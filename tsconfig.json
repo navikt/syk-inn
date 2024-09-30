@@ -19,7 +19,8 @@
         ],
         "paths": {
             "@/*": ["./src/*"],
-            "@fhir/*": ["./src/fhir/*"]
+            "@fhir/*": ["./src/fhir/*"],
+            "@utils/*": ["./src/utils/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -6,6 +6,9 @@ import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
 import Script from 'next/script'
 import { Page } from '@navikt/ds-react'
 
+import { isLocalOrDemo } from '@utils/env'
+import DevTools from '@/devtools/DevTools'
+
 import Preload from './preload'
 import Providers from './providers'
 
@@ -48,7 +51,10 @@ async function StandaloneLayout({ children }: PropsWithChildren): Promise<ReactE
             <body>
                 <Page footerPosition="belowFold" footer={<Decorator.Footer />}>
                     <Decorator.Header />
-                    <Providers>{children}</Providers>
+                    <Providers>
+                        {children}
+                        {isLocalOrDemo && <DevTools />}
+                    </Providers>
                     <Decorator.Scripts loader={Script} />
                 </Page>
             </body>
@@ -69,7 +75,12 @@ function FhirLayout({ children }: PropsWithChildren): ReactElement {
             </head>
             <Preload />
             <body>
-                <Providers>{children}</Providers>
+                <Page footerPosition="belowFold">
+                    <Providers>
+                        {children}
+                        {isLocalOrDemo && <DevTools />}
+                    </Providers>
+                </Page>
             </body>
         </html>
     )

@@ -502,6 +502,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-devtools@npm:5.58.0":
+  version: 5.58.0
+  resolution: "@tanstack/query-devtools@npm:5.58.0"
+  checksum: 10c0/3b0ad21503682f6c452f5f78f5cc9007e902f455c70fd7d537ca2c3b13f41607ab4ad612c0ca19abc24aa2a9fa9bf019101dfeb43abfa53f04782322558f19f6
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-devtools@npm:^5.58.0":
+  version: 5.58.0
+  resolution: "@tanstack/react-query-devtools@npm:5.58.0"
+  dependencies:
+    "@tanstack/query-devtools": "npm:5.58.0"
+  peerDependencies:
+    "@tanstack/react-query": ^5.56.2
+    react: ^18 || ^19
+  checksum: 10c0/6a3ad499380907764f793a964861418bf658d9b5e1b2fbdd410368b04b9bd7334a20ffd8eace8d83341c6441eccb79c73616f0ddd05d6e964ea1520b3c46e324
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-query@npm:^5.56.2":
   version: 5.56.2
   resolution: "@tanstack/react-query@npm:5.56.2"
@@ -1479,7 +1498,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:^2.1.0":
+"clsx@npm:^2.1.0, clsx@npm:^2.1.1":
   version: 2.1.1
   resolution: "clsx@npm:2.1.1"
   checksum: 10c0/c4c8eb865f8c82baab07e71bfa8897c73454881c4f99d6bc81585aecd7c441746c1399d08363dc096c550cceaf97bd4ce1e8854e1771e9998d9f94c4fe075839
@@ -5559,10 +5578,12 @@ __metadata:
     "@navikt/nav-dekoratoren-moduler": "npm:^3.1.0"
     "@navikt/next-logger": "npm:^1.32.0"
     "@tanstack/react-query": "npm:^5.56.2"
+    "@tanstack/react-query-devtools": "npm:^5.58.0"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
     autoprefixer: "npm:^10.4.20"
+    clsx: "npm:^2.1.1"
     csp-header: "npm:^5.2.1"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.2.13"
@@ -5579,6 +5600,7 @@ __metadata:
     prettier: "npm:^3.3.3"
     react: "npm:^18"
     react-dom: "npm:^18"
+    tailwind-merge: "npm:^2.5.2"
     tailwindcss: "npm:^3.4.13"
     typescript: "npm:^5"
   languageName: unknown
@@ -5605,6 +5627,13 @@ __metadata:
   version: 6.2.0
   resolution: "tabbable@npm:6.2.0"
   checksum: 10c0/ced8b38f05f2de62cd46836d77c2646c42b8c9713f5bd265daf0e78ff5ac73d3ba48a7ca45f348bafeef29b23da7187c72250742d37627883ef89cbd7fa76898
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:^2.5.2":
+  version: 2.5.2
+  resolution: "tailwind-merge@npm:2.5.2"
+  checksum: 10c0/e43a9a468f7ba4ed5b4a399558d96d6270a3d8131dca111cccc803e71cc23885060d18d721f312a24fff0a75c567dbb30b2a87c18aba25eb4255df197d8170ab
   languageName: node
   linkType: hard
 
