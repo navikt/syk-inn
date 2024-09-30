@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
 import Script from 'next/script'
+import { Page } from '@navikt/ds-react'
 
 import Preload from './preload'
 import Providers from './providers'
@@ -43,11 +44,13 @@ async function StandaloneLayout({ children }: PropsWithChildren): Promise<ReactE
                 />
                 <Decorator.HeadAssets />
             </head>
+            <Preload />
             <body>
-                <Decorator.Header />
-                {children}
-                <Decorator.Footer />
-                <Decorator.Scripts loader={Script} />
+                <Page footerPosition="belowFold" footer={<Decorator.Footer />}>
+                    <Decorator.Header />
+                    <Providers>{children}</Providers>
+                    <Decorator.Scripts loader={Script} />
+                </Page>
             </body>
         </html>
     )
@@ -65,9 +68,9 @@ function FhirLayout({ children }: PropsWithChildren): ReactElement {
                 />
             </head>
             <Preload />
-            <Providers>
-                <body>{children}</body>
-            </Providers>
+            <body>
+                <Providers>{children}</Providers>
+            </body>
         </html>
     )
 }
