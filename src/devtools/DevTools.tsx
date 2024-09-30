@@ -1,11 +1,12 @@
 'use client'
 
-import { ReactElement, useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import { SandboxIcon, TenancyIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
 
 import { cn } from '@utils/tw'
+import { InternalDevToolsPanel } from '@/devtools/InternalDevTools'
 
 function DevTools(): ReactElement {
     const [tanstackOpen, setTanstackOpen] = useState(false)
@@ -50,14 +51,6 @@ function DevTools(): ReactElement {
                 />
             </div>
         </>
-    )
-}
-
-function InternalDevToolsPanel(): ReactElement {
-    return (
-        <div className="h-[500px] max-h-[500px] overflow-auto bg-red-500 border-t-2">
-            <div>WHOP</div>
-        </div>
     )
 }
 
