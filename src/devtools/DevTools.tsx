@@ -9,8 +9,8 @@ import { cn } from '@utils/tw'
 import { InternalDevToolsPanel } from '@/devtools/InternalDevTools'
 
 function DevTools(): ReactElement {
-    const [tanstackOpen, setTanstackOpen] = useState(false)
-    const [internalOpen, setInternalOpen] = useState(false)
+    const [tanstackOpen, setTanstackOpen] = useState(localStorage && localStorage.getItem('tanstackOpen') === 'true')
+    const [internalOpen, setInternalOpen] = useState(localStorage && localStorage.getItem('internalOpen') === 'true')
 
     return (
         <>
@@ -37,6 +37,8 @@ function DevTools(): ReactElement {
                     onClick={() => {
                         setTanstackOpen(false)
                         setInternalOpen((b) => !b)
+                        localStorage.setItem('internalOpen', String(!internalOpen))
+                        localStorage.removeItem('tanstackOpen')
                     }}
                 />
                 <Button
@@ -47,6 +49,8 @@ function DevTools(): ReactElement {
                     onClick={() => {
                         setInternalOpen(false)
                         setTanstackOpen((b) => !b)
+                        localStorage.setItem('tanstackOpen', String(!tanstackOpen))
+                        localStorage.removeItem('internalOpen')
                     }}
                 />
             </div>
