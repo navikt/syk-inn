@@ -1,0 +1,95 @@
+version: 2
+
+registries:
+  npm-github:
+    type: npm-registry
+    url: https://npm.pkg.github.com
+    token: ${{ secrets.READER_TOKEN }}
+
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+      include: scope
+    open-pull-requests-limit: 20
+    registries: '*'
+    ignore:
+      - dependency-name: 'eslint'
+        versions: ['9.x']
+    groups:
+      aksel-dependencies:
+        patterns:
+          - '@navikt/aksel*'
+          - '@navikt/ds*'
+      react-dependencies:
+        patterns:
+          - 'react'
+          - 'react-dom'
+          - '@types/react'
+          - '@types/react-dom'
+      styling:
+        patterns:
+          - 'tailwindcss'
+          - 'autoprefixer'
+          - 'postcss'
+          - 'postcss-import'
+          - 'classnames'
+      graphql-codegen:
+        patterns:
+          - '@graphql-codegen/*'
+      graphql-runtime:
+        patterns:
+          - '@apollo/client'
+          - '@apollo/server'
+          - '@as-integrations/next'
+          - '@graphql-tools/*'
+          - '@graphql-typed-document-node/core'
+          - 'graphql'
+          - 'graphql-tag'
+      team-deps:
+        patterns:
+          - '@navikt/dinesykmeldte-sidemeny'
+          - '@navikt/next-auth-wonderwall'
+          - '@navikt/next-logger'
+          - 'nextleton'
+      next:
+        patterns:
+          - 'next'
+          - '@next/bundle-analyzer'
+          - 'eslint-config-next'
+      code-style:
+        patterns:
+          - 'eslint'
+          - 'prettier'
+          - 'prettier-plugin-tailwindcss'
+      testing:
+        patterns:
+          - 'vitest'
+          - 'vitest-dom'
+          - 'vitest-axe'
+          - '@vitest/coverage-v8'
+          - '@vitejs/plugin-react'
+          - 'open'
+          - 'next-router-mock'
+          - '@testing-library/react'
+          - '@testing-library/user-event'
+          - 'jsdom'
+      utils:
+        patterns:
+          - 'zod'
+          - 'date-fns'
+          - 'date-fns-tz'
+          - 'remeda'
+          - 'fuse.js'
+          - 'crypto-hash'
+      dev-tools:
+        patterns:
+          - 'dotenv'
+          - 'concurrently'
+          - 'husky'
+          - 'lint-staged'
+          - 'node-gyp'

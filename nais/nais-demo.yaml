@@ -1,0 +1,34 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: {{appname}}-demo
+  namespace: tsm
+  labels:
+    team: tsm
+    branchState: {{branchState}}
+spec:
+  image: {{image}}
+  port: 3000
+  ingresses:
+    - {{ingress}}
+  replicas:
+    min: {{replicas}}
+    max: {{replicas}}
+  liveness:
+    path: /samarbeidspartner/sykmelding/api/internal/is_alive
+  readiness:
+    path: /samarbeidspartner/sykmelding/api/internal/is_ready
+  preStopHook:
+    http:
+      path: /samarbeidspartner/sykmelding/api/internal/pre_stop
+  accessPolicy:
+    outbound:
+      rules:
+        - application: nav-dekoratoren
+          namespace: personbruker
+  resources:
+    limits:
+      memory: 600Mi
+    requests:
+      cpu: 50m
+      memory: 400Mi

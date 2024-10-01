@@ -2,6 +2,7 @@
 const nextConfig = {
     output: 'standalone',
     assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
+    basePath: process.env.NEXT_PUBLIC_BASE_PATH,
     experimental: {
         optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
         instrumentationHook: true,

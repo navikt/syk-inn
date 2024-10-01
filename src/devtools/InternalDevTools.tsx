@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react'
 import { BodyShort, Button, Heading, ToggleGroup } from '@navikt/ds-react'
 import { PersonIcon, StethoscopeIcon } from '@navikt/aksel-icons'
 
+import { getBaseURL } from '@utils/url'
+
 import { DevToolItem } from './InternalDevToolItem'
 import { DevToolsProps } from './DevTools'
 
@@ -31,7 +33,7 @@ function ResetSmartContext(): ReactElement {
         sessionStorage.removeItem('SMART_KEY')
 
         if (postAction === 'reload') window.location.reload()
-        if (postAction === 're-launch') window.location.href = '/fhir/launch?iss=http://localhost:3000/api/fhir-mock'
+        if (postAction === 're-launch') window.location.href = `/fhir/launch?iss=${getBaseURL()}/api/fhir-mock`
     }
 
     return (

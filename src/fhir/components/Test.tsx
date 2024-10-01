@@ -5,6 +5,8 @@ import React, { ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Alert, BodyShort, Detail, Heading } from '@navikt/ds-react'
 
+import { getBaseURL } from '@utils/url'
+
 function Test(): ReactElement {
     const { data, error, isFetching } = useQuery({
         queryKey: ['pasient'],
@@ -19,8 +21,10 @@ function Test(): ReactElement {
     if (error) {
         return (
             <>
-                <Alert variant="error">Error: {error.message}</Alert>
-                <a href="/fhir/launch?iss=http://localhost:3000/api/fhir-mock">Re-do local FHIR launch?</a>
+                <Alert variant="error" className="mb-4">
+                    Error: {error.message}
+                </Alert>
+                <a href={`/fhir/launch?iss=${getBaseURL()}/api/fhir-mock`}>Re-do local FHIR launch?</a>
             </>
         )
     }

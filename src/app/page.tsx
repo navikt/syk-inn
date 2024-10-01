@@ -6,6 +6,7 @@ import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 
 import { isLocalOrDemo } from '@utils/env'
+import { getBaseURL } from '@utils/url'
 
 export default function Home(): ReactElement {
     if (!isLocalOrDemo) {
@@ -25,12 +26,10 @@ export default function Home(): ReactElement {
             </BodyShort>
 
             <div className="flex flex-col gap-3">
-                <Link href="/fhir/launch?iss=http://localhost:3000/api/fhir-mock">
+                <Link href={`/fhir/launch?iss=${getBaseURL()}/api/fhir-mock`}>
                     Go to FHIR Launch? (client side navigation)
                 </Link>
-                <a href="/fhir/launch?iss=http://localhost:3000/api/fhir-mock">
-                    Go to FHIR Launch? (full page refresh)
-                </a>
+                <a href={`/fhir/launch?iss=${getBaseURL()}/api/fhir-mock`}>Go to FHIR Launch? (full page refresh)</a>
             </div>
         </div>
     )

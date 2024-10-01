@@ -15,6 +15,12 @@ async function handler(req: Request): Promise<Response> {
         case 'GET - /Patient': {
             return Response.json(data.pasient['Espen Eksempel'], { status: 200 })
         }
+        case 'GET - /.well-known/smart-configuration': {
+            return Response.json({ TODO: 'Implement this endpoint' }, { status: 501 })
+        }
+        case 'GET - /metadata': {
+            return Response.json({ TODO: 'Implement this endpoint as well' }, { status: 501 })
+        }
         default: {
             logger.error(`No mock found for ${mockIdentifier}`)
             return new Response(`Unimplemented FHIR resource: ${mockIdentifier} (${req.method})`, { status: 501 })
@@ -34,6 +40,4 @@ export {
     handler as PATCH,
     handler as OPTIONS,
     handler as HEAD,
-    handler as CONNECT,
-    handler as TRACE,
 }
