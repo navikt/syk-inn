@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Button, Heading, ToggleGroup } from '@navikt/ds-react'
+import { BodyShort, Button, Heading, ToggleGroup } from '@navikt/ds-react'
 import { PersonIcon, StethoscopeIcon } from '@navikt/aksel-icons'
 
 import { DevToolItem } from './InternalDevToolItem'
@@ -7,12 +7,17 @@ import { DevToolsProps } from './DevTools'
 
 export function InternalDevToolsPanel({ mode }: Pick<DevToolsProps, 'mode'>): ReactElement {
     return (
-        <div className="h-[500px] max-h-[500px] overflow-auto bg-white border-t-2 p-2">
-            <Heading level="3" size="medium" spacing>
-                syk-inn devtools
+        <div className="h-[500px] max-h-[500px] overflow-auto p-2 border-t-2 border-t-border-alt-3 bg-surface-alt-3-subtle">
+            <Heading level="3" size="medium">
+                App DevTools
             </Heading>
-            <ResetSmartContext />
-            <ToggleAppVariant mode={mode} />
+            <BodyShort size="small" className="text-text-subtle">
+                Collection of actions and utilities used for local development only.
+            </BodyShort>
+            <div className="flex flex-col gap-6 mt-6">
+                <ResetSmartContext />
+                <ToggleAppVariant mode={mode} />
+            </div>
         </div>
     )
 }
@@ -59,6 +64,7 @@ function ToggleAppVariant({ mode }: Pick<DevToolsProps, 'mode'>): ReactElement {
                     document.cookie = `development-mode-override=${value}; path=/`
                     window.location.reload()
                 }}
+                variant="neutral"
             >
                 <ToggleGroup.Item value="standalone" icon={<PersonIcon aria-hidden />} label="Standalone" />
                 <ToggleGroup.Item value="fhir" icon={<StethoscopeIcon aria-hidden />} label="FHIR" />

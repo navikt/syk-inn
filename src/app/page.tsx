@@ -3,13 +3,20 @@ import { VirusIcon } from '@navikt/aksel-icons'
 import { ReactElement } from 'react'
 import Link from 'next/link'
 import { cookies } from 'next/headers'
+import { notFound } from 'next/navigation'
+
+import { isLocalOrDemo } from '@utils/env'
 
 export default function Home(): ReactElement {
+    if (!isLocalOrDemo) {
+        notFound()
+    }
+
     return (
         <div className="flex gap-3 p-3 flex-col">
             <Heading level="1" size="xlarge" className="flex gap-2 items-center">
                 <VirusIcon />
-                syk-inn dev
+                syk-inn debug page
             </Heading>
 
             <BodyShort size="small">
