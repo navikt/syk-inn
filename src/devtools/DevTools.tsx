@@ -6,11 +6,16 @@ import { SandboxIcon, TenancyIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
 
 import { cn } from '@utils/tw'
-import { InternalDevToolsPanel } from '@/devtools/InternalDevTools'
 
-function DevTools(): ReactElement {
-    const [tanstackOpen, setTanstackOpen] = useState(localStorage && localStorage.getItem('tanstackOpen') === 'true')
-    const [internalOpen, setInternalOpen] = useState(localStorage && localStorage.getItem('internalOpen') === 'true')
+import { InternalDevToolsPanel } from './InternalDevTools'
+
+export type DevToolsProps = {
+    mode: 'fhir' | 'standalone'
+}
+
+function DevTools({ mode }: DevToolsProps): ReactElement {
+    const [tanstackOpen, setTanstackOpen] = useState(localStorage.getItem('tanstackOpen') === 'true')
+    const [internalOpen, setInternalOpen] = useState(localStorage.getItem('internalOpen') === 'true')
 
     return (
         <>
@@ -21,7 +26,7 @@ function DevTools(): ReactElement {
             )}
             {internalOpen && (
                 <div className="fixed bottom-0 left-0 w-full">
-                    <InternalDevToolsPanel />
+                    <InternalDevToolsPanel mode={mode} />
                 </div>
             )}
             <div

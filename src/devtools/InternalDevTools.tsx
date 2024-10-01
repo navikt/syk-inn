@@ -1,7 +1,21 @@
 import React, { ReactElement } from 'react'
-import { Button, Heading } from '@navikt/ds-react'
+import { Button, Heading, ToggleGroup } from '@navikt/ds-react'
+import { PersonIcon, StethoscopeIcon } from '@navikt/aksel-icons'
 
-import { DevToolItem } from '@/devtools/InternalDevToolItem'
+import { DevToolItem } from './InternalDevToolItem'
+import { DevToolsProps } from './DevTools'
+
+export function InternalDevToolsPanel({ mode }: Pick<DevToolsProps, 'mode'>): ReactElement {
+    return (
+        <div className="h-[500px] max-h-[500px] overflow-auto bg-white border-t-2 p-2">
+            <Heading level="3" size="medium" spacing>
+                syk-inn devtools
+            </Heading>
+            <ResetSmartContext />
+            <ToggleAppVariant mode={mode} />
+        </div>
+    )
+}
 
 function ResetSmartContext(): ReactElement {
     const resetSmartContext = (postAction?: 'reload' | 're-launch') => () => {
@@ -33,13 +47,22 @@ function ResetSmartContext(): ReactElement {
     )
 }
 
-export function InternalDevToolsPanel(): ReactElement {
+function ToggleAppVariant({ mode }: Pick<DevToolsProps, 'mode'>): ReactElement {
     return (
-        <div className="h-[500px] max-h-[500px] overflow-auto bg-white border-t-2 p-2">
-            <Heading level="3" size="medium" spacing>
-                syk-inn devtools
-            </Heading>
-            <ResetSmartContext />
-        </div>
+        <DevToolItem
+            title="Change app context"
+            description="Toggle between rendering the app in FHIR-mode or standalone-mode"
+        >
+            <ToggleGroup
+                defaultValue={mode}
+                onChange={(value) => {
+                    document.cookie = `development-mode-override=${value}; path=/`
+                    window.location.reload()
+                }}
+            >
+                <ToggleGroup.Item value="standalone" icon={<PersonIcon aria-hidden />} label="Standalone" />
+                <ToggleGroup.Item value="fhir" icon={<StethoscopeIcon aria-hidden />} label="FHIR" />
+            </ToggleGroup>
+        </DevToolItem>
     )
 }

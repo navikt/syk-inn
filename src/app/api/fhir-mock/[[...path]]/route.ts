@@ -1,7 +1,9 @@
-import { logger } from '@navikt/next-logger'
+import { createChildLogger } from '@navikt/next-logger'
+
+const logger = createChildLogger('fhir-mock')
 
 async function handler(req: Request): Promise<Response> {
-    logger.info(`[FHIR-MOCK]: ${req.method} - path: ${new URL(req.url).pathname}`)
+    logger.info(`${req.method} - path: ${new URL(req.url).pathname}`)
 
     // TODO: Implement FHIR Mock
     return Response.json({ ok: '2k' })

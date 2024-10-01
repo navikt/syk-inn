@@ -18,7 +18,6 @@
             }
         ],
         "paths": {
-            "@/*": ["./src/*"],
             "@fhir/*": ["./src/fhir/*"],
             "@utils/*": ["./src/utils/*"]
         }
