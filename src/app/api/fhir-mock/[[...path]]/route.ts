@@ -1,12 +1,29 @@
-import { createChildLogger } from '@navikt/next-logger'
+import { logger as pinoLogger } from '@navikt/next-logger'
 
-const logger = createChildLogger('fhir-mock')
+import data from './data'
+
+const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK] ' })
 
 async function handler(req: Request): Promise<Response> {
-    logger.info(`${req.method} - path: ${new URL(req.url).pathname}`)
+    const url = new URL(req.url)
+    const fhirPath = cleanPath(url.pathname)
 
-    // TODO: Implement FHIR Mock
-    return Response.json({ ok: '2k' })
+    logger.info(`Incoming request: ${req.method} - ${fhirPath}`)
+
+    const mockIdentifier = `${req.method} - ${fhirPath}`
+    switch (mockIdentifier) {
+        case 'GET - /Patient': {
+            return Response.json(data.pasient['Espen Eksempel'], { status: 200 })
+        }
+        default: {
+            logger.error(`No mock found for ${mockIdentifier}`)
+            return new Response(`Unimplemented FHIR resource: ${mockIdentifier} (${req.method})`, { status: 501 })
+        }
+    }
+}
+
+function cleanPath(url: string): string {
+    return url.replace(/.*\/fhir-mock/, '')
 }
 
 export {
