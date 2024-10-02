@@ -46,18 +46,20 @@ function DevTools({ mode }: DevToolsProps): ReactElement {
                         localStorage.removeItem('tanstackOpen')
                     }}
                 />
-                <Button
-                    variant="secondary-neutral"
-                    size="small"
-                    icon={<TenancyIcon title="Tanstack Query Devtools" />}
-                    className="bg-white"
-                    onClick={() => {
-                        setInternalOpen(false)
-                        setTanstackOpen((b) => !b)
-                        localStorage.setItem('tanstackOpen', String(!tanstackOpen))
-                        localStorage.removeItem('internalOpen')
-                    }}
-                />
+                {process.env.NODE_ENV !== 'production' && (
+                    <Button
+                        variant="secondary-neutral"
+                        size="small"
+                        icon={<TenancyIcon title="Tanstack Query Devtools" />}
+                        className="bg-white"
+                        onClick={() => {
+                            setInternalOpen(false)
+                            setTanstackOpen((b) => !b)
+                            localStorage.setItem('tanstackOpen', String(!tanstackOpen))
+                            localStorage.removeItem('internalOpen')
+                        }}
+                    />
+                )}
             </div>
         </>
     )
