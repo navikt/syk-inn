@@ -16,10 +16,10 @@ async function handler(req: Request): Promise<Response> {
             return Response.json(data.pasient['Espen Eksempel'], { status: 200 })
         }
         case 'GET - /.well-known/smart-configuration': {
-            return Response.json({ TODO: 'Implement this endpoint' }, { status: 501 })
+            return Response.json(data.fhirServer.wellKnown, { status: 200 })
         }
         case 'GET - /metadata': {
-            return Response.json({ TODO: 'Implement this endpoint as well' }, { status: 501 })
+            return Response.json(data.fhirServer.metadata, { status: 501 })
         }
         default: {
             logger.error(`No mock found for ${mockIdentifier}`)
