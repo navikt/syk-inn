@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 
-import { isLocalOrDemo } from '@utils/env'
+import { bundledEnv, isLocalOrDemo } from '@utils/env'
 import { getBaseURL } from '@utils/url'
 
 export default function Home(): ReactElement {
@@ -29,7 +29,11 @@ export default function Home(): ReactElement {
                 <Link href={`/fhir/launch?iss=${getBaseURL()}/api/fhir-mock`}>
                     Go to FHIR Launch? (client side navigation)
                 </Link>
-                <a href={`/fhir/launch?iss=${getBaseURL()}/api/fhir-mock`}>Go to FHIR Launch? (full page refresh)</a>
+                <a
+                    href={`${bundledEnv.NEXT_PUBLIC_BASE_PATH ?? ''}/fhir/launch?iss=${getBaseURL()}${bundledEnv.NEXT_PUBLIC_BASE_PATH ?? ''}/api/fhir-mock`}
+                >
+                    Go to FHIR Launch? (full page refresh)
+                </a>
             </div>
         </div>
     )
