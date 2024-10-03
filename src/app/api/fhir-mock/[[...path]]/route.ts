@@ -19,7 +19,7 @@ async function handler(req: Request): Promise<Response> {
             return Response.json(data.fhirServer.wellKnown, { status: 200 })
         }
         case 'GET - /metadata': {
-            return Response.json(data.fhirServer.metadata, { status: 501 })
+            return Response.json(data.fhirServer.metadata, { status: 200 })
         }
         default: {
             logger.error(`No mock found for ${mockIdentifier}`)
