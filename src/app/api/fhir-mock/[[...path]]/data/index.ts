@@ -1,5 +1,7 @@
+import { getBaseURL } from '@utils/url'
+
 import pasientEspenEksempel from './pasient-espen-eksempel.json'
-import wellKnown from './fhir-server/well-known.json'
+import { createWellKnown } from './fhir-server/well-known'
 import metadata from './fhir-server/metadata.json'
 
 const testData = {
@@ -7,7 +9,7 @@ const testData = {
         'Espen Eksempel': pasientEspenEksempel,
     },
     fhirServer: {
-        wellKnown: wellKnown,
+        wellKnown: createWellKnown(`${getBaseURL()}/api/fhir-mock`),
         metadata: metadata,
     },
 }
