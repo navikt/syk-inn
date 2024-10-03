@@ -8,6 +8,15 @@ async function handler(req: Request): Promise<Response> {
 
     logger.info(`Incoming request: ${req.method} - ${fhirPath}`)
 
+    const mockIdentifier = `${req.method} - ${fhirPath}`
+    switch (mockIdentifier) {
+        case 'GET - /authorize': {
+            logger.info(`/authorize request with params: \n\t${Array.from(url.searchParams.entries()).join('\n\t')}`)
+
+            return Response.redirect(url.searchParams.get('redirect_uri')!, 302)
+        }
+    }
+
     return new Response(`Auth mock not implemented for ${req.method} - ${fhirPath}`, { status: 501 })
 }
 

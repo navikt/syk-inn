@@ -46,7 +46,7 @@ export default function Home(): ReactElement {
                     Examples
                 </Heading>
 
-                <div>
+                <div className="mt-2">
                     <Heading level="3" size="xsmall" spacing>
                         🔥 Launch example FHIR modes
                     </Heading>
@@ -55,13 +55,17 @@ export default function Home(): ReactElement {
                             href={`${bundledEnv.NEXT_PUBLIC_BASE_PATH ?? ''}/fhir/launch?iss=${getBaseURL()}${bundledEnv.NEXT_PUBLIC_BASE_PATH ?? ''}/api/fhir-mock`}
                             border
                         >
-                            <LinkPanelTitle className="text-medium">Launch mot syk-inn FHIR-mock</LinkPanelTitle>
+                            <LinkPanelTitle className="text-medium leading-5">
+                                Launch mot syk-inn FHIR-mock
+                            </LinkPanelTitle>
                             <LinkPanelDescription className="text-sm">
                                 Har norske data, hardkodet testdata
                             </LinkPanelDescription>
                         </LinkPanel>
                         <LinkPanel href="#" border>
-                            <LinkPanelTitle className="text-medium">Launch mot launch.smarthealthit.org</LinkPanelTitle>
+                            <LinkPanelTitle className="text-medium leading-5">
+                                Launch mot launch.smarthealthit.org
+                            </LinkPanelTitle>
                             <LinkPanelDescription className="text-sm">
                                 Forhåndsdefinerte data, ekstern FHIR server
                             </LinkPanelDescription>
@@ -70,7 +74,9 @@ export default function Home(): ReactElement {
                             href="https://launch.smarthealthit.org/?launch=WzAsImNkMDlmNWQ0LTU1ZjctNGEyNC1hMjVkLWE1YjY1YzdhODgwNSIsIjI1MzEwNzEiLCJBVVRPIiwwLDAsMCwiIiwiIiwiIiwiIiwiIiwiIiwiIiwwLDEsIiJd&launch_url=http%3A%2F%2Flocalhost%3A3000%2Ffhir%2Flaunch"
                             border
                         >
-                            <LinkPanelTitle className="text-medium">Konfigurer launch.smarthealthit.org</LinkPanelTitle>
+                            <LinkPanelTitle className="text-medium leading-5">
+                                Konfigurer launch.smarthealthit.org
+                            </LinkPanelTitle>
                             <LinkPanelDescription className="text-sm">
                                 Konfigurer smarthealthit.org launch
                             </LinkPanelDescription>

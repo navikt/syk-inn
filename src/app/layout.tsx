@@ -38,7 +38,7 @@ export default function RootLayout({ children }: PropsWithChildren): ReactElemen
 
 async function StandaloneLayout({ children }: PropsWithChildren): Promise<ReactElement> {
     const Decorator = await fetchDecoratorReact({
-        env: 'prod',
+        env: 'dev',
         params: {
             context: 'samarbeidspartner',
         },
