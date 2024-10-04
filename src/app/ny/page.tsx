@@ -1,19 +1,17 @@
 'use client'
 
 import React, { ReactElement } from 'react'
-import { Heading } from '@navikt/ds-react'
 import Link from 'next/link'
 
-import Test from '@fhir/components/Test'
-import { isLocalOrDemo } from '@utils/env'
 import NySykmeldingForm from '@components/ny-sykmelding/NySykmeldingForm'
+import { isLocalOrDemo } from '@utils/env'
 import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
 import { NySykmeldingFormDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
 
 function Page(): ReactElement {
-    const FhirDataService: NySykmeldingFormDataService = {
+    const StandaloneDataService: NySykmeldingFormDataService = {
         getPatient: () => ({
-            navn: 'FHIR Fhirresson',
+            navn: 'Standalone Alonessen',
             fnr: '12345678910',
         }),
     }
@@ -25,11 +23,8 @@ function Page(): ReactElement {
                     <Link href="/">← Back to development page</Link>
                 </div>
             )}
-            <Heading level="2" size="medium" spacing>
-                You are FHIR-ed
-            </Heading>
-            <Test />
-            <NySykmeldingFormDataProvider dataService={FhirDataService}>
+
+            <NySykmeldingFormDataProvider dataService={StandaloneDataService}>
                 <NySykmeldingForm />
             </NySykmeldingFormDataProvider>
         </div>

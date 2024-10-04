@@ -4,6 +4,7 @@ import { VirusIcon } from '@navikt/aksel-icons'
 import { ReactElement } from 'react'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 
 import { bundledEnv, isLocalOrDemo } from '@utils/env'
 import { getBaseURL } from '@utils/url'
@@ -87,7 +88,10 @@ export default function Home(): ReactElement {
                     <Heading level="3" size="xsmall" spacing>
                         ⚠️ Standalone examples
                     </Heading>
-                    <BodyShort>TODO</BodyShort>
+                    <LinkPanel as={Link} href="/ny" border className="max-w-prose">
+                        <LinkPanelTitle className="text-medium leading-5">Enkel standalone</LinkPanelTitle>
+                        <LinkPanelDescription className="text-sm">Med mocket HelseID</LinkPanelDescription>
+                    </LinkPanel>
                 </div>
             </div>
         </div>
