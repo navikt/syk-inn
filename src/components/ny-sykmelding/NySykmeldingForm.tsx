@@ -11,6 +11,10 @@ import {
     useNySykmeldingDataService,
 } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
 import { NySykmeldingFormValues } from '@components/ny-sykmelding/NySykmeldingFormValues'
+import {
+    assertResourceAvailable,
+    PatientInfo,
+} from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
 
 function NySykmeldingForm(): ReactElement {
     const form = useForm<NySykmeldingFormValues>()
@@ -36,21 +40,25 @@ function NySykmeldingForm(): ReactElement {
                 )}
                 className="flex flex-col gap-3 max-w-prose"
             >
-                <PatientTestField />
+                <PasientSearchField />
                 <Button type="submit">Doit</Button>
             </form>
         </FormProvider>
     )
 }
 
-function PatientTestField(): ReactElement {
+function PasientSearchField(): ReactElement {
     const formContext = useFormContext<NySykmeldingFormValues>()
     const value = formContext.watch('pasient')
 
     const dataService = useNySykmeldingDataService()
     const { data, isLoading, error } = useQuery({
-        queryKey: ['form', value?.length],
-        queryFn: () => dataService.getPatient(),
+        queryKey: ['form', value] as const,
+        queryFn: (): Promise<PatientInfo> => {
+            assertResourceAvailable(dataService.query.getPasientByFnr)
+
+            return dataService.query.getPasientByFnr(value ?? '')
+        },
         enabled: value?.length === 11,
     })
 
@@ -58,7 +66,7 @@ function PatientTestField(): ReactElement {
         <div>
             <TextField label="Test" placeholder="Passy" {...formContext.register('pasient')} />
             <div className="flex justify-center">
-                <Detail>
+                <Detail className="mt-2">
                     Pasienten: {data?.fnr ?? 'N/A'}, {data?.navn ?? 'N/A'}
                 </Detail>
                 {isLoading && <Loader size="xsmall" />}

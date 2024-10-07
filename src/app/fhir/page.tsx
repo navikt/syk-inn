@@ -8,14 +8,22 @@ import Test from '@fhir/components/Test'
 import { isLocalOrDemo } from '@utils/env'
 import NySykmeldingForm from '@components/ny-sykmelding/NySykmeldingForm'
 import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
-import { NySykmeldingFormDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
+import {
+    NotAvailable,
+    NySykmeldingFormDataService,
+} from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
 
 function Page(): ReactElement {
     const FhirDataService: NySykmeldingFormDataService = {
-        getPatient: () => ({
-            navn: 'FHIR Fhirresson',
-            fnr: '12345678910',
-        }),
+        context: {
+            getPasient: async () => ({
+                navn: 'FHIR Fhirresson',
+                fnr: '12345678910',
+            }),
+        },
+        query: {
+            getPasientByFnr: NotAvailable,
+        },
     }
 
     return (

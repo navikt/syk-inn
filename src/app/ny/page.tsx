@@ -6,14 +6,22 @@ import Link from 'next/link'
 import NySykmeldingForm from '@components/ny-sykmelding/NySykmeldingForm'
 import { isLocalOrDemo } from '@utils/env'
 import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
-import { NySykmeldingFormDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
+import {
+    NotAvailable,
+    NySykmeldingFormDataService,
+} from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
 
 function Page(): ReactElement {
     const StandaloneDataService: NySykmeldingFormDataService = {
-        getPatient: () => ({
-            navn: 'Standalone Alonessen',
-            fnr: '12345678910',
-        }),
+        context: {
+            getPasient: NotAvailable,
+        },
+        query: {
+            getPasientByFnr: async (fnr) => ({
+                fnr,
+                navn: 'Stand Alonessen',
+            }),
+        },
     }
 
     return (

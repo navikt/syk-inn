@@ -10,8 +10,10 @@ async function handler(req: Request): Promise<Response> {
 
     const mockIdentifier = `${req.method} - ${fhirPath}`
     switch (mockIdentifier) {
-        case 'GET - /authorize': {
-            logger.info(`/authorize request with params: \n\t${Array.from(url.searchParams.entries()).join('\n\t')}`)
+        case 'GET - /auth/authorize': {
+            logger.info(
+                `/auth/authorize request with params: \n\t${Array.from(url.searchParams.entries()).join('\n\t')}`,
+            )
 
             return Response.redirect(url.searchParams.get('redirect_uri')!, 302)
         }
@@ -21,7 +23,7 @@ async function handler(req: Request): Promise<Response> {
 }
 
 function cleanPath(url: string): string {
-    return url.replace(/.*\/fhir-mock\/auth/, '')
+    return url.replace(/.*\/fhir-mock/, '')
 }
 
 export {
