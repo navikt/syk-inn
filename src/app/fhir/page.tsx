@@ -3,28 +3,23 @@
 import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 import Link from 'next/link'
+import { oauth2 } from 'fhirclient'
+import { useQuery } from '@tanstack/react-query'
 
 import Test from '@fhir/components/Test'
 import { isLocalOrDemo } from '@utils/env'
 import NySykmeldingForm from '@components/ny-sykmelding/NySykmeldingForm'
 import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
-import {
-    NotAvailable,
-    NySykmeldingFormDataService,
-} from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
+
+import { createFhirFetcher } from './fhir-context'
 
 function Page(): ReactElement {
-    const FhirDataService: NySykmeldingFormDataService = {
-        context: {
-            getPasient: async () => ({
-                navn: 'FHIR Fhirresson',
-                fnr: '12345678910',
-            }),
+    const client = useQuery({
+        queryKey: ['fhir-client'],
+        queryFn: async () => {
+            return oauth2.ready()
         },
-        query: {
-            getPasientByFnr: NotAvailable,
-        },
-    }
+    })
 
     return (
         <div className="p-8">
@@ -36,10 +31,14 @@ function Page(): ReactElement {
             <Heading level="2" size="medium" spacing>
                 You are FHIR-ed
             </Heading>
+            {client.isLoading && <p>Setting up FHIR-context...</p>}
+            {client.isError && <p>Error: {client.error.message}</p>}
+            {client.data && (
+                <NySykmeldingFormDataProvider dataService={createFhirFetcher(client.data)}>
+                    <NySykmeldingForm />
+                </NySykmeldingFormDataProvider>
+            )}
             <Test />
-            <NySykmeldingFormDataProvider dataService={FhirDataService}>
-                <NySykmeldingForm />
-            </NySykmeldingFormDataProvider>
         </div>
     )
 }
