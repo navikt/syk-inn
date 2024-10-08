@@ -1,22 +1,29 @@
 import { client as fhirClient } from 'fhirclient'
+import { logger } from '@navikt/next-logger'
 
 import {
     NotAvailable,
     NySykmeldingFormDataService,
 } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
 
+import { FhirPatientSchema } from './schema/patient'
+import { getName, getOid } from './schema/mappers/patient'
+
 export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykmeldingFormDataService => {
     return {
         context: {
             getPasient: async () => {
                 const patient = await client.request('Patient')
+                const parsed = FhirPatientSchema.safeParse(patient)
 
-                // TODO: Actually map from FHIR-data to generic data
-                // eslint-disable-next-line no-console
-                console.log(patient)
+                if (parsed.error) {
+                    logger.error('Failed to parse patient', parsed.error)
+                    throw parsed.error
+                }
+
                 return {
-                    navn: 'FHIR Fhirresson',
-                    fnr: '12345678910',
+                    navn: getName(parsed.data),
+                    fnr: getOid(parsed.data),
                 }
             },
         },
