@@ -39,7 +39,7 @@ function Page(): ReactElement {
                     <NySykmeldingForm />
                 </NySykmeldingFormDataProvider>
             )}
-            <ErrorBoundary fallback={<div>Test komponent tryna</div>}>
+            <ErrorBoundary fallback={<div className="mt-8">Test komponent tryna</div>}>
                 <Test />
             </ErrorBoundary>
         </div>

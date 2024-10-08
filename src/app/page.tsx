@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
 import { bundledEnv, isLocalOrDemo } from '@utils/env'
-import { getBaseURL } from '@utils/url'
+import { getAbsoluteURL, urlWithBasePath } from '@utils/url'
 
 export default function Home(): ReactElement {
     if (!isLocalOrDemo) {
@@ -53,7 +53,7 @@ export default function Home(): ReactElement {
                     </Heading>
                     <div className="flex gap-3">
                         <LinkPanel
-                            href={`${bundledEnv.NEXT_PUBLIC_BASE_PATH ?? ''}/fhir/launch?iss=${getBaseURL()}${bundledEnv.NEXT_PUBLIC_BASE_PATH ?? ''}/api/fhir-mock`}
+                            href={urlWithBasePath(`/fhir/launch?iss=${`${getAbsoluteURL()}/api/fhir-mock`}`)}
                             border
                         >
                             <LinkPanelTitle className="text-medium leading-5">
@@ -63,7 +63,10 @@ export default function Home(): ReactElement {
                                 Har norske data, hardkodet testdata
                             </LinkPanelDescription>
                         </LinkPanel>
-                        <LinkPanel href="#" border>
+                        <LinkPanel
+                            href={`${`${getAbsoluteURL()}/fhir/launch`}?iss=https%3A%2F%2Flaunch.smarthealthit.org%2Fv%2Fr4%2Ffhir&launch=WzAsImNkMDlmNWQ0LTU1ZjctNGEyNC1hMjVkLWE1YjY1YzdhODgwNSIsIjI1MzEwNzEiLCJBVVRPIiwwLDAsMCwiIiwiIiwiIiwiIiwiIiwiIiwiIiwwLDEsIiJd`}
+                            border
+                        >
                             <LinkPanelTitle className="text-medium leading-5">
                                 Launch mot launch.smarthealthit.org
                             </LinkPanelTitle>
@@ -72,7 +75,7 @@ export default function Home(): ReactElement {
                             </LinkPanelDescription>
                         </LinkPanel>
                         <LinkPanel
-                            href="https://launch.smarthealthit.org/?launch=WzAsImNkMDlmNWQ0LTU1ZjctNGEyNC1hMjVkLWE1YjY1YzdhODgwNSIsIjI1MzEwNzEiLCJBVVRPIiwwLDAsMCwiIiwiIiwiIiwiIiwiIiwiIiwiIiwwLDEsIiJd&launch_url=http%3A%2F%2Flocalhost%3A3000%2Ffhir%2Flaunch"
+                            href={`https://launch.smarthealthit.org/?launch=WzAsImNkMDlmNWQ0LTU1ZjctNGEyNC1hMjVkLWE1YjY1YzdhODgwNSIsIjI1MzEwNzEiLCJBVVRPIiwwLDAsMCwiIiwiIiwiIiwiIiwiIiwiIiwiIiwwLDEsIiJd&launch_url=${`${getAbsoluteURL()}/fhir/launch`}`}
                             border
                         >
                             <LinkPanelTitle className="text-medium leading-5">

@@ -1,6 +1,6 @@
 import { bundledEnv } from '@utils/env'
 
-export function getBaseURL(): string {
+export function getAbsoluteURL(): string {
     switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
         case 'local':
             return 'http://localhost:3000'
@@ -9,4 +9,11 @@ export function getBaseURL(): string {
         default:
             throw new Error(`Unknown runtime environment ${bundledEnv.NEXT_PUBLIC_RUNTIME_ENV}`)
     }
+}
+
+/**
+ * Only to be used when using non-next APIs that don't automatically prepend basepath
+ */
+export function urlWithBasePath(path: `/${string}`): string {
+    return `${bundledEnv.NEXT_PUBLIC_BASE_PATH ?? ''}${path}`
 }

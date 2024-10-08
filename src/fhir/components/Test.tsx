@@ -5,7 +5,7 @@ import React, { ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Accordion, Alert, BodyShort, Detail, Heading } from '@navikt/ds-react'
 
-import { getBaseURL } from '@utils/url'
+import { getAbsoluteURL, urlWithBasePath } from '@utils/url'
 
 function Test(): ReactElement {
     const { data, error, isFetching } = useQuery({
@@ -24,7 +24,9 @@ function Test(): ReactElement {
                 <Alert variant="error" className="mb-4">
                     Error: {error.message}
                 </Alert>
-                <a href={`/fhir/launch?iss=${getBaseURL()}/api/fhir-mock`}>Re-do local FHIR launch?</a>
+                <a href={urlWithBasePath(`/fhir/launch?iss=${getAbsoluteURL()}/api/fhir-mock`)}>
+                    Re-do local FHIR launch?
+                </a>
             </>
         )
     }
