@@ -1,20 +1,13 @@
 'use client'
 
 import React, { ReactElement } from 'react'
-import { FormProvider, useForm, useFormContext } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { logger } from '@navikt/next-logger'
-import { Alert, Button, Detail, Loader, TextField } from '@navikt/ds-react'
-import { useQuery } from '@tanstack/react-query'
+import { Alert, Button } from '@navikt/ds-react'
 
-import {
-    useIsNySykmeldingDataServiceInitialized,
-    useNySykmeldingDataService,
-} from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
+import { useIsNySykmeldingDataServiceInitialized } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
 import { NySykmeldingFormValues } from '@components/ny-sykmelding/NySykmeldingFormValues'
-import {
-    assertResourceAvailable,
-    PatientInfo,
-} from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
+import PasientSection from '@components/ny-sykmelding/pasient/PasientSection'
 
 function NySykmeldingForm(): ReactElement {
     const form = useForm<NySykmeldingFormValues>()
@@ -40,39 +33,10 @@ function NySykmeldingForm(): ReactElement {
                 )}
                 className="flex flex-col gap-3 max-w-prose"
             >
-                <PasientSearchField />
+                <PasientSection />
                 <Button type="submit">Doit</Button>
             </form>
         </FormProvider>
-    )
-}
-
-function PasientSearchField(): ReactElement {
-    const formContext = useFormContext<NySykmeldingFormValues>()
-    const value = formContext.watch('pasient')
-
-    const dataService = useNySykmeldingDataService()
-    const { data, isLoading, error } = useQuery({
-        queryKey: ['form', value] as const,
-        queryFn: (): Promise<PatientInfo> => {
-            assertResourceAvailable(dataService.query.getPasientByFnr)
-
-            return dataService.query.getPasientByFnr(value ?? '')
-        },
-        enabled: value?.length === 11,
-    })
-
-    return (
-        <div>
-            <TextField label="Test" placeholder="Passy" {...formContext.register('pasient')} />
-            <div className="flex justify-center">
-                <Detail className="mt-2">
-                    Pasienten: {data?.fnr ?? 'N/A'}, {data?.navn ?? 'N/A'}
-                </Detail>
-                {isLoading && <Loader size="xsmall" />}
-                {error && <Alert variant="error">Error: {error.message}</Alert>}
-            </div>
-        </div>
     )
 }
 

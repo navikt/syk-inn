@@ -23,6 +23,13 @@ const DevTools = dynamic(() => import('../devtools/DevTools'), { ssr: false })
 
 export default function RootLayout({ children }: PropsWithChildren): ReactElement {
     // TODO: Mode is only toggleable by devtools, in production this should be inferred by something else (ingress?)
+    // Option 1:
+    // IF →   https://sykmelding-fhir.nav.no?iss=https://anita-systems.no/fhir/v4 → FHIR-MODE
+    // ELSE → https://nav.no/samarbeidspartner/sykmelding → DECORATOR MODE
+
+    // Option 2:
+    // IF →   https://nav.no/samarbeidspartner/sykmelding/fhir?iss=https://anita-systems.no/fhir/v4 → FHIR-MODE
+    // ELSE → https://nav.no/samarbeidspartner/sykmelding → DECORATOR MODE
     const modeOverride = isLocalOrDemo ? (cookies().get('development-mode-override')?.value ?? null) : null
     const MODE = modeOverride === 'standalone' || modeOverride === 'fhir' ? modeOverride : 'standalone'
 

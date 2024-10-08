@@ -5,6 +5,7 @@ import { Heading } from '@navikt/ds-react'
 import Link from 'next/link'
 import { oauth2 } from 'fhirclient'
 import { useQuery } from '@tanstack/react-query'
+import { ErrorBoundary } from 'react-error-boundary'
 
 import Test from '@fhir/components/Test'
 import { isLocalOrDemo } from '@utils/env'
@@ -38,7 +39,9 @@ function Page(): ReactElement {
                     <NySykmeldingForm />
                 </NySykmeldingFormDataProvider>
             )}
-            <Test />
+            <ErrorBoundary fallback={<div>Test komponent tryna</div>}>
+                <Test />
+            </ErrorBoundary>
         </div>
     )
 }
