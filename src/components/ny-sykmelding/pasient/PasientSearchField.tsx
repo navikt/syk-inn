@@ -32,7 +32,7 @@ export function PasientSearchField({ children }: PropsWithChildren): ReactElemen
             <TextField label="Test" placeholder="Passy" {...formContext.register('pasient')} />
             <div className="flex justify-center">
                 <Detail className="mt-2">
-                    Pasienten: {data?.fnr ?? 'N/A'}, {data?.navn ?? 'N/A'}
+                    Pasienten: {data?.oid.nr ?? 'N/A'}, {data?.navn ?? 'N/A'}
                 </Detail>
                 {isLoading && <Loader size="xsmall" />}
                 {error && <Alert variant="error">Error: {error.message}</Alert>}

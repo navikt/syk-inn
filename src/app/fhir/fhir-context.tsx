@@ -24,6 +24,11 @@ export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykm
                 return {
                     navn: getName(parsed.data),
                     fnr: getOid(parsed.data),
+                    oid: {
+                        // TODO: Don't hardcode
+                        type: 'fødselsnummer',
+                        nr: getOid(parsed.data),
+                    },
                 }
             },
         },

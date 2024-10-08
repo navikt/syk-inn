@@ -3,11 +3,12 @@
 import React, { ReactElement } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { logger } from '@navikt/next-logger'
-import { Alert, Button } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react'
 
 import { useIsNySykmeldingDataServiceInitialized } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
 import { NySykmeldingFormValues } from '@components/ny-sykmelding/NySykmeldingFormValues'
 import PasientSection from '@components/ny-sykmelding/pasient/PasientSection'
+import { FormSection } from '@components/ui/form'
 
 function NySykmeldingForm(): ReactElement {
     const form = useForm<NySykmeldingFormValues>()
@@ -33,8 +34,24 @@ function NySykmeldingForm(): ReactElement {
                 )}
                 className="flex flex-col gap-3 max-w-prose"
             >
-                <PasientSection />
-                <Button type="submit">Doit</Button>
+                <FormSection title="Info om pasienten">
+                    <PasientSection />
+                </FormSection>
+
+                <div className="bg-bg-subtle p-4 rounded">
+                    <Heading level="3" size="medium" spacing>
+                        {`Let'se go`}
+                    </Heading>
+                    <BodyShort spacing>
+                        Du kan sende inn sykmeldingen til NAV, eller lagre den for å fortsette på et senere tidspunkt.
+                    </BodyShort>
+                    <div className="flex gap-3 justify-end">
+                        <Button type="button" variant="secondary">
+                            Lagre
+                        </Button>
+                        <Button type="submit">Opprett sykmelding</Button>
+                    </div>
+                </div>
             </form>
         </FormProvider>
     )

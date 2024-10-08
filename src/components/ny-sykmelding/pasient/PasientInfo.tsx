@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
-import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Detail } from '@navikt/ds-react'
 
 import { assertResourceAvailable } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
 import { PasientSearchField } from '@components/ny-sykmelding/pasient/PasientSearchField'
@@ -28,14 +28,17 @@ function PasientInfo(): ReactElement {
 
     return (
         <div>
-            <Heading level="3" size="medium">
-                Pasientinfo
-            </Heading>
+            <Detail spacing>Pasientdetaljer hentet fra EPJ</Detail>
             {pasientQuery.isLoading && <p>Laster pasientinfo...</p>}
             {pasientQuery.data && (
-                <p>
-                    Pasient: {pasientQuery.data.navn}, {pasientQuery.data.fnr}
-                </p>
+                <div>
+                    <Detail>Navn</Detail>
+                    <BodyShort spacing>{pasientQuery.data.navn}</BodyShort>
+                    <Detail>ID-nummer</Detail>
+                    <BodyShort>
+                        {pasientQuery.data.oid.nr} <span className="text-xs">({pasientQuery.data.oid.type})</span>
+                    </BodyShort>
+                </div>
             )}
         </div>
     )

@@ -18,7 +18,10 @@ function Page(): ReactElement {
         },
         query: {
             getPasientByFnr: async (fnr) => ({
-                fnr,
+                oid: {
+                    type: 'fødselsnummer',
+                    nr: fnr,
+                },
                 navn: 'Stand Alonessen',
             }),
         },

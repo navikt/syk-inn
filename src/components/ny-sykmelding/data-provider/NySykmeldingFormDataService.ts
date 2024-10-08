@@ -4,7 +4,10 @@ export const NotAvailable = {
 } as const
 
 export type PatientInfo = {
-    fnr: string
+    oid: {
+        type: 'fødselsnummer' | 'd-nummer' | 'annet nummer'
+        nr: string
+    }
     navn: string
 }
 
