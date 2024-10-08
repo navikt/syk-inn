@@ -6,7 +6,7 @@ import {
     NySykmeldingFormDataService,
 } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
 
-import { FhirPatientSchema } from './schema/patient'
+import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getName, getOid } from './schema/mappers/patient'
 
 export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykmeldingFormDataService => {
@@ -14,20 +14,29 @@ export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykm
         context: {
             getPasient: async () => {
                 const patient = await client.request('Patient')
-                const parsed = FhirPatientSchema.safeParse(patient)
+                const parsed = FhirBundleOrPatientSchema.safeParse(patient)
 
                 if (parsed.error) {
                     logger.error('Failed to parse patient', parsed.error)
                     throw parsed.error
                 }
 
+                const firstPatient =
+                    parsed.data?.resourceType === 'Bundle' ? parsed.data.entry[0].resource : parsed.data
+
+                if (parsed.data?.resourceType === 'Bundle') {
+                    logger.warn(
+                        `Multiple patients found, using the first one, there was ${parsed.data.entry.length - 1} others`,
+                    )
+                }
+
                 return {
-                    navn: getName(parsed.data),
-                    fnr: getOid(parsed.data),
+                    navn: getName(firstPatient),
+                    fnr: getOid(firstPatient),
                     oid: {
                         // TODO: Don't hardcode
                         type: 'fødselsnummer',
-                        nr: getOid(parsed.data),
+                        nr: getOid(firstPatient),
                     },
                 }
             },

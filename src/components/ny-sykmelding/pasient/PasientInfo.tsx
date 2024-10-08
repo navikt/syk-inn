@@ -46,10 +46,15 @@ function PasientInfo(): ReactElement {
 
 function PasientInfoDegredationInfo({ query }: { query: UseQueryResult }): ReactElement {
     return (
-        <Alert variant="warning">
+        <Alert variant="warning" className="my-2">
             <BodyShort spacing>
                 Det var ikke mulig å hente pasienten din akkurat nå. Du kan enten{' '}
-                <Button size="xsmall" variant="secondary" onClick={() => query.refetch()} loading={query.isRefetching}>
+                <Button
+                    size="xsmall"
+                    variant="secondary-neutral"
+                    onClick={() => query.refetch()}
+                    loading={query.isRefetching}
+                >
                     prøve på nytt
                 </Button>
                 , eller prøve igjen senere.
