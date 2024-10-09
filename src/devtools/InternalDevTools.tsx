@@ -17,7 +17,7 @@ export function InternalDevToolsPanel({ mode }: Pick<DevToolsProps, 'mode'>): Re
             <BodyShort size="small" className="text-text-subtle">
                 Collection of actions and utilities used for local development only.
             </BodyShort>
-            <div className="flex flex-wrap gap-6 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 <ResetSmartContext />
                 <ToggleAppVariant mode={mode} />
                 <ToggleAPIFailures />
@@ -93,6 +93,7 @@ function ToggleAPIFailures(): ReactElement {
                 legend="Context"
                 description="Contextual APIs are based on SMART context or standalone preloading"
                 value={contextOverrides}
+                size="small"
                 onChange={(value) => {
                     startTransition(() => {
                         setContextOverrides(value)
@@ -105,6 +106,7 @@ function ToggleAPIFailures(): ReactElement {
                 legend="Query"
                 description="Query APIs are based on user input or external data sources"
                 value={queryOverrides}
+                size="small"
                 onChange={(value) => {
                     startTransition(() => {
                         setQueryOverrides(value)
