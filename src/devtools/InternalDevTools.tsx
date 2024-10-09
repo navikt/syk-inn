@@ -1,6 +1,6 @@
 import React, { ReactElement, startTransition } from 'react'
 import { BodyShort, Button, Checkbox, CheckboxGroup, Heading, ToggleGroup } from '@navikt/ds-react'
-import { PersonIcon, StethoscopeIcon } from '@navikt/aksel-icons'
+import { PersonIcon, StethoscopeIcon, XMarkIcon } from '@navikt/aksel-icons'
 
 import { getAbsoluteURL, urlWithBasePath } from '@utils/url'
 
@@ -8,12 +8,21 @@ import { DevToolItem } from './InternalDevToolItem'
 import { DevToolsProps } from './DevTools'
 import { useAPIOverride } from './useAPIOverride'
 
-export function InternalDevToolsPanel({ mode }: Pick<DevToolsProps, 'mode'>): ReactElement {
+export function InternalDevToolsPanel({
+    mode,
+    onClose,
+}: Pick<DevToolsProps, 'mode'> & { onClose: () => void }): ReactElement {
     return (
         <div className="h-[500px] max-h-[500px] overflow-auto p-2 border-t-2 border-t-border-alt-3 bg-surface-alt-3-subtle">
             <Heading level="3" size="medium">
                 App DevTools
             </Heading>
+            <Button
+                variant="tertiary-neutral"
+                icon={<XMarkIcon title="Lukk DevTools" />}
+                onClick={onClose}
+                className="absolute right-2 top-2"
+            />
             <BodyShort size="small" className="text-text-subtle">
                 Collection of actions and utilities used for local development only.
             </BodyShort>

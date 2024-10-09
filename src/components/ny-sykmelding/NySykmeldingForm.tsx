@@ -38,6 +38,10 @@ function NySykmeldingForm(): ReactElement {
                     <PasientSection />
                 </FormSection>
 
+                <FormSection title="Arbeidssituasjon">
+                    <PasientSection />
+                </FormSection>
+
                 <div className="bg-bg-subtle p-4 rounded">
                     <Heading level="3" size="medium" spacing>
                         {`Let'se go`}
