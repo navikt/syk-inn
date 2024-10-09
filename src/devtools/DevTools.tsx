@@ -20,12 +20,12 @@ function DevTools({ mode }: DevToolsProps): ReactElement {
     return (
         <>
             {tanstackOpen && (
-                <div className="fixed bottom-0 left-0 w-full">
+                <div className="fixed bottom-0 left-0 w-full z-popover">
                     <ReactQueryDevtoolsPanel />
                 </div>
             )}
             {internalOpen && (
-                <div className="fixed bottom-0 left-0 w-full">
+                <div className="fixed bottom-0 left-0 w-full z-popover">
                     <InternalDevToolsPanel mode={mode} />
                 </div>
             )}

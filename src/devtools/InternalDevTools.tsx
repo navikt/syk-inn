@@ -1,11 +1,12 @@
-import React, { ReactElement } from 'react'
-import { BodyShort, Button, Heading, ToggleGroup } from '@navikt/ds-react'
+import React, { ReactElement, startTransition } from 'react'
+import { BodyShort, Button, Checkbox, CheckboxGroup, Heading, ToggleGroup } from '@navikt/ds-react'
 import { PersonIcon, StethoscopeIcon } from '@navikt/aksel-icons'
 
 import { getAbsoluteURL, urlWithBasePath } from '@utils/url'
 
 import { DevToolItem } from './InternalDevToolItem'
 import { DevToolsProps } from './DevTools'
+import { useAPIOverride } from './useAPIOverride'
 
 export function InternalDevToolsPanel({ mode }: Pick<DevToolsProps, 'mode'>): ReactElement {
     return (
@@ -16,9 +17,10 @@ export function InternalDevToolsPanel({ mode }: Pick<DevToolsProps, 'mode'>): Re
             <BodyShort size="small" className="text-text-subtle">
                 Collection of actions and utilities used for local development only.
             </BodyShort>
-            <div className="flex flex-col gap-6 mt-6">
+            <div className="flex flex-wrap gap-6 mt-6">
                 <ResetSmartContext />
                 <ToggleAppVariant mode={mode} />
+                <ToggleAPIFailures />
             </div>
         </div>
     )
@@ -42,6 +44,7 @@ function ResetSmartContext(): ReactElement {
         <DevToolItem
             title="Reset SMART Context"
             description={`Deletes all SMART context from sessionStorage. Current SMART_KEY: ${sessionStorage?.getItem('SMART_KEY') ?? 'none'}`}
+            className="flex gap-3"
         >
             <Button variant="secondary-neutral" size="small" onClick={resetSmartContext()}>
                 Reset
@@ -73,6 +76,43 @@ function ToggleAppVariant({ mode }: Pick<DevToolsProps, 'mode'>): ReactElement {
                 <ToggleGroup.Item value="standalone" icon={<PersonIcon aria-hidden />} label="Standalone" />
                 <ToggleGroup.Item value="fhir" icon={<StethoscopeIcon aria-hidden />} label="FHIR" />
             </ToggleGroup>
+        </DevToolItem>
+    )
+}
+
+function ToggleAPIFailures(): ReactElement {
+    const { queryOverrides, setQueryOverrides, contextOverrides, setContextOverrides } = useAPIOverride()
+
+    return (
+        <DevToolItem
+            title="Force API errors"
+            description="Toggle specific APIs to fail for testing graceful degredation of components"
+            className="flex flex-col gap-3"
+        >
+            <CheckboxGroup
+                legend="Context"
+                description="Contextual APIs are based on SMART context or standalone preloading"
+                value={contextOverrides}
+                onChange={(value) => {
+                    startTransition(() => {
+                        setContextOverrides(value)
+                    })
+                }}
+            >
+                <Checkbox value="pasient">Pasient</Checkbox>
+            </CheckboxGroup>
+            <CheckboxGroup
+                legend="Query"
+                description="Query APIs are based on user input or external data sources"
+                value={queryOverrides}
+                onChange={(value) => {
+                    startTransition(() => {
+                        setQueryOverrides(value)
+                    })
+                }}
+            >
+                <Checkbox value="pasient">Pasient by OID</Checkbox>
+            </CheckboxGroup>
         </DevToolItem>
     )
 }

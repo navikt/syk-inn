@@ -4061,6 +4061,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mitt@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "mitt@npm:3.0.1"
+  checksum: 10c0/3ab4fdecf3be8c5255536faa07064d05caa3dd332bd318ff02e04621f7b3069ca1de9106cfe8e7ced675abfc2bec2ce4c4ef321c4a1bb1fb29df8ae090741913
+  languageName: node
+  linkType: hard
+
 "mkdirp@npm:^1.0.3":
   version: 1.0.4
   resolution: "mkdirp@npm:1.0.4"
@@ -4266,6 +4273,17 @@ __metadata:
   dependencies:
     path-key: "npm:^4.0.0"
   checksum: 10c0/124df74820c40c2eb9a8612a254ea1d557ddfab1581c3e751f825e3e366d9f00b0d76a3c94ecd8398e7f3eee193018622677e95816e8491f0797b21e30b2deba
+  languageName: node
+  linkType: hard
+
+"nuqs@npm:^1.20.0":
+  version: 1.20.0
+  resolution: "nuqs@npm:1.20.0"
+  dependencies:
+    mitt: "npm:^3.0.1"
+  peerDependencies:
+    next: ">=13.4 <14.0.2 || ^14.0.3"
+  checksum: 10c0/8e1b67a96c6fda21023924db03b31f3eecf387097ee23685f35fbd1118ff202d1f8f3efd5e1e45bb5736e701a13da0d6cefc98cbe813315dc6462c2e38e2c93f
   languageName: node
   linkType: hard
 
@@ -5630,6 +5648,7 @@ __metadata:
     lint-staged: "npm:^15.2.10"
     next: "npm:14.2.13"
     next-logger: "npm:^5.0.1"
+    nuqs: "npm:^1.20.0"
     pino: "npm:^9.4.0"
     pino-pretty: "npm:^11.2.2"
     postcss: "npm:^8.4.47"

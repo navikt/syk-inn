@@ -48,6 +48,7 @@ async function StandaloneLayout({ children }: PropsWithChildren): Promise<ReactE
         env: 'dev',
         params: {
             context: 'samarbeidspartner',
+            simple: true,
         },
     })
 
