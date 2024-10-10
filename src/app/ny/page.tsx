@@ -3,6 +3,7 @@
 import React, { ReactElement } from 'react'
 import Link from 'next/link'
 import { Heading } from '@navikt/ds-react'
+import { PageBlock } from '@navikt/ds-react/Page'
 
 import NySykmeldingForm from '@components/ny-sykmelding/NySykmeldingForm'
 import { isLocalOrDemo } from '@utils/env'
@@ -30,21 +31,21 @@ function Page(): ReactElement {
     }
 
     return (
-        <div className="p-8">
+        <PageBlock as="main" width="xl" gutters className="pt-4">
             {isLocalOrDemo && (
-                <div className="-mt-4 mb-2">
+                <div className="mb-2">
                     <Link href="/">← Back to development page</Link>
                 </div>
             )}
 
             <Heading level="2" size="medium" spacing>
-                You stand alone in this
+                Opprett ny sykmelding
             </Heading>
 
             <NySykmeldingFormDataProvider dataService={StandaloneDataService}>
                 <NySykmeldingForm />
             </NySykmeldingFormDataProvider>
-        </div>
+        </PageBlock>
     )
 }
 

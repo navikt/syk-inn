@@ -18,7 +18,7 @@ function Test(): ReactElement {
     return (
         <Accordion className="max-w-prose mt-8">
             <Accordion.Item defaultOpen={false}>
-                <Accordion.Header>Se fullstendig Pasient JSON</Accordion.Header>
+                <Accordion.Header>Test: Se fullstendig Pasient JSON</Accordion.Header>
                 <Accordion.Content>
                     <Heading level="3" size="small">
                         Pasient

@@ -7,7 +7,7 @@ function FhirHeader(): ReactElement {
         <div className="border-b-2 border-b-border-subtle h-16 max-h-16 flex items-center px-2">
             <div>
                 <Image
-                    src="https://emoji.slack-edge.com/T5LNAMWNA/fire-leo/eebaeba38b02e3c2.png"
+                    src="https://emoji.slack-edge.com/T5LNAMWNA/erik_ser_deg/d868fac0c3a5279e.png"
                     alt="syk-inn FHIR Logo"
                     unoptimized
                     fill

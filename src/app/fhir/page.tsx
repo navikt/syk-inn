@@ -1,11 +1,12 @@
 'use client'
 
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort, Detail, Heading } from '@navikt/ds-react'
+import { Alert, BodyShort, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import Link from 'next/link'
 import { oauth2 } from 'fhirclient'
 import { useQuery } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
+import { PageBlock } from '@navikt/ds-react/Page'
 
 import Test from '@fhir/components/Test'
 import { isLocalOrDemo } from '@utils/env'
@@ -24,16 +25,22 @@ function Page(): ReactElement {
     })
 
     return (
-        <div className="p-8">
+        <PageBlock as="main" width="xl" gutters className="pt-4">
             {isLocalOrDemo && (
-                <div className="-mt-4 mb-2">
+                <div className="mb-2">
                     <Link href="/">← Back to development page</Link>
                 </div>
             )}
             <Heading level="2" size="medium" spacing>
-                You are FHIR-ed up
+                Opprett ny sykmelding
             </Heading>
-            {client.isLoading && <p>Setting up FHIR-context...</p>}
+            {client.isLoading && (
+                <div className="max-w-prose flex-col flex gap-3">
+                    <Skeleton height={192} variant="rounded" />
+                    <Skeleton height={192} variant="rounded" />
+                    <Skeleton height={192} variant="rounded" />
+                </div>
+            )}
             {client.isError && (
                 <div className="max-w-prose">
                     <Alert variant="error">
@@ -67,7 +74,7 @@ function Page(): ReactElement {
             <ErrorBoundary fallback={<div className="mt-8">Test komponent tryna</div>}>
                 <Test />
             </ErrorBoundary>
-        </div>
+        </PageBlock>
     )
 }
 

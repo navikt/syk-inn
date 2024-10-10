@@ -46,7 +46,7 @@ function NySykmeldingForm(): ReactElement {
 
                 <div className="bg-bg-subtle p-4 rounded">
                     <Heading level="3" size="medium" spacing>
-                        {`Let'se go`}
+                        Ferdigstill sykmeldingen
                     </Heading>
                     <BodyShort spacing>
                         Du kan sende inn sykmeldingen til NAV, eller lagre den for å fortsette på et senere tidspunkt.
