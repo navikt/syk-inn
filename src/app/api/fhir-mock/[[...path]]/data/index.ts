@@ -1,4 +1,4 @@
-import { getAbsoluteURL, urlWithBasePath } from '@utils/url'
+import { getAbsoluteURL } from '@utils/url'
 
 import pasientEspenEksempel from './pasient-espen-eksempel.json'
 import { createWellKnown } from './fhir-server/well-known'
@@ -9,7 +9,7 @@ const testData = {
         'Espen Eksempel': pasientEspenEksempel,
     },
     fhirServer: {
-        wellKnown: createWellKnown(`${getAbsoluteURL()}${urlWithBasePath('/api/fhir-mock')}`),
+        wellKnown: createWellKnown(`${getAbsoluteURL()}/api/fhir-mock`),
         metadata: metadata,
     },
 }
