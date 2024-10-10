@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
-import { Alert, BodyShort, Button, Checkbox, CheckboxGroup } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Checkbox, CheckboxGroup, Skeleton } from '@navikt/ds-react'
 
 import { useNySykmeldingDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
 import {
@@ -42,7 +42,13 @@ function ArbeidstakerWithDataField(): ReactElement {
 
     return (
         <div>
-            {arbeidstakerQuery.isLoading && <div>Loading...</div>}
+            {arbeidstakerQuery.isLoading && (
+                <div>
+                    <Skeleton variant="rectangle" height={132 + 20} className="mb-3" />
+                    <Skeleton variant="rectangle" height={42} width="25%" className="mb-3" />
+                    <Skeleton variant="rectangle" height={42} width="30%" className="mb-3" />
+                </div>
+            )}
             {arbeidstakerQuery.data && <ArbeidssituasjonCheckboxField arbeidsgivere={arbeidstakerQuery.data} />}
         </div>
     )

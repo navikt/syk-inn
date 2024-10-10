@@ -40,16 +40,20 @@ export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykm
                     },
                 }
             },
-            arbeidsgivere: async () => [
-                {
-                    navn: 'Arbeidsgiver 1',
-                    organisasjonsnummer: '123456789',
-                },
-                {
-                    navn: 'Arbeidsgiver 2',
-                    organisasjonsnummer: '987654321',
-                },
-            ],
+            arbeidsgivere: async () => {
+                await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000))
+
+                return [
+                    {
+                        navn: 'Arbeidsgiver 1',
+                        organisasjonsnummer: '123456789',
+                    },
+                    {
+                        navn: 'Arbeidsgiver 2',
+                        organisasjonsnummer: '987654321',
+                    },
+                ]
+            },
         },
         query: {
             pasient: NotAvailable,
