@@ -12,9 +12,9 @@ function PasientInfo(): ReactElement {
     const pasientQuery = useQuery({
         queryKey: ['pasient'],
         queryFn: async () => {
-            assertResourceAvailable(dataService.context.getPasient)
+            assertResourceAvailable(dataService.context.pasient)
 
-            return dataService.context.getPasient()
+            return dataService.context.pasient()
         },
     })
 

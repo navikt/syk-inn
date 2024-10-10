@@ -14,8 +14,8 @@ export type DevToolsProps = {
 }
 
 function DevTools({ mode }: DevToolsProps): ReactElement {
-    const tanstackDialogRef = React.useRef<HTMLDialogElement>()
-    const internalDialogRef = React.useRef<HTMLDialogElement>()
+    const tanstackDialogRef = React.useRef<HTMLDialogElement | null>(null)
+    const internalDialogRef = React.useRef<HTMLDialogElement | null>(null)
     const [tanstackOpen, setTanstackOpen] = useState(localStorage.getItem('tanstackOpen') === 'true')
     const [internalOpen, setInternalOpen] = useState(localStorage.getItem('internalOpen') === 'true')
 

@@ -4,11 +4,13 @@ import React, { ReactElement } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { logger } from '@navikt/next-logger'
 import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react'
+import { DevTool } from '@hookform/devtools'
 
 import { useIsNySykmeldingDataServiceInitialized } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
 import { NySykmeldingFormValues } from '@components/ny-sykmelding/NySykmeldingFormValues'
 import PasientSection from '@components/ny-sykmelding/pasient/PasientSection'
 import { FormSection } from '@components/ui/form'
+import ArbeidssituasjonSection from '@components/ny-sykmelding/arbeidssituasjon/ArbeidssituasjonSection'
 
 function NySykmeldingForm(): ReactElement {
     const form = useForm<NySykmeldingFormValues>()
@@ -39,7 +41,7 @@ function NySykmeldingForm(): ReactElement {
                 </FormSection>
 
                 <FormSection title="Arbeidssituasjon">
-                    <PasientSection />
+                    <ArbeidssituasjonSection />
                 </FormSection>
 
                 <div className="bg-bg-subtle p-4 rounded">
@@ -57,6 +59,7 @@ function NySykmeldingForm(): ReactElement {
                     </div>
                 </div>
             </form>
+            <DevTool control={form.control} placement="bottom-left" />
         </FormProvider>
     )
 }

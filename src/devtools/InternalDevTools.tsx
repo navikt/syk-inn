@@ -3,6 +3,7 @@ import { BodyShort, Button, Checkbox, CheckboxGroup, Heading, ToggleGroup } from
 import { PersonIcon, StethoscopeIcon, XMarkIcon } from '@navikt/aksel-icons'
 
 import { getAbsoluteURL, urlWithBasePath } from '@utils/url'
+import { NySykmeldingFormDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
 
 import { DevToolItem } from './InternalDevToolItem'
 import { DevToolsProps } from './DevTools'
@@ -92,6 +93,15 @@ function ToggleAppVariant({ mode }: Pick<DevToolsProps, 'mode'>): ReactElement {
 function ToggleAPIFailures(): ReactElement {
     const { queryOverrides, setQueryOverrides, contextOverrides, setContextOverrides } = useAPIOverride()
 
+    const context: Record<keyof NySykmeldingFormDataService['context'], ReactElement> = {
+        pasient: <Checkbox value="pasient">Pasient</Checkbox>,
+        arbeidsgivere: <Checkbox value="arbeidsgivere">Arbeidsgivere</Checkbox>,
+    }
+
+    const query: Record<keyof NySykmeldingFormDataService['query'], ReactElement> = {
+        pasient: <Checkbox value="pasient">Pasient by OID (fnr/dnr)</Checkbox>,
+    }
+
     return (
         <DevToolItem
             title="Force API errors"
@@ -109,7 +119,7 @@ function ToggleAPIFailures(): ReactElement {
                     })
                 }}
             >
-                <Checkbox value="pasient">Pasient</Checkbox>
+                {...Object.values(context)}
             </CheckboxGroup>
             <CheckboxGroup
                 legend="Query"
@@ -122,7 +132,7 @@ function ToggleAPIFailures(): ReactElement {
                     })
                 }}
             >
-                <Checkbox value="pasient">Pasient by OID</Checkbox>
+                {...Object.values(query)}
             </CheckboxGroup>
         </DevToolItem>
     )

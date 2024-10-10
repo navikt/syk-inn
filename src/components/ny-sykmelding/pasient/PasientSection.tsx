@@ -9,7 +9,7 @@ import { useNySykmeldingDataService } from '../data-provider/NySykmeldingFormDat
 function PasientSection(): ReactElement {
     const dataService = useNySykmeldingDataService()
 
-    if (isResourceAvailable(dataService.context.getPasient)) {
+    if (isResourceAvailable(dataService.context.pasient)) {
         return <PasientInfo />
     }
 

@@ -31,7 +31,7 @@ function Page(): ReactElement {
                 </div>
             )}
             <Heading level="2" size="medium" spacing>
-                You are FHIR-ed
+                You are FHIR-ed up
             </Heading>
             {client.isLoading && <p>Setting up FHIR-context...</p>}
             {client.isError && (

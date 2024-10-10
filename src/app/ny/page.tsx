@@ -2,6 +2,7 @@
 
 import React, { ReactElement } from 'react'
 import Link from 'next/link'
+import { Heading } from '@navikt/ds-react'
 
 import NySykmeldingForm from '@components/ny-sykmelding/NySykmeldingForm'
 import { isLocalOrDemo } from '@utils/env'
@@ -14,10 +15,11 @@ import {
 function Page(): ReactElement {
     const StandaloneDataService: NySykmeldingFormDataService = {
         context: {
-            getPasient: NotAvailable,
+            pasient: NotAvailable,
+            arbeidsgivere: NotAvailable,
         },
         query: {
-            getPasientByFnr: async (fnr) => ({
+            pasient: async (fnr) => ({
                 oid: {
                     type: 'fødselsnummer',
                     nr: fnr,
@@ -34,6 +36,10 @@ function Page(): ReactElement {
                     <Link href="/">← Back to development page</Link>
                 </div>
             )}
+
+            <Heading level="2" size="medium" spacing>
+                You stand alone in this
+            </Heading>
 
             <NySykmeldingFormDataProvider dataService={StandaloneDataService}>
                 <NySykmeldingForm />

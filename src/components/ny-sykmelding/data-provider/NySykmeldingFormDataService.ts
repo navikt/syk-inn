@@ -11,12 +11,18 @@ export type PatientInfo = {
     navn: string
 }
 
+export type ArbeidsgiverInfo = {
+    navn: string
+    organisasjonsnummer: string
+}
+
 export type NySykmeldingFormDataService = {
     context: {
-        getPasient: (() => Promise<PatientInfo>) | NotAvailable
+        pasient: (() => Promise<PatientInfo>) | NotAvailable
+        arbeidsgivere: (() => Promise<ArbeidsgiverInfo[]>) | NotAvailable
     }
     query: {
-        getPasientByFnr: ((fnr: string) => Promise<PatientInfo>) | NotAvailable
+        pasient: ((fnr: string) => Promise<PatientInfo>) | NotAvailable
     }
 }
 

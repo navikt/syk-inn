@@ -1,9 +1,8 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
-import { useFormContext } from 'react-hook-form'
 import { useQuery } from '@tanstack/react-query'
 import { Alert, Detail, Loader, TextField } from '@navikt/ds-react'
 
-import { NySykmeldingFormValues } from '@components/ny-sykmelding/NySykmeldingFormValues'
+import { useFormContext } from '@components/ny-sykmelding/NySykmeldingFormValues'
 import { useNySykmeldingDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
 import {
     assertResourceAvailable,
@@ -11,17 +10,17 @@ import {
 } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
 
 export function PasientSearchField({ children }: PropsWithChildren): ReactElement {
-    const formContext = useFormContext<NySykmeldingFormValues>()
-    const value = formContext.watch('pasient')
-
     const dataService = useNySykmeldingDataService()
+
+    const formContext = useFormContext()
+    const value = formContext.watch('pasient')
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['form', value] as const,
         queryFn: (): Promise<PatientInfo> => {
-            assertResourceAvailable(dataService.query.getPasientByFnr)
+            assertResourceAvailable(dataService.query.pasient)
 
-            return dataService.query.getPasientByFnr(value ?? '')
+            return dataService.query.pasient(value ?? '')
         },
         enabled: value?.length === 11,
     })

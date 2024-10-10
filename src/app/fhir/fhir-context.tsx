@@ -12,7 +12,7 @@ import { getName, getOid } from './schema/mappers/patient'
 export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykmeldingFormDataService => {
     return {
         context: {
-            getPasient: async () => {
+            pasient: async () => {
                 const patient = await client.request('Patient')
                 const parsed = FhirBundleOrPatientSchema.safeParse(patient)
 
@@ -40,9 +40,19 @@ export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykm
                     },
                 }
             },
+            arbeidsgivere: async () => [
+                {
+                    navn: 'Arbeidsgiver 1',
+                    organisasjonsnummer: '123456789',
+                },
+                {
+                    navn: 'Arbeidsgiver 2',
+                    organisasjonsnummer: '987654321',
+                },
+            ],
         },
         query: {
-            getPasientByFnr: NotAvailable,
+            pasient: NotAvailable,
         },
     }
 }

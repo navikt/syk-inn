@@ -22,10 +22,11 @@ export function useWithFailInterceptor(dataService: NySykmeldingFormDataService)
 
     return {
         context: {
-            getPasient: failIfOverride('context', 'pasient', dataService.context.getPasient),
+            pasient: failIfOverride('context', 'pasient', dataService.context.pasient),
+            arbeidsgivere: failIfOverride('context', 'arbeidsgivere', dataService.context.arbeidsgivere),
         },
         query: {
-            getPasientByFnr: failIfOverride('query', 'pasient', dataService.query.getPasientByFnr),
+            pasient: failIfOverride('query', 'pasient', dataService.query.pasient),
         },
     }
 }
