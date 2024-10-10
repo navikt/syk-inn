@@ -14,6 +14,6 @@ export function getAbsoluteURL(): string {
 /**
  * Only to be used when using non-next APIs that don't automatically prepend basepath
  */
-export function urlWithBasePath(path: `/${string}`): string {
+export function pathWithBasePath(path: `/${string}`): string {
     return `${bundledEnv.NEXT_PUBLIC_BASE_PATH ?? ''}${path}`
 }

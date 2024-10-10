@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 import { LinkPanel, LinkPanelDescription, LinkPanelTitle } from '@navikt/ds-react/LinkPanel'
 
-import { getAbsoluteURL, urlWithBasePath } from '@utils/url'
+import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 
 function ScenarioLinks(): ReactElement {
     return (
@@ -19,7 +19,7 @@ function ScenarioLinks(): ReactElement {
                 </Heading>
                 <div className="flex gap-3">
                     <LinkPanel
-                        href={urlWithBasePath(`/fhir/launch?iss=${`${getAbsoluteURL()}/api/fhir-mock`}`)}
+                        href={pathWithBasePath(`/fhir/launch?iss=${`${getAbsoluteURL()}/api/fhir-mock`}`)}
                         border
                         onClick={() => {
                             document.cookie = `development-mode-override=fhir; path=/`
@@ -65,7 +65,7 @@ function ScenarioLinks(): ReactElement {
                     ⚠️ Standalone examples
                 </Heading>
                 <LinkPanel
-                    href="/ny"
+                    href={pathWithBasePath('/ny')}
                     border
                     className="max-w-prose"
                     onClick={() => {

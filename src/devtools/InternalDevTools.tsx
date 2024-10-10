@@ -2,7 +2,7 @@ import React, { ReactElement, startTransition } from 'react'
 import { BodyShort, Button, Checkbox, CheckboxGroup, Heading, ToggleGroup } from '@navikt/ds-react'
 import { PersonIcon, StethoscopeIcon, XMarkIcon } from '@navikt/aksel-icons'
 
-import { getAbsoluteURL, urlWithBasePath } from '@utils/url'
+import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 import { NySykmeldingFormDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
 
 import { DevToolItem } from './InternalDevToolItem'
@@ -46,7 +46,7 @@ function ResetSmartContext(): ReactElement {
 
         if (postAction === 'reload') window.location.reload()
         if (postAction === 're-launch') {
-            window.location.href = urlWithBasePath(`/fhir/launch?iss=${getAbsoluteURL()}/api/fhir-mock`)
+            window.location.href = pathWithBasePath(`/fhir/launch?iss=${getAbsoluteURL()}/api/fhir-mock`)
         }
     }
 

@@ -11,7 +11,7 @@ import Test from '@fhir/components/Test'
 import { isLocalOrDemo } from '@utils/env'
 import NySykmeldingForm from '@components/ny-sykmelding/NySykmeldingForm'
 import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
-import { getAbsoluteURL, urlWithBasePath } from '@utils/url'
+import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 
 import { createFhirFetcher } from './fhir-context'
 
@@ -49,7 +49,7 @@ function Page(): ReactElement {
                         {isLocalOrDemo && (
                             <div className="mt-4">
                                 <Detail>Dev only</Detail>
-                                <a href={urlWithBasePath(`/fhir/launch?iss=${`${getAbsoluteURL()}/api/fhir-mock`}`)}>
+                                <a href={pathWithBasePath(`/fhir/launch?iss=${`${getAbsoluteURL()}/api/fhir-mock`}`)}>
                                     Re-launch lokal FHIR context
                                 </a>
                             </div>
