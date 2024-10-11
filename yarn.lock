@@ -12,6 +12,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ariakit/core@npm:0.4.12":
+  version: 0.4.12
+  resolution: "@ariakit/core@npm:0.4.12"
+  checksum: 10c0/9935d233a7c073141e672a2405c43283dfb55c086ab313b91e4f29070de0d8e054d47919c33046baf80a9e4288c8115e297820bc08334cd8e3ae6d35909b8329
+  languageName: node
+  linkType: hard
+
+"@ariakit/react-core@npm:0.4.13":
+  version: 0.4.13
+  resolution: "@ariakit/react-core@npm:0.4.13"
+  dependencies:
+    "@ariakit/core": "npm:0.4.12"
+    "@floating-ui/dom": "npm:^1.0.0"
+    use-sync-external-store: "npm:^1.2.0"
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/223503aa403ba618121b8493a9c6425ff7fb8ba70d3ec15df7361d4d9cf3b2b79d1e7aaee3b7c50f982085bf61fdea8a3438351dbcc560675f3e1ad5fe2cd9db
+  languageName: node
+  linkType: hard
+
+"@ariakit/react@npm:^0.4.13":
+  version: 0.4.13
+  resolution: "@ariakit/react@npm:0.4.13"
+  dependencies:
+    "@ariakit/react-core": "npm:0.4.13"
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/d917d283fa03642e13f4e353d2b62ea2eb67c77b3e9c103a066ed337aaac94ee8c7f314eaf28e19ce2fb817d659d2d0c1793283c883e4b574b05e84da79c631e
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.25.7":
   version: 7.25.7
   resolution: "@babel/code-frame@npm:7.25.7"
@@ -478,6 +511,13 @@ __metadata:
   version: 7.1.0
   resolution: "@navikt/aksel-icons@npm:7.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.1.0%2F01f80ff249d8a5ea0158c737026860fd4b59c08b"
   checksum: 10c0/45e7e298e99713b7a21d0f5c6aee3c55c3eb50909175f65d7bdd067b0a5e2ac968da875ed03ec7ba33eba0aeb8334aeb7bddc98fd19b4799bc131f0928f2491c
+  languageName: node
+  linkType: hard
+
+"@navikt/diagnosekoder@npm:^1.2024.0":
+  version: 1.2024.0
+  resolution: "@navikt/diagnosekoder@npm:1.2024.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdiagnosekoder%2F1.2024.0%2F2d990449f3bb8d5231f2e9b583ba30f8bebbeccb"
+  checksum: 10c0/d09fc1454f66787768445bd603483996fe3dc3b4a007f6e2fa3ae3e4125d6fa3c538342485c0ca5f13a93c735db7816d978cf65ebd5aadfcd01b672ac0504332
   languageName: node
   linkType: hard
 
@@ -3171,6 +3211,13 @@ __metadata:
   version: 1.2.3
   resolution: "functions-have-names@npm:1.2.3"
   checksum: 10c0/33e77fd29bddc2d9bb78ab3eb854c165909201f88c75faa8272e35899e2d35a8a642a15e7420ef945e1f64a9670d6aa3ec744106b2aa42be68ca5114025954ca
+  languageName: node
+  linkType: hard
+
+"fuse.js@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "fuse.js@npm:7.0.0"
+  checksum: 10c0/3574b7fc2e0ccb047e05dbe5f8f04e8f0754f62fa209669ef426ea1354a32ae7355620788af8f1d29f94e1fdecd513f1f3787f012848a31ec90bb4e0e6092504
   languageName: node
   linkType: hard
 
@@ -6112,8 +6159,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "syk-inn@workspace:."
   dependencies:
+    "@ariakit/react": "npm:^0.4.13"
     "@hookform/devtools": "npm:^4.3.1"
     "@navikt/aksel-icons": "npm:^7.1.0"
+    "@navikt/diagnosekoder": "npm:^1.2024.0"
     "@navikt/ds-css": "npm:^7.1.0"
     "@navikt/ds-react": "npm:^7.1.0"
     "@navikt/ds-tailwind": "npm:^7.1.0"
@@ -6131,6 +6180,7 @@ __metadata:
     eslint: "npm:^8"
     eslint-config-next: "npm:14.2.13"
     fhirclient: "npm:^2.5.4"
+    fuse.js: "npm:^7.0.0"
     html-react-parser: "npm:^5.1.16"
     husky: "npm:^9.1.6"
     jsdom: "npm:^25.0.1"
@@ -6548,6 +6598,15 @@ __metadata:
   peerDependencies:
     react: ">=16.13"
   checksum: 10c0/f21f4239d774182e5389172321f00db487b415a97f5835abbe99d228eec45e3fd97803a52a25db6216ae6e1e1203b3f523336d94695dc683c661bad36a318891
+  languageName: node
+  linkType: hard
+
+"use-sync-external-store@npm:^1.2.0":
+  version: 1.2.2
+  resolution: "use-sync-external-store@npm:1.2.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 10c0/23b1597c10adf15b26ade9e8c318d8cc0abc9ec0ab5fc7ca7338da92e89c2536abd150a5891bf076836c352fdfa104fc7231fb48f806fd9960e0cbe03601abaf
   languageName: node
   linkType: hard
 

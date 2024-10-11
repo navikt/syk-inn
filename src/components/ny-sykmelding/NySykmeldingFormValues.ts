@@ -6,6 +6,8 @@ import {
     UseControllerProps,
 } from 'react-hook-form'
 
+import { DiagnoseSuggestion } from '@components/ny-sykmelding/diagnose/combobox/DiagnoseCombobox'
+
 export type NySykmeldingFormValues = {
     context: {
         pasientOid: string | null
@@ -17,6 +19,10 @@ export type NySykmeldingFormValues = {
         stilling: string
         stillingsprosent: string
     } | null
+    diagnoser: {
+        hoved: DiagnoseSuggestion | null
+        bi: DiagnoseSuggestion[] | null
+    }
 }
 
 export const useController: <Path extends FieldPath<NySykmeldingFormValues>>(

@@ -11,7 +11,9 @@
         "prepare": "husky"
     },
     "dependencies": {
+        "@ariakit/react": "^0.4.13",
         "@navikt/aksel-icons": "^7.1.0",
+        "@navikt/diagnosekoder": "^1.2024.0",
         "@navikt/ds-css": "^7.1.0",
         "@navikt/ds-react": "^7.1.0",
         "@navikt/ds-tailwind": "^7.1.0",
@@ -22,6 +24,7 @@
         "clsx": "^2.1.1",
         "csp-header": "^5.2.1",
         "fhirclient": "^2.5.4",
+        "fuse.js": "^7.0.0",
         "html-react-parser": "^5.1.16",
         "jsdom": "^25.0.1",
         "next": "14.2.13",

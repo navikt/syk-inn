@@ -20,17 +20,19 @@ function ArbeidstakerField({ children }: PropsWithChildren): ReactElement {
         <div>
             {children}
             <ArbeidssituasjonField />
-            <TextField label="Arbeidsgiver" {...navnField.field} value={navnField.field.value ?? ''} />
-            <TextField
-                label="Yrke/stilling for dette arbeidsforholdet"
-                {...stillingField.field}
-                value={stillingField.field.value ?? ''}
-            />
-            <TextField
-                label="Stillingsprosent"
-                {...stillingsprosentField.field}
-                value={stillingsprosentField.field.value ?? ''}
-            />
+            <div className="flex flex-col gap-3 mt-3">
+                <TextField label="Arbeidsgiver" {...navnField.field} value={navnField.field.value ?? ''} />
+                <TextField
+                    label="Yrke/stilling for dette arbeidsforholdet"
+                    {...stillingField.field}
+                    value={stillingField.field.value ?? ''}
+                />
+                <TextField
+                    label="Stillingsprosent"
+                    {...stillingsprosentField.field}
+                    value={stillingsprosentField.field.value ?? ''}
+                />
+            </div>
         </div>
     )
 }

@@ -28,10 +28,20 @@ export function PasientSearchField({ children }: PropsWithChildren): ReactElemen
     return (
         <div>
             {children}
-            <TextField label="Test" placeholder="Passy" {...formContext.register('pasient')} />
-            <div className="flex justify-center">
+            <TextField
+                label="Fødselsnummer eller D-nummer"
+                placeholder="11 siffer"
+                {...formContext.register('pasient', {
+                    required: 'Fødselsnummer eller D-nummer er påkrevd',
+                    pattern: {
+                        value: /^\d{11}$/,
+                        message: 'Fødselsnummer eller D-nummer må være 11 siffer',
+                    },
+                })}
+            />
+            <div className="flex">
                 <Detail className="mt-2">
-                    Pasienten: {data?.oid.nr ?? 'N/A'}, {data?.navn ?? 'N/A'}
+                    Valgt pasient: {data?.oid.nr ?? 'N/A'}, {data?.navn ?? 'N/A'}
                 </Detail>
                 {isLoading && <Loader size="xsmall" />}
                 {error && <Alert variant="error">Error: {error.message}</Alert>}

@@ -1,0 +1,16 @@
+.disclosure {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    height: 2rem;
+    width: 2rem;
+    @apply p-0 flex justify-center items-center;
+}
+
+.comboboxItem:hover {
+    background-color: var(--a-surface-hover);
+}
+
+.comboboxItem[data-active-item] {
+    background-color: var(--a-surface-active);
+}

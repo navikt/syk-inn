@@ -11,6 +11,7 @@ import { NySykmeldingFormValues } from '@components/ny-sykmelding/NySykmeldingFo
 import PasientSection from '@components/ny-sykmelding/pasient/PasientSection'
 import { FormSection } from '@components/ui/form'
 import ArbeidssituasjonSection from '@components/ny-sykmelding/arbeidssituasjon/ArbeidssituasjonSection'
+import DiagnoseSection from '@components/ny-sykmelding/diagnose/DiagnoseSection'
 
 function NySykmeldingForm(): ReactElement {
     const form = useForm<NySykmeldingFormValues>()
@@ -42,6 +43,10 @@ function NySykmeldingForm(): ReactElement {
 
                 <FormSection title="Arbeidssituasjon">
                     <ArbeidssituasjonSection />
+                </FormSection>
+
+                <FormSection title="Diagnose">
+                    <DiagnoseSection />
                 </FormSection>
 
                 <div className="bg-bg-subtle p-4 rounded">

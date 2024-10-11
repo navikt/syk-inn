@@ -60,34 +60,42 @@ function ArbeidssituasjonCheckboxField({ arbeidsgivere }: { arbeidsgivere: Arbei
     })
 
     return (
-        <CheckboxGroup
-            legend="Arbeidssituasjon sykmeldingen gjelder for"
-            size="small"
-            {...arbeidsgiverField.field}
-            value={arbeidsgiverField.field.value ?? []}
-            description={
-                <>
-                    <BodyShort spacing>
-                        Dersom du velger flere arbeidsgivere, blir det opprettet flere sykmeldinger, så bruker kan sende
-                        inn hver sykmeldign til hver arbeidsgiver.
-                    </BodyShort>
-                    <BodyShort>
-                        Dersom diagnoser eller perioder er forskjellige mellom arbeidsforholdene, må det opprettes flere
-                        sykmeldinger.
-                    </BodyShort>
-                </>
-            }
-        >
-            {arbeidsgivere.map((it) => (
-                <Checkbox
-                    key={it.organisasjonsnummer}
-                    value={it.organisasjonsnummer}
-                    description={it.organisasjonsnummer}
-                >
-                    {it.navn}
-                </Checkbox>
-            ))}
-        </CheckboxGroup>
+        <>
+            <CheckboxGroup
+                legend="Arbeidssituasjon sykmeldingen gjelder for"
+                size="small"
+                {...arbeidsgiverField.field}
+                value={arbeidsgiverField.field.value ?? []}
+                description={
+                    <>
+                        <BodyShort spacing>
+                            Dersom du velger flere arbeidsgivere, blir det opprettet flere sykmeldinger, så bruker kan
+                            sende inn hver sykmeldign til hver arbeidsgiver.
+                        </BodyShort>
+                        <BodyShort>
+                            Dersom diagnoser eller perioder er forskjellige mellom arbeidsforholdene, må det opprettes
+                            flere sykmeldinger.
+                        </BodyShort>
+                    </>
+                }
+            >
+                {arbeidsgivere.map((it) => (
+                    <Checkbox
+                        key={it.organisasjonsnummer}
+                        value={it.organisasjonsnummer}
+                        description={it.organisasjonsnummer}
+                    >
+                        {it.navn}
+                    </Checkbox>
+                ))}
+            </CheckboxGroup>
+            {arbeidsgiverField.field.value && arbeidsgiverField.field.value.length > 1 && (
+                <Alert variant="info" className="mt-2">
+                    Det vil bli opprettet {arbeidsgiverField.field.value.length} sykmeldinger med samme periode og
+                    diagnose.
+                </Alert>
+            )}
+        </>
     )
 }
 
