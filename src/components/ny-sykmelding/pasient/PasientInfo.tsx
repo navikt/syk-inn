@@ -43,7 +43,8 @@ function PasientInfo(): ReactElement {
                     <BodyShort spacing>{pasientQuery.data.navn}</BodyShort>
                     <Detail>ID-nummer</Detail>
                     <BodyShort>
-                        {pasientQuery.data.oid.nr} <span className="text-xs">({pasientQuery.data.oid.type})</span>
+                        {pasientQuery.data.oid?.nr ?? 'ukjent'}{' '}
+                        {pasientQuery.data.oid?.type && <span className="text-xs">({pasientQuery.data.oid.type})</span>}
                     </BodyShort>
                 </div>
             )}
@@ -61,6 +62,7 @@ function PasientInfoDegredationInfo({ query }: { query: UseQueryResult }): React
                     variant="secondary-neutral"
                     onClick={() => query.refetch()}
                     loading={query.isRefetching}
+                    type="button"
                 >
                     prøve på nytt
                 </Button>

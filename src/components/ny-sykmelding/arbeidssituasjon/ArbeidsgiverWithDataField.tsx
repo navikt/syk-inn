@@ -111,6 +111,7 @@ function PasientInfoDegredationInfo({ query }: { query: UseQueryResult }): React
                     variant="secondary-neutral"
                     onClick={() => query.refetch()}
                     loading={query.isRefetching}
+                    type="button"
                 >
                     prøve på nytt
                 </Button>

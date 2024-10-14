@@ -32,12 +32,7 @@ export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykm
 
                 return {
                     navn: getName(firstPatient),
-                    fnr: getOid(firstPatient),
-                    oid: {
-                        // TODO: Don't hardcode
-                        type: 'fødselsnummer',
-                        nr: getOid(firstPatient),
-                    },
+                    oid: getOid(firstPatient),
                 }
             },
             arbeidsgivere: async () => {

@@ -45,7 +45,7 @@ export function PasientSearchField({ children }: PropsWithChildren): ReactElemen
             />
             <div className="flex">
                 <Detail className="mt-2">
-                    Valgt pasient: {data?.oid.nr ?? 'N/A'}, {data?.navn ?? 'N/A'}
+                    Valgt pasient: {data?.oid?.nr ?? 'N/A'}, {data?.navn ?? 'N/A'}
                 </Detail>
                 {isLoading && <Loader size="xsmall" />}
                 {error && <Alert variant="error">Error: {error.message}</Alert>}

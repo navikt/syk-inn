@@ -3,7 +3,7 @@ import { z } from 'zod'
 export type FhirPatient = z.infer<typeof FhirPatientSchema>
 export const FhirPatientSchema = z.object({
     resourceType: z.literal('Patient'),
-    identifier: z.array(z.object({ system: z.string(), value: z.string() })),
+    identifier: z.array(z.object({ system: z.string(), value: z.string() })).optional(),
     name: z.array(z.object({ family: z.string(), given: z.array(z.string()) })),
 })
 

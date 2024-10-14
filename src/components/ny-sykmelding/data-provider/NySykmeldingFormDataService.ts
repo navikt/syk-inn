@@ -7,7 +7,7 @@ export type PatientInfo = {
     oid: {
         type: 'fødselsnummer' | 'd-nummer' | 'annet nummer'
         nr: string
-    }
+    } | null
     navn: string
 }
 
