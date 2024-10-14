@@ -77,25 +77,42 @@ function NySykmeldingForm(): ReactElement {
                     )}
                     className="flex flex-col gap-3 max-w-prose"
                 >
-                    <FormSection title="Info om pasienten">
+                    <FormSection
+                        title="Info om pasienten"
+                        demoDescription="Info om pasienten vil enten være preutfylt via FHIR-context, eller så må det skrives inn for hånd. FHIR vil falle tilbake til manuell input dersom konteknsten er utilgjengelig."
+                    >
                         <PasientSection />
                     </FormSection>
 
-                    <FormSection title="Arbeidssituasjon">
+                    <FormSection
+                        title="Arbeidssituasjon"
+                        demoDescription="Arbeidssituasjon vil kunne potensielt hentes via Aareg. Her er det mye rom for å være litt smartere ved bruk av data. Igjen så vil det falle tilbake til manuell utfylling dersom data ikke er tilgjengelig."
+                    >
                         <ArbeidssituasjonSection />
                     </FormSection>
 
-                    <FormSection title="Diagnose">
+                    <FormSection
+                        title="Diagnose"
+                        demoDescription="Et dynamisk søk i gyldige ICD-10 og ICPC-2 koder. Her er det rom for å begrense diagnosekoder til type behandler for eksempel."
+                    >
                         <DiagnoseSection />
                     </FormSection>
 
-                    <FormSection title="Aktivitet">
+                    <FormSection
+                        title="Aktivitet"
+                        demoDescription="Denne inputten er ikke avhengig av noe ekstern data, ren input med noe validering."
+                        demoBottom
+                    >
                         <AktivitetSection />
                     </FormSection>
 
                     <FormErrors ref={errorSectionRef} />
 
-                    <div className="bg-bg-subtle p-4 rounded">
+                    <FormSection
+                        title="Oppsummering"
+                        demoDescription="Kan vi mellomlagre informasjon for brukeren, så det ikke er noe fare for å miste data?"
+                        demoBottom
+                    >
                         <Heading level="3" size="medium" spacing>
                             Ferdigstill sykmeldingen
                         </Heading>
@@ -111,7 +128,7 @@ function NySykmeldingForm(): ReactElement {
                                 Opprett sykmelding
                             </Button>
                         </div>
-                    </div>
+                    </FormSection>
                 </form>
                 <DevTool control={form.control} placement="bottom-left" />
             </FormProvider>
