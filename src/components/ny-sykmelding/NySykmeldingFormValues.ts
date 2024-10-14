@@ -14,11 +14,14 @@ export type NySykmeldingFormValues = {
         arbeidsgiverOrgnummer: string[] | null
     } | null
     pasient: string | null
-    arbeidsgiver: {
-        navn: string
-        stilling: string
-        stillingsprosent: string
-    } | null
+    arbeidssituasjon: {
+        situasjon: 'en' | 'flere' | 'ingen'
+        arbeidsgiver: {
+            navn: string
+            stilling: string
+            stillingsprosent: string
+        } | null
+    }
     diagnoser: {
         hoved: DiagnoseSuggestion | null
         bi: DiagnoseSuggestion[] | null

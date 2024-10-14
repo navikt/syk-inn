@@ -7,10 +7,12 @@ import {
     ArbeidsgiverInfo,
     assertResourceAvailable,
 } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
-import ArbeidstakerField from '@components/ny-sykmelding/arbeidssituasjon/ArbeidstakerField'
-import { useController } from '@components/ny-sykmelding/NySykmeldingFormValues'
 
-function ArbeidstakerWithDataField(): ReactElement {
+import { useController } from '../NySykmeldingFormValues'
+
+import ArbeidsgiverField from './ArbeidsgiverField'
+
+function ArbeidsgiverWithDataField(): ReactElement {
     const dataService = useNySykmeldingDataService()
     const arbeidstakerQuery = useQuery({
         queryKey: ['arbeidstaker'],
@@ -23,20 +25,20 @@ function ArbeidstakerWithDataField(): ReactElement {
 
     if (arbeidstakerQuery.isError) {
         return (
-            <ArbeidstakerField>
+            <ArbeidsgiverField>
                 <PasientInfoDegredationInfo query={arbeidstakerQuery} />
-            </ArbeidstakerField>
+            </ArbeidsgiverField>
         )
     }
 
     if (arbeidstakerQuery.data && arbeidstakerQuery.data.length === 0) {
         return (
-            <ArbeidstakerField>
+            <ArbeidsgiverField>
                 <Alert variant="info" className="mb-4">
                     Vi fant ingen arbeidsforhold for pasienten. Du kan fortsette utfyllingen ved å manuelt taste inn
                     arbeidsforholdet.
                 </Alert>
-            </ArbeidstakerField>
+            </ArbeidsgiverField>
         )
     }
 
@@ -119,4 +121,4 @@ function PasientInfoDegredationInfo({ query }: { query: UseQueryResult }): React
     )
 }
 
-export default ArbeidstakerWithDataField
+export default ArbeidsgiverWithDataField

@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import { ToggleGroup } from '@navikt/ds-react'
-import { useController } from 'react-hook-form'
+
+import { useController } from '../NySykmeldingFormValues'
 
 function ArbeidssituasjonField(): ReactElement {
     const arbeidssituasjon = useController({
