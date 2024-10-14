@@ -12,6 +12,7 @@ import { FormSection } from '@components/ui/form'
 import ArbeidssituasjonSection from '@components/ny-sykmelding/arbeidssituasjon/ArbeidssituasjonSection'
 import DiagnoseSection from '@components/ny-sykmelding/diagnose/DiagnoseSection'
 import FormErrors, { useFormErrors } from '@components/ny-sykmelding/errors/FormErrors'
+import { createSykmelding } from '@components/ny-sykmelding/ny-sykmelding-actions'
 
 import { useIsNySykmeldingDataServiceInitialized } from './data-provider/NySykmeldingFormDataProvider'
 import { NySykmeldingFormValues } from './NySykmeldingFormValues'
@@ -24,9 +25,16 @@ function NySykmeldingForm(): ReactElement {
     const opprettSykmelding = useMutation({
         mutationKey: ['opprett-sykmelding'],
         mutationFn: async (values: NySykmeldingFormValues) => {
-            logger.info('Submitting values,', values)
-            await new Promise((resolve) => setTimeout(resolve, 10000))
-            return { TODO: true }
+            logger.info('(Client) Submitting values,', values)
+
+            return await createSykmelding(values)
+        },
+        onSuccess: (data) => {
+            if ('ok' in data) {
+                logger.info('Sykmelding created successfully')
+            } else {
+                logger.error(`Sykmelding creation failed, errors: ${JSON.stringify(data)}`)
+            }
         },
     })
 
@@ -34,6 +42,18 @@ function NySykmeldingForm(): ReactElement {
         return (
             <div className="max-w-prose p-8">
                 <Alert variant="warning">Skjemaet er ikke tilgjengelig uten pasient-data.</Alert>
+            </div>
+        )
+    }
+
+    if (opprettSykmelding.data && 'ok' in opprettSykmelding.data) {
+        return (
+            <div className="flex flex-col gap-3 max-w-prose">
+                <FormSection title="Takk for i dag">
+                    <Alert variant="success" className="mt-4">
+                        Sykmelding opprettet!
+                    </Alert>
+                </FormSection>
             </div>
         )
     }

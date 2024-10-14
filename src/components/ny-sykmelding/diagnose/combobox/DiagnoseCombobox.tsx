@@ -137,6 +137,7 @@ function DiagnoseCombobox({ id, className, value, label, onSelect, onChange, onB
                                 combobox.setValue(resetValue)
                                 onChange()
                             }}
+                            autoFocus
                         >
                             Endre hoveddiagnose
                         </Button>
