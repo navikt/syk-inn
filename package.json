@@ -23,6 +23,7 @@
         "@tanstack/react-query-devtools": "^5.58.0",
         "clsx": "^2.1.1",
         "csp-header": "^5.2.1",
+        "date-fns": "^3.6.0",
         "fhirclient": "^2.5.4",
         "fuse.js": "^7.0.0",
         "html-react-parser": "^5.1.16",

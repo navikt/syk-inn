@@ -23,6 +23,11 @@ export type NySykmeldingFormValues = {
         hoved: DiagnoseSuggestion | null
         bi: DiagnoseSuggestion[] | null
     }
+    aktivitet: {
+        type: 'AKTIVITET_IKKE_MULIG'
+        fom: string | null
+        tom: string | null
+    }
 }
 
 export const useController: <Path extends FieldPath<NySykmeldingFormValues>>(

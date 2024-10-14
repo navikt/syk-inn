@@ -7,16 +7,17 @@ import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react'
 import { DevTool } from '@hookform/devtools'
 import { useMutation } from '@tanstack/react-query'
 
-import PasientSection from '@components/ny-sykmelding/pasient/PasientSection'
 import { FormSection } from '@components/ui/form'
-import ArbeidssituasjonSection from '@components/ny-sykmelding/arbeidssituasjon/ArbeidssituasjonSection'
-import DiagnoseSection from '@components/ny-sykmelding/diagnose/DiagnoseSection'
-import FormErrors, { useFormErrors } from '@components/ny-sykmelding/errors/FormErrors'
-import { createSykmelding } from '@components/ny-sykmelding/ny-sykmelding-actions'
 
 import { useIsNySykmeldingDataServiceInitialized } from './data-provider/NySykmeldingFormDataProvider'
-import { NySykmeldingFormValues } from './NySykmeldingFormValues'
+import ArbeidssituasjonSection from './arbeidssituasjon/ArbeidssituasjonSection'
+import AktivitetSection from './aktivitet/AktivitetSection'
+import DiagnoseSection from './diagnose/DiagnoseSection'
+import PasientSection from './pasient/PasientSection'
 import { NySykmeldingOpprettProgressModal } from './NySykmeldingOpprettProgressModal'
+import FormErrors, { useFormErrors } from './errors/FormErrors'
+import { NySykmeldingFormValues } from './NySykmeldingFormValues'
+import { createSykmelding } from './ny-sykmelding-actions'
 
 function NySykmeldingForm(): ReactElement {
     const [errorSectionRef, focusErrorSection] = useFormErrors()
@@ -86,6 +87,10 @@ function NySykmeldingForm(): ReactElement {
 
                     <FormSection title="Diagnose">
                         <DiagnoseSection />
+                    </FormSection>
+
+                    <FormSection title="Aktivitet">
+                        <AktivitetSection />
                     </FormSection>
 
                     <FormErrors ref={errorSectionRef} />
