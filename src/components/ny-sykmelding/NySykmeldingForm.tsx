@@ -11,12 +11,14 @@ import PasientSection from '@components/ny-sykmelding/pasient/PasientSection'
 import { FormSection } from '@components/ui/form'
 import ArbeidssituasjonSection from '@components/ny-sykmelding/arbeidssituasjon/ArbeidssituasjonSection'
 import DiagnoseSection from '@components/ny-sykmelding/diagnose/DiagnoseSection'
+import FormErrors, { useFormErrors } from '@components/ny-sykmelding/errors/FormErrors'
 
 import { useIsNySykmeldingDataServiceInitialized } from './data-provider/NySykmeldingFormDataProvider'
 import { NySykmeldingFormValues } from './NySykmeldingFormValues'
 import { NySykmeldingOpprettProgressModal } from './NySykmeldingOpprettProgressModal'
 
 function NySykmeldingForm(): ReactElement {
+    const [errorSectionRef, focusErrorSection] = useFormErrors()
     const form = useForm<NySykmeldingFormValues>()
 
     const opprettSykmelding = useMutation({
@@ -46,7 +48,10 @@ function NySykmeldingForm(): ReactElement {
                             opprettSykmelding.mutate(values)
                         },
                         (errors) => {
-                            logger.error(`Form submit failed, errors: ${JSON.stringify(errors, null, 2)}`)
+                            logger.error(`Form submit failed, errors:`)
+                            logger.info(errors)
+
+                            focusErrorSection()
                         },
                     )}
                     className="flex flex-col gap-3 max-w-prose"
@@ -62,6 +67,8 @@ function NySykmeldingForm(): ReactElement {
                     <FormSection title="Diagnose">
                         <DiagnoseSection />
                     </FormSection>
+
+                    <FormErrors ref={errorSectionRef} />
 
                     <div className="bg-bg-subtle p-4 rounded">
                         <Heading level="3" size="medium" spacing>

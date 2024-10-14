@@ -15,7 +15,7 @@ function DiagnoseSmartPicker(): ReactElement {
 
     return (
         <DiagnoseCombobox
-            id="hoveddiagnose-combobox"
+            id="diagnoser.hoved"
             label="Hoveddiagnose"
             value={field.value}
             onBlur={field.onBlur}

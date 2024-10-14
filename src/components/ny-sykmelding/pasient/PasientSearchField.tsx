@@ -2,12 +2,9 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Alert, Detail, Loader, TextField } from '@navikt/ds-react'
 
-import { useFormContext } from '@components/ny-sykmelding/NySykmeldingFormValues'
-import { useNySykmeldingDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
-import {
-    assertResourceAvailable,
-    PatientInfo,
-} from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
+import { assertResourceAvailable, PatientInfo } from '../data-provider/NySykmeldingFormDataService'
+import { useController, useFormContext } from '../NySykmeldingFormValues'
+import { useNySykmeldingDataService } from '../data-provider/NySykmeldingFormDataProvider'
 
 export function PasientSearchField({ children }: PropsWithChildren): ReactElement {
     const dataService = useNySykmeldingDataService()
@@ -24,20 +21,27 @@ export function PasientSearchField({ children }: PropsWithChildren): ReactElemen
         },
         enabled: value?.length === 11,
     })
+    const oidField = useController({
+        name: 'pasient',
+        rules: {
+            required: 'Fødselsnummer eller D-nummer er påkrevd',
+            pattern: {
+                value: /^\d{11}$/,
+                message: 'Fødselsnummer eller D-nummer må være 11 siffer',
+            },
+        },
+    })
 
     return (
         <div>
             {children}
             <TextField
+                id={oidField.field.name}
                 label="Fødselsnummer eller D-nummer"
+                {...oidField.field}
+                value={oidField.field.value ?? ''}
+                error={oidField.fieldState.error?.message}
                 placeholder="11 siffer"
-                {...formContext.register('pasient', {
-                    required: 'Fødselsnummer eller D-nummer er påkrevd',
-                    pattern: {
-                        value: /^\d{11}$/,
-                        message: 'Fødselsnummer eller D-nummer må være 11 siffer',
-                    },
-                })}
             />
             <div className="flex">
                 <Detail className="mt-2">
