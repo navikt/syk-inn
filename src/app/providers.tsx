@@ -2,7 +2,13 @@
 
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { QueryClient, QueryClientProvider, QueryCache } from '@tanstack/react-query'
-import { logger } from '@navikt/next-logger'
+import { configureLogger, logger } from '@navikt/next-logger'
+
+import { bundledEnv } from '@utils/env'
+
+configureLogger({
+    basePath: bundledEnv.NEXT_PUBLIC_BASE_PATH ?? undefined,
+})
 
 function Providers({ children }: PropsWithChildren): ReactElement {
     const [queryClient] = React.useState(

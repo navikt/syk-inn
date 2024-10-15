@@ -5,7 +5,10 @@ import { verifyFhirToken } from '@fhir/auth/verify'
 export async function GET(): Promise<Response> {
     const token = headers().get('Authorization')
 
-    await verifyFhirToken(token!)
-
-    return new Response('OK')
+    try {
+        await verifyFhirToken(token!)
+        return new Response('OK (see logs)')
+    } catch (e) {
+        return new Response('Oh no :( (see logs)')
+    }
 }
