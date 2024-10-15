@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const createWellKnown = (baseUrl: string) => ({
     issuer: `${baseUrl}/fhir`,
-    jwks_uri: 'https://launch.smarthealthit.org/keys',
+    jwks_uri: `${baseUrl}/keys`,
     authorization_endpoint: `${baseUrl}/auth/authorize`,
     grant_types_supported: ['authorization_code', 'client_credentials'],
     token_endpoint: `${baseUrl}/auth/token`,

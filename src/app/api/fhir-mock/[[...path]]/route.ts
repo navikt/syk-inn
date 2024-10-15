@@ -21,6 +21,9 @@ async function handler(req: Request): Promise<Response> {
         case 'GET - /metadata': {
             return Response.json(data.fhirServer.metadata, { status: 200 })
         }
+        case 'GET - /keys': {
+            return Response.json(await data.fhirServer.keys, { status: 200 })
+        }
         default: {
             logger.error(`No mock found for ${mockIdentifier}`)
             return new Response(`Unimplemented FHIR resource: ${mockIdentifier} (${req.method})`, { status: 501 })

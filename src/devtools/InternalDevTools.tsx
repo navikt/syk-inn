@@ -1,5 +1,5 @@
 import React, { ReactElement, startTransition } from 'react'
-import { BodyShort, Button, Checkbox, CheckboxGroup, Heading, ToggleGroup } from '@navikt/ds-react'
+import { BodyShort, Button, Checkbox, CheckboxGroup, Detail, Heading, ToggleGroup } from '@navikt/ds-react'
 import { PersonIcon, StethoscopeIcon, XMarkIcon } from '@navikt/aksel-icons'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
@@ -52,19 +52,46 @@ function ResetSmartContext(): ReactElement {
 
     return (
         <DevToolItem
-            title="Reset SMART Context"
-            description={`Deletes all SMART context from sessionStorage. Current SMART_KEY: ${sessionStorage?.getItem('SMART_KEY') ?? 'none'}`}
-            className="flex gap-3"
+            title="SMART Context"
+            description="Utilities for interacting with SMART stuff"
+            className="flex flex-col gap-3"
         >
-            <Button variant="secondary-neutral" size="small" onClick={resetSmartContext()}>
-                Reset
-            </Button>
-            <Button variant="secondary-neutral" size="small" onClick={resetSmartContext('reload')}>
-                Reset and reload
-            </Button>
-            <Button variant="secondary-neutral" size="small" onClick={resetSmartContext('re-launch')}>
-                Reset and re-launch
-            </Button>
+            <div>
+                <Detail>Deletes all SMART context from sessionStorage.</Detail>
+                <Detail spacing>Current SMART_KEY: {sessionStorage?.getItem('SMART_KEY') ?? 'none'}</Detail>
+                <div className="flex gap-3">
+                    <Button variant="secondary-neutral" size="small" onClick={resetSmartContext()}>
+                        Reset
+                    </Button>
+                    <Button variant="secondary-neutral" size="small" onClick={resetSmartContext('reload')}>
+                        Reset and reload
+                    </Button>
+                    <Button variant="secondary-neutral" size="small" onClick={resetSmartContext('re-launch')}>
+                        Reset and re-launch
+                    </Button>
+                </div>
+            </div>
+            <div>
+                <Detail>Test auth stuff</Detail>
+                <Button
+                    size="small"
+                    variant="secondary-neutral"
+                    onClick={async () => {
+                        const key = JSON.parse(sessionStorage.getItem('SMART_KEY')!)
+                        const item = JSON.parse(sessionStorage.getItem(key)!)
+                        const accessToken = item.tokenResponse.access_token
+
+                        await fetch(pathWithBasePath('/api/test'), {
+                            headers: {
+                                Authorization: `Bearer ${accessToken}`,
+                            },
+                        })
+                    }}
+                >
+                    Validate current access token
+                </Button>
+                <Detail>(See server log for result)</Detail>
+            </div>
         </DevToolItem>
     )
 }

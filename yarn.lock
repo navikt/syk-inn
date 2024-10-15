@@ -4070,6 +4070,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jose@npm:^5.9.4":
+  version: 5.9.4
+  resolution: "jose@npm:5.9.4"
+  checksum: 10c0/d24d929db0759f2ca543b16f1c4d6e2235495deaa3d5e5de11552798b40af1734fd9b2886a93e16fa3207c1504375e1fe64f3d9ec3bf80361396c597ace11251
+  languageName: node
+  linkType: hard
+
 "joycon@npm:^3.1.1":
   version: 3.1.1
   resolution: "joycon@npm:3.1.1"
@@ -4689,6 +4696,13 @@ __metadata:
   bin:
     next: dist/bin/next
   checksum: 10c0/ef3aa074e9c7e0de95a9815cbbe9eee98bd190ed2ede982a2c0e00a8b438ac76193a3a6d2acabbadfd66f1f463ca97e84390a352ab0822f865c5524b356fdb31
+  languageName: node
+  linkType: hard
+
+"nextleton@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "nextleton@npm:0.6.1"
+  checksum: 10c0/e022de7692575220eb349b8497b6975b19d80d088a14eb7d41013f9b389de5333bee7e6efd3f42bc8936c282d027165dd301cc4f5747070ac25bd2585aefa075
   languageName: node
   linkType: hard
 
@@ -6184,10 +6198,12 @@ __metadata:
     fuse.js: "npm:^7.0.0"
     html-react-parser: "npm:^5.1.16"
     husky: "npm:^9.1.6"
+    jose: "npm:^5.9.4"
     jsdom: "npm:^25.0.1"
     lint-staged: "npm:^15.2.10"
     next: "npm:14.2.13"
     next-logger: "npm:^5.0.1"
+    nextleton: "npm:^0.6.1"
     nuqs: "npm:^1.20.0"
     pino: "npm:^9.4.0"
     pino-pretty: "npm:^11.2.2"
