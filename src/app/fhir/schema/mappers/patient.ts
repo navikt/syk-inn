@@ -20,7 +20,7 @@ export function getOid(patient: FhirPatient): {
     }
 
     return {
-        type: urnToOidType(oid.system),
+        type: urnToOidType(oid.system, oid.value),
         nr: oid.value,
     }
 }
@@ -28,14 +28,14 @@ export function getOid(patient: FhirPatient): {
 /**
  * Kilde: https://www.ehelse.no/teknisk-dokumentasjon/oid-identifikatorserier-i-helse-og-omsorgstjenesten
  */
-function urnToOidType(urn: string): 'fødselsnummer' | 'd-nummer' | 'annet nummer' {
+function urnToOidType(urn: string, value: string): 'fødselsnummer' | 'd-nummer' | 'annet nummer' {
     switch (urn.replace('urn:oid:', '')) {
         case '2.16.578.1.12.4.1.4.1':
             return 'fødselsnummer'
         case '2.16.578.1.12.4.1.4.2':
             return 'd-nummer'
         default:
-            logger.error(`Unknown OID: ${urn}`)
+            logger.error(`Unknown OID: ${urn}, value: ${value}`)
             return 'annet nummer'
     }
 }
