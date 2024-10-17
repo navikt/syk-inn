@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { PageBlock } from '@navikt/ds-react/Page'
 
 import { isLocalOrDemo } from '@utils/env'
-import { sessionAuthed } from '@fhir/session-lifecycle'
+import { sessionAuthed } from '@fhir/sessions/session-lifecycle'
 
 import FhirClient from './fhir-client'
 

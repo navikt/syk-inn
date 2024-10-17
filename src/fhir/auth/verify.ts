@@ -1,23 +1,16 @@
 import { createRemoteJWKSet, jwtVerify } from 'jose'
 import { logger } from '@navikt/next-logger'
-import { cookies } from 'next/headers'
 
-import { raise } from '@utils/ts'
-import { sessionStore } from '@fhir/session-store'
-import { knownIssuers } from '@fhir/issuers'
+import { getSessionIssuer } from '../sessions/session-lifecycle'
+import { knownIssuers } from '../issuers'
 
 export async function verifyFhirToken(token: string): Promise<void> {
-    const session = sessionStore.get(cookies().get('syk-inn-session-id')?.value ?? raise('No session ID found!'))
-    const wellKnown = await fetch(`${session.iss}/.well-known/smart-configuration`).then((it) => it.json())
-
-    if (!knownIssuers.find((it) => it.startsWith(session.iss))) {
-        throw new Error(`Non-allow-listed issuer: ${session.iss}`)
+    const issuer = await getSessionIssuer()
+    if (!knownIssuers.find((it) => it.startsWith(issuer))) {
+        throw new Error(`Non-allow-listed issuer: ${issuer}. Somebody is hacking! :shock:`)
     }
 
-    if (!('accessToken' in session)) {
-        raise('No valid session no authenticate')
-    }
-
+    const wellKnown = await fetch(`${issuer}/.well-known/smart-configuration`).then((it) => it.json())
     const cleanToken = token.replace('Bearer ', '')
 
     try {
