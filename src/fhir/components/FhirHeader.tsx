@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 
-import { NavLogo } from '@fhir/components/NavLogo'
+import { NavLogo } from '@components/ui/NavLogo'
 
 function FhirHeader(): ReactElement {
     return (

@@ -13,6 +13,12 @@ type Props = {
 
 async function Page({ searchParams }: Props): Promise<ReactElement> {
     if (searchParams.iss) {
+        /**
+         * Server component:
+         *
+         * Launch is server side rendered with ?iss=<issuer> when the EPJ launches the application. We store the issuer
+         * together with the current users session-ID to be able to verify the token at a later time.
+         */
         await sessionLaunched(searchParams.iss)
     }
 
