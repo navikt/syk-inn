@@ -12,10 +12,15 @@ import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding/data-pro
 import NySykmeldingForm from '@components/ny-sykmelding/NySykmeldingForm'
 import Test from '@fhir/components/Test'
 
-import { createFhirFetcher } from './fhir-context'
-import FhirUserInfo from './fhir-user-info'
+import { createFhirDataService } from '../data-fetching/fhir-data-service'
 
-function FhirClient(): ReactElement {
+import FhirHeaderUser from './FhirHeaderUser'
+
+/**
+ * The FHIR library requires asynchronous initialization, so this component is used to handle the loading state, error state
+ * and wraps the rest of the tree in a provider when the client is ready.
+ */
+function FhirClientProvider(): ReactElement {
     const client = useQuery({
         queryKey: ['fhir-client'],
         queryFn: async () => {
@@ -58,16 +63,19 @@ function FhirClient(): ReactElement {
                 </div>
             )}
             {client.data && (
-                <NySykmeldingFormDataProvider dataService={createFhirFetcher(client.data)}>
-                    <FhirUserInfo />
+                <NySykmeldingFormDataProvider dataService={createFhirDataService(client.data)}>
+                    <FhirHeaderUser />
                     <NySykmeldingForm />
                 </NySykmeldingFormDataProvider>
             )}
-            <ErrorBoundary fallback={<div className="mt-8">Test komponent tryna</div>}>
-                <Test />
-            </ErrorBoundary>
+            {/* TODO: This is debug-only development code, used only to inspect the JSON payload, will be removed. */}
+            {isLocalOrDemo && (
+                <ErrorBoundary fallback={<div className="mt-8">Test komponent tryna</div>}>
+                    <Test />
+                </ErrorBoundary>
+            )}
         </div>
     )
 }
 
-export default FhirClient
+export default FhirClientProvider

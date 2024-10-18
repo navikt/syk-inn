@@ -5,7 +5,12 @@ import { useQuery } from '@tanstack/react-query'
 import { oauth2 } from 'fhirclient'
 import { Alert, Skeleton } from '@navikt/ds-react'
 
-function FhirInitialization(): ReactElement {
+/**
+ * Not the most idiomatic use of tanstack-query, but since the fhirclient uses a redirect based flow for the auth flow,
+ * tanstack-query is used to handle the (implicit) loading state and eventual error state. The happy-state is being redirected
+ * away from this component.
+ */
+function FhirLaurchInitialization(): ReactElement {
     const { error } = useQuery({
         queryKey: ['fhir-initialization'],
         queryFn: async () => {
@@ -32,4 +37,4 @@ function FhirInitialization(): ReactElement {
     )
 }
 
-export default FhirInitialization
+export default FhirLaurchInitialization

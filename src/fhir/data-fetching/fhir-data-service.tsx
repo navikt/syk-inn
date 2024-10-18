@@ -10,7 +10,11 @@ import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getName, getOid } from './schema/mappers/patient'
 import { FhirPractitionerSchema } from './schema/practitioner'
 
-export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykmeldingFormDataService => {
+/**
+ * FHIR-specific implementation of NySykmeldingFormDataService. Used to create the generic interface the form uses to
+ * the actual data through the fhirclient-context.
+ */
+export const createFhirDataService = (client: ReturnType<typeof fhirClient>): NySykmeldingFormDataService => {
     return {
         context: {
             pasient: async () => {

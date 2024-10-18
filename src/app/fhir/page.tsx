@@ -5,8 +5,7 @@ import { PageBlock } from '@navikt/ds-react/Page'
 
 import { isLocalOrDemo } from '@utils/env'
 import { sessionAuthed } from '@fhir/sessions/session-lifecycle'
-
-import FhirClient from './fhir-client'
+import FhirClientProvider from '@fhir/components/FhirClientProvider'
 
 type Props = {
     searchParams: { code: string | undefined }
@@ -27,7 +26,7 @@ async function Page({ searchParams }: Props): Promise<ReactElement> {
             <Heading level="2" size="medium" spacing>
                 Opprett ny sykmelding
             </Heading>
-            <FhirClient />
+            <FhirClientProvider />
         </PageBlock>
     )
 }

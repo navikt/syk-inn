@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useNySykmeldingDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
 import { assertResourceAvailable } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
 
-function FhirUserInfo(): ReactElement {
+function FhirHeaderUser(): ReactElement {
     const dataService = useNySykmeldingDataService()
     const { data, isLoading, error } = useQuery({
         queryKey: ['fhir-user-info'],
@@ -18,6 +18,10 @@ function FhirUserInfo(): ReactElement {
         },
     })
 
+    /**
+     * This component portals into a slot in the header, because the FhirHeader is
+     * rendered outside of the normal data-provider.
+     */
     return createPortal(
         <div className="h-full flex flex-col justify-center items-end mr-2">
             {isLoading && (
@@ -42,4 +46,4 @@ function FhirUserInfo(): ReactElement {
     )
 }
 
-export default FhirUserInfo
+export default FhirHeaderUser
