@@ -29,14 +29,14 @@ export class SessionStoreRedis implements SessionStore {
     }
 
     public async initSession(sessionId: SessionId, issuer: string): Promise<PartialSession> {
-        await this.client.hSet(sessionId, { iss: issuer })
-        await this.client.expire(sessionId, 8 * 60 * 60)
+        await this.client.hSet(sessionIdKey(sessionId), { iss: issuer })
+        await this.client.expire(sessionIdKey(sessionId), 8 * 60 * 60)
 
         return { iss: issuer }
     }
 
     public async isSessionInitiated(sessionId: SessionId): Promise<boolean> {
-        return (await this.client.exists(sessionId)) > 0
+        return (await this.client.exists(sessionIdKey(sessionId))) > 0
     }
 
     public async completeAuth(sessionId: string): Promise<CompleteSession> {
@@ -45,13 +45,13 @@ export class SessionStoreRedis implements SessionStore {
             return session
         }
 
-        await this.client.hSet(sessionId, { complete: 'true' })
+        await this.client.hSet(sessionIdKey(sessionId), { complete: 'true' })
 
         return { ...session, complete: true }
     }
 
     public async get(sessionId: SessionId): Promise<PartialSession | CompleteSession> {
-        const sessionData = await this.client.hGetAll(sessionId)
+        const sessionData = await this.client.hGetAll(sessionIdKey(sessionId))
         if (!sessionData || Object.keys(sessionData).length === 0) {
             throw new Error('Session not found')
         }
@@ -65,4 +65,8 @@ export class SessionStoreRedis implements SessionStore {
 
         return sessionData as PartialSession
     }
+}
+
+function sessionIdKey(sessionId: SessionId): string {
+    return sessionId.startsWith('session:') ? sessionId : `session:${sessionId}`
 }

@@ -12,13 +12,13 @@ export type PartialSession = { iss: string }
 export type CompleteSession = PartialSession & { complete: true }
 
 export interface SessionStore {
-    setup(): Promise<void>
-    cleanup(): Promise<void>
-
     initSession(sessionId: SessionId, issuer: string): Promise<PartialSession>
     completeAuth(sessionId: string): Promise<CompleteSession>
     isSessionInitiated(sessionId: SessionId): Promise<boolean>
     get(sessionId: SessionId): Promise<PartialSession | CompleteSession>
+
+    setup(): Promise<void>
+    cleanup(): Promise<void>
 }
 
 function getSessionStoreImplementation(): SessionStore {
