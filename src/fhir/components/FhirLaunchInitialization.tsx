@@ -10,7 +10,7 @@ import { Alert, Skeleton } from '@navikt/ds-react'
  * tanstack-query is used to handle the (implicit) loading state and eventual error state. The happy-state is being redirected
  * away from this component.
  */
-function FhirLaurchInitialization(): ReactElement {
+function FhirLaunchInitialization(): ReactElement {
     const { error } = useQuery({
         queryKey: ['fhir-initialization'],
         queryFn: async () => {
@@ -37,4 +37,4 @@ function FhirLaurchInitialization(): ReactElement {
     )
 }
 
-export default FhirLaurchInitialization
+export default FhirLaunchInitialization

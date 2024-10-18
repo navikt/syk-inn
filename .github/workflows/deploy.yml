@@ -1,0 +1,105 @@
+name: Build & Deploy Demo App
+on: push
+
+env:
+  APP: syk-inn
+  BASE_PATH: /samarbeidspartner/sykmelding
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+jobs:
+  build-demo:
+    if: github.ref_name == 'main' || startsWith(github.ref_name, 'demo')
+    name: Build for demo
+    runs-on: ubuntu-latest
+    permissions:
+      packages: 'write'
+      contents: 'read'
+      id-token: 'write'
+    outputs:
+      image: ${{ steps.build-and-publish.outputs.image }}
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+        id: build-and-publish
+        with:
+          app: ${{ env.APP }}
+          env: demo
+          team: tsm
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-demo-main:
+    if: github.ref_name == 'main'
+    name: Deploy main to demo
+    environment:
+      name: demo-main
+      url: https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }}
+    runs-on: ubuntu-latest
+    needs: [build-demo]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: nais/nais-demo.yaml
+          VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }},appname=${{ env.APP }},replicas=1,branchState=alive
+
+  prebuild-app-for-playwright:
+    name: Prebuild image for sharded playwright tests
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ${{ github.repository }}-e2e
+      REGISTRY: ghcr.io
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - name: Build e2e version of app
+        run: |
+          cp nais/envs/.env.demo .env.production
+          yarn build:e2e
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+    outputs:
+      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+  run-playwright:
+    needs: [prebuild-app-for-playwright]
+    name: Playwright tests shard ${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    services:
+      app:
+        image: ${{ needs.prebuild-app-for-playwright.outputs.image }}
+        ports: ['3000:3000']
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1/4, 2/4, 3/4, 4/4]
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - name: Install Playwright browsers
+        run: yarn playwright install --with-deps
+      - name: Run Playwright
+        run: yarn e2e --shard ${{ matrix.shard }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

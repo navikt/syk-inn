@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import { isLocalOrDemo } from '@utils/env'
 import { sessionLaunched } from '@fhir/sessions/session-lifecycle'
-import FhirLaurchInitialization from '@fhir/components/FhirLaurchInitialization'
+import FhirLaunchInitialization from '@fhir/components/FhirLaunchInitialization'
 
 type Props = {
     searchParams: { iss: string | undefined }
@@ -32,7 +32,7 @@ async function Page({ searchParams }: Props): Promise<ReactElement> {
             <Heading level="2" size="medium" spacing>
                 Starter applikasjon for sykmeldinger
             </Heading>
-            <FhirLaurchInitialization />
+            <FhirLaunchInitialization />
         </PageBlock>
     )
 }

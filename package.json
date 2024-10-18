@@ -7,8 +7,13 @@
         "dev": "next dev | pino-pretty",
         "dev:redis": "docker run --name syk-inn-dev-redis -p 6379:6379 -d redis",
         "build": "next build",
+        "build:e2e": "./scripts/build-e2e.sh",
         "start": "next start",
+        "start:e2e": "NEXT_PUBLIC_ASSET_PREFIX= node .next/standalone/server.js | pino-pretty",
         "lint": "next lint",
+        "e2e": "playwright test",
+        "e2e:dev": "yarn e2e --ui",
+        "e2e:fast": "FAST=true yarn e2e --ui",
         "prepare": "husky"
     },
     "dependencies": {
@@ -47,6 +52,7 @@
     "devDependencies": {
         "@hookform/devtools": "^4.3.1",
         "@navikt/eslint-config-teamsykmelding": "^6.6.0",
+        "@playwright/test": "^1.48.1",
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",
