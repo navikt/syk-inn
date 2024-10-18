@@ -8,6 +8,10 @@ import { NySykmeldingFormDataService } from './NySykmeldingFormDataService'
 
 const NySykmeldingFormContext = createContext<NySykmeldingFormDataService | null>(null)
 
+/**
+ * Actual provider for specific implementation of NySykmeldingFormDataService for the form. In demo and local development
+ * an interceptor is used to interact with DevTools for overriding whether a specific API fails or not.
+ */
 export function NySykmeldingFormDataProvider({
     dataService,
     children,
