@@ -15,6 +15,9 @@ async function handler(req: Request): Promise<Response> {
         case 'GET - /Patient': {
             return Response.json(data.pasient['Espen Eksempel'], { status: 200 })
         }
+        case 'GET - /Practitioner': {
+            return Response.json(data.practitioner['Koman Magnar'], { status: 200 })
+        }
         case 'GET - /.well-known/smart-configuration': {
             return Response.json(data.fhirServer.wellKnown, { status: 200 })
         }
@@ -26,7 +29,7 @@ async function handler(req: Request): Promise<Response> {
         }
         default: {
             logger.error(`No mock found for ${mockIdentifier}`)
-            return new Response(`Unimplemented FHIR resource: ${mockIdentifier} (${req.method})`, { status: 501 })
+            return new Response(`Unimplemented FHIR resource: ${mockIdentifier}`, { status: 501 })
         }
     }
 }

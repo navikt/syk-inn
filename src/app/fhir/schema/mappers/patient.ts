@@ -1,9 +1,10 @@
 import { logger } from '@navikt/next-logger'
 
 import { FhirPatient } from '../patient'
+import { Name } from '../common'
 
-export function getName(patient: FhirPatient): string {
-    return `${patient.name[0].given[0]} ${patient.name[0].family}`
+export function getName(name: Name): string {
+    return `${name[0].given[0]} ${name[0].family}`
 }
 
 export function getOid(patient: FhirPatient): {

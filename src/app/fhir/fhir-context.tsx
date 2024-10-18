@@ -8,6 +8,7 @@ import {
 
 import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getName, getOid } from './schema/mappers/patient'
+import { FhirPractitionerSchema } from './schema/practitioner'
 
 export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykmeldingFormDataService => {
     return {
@@ -31,7 +32,7 @@ export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykm
                 }
 
                 return {
-                    navn: getName(firstPatient),
+                    navn: getName(firstPatient.name),
                     oid: getOid(firstPatient),
                 }
             },
@@ -51,9 +52,16 @@ export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykm
             },
             bruker: async () => {
                 await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000))
+                const practitioner = await client.request('Practitioner')
+
+                const parsed = FhirPractitionerSchema.safeParse(practitioner)
+                if (!parsed.success) {
+                    logger.error('Failed to parse practitioner', parsed.error)
+                    throw parsed.error
+                }
 
                 return {
-                    navn: 'Fastlege Fastlegesen',
+                    navn: getName(parsed.data.name),
                     epjDescription: 'Fake EPJ V0.89',
                 }
             },
