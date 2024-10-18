@@ -123,6 +123,7 @@ function ToggleAPIFailures(): ReactElement {
     const context: Record<keyof NySykmeldingFormDataService['context'], ReactElement> = {
         pasient: <Checkbox value="pasient">Pasient</Checkbox>,
         arbeidsgivere: <Checkbox value="arbeidsgivere">Arbeidsgivere</Checkbox>,
+        bruker: <Checkbox value="bruker">Bruker</Checkbox>,
     }
 
     const query: Record<keyof NySykmeldingFormDataService['query'], ReactElement> = {

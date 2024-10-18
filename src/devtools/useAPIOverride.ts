@@ -24,6 +24,7 @@ export function useWithFailInterceptor(dataService: NySykmeldingFormDataService)
         context: {
             pasient: failIfOverride('context', 'pasient', dataService.context.pasient),
             arbeidsgivere: failIfOverride('context', 'arbeidsgivere', dataService.context.arbeidsgivere),
+            bruker: failIfOverride('context', 'bruker', dataService.context.bruker),
         },
         query: {
             pasient: failIfOverride('query', 'pasient', dataService.query.pasient),

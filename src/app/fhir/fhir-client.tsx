@@ -13,6 +13,7 @@ import NySykmeldingForm from '@components/ny-sykmelding/NySykmeldingForm'
 import Test from '@fhir/components/Test'
 
 import { createFhirFetcher } from './fhir-context'
+import FhirUserInfo from './fhir-user-info'
 
 function FhirClient(): ReactElement {
     const client = useQuery({
@@ -58,6 +59,7 @@ function FhirClient(): ReactElement {
             )}
             {client.data && (
                 <NySykmeldingFormDataProvider dataService={createFhirFetcher(client.data)}>
+                    <FhirUserInfo />
                     <NySykmeldingForm />
                 </NySykmeldingFormDataProvider>
             )}

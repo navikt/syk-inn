@@ -18,6 +18,7 @@ function Page(): ReactElement {
         context: {
             pasient: NotAvailable,
             arbeidsgivere: NotAvailable,
+            bruker: NotAvailable,
         },
         query: {
             pasient: async (fnr) => ({

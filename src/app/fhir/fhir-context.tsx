@@ -49,6 +49,14 @@ export const createFhirFetcher = (client: ReturnType<typeof fhirClient>): NySykm
                     },
                 ]
             },
+            bruker: async () => {
+                await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000))
+
+                return {
+                    navn: 'Fastlege Fastlegesen',
+                    epjDescription: 'Fake EPJ V0.89',
+                }
+            },
         },
         query: {
             pasient: NotAvailable,
