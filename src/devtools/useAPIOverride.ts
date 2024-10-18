@@ -1,7 +1,7 @@
 import { logger } from '@navikt/next-logger'
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs'
 
-import { NySykmeldingFormDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
+import { NySykmeldingFormDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
 export function useWithFailInterceptor(dataService: NySykmeldingFormDataService): NySykmeldingFormDataService {
     const { contextOverrides, queryOverrides } = useAPIOverride()

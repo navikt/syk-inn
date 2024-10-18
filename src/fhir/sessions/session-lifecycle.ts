@@ -3,7 +3,10 @@ import { cookies } from 'next/headers'
 import { raise } from '@utils/ts'
 import { getSessionStore } from '@fhir/sessions/session-store'
 
-export async function sessionLaunched(issuer: string): Promise<void> {
+/**
+ * Save the launched session's issuer to the session store.
+ */
+export async function saveSessionIssuer(issuer: string): Promise<void> {
     const sessionCookie = cookies().get('syk-inn-session-id')
     const sessionId = sessionCookie?.value ?? null
 
@@ -15,8 +18,13 @@ export async function sessionLaunched(issuer: string): Promise<void> {
     await sessionStore.initSession(sessionId, issuer)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function sessionAuthed(accessToken: string): Promise<void> {
+/**
+ * Mark the current session as completed, i.e. that the user has authenticated with the FHIR server and returned to us.
+ */
+export async function saveSessionCompleted(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    accessToken: string,
+): Promise<void> {
     const sessionId = cookies().get('syk-inn-session-id')?.value ?? null
 
     if (sessionId == null) {

@@ -5,6 +5,9 @@ import React, { ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Accordion, Alert, Detail, Heading } from '@navikt/ds-react'
 
+/**
+ * TODO: Delete this. Only used for debugging purposes right now.
+ */
 function Test(): ReactElement {
     const { data, error, isFetching } = useQuery({
         queryKey: ['pasient-debug'],

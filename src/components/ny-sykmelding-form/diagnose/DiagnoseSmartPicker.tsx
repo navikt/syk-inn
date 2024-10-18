@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 
-import { useController } from '@components/ny-sykmelding/NySykmeldingFormValues'
-import DiagnoseCombobox from '@components/ny-sykmelding/diagnose/combobox/DiagnoseCombobox'
+import { useController } from '@components/ny-sykmelding-form/NySykmeldingFormValues'
+import DiagnoseCombobox from '@components/ny-sykmelding-form/diagnose/combobox/DiagnoseCombobox'
 
 function DiagnoseSmartPicker(): ReactElement {
     const { field, fieldState } = useController({

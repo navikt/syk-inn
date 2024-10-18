@@ -5,8 +5,8 @@ import { createPortal } from 'react-dom'
 import { Alert, BodyShort, Detail, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@tanstack/react-query'
 
-import { useNySykmeldingDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
-import { assertResourceAvailable } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
+import { useNySykmeldingDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
+import { assertResourceAvailable } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
 function FhirHeaderUser(): ReactElement {
     const dataService = useNySykmeldingDataService()

@@ -4,7 +4,7 @@ import { logger } from '@navikt/next-logger'
 import {
     NotAvailable,
     NySykmeldingFormDataService,
-} from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
+} from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
 import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getName, getOid } from './schema/mappers/patient'

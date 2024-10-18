@@ -3,7 +3,7 @@ import { BodyShort, Button, Checkbox, CheckboxGroup, Detail, Heading, ToggleGrou
 import { PersonIcon, StethoscopeIcon, XMarkIcon } from '@navikt/aksel-icons'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
-import { NySykmeldingFormDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
+import { NySykmeldingFormDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
 import { DevToolItem } from './InternalDevToolItem'
 import { DevToolsProps } from './DevTools'

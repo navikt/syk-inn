@@ -2,8 +2,8 @@ import React, { ReactElement } from 'react'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { Alert, BodyShort, Button, Detail, Skeleton } from '@navikt/ds-react'
 
-import { assertResourceAvailable } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
-import { PasientSearchField } from '@components/ny-sykmelding/pasient/PasientSearchField'
+import { assertResourceAvailable } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
+import { PasientSearchField } from '@components/ny-sykmelding-form/pasient/PasientSearchField'
 
 import { useNySykmeldingDataService } from '../data-provider/NySykmeldingFormDataProvider'
 

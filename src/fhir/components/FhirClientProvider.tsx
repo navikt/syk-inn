@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactElement } from 'react'
+import React, { PropsWithChildren, ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { oauth2 } from 'fhirclient'
 import { Alert, BodyShort, Detail, Heading, Skeleton } from '@navikt/ds-react'
@@ -8,19 +8,16 @@ import { ErrorBoundary } from 'react-error-boundary'
 
 import { isLocalOrDemo } from '@utils/env'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
-import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
-import NySykmeldingForm from '@components/ny-sykmelding/NySykmeldingForm'
+import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
 import Test from '@fhir/components/Test'
 
 import { createFhirDataService } from '../data-fetching/fhir-data-service'
-
-import FhirHeaderUser from './FhirHeaderUser'
 
 /**
  * The FHIR library requires asynchronous initialization, so this component is used to handle the loading state, error state
  * and wraps the rest of the tree in a provider when the client is ready.
  */
-function FhirClientProvider(): ReactElement {
+function FhirClientProvider({ children }: PropsWithChildren): ReactElement {
     const client = useQuery({
         queryKey: ['fhir-client'],
         queryFn: async () => {
@@ -64,8 +61,7 @@ function FhirClientProvider(): ReactElement {
             )}
             {client.data && (
                 <NySykmeldingFormDataProvider dataService={createFhirDataService(client.data)}>
-                    <FhirHeaderUser />
-                    <NySykmeldingForm />
+                    {children}
                 </NySykmeldingFormDataProvider>
             )}
             {/* TODO: This is debug-only development code, used only to inspect the JSON payload, will be removed. */}

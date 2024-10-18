@@ -1,8 +1,8 @@
 import { Detail } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 
-import { useNySykmeldingDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
-import { isResourceAvailable } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
+import { useNySykmeldingDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
+import { isResourceAvailable } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
 import ArbeidsgiverWithDataField from './ArbeidsgiverWithDataField'
 import ArbeidsgiverField from './ArbeidsgiverField'

@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { Alert, BodyShort, Button, Checkbox, CheckboxGroup, Skeleton } from '@navikt/ds-react'
 
-import { useNySykmeldingDataService } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataProvider'
+import { useNySykmeldingDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
 import {
     ArbeidsgiverInfo,
     assertResourceAvailable,
-} from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
+} from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
 import { useController } from '../NySykmeldingFormValues'
 

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
 
-import ArbeidssituasjonField from '@components/ny-sykmelding/arbeidssituasjon/ArbeidssituasjonField'
+import ArbeidssituasjonField from '@components/ny-sykmelding-form/arbeidssituasjon/ArbeidssituasjonField'
 
 import { useFormContext } from '../NySykmeldingFormValues'
 

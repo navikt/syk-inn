@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 
-import { isResourceAvailable } from '@components/ny-sykmelding/data-provider/NySykmeldingFormDataService'
-import { PasientSearchField } from '@components/ny-sykmelding/pasient/PasientSearchField'
-import PasientInfo from '@components/ny-sykmelding/pasient/PasientInfo'
+import { isResourceAvailable } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
+import { PasientSearchField } from '@components/ny-sykmelding-form/pasient/PasientSearchField'
+import PasientInfo from '@components/ny-sykmelding-form/pasient/PasientInfo'
 
 import { useNySykmeldingDataService } from '../data-provider/NySykmeldingFormDataProvider'
 

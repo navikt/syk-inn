@@ -97,7 +97,7 @@ jobs:
         run: yarn playwright install --with-deps
       - name: Run Playwright
         run: yarn e2e --shard ${{ matrix.shard }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report

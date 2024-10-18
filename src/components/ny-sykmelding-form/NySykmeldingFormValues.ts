@@ -6,7 +6,7 @@ import {
     UseControllerProps,
 } from 'react-hook-form'
 
-import { DiagnoseSuggestion } from '@components/ny-sykmelding/diagnose/combobox/DiagnoseCombobox'
+import { DiagnoseSuggestion } from '@components/ny-sykmelding-form/diagnose/combobox/DiagnoseCombobox'
 
 export type NySykmeldingFormValues = {
     context: {

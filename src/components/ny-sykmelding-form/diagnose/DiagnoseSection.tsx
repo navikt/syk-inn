@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import DiagnoseSmartPicker from '@components/ny-sykmelding/diagnose/DiagnoseSmartPicker'
+import DiagnoseSmartPicker from '@components/ny-sykmelding-form/diagnose/DiagnoseSmartPicker'
 
 function DiagnoseSection(): ReactElement {
     return (
