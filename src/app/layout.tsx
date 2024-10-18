@@ -14,6 +14,7 @@ import FhirHeader from '@fhir/components/FhirHeader'
 
 import Preload from './preload'
 import Providers from './providers'
+import DemoWarning from './demo-warning'
 
 export const metadata: Metadata = {
     title: '(Ny) Innsending av Sykmeldinger',
@@ -67,6 +68,7 @@ async function StandaloneLayout({ children }: PropsWithChildren): Promise<ReactE
             <body>
                 <Page footerPosition="belowFold" footer={<Decorator.Footer />}>
                     <Decorator.Header />
+                    {isLocalOrDemo && <DemoWarning />}
                     <Providers>
                         {children}
                         {isLocalOrDemo && <DevTools mode="standalone" />}
@@ -94,6 +96,7 @@ function FhirLayout({ children }: PropsWithChildren): ReactElement {
                 <Page footerPosition="belowFold">
                     <Providers>
                         <FhirHeader />
+                        {isLocalOrDemo && <DemoWarning />}
                         {children}
                         {isLocalOrDemo && <DevTools mode="fhir" />}
                     </Providers>
