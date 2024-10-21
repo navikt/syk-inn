@@ -154,7 +154,7 @@ function useSuggestions(value: string): {
     suggestions: DiagnoseSuggestion[]
 } {
     const { data, isLoading, error } = useQuery({
-        queryKey: ['diagnoseSuggestions', value],
+        queryKey: ['diagnose-suggestions', value],
         queryFn: async () => {
             const response = await fetch(`${pathWithBasePath(`/api/diagnose/query?value=${value}`)}`)
             if (!response.ok) {

@@ -4,6 +4,7 @@ import { Alert, BodyShort, Button, Detail, Skeleton } from '@navikt/ds-react'
 
 import { assertResourceAvailable } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { PasientSearchField } from '@components/ny-sykmelding-form/pasient/PasientSearchField'
+import SubtleRetryIndicator from '@components/misc/SubtleRetryIndicator'
 
 import { useNySykmeldingDataService } from '../data-provider/NySykmeldingFormDataProvider'
 
@@ -28,7 +29,9 @@ function PasientInfo(): ReactElement {
 
     return (
         <div>
-            <Detail spacing>Pasientdetaljer hentet fra EPJ</Detail>
+            <Detail spacing>
+                Pasientdetaljer hentet fra EPJ <SubtleRetryIndicator failureCount={pasientQuery.failureCount} />
+            </Detail>
             {pasientQuery.isLoading && (
                 <div>
                     <Detail>Navn</Detail>
