@@ -17,16 +17,18 @@ export type DevToolsProps = {
 function DevTools({ mode }: DevToolsProps): ReactElement {
     const { refs, tanstackOpen, internalOpen, toggleInternalDevTools, toggleTanstackDevTools, closeAllDevTools } =
         useDevToolsOverlayState()
+
     useKeyboardShortcuts(closeAllDevTools, toggleInternalDevTools, toggleTanstackDevTools)
 
     return (
         <>
             <div
                 className={cn('fixed bottom-2 right-2 flex flex-col gap-2 items-end', {
-                    'bottom-[calc(500px+0.5rem)]': tanstackOpen || internalOpen,
+                    'bottom-[calc(500px+0.5rem)]': tanstackOpen,
+                    'right-[calc(500px+0.5rem)]': internalOpen,
                 })}
             >
-                <div className="text-right text-text-subtle">
+                <div className="text-right text-text-subtle [text-shadow:1px_1px_0px_white]">
                     <div>
                         <Detail className="">Internal devtools</Detail>
                         <Detail className="-mt-1 font-bold">{getAltKeyLabel()} + d</Detail>
@@ -66,7 +68,11 @@ function DevTools({ mode }: DevToolsProps): ReactElement {
             <dialog ref={refs.tanstackDialogRef} className="fixed bottom-0 left-0 w-full z-popover" open={tanstackOpen}>
                 {tanstackOpen && <ReactQueryDevtoolsPanel />}
             </dialog>
-            <dialog ref={refs.internalDialogRef} className="fixed bottom-0 left-0 w-full z-popover" open={internalOpen}>
+            <dialog
+                ref={refs.internalDialogRef}
+                className="fixed left-auto bottom-0 top-0 right-0 h-full z-popover"
+                open={internalOpen}
+            >
                 {internalOpen && <InternalDevToolsPanel mode={mode} onClose={closeAllDevTools} />}
             </dialog>
         </>

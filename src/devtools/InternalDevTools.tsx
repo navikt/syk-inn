@@ -1,6 +1,7 @@
 import React, { ReactElement, startTransition } from 'react'
 import { BodyShort, Button, Checkbox, CheckboxGroup, Detail, Heading, ToggleGroup } from '@navikt/ds-react'
 import { PersonIcon, StethoscopeIcon, XMarkIcon } from '@navikt/aksel-icons'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 import { NySykmeldingFormDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
@@ -14,7 +15,7 @@ export function InternalDevToolsPanel({
     onClose,
 }: Pick<DevToolsProps, 'mode'> & { onClose: () => void }): ReactElement {
     return (
-        <div className="h-[500px] max-h-[500px] overflow-auto p-2 border-t-2 border-t-border-alt-3 bg-surface-alt-3-subtle">
+        <div className="w-[500px] max-w-[500px] h-full overflow-auto p-2 border-l-2 border-l-border-alt-3 bg-surface-alt-3-subtle">
             <Heading level="3" size="medium">
                 App DevTools
             </Heading>
@@ -27,10 +28,10 @@ export function InternalDevToolsPanel({
             <BodyShort size="small" className="text-text-subtle">
                 Collection of actions and utilities used for local development only.
             </BodyShort>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            <div className="grid grid-cols-1 gap-6 mt-6">
+                <ToggleAPIFailures />
                 <ResetSmartContext />
                 <ToggleAppVariant mode={mode} />
-                <ToggleAPIFailures />
             </div>
         </div>
     )
@@ -118,6 +119,7 @@ function ToggleAppVariant({ mode }: Pick<DevToolsProps, 'mode'>): ReactElement {
 }
 
 function ToggleAPIFailures(): ReactElement {
+    const queryClient = useQueryClient()
     const { queryOverrides, setQueryOverrides, contextOverrides, setContextOverrides } = useAPIOverride()
 
     const context: Record<keyof NySykmeldingFormDataService['context'], ReactElement> = {
@@ -162,6 +164,17 @@ function ToggleAPIFailures(): ReactElement {
             >
                 {...Object.values(query)}
             </CheckboxGroup>
+            <div>
+                <Button
+                    variant="secondary-neutral"
+                    size="small"
+                    onClick={() => {
+                        queryClient.resetQueries()
+                    }}
+                >
+                    Reload all queries
+                </Button>
+            </div>
         </DevToolItem>
     )
 }
