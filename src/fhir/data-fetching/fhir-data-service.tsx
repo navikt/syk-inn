@@ -9,6 +9,7 @@ import {
     PatientInfo,
 } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { raise } from '@utils/ts'
+import { wait } from '@utils/wait'
 
 import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getName, getOid } from './schema/mappers/patient'
@@ -35,6 +36,7 @@ export const createFhirDataService = (client: FhirClient): NySykmeldingFormDataS
 
 function getFhirPasient(client: FhirClient) {
     return async (): Promise<PatientInfo> => {
+        await wait()
         // TODO: Handle client.patient.id being null (can we launch without patient?)
         const patient = await client.request(`Patient/${client.patient.id ?? raise('client.patient.id is null')}`)
         const parsed = FhirBundleOrPatientSchema.safeParse(patient)
@@ -53,12 +55,10 @@ function getFhirPasient(client: FhirClient) {
 
 function getFhirPractitioner(client: FhirClient) {
     return async (): Promise<BrukerInfo> => {
-        if (client.getUserType() !== 'Practitioner') {
-            raise(`User is not a practitioner, but was a ${client.getUserType()}`)
-        }
+        await wait()
 
-        await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000))
-        const practitioner = await client.request(`Practitioner/${client.user.id}`)
+        // TODO: Gracefully handle different fhirUsers?
+        const practitioner = await client.request(client.user.fhirUser ?? raise('No FHIR-user available'))
 
         const parsed = FhirPractitionerSchema.safeParse(practitioner)
         if (!parsed.success) {
@@ -74,7 +74,7 @@ function getFhirPractitioner(client: FhirClient) {
 }
 
 async function getArbeidsgivere(): Promise<ArbeidsgiverInfo[]> {
-    await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000))
+    await wait()
 
     return [
         {

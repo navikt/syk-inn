@@ -1,8 +1,10 @@
+import { randomUUID } from 'node:crypto'
+
 import { logger as pinoLogger } from '@navikt/next-logger/dist/logger'
 
 import { getAbsoluteURL } from '@utils/url'
 
-import { createToken } from '../../jwt'
+import { createIdToken } from '../../jwt'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
 
@@ -24,13 +26,14 @@ async function handler(req: Request): Promise<Response> {
                 return new Response('Missing redirect_uri', { status: 400 })
             }
 
-            const token = await createToken()
-            return Response.redirect(`${redirectUri}?code=${token}`, 302)
+            const notAToken = randomUUID()
+            return Response.redirect(`${redirectUri}?code="${notAToken}"`, 302)
         }
         case 'POST - /auth/token': {
             const body = await req.formData()
             return Response.json({
                 access_token: body.get('code'),
+                id_token: await createIdToken(),
                 token_type: 'Bearer',
                 expires_in: 3600,
                 scope: 'patient/*.read launch',

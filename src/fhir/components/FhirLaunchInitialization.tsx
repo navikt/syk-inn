@@ -16,7 +16,7 @@ function FhirLaunchInitialization(): ReactElement {
         queryFn: async () => {
             await oauth2.authorize({
                 clientId: 'nav/syk-inn',
-                scope: 'openid fhirUser launch patient/*.read',
+                scope: 'openid profile fhirUser launch patient/*.read',
             })
             return null
         },
