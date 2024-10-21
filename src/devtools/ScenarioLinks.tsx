@@ -31,7 +31,7 @@ function ScenarioLinks(): ReactElement {
                         </LinkPanelDescription>
                     </LinkPanel>
                     <LinkPanel
-                        href={`${`${getAbsoluteURL()}/fhir/launch`}?iss=https%3A%2F%2Flaunch.smarthealthit.org%2Fv%2Fr4%2Ffhir&launch=WzAsImNkMDlmNWQ0LTU1ZjctNGEyNC1hMjVkLWE1YjY1YzdhODgwNSIsIjI1MzEwNzEiLCJBVVRPIiwwLDAsMCwiIiwiIiwiIiwiIiwiIiwiIiwiIiwwLDEsIiJd`}
+                        href={`${`${getAbsoluteURL()}/fhir/launch`}?iss=https%3A%2F%2Flaunch.smarthealthit.org%2Fv%2Fr4%2Ffhir&launch=WzAsImNkMDlmNWQ0LTU1ZjctNGEyNC1hMjVkLWE1YjY1YzdhODgwNSIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMSwiIl0`}
                         border
                         onClick={() => {
                             document.cookie = `development-mode-override=fhir; path=/`
@@ -45,7 +45,7 @@ function ScenarioLinks(): ReactElement {
                         </LinkPanelDescription>
                     </LinkPanel>
                     <LinkPanel
-                        href={`https://launch.smarthealthit.org/?launch=WzAsImNkMDlmNWQ0LTU1ZjctNGEyNC1hMjVkLWE1YjY1YzdhODgwNSIsIjI1MzEwNzEiLCJBVVRPIiwwLDAsMCwiIiwiIiwiIiwiIiwiIiwiIiwiIiwwLDEsIiJd&launch_url=${`${getAbsoluteURL()}/fhir/launch`}`}
+                        href={`https://launch.smarthealthit.org/?launch=WzAsImNkMDlmNWQ0LTU1ZjctNGEyNC1hMjVkLWE1YjY1YzdhODgwNSIsIiIsIkFVVE8iLDAsMCwwLCIiLCIiLCIiLCIiLCIiLCIiLCIiLDAsMSwiIl0&launch_url=${`${getAbsoluteURL()}/fhir/launch`}`}
                         border
                         onClick={() => {
                             document.cookie = `development-mode-override=fhir; path=/`

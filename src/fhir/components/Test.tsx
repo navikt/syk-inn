@@ -14,7 +14,7 @@ function Test(): ReactElement {
         queryFn: async () => {
             const client = await oauth2.ready()
 
-            return client.request('Patient')
+            return client.request(`Patient/${client.patient.id}`)
         },
     })
 

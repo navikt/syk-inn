@@ -9,6 +9,9 @@ export const FhirPatientSchema = z.object({
     name: NameSchema,
 })
 
+/**
+ * TODO: Does this need to be supported?
+ */
 export type FhirBundle = z.infer<typeof FhirBundleSchema>
 export const FhirBundleSchema = z.object({
     resourceType: z.literal('Bundle'),

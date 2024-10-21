@@ -12,7 +12,7 @@ async function handler(req: Request): Promise<Response> {
 
     const mockIdentifier = `${req.method} - ${fhirPath}`
     switch (mockIdentifier) {
-        case 'GET - /Patient': {
+        case 'GET - /Patient/cd09f5d4-55f7-4a24-a25d-a5b65c7a8805': {
             return Response.json(data.pasient['Espen Eksempel'], { status: 200 })
         }
         case 'GET - /Practitioner': {
