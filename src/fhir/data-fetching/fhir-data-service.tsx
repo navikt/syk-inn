@@ -1,5 +1,6 @@
 import { client as fhirClient } from 'fhirclient'
 import { logger } from '@navikt/next-logger'
+import { z } from 'zod'
 
 import {
     ArbeidsgiverInfo,
@@ -10,6 +11,7 @@ import {
 } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { raise } from '@utils/ts'
 import { wait } from '@utils/wait'
+import { ConditionSchema } from '@fhir/data-fetching/schema/condition'
 
 import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getName, getOid } from './schema/mappers/patient'
@@ -34,9 +36,30 @@ export const createFhirDataService = (client: FhirClient): NySykmeldingFormDataS
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getFhirConditions(client: FhirClient) {
+    return async (): Promise<string[]> => {
+        const patientId = client.patient.id
+
+        const conditions = await client.request(`Condition?patient=${patientId}`, {
+            pageLimit: 0,
+            flat: true,
+        })
+
+        const parsed = z.array(ConditionSchema).safeParse(conditions)
+        if (!parsed.success) {
+            logger.error(`Failed to parse conditions ${parsed.error.message}`)
+            throw parsed.error
+        }
+
+        return []
+    }
+}
+
 function getFhirPasient(client: FhirClient) {
     return async (): Promise<PatientInfo> => {
         await wait()
+
         // TODO: Handle client.patient.id being null (can we launch without patient?)
         const patient = await client.request(`Patient/${client.patient.id ?? raise('client.patient.id is null')}`)
         const parsed = FhirBundleOrPatientSchema.safeParse(patient)
