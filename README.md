@@ -67,3 +67,31 @@ Start the development server:
 ```bash
 yarn dev
 ```
+
+### Running e2e tests
+
+Headless:
+
+```bash
+yarn test:e2e
+```
+
+With interactive Playwright test runner:
+
+```bash
+yarn test:e2e --ui
+```
+
+If you are developing only e2e tests, you can run it in a special "fast mode" that uses the nextjs production server.
+
+Pre-build the server in a special e2e mode:
+
+```
+yarn build:e2e
+```
+
+Run the playwright tests using this built server:
+
+```bash
+FAST=true yarn test:e2e --ui
+```
