@@ -1,25 +1,13 @@
 import { logger } from '@navikt/next-logger'
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs'
 
-import { NySykmeldingFormDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
+import type { NotAvailable } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
+import {
+    isResourceAvailable,
+    NySykmeldingFormDataService,
+} from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
-export function useWithFailInterceptor(dataService: NySykmeldingFormDataService): NySykmeldingFormDataService {
-    const { contextOverrides, queryOverrides } = useAPIOverride()
-
-    const failIfOverride = <Fn>(group: string, what: string, fn: Fn): Fn => {
-        const overrides: string[] | undefined = group === 'context' ? contextOverrides : queryOverrides
-
-        if (overrides?.includes(what)) {
-            logger.warn(`Configuring ${group} ${what} to fail because DevTools says so`)
-            return (() => {
-                logger.warn(`Failing ${group} ${what} to fail because DevTools says so`)
-                throw new Error(`This query fails because ${what} is configured to fail in the dev-tools`)
-            }) as Fn
-        }
-
-        return fn
-    }
-
+export function withFailInterceptor(dataService: NySykmeldingFormDataService): NySykmeldingFormDataService {
     return {
         context: {
             pasient: failIfOverride('context', 'pasient', dataService.context.pasient),
@@ -53,4 +41,35 @@ export function useAPIOverride(): {
         setContextOverrides,
         setQueryOverrides,
     }
+}
+
+/**
+ * Legal use of any: The function signature here is irrelevant, and will be inferred as the correct type by the caller
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function failIfOverride<Fn extends (...args: any[]) => Promise<any>>(
+    group: string,
+    what: string,
+    fn: Fn | NotAvailable,
+): Fn | NotAvailable {
+    if (!isResourceAvailable(fn)) return fn
+
+    const interceptor: Fn = ((...args) => {
+        /**
+         * Params are parsed lazily instead of using nuqs, because we don't want to use nuqs hook
+         * this high in the rendering tree, as it interfers with the pre-rendering that next does
+         */
+        const params = new URLSearchParams(window.location.search)
+        const rawParams = (group === 'context' ? params.get('context-fails') : params.get('query-fails')) ?? ''
+        const overrides: string[] | undefined = rawParams.split(',').filter((it) => !!it)
+
+        if (overrides?.includes(what)) {
+            logger.warn(`Failing ${group} ${what} to fail because DevTools says so`)
+            throw new Error(`This query fails because ${what} is configured to fail in the dev-tools`)
+        }
+
+        return fn(...args)
+    }) as Fn
+
+    return interceptor
 }

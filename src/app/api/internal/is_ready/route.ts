@@ -3,6 +3,9 @@ import { logger } from '@navikt/next-logger'
 
 import { getServerEnv } from '@utils/env'
 
+// TODO: Remove when next 15
+export const dynamic = 'force-dynamic'
+
 export async function GET(): Promise<NextResponse> {
     try {
         getServerEnv()

@@ -123,13 +123,29 @@ function ToggleAPIFailures(): ReactElement {
     const { queryOverrides, setQueryOverrides, contextOverrides, setContextOverrides } = useAPIOverride()
 
     const context: Record<keyof NySykmeldingFormDataService['context'], ReactElement> = {
-        pasient: <Checkbox value="pasient">Pasient</Checkbox>,
-        arbeidsgivere: <Checkbox value="arbeidsgivere">Arbeidsgivere</Checkbox>,
-        bruker: <Checkbox value="bruker">Bruker</Checkbox>,
+        pasient: (
+            <Checkbox key="pasient" value="pasient">
+                Pasient
+            </Checkbox>
+        ),
+        arbeidsgivere: (
+            <Checkbox key="arbeidsgivere" value="arbeidsgivere">
+                Arbeidsgivere
+            </Checkbox>
+        ),
+        bruker: (
+            <Checkbox key="bruker" value="bruker">
+                Bruker
+            </Checkbox>
+        ),
     }
 
     const query: Record<keyof NySykmeldingFormDataService['query'], ReactElement> = {
-        pasient: <Checkbox value="pasient">Pasient by OID (fnr/dnr)</Checkbox>,
+        pasient: (
+            <Checkbox key="pasient" value="pasient">
+                Pasient by OID (fnr/dnr)
+            </Checkbox>
+        ),
     }
 
     return (

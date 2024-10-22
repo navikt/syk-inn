@@ -7,7 +7,7 @@ import { PageBlock } from '@navikt/ds-react/Page'
 
 import { bundledEnv, isLocalOrDemo } from '@utils/env'
 
-import ScenarioLinks from '../devtools/ScenarioLinks'
+import ScenarioLinks from '../../devtools/ScenarioLinks'
 
 export default function Home(): ReactElement {
     if (!isLocalOrDemo) {

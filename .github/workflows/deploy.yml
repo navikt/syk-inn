@@ -76,7 +76,7 @@ jobs:
           team: tsm
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}±
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-demo-main:
     if: github.ref_name == 'main'

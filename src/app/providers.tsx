@@ -3,6 +3,7 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { QueryClient, QueryClientProvider, QueryCache } from '@tanstack/react-query'
 import { configureLogger, logger } from '@navikt/next-logger'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 import { bundledEnv } from '@utils/env'
 
@@ -28,7 +29,11 @@ function Providers({ children }: PropsWithChildren): ReactElement {
             }),
     )
 
-    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    return (
+        <NuqsAdapter>
+            <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        </NuqsAdapter>
+    )
 }
 
 export default Providers
