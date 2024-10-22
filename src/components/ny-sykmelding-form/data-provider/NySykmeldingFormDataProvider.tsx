@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, ReactElement, useContext } from 'reac
 
 import { isLocalOrDemo } from '@utils/env'
 
-import { useWithFailInterceptor } from '../../../devtools/useAPIOverride'
+import { withFailInterceptor } from '../../../devtools/useAPIOverride'
 
 import { NySykmeldingFormDataService } from './NySykmeldingFormDataService'
 
@@ -17,9 +17,7 @@ export function NySykmeldingFormDataProvider({
     children,
 }: PropsWithChildren<{ dataService: NySykmeldingFormDataService }>): ReactElement {
     const wrappedDataService: NySykmeldingFormDataService = isLocalOrDemo
-        ? // Conditional statement is build time, which makes it fine
-          // eslint-disable-next-line react-hooks/rules-of-hooks
-          useWithFailInterceptor(dataService)
+        ? withFailInterceptor(dataService)
         : dataService
 
     return <NySykmeldingFormContext.Provider value={wrappedDataService}>{children}</NySykmeldingFormContext.Provider>

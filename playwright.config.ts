@@ -5,18 +5,18 @@ const PORT = process.env.PORT || 3000
 type OptionsType = { baseURL: string; timeout: number; server: PlaywrightTestConfig['webServer'] | undefined }
 const opts: OptionsType = process.env.CI
     ? {
-          baseURL: `http://localhost:3000/samarbeidspartner/sykmelding`,
+          baseURL: `http://localhost:3000`,
           timeout: 30 * 1000,
           // Uses service container app
           server: undefined,
       }
     : process.env.FAST
       ? {
-            baseURL: `http://localhost:${PORT}/samarbeidspartner/sykmelding`,
+            baseURL: `http://localhost:${PORT}`,
             timeout: 30 * 1000,
             server: {
                 command: 'yarn start:e2e',
-                url: `http://localhost:${PORT}/samarbeidspartner/sykmelding`,
+                url: `http://localhost:${PORT}`,
                 timeout: 120 * 1000,
                 reuseExistingServer: false,
                 stderr: 'pipe',

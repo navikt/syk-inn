@@ -16,9 +16,9 @@ This application will be used by health care professionals to send "sykmeldinger
 
 ### Routes (uses Next "App Dir")
 
--   FHIR Launch route: [src/app/fhir/launch/page.tsx](src/app/fhir/launch/page.tsx)
--   FHIR Form route: [src/app/fhir/page.tsx](src/app/fhir/page.tsx)
--   Standalone Form route: [src/app/ny/page.tsx](src/app/ny/page.tsx)
+-   FHIR Launch route: [src/app/(fhir)/fhir/launch/page.tsx](<src/app/(fhir)/fhir/launch/page.tsx>)
+-   FHIR Form route: [src/app/(fhir)/fhir/page.tsx](<src/app/(fhir)/fhir/page.tsx>)
+-   Standalone Form route: [src/app/(standalone)ny/page.tsx](<src/app/(standalone)/ny/page.tsx>)
 
 ### The actual form:
 
