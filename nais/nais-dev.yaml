@@ -1,19 +1,18 @@
 apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
-  name: {{appname}}-demo
+  name: syk-inn
   namespace: tsm
   labels:
     team: tsm
-    branchState: {{branchState}}
 spec:
   image: {{image}}
   port: 3000
   ingresses:
-    - {{ingress}}
+    - "https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding"
   replicas:
-    min: {{replicas}}
-    max: {{replicas}}
+    min: 2
+    max: 2
   liveness:
     path: /samarbeidspartner/sykmelding/api/internal/is_alive
   readiness:
@@ -24,13 +23,13 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: "launch.smarthealthit.org"
+        - host: "fhirapi.public.webmedepj.no"
       rules:
         - application: nav-dekoratoren
           namespace: personbruker
   resources:
     limits:
-      memory: 600Mi
+      memory: 512Mi
     requests:
       cpu: 50m
-      memory: 400Mi
+      memory: 256Mi
