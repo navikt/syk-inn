@@ -1,7 +1,5 @@
 import { createClient, RedisClientType } from '@redis/client'
 import { logger } from '@navikt/next-logger'
-
-import { getServerEnv } from '@utils/env'
 import { raise } from '@utils/ts'
 
 import { CompleteSession, PartialSession, SessionId, SessionStore } from './session-store'
@@ -11,7 +9,9 @@ export class SessionStoreRedis implements SessionStore {
 
     constructor() {
         this.client = createClient({
-            url: getServerEnv().REDIS_URL ?? raise("Trying to init Redis, but no 'REDIS_URL' found"),
+            url: process.env.REDIS_URI_SYK_INN ?? raise("Trying to init Redis, but no 'REDIS_URL' found"),
+            username: process.env.REDIS_USERNAME_SYK_INN ?? raise("Trying to init Redis, but no 'username' found"),
+            password: process.env.REDIS_PASSWORD_SYK_INN ?? raise("Trying to init Redis, but no 'password' found"),
         })
     }
 
