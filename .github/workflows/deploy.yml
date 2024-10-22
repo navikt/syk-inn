@@ -1,4 +1,4 @@
-name: Build & Deploy Demo App
+name: Build & Deploy
 on: push
 
 env:
@@ -11,6 +11,41 @@ permissions:
   packages: write
 
 jobs:
+  build-dev:
+    name: Build for dev
+    runs-on: ubuntu-latest
+    permissions:
+      packages: 'write'
+      contents: 'read'
+      id-token: 'write'
+    outputs:
+      image: ${{ steps.build-and-publish.outputs.image }}
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+        id: build-and-publish
+        with:
+          app: ${{ env.APP }}
+          env: dev
+          team: tsm
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-dev-main:
+    needs: build-dev
+    name: Deploy main to dev
+    environment:
+      name: dev
+      url: https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: nais/nais-dev.yaml
+          VAR: image=${{ needs.build-dev.outputs.image }}
+
   build-demo:
     if: github.ref_name == 'main' || startsWith(github.ref_name, 'demo')
     name: Build for demo
@@ -30,7 +65,7 @@ jobs:
           team: tsm
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}±
 
   deploy-demo-main:
     if: github.ref_name == 'main'
