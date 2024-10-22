@@ -8,17 +8,7 @@ export const createWellKnown = (baseUrl: string) => ({
     token_endpoint_auth_methods_supported: ['client_secret_basic', 'client_secret_post', 'private_key_jwt'],
     introspection_endpoint: `${baseUrl}/auth/introspect`,
     code_challenge_methods_supported: ['S256'],
-    scopes_supported: [
-        'openid',
-        'profile',
-        'fhirUser',
-        'launch',
-        'launch/patient',
-        'launch/encounter',
-        'patient/*.*',
-        'user/*.*',
-        'offline_access',
-    ],
+    scopes_supported: ['openid', 'profile', 'fhirUser', 'launch', 'patient/*.*', 'user/*.*', 'offline_access'],
     response_types_supported: ['code', 'token', 'id_token', 'token id_token', 'refresh_token'],
     capabilities: [
         'launch-ehr',
