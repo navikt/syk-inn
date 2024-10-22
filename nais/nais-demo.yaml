@@ -23,6 +23,9 @@ spec:
       path: /samarbeidspartner/sykmelding/api/internal/pre_stop
   accessPolicy:
     outbound:
+      external:
+        - host: "fhirapi.public.webmedepj.no"
+        - host: "launch.smarthealthit.org"
       rules:
         - application: nav-dekoratoren
           namespace: personbruker
