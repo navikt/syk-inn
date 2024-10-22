@@ -24,7 +24,6 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: "api.dips.no"
         - host: "fhirapi.public.webmedepj.no"
         - host: "launch.smarthealthit.org"
       rules:
