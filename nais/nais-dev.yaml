@@ -13,6 +13,9 @@ spec:
   replicas:
     min: 2
     max: 2
+  redis:
+    - instance: syk-inn
+      access: readwrite
   liveness:
     path: /samarbeidspartner/sykmelding/api/internal/is_alive
   readiness:
