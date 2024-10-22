@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useNySykmeldingDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
 import { assertResourceAvailable } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
-function FhirHeaderUser(): ReactElement {
+function FhirHeaderUser(): ReactElement | null {
     const dataService = useNySykmeldingDataService()
     const { data, isLoading, error } = useQuery({
         queryKey: ['fhir-user-info'],
@@ -17,6 +17,12 @@ function FhirHeaderUser(): ReactElement {
             return await dataService.context.bruker()
         },
     })
+
+    const fhirUserPortalElement = document.getElementById('fhir-user-portal')
+
+    if (!fhirUserPortalElement) {
+        return null
+    }
 
     /**
      * This component portals into a slot in the header, because the FhirHeader is
@@ -42,7 +48,7 @@ function FhirHeaderUser(): ReactElement {
                 </>
             )}
         </div>,
-        document.getElementById('fhir-user-portal')!,
+        fhirUserPortalElement,
     )
 }
 
