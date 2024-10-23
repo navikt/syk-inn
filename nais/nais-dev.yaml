@@ -31,6 +31,10 @@ spec:
   preStopHook:
     http:
       path: /samarbeidspartner/sykmelding/api/internal/pre_stop
+  filesFrom:
+    - emptyDir:
+        medium: Memory
+      mountPath: /app/.next/cache
   accessPolicy:
     outbound:
       external:
