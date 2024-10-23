@@ -9,3 +9,5 @@ export function raise(messageOrError: string | Error): never {
         throw new Error(messageOrError)
     }
 }
+
+export type KeysOfUnion<T> = T extends T ? keyof T : never
