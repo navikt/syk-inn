@@ -34,7 +34,7 @@ export default function FhirLayout({ children }: PropsWithChildren): ReactElemen
                         <FhirHeader />
                         {isLocalOrDemo && <DemoWarning />}
                         {children}
-                        {isLocalOrDemo && <LazyDevTools mode="fhir" />}
+                        {isLocalOrDemo && <LazyDevTools />}
                     </Providers>
                 </Page>
             </body>

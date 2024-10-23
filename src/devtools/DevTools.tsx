@@ -10,11 +10,7 @@ import { cn } from '@utils/tw'
 
 import { InternalDevToolsPanel } from './InternalDevTools'
 
-export type DevToolsProps = {
-    mode: 'fhir' | 'standalone'
-}
-
-function DevTools({ mode }: DevToolsProps): ReactElement {
+function DevTools(): ReactElement {
     const { refs, tanstackOpen, internalOpen, toggleInternalDevTools, toggleTanstackDevTools, closeAllDevTools } =
         useDevToolsOverlayState()
 
@@ -73,7 +69,7 @@ function DevTools({ mode }: DevToolsProps): ReactElement {
                 className="fixed left-auto bottom-0 top-0 right-0 h-full z-popover"
                 open={internalOpen}
             >
-                {internalOpen && <InternalDevToolsPanel mode={mode} onClose={closeAllDevTools} />}
+                {internalOpen && <InternalDevToolsPanel onClose={closeAllDevTools} />}
             </dialog>
         </>
     )

@@ -1,19 +1,17 @@
 import React, { ReactElement, startTransition } from 'react'
-import { BodyShort, Button, Checkbox, CheckboxGroup, Detail, Heading, ToggleGroup } from '@navikt/ds-react'
-import { PersonIcon, StethoscopeIcon, XMarkIcon } from '@navikt/aksel-icons'
+import { BodyShort, Button, Checkbox, CheckboxGroup, Detail, Heading } from '@navikt/ds-react'
+import { XMarkIcon } from '@navikt/aksel-icons'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 import { NySykmeldingFormDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
 import { DevToolItem } from './InternalDevToolItem'
-import { DevToolsProps } from './DevTools'
 import { useAPIOverride } from './useAPIOverride'
 
-export function InternalDevToolsPanel({
-    mode,
-    onClose,
-}: Pick<DevToolsProps, 'mode'> & { onClose: () => void }): ReactElement {
+type Props = { onClose: () => void }
+
+export function InternalDevToolsPanel({ onClose }: Props): ReactElement {
     return (
         <div className="w-[500px] max-w-[500px] h-full overflow-auto p-2 border-l-2 border-l-border-alt-3 bg-surface-alt-3-subtle">
             <Heading level="3" size="medium">
@@ -31,7 +29,6 @@ export function InternalDevToolsPanel({
             <div className="grid grid-cols-1 gap-6 mt-6">
                 <ToggleAPIFailures />
                 <ResetSmartContext />
-                <ToggleAppVariant mode={mode} />
             </div>
         </div>
     )
@@ -93,27 +90,6 @@ function ResetSmartContext(): ReactElement {
                 </Button>
                 <Detail>(See server log for result)</Detail>
             </div>
-        </DevToolItem>
-    )
-}
-
-function ToggleAppVariant({ mode }: Pick<DevToolsProps, 'mode'>): ReactElement {
-    return (
-        <DevToolItem
-            title="Change app context"
-            description="Toggle between rendering the app in FHIR-mode or standalone-mode"
-        >
-            <ToggleGroup
-                defaultValue={mode}
-                onChange={(value) => {
-                    document.cookie = `development-mode-override=${value}; path=/`
-                    window.location.reload()
-                }}
-                variant="neutral"
-            >
-                <ToggleGroup.Item value="standalone" icon={<PersonIcon aria-hidden />} label="Standalone" />
-                <ToggleGroup.Item value="fhir" icon={<StethoscopeIcon aria-hidden />} label="FHIR" />
-            </ToggleGroup>
         </DevToolItem>
     )
 }

@@ -44,7 +44,7 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                     {isLocalOrDemo && <DemoWarning />}
                     <Providers>
                         {children}
-                        {isLocalOrDemo && <LazyDevTools mode="standalone" />}
+                        {isLocalOrDemo && <LazyDevTools />}
                     </Providers>
                     <Decorator.Scripts loader={Script} />
                 </Page>
