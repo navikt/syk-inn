@@ -23,6 +23,7 @@ export interface SessionStore {
 
 function getSessionStoreImplementation(): SessionStore {
     switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
+        case 'e2e':
         case 'demo':
             return new SessionStoreInMem()
         case 'local':

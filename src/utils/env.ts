@@ -5,6 +5,7 @@ import { KeysOfUnion } from '@utils/ts'
 const BundledEnvSchema = z.object({
     NEXT_PUBLIC_RUNTIME_ENV: z.union([
         z.literal('local'),
+        z.literal('e2e'),
         z.literal('demo'),
         z.literal('prod-gcp'),
         z.literal('dev-gcp'),
@@ -56,7 +57,7 @@ const ServerEnvSchema = z.object({
  */
 export function getServerEnv(): ServerEnv {
     const redisConfig =
-        process.env.NEXT_PUBLIC_RUNTIME_ENV !== 'demo'
+        bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'demo' && bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'e2e'
             ? ({
                   runtimeEnv: process.env.NEXT_PUBLIC_RUNTIME_ENV,
                   url: process.env.REDIS_URI_SYK_INN,

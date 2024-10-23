@@ -2,6 +2,8 @@
 
 import { logger } from '@navikt/next-logger'
 
+import { wait } from '@utils/wait'
+
 import { NySykmeldingFormValues } from './NySykmeldingFormValues'
 
 export async function createSykmelding(
@@ -16,7 +18,8 @@ export async function createSykmelding(
      */
 
     // Fake dev loading
-    await new Promise((resolve) => setTimeout(resolve, 5000))
+    await wait(5000)
+
     logger.info(`Submitting values ${JSON.stringify(values, null, 2)}`)
 
     // TODO(2): Validate payload (zod?)

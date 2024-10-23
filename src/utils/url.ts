@@ -2,6 +2,7 @@ import { bundledEnv } from '@utils/env'
 
 export function getAbsoluteURL(): string {
     switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
+        case 'e2e':
         case 'local':
             return 'http://localhost:3000'
         case 'demo':

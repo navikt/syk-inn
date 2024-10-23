@@ -3,6 +3,7 @@ import { BodyShort, Heading } from '@navikt/ds-react'
 
 import { isLocalOrDemo } from '@utils/env'
 import { cn } from '@utils/tw'
+import { cleanId } from '@utils/string'
 
 import demoArrow from './demo-arrow.webp'
 
@@ -14,10 +15,12 @@ type Props = {
 }
 
 export function FormSection({ children, title, demoDescription, demoBottom }: PropsWithChildren<Props>): ReactElement {
+    const headingId = `section-heading-${cleanId(title)}`
+
     return (
         <div className="relative">
-            <section className="p-4 bg-bg-subtle rounded">
-                <Heading level="2" size="medium">
+            <section className="p-4 bg-bg-subtle rounded" aria-labelledby={headingId}>
+                <Heading level="2" size="medium" id={headingId}>
                     {title}
                 </Heading>
                 {children}

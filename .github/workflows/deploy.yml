@@ -134,7 +134,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1/4, 2/4, 3/4, 4/4]
+        # Uncomment for 4 shards
+        #shard: [1/4, 2/4, 3/4, 4/4]
+        # Two shards until we have a bigger test suite
+        shard: [1/2, 2/2]
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
         with:
