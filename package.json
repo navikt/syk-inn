@@ -35,18 +35,18 @@
         "fhirclient": "^2.5.4",
         "fuse.js": "^7.0.0",
         "html-react-parser": "^5.1.18",
-        "jose": "^5.9.4",
+        "jose": "^5.9.6",
         "jsdom": "^25.0.1",
-        "next": "14.2.15",
+        "next": "14.2.16",
         "next-logger": "^5.0.1",
         "nextleton": "^0.6.1",
-        "nuqs": "^2.0.0",
+        "nuqs": "^2.0.2",
         "pino": "^9.5.0",
         "pino-pretty": "^11.3.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "react-error-boundary": "^4.1.1",
-        "react-hook-form": "^7.53.0",
+        "react-error-boundary": "^4.1.2",
+        "react-hook-form": "^7.53.1",
         "remeda": "^2.16.0",
         "tailwind-merge": "^2.5.4",
         "zod": "^3.23.8"
@@ -55,12 +55,12 @@
         "@hookform/devtools": "^4.3.1",
         "@navikt/eslint-config-teamsykmelding": "^6.6.0",
         "@playwright/test": "^1.48.1",
-        "@types/node": "^20.16.12",
-        "@types/react": "^18.3.11",
+        "@types/node": "^20.16.15",
+        "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
         "autoprefixer": "^10.4.20",
         "eslint": "^8.57.1",
-        "eslint-config-next": "14.2.15",
+        "eslint-config-next": "14.2.16",
         "husky": "^9.1.6",
         "lint-staged": "^15.2.10",
         "postcss": "^8.4.47",
@@ -75,5 +75,8 @@
             "@navikt/eslint-config-teamsykmelding",
             "next/core-web-vitals"
         ]
+    },
+    "resolutions": {
+        "eslint-plugin-react-hooks": "5.0.0"
     }
 }
