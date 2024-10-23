@@ -1,6 +1,9 @@
+import * as R from 'remeda'
 import { createClient, RedisClientType } from '@redis/client'
 import { logger } from '@navikt/next-logger'
+
 import { raise } from '@utils/ts'
+import { getServerEnv } from '@utils/env'
 
 import { CompleteSession, PartialSession, SessionId, SessionStore } from './session-store'
 
@@ -8,11 +11,9 @@ export class SessionStoreRedis implements SessionStore {
     private readonly client: RedisClientType
 
     constructor() {
-        this.client = createClient({
-            url: process.env.REDIS_URI_SYK_INN ?? raise("Trying to init Redis, but no 'REDIS_URL' found"),
-            username: process.env.REDIS_USERNAME_SYK_INN ?? raise("Trying to init Redis, but no 'username' found"),
-            password: process.env.REDIS_PASSWORD_SYK_INN ?? raise("Trying to init Redis, but no 'password' found"),
-        })
+        const redisConfig = getServerEnv().redisConfig ?? raise('Redis config is not set! :(')
+
+        this.client = createClient(R.omit(redisConfig, ['NEXT_PUBLIC_RUNTIME_ENV']))
     }
 
     async setup(): Promise<void> {

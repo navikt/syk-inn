@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { KeysOfUnion } from '@utils/ts'
+
 const BundledEnvSchema = z.object({
     NEXT_PUBLIC_RUNTIME_ENV: z.union([
         z.literal('local'),
@@ -21,9 +23,27 @@ export const bundledEnv = BundledEnvSchema.parse({
     NEXT_PUBLIC_ASSET_PREFIX: process.env.NEXT_PUBLIC_ASSET_PREFIX,
 })
 
+type RedisConfig = z.infer<typeof RedisConfigSchema>
+const RedisConfigSchema = z.union([
+    /**
+     * Defines a union type for strongly typing Redis configurations for local and production environments.
+     * The local setup doesn't require authentication but does need the Docker image URL.
+     */
+    z.object({
+        NEXT_PUBLIC_RUNTIME_ENV: z.intersection(z.literal('dev-gcp'), z.literal('prod-gcp')),
+        url: z.string(),
+        username: z.string(),
+        password: z.string(),
+    }),
+    z.object({
+        NEXT_PUBLIC_RUNTIME_ENV: z.literal('local'),
+        url: z.string(),
+    }),
+])
+
 type ServerEnv = z.infer<typeof ServerEnvSchema>
 const ServerEnvSchema = z.object({
-    REDIS_URL: z.string().nullish(),
+    redisConfig: RedisConfigSchema.nullish(),
 })
 
 /**
@@ -35,9 +55,19 @@ const ServerEnvSchema = z.object({
  * the server is configured correctly before receiving any traffic.
  */
 export function getServerEnv(): ServerEnv {
+    const redisConfig =
+        process.env.NEXT_PUBLIC_RUNTIME_ENV !== 'demo'
+            ? ({
+                  NEXT_PUBLIC_RUNTIME_ENV: process.env.NEXT_PUBLIC_RUNTIME_ENV,
+                  url: process.env.REDIS_URI_SYK_INN,
+                  username: process.env.REDIS_USERNAME_SYK_INN,
+                  password: process.env.REDIS_PASSWORD_SYK_INN,
+              } satisfies Record<KeysOfUnion<RedisConfig>, unknown | undefined>)
+            : undefined
+
     return ServerEnvSchema.parse({
-        REDIS_URL: process.env.REDIS_URL,
-    } satisfies Record<keyof ServerEnv, string | undefined>)
+        redisConfig,
+    } satisfies Record<keyof ServerEnv, unknown | undefined>)
 }
 
 export const isLocalOrDemo = process.env.NODE_ENV === 'development' || bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'demo'
