@@ -4,7 +4,7 @@
     "private": true,
     "packageManager": "yarn@4.5.0",
     "scripts": {
-        "dev": "next dev | pino-pretty",
+        "dev": "next dev --turbo | pino-pretty",
         "dev:redis": "docker run --name syk-inn-dev-redis -p 6379:6379 -d redis",
         "build": "./scripts/verify-build.sh && next build",
         "build:e2e": "./scripts/build-e2e.sh",
@@ -19,16 +19,16 @@
     },
     "dependencies": {
         "@ariakit/react": "^0.4.13",
-        "@navikt/aksel-icons": "^7.3.1",
+        "@navikt/aksel-icons": "^7.4.0",
         "@navikt/diagnosekoder": "^1.2024.1",
-        "@navikt/ds-css": "^7.3.1",
-        "@navikt/ds-react": "^7.3.1",
-        "@navikt/ds-tailwind": "^7.3.1",
+        "@navikt/ds-css": "^7.4.0",
+        "@navikt/ds-react": "^7.4.0",
+        "@navikt/ds-tailwind": "^7.4.0",
         "@navikt/nav-dekoratoren-moduler": "^3.1.1",
         "@navikt/next-logger": "^1.32.0",
         "@redis/client": "^1.6.0",
-        "@tanstack/react-query": "^5.59.15",
-        "@tanstack/react-query-devtools": "^5.59.15",
+        "@tanstack/react-query": "^5.59.16",
+        "@tanstack/react-query-devtools": "^5.59.16",
         "clsx": "^2.1.1",
         "csp-header": "^5.2.1",
         "date-fns": "^3.6.0",
@@ -37,10 +37,10 @@
         "html-react-parser": "^5.1.18",
         "jose": "^5.9.6",
         "jsdom": "^25.0.1",
-        "next": "14.2.16",
+        "next": "15.0.1",
         "next-logger": "^5.0.1",
         "nextleton": "^0.6.1",
-        "nuqs": "^2.0.2",
+        "nuqs": "^2.0.3",
         "pino": "^9.5.0",
         "pino-pretty": "^11.3.0",
         "react": "^18.3.1",
@@ -53,14 +53,14 @@
     },
     "devDependencies": {
         "@hookform/devtools": "^4.3.1",
-        "@navikt/eslint-config-teamsykmelding": "^6.6.0",
+        "@navikt/eslint-config-teamsykmelding": "^7.0.0",
         "@playwright/test": "^1.48.1",
-        "@types/node": "^20.16.15",
+        "@types/node": "^20.17.0",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
         "autoprefixer": "^10.4.20",
         "eslint": "^8.57.1",
-        "eslint-config-next": "14.2.16",
+        "eslint-config-next": "15.0.1",
         "husky": "^9.1.6",
         "lint-staged": "^15.2.10",
         "postcss": "^8.4.47",
@@ -75,8 +75,5 @@
             "@navikt/eslint-config-teamsykmelding",
             "next/core-web-vitals"
         ]
-    },
-    "resolutions": {
-        "eslint-plugin-react-hooks": "5.0.0"
     }
 }

@@ -1,11 +1,15 @@
 import { ErrorSummary } from '@navikt/ds-react'
-import { ForwardedRef, forwardRef, ReactElement, RefObject, useRef } from 'react'
+import { LegacyRef, ReactElement, useRef } from 'react'
 
 import { useFormContext } from '../NySykmeldingFormValues'
 
 import { extractAllErrors } from './errorUtils'
 
-function FormErrors(_: unknown, ref: ForwardedRef<HTMLDivElement>): ReactElement | null {
+type Props = {
+    ref: LegacyRef<HTMLDivElement>
+}
+
+function FormErrors({ ref }: Props): ReactElement | null {
     const {
         formState: { errors },
     } = useFormContext()
@@ -29,7 +33,7 @@ function FormErrors(_: unknown, ref: ForwardedRef<HTMLDivElement>): ReactElement
     )
 }
 
-export function useFormErrors(): [RefObject<HTMLDivElement>, () => void] {
+export function useFormErrors(): [LegacyRef<HTMLDivElement>, () => void] {
     const errorSectionRef = useRef<HTMLDivElement>(null)
     const focusErrorSection = (): void => {
         requestAnimationFrame(() => {
@@ -40,4 +44,4 @@ export function useFormErrors(): [RefObject<HTMLDivElement>, () => void] {
     return [errorSectionRef, focusErrorSection] as const
 }
 
-export default forwardRef(FormErrors)
+export default FormErrors

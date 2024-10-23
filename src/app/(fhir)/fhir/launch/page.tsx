@@ -8,18 +8,20 @@ import { saveSessionIssuer } from '@fhir/sessions/session-lifecycle'
 import FhirLaunchInitialization from '@fhir/components/FhirLaunchInitialization'
 
 type Props = {
-    searchParams: { iss: string | undefined }
+    searchParams: Promise<{ iss: string | undefined }>
 }
 
 async function Page({ searchParams }: Props): Promise<ReactElement> {
-    if (searchParams.iss) {
+    const params = await searchParams
+
+    if (params.iss) {
         /**
          * Server component:
          *
          * Launch is server side rendered with ?iss=<issuer> when the EPJ launches the application. We store the issuer
          * together with the current users session-ID to be able to verify the token at a later time.
          */
-        await saveSessionIssuer(searchParams.iss)
+        await saveSessionIssuer(params.iss)
     }
 
     return (

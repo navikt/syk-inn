@@ -1,7 +1,6 @@
 import { BodyShort, Detail, Heading } from '@navikt/ds-react'
 import { VirusIcon } from '@navikt/aksel-icons'
 import { ReactElement } from 'react'
-import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { PageBlock } from '@navikt/ds-react/Page'
 
@@ -13,8 +12,6 @@ export default function Home(): ReactElement {
     if (!isLocalOrDemo) {
         notFound()
     }
-
-    const renderingMode = cookies().get('development-mode-override')?.value === 'fhir' ? 'fhir' : 'standalone'
 
     return (
         <PageBlock as="main" width="xl" gutters>
@@ -31,13 +28,6 @@ export default function Home(): ReactElement {
                     <Heading size="small" className="-mt-7 bg-white w-fit px-2 py-0">
                         Metadata
                     </Heading>
-                    <BodyShort size="small">
-                        Rendering mode: <span className="font-bold">{renderingMode}</span>
-                    </BodyShort>
-                    {renderingMode === 'fhir' && <Detail>You should see custom internal header</Detail>}
-                    {renderingMode === 'standalone' && (
-                        <Detail>You should see a nav.no-style decorator (header and footer)</Detail>
-                    )}
                     <BodyShort size="small" className="mt-2">
                         Runtime environment: <span className="font-bold">{bundledEnv.NEXT_PUBLIC_RUNTIME_ENV}</span>
                     </BodyShort>

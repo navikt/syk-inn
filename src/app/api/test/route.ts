@@ -3,7 +3,7 @@ import { headers } from 'next/headers'
 import { verifyFhirToken } from '@fhir/auth/verify'
 
 export async function GET(): Promise<Response> {
-    const token = headers().get('Authorization')
+    const token = (await headers()).get('Authorization')
 
     try {
         await verifyFhirToken(token!)
