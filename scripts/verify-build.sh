@@ -1,22 +1,27 @@
 #!/bin/bash
 
-# Check if .env.production exists
 if [ ! -f ".env.production" ]; then
-  # Show yellow warning
-  echo -e "\e[33mWarning: .env.production does not exist.\e[0m"
+  if [ -n "$CI" ]; then
+    echo -e "CI environment detected and .env.production is missing. Is the common workflow not working as intended?"
+    exit 1
+  fi
 
-  # Prompt the user for y/N (default N)
-  read -p "Do you want to copy nais/envs/.env.dev to .env.production? (y/N): " response
-  response=${response:-N}
+  echo -e "\e[33mWarning: .env.production does not exist. This is required to build the application locally.\e[0m"
 
-  # Check user response
+  echo -e "\e[34m\n  Do you want to copy nais/envs/.env.dev to .env.production? (y/N):\n \e[0m"
+  read -r response
+
+
   if [[ "$response" == "y" || "$response" == "Y" ]]; then
     cp nais/envs/.env.dev .env.production
-    echo ".env.production has been created."
+    runtimeEnv=$(grep "^NEXT_PUBLIC_RUNTIME_ENV=" .env.production | cut -d '=' -f2)
+    echo -e "\e[32m  👍 .env.production has been created. Building application as \e[44;97m $runtimeEnv \e[32m\e[0m"
   else
-    echo "Operation cancelled. Exiting."
+    echo -e "\e[33mOperation cancelled. Exiting.\e[0m"
     exit 1
   fi
 else
-  echo ".env.production already exists. It's all good in the hood..."
+  runtimeEnv=$(grep "^NEXT_PUBLIC_RUNTIME_ENV=" .env.production | cut -d '=' -f2)
+  echo -e "\e[32m  👍 .env.production already exists. It's all good in the hood... Building application as \e[44;97m $runtimeEnv \e[32m\e[0m\n"
+
 fi
