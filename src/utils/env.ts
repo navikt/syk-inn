@@ -30,13 +30,13 @@ const RedisConfigSchema = z.union([
      * The local setup doesn't require authentication but does need the Docker image URL.
      */
     z.object({
-        NEXT_PUBLIC_RUNTIME_ENV: z.intersection(z.literal('dev-gcp'), z.literal('prod-gcp')),
+        runtimeEnv: z.union([z.literal('dev-gcp'), z.literal('prod-gcp')]),
         url: z.string(),
         username: z.string(),
         password: z.string(),
     }),
     z.object({
-        NEXT_PUBLIC_RUNTIME_ENV: z.literal('local'),
+        runtimeEnv: z.literal('local'),
         url: z.string(),
     }),
 ])
@@ -58,7 +58,7 @@ export function getServerEnv(): ServerEnv {
     const redisConfig =
         process.env.NEXT_PUBLIC_RUNTIME_ENV !== 'demo'
             ? ({
-                  NEXT_PUBLIC_RUNTIME_ENV: process.env.NEXT_PUBLIC_RUNTIME_ENV,
+                  runtimeEnv: process.env.NEXT_PUBLIC_RUNTIME_ENV,
                   url: process.env.REDIS_URI_SYK_INN,
                   username: process.env.REDIS_USERNAME_SYK_INN,
                   password: process.env.REDIS_PASSWORD_SYK_INN,
