@@ -7,7 +7,7 @@ import { getSessionStore } from '@fhir/sessions/session-store'
  * Save the launched session's issuer to the session store.
  */
 export async function saveSessionIssuer(issuer: string): Promise<void> {
-    const sessionCookie = cookies().get('syk-inn-session-id')
+    const sessionCookie = (await cookies()).get('syk-inn-session-id')
     const sessionId = sessionCookie?.value ?? null
 
     if (sessionId == null) {
@@ -25,7 +25,7 @@ export async function saveSessionCompleted(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     accessToken: string,
 ): Promise<void> {
-    const sessionId = cookies().get('syk-inn-session-id')?.value ?? null
+    const sessionId = (await cookies()).get('syk-inn-session-id')?.value ?? null
 
     if (sessionId == null) {
         raise('User without session ID trying to launch FHIR-session. Is middleware not middlewaring?')
@@ -42,7 +42,7 @@ export async function saveSessionCompleted(
 }
 
 export async function getSessionIssuer(): Promise<string> {
-    const sessionId = cookies().get('syk-inn-session-id')?.value ?? null
+    const sessionId = (await cookies()).get('syk-inn-session-id')?.value ?? null
 
     if (sessionId == null) {
         raise('User without session ID trying to launch FHIR-session. Is middleware not middlewaring?')

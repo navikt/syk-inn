@@ -6,7 +6,6 @@ const nextConfig = {
     eslint: { ignoreDuringBuilds: true },
     experimental: {
         optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
-        instrumentationHook: true,
     },
 }
 

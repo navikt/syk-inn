@@ -10,10 +10,11 @@ import FhirHeaderUser from '@fhir/components/FhirHeaderUser'
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 
 type Props = {
-    searchParams: { code: string | undefined }
+    searchParams: Promise<{ code: string | undefined }>
 }
 
-async function Page({ searchParams }: Props): Promise<ReactElement> {
+async function Page(props: Props): Promise<ReactElement> {
+    const searchParams = await props.searchParams
     if (searchParams.code) {
         /**
          * Server component:
