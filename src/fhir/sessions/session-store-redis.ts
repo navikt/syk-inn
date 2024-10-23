@@ -13,7 +13,7 @@ export class SessionStoreRedis implements SessionStore {
     constructor() {
         const redisConfig = getServerEnv().redisConfig ?? raise('Redis config is not set! :(')
 
-        this.client = createClient(R.omit(redisConfig, ['NEXT_PUBLIC_RUNTIME_ENV']))
+        this.client = createClient(R.omit(redisConfig, ['runtimeEnv']))
     }
 
     async setup(): Promise<void> {
