@@ -9,13 +9,21 @@ spec:
   image: {{image}}
   port: 3000
   ingresses:
-    - "https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding"
+    - 'https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
   replicas:
     min: 2
     max: 2
   redis:
     - instance: syk-inn
       access: readwrite
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
+    logging:
+      destinations:
+        - id: loki
+        - id: elastic
   liveness:
     path: /samarbeidspartner/sykmelding/api/internal/is_alive
   readiness:
@@ -26,7 +34,7 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: "fhirapi.public.webmedepj.no"
+        - host: 'fhirapi.public.webmedepj.no'
       rules:
         - application: nav-dekoratoren
           namespace: personbruker
