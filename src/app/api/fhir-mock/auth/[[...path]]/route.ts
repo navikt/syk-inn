@@ -1,14 +1,20 @@
 import { randomUUID } from 'node:crypto'
 
 import { logger as pinoLogger } from '@navikt/next-logger/dist/logger'
+import { notFound } from 'next/navigation'
 
 import { getAbsoluteURL } from '@utils/url'
+import { isLocalOrDemo } from '@utils/env'
 
 import { createIdToken } from '../../jwt'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
 
 async function handler(req: Request): Promise<Response> {
+    if (!isLocalOrDemo) {
+        notFound()
+    }
+
     const url = new URL(req.url)
     const fhirPath = cleanPath(url.pathname)
 
