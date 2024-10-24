@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 import { NySykmeldingFormDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
+import { getFhirIdTokenFromSessionStorage } from '@fhir/auth/token-in-client'
 
 import { DevToolItem } from './InternalDevToolItem'
 import { useAPIOverride } from './useAPIOverride'
@@ -75,14 +76,8 @@ function ResetSmartContext(): ReactElement {
                     size="small"
                     variant="secondary-neutral"
                     onClick={async () => {
-                        const key = JSON.parse(sessionStorage.getItem('SMART_KEY')!)
-                        const item = JSON.parse(sessionStorage.getItem(key)!)
-                        const accessToken = item.tokenResponse.access_token
-
-                        await fetch(pathWithBasePath('/api/test'), {
-                            headers: {
-                                Authorization: `Bearer ${accessToken}`,
-                            },
+                        await fetch(pathWithBasePath('/api/verify-token'), {
+                            headers: { Authorization: `Bearer ${getFhirIdTokenFromSessionStorage()}` },
                         })
                     }}
                 >

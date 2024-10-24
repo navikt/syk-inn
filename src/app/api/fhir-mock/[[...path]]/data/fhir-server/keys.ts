@@ -1,7 +1,8 @@
+import { JSONWebKeySet } from 'jose'
+
 import { publicJwk } from '../../../jwt'
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const createKeys = async () => {
+export const createKeys = async (): Promise<JSONWebKeySet> => {
     const jwk = await publicJwk()
 
     return {
