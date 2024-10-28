@@ -4,14 +4,14 @@ import { logger as pinoLogger } from '@navikt/next-logger/dist/logger'
 import { notFound } from 'next/navigation'
 
 import { getAbsoluteURL } from '@utils/url'
-import { isLocalOrDemo } from '@utils/env'
+import { isE2E, isLocalOrDemo } from '@utils/env'
 
 import { createIdToken } from '../../jwt'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
 
 async function handler(req: Request): Promise<Response> {
-    if (!isLocalOrDemo) {
+    if (!isLocalOrDemo && !isE2E) {
         notFound()
     }
 

@@ -72,3 +72,4 @@ export function getServerEnv(): ServerEnv {
 }
 
 export const isLocalOrDemo = process.env.NODE_ENV === 'development' || bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'demo'
+export const isE2E = bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'e2e'
