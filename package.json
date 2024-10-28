@@ -4,9 +4,9 @@
     "private": true,
     "packageManager": "yarn@4.5.1",
     "scripts": {
-        "dev": "next dev --turbo | pino-pretty",
+        "dev": "./scripts/pre-dev.sh && next dev --turbo | pino-pretty",
         "dev:redis": "docker run --name syk-inn-dev-redis -p 6379:6379 -d redis",
-        "build": "scripts/pre-build.sh && next build",
+        "build": "./scripts/pre-build.sh && next build",
         "build:e2e": "./scripts/build-e2e.sh",
         "start": "next start",
         "start:e2e": "NEXT_PUBLIC_ASSET_PREFIX= node .next/standalone/server.js | pino-pretty",
