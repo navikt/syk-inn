@@ -125,7 +125,7 @@ jobs:
 
   run-playwright:
     needs: [prebuild-app-for-playwright]
-    name: Playwright tests shard ${{ matrix.shard }}
+    name: Playwright shard ${{ matrix.shardIndex }}
     runs-on: ubuntu-latest
     services:
       app:
