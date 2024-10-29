@@ -7,7 +7,7 @@ import { isLocalOrDemo } from '@utils/env'
 import { saveSessionCompleted } from '@fhir/sessions/session-lifecycle'
 import FhirClientProvider from '@fhir/components/FhirClientProvider'
 import FhirHeaderUser from '@fhir/components/FhirHeaderUser'
-import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
+import FhirForm from '@fhir/components/FhirForm'
 
 type Props = {
     searchParams: Promise<{ code: string | undefined }>
@@ -38,7 +38,7 @@ async function Page(props: Props): Promise<ReactElement> {
             </Heading>
             <FhirClientProvider>
                 <FhirHeaderUser />
-                <NySykmeldingForm />
+                <FhirForm />
             </FhirClientProvider>
         </PageBlock>
     )

@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 import { NySykmeldingFormDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
-import { getFhirIdTokenFromSessionStorage } from '@fhir/auth/token-in-client'
+import { getFhirIdTokenFromSessionStorage } from '@fhir/auth/session'
 
 import { DevToolItem } from './InternalDevToolItem'
 import { useAPIOverride } from './useAPIOverride'

@@ -19,7 +19,9 @@ function ScenarioLinks(): ReactElement {
                 </Heading>
                 <div className="flex gap-3">
                     <LinkPanel
-                        href={pathWithBasePath(`/fhir/launch?iss=${`${getAbsoluteURL()}/api/fhir-mock`}`)}
+                        href={pathWithBasePath(
+                            `/fhir/launch?iss=${`${getAbsoluteURL()}/api/fhir-mock&launch=local-dev-id`}`,
+                        )}
                         border
                         onClick={() => {
                             document.cookie = `development-mode-override=fhir; path=/`

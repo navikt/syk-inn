@@ -33,7 +33,7 @@ async function handler(req: Request): Promise<Response> {
             }
 
             const notAToken = randomUUID()
-            return Response.redirect(`${redirectUri}?code="${notAToken}"`, 302)
+            return Response.redirect(`${redirectUri}?code=${notAToken}`, 302)
         }
         case 'POST - /auth/token': {
             const body = await req.formData()

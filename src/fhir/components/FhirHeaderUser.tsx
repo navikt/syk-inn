@@ -6,23 +6,15 @@ import { Alert, BodyShort, Detail, Skeleton, Tooltip } from '@navikt/ds-react'
 import { useQuery } from '@tanstack/react-query'
 import { CheckmarkIcon, XMarkOctagonIcon } from '@navikt/aksel-icons'
 
-import { useNySykmeldingDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
-import { assertResourceAvailable } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { pathWithBasePath } from '@utils/url'
-import { getFhirIdTokenFromSessionStorage } from '@fhir/auth/token-in-client'
+
+import { getFhirIdTokenFromSessionStorage } from '../auth/session'
+import { useFhirUser } from '../hooks/use-fhir-user'
 
 function FhirHeaderUser(): ReactElement | null {
-    const dataService = useNySykmeldingDataService()
-    const { data, isLoading, error } = useQuery({
-        queryKey: ['fhir-user-info'],
-        queryFn: async () => {
-            assertResourceAvailable(dataService.context.bruker)
-            return await dataService.context.bruker()
-        },
-    })
+    const { data, isLoading, error } = useFhirUser()
 
     const fhirUserPortalElement = document.getElementById('fhir-user-portal')
-
     if (!fhirUserPortalElement) {
         return null
     }

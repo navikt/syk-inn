@@ -55,10 +55,14 @@ function getFhirPasient(client: FhirClient) {
 
 function getFhirPractitioner(client: FhirClient) {
     return async (): Promise<BrukerInfo> => {
+        if (client.user.fhirUser == null) {
+            throw new Error('No FHIR-user available')
+        }
+
         await wait()
 
         // TODO: Gracefully handle different fhirUsers?
-        const practitioner = await client.request(client.user.fhirUser ?? raise('No FHIR-user available'))
+        const practitioner = await client.request(client.user.fhirUser)
 
         const parsed = FhirPractitionerSchema.safeParse(practitioner)
         if (!parsed.success) {
