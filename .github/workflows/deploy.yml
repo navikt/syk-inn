@@ -15,7 +15,7 @@ jobs:
     name: Test, lint and verify
     runs-on: ubuntu-latest
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@node-22
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
         with:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - run: yarn lint
@@ -101,7 +101,7 @@ jobs:
       IMAGE_NAME: ${{ github.repository }}-e2e
       REGISTRY: ghcr.io
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@node-22
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
         with:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Build e2e version of app
@@ -137,7 +137,7 @@ jobs:
         shardIndex: [1, 2]
         shardTotal: [2]
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@node-22
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
         with:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Install Playwright browsers
