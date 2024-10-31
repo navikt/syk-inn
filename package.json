@@ -3,6 +3,9 @@
     "version": "0.1.0",
     "private": true,
     "packageManager": "yarn@4.5.1",
+    "engines": {
+        "node": "22"
+    },
     "scripts": {
         "dev": "./scripts/pre-dev.sh && next dev --turbo | pino-pretty",
         "dev:redis": "docker run --name syk-inn-dev-redis -p 6379:6379 -d redis",
