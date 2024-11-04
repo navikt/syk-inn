@@ -118,9 +118,6 @@ function NySykmeldingForm(): ReactElement {
                             tidspunkt.
                         </BodyShort>
                         <div className="flex gap-3 justify-end">
-                            <Button type="button" variant="secondary" loading={opprettSykmelding.isPending}>
-                                Lagre
-                            </Button>
                             <Button type="submit" loading={opprettSykmelding.isPending}>
                                 Opprett sykmelding
                             </Button>
