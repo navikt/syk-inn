@@ -9,18 +9,27 @@ import demoArrow from './demo-arrow.webp'
 
 type Props = {
     title: string
+    icon?: ReactElement
+    description?: string
     // TODO: Only temporary property used to inline som visual annotations for the development form
     demoDescription?: string | string[]
     demoBottom?: boolean
 }
 
-export function FormSection({ children, title, demoDescription, demoBottom }: PropsWithChildren<Props>): ReactElement {
+export function FormSection({
+    children,
+    icon,
+    title,
+    demoDescription,
+    demoBottom,
+}: PropsWithChildren<Props>): ReactElement {
     const headingId = `section-heading-${cleanId(title)}`
 
     return (
         <div className="relative">
             <section className="p-4 bg-bg-subtle rounded" aria-labelledby={headingId}>
-                <Heading level="2" size="medium" id={headingId}>
+                <Heading level="2" size="medium" id={headingId} className="flex items-center gap-1">
+                    {icon}
                     {title}
                 </Heading>
                 {children}
