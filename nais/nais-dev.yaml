@@ -35,11 +35,15 @@ spec:
     - emptyDir:
         medium: Memory
       mountPath: /app/.next/cache
+  azure:
+    application:
+      enabled: true
   accessPolicy:
     outbound:
       external:
         - host: 'fhirapi.public.webmedepj.no'
       rules:
+        - application: syk-inn-api
         - application: nav-dekoratoren
           namespace: personbruker
   resources:

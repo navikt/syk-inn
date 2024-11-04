@@ -3,6 +3,7 @@
 import { logger } from '@navikt/next-logger'
 
 import { wait } from '@utils/wait'
+import { createNewSykmelding } from '@services/SykInnApiService'
 
 import { NySykmeldingFormValues } from './NySykmeldingFormValues'
 
@@ -24,6 +25,27 @@ export async function createSykmelding(
 
     // TODO(2): Validate payload (zod?)
     // TODO(3): Exchange token: Exchange to nais M2M token, and call API using service discovery
+    const result = await createNewSykmelding({
+        // TODO: Get from context
+        pasientFnr: '12345678901',
+        sykmelderHpr: '1234567',
+        sykmelding: {
+            hoveddiagnose: {
+                system: values.diagnoser.hoved!.system,
+                code: values.diagnoser.hoved!.code,
+            },
+            aktivitet: {
+                type: 'AKTIVITET_IKKE_MULIG',
+                fom: values.aktivitet.fom!,
+                tom: values.aktivitet.tom!,
+            },
+        },
+    })
+
+    if (result !== 'ok') {
+        return [{ errors: { message: `Sykmelding creation failed: ${result.errorType}` } }]
+    }
+
     // TODO(4): Redirect to /<mode>/sykmelding/<id> (how to get mode?)
 
     return { ok: 'ok', id: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d' }

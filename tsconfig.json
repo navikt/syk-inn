@@ -16,7 +16,8 @@
         "paths": {
             "@fhir/*": ["./src/fhir/*"],
             "@utils/*": ["./src/utils/*"],
-            "@components/*": ["./src/components/*"]
+            "@components/*": ["./src/components/*"],
+            "@services/*": ["./src/services/*"]
         },
         "target": "ES2017"
     },

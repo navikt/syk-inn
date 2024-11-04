@@ -14,7 +14,7 @@ function ArbeidsgiverField({ children }: PropsWithChildren): ReactElement {
         <div>
             {children}
             <ArbeidssituasjonField />
-            {type !== 'ingen' && <ArbeidstakerManuellInputSection />}
+            {type === 'flere' && <ArbeidstakerManuellInputSection />}
         </div>
     )
 }
