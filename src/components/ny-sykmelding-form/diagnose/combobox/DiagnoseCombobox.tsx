@@ -103,7 +103,10 @@ function DiagnoseCombobox({ id, className, value, label, onSelect, onChange, onB
                         {state.value &&
                             suggestions.length > 0 &&
                             suggestions.map((value) => (
-                                <AkselifiedComboboxItem key={value.code} value={createUniqueValue(value)}>
+                                <AkselifiedComboboxItem
+                                    key={`${value.code}-${value.system}`}
+                                    value={createUniqueValue(value)}
+                                >
                                     <div>
                                         <Label>{value.code}</Label>
                                         <Detail>{value.system}</Detail>
