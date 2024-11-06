@@ -8,7 +8,7 @@ test('has title', async ({ page }) => {
     const pasientInfoRegion = page.getByRole('region', { name: 'Info om pasienten' })
     await expect(pasientInfoRegion).toBeVisible()
     await expect(pasientInfoRegion.getByText('Espen Eksempel')).toBeVisible()
-    await expect(pasientInfoRegion.getByText('210377xxxxx (fødselsnummer)')).toBeVisible()
+    await expect(pasientInfoRegion.getByText('21037712323 (fødselsnummer)')).toBeVisible()
 
     const diagnoseRegion = page.getByRole('region', { name: 'Diagnose' })
     await expect(diagnoseRegion).toBeVisible()
