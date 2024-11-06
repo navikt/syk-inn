@@ -8,6 +8,15 @@ import {
 
 import { DiagnoseSuggestion } from '@components/ny-sykmelding-form/diagnose/combobox/DiagnoseCombobox'
 
+export type AktivitetIkkeMuligType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT'
+
+export type AktivitetFormValue = {
+    type: AktivitetIkkeMuligType
+    fom: string | null
+    tom: string | null
+    grad: number | null
+}
+
 export type NySykmeldingFormValues = {
     context: {
         pasientOid: string | null
@@ -26,11 +35,7 @@ export type NySykmeldingFormValues = {
         hoved: DiagnoseSuggestion | null
         bi: DiagnoseSuggestion[] | null
     }
-    aktivitet: {
-        type: 'AKTIVITET_IKKE_MULIG'
-        fom: string | null
-        tom: string | null
-    }
+    aktivitet: AktivitetFormValue
 }
 
 export const useController: <Path extends FieldPath<NySykmeldingFormValues>>(

@@ -11,3 +11,7 @@ export function raise(messageOrError: string | Error): never {
 }
 
 export type KeysOfUnion<T> = T extends T ? keyof T : never
+
+export type NonNullableObject<T> = {
+    [P in keyof T]: NonNullable<T[P]>
+}

@@ -1,18 +1,30 @@
 import React, { ReactElement, useState } from 'react'
-import { BodyShort, DatePicker, Detail, Label, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
+import {
+    Detail,
+    DatePicker,
+    Radio,
+    RadioGroup,
+    RangeValidationT,
+    TextField,
+    useRangeDatepicker,
+} from '@navikt/ds-react'
 
-import { useController } from '../NySykmeldingFormValues'
+import { cn } from '@utils/tw'
+
+import { AktivitetIkkeMuligType, useController, useFormContext } from '../NySykmeldingFormValues'
 
 import styles from './AktivitetSection.module.css'
 
 function AktivitetSection(): ReactElement {
+    const { register } = useFormContext()
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
     const aktivitetField = useController({
         name: 'aktivitet',
         defaultValue: {
-            type: 'AKTIVITET_IKKE_MULIG',
+            type: 'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType,
             fom: null,
             tom: null,
+            grad: null,
         },
         rules: {
             validate: (value) => {
@@ -63,12 +75,7 @@ function AktivitetSection(): ReactElement {
         <div>
             <Detail spacing>Pasientens begrensninger i aktivitet</Detail>
 
-            <div className="flex items-center gap-1">
-                <Label>Aktivitetstype:</Label>
-                <BodyShort>Aktivitet ikke mulig</BodyShort>
-            </div>
-
-            <div className={styles.periodePicker}>
+            <div className={cn(styles.periodePicker)}>
                 <DatePicker {...datepickerProps} wrapperClassName={styles.dateRangePicker}>
                     <DatePicker.Input
                         className={styles.dateRangeInput}
@@ -85,6 +92,37 @@ function AktivitetSection(): ReactElement {
                     />
                 </DatePicker>
             </div>
+
+            <RadioGroup
+                legend="Aktivitetsbegrensning"
+                onChange={(value: AktivitetIkkeMuligType) => {
+                    aktivitetField.field.onChange({
+                        ...aktivitetField.field.value,
+                        type: value,
+                    })
+                }}
+                defaultValue={'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType}
+            >
+                <Radio
+                    value={'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType}
+                    description="100% sykmeldingsperiode"
+                >
+                    Aktivitet ikke mulig
+                </Radio>
+                <Radio
+                    value={'GRADERT' satisfies AktivitetIkkeMuligType}
+                    description="Gradert sykmeldingsperiode"
+                    className="flex"
+                >
+                    <div>Noe mulighet for aktivitet</div>
+                </Radio>
+            </RadioGroup>
+
+            {aktivitetField.field.value.type === 'GRADERT' && (
+                <div className="w-[20ch]">
+                    <TextField label="Sykmeldingsgrad" {...register('aktivitet.grad')} />
+                </div>
+            )}
         </div>
     )
 }

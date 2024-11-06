@@ -1,23 +1,13 @@
 import React, { ReactElement } from 'react'
-import { useQuery, UseQueryResult } from '@tanstack/react-query'
+import { UseQueryResult } from '@tanstack/react-query'
 import { Alert, BodyShort, Button, Detail, Skeleton } from '@navikt/ds-react'
 
-import { assertResourceAvailable } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { PasientSearchField } from '@components/ny-sykmelding-form/pasient/PasientSearchField'
 import SubtleRetryIndicator from '@components/misc/SubtleRetryIndicator'
-
-import { useNySykmeldingDataService } from '../data-provider/NySykmeldingFormDataProvider'
+import { useContextPasient } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-pasient'
 
 function PasientInfo(): ReactElement {
-    const dataService = useNySykmeldingDataService()
-    const pasientQuery = useQuery({
-        queryKey: ['pasient'],
-        queryFn: async () => {
-            assertResourceAvailable(dataService.context.pasient)
-
-            return dataService.context.pasient()
-        },
-    })
+    const pasientQuery = useContextPasient()
 
     if (pasientQuery.error) {
         return (

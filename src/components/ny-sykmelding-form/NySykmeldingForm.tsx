@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query'
 import { FloppydiskIcon, HandBandageIcon, PersonIcon, VitalsIcon } from '@navikt/aksel-icons'
 
 import { FormSection } from '@components/ui/form'
+import NySykmeldingFormSummary from '@components/ny-sykmelding-form/aktivitet/form-summary/NySykmeldingFormSummary'
 
 import { useIsNySykmeldingDataServiceInitialized } from './data-provider/NySykmeldingFormDataProvider'
 import AktivitetSection from './aktivitet/AktivitetSection'
@@ -102,14 +103,13 @@ function NySykmeldingForm(): ReactElement {
                         <AktivitetSection />
                     </FormSection>
 
-                    <FormErrors ref={errorSectionRef} />
-
                     <FormSection
                         title="Oppsummering"
                         icon={<FloppydiskIcon />}
                         demoDescription="Kan vi mellomlagre informasjon for brukeren, så det ikke er noe fare for å miste data?"
                         demoBottom
                     >
+                        <NySykmeldingFormSummary />
                         <Heading level="3" size="small" spacing>
                             Ferdigstill sykmeldingen
                         </Heading>
@@ -117,6 +117,8 @@ function NySykmeldingForm(): ReactElement {
                             Du kan sende inn sykmeldingen til NAV, eller lagre den for å fortsette på et senere
                             tidspunkt.
                         </BodyShort>
+                        <FormErrors ref={errorSectionRef} />
+
                         <div className="flex gap-3 justify-end">
                             <Button type="submit" loading={opprettSykmelding.isPending}>
                                 Opprett sykmelding

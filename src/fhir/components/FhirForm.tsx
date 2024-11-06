@@ -6,11 +6,10 @@ import { Alert, BodyLong, Button, Heading } from '@navikt/ds-react'
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 import { getAbsoluteURL } from '@utils/url'
 import { getSmartSession } from '@fhir/auth/session'
-
-import { useFhirUser } from '../hooks/use-fhir-user'
+import { useContextUser } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-user'
 
 function FhirForm(): ReactElement {
-    const { error } = useFhirUser()
+    const { error } = useContextUser()
 
     if (error) {
         return <FhirUserError />

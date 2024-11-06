@@ -7,12 +7,12 @@ import { useQuery } from '@tanstack/react-query'
 import { CheckmarkIcon, XMarkOctagonIcon } from '@navikt/aksel-icons'
 
 import { pathWithBasePath } from '@utils/url'
+import { useContextUser } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-user'
 
 import { getFhirIdTokenFromSessionStorage } from '../auth/session'
-import { useFhirUser } from '../hooks/use-fhir-user'
 
 function FhirHeaderUser(): ReactElement | null {
-    const { data, isLoading, error } = useFhirUser()
+    const { data, isLoading, error } = useContextUser()
 
     const fhirUserPortalElement = document.getElementById('fhir-user-portal')
     if (!fhirUserPortalElement) {

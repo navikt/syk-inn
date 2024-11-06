@@ -2,20 +2,18 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query'
 
 import {
     assertResourceAvailable,
-    BrukerInfo,
+    PatientInfo,
 } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { useNySykmeldingDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
 
-const FhirUserInfoKey = ['fhir-user-info'] as const
-
-export function useFhirUser(): UseQueryResult<BrukerInfo, Error> {
+export function useContextPasient(): UseQueryResult<PatientInfo, Error> {
     const dataService = useNySykmeldingDataService()
     return useQuery({
-        queryKey: FhirUserInfoKey,
+        queryKey: ['pasient'],
         queryFn: async () => {
-            assertResourceAvailable(dataService.context.bruker)
+            assertResourceAvailable(dataService.context.pasient)
 
-            return await dataService.context.bruker()
+            return dataService.context.pasient()
         },
     })
 }
