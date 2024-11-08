@@ -1,28 +1,15 @@
 import { PropsWithChildren, ReactElement } from 'react'
-import { BodyShort, Heading } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 
-import { isLocalOrDemo } from '@utils/env'
-import { cn } from '@utils/tw'
 import { cleanId } from '@utils/string'
-
-import demoArrow from './demo-arrow.webp'
 
 type Props = {
     title: string
     icon?: ReactElement
     description?: string
-    // TODO: Only temporary property used to inline som visual annotations for the development form
-    demoDescription?: string | string[]
-    demoBottom?: boolean
 }
 
-export function FormSection({
-    children,
-    icon,
-    title,
-    demoDescription,
-    demoBottom,
-}: PropsWithChildren<Props>): ReactElement {
+export function FormSection({ children, icon, title }: PropsWithChildren<Props>): ReactElement {
     const headingId = `section-heading-${cleanId(title)}`
 
     return (
@@ -34,34 +21,6 @@ export function FormSection({
                 </Heading>
                 {children}
             </section>
-            {isLocalOrDemo && demoDescription && (
-                <div
-                    className={cn(
-                        'hidden lg:block absolute top-4 -right-[380px] bg-surface-action-subtle-hover max-w-[360px] rounded border-2 border-t-border-alt-3',
-                        { 'bottom-4 top-auto': demoBottom },
-                    )}
-                >
-                    <div className="overflow-auto h-full w-full p-2">
-                        {Array.isArray(demoDescription) ? (
-                            demoDescription.map((text, i) => (
-                                <BodyShort key={i} spacing={i < demoDescription.length - 1}>
-                                    {text}
-                                </BodyShort>
-                            ))
-                        ) : (
-                            <BodyShort>{demoDescription}</BodyShort>
-                        )}
-                    </div>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                        src={demoArrow.src}
-                        alt=""
-                        width={240}
-                        height={120}
-                        className="h-[56px] absolute -bottom-[60px]"
-                    />
-                </div>
-            )}
         </div>
     )
 }

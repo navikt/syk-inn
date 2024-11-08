@@ -78,37 +78,19 @@ function NySykmeldingForm(): ReactElement {
                     )}
                     className="flex flex-col gap-3 max-w-prose"
                 >
-                    <FormSection
-                        title="Info om pasienten"
-                        icon={<PersonIcon />}
-                        demoDescription="Info om pasienten vil enten være preutfylt via FHIR-context, eller så må det skrives inn for hånd. FHIR vil falle tilbake til manuell input dersom konteknsten er utilgjengelig."
-                    >
+                    <FormSection title="Info om pasienten" icon={<PersonIcon />}>
                         <PasientSection />
                     </FormSection>
 
-                    <FormSection
-                        title="Diagnose"
-                        icon={<HandBandageIcon />}
-                        demoDescription="Et dynamisk søk i gyldige ICD-10 og ICPC-2 koder. Her er det rom for å begrense diagnosekoder til type behandler for eksempel."
-                    >
+                    <FormSection title="Diagnose" icon={<HandBandageIcon />}>
                         <DiagnoseSection />
                     </FormSection>
 
-                    <FormSection
-                        title="Aktivitet"
-                        icon={<VitalsIcon />}
-                        demoDescription="Denne inputten er ikke avhengig av noe ekstern data, ren input med noe validering."
-                        demoBottom
-                    >
+                    <FormSection title="Aktivitet" icon={<VitalsIcon />}>
                         <AktivitetSection />
                     </FormSection>
 
-                    <FormSection
-                        title="Oppsummering"
-                        icon={<FloppydiskIcon />}
-                        demoDescription="Kan vi mellomlagre informasjon for brukeren, så det ikke er noe fare for å miste data?"
-                        demoBottom
-                    >
+                    <FormSection title="Oppsummering" icon={<FloppydiskIcon />}>
                         <NySykmeldingFormSummary />
                         <Heading level="3" size="small" spacing>
                             Ferdigstill sykmeldingen

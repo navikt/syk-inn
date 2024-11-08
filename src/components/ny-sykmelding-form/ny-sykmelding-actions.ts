@@ -18,11 +18,19 @@ const CreateSykmeldingSchema = z.object({
             code: z.string(),
         }),
     }),
-    aktivitet: z.object({
-        type: z.literal('AKTIVITET_IKKE_MULIG'),
-        fom: DateOnly,
-        tom: DateOnly,
-    }),
+    aktivitet: z.discriminatedUnion('type', [
+        z.object({
+            type: z.literal('AKTIVITET_IKKE_MULIG'),
+            fom: DateOnly,
+            tom: DateOnly,
+        }),
+        z.object({
+            type: z.literal('GRADERT'),
+            fom: DateOnly,
+            tom: DateOnly,
+            grad: z.number().min(1).max(99),
+        }),
+    ]),
 })
 
 export async function createSykmelding(
@@ -62,11 +70,7 @@ export async function createSykmelding(
                 system: verifiedPayload.data.diagnoser.hoved.system,
                 code: verifiedPayload.data.diagnoser.hoved.code,
             },
-            aktivitet: {
-                type: verifiedPayload.data.aktivitet.type,
-                fom: verifiedPayload.data.aktivitet.fom,
-                tom: verifiedPayload.data.aktivitet.tom,
-            },
+            aktivitet: verifiedPayload.data.aktivitet,
         },
     })
 
