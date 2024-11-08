@@ -1,8 +1,8 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Alert, Detail, Loader, TextField } from '@navikt/ds-react'
+import { Alert, BodyShort, Detail, Loader, TextField } from '@navikt/ds-react'
 
-import { assertResourceAvailable, PatientInfo } from '../data-provider/NySykmeldingFormDataService'
+import { assertResourceAvailable, isResourceAvailable, PatientInfo } from '../data-provider/NySykmeldingFormDataService'
 import { useController, useFormContext } from '../NySykmeldingFormValues'
 import { useNySykmeldingDataService } from '../data-provider/NySykmeldingFormDataProvider'
 
@@ -19,7 +19,7 @@ export function PasientSearchField({ children }: PropsWithChildren): ReactElemen
 
             return dataService.query.pasient(value ?? '')
         },
-        enabled: value?.length === 11,
+        enabled: value?.length === 11 && isResourceAvailable(dataService.query.pasient),
     })
     const oidField = useController({
         name: 'pasient',
@@ -42,11 +42,17 @@ export function PasientSearchField({ children }: PropsWithChildren): ReactElemen
                 value={oidField.field.value ?? ''}
                 error={oidField.fieldState.error?.message}
                 placeholder="11 siffer"
+                maxLength={11}
             />
             <div className="flex">
-                <Detail className="mt-2">
-                    Valgt pasient: {data?.oid?.nr ?? 'N/A'}, {data?.navn ?? 'N/A'}
-                </Detail>
+                {!isResourceAvailable(dataService.query.pasient) ? (
+                    <BodyShort className="mt-2">Pasient søk er ikke tilgjengelig</BodyShort>
+                ) : (
+                    <Detail className="mt-2">
+                        Valgt pasient: {data?.oid?.nr ?? 'N/A'}, {data?.navn ?? 'N/A'}
+                    </Detail>
+                )}
+
                 {isLoading && <Loader size="xsmall" />}
                 {error && <Alert variant="error">Error: {error.message}</Alert>}
             </div>
