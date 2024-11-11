@@ -63,6 +63,6 @@ export function isResourceAvailable<Resource>(resource: Resource | NotAvailable)
  */
 export function assertResourceAvailable<Resource>(resource: Resource | NotAvailable): asserts resource is Resource {
     if (!isResourceAvailable(resource)) {
-        throw new Error('Resource is not available')
+        throw new Error(`Resource is not available`)
     }
 }

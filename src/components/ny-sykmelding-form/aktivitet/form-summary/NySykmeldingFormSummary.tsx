@@ -22,7 +22,9 @@ function NySykmeldingFormSummary(): ReactElement {
 function PasientListItem(): ReactElement | null {
     const { watch } = useFormContext()
     const pasient = watch('pasient')
-    const pasientQuery = useContextPasient()
+    const pasientQuery = useContextPasient({
+        allowContextless: true,
+    })
 
     if (pasient?.length !== 11 && pasientQuery.data?.oid == null) {
         return (

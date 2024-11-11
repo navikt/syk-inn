@@ -22,8 +22,12 @@ function Providers({ children }: PropsWithChildren): ReactElement {
                     },
                 },
                 queryCache: new QueryCache({
-                    onError: (error) => {
-                        logger.error(error)
+                    onError: (error, query) => {
+                        logger.error(
+                            new Error(`Query failed, reason: ${error.message}, hash: ${query.queryHash}`, {
+                                cause: error,
+                            }),
+                        )
                     },
                 }),
             }),
