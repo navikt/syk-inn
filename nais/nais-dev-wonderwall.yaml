@@ -1,0 +1,65 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: syk-inn-wonderwall
+  namespace: tsm
+  labels:
+    team: tsm
+spec:
+  image: ghcr.io/nais/wonderwall:latest
+  redis:
+    # Same redis as syk-inn, will be owned by syk-inn because it created it
+    - instance: syk-inn
+      access: readwrite
+  envFrom:
+    # Created manually in nais console / kubectl
+    - secret: tsm-syk-inn-helseid
+  ingresses:
+    - 'https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
+  accessPolicy:
+    outbound:
+      rules:
+        - application: syk-inn
+      external:
+        - host: helseid-sts.test.nhn.no
+  liveness:
+    path: /samarbeidspartner/sykmelding/oauth2/ping
+    initialDelay: 5
+  readiness:
+    path: /samarbeidspartner/sykmelding/oauth2/ping
+    initialDelay: 5
+  prometheus:
+    enabled: false
+  replicas:
+    min: 1
+    max: 2
+    cpuThresholdPercentage: 90
+  resources:
+    limits:
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+  env:
+    - name: WONDERWALL_OPENID_CLIENT_ID
+      value: '114949aa-d482-4fbd-9548-bc5fa26ddbd8'
+    - name: WONDERWALL_OPENID_SCOPES
+      value: profile,offline_access,helseid://scopes/identity/assurance_level,helseid://scopes/identity/pid,helseid://scopes/identity/security_level,helseid://scopes/hpr/hpr_number,helseid://scopes/identity/assurance_level,helseid://scopes/identity/network
+    - name: WONDERWALL_UPSTREAM_HOST
+      value: syk-inn
+    - name: WONDERWALL_INGRESS
+      value: https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding
+    - name: WONDERWALL_OPENID_WELL_KNOWN_URL
+      value: https://helseid-sts.test.nhn.no/.well-known/openid-configuration
+    - name: WONDERWALL_REDIS_URI
+      value: $(REDIS_URI_SYK_INN)
+    - name: WONDERWALL_REDIS_USERNAME
+      value: $(REDIS_USERNAME_SYK_INN)
+    - name: WONDERWALL_REDIS_PASSWORD
+      value: $(REDIS_PASSWORD_SYK_INN)
+    - name: WONDERWALL_BIND_ADDRESS
+      value: $(BIND_ADDRESS)
+    - name: WONDERWALL_AUTO_LOGIN
+      value: 'true'
+    - name: WONDERWALL_AUTO_LOGIN_IGNORE_PATHS
+      value: '/samarbeidspartner/sykmelding/fhir/**'
