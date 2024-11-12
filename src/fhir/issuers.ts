@@ -8,10 +8,10 @@ export const knownIssuers: string[] = ['https://launch.smarthealthit.org/v/r4/fh
 switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
     case 'local':
     case 'e2e':
-        knownIssuers.push('http://localhost:3000/api/fhir-mock')
+        knownIssuers.push('http://localhost:3000/api/mocks/fhir')
         break
     case 'demo':
-        knownIssuers.push('https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding/api/fhir-mock')
+        knownIssuers.push('https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding/api/mocks/fhir')
         break
     case 'dev-gcp':
     case 'prod-gcp':

@@ -14,7 +14,7 @@ const testData = {
         'Koman Magnar': practitionerKomanMagnar,
     },
     fhirServer: {
-        wellKnown: createWellKnown(`${getAbsoluteURL()}/api/fhir-mock`),
+        wellKnown: createWellKnown(`${getAbsoluteURL()}/api/mocks/fhir`),
         keys: createKeys(),
         metadata: metadata,
     },

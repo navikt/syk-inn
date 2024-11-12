@@ -55,7 +55,7 @@ async function handler(req: Request): Promise<Response> {
 }
 
 function cleanPath(url: string): string {
-    return url.replace(/.*\/fhir-mock/, '')
+    return url.replace(/.*\/mocks\/fhir/, '')
 }
 
 export {

@@ -45,7 +45,7 @@ function ResetSmartContext(): ReactElement {
 
         if (postAction === 'reload') window.location.reload()
         if (postAction === 're-launch') {
-            window.location.href = pathWithBasePath(`/fhir/launch?iss=${getAbsoluteURL()}/api/fhir-mock`)
+            window.location.href = pathWithBasePath(`/fhir/launch?iss=${getAbsoluteURL()}/api/mocks/fhir`)
         }
     }
 

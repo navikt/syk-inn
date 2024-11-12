@@ -1,0 +1,24 @@
+{
+    "userinfo_issued_at": 1731399642,
+    "helseid://claims/hpr/hpr_details": {
+        "approvals": [
+            {
+                "profession": "LE",
+                "authorization": {
+                    "value": "1",
+                    "description": "Autorisasjon"
+                },
+                "requisition_rights": [
+                    {
+                        "value": "1",
+                        "description": "Full rekvisisjonsrett"
+                    }
+                ],
+                "specialities": []
+            }
+        ],
+        "hpr_number": 565501872,
+        "no_hpr_number": false
+    },
+    "sub": "OCW7BpVN57vnbxBUE8WOOTM9FokCaBixlD2y8FgYCag="
+}

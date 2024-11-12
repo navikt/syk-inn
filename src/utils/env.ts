@@ -44,6 +44,7 @@ const RedisConfigSchema = z.union([
 
 type ServerEnv = z.infer<typeof ServerEnvSchema>
 const ServerEnvSchema = z.object({
+    helseIdWellKnown: z.string(),
     redisConfig: RedisConfigSchema.nullish(),
 })
 
@@ -68,6 +69,7 @@ export function getServerEnv(): ServerEnv {
 
     return ServerEnvSchema.parse({
         redisConfig,
+        helseIdWellKnown: process.env.HELSE_ID_WELL_KNOWN_URL,
     } satisfies Record<keyof ServerEnv, unknown | undefined>)
 }
 

@@ -49,7 +49,7 @@ function FhirClientProvider({ children }: PropsWithChildren): ReactElement {
                         {isLocalOrDemo && (
                             <div className="mt-4">
                                 <Detail>Dev only</Detail>
-                                <a href={pathWithBasePath(`/fhir/launch?iss=${`${getAbsoluteURL()}/api/fhir-mock`}`)}>
+                                <a href={pathWithBasePath(`/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir`}`)}>
                                     Re-launch lokal FHIR context
                                 </a>
                             </div>
