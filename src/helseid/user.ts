@@ -1,5 +1,7 @@
 import { headers } from 'next/headers'
 
+import { isLocalOrDemo } from '@utils/env'
+
 import { getHelseIdWellKnown } from './helse-id'
 
 export async function getHelseIdUserInfo(): Promise<Record<string, unknown>> {
@@ -10,6 +12,7 @@ export async function getHelseIdUserInfo(): Promise<Record<string, unknown>> {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${await getHelseIdAccessToken()}`,
         },
+        cache: 'no-store',
     })
 
     if (!response.ok) {
@@ -20,6 +23,10 @@ export async function getHelseIdUserInfo(): Promise<Record<string, unknown>> {
 }
 
 export async function getHelseIdAccessToken(): Promise<string> {
+    if (isLocalOrDemo) {
+        return 'foo-bar-token'
+    }
+
     const bearerToken = (await headers()).get('Authorization')
 
     if (!bearerToken) {

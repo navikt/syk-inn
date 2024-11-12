@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 if [ ! -f ".env.production" ]; then
   if [ -n "$CI" ]; then
