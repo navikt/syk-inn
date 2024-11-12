@@ -43,6 +43,7 @@ spec:
     outbound:
       external:
         - host: 'fhirapi.public.webmedepj.no'
+        - host: 'helseid-sts.test.nhn.no'
       rules:
         - application: syk-inn-api
         - application: nav-dekoratoren
@@ -53,3 +54,6 @@ spec:
     requests:
       cpu: 50m
       memory: 256Mi
+  env:
+    - name: HELSE_ID_WELL_KNOWN_URL
+      value: https://helseid-sts.test.nhn.no/.well-known/openid-configuration

@@ -16,7 +16,7 @@ export async function createIdToken(): Promise<string> {
     })
         .setProtectedHeader({ alg: 'RS256', kid: 'very-cool-kid' }) // Use the same 'kid' as in /keys
         .setIssuedAt()
-        .setIssuer('http://localhost:3000/api/fhir-mock/fhir')
+        .setIssuer('http://localhost:3000/api/mocks/fhir/fhir')
         .setAudience('syk-inn')
         .setExpirationTime('2h')
         .sign((await keyPair).privateKey)

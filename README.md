@@ -31,8 +31,8 @@ The form is built specifically to handle multiple "contexts" without the form ha
 
 ### FHIR mocking for local development (and demo application)
 
--   FHIR server authentication mocks: [src/app/api/fhir-mock/auth/[[...path]]/route.ts](src/app/api/fhir-mock/auth/%5B%5B...path%5D%5D/route.ts)
--   FHIR server mocks: [src/app/api/fhir-mock/auth/[[...path]]/route.ts](src/app/api/fhir-mock/%5B%5B...path%5D%5D/route.ts)
+-   FHIR server authentication mocks: [src/app/api/mocks/fhir/auth/[[...path]]/route.ts](src/app/api/mocks/fhir/auth/%5B%5B...path%5D%5D/route.ts)
+-   FHIR server mocks: [src/app/api/mocks/fhir/auth/[[...path]]/route.ts](src/app/api/mocks/fhir/%5B%5B...path%5D%5D/route.ts)
 
 ## Local Development
 

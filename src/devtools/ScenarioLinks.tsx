@@ -20,7 +20,7 @@ function ScenarioLinks(): ReactElement {
                 <div className="flex gap-3">
                     <LinkPanel
                         href={pathWithBasePath(
-                            `/fhir/launch?iss=${`${getAbsoluteURL()}/api/fhir-mock&launch=local-dev-id`}`,
+                            `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}`,
                         )}
                         border
                         onClick={() => {

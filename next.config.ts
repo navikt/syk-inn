@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
     experimental: {
         optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
     },
+    logging: {
+        fetches: {
+            fullUrl: true,
+            hmrRefreshes: true,
+        },
+    },
 }
 
 export default nextConfig

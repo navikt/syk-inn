@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 test('has title', async ({ page }) => {
-    await page.goto(`/fhir/launch?iss=http://localhost:3000/api/fhir-mock`)
+    await page.goto(`/fhir/launch?iss=http://localhost:3000/api/mocks/fhir`)
 
     await expect(page.getByRole('heading', { name: 'Opprett ny sykmelding' })).toBeVisible()
 
