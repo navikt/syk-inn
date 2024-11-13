@@ -12,6 +12,40 @@ This application will be used by health care professionals to send "sykmeldinger
 -   Any asynchronous data loading or actions are using tanstack/query, and **should** have both loading **and** error state.
 -   Users sessions are stored in Redis, any action will validate the token using the appropriate issuer.
 
+## High level flow
+
+There are two apps, `syk-inn-wonderwall` is a deployed confugiration of [wonderwall](https://github.com/nais/wonderwall)
+using HelseID. This acts as a reverse proxy in front of the NextJS app `syk-inn`. Wonderwall will log in any user using
+HelseID on all paths except (`/fhir/**`), and add the HelseID access_token as the `Authorization` header to all
+requests.
+
+```mermaid
+graph TD
+    user_standalone["User (standalone)"] --> helseid_routes
+    subgraph syk_inn_box ["syk-inn"]
+        syk_inn_fhir["syk-inn (fhir)"]
+        syk_inn_standalone["syk-inn (standalone)"]
+    end
+
+    subgraph external_epj ["Any EPJ"]
+       user_epj["User"] --> epj
+       epj["EPJ App"]
+       fhir["FHIR Server"]
+    end
+
+    subgraph wonderwall ["Wonderwall (nav.no/samarbeidspartner/sykmelding)"]
+       helseid_routes["/**"]
+       fhir_routes["/fhir/**"]
+    end
+
+    helseid_routes --> syk_inn_standalone
+    helseid_routes <--> helseid["HelseID (NHN)"]
+    fhir_routes --> syk_inn_fhir
+    epj -- "/fhir/launch?iss=iss&code=code" --> fhir_routes
+    syk_inn_fhir -- GET Pasient<br>GET Practitioneer <--> fhir
+    syk_inn_standalone -- .well-known/connect/userinfo --> helseid
+```
+
 ## Points of interest in the code
 
 ### Routes (uses Next "App Dir")
