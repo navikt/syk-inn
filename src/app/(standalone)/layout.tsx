@@ -13,7 +13,7 @@ import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../providers'
 import Preload from '../preload'
 import HelseIdDataServiceProvider from '../../helseid/components/HelseIdDataServiceProvider'
-// import { getHelseIdUserInfo } from '../../helseid/helseid-userinfo'
+import { getHelseIdUserInfo } from '../../helseid/helseid-userinfo'
 
 export const metadata: Metadata = {
     title: '(Ny) Innsending av Sykmeldinger',
@@ -28,7 +28,7 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
         },
     })
 
-    // const behandler = await getHelseIdUserInfo()
+    const behandler = await getHelseIdUserInfo()
 
     return (
         <html lang="nb">
@@ -49,8 +49,8 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                     <Providers>
                         <HelseIdDataServiceProvider
                             behandler={{
-                                navn: 'Test',
-                                hpr: '123',
+                                navn: 'TODO',
+                                hpr: behandler?.hpr_number ?? 'TODO',
                             }}
                         >
                             {children}
