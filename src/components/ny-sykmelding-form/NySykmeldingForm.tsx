@@ -11,7 +11,10 @@ import { FloppydiskIcon, HandBandageIcon, PersonIcon, VitalsIcon } from '@navikt
 import { FormSection } from '@components/ui/form'
 import NySykmeldingFormSummary from '@components/ny-sykmelding-form/aktivitet/form-summary/NySykmeldingFormSummary'
 
-import { useIsNySykmeldingDataServiceInitialized } from './data-provider/NySykmeldingFormDataProvider'
+import {
+    useIsNySykmeldingDataServiceInitialized,
+    useNySykmeldingDataService,
+} from './data-provider/NySykmeldingFormDataProvider'
 import AktivitetSection from './aktivitet/AktivitetSection'
 import DiagnoseSection from './diagnose/DiagnoseSection'
 import PasientSection from './pasient/PasientSection'
@@ -23,13 +26,16 @@ import { createSykmelding } from './ny-sykmelding-actions'
 function NySykmeldingForm(): ReactElement {
     const [errorSectionRef, focusErrorSection] = useFormErrors()
     const form = useForm<NySykmeldingFormValues>()
+    const dataService = useNySykmeldingDataService()
 
     const opprettSykmelding = useMutation({
         mutationKey: ['opprett-sykmelding'],
         mutationFn: async (values: NySykmeldingFormValues) => {
             logger.info('(Client) Submitting values,', values)
 
-            return await createSykmelding(values)
+            return await createSykmelding(values, {
+                hpr: dataService.context.behandler.hpr,
+            })
         },
         onSuccess: (data) => {
             if ('ok' in data) {

@@ -7,6 +7,7 @@ import { wait } from '@utils/wait'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { createNewSykmelding } from '@services/SykInnApiService'
 import { DateOnly } from '@utils/zod'
+import { raise } from '@utils/ts'
 
 import { NySykmeldingFormValues } from './NySykmeldingFormValues'
 
@@ -35,6 +36,7 @@ const CreateSykmeldingSchema = z.object({
 
 export async function createSykmelding(
     values: NySykmeldingFormValues,
+    behandler: { hpr: string },
 ): Promise<{ ok: 'ok'; id: string } | { errors: { message: string } }[]> {
     const verifiedPayload = CreateSykmeldingSchema.safeParse(values)
     if (!verifiedPayload.success) {
@@ -62,8 +64,8 @@ export async function createSykmelding(
 
     const result = await createNewSykmelding({
         // TODO: Get from context
-        pasientFnr: '12345678901',
-        sykmelderHpr: '1234567',
+        pasientFnr: verifiedPayload.data.pasient ?? raise('TODO: Pasient from context is not supported yet'),
+        sykmelderHpr: behandler.hpr,
         sykmelding: {
             hoveddiagnose: {
                 system: verifiedPayload.data.diagnoser.hoved.system,

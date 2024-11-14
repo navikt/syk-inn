@@ -15,6 +15,8 @@ import Preload from '../preload'
 import HelseIdDataServiceProvider from '../../helseid/components/HelseIdDataServiceProvider'
 import { getHelseIdUserInfo } from '../../helseid/helseid-userinfo'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
     title: '(Ny) Innsending av Sykmeldinger',
 }
