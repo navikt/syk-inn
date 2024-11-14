@@ -110,6 +110,16 @@ function NySykmeldingForm(): ReactElement {
                         </BodyShort>
                         <FormErrors ref={errorSectionRef} />
 
+                        {opprettSykmelding.error && (
+                            <Alert variant="error">
+                                <Heading level="3" size="medium">
+                                    Kunne ikke opprette sykmelding
+                                </Heading>
+                                <BodyShort spacing>En feil skjedde under oppretting av sykmelding.</BodyShort>
+                                <BodyShort>Teknisk beskrivelse: {opprettSykmelding.error.message}</BodyShort>
+                            </Alert>
+                        )}
+
                         <div className="flex gap-3 justify-end">
                             <Button type="submit" loading={opprettSykmelding.isPending}>
                                 Opprett sykmelding

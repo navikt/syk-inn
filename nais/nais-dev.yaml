@@ -9,7 +9,7 @@ spec:
   image: {{image}}
   port: 3000
   replicas:
-    min: 2
+    min: 1
     max: 2
   redis:
     - instance: syk-inn
@@ -54,6 +54,3 @@ spec:
     requests:
       cpu: 50m
       memory: 256Mi
-  env:
-    - name: HELSE_ID_WELL_KNOWN_URL
-      value: https://helseid-sts.test.nhn.no/.well-known/openid-configuration

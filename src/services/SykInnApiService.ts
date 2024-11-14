@@ -25,7 +25,7 @@ type NySykmeldingPayload = {
 }
 
 const SYK_INN_API_URL = 'http://syk-inn-api'
-const SYK_INN_API_SCOPE = 'dev-gcp:tsm:syk-inn-api'
+const SYK_INN_API_SCOPE = 'api://dev-gcp.tsm.syk-inn-api/.default'
 
 export async function createNewSykmelding(payload: NySykmeldingPayload): Promise<
     | 'ok'
@@ -41,7 +41,8 @@ export async function createNewSykmelding(payload: NySykmeldingPayload): Promise
         return { errorType: 'TOKEN_EXCHANGE_FAILED' }
     }
 
-    const response = await fetch(SYK_INN_API_URL, {
+    const response = await fetch(`${SYK_INN_API_URL}/api/v1/sykmelding/create`, {
+        method: 'POST',
         headers: {
             Authorization: `Bearer ${tokenResult.token}`,
             'Content-Type': 'application/json',
@@ -50,10 +51,8 @@ export async function createNewSykmelding(payload: NySykmeldingPayload): Promise
     })
 
     if (!response.ok) {
-        logger.error(`Failed to create new sykmelding`, {
-            status: response.status,
-            statusText: response.statusText,
-        })
+        logger.error(`Failed to create new sykmelding, ${response.status} ${response.statusText}`)
+
         return { errorType: 'API_CALL_FAILED' }
     }
 
