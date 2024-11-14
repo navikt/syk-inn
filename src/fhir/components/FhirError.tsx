@@ -3,22 +3,10 @@
 import React, { ReactElement } from 'react'
 import { Alert, BodyLong, Button, Heading } from '@navikt/ds-react'
 
-import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 import { getAbsoluteURL } from '@utils/url'
 import { getSmartSession } from '@fhir/auth/session'
-import { useContextUser } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-user'
 
-function FhirForm(): ReactElement {
-    const { error } = useContextUser()
-
-    if (error) {
-        return <FhirUserError />
-    }
-
-    return <NySykmeldingForm />
-}
-
-function FhirUserError(): ReactElement {
+export function FhirError(): ReactElement {
     return (
         <div className="max-w-prose">
             <Alert variant="error">
@@ -52,5 +40,3 @@ function getReInitializationURL(): string {
 
     return `${getAbsoluteURL()}/fhir/launch?iss=${iss}`
 }
-
-export default FhirForm

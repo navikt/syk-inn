@@ -2,18 +2,21 @@
 
 import React, { ReactElement } from 'react'
 import { createPortal } from 'react-dom'
-import { Alert, BodyShort, Detail, Skeleton, Tooltip } from '@navikt/ds-react'
+import { BodyShort, Detail, Skeleton, Tooltip } from '@navikt/ds-react'
 import { useQuery } from '@tanstack/react-query'
 import { CheckmarkIcon, XMarkOctagonIcon } from '@navikt/aksel-icons'
 
 import { pathWithBasePath } from '@utils/url'
-import { useContextUser } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-user'
+import { BehandlerInfo } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
 import { getFhirIdTokenFromSessionStorage } from '../auth/session'
 
-function FhirHeaderUser(): ReactElement | null {
-    const { data, isLoading, error } = useContextUser()
+type Props = {
+    isLoading: boolean
+    behandler: BehandlerInfo | undefined
+}
 
+function FhirHeaderUser({ isLoading, behandler }: Props): ReactElement | null {
     const fhirUserPortalElement = document.getElementById('fhir-user-portal')
     if (!fhirUserPortalElement) {
         return null
@@ -25,27 +28,12 @@ function FhirHeaderUser(): ReactElement | null {
      */
     return createPortal(
         <div className="h-full flex flex-col justify-center items-end mr-2">
-            {isLoading && (
+            {/*// TODO: Loading skellington*/}
+            {!isLoading && behandler && (
                 <div className="flex gap-3 items-center">
                     <div>
-                        <Skeleton width={140} />
-                        <Skeleton width={80} />
-                    </div>
-                    <div className="w-8 h-8">
-                        <Skeleton variant="circle" height="100%" />
-                    </div>
-                </div>
-            )}
-            {error && !isLoading && (
-                <Alert variant="error" size="small">
-                    Kunne ikke hente brukerinformasjon
-                </Alert>
-            )}
-            {!isLoading && data && (
-                <div className="flex gap-3 items-center">
-                    <div>
-                        <BodyShort>{data.navn}</BodyShort>
-                        <Detail>{data.epjDescription}</Detail>
+                        <BodyShort>{behandler.navn}</BodyShort>
+                        <Detail>{behandler.epjDescription}</Detail>
                     </div>
                     <VerifiedBadge />
                 </div>

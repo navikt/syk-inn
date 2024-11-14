@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { logger } from '@navikt/next-logger'
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs'
 
@@ -12,7 +14,7 @@ export function withFailInterceptor(dataService: NySykmeldingFormDataService): N
         context: {
             pasient: failIfOverride('context', 'pasient', dataService.context.pasient),
             arbeidsgivere: failIfOverride('context', 'arbeidsgivere', dataService.context.arbeidsgivere),
-            bruker: failIfOverride('context', 'bruker', dataService.context.bruker),
+            behandler: dataService.context.behandler,
         },
         query: {
             pasient: failIfOverride('query', 'pasient', dataService.query.pasient),
@@ -46,7 +48,6 @@ export function useAPIOverride(): {
 /**
  * Legal use of any: The function signature here is irrelevant, and will be inferred as the correct type by the caller
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function failIfOverride<Fn extends (...args: any[]) => Promise<any>>(
     group: string,
     what: string,

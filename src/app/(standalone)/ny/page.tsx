@@ -1,5 +1,3 @@
-'use client'
-
 import React, { ReactElement } from 'react'
 import Link from 'next/link'
 import { Heading } from '@navikt/ds-react'
@@ -7,30 +5,8 @@ import { PageBlock } from '@navikt/ds-react/Page'
 
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 import { isLocalOrDemo } from '@utils/env'
-import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
-import {
-    NotAvailable,
-    NySykmeldingFormDataService,
-} from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
-function Page(): ReactElement {
-    const StandaloneDataService: NySykmeldingFormDataService = {
-        context: {
-            pasient: NotAvailable,
-            arbeidsgivere: NotAvailable,
-            bruker: NotAvailable,
-        },
-        query: {
-            pasient: async (fnr) => ({
-                oid: {
-                    type: 'fødselsnummer',
-                    nr: fnr,
-                },
-                navn: 'Stand Alonessen',
-            }),
-        },
-    }
-
+async function Page(): Promise<ReactElement> {
     return (
         <PageBlock as="main" width="xl" gutters className="pt-4">
             {isLocalOrDemo && (
@@ -43,9 +19,7 @@ function Page(): ReactElement {
                 Opprett ny sykmelding
             </Heading>
 
-            <NySykmeldingFormDataProvider dataService={StandaloneDataService}>
-                <NySykmeldingForm />
-            </NySykmeldingFormDataProvider>
+            <NySykmeldingForm />
         </PageBlock>
     )
 }

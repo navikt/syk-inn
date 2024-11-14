@@ -104,7 +104,7 @@ function ToggleAPIFailures(): ReactElement {
                 Arbeidsgivere
             </Checkbox>
         ),
-        bruker: (
+        behandler: (
             <Checkbox key="bruker" value="bruker">
                 Bruker
             </Checkbox>

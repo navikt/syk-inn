@@ -3,7 +3,9 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { oauth2 } from 'fhirclient'
-import { Alert, Skeleton } from '@navikt/ds-react'
+import { Skeleton } from '@navikt/ds-react'
+
+import { FhirError } from '@fhir/components/FhirError'
 
 /**
  * Not the most idiomatic use of tanstack-query, but since the fhirclient uses a redirect based flow for the auth flow,
@@ -22,17 +24,15 @@ function FhirLaunchInitialization(): ReactElement {
         },
     })
 
+    if (error) {
+        return <FhirError />
+    }
+
     return (
-        <div>
-            {!error ? (
-                <div className="max-w-prose flex-col flex gap-3">
-                    <Skeleton height={192} variant="rounded" />
-                    <Skeleton height={192} variant="rounded" />
-                    <Skeleton height={192} variant="rounded" />
-                </div>
-            ) : (
-                <Alert variant="error">Error: {error.message}</Alert>
-            )}
+        <div className="max-w-prose flex-col flex gap-3">
+            <Skeleton height={192} variant="rounded" />
+            <Skeleton height={192} variant="rounded" />
+            <Skeleton height={192} variant="rounded" />
         </div>
     )
 }

@@ -12,6 +12,8 @@ import DemoWarning from '@components/demo-warning'
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../providers'
 import Preload from '../preload'
+import HelseIdDataServiceProvider from '../../helseid/components/HelseIdDataServiceProvider'
+// import { getHelseIdUserInfo } from '../../helseid/helseid-userinfo'
 
 export const metadata: Metadata = {
     title: '(Ny) Innsending av Sykmeldinger',
@@ -25,6 +27,8 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
             simple: true,
         },
     })
+
+    // const behandler = await getHelseIdUserInfo()
 
     return (
         <html lang="nb">
@@ -43,8 +47,15 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                     <Decorator.Header />
                     {isLocalOrDemo && <DemoWarning />}
                     <Providers>
-                        {children}
-                        {isLocalOrDemo && <LazyDevTools />}
+                        <HelseIdDataServiceProvider
+                            behandler={{
+                                navn: 'Test',
+                                hpr: '123',
+                            }}
+                        >
+                            {children}
+                            {isLocalOrDemo && <LazyDevTools />}
+                        </HelseIdDataServiceProvider>
                     </Providers>
                     <Decorator.Scripts loader={Script} />
                 </Page>

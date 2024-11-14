@@ -5,6 +5,7 @@ import { Alert, BodyShort, Button, Detail, Skeleton } from '@navikt/ds-react'
 import { PasientSearchField } from '@components/ny-sykmelding-form/pasient/PasientSearchField'
 import SubtleRetryIndicator from '@components/misc/SubtleRetryIndicator'
 import { useContextPasient } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-pasient'
+import { PatientInfo } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
 function PasientInfo(): ReactElement {
     const pasientQuery = useContextPasient()
@@ -37,7 +38,9 @@ function PasientInfo(): ReactElement {
                     <Detail>ID-nummer</Detail>
                     <BodyShort>
                         {pasientQuery.data.oid?.nr ?? 'ukjent'}{' '}
-                        {pasientQuery.data.oid?.type && <span className="text-xs">({pasientQuery.data.oid.type})</span>}
+                        {pasientQuery.data.oid?.type && (
+                            <span className="text-xs">({oidTypeToReadableText(pasientQuery.data.oid.type)})</span>
+                        )}
                     </BodyShort>
                 </div>
             )}
@@ -64,6 +67,17 @@ function PasientInfoDegredationInfo({ query }: { query: UseQueryResult }): React
             <BodyShort>Du kan fortsette utfyllingen ved å manuelt hente opp pasienten dersom du ønsker.</BodyShort>
         </Alert>
     )
+}
+
+function oidTypeToReadableText(type: NonNullable<PatientInfo['oid']>['type']): string {
+    switch (type) {
+        case 'fnr':
+            return 'fødselsnummer'
+        case 'dnr':
+            return 'd-nummer'
+        default:
+            return 'ukjent nummer'
+    }
 }
 
 export default PasientInfo

@@ -1,4 +1,4 @@
-import { logger } from '@navikt/next-logger'
+import { urnToOidType } from '@fhir/data-fetching/schema/mappers/oid'
 
 import { FhirPatient } from '../patient'
 import { Name } from '../common'
@@ -7,36 +7,43 @@ export function getName(name: Name): string {
     return `${name[0].given[0]} ${name[0].family}`
 }
 
-export function getOid(patient: FhirPatient): {
-    type: 'fødselsnummer' | 'd-nummer' | 'annet nummer'
+export function getValidPasientOid(patient: FhirPatient): {
+    type: 'fnr' | 'dnr'
     nr: string
 } | null {
     if (patient.identifier == null) {
         return null
     }
 
-    const oid = patient.identifier.find((id) => id.system.startsWith('urn:oid'))
-    if (oid == null) {
+    const oids = patient.identifier.filter((id) => id.system.startsWith('urn:oid'))
+    if (oids.length === 0) {
         return null
     }
 
-    return {
-        type: urnToOidType(oid.system, oid.value),
-        nr: oid.value,
-    }
-}
+    const oidsByType = oids.map((it) => ({
+        type: urnToOidType(it.system, it.value),
+        nr: it.value,
+    }))
 
-/**
- * Kilde: https://www.ehelse.no/teknisk-dokumentasjon/oid-identifikatorserier-i-helse-og-omsorgstjenesten
- */
-function urnToOidType(urn: string, value: string): 'fødselsnummer' | 'd-nummer' | 'annet nummer' {
-    switch (urn.replace('urn:oid:', '')) {
-        case '2.16.578.1.12.4.1.4.1':
-            return 'fødselsnummer'
-        case '2.16.578.1.12.4.1.4.2':
-            return 'd-nummer'
-        default:
-            logger.error(`Unknown OID: ${urn}, value: ${value}`)
-            return 'annet nummer'
+    if (!oidsByType.find((oid) => ['fnr', 'dnr'].includes(oid.type))) {
+        return null
     }
+
+    const fnr = oidsByType.find((oid) => oid.type === 'fnr')
+    if (fnr != null) {
+        return {
+            type: 'fnr',
+            nr: fnr.nr,
+        }
+    }
+
+    const dnr = oidsByType.find((oid) => oid.type === 'dnr')
+    if (dnr != null) {
+        return {
+            type: 'dnr',
+            nr: dnr.nr,
+        }
+    }
+
+    return null
 }

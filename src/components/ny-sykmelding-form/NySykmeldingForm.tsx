@@ -43,7 +43,10 @@ function NySykmeldingForm(): ReactElement {
     if (!useIsNySykmeldingDataServiceInitialized()) {
         return (
             <div className="max-w-prose p-8">
-                <Alert variant="warning">Skjemaet er ikke tilgjengelig uten pasient-data.</Alert>
+                <Alert variant="error">
+                    <BodyShort spacing>Oppstart av applikasjon feilet.</BodyShort>
+                    <div>Teknisk årsak: DataProvider ikke tilgjengelig</div>
+                </Alert>
             </div>
         )
     }

@@ -7,8 +7,8 @@ import { PageBlock } from '@navikt/ds-react/Page'
 import { bundledEnv, isLocalOrDemo } from '@utils/env'
 
 import ScenarioLinks from '../../devtools/ScenarioLinks'
-import { getHelseIdWellKnown } from '../../helseid/helse-id'
-import { getHelseIdUserInfo } from '../../helseid/user'
+import { getHelseIdWellKnown } from '../../helseid/helseid-resources'
+import { getHelseIdUserInfo } from '../../helseid/helseid-userinfo'
 
 export default function Home(): ReactElement {
     if (!isLocalOrDemo) {

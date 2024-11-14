@@ -6582,6 +6582,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"server-only@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "server-only@npm:0.0.1"
+  checksum: 10c0/4704f0ef85da0be981af6d4ed8e739d39bcfd265b9c246a684060acda5642d0fdc6daffc2308e71e2682c5f508090978802eae0a77623c9b90a49f9ae68048d6
+  languageName: node
+  linkType: hard
+
 "set-function-length@npm:^1.2.1":
   version: 1.2.2
   resolution: "set-function-length@npm:1.2.2"
@@ -7143,6 +7150,7 @@ __metadata:
     react-error-boundary: "npm:^4.1.2"
     react-hook-form: "npm:^7.53.2"
     remeda: "npm:^2.17.0"
+    server-only: "npm:^0.0.1"
     tailwind-merge: "npm:^2.5.4"
     tailwindcss: "npm:^3.4.14"
     typescript: "npm:^5.6.3"

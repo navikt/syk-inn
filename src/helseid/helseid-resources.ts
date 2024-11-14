@@ -1,4 +1,7 @@
+import 'server-only'
+
 import { z } from 'zod'
+import { headers } from 'next/headers'
 
 import { getServerEnv, isLocalOrDemo } from '@utils/env'
 
@@ -28,4 +31,22 @@ export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
     }
 
     return HelseIdWellKnownSchema.parseAsync(await response.json())
+}
+
+/**
+ * Wonderwall (see README.md) exchanges it's own session ID for the actual HelseID access token. This
+ * is not available in a other contexts other than a RSC or route handler.
+ */
+export async function getHelseIdAccessToken(): Promise<string> {
+    if (isLocalOrDemo) {
+        return 'foo-bar-token'
+    }
+
+    const bearerToken = (await headers()).get('Authorization')
+
+    if (!bearerToken) {
+        throw new Error('No bearer token found')
+    }
+
+    return bearerToken.replace('Bearer ', '')
 }

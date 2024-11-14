@@ -7,8 +7,7 @@ import { PageBlock } from '@navikt/ds-react/Page'
 import { isLocalOrDemo } from '@utils/env'
 import { saveSessionCompleted } from '@fhir/sessions/session-lifecycle'
 import FhirClientProvider from '@fhir/components/FhirClientProvider'
-import FhirHeaderUser from '@fhir/components/FhirHeaderUser'
-import FhirForm from '@fhir/components/FhirForm'
+import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 
 type Props = {
     searchParams: Promise<{ code: string | undefined }>
@@ -53,8 +52,7 @@ async function Page(props: Props): Promise<ReactElement> {
                 </List>
             </section>
             <FhirClientProvider>
-                <FhirHeaderUser />
-                <FhirForm />
+                <NySykmeldingForm />
             </FhirClientProvider>
         </PageBlock>
     )

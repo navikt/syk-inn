@@ -1,8 +1,6 @@
-import { headers } from 'next/headers'
+import 'server-only'
 
-import { isLocalOrDemo } from '@utils/env'
-
-import { getHelseIdWellKnown } from './helse-id'
+import { getHelseIdAccessToken, getHelseIdWellKnown } from './helseid-resources'
 
 export async function getHelseIdUserInfo(): Promise<Record<string, unknown>> {
     const wellKnown = await getHelseIdWellKnown()
@@ -20,18 +18,4 @@ export async function getHelseIdUserInfo(): Promise<Record<string, unknown>> {
     }
 
     return response.json()
-}
-
-export async function getHelseIdAccessToken(): Promise<string> {
-    if (isLocalOrDemo) {
-        return 'foo-bar-token'
-    }
-
-    const bearerToken = (await headers()).get('Authorization')
-
-    if (!bearerToken) {
-        throw new Error('No bearer token found')
-    }
-
-    return bearerToken.replace('Bearer ', '')
 }

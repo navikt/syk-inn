@@ -15,9 +15,9 @@ export type NySykmeldingFormDataService = {
      * Contextually available data will be fetched without any arguments, and is based on the current session.
      */
     context: {
+        behandler: BehandlerInfo
         pasient: (() => Promise<PatientInfo>) | NotAvailable
         arbeidsgivere: (() => Promise<ArbeidsgiverInfo[]>) | NotAvailable
-        bruker: (() => Promise<BrukerInfo>) | NotAvailable
     }
     /**
      * Query data can be anything that requires an argument to fetch, such as a specific patient.
@@ -29,7 +29,7 @@ export type NySykmeldingFormDataService = {
 
 export type PatientInfo = {
     oid: {
-        type: 'fødselsnummer' | 'd-nummer' | 'annet nummer'
+        type: 'fnr' | 'dnr' | 'annet'
         nr: string
     } | null
     navn: string
@@ -40,9 +40,10 @@ export type ArbeidsgiverInfo = {
     organisasjonsnummer: string
 }
 
-export type BrukerInfo = {
+export type BehandlerInfo = {
     navn: string
-    epjDescription: string
+    hpr: string
+    epjDescription?: string
 }
 
 /**

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { PropsWithChildren, ReactElement } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { skipToken, useQuery } from '@tanstack/react-query'
 import { oauth2 } from 'fhirclient'
 import { Alert, BodyShort, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -10,6 +10,7 @@ import { isLocalOrDemo } from '@utils/env'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
 import Test from '@fhir/components/Test'
+import FhirHeaderUser from '@fhir/components/FhirHeaderUser'
 
 import { createFhirDataService } from '../data-fetching/fhir-data-service'
 
@@ -20,21 +21,27 @@ import { createFhirDataService } from '../data-fetching/fhir-data-service'
 function FhirClientProvider({ children }: PropsWithChildren): ReactElement {
     const client = useQuery({
         queryKey: ['fhir-client'],
-        queryFn: async () => {
-            return oauth2.ready()
-        },
+        queryFn: () => oauth2.ready(),
+    })
+    const fhirDataService = useQuery({
+        queryKey: ['fhir-data-service'],
+        queryFn: client.data != null ? () => createFhirDataService(client.data) : skipToken,
     })
 
     return (
         <div>
-            {client.isLoading && (
+            <FhirHeaderUser
+                isLoading={client.isLoading || fhirDataService.isLoading}
+                behandler={fhirDataService.data?.context.behandler}
+            />
+            {(client.isLoading || fhirDataService.isLoading) && (
                 <div className="max-w-prose flex-col flex gap-3">
                     <Skeleton height={192} variant="rounded" />
                     <Skeleton height={192} variant="rounded" />
                     <Skeleton height={192} variant="rounded" />
                 </div>
             )}
-            {client.isError && (
+            {client.isError && fhirDataService.isError && (
                 <div className="max-w-prose">
                     <Alert variant="error">
                         <Heading level="3" size="medium">
@@ -55,12 +62,15 @@ function FhirClientProvider({ children }: PropsWithChildren): ReactElement {
                             </div>
                         )}
                         <Detail className="mt-4">Teknisk feilmelding</Detail>
-                        <pre className="text-xs">{client.error.message}</pre>
+                        {client.error.message && <pre className="text-xs">{client.error.message}</pre>}
+                        {fhirDataService.error.message && (
+                            <pre className="text-xs">{fhirDataService.error.message}</pre>
+                        )}
                     </Alert>
                 </div>
             )}
-            {client.data && (
-                <NySykmeldingFormDataProvider dataService={createFhirDataService(client.data)}>
+            {fhirDataService.data && (
+                <NySykmeldingFormDataProvider dataService={fhirDataService.data}>
                     {children}
                 </NySykmeldingFormDataProvider>
             )}

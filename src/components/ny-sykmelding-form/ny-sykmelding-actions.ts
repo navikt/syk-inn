@@ -60,7 +60,6 @@ export async function createSykmelding(
        Standalone: Server side validation against HelseID/.well-known. This is known.
      */
 
-    // TODO(2): Exchange token: Exchange to nais M2M token, and call API using service discovery
     const result = await createNewSykmelding({
         // TODO: Get from context
         pasientFnr: '12345678901',
