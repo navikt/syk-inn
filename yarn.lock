@@ -925,18 +925,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/nav-dekoratoren-moduler@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "@navikt/nav-dekoratoren-moduler@npm:3.1.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnav-dekoratoren-moduler%2F3.1.1%2Fb630f2cd32677c2fb0ab67655ee559951bd3d3d4"
-  peerDependencies:
-    csp-header: ">=5.x"
-    html-react-parser: ">=5.x"
-    jsdom: ">=16.x"
-    react: ">=17.x"
-  checksum: 10c0/34b97fd31c1fdf51d797853f64a54dae8bab4edb4d329b4f2dd0f245a03efe16a605f83dfddf9817e05ff3b14f18f6d0e7f2f4ceb1be91325af485f2ec539d3b
-  languageName: node
-  linkType: hard
-
 "@navikt/next-logger@npm:^1.35.0":
   version: 1.35.0
   resolution: "@navikt/next-logger@npm:1.35.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.35.0%2Fd8db3f9b5719486d8b7a61e29f4c18dd1f2a5033"
@@ -7114,7 +7102,6 @@ __metadata:
     "@navikt/ds-react": "npm:^7.5.1"
     "@navikt/ds-tailwind": "npm:^7.5.1"
     "@navikt/eslint-config-teamsykmelding": "npm:^7.0.0"
-    "@navikt/nav-dekoratoren-moduler": "npm:^3.1.1"
     "@navikt/next-logger": "npm:^1.35.0"
     "@navikt/oasis": "npm:^3.4.0"
     "@playwright/test": "npm:1.48.2"

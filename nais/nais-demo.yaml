@@ -28,10 +28,7 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: "launch.smarthealthit.org"
-      rules:
-        - application: nav-dekoratoren
-          namespace: personbruker
+        - host: 'launch.smarthealthit.org'
   resources:
     limits:
       memory: 600Mi

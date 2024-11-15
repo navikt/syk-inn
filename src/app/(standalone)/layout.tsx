@@ -1,9 +1,7 @@
 import '../globals.css'
 
 import React, { PropsWithChildren, ReactElement } from 'react'
-import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
 import { Page } from '@navikt/ds-react'
-import Script from 'next/script'
 import type { Metadata } from 'next'
 
 import { isLocalOrDemo } from '@utils/env'
@@ -14,6 +12,7 @@ import Providers from '../providers'
 import Preload from '../preload'
 import HelseIdDataServiceProvider from '../../helseid/components/HelseIdDataServiceProvider'
 import { getHelseIdUserInfo } from '../../helseid/helseid-userinfo'
+import HelseIdHeader from '../../helseid/components/HelseIdHeader'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,14 +21,6 @@ export const metadata: Metadata = {
 }
 
 export default async function StandaloneLayout({ children }: PropsWithChildren): Promise<ReactElement> {
-    const Decorator = await fetchDecoratorReact({
-        env: 'dev',
-        params: {
-            context: 'samarbeidspartner',
-            simple: true,
-        },
-    })
-
     const behandler = await getHelseIdUserInfo()
 
     return (
@@ -41,12 +32,16 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                     href="https://cdn.nav.no/personbruker/decorator-next/public/favicon.svg"
                     type="image/svg+xml"
                 />
-                <Decorator.HeadAssets />
             </head>
             <Preload />
             <body>
-                <Page footerPosition="belowFold" footer={<Decorator.Footer />}>
-                    <Decorator.Header />
+                <HelseIdHeader
+                    behandler={{
+                        navn: 'TODO',
+                        hpr: behandler?.hpr_number ?? 'TODO',
+                    }}
+                />
+                <Page footerPosition="belowFold">
                     {isLocalOrDemo && <DemoWarning />}
                     <Providers>
                         <HelseIdDataServiceProvider
@@ -59,7 +54,6 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                             {isLocalOrDemo && <LazyDevTools />}
                         </HelseIdDataServiceProvider>
                     </Providers>
-                    <Decorator.Scripts loader={Script} />
                 </Page>
             </body>
         </html>

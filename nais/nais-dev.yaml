@@ -46,8 +46,6 @@ spec:
         - host: 'helseid-sts.test.nhn.no'
       rules:
         - application: syk-inn-api
-        - application: nav-dekoratoren
-          namespace: personbruker
   resources:
     limits:
       memory: 512Mi
