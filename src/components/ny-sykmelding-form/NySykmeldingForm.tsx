@@ -33,16 +33,19 @@ function NySykmeldingForm(): ReactElement {
         mutationFn: async (values: NySykmeldingFormValues) => {
             logger.info('(Client) Submitting values,', values)
 
-            return await createSykmelding(values, {
+            const createResult = await createSykmelding(values, {
                 hpr: dataService.context.behandler.hpr,
             })
+
+            if ('ok' in createResult) {
+                return createResult
+            }
+
+            logger.error(`Sykmelding creation failed, errors: ${JSON.stringify(createResult)}`)
+            throw new Error(`Sykmelding creation failed: ${createResult[0].errors.message}`)
         },
         onSuccess: (data) => {
-            if ('ok' in data) {
-                logger.info('Sykmelding created successfully')
-            } else {
-                logger.error(`Sykmelding creation failed, errors: ${JSON.stringify(data)}`)
-            }
+            logger.info(`Sykmelding created successfully: ${data.ok}`)
         },
     })
 
