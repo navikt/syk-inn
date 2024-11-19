@@ -2,24 +2,16 @@ import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 import { PageBlock } from '@navikt/ds-react/Page'
 import Link from 'next/link'
-import { logger } from '@navikt/next-logger'
 
-import { bundledEnv, isLocalOrDemo } from '@utils/env'
+import { isLocalOrDemo } from '@utils/env'
 import { saveSessionIssuer } from '@fhir/sessions/session-lifecycle'
 import FhirLaunchInitialization from '@fhir/components/FhirLaunchInitialization'
-import { wait } from '@utils/wait'
 
 type Props = {
     searchParams: Promise<{ iss: string | undefined }>
 }
 
 async function Page({ searchParams }: Props): Promise<ReactElement> {
-    // TODO: Give us self enough time to open devtools when debugging webmed
-    if (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'dev-gcp') {
-        logger.warn('DEBUG: Launching app! Waiting 10 seconds...')
-        await wait(10000)
-    }
-
     const params = await searchParams
 
     if (params.iss) {
