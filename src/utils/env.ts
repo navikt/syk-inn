@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 import { KeysOfUnion } from '@utils/ts'
 
+export type BundledEnv = z.infer<typeof BundledEnvSchema>
 const BundledEnvSchema = z.object({
     NEXT_PUBLIC_RUNTIME_ENV: z.union([
         z.literal('local'),

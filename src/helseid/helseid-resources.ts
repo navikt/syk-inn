@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { headers } from 'next/headers'
 
 import { getServerEnv, isLocalOrDemo } from '@utils/env'
+import { getLoopbackURL } from '@utils/url'
 
 type HelseIdWellKnown = z.infer<typeof HelseIdWellKnownSchema>
 const HelseIdWellKnownSchema = z.object({
@@ -14,8 +15,8 @@ const HelseIdWellKnownSchema = z.object({
 export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
     if (isLocalOrDemo) {
         return HelseIdWellKnownSchema.parse({
-            issuer: 'http://localhost:3000/api/mocks/helseid',
-            userinfo_endpoint: 'http://localhost:3000/api/mocks/helseid/connect/userinfo',
+            issuer: `${getLoopbackURL()}/api/mocks/helseid`,
+            userinfo_endpoint: `${getLoopbackURL()}/api/mocks/helseid/connect/userinfo`,
         } satisfies HelseIdWellKnown)
     }
 
