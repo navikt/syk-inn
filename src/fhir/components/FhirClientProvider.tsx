@@ -5,14 +5,16 @@ import { skipToken, useQuery } from '@tanstack/react-query'
 import { oauth2 } from 'fhirclient'
 import { Alert, BodyShort, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { ErrorBoundary } from 'react-error-boundary'
+import dynamic from 'next/dynamic'
 
 import { isLocalOrDemo } from '@utils/env'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
 import Test from '@fhir/components/Test'
-import FhirHeaderUser from '@fhir/components/FhirHeaderUser'
 
 import { createFhirDataService } from '../data-fetching/fhir-data-service'
+
+const FhirHeaderUser = dynamic(() => import('@fhir/components/FhirHeaderUser'), { ssr: false })
 
 /**
  * The FHIR library requires asynchronous initialization, so this component is used to handle the loading state, error state
