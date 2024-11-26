@@ -62,4 +62,4 @@ spec:
     - name: WONDERWALL_AUTO_LOGIN
       value: 'true'
     - name: WONDERWALL_AUTO_LOGIN_IGNORE_PATHS
-      value: '/samarbeidspartner/sykmelding/fhir/**'
+      value: '/samarbeidspartner/sykmelding/fhir/**,/samarbeidspartner/sykmelding/api/**'
