@@ -13,10 +13,24 @@ export class SessionStoreRedis implements SessionStore {
     constructor() {
         const redisConfig = getServerEnv().redisConfig ?? raise('Redis config is not set! :(')
 
-        this.client = createClient(R.omit(redisConfig, ['runtimeEnv']))
+        this.client = createClient({
+            ...R.omit(redisConfig, ['runtimeEnv']),
+            socket: {
+                connectTimeout: 5000,
+                keepAlive: 5000,
+            },
+        })
+
+        this.client.on('error', (err) => logger.error(err))
+        this.client.on('connect', () => logger.info('Redis Client Connected'))
+        this.client.on('ready', () => logger.info('Redis Client Ready'))
     }
 
     async setup(): Promise<void> {
+        if (this.client.isOpen) {
+            return
+        }
+
         try {
             await this.client.connect()
         } catch (e) {
@@ -26,6 +40,10 @@ export class SessionStoreRedis implements SessionStore {
     }
 
     async cleanup(): Promise<void> {
+        if (!this.client.isOpen) {
+            return
+        }
+
         await this.client.disconnect()
     }
 
