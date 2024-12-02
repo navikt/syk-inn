@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import { Alert, BodyShort, Heading } from '@navikt/ds-react'
 import { PageBlock } from '@navikt/ds-react/Page'
 import Link from 'next/link'
+import { logger } from '@navikt/next-logger'
 
 import { isLocalOrDemo } from '@utils/env'
 import { saveSessionIssuer } from '@fhir/sessions/session-lifecycle'
@@ -16,6 +17,8 @@ async function Page({ searchParams }: Props): Promise<ReactElement> {
     const params = await searchParams
 
     if (params.iss && !isKnownIssuer(params.iss)) {
+        logger.warn(`Attempted to launch with unknown issuer: ${params.iss}`)
+
         /**
          * Server component:
          *

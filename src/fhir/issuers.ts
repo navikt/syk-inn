@@ -19,5 +19,8 @@ switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
 }
 
 export function isKnownIssuer(iss: string): boolean {
-    return knownIssuers.includes(iss)
+    const [withoutQuery] = iss.split('?')
+    const withoutTrailingSlash = withoutQuery.replace(/\/$/, '')
+
+    return knownIssuers.map((it) => it.replace(/\/$/, '')).includes(withoutTrailingSlash)
 }
