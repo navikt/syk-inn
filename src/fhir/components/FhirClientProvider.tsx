@@ -43,7 +43,7 @@ function FhirClientProvider({ children }: PropsWithChildren): ReactElement {
                     <Skeleton height={192} variant="rounded" />
                 </div>
             )}
-            {client.isError && fhirDataService.isError && (
+            {(client.isError || fhirDataService.isError) && (
                 <div className="max-w-prose">
                     <Alert variant="error">
                         <Heading level="3" size="medium">
@@ -64,8 +64,8 @@ function FhirClientProvider({ children }: PropsWithChildren): ReactElement {
                             </div>
                         )}
                         <Detail className="mt-4">Teknisk feilmelding</Detail>
-                        {client.error.message && <pre className="text-xs">{client.error.message}</pre>}
-                        {fhirDataService.error.message && (
+                        {client.error?.message && <pre className="text-xs">{client.error.message}</pre>}
+                        {fhirDataService.error?.message && (
                             <pre className="text-xs">{fhirDataService.error.message}</pre>
                         )}
                     </Alert>
