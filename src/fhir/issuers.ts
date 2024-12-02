@@ -3,7 +3,7 @@ import { bundledEnv } from '@utils/env'
 /**
  * Should be provided by an external configuration or self-service system. But for now we'll hardcode the trusted issuers.
  */
-export const knownIssuers: string[] = ['https://launch.smarthealthit.org/v/r4/fhir']
+export const knownIssuers: string[] = ['https://launch.smarthealthit.org/v/r4/fhir', 'https://fhir.ekstern.dev.nav.no/']
 
 switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
     case 'local':
@@ -16,4 +16,8 @@ switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
     case 'dev-gcp':
     case 'prod-gcp':
         break
+}
+
+export function isKnownIssuer(iss: string): boolean {
+    return knownIssuers.includes(iss)
 }
