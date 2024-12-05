@@ -1,8 +1,10 @@
+import * as R from 'remeda'
 import { client as fhirClient } from 'fhirclient'
 import { logger } from '@navikt/next-logger'
 
 import {
     ArbeidsgiverInfo,
+    Autorisasjoner,
     BehandlerInfo,
     NotAvailable,
     NySykmeldingFormDataService,
@@ -14,7 +16,7 @@ import { getHpr } from '@fhir/data-fetching/schema/mappers/oid'
 
 import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getName, getValidPasientOid } from './schema/mappers/patient'
-import { FhirPractitionerSchema } from './schema/practitioner'
+import { FhirPractitionerQualification, FhirPractitionerSchema } from './schema/practitioner'
 
 type FhirClient = ReturnType<typeof fhirClient>
 
@@ -81,6 +83,7 @@ async function getFhirPractitioner(client: FhirClient): Promise<BehandlerInfo> {
         navn: getName(parsed.data.name),
         epjDescription: 'Fake EPJ V0.89',
         hpr: hpr,
+        autorisasjoner: getAutorisasjoner(parsed.data.qualification),
     }
 }
 
@@ -97,4 +100,45 @@ async function getArbeidsgivere(): Promise<ArbeidsgiverInfo[]> {
             organisasjonsnummer: '987654321',
         },
     ]
+}
+
+function getAutorisasjoner(qualification: FhirPractitionerQualification[]): Autorisasjoner {
+    return R.pipe(
+        qualification,
+        R.map((it) => it.code.coding),
+        R.map(
+            (it) =>
+                ({
+                    kategori:
+                        getCodingByUrn('urn:oid:2.16.578.1.12.4.1.1.9060', it) ??
+                        raise("Practitioner without 'helsepersonell kategori'"),
+                    autorisasjon: getCodingByUrn('urn:oid:2.16.578.1.12.4.1.1.7704', it),
+                    spesialisering: getCodingByUrn('urn:oid:2.16.578.1.12.4.1.1.7426', it),
+                }) satisfies Autorisasjoner[number],
+        ),
+    )
+}
+
+function getCodingByUrn<
+    T extends
+        | 'urn:oid:2.16.578.1.12.4.1.1.9060'
+        | 'urn:oid:2.16.578.1.12.4.1.1.7704'
+        | 'urn:oid:2.16.578.1.12.4.1.1.7426',
+>(
+    urn: T,
+    codings: FhirPractitionerQualification['code']['coding'],
+): {
+    system: T
+    code: string
+    display: string
+} | null {
+    const match = codings.find((coding) => coding.system === urn)
+    if (match) {
+        return {
+            system: urn,
+            code: match.code,
+            display: match.display,
+        }
+    }
+    return null
 }

@@ -6,10 +6,11 @@ import { logger } from '@navikt/next-logger'
 import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react'
 import { DevTool } from '@hookform/devtools'
 import { useMutation } from '@tanstack/react-query'
-import { FloppydiskIcon, HandBandageIcon, PersonIcon, VitalsIcon } from '@navikt/aksel-icons'
+import { FloppydiskIcon, HandBandageIcon, PersonIcon, StethoscopeIcon, VitalsIcon } from '@navikt/aksel-icons'
 
 import { FormSection } from '@components/ui/form'
 import NySykmeldingFormSummary from '@components/ny-sykmelding-form/aktivitet/form-summary/NySykmeldingFormSummary'
+import { PractitionerSection } from '@components/ny-sykmelding-form/practitioner/PractitionerSection'
 
 import {
     useIsNySykmeldingDataServiceInitialized,
@@ -90,6 +91,10 @@ function NySykmeldingForm(): ReactElement {
                     )}
                     className="flex flex-col gap-3 max-w-prose"
                 >
+                    <FormSection title="Sykmelder" icon={<StethoscopeIcon />}>
+                        <PractitionerSection />
+                    </FormSection>
+
                     <FormSection title="Info om pasienten" icon={<PersonIcon />}>
                         <PasientSection />
                     </FormSection>

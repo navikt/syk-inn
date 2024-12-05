@@ -48,6 +48,7 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                             behandler={{
                                 navn: 'TODO',
                                 hpr: behandler?.hpr_number ?? 'TODO',
+                                autorisasjoner: [],
                             }}
                         >
                             {children}

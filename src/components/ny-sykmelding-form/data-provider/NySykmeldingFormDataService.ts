@@ -40,10 +40,29 @@ export type ArbeidsgiverInfo = {
     organisasjonsnummer: string
 }
 
+export type Autorisasjoner = Array<{
+    kategori: {
+        system: 'urn:oid:2.16.578.1.12.4.1.1.9060'
+        code: string
+        display: string
+    }
+    autorisasjon: {
+        system: 'urn:oid:2.16.578.1.12.4.1.1.7704'
+        code: string
+        display: string
+    } | null
+    spesialisering: {
+        system: 'urn:oid:2.16.578.1.12.4.1.1.7426'
+        code: string
+        display: string
+    } | null
+}>
+
 export type BehandlerInfo = {
     navn: string
     hpr: string
     epjDescription?: string
+    autorisasjoner: Autorisasjoner
 }
 
 /**
