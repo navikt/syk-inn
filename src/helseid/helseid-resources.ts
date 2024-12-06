@@ -2,9 +2,10 @@ import 'server-only'
 
 import { z } from 'zod'
 import { headers } from 'next/headers'
+import { logger } from '@navikt/next-logger'
 
 import { getServerEnv, isLocalOrDemo } from '@utils/env'
-import { getLoopbackURL } from '@utils/url'
+import { getLoopbackURL, pathWithBasePath } from '@utils/url'
 
 type HelseIdWellKnown = z.infer<typeof HelseIdWellKnownSchema>
 const HelseIdWellKnownSchema = z.object({
@@ -14,10 +15,14 @@ const HelseIdWellKnownSchema = z.object({
 
 export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
     if (isLocalOrDemo) {
-        return HelseIdWellKnownSchema.parse({
-            issuer: `${getLoopbackURL()}/api/mocks/helseid`,
-            userinfo_endpoint: `${getLoopbackURL()}/api/mocks/helseid/connect/userinfo`,
+        const parsedSchema = HelseIdWellKnownSchema.parse({
+            issuer: `${getLoopbackURL()}${pathWithBasePath('/api/mocks/helseid')}`,
+            userinfo_endpoint: `${getLoopbackURL()}${pathWithBasePath('/api/mocks/helseid/connect/userinfo')}`,
         } satisfies HelseIdWellKnown)
+
+        logger.info(`Fake local or demo HelseID .well-known: ${JSON.stringify(parsedSchema, null, 2)}`)
+
+        return parsedSchema
     }
 
     const response = await fetch(getServerEnv().helseIdWellKnown, {

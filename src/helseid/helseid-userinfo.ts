@@ -24,6 +24,8 @@ export const UserInfoSchema = z.object({
 
 export async function getHelseIdUserInfo(): Promise<HprDetails | null> {
     const wellKnown = await getHelseIdWellKnown()
+
+    logger.info(`Getting userinfo from: ${wellKnown.userinfo_endpoint}`)
     const response = await fetch(wellKnown.userinfo_endpoint, {
         method: 'GET',
         headers: {
