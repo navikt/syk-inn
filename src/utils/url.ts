@@ -25,7 +25,7 @@ export function getLoopbackURL(): string {
         raise(`Trying to use loopback URL in env ${bundledEnv.NEXT_PUBLIC_RUNTIME_ENV}, this is illegal!!`)
     }
 
-    return `http://0.0.0.0:${process.env.PORT ?? '3000'}`
+    return `http://127.0.0.1:${process.env.PORT ?? '3000'}`
 }
 
 /**
