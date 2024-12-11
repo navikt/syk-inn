@@ -58,14 +58,22 @@ function createGetFhirPasientFn(client: FhirClient) {
 }
 
 async function getFhirPractitioner(client: FhirClient): Promise<BehandlerInfo> {
-    if (client.user.fhirUser == null) {
-        throw new Error('No FHIR-user available')
-    }
-
     await wait()
 
     // TODO: Gracefully handle different fhirUsers?
-    const practitioner: unknown = await client.request(client.user.fhirUser)
+    let practitioner: unknown
+    if (client.user.fhirUser) {
+        // This should be available in all FHIR apis
+        practitioner = await client.request(client.user.fhirUser)
+    } else {
+        // Temporary WebMed hack:
+        const practitionerId = client.getState('tokenResponse.practitioner')
+        practitioner = await client.request(`Practitioner/${practitionerId}`)
+
+        logger.error(
+            `Hit WebMed fallback, got Practitioner from tokenResponse instead, is null: ${practitioner == null}`,
+        )
+    }
 
     const parsed = FhirPractitionerSchema.safeParse(practitioner)
     if (!parsed.success) {
