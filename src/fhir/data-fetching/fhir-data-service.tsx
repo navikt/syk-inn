@@ -91,7 +91,7 @@ async function getFhirPractitioner(client: FhirClient): Promise<BehandlerInfo> {
         navn: getName(parsed.data.name),
         epjDescription: 'Fake EPJ V0.89',
         hpr: hpr,
-        autorisasjoner: getAutorisasjoner(parsed.data.qualification),
+        autorisasjoner: parsed.data.qualification ? getAutorisasjoner(parsed.data.qualification) : [],
     }
 }
 
