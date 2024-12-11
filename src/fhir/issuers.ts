@@ -3,7 +3,11 @@ import { bundledEnv } from '@utils/env'
 /**
  * Should be provided by an external configuration or self-service system. But for now we'll hardcode the trusted issuers.
  */
-export const knownIssuers: string[] = ['https://launch.smarthealthit.org/v/r4/fhir', 'https://fhir.ekstern.dev.nav.no/']
+export const knownIssuers: string[] = [
+    'https://launch.smarthealthit.org/v/r4/fhir',
+    'https://fhir.ekstern.dev.nav.no/',
+    'https://fhirapi.public.webmedepj.no/',
+]
 
 switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
     case 'local':
