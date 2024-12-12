@@ -46,6 +46,15 @@ graph TD
     syk_inn_standalone -- .well-known/connect/userinfo --> helseid
 ```
 
+## Lingo
+
+Code is written in English. FHIR-resources are referred to as their English names. However, sykmelding domain words
+are in Norwegian. So for example, in the data layer where we integrate with FHIR, resources will be referred to as
+`Patient` and `Practitioner`, but once mapped into the specific SykmeldingForm, these will be refered to as `Pasient`
+and `Behandler`.
+
+In standalone mode, there are no FHIR-resources, so the domain will be refered to in Norwegian, and code still in English.
+
 ## Points of interest in the code
 
 ### Routes (uses Next "App Dir")

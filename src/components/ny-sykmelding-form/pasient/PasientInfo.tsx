@@ -5,7 +5,7 @@ import { Alert, BodyShort, Button, Detail, Skeleton } from '@navikt/ds-react'
 import { PasientSearchField } from '@components/ny-sykmelding-form/pasient/PasientSearchField'
 import SubtleRetryIndicator from '@components/misc/SubtleRetryIndicator'
 import { useContextPasient } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-pasient'
-import { PatientInfo } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
+import type { PasientInfo } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { useFormContext } from '@components/ny-sykmelding-form/NySykmeldingFormValues'
 
 function PasientInfo(): ReactElement {
@@ -72,7 +72,7 @@ function PasientInfoDegredationInfo({ query }: { query: UseQueryResult }): React
     )
 }
 
-function oidTypeToReadableText(type: NonNullable<PatientInfo['oid']>['type']): string {
+function oidTypeToReadableText(type: NonNullable<PasientInfo['oid']>['type']): string {
     switch (type) {
         case 'fnr':
             return 'fødselsnummer'

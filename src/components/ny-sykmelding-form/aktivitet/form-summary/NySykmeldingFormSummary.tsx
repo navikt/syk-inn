@@ -3,7 +3,7 @@ import { List } from '@navikt/ds-react'
 import { CheckmarkCircleFillIcon, CircleIcon } from '@navikt/aksel-icons'
 
 import { useContextPasient } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-pasient'
-import { PatientInfo } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
+import { PasientInfo } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { toReadableDatePeriod } from '@utils/date'
 import { NonNullableObject } from '@utils/ts'
 
@@ -111,7 +111,7 @@ function aktivitetDescription(aktivitet: NonNullableObject<AktivitetFormValue>):
     }
 }
 
-function pasientInfoName(data: PatientInfo): string {
+function pasientInfoName(data: PasientInfo): string {
     return `${data.navn} ${data.oid ? `(${data.oid.nr})` : ''}`
 }
 

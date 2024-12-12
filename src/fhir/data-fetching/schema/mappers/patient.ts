@@ -7,7 +7,7 @@ export function getName(name: Name): string {
     return `${name[0].given[0]} ${name[0].family}`
 }
 
-export function getValidPasientOid(patient: FhirPatient): {
+export function getValidPatientOid(patient: FhirPatient): {
     type: 'fnr' | 'dnr'
     nr: string
 } | null {

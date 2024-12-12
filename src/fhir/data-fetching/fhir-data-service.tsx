@@ -8,14 +8,14 @@ import {
     BehandlerInfo,
     NotAvailable,
     NySykmeldingFormDataService,
-    PatientInfo,
+    PasientInfo,
 } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { raise } from '@utils/ts'
 import { wait } from '@utils/wait'
 import { getHpr } from '@fhir/data-fetching/schema/mappers/oid'
 
 import { FhirBundleOrPatientSchema } from './schema/patient'
-import { getName, getValidPasientOid } from './schema/mappers/patient'
+import { getName, getValidPatientOid } from './schema/mappers/patient'
 import { FhirPractitionerQualification, FhirPractitionerSchema } from './schema/practitioner'
 
 type FhirClient = ReturnType<typeof fhirClient>
@@ -39,7 +39,7 @@ export const createFhirDataService = async (client: FhirClient): Promise<NySykme
 }
 
 function createGetFhirPasientFn(client: FhirClient) {
-    return async (): Promise<PatientInfo> => {
+    return async (): Promise<PasientInfo> => {
         await wait()
         // TODO: Handle client.patient.id being null (can we launch without patient?)
         const patient = await client.request(`Patient/${client.patient.id ?? raise('client.patient.id is null')}`)
@@ -52,7 +52,7 @@ function createGetFhirPasientFn(client: FhirClient) {
 
         return {
             navn: getName(patient.name),
-            oid: getValidPasientOid(patient),
+            oid: getValidPatientOid(patient),
         }
     }
 }

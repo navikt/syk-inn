@@ -16,19 +16,20 @@ export type NySykmeldingFormDataService = {
      */
     context: {
         behandler: BehandlerInfo
-        pasient: (() => Promise<PatientInfo>) | NotAvailable
+        pasient: (() => Promise<PasientInfo>) | NotAvailable
         arbeidsgivere: (() => Promise<ArbeidsgiverInfo[]>) | NotAvailable
     }
     /**
      * Query data can be anything that requires an argument to fetch, such as a specific patient.
      */
     query: {
-        pasient: ((fnr: string) => Promise<PatientInfo>) | NotAvailable
+        pasient: ((fnr: string) => Promise<PasientInfo>) | NotAvailable
     }
 }
 
-export type PatientInfo = {
+export type PasientInfo = {
     oid: {
+        // TODO: Are we supporting multiple oid types here?
         type: 'fnr' | 'dnr' | 'annet'
         nr: string
     } | null
