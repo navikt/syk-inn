@@ -6,9 +6,11 @@ import { PasientSearchField } from '@components/ny-sykmelding-form/pasient/Pasie
 import SubtleRetryIndicator from '@components/misc/SubtleRetryIndicator'
 import { useContextPasient } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-pasient'
 import { PatientInfo } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
+import { useFormContext } from '@components/ny-sykmelding-form/NySykmeldingFormValues'
 
 function PasientInfo(): ReactElement {
     const pasientQuery = useContextPasient()
+    const formContext = useFormContext()
 
     if (pasientQuery.error) {
         return (
@@ -42,6 +44,7 @@ function PasientInfo(): ReactElement {
                             <span className="text-xs">({oidTypeToReadableText(pasientQuery.data.oid.type)})</span>
                         )}
                     </BodyShort>
+                    <input {...formContext.register('pasient')} type="hidden" value={pasientQuery.data.oid?.nr} />
                 </div>
             )}
         </div>
