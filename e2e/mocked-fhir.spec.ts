@@ -1,16 +1,16 @@
 import { test, expect } from '@playwright/test'
 
-import { assertPreloadedPatient, launchWithMock, pickHoveddiagnose } from './fhir-actions'
+import { assertPreloadedPatient, fillAktivitetsPeriode, launchWithMock, pickHoveddiagnose } from './fhir-actions'
 
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
     await assertPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-
-    const aktivitetRegion = page.getByRole('region', { name: 'Aktivitet' })
-    await expect(aktivitetRegion).toBeVisible()
-    await aktivitetRegion.getByRole('textbox', { name: 'Fra og med' }).fill('15.02.2024')
-    await aktivitetRegion.getByRole('textbox', { name: 'Til og med' }).fill('18.02.2024')
+    await fillAktivitetsPeriode({
+        type: '100%',
+        fom: '15.02.2024',
+        tom: '18.02.2024',
+    })(page)
 
     await page.getByRole('button', { name: 'Opprett sykmelding' }).click()
 
@@ -26,10 +26,11 @@ test('shall be able to edit diagnose', async ({ page }) => {
     await diagnoseRegion.getByRole('combobox', { name: 'Hoveddiagnose' }).fill('D290')
     await diagnoseRegion.getByRole('option', { name: /D290/ }).click()
 
-    const aktivitetRegion = page.getByRole('region', { name: 'Aktivitet' })
-    await expect(aktivitetRegion).toBeVisible()
-    await aktivitetRegion.getByRole('textbox', { name: 'Fra og med' }).fill('15.02.2024')
-    await aktivitetRegion.getByRole('textbox', { name: 'Til og med' }).fill('18.02.2024')
+    await fillAktivitetsPeriode({
+        type: '100%',
+        fom: '15.02.2024',
+        tom: '18.02.2024',
+    })(page)
 
     await page.getByRole('button', { name: 'Opprett sykmelding' }).click()
 
@@ -40,18 +41,11 @@ test('can submit gradert sykmelding', async ({ page }) => {
     await launchWithMock(page)
     await assertPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-
-    const aktivitetRegion = page.getByRole('region', { name: 'Aktivitet' })
-    await expect(aktivitetRegion).toBeVisible()
-    await aktivitetRegion.getByRole('textbox', { name: 'Fra og med' }).fill('15.02.2024')
-    await aktivitetRegion.getByRole('textbox', { name: 'Til og med' }).fill('18.02.2024')
-
-    await aktivitetRegion
-        .getByRole('group', { name: 'Aktivitetsbegrensning' })
-        .getByRole('radio', { name: 'Noe mulighet for aktivitet' })
-        .click()
-
-    await aktivitetRegion.getByRole('textbox', { name: 'Grad' }).fill('50')
+    await fillAktivitetsPeriode({
+        type: { grad: 50 },
+        fom: '15.02.2024',
+        tom: '18.02.2024',
+    })(page)
 
     await page.getByRole('button', { name: 'Opprett sykmelding' }).click()
 

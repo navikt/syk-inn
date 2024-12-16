@@ -25,3 +25,31 @@ export function pickHoveddiagnose({ search, select }: { search: string; select: 
         return diagnoseRegion
     }
 }
+
+export function fillAktivitetsPeriode({
+    type,
+    fom,
+    tom,
+}: {
+    type: '100%' | { grad: number }
+    fom: string
+    tom: string
+}) {
+    return async (page: Page) => {
+        const aktivitetRegion = page.getByRole('region', { name: 'Aktivitet' })
+        await expect(aktivitetRegion).toBeVisible()
+        await aktivitetRegion.getByRole('textbox', { name: 'Fra og med' }).fill(fom)
+        await aktivitetRegion.getByRole('textbox', { name: 'Til og med' }).fill(tom)
+
+        if (typeof type !== 'string' && 'grad' in type) {
+            await aktivitetRegion
+                .getByRole('group', { name: 'Aktivitetsbegrensning' })
+                .getByRole('radio', { name: 'Noe mulighet for aktivitet' })
+                .click()
+
+            await aktivitetRegion.getByRole('textbox', { name: 'Grad' }).fill(`${type.grad}`)
+        }
+
+        return aktivitetRegion
+    }
+}
