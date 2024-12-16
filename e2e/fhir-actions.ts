@@ -1,4 +1,4 @@
-import { expect, Page } from '@playwright/test'
+import { expect, Locator, Page } from '@playwright/test'
 
 export async function launchWithMock(page: Page): Promise<void> {
     await page.goto(`/fhir/launch?iss=http://localhost:3000/api/mocks/fhir`)
@@ -23,6 +23,14 @@ export function pickHoveddiagnose({ search, select }: { search: string; select: 
         await diagnoseRegion.getByRole('option', { name: select }).click()
 
         return diagnoseRegion
+    }
+}
+
+export function editHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
+    return async (region: Locator) => {
+        await region.getByRole('button', { name: 'Endre hoveddiagnose' }).click()
+        await region.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
+        await region.getByRole('option', { name: select }).click()
     }
 }
 

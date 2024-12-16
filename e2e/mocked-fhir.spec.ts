@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test'
 
-import { assertPreloadedPatient, fillAktivitetsPeriode, launchWithMock, pickHoveddiagnose } from './fhir-actions'
+import {
+    assertPreloadedPatient,
+    editHoveddiagnose,
+    fillAktivitetsPeriode,
+    launchWithMock,
+    pickHoveddiagnose,
+} from './fhir-actions'
 
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
@@ -20,11 +26,9 @@ test('can submit 100% sykmelding', async ({ page }) => {
 test('shall be able to edit diagnose', async ({ page }) => {
     await launchWithMock(page)
     await assertPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
-    const diagnoseRegion = await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
-    await diagnoseRegion.getByRole('button', { name: 'Endre hoveddiagnose' }).click()
-    await diagnoseRegion.getByRole('combobox', { name: 'Hoveddiagnose' }).fill('D290')
-    await diagnoseRegion.getByRole('option', { name: /D290/ }).click()
+    const diagnoseRegion = await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+    await editHoveddiagnose({ search: 'D290', select: /D290/ })(diagnoseRegion)
 
     await fillAktivitetsPeriode({
         type: '100%',
