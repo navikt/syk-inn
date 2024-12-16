@@ -29,7 +29,10 @@ const CreateSykmeldingSchema = z.object({
             type: z.literal('GRADERT'),
             fom: DateOnly,
             tom: DateOnly,
-            grad: z.number().min(1).max(99),
+            grad: z
+                .string()
+                .transform((it) => +it)
+                .pipe(z.number().min(1).max(99)),
         }),
     ]),
 })
