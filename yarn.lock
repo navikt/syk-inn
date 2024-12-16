@@ -577,9 +577,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/devtools@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "@hookform/devtools@npm:4.3.1"
+"@hookform/devtools@npm:^4.3.2":
+  version: 4.3.2
+  resolution: "@hookform/devtools@npm:4.3.2"
   dependencies:
     "@emotion/react": "npm:^11.1.5"
     "@emotion/styled": "npm:^11.3.0"
@@ -590,9 +590,9 @@ __metadata:
     use-deep-compare-effect: "npm:^1.8.1"
     uuid: "npm:^8.3.2"
   peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-    react-dom: ^16.8.0 || ^17 || ^18
-  checksum: 10c0/4155e4c5da69b397e7a0aea9c674def5cb92e9d21f420be6cbb32d3c893a239e890d3a17f8a31fb194493696230806f8d77b8b2be1b7a9c797a3f89477c3c9f5
+    react: ^16.8.0 || ^17 || ^18 || ^19
+    react-dom: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 10c0/8bc008e8e9fd0f39ebd751befb625117e41a5a219c83059a011958f41f25617fd74f80e6282ab8951d0c4013b1f67236fc4a14baa30b968daf352d4a167d2998
   languageName: node
   linkType: hard
 
@@ -4208,13 +4208,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-dom-parser@npm:5.0.11":
-  version: 5.0.11
-  resolution: "html-dom-parser@npm:5.0.11"
+"html-dom-parser@npm:5.0.12":
+  version: 5.0.12
+  resolution: "html-dom-parser@npm:5.0.12"
   dependencies:
     domhandler: "npm:5.0.3"
     htmlparser2: "npm:9.1.0"
-  checksum: 10c0/752c962663d9873d90d15d1c0b5721dd16816b2ee307b660e5d579d962674d9aec10d7b532607349df21a6ee8c0f308821480b1fe664fbefad76fe94ca96d086
+  checksum: 10c0/935f4e0e3c98fd545f7b9a3cad5df32eb5a5b76ad4484113e3b7ea8e75d82c2ea6d732ffc4fc7e5ed8414a96bf3993960e011f65ca30fb80311b00d2486332ed
   languageName: node
   linkType: hard
 
@@ -4227,12 +4227,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-react-parser@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "html-react-parser@npm:5.2.0"
+"html-react-parser@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "html-react-parser@npm:5.2.1"
   dependencies:
     domhandler: "npm:5.0.3"
-    html-dom-parser: "npm:5.0.11"
+    html-dom-parser: "npm:5.0.12"
     react-property: "npm:2.0.2"
     style-to-js: "npm:1.1.16"
   peerDependencies:
@@ -4241,7 +4241,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10c0/7c70ce8c5557a32c944a6408ef058f47369923e7d618c6713b7c3f2b90ace39bcdae52e6728119383c3ee582969e779189a4f3ea0116f2451f87f446ef476553
+  checksum: 10c0/79d687d5d3c70c91add24208ad088fd340b20611aa07a737c575fc9a05080a759a1991eec8af0fd8a97b9b08e3db962505386b18bb69620d08c97907e6c2c578
   languageName: node
   linkType: hard
 
@@ -6183,12 +6183,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.54.0":
-  version: 7.54.0
-  resolution: "react-hook-form@npm:7.54.0"
+"react-hook-form@npm:^7.54.1":
+  version: 7.54.1
+  resolution: "react-hook-form@npm:7.54.1"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10c0/8dbc68e8b82aafda1271bbc291052b5efb091505865cd10e3d7dd618ca3870bd05596d7ba68f128427d47ff11e0d9f03089fd7afb88d2a8865ff81f21af417a0
+  checksum: 10c0/2d960ddf8aa654f34e36f5d995f0ec067a4c01340d650eca44f22aa4421e278dcc449c8522e66c5c66b1c61d62fbdf914b9e0a8de9deb4c6346cc3b37ef4eb82
   languageName: node
   linkType: hard
 
@@ -7156,7 +7156,7 @@ __metadata:
   resolution: "syk-inn@workspace:."
   dependencies:
     "@ariakit/react": "npm:^0.4.15"
-    "@hookform/devtools": "npm:^4.3.1"
+    "@hookform/devtools": "npm:^4.3.2"
     "@navikt/aksel-icons": "npm:^7.8.0"
     "@navikt/diagnosekoder": "npm:^1.2024.1"
     "@navikt/ds-css": "npm:^7.8.0"
@@ -7180,7 +7180,7 @@ __metadata:
     eslint-config-next: "npm:15.1.0"
     fhirclient: "npm:^2.5.4"
     fuse.js: "npm:^7.0.0"
-    html-react-parser: "npm:^5.2.0"
+    html-react-parser: "npm:^5.2.1"
     husky: "npm:^9.1.7"
     jose: "npm:^5.9.6"
     jsdom: "npm:^25.0.1"
@@ -7196,7 +7196,7 @@ __metadata:
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
     react-error-boundary: "npm:^4.1.2"
-    react-hook-form: "npm:^7.54.0"
+    react-hook-form: "npm:^7.54.1"
     remeda: "npm:^2.17.4"
     server-only: "npm:^0.0.1"
     tailwind-merge: "npm:^2.5.5"
