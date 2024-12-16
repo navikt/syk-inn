@@ -14,3 +14,14 @@ export function assertPreloadedPatient({ name, fnr }: { name: string; fnr: strin
         await expect(pasientInfoRegion.getByText(`${fnr} (fødselsnummer)`)).toBeVisible()
     }
 }
+
+export function pickHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
+    return async (page: Page) => {
+        const diagnoseRegion = page.getByRole('region', { name: 'Diagnose' })
+        await expect(diagnoseRegion).toBeVisible()
+        await diagnoseRegion.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
+        await diagnoseRegion.getByRole('option', { name: select }).click()
+
+        return diagnoseRegion
+    }
+}
