@@ -1,14 +1,10 @@
 import { test, expect } from '@playwright/test'
 
+import { assertPreloadedPatient, launchWithMock } from './fhir-actions'
+
 test('can submit 100% sykmelding', async ({ page }) => {
-    await page.goto(`/fhir/launch?iss=http://localhost:3000/api/mocks/fhir`)
-
-    await expect(page.getByRole('heading', { name: 'Opprett ny sykmelding' })).toBeVisible()
-
-    const pasientInfoRegion = page.getByRole('region', { name: 'Info om pasienten' })
-    await expect(pasientInfoRegion).toBeVisible()
-    await expect(pasientInfoRegion.getByText('Espen Eksempel')).toBeVisible()
-    await expect(pasientInfoRegion.getByText('21037712323 (fødselsnummer)')).toBeVisible()
+    await launchWithMock(page)
+    await assertPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     const diagnoseRegion = page.getByRole('region', { name: 'Diagnose' })
     await expect(diagnoseRegion).toBeVisible()
@@ -30,14 +26,8 @@ test('can submit 100% sykmelding', async ({ page }) => {
 })
 
 test('shall be able to edit diagnose', async ({ page }) => {
-    await page.goto(`/fhir/launch?iss=http://localhost:3000/api/mocks/fhir`)
-
-    await expect(page.getByRole('heading', { name: 'Opprett ny sykmelding' })).toBeVisible()
-
-    const pasientInfoRegion = page.getByRole('region', { name: 'Info om pasienten' })
-    await expect(pasientInfoRegion).toBeVisible()
-    await expect(pasientInfoRegion.getByText('Espen Eksempel')).toBeVisible()
-    await expect(pasientInfoRegion.getByText('21037712323 (fødselsnummer)')).toBeVisible()
+    await launchWithMock(page)
+    await assertPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     const diagnoseRegion = page.getByRole('region', { name: 'Diagnose' })
     await expect(diagnoseRegion).toBeVisible()
@@ -55,14 +45,8 @@ test('shall be able to edit diagnose', async ({ page }) => {
 })
 
 test('can submit gradert sykmelding', async ({ page }) => {
-    await page.goto(`/fhir/launch?iss=http://localhost:3000/api/mocks/fhir`)
-
-    await expect(page.getByRole('heading', { name: 'Opprett ny sykmelding' })).toBeVisible()
-
-    const pasientInfoRegion = page.getByRole('region', { name: 'Info om pasienten' })
-    await expect(pasientInfoRegion).toBeVisible()
-    await expect(pasientInfoRegion.getByText('Espen Eksempel')).toBeVisible()
-    await expect(pasientInfoRegion.getByText('21037712323 (fødselsnummer)')).toBeVisible()
+    await launchWithMock(page)
+    await assertPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     const diagnoseRegion = page.getByRole('region', { name: 'Diagnose' })
     await expect(diagnoseRegion).toBeVisible()
