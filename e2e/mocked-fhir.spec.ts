@@ -35,8 +35,8 @@ test('can submit 100% sykmelding', async ({ page }) => {
             },
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
-                fom: '2024-02-14T23:00:00.000Z',
-                tom: '2024-02-17T23:00:00.000Z',
+                fom: '2024-02-15',
+                tom: '2024-02-18',
                 grad: null,
             },
         },
@@ -70,8 +70,8 @@ test('shall be able to edit diagnose', async ({ page }) => {
             diagnoser: { hoved: { code: 'D290', system: 'ICD10', text: 'Godartet svulst i penis' } },
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
-                fom: '2024-02-14T23:00:00.000Z',
-                tom: '2024-02-17T23:00:00.000Z',
+                fom: '2024-02-15',
+                tom: '2024-02-18',
                 grad: null,
             },
         },
@@ -104,8 +104,8 @@ test('can submit gradert sykmelding', async ({ page }) => {
             },
             aktivitet: {
                 type: 'GRADERT',
-                fom: '2024-02-14T23:00:00.000Z',
-                tom: '2024-02-17T23:00:00.000Z',
+                fom: '2024-02-15',
+                tom: '2024-02-18',
                 grad: '50',
             },
         },

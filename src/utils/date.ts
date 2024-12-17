@@ -1,4 +1,4 @@
-import { format, getDate, isSameDay, isSameMonth, isSameYear } from 'date-fns'
+import { format, formatISO, getDate, isSameDay, isSameMonth, isSameYear } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
 export function toReadableDateNoYear(date: string | Date): string {
@@ -23,4 +23,8 @@ export function toReadableDatePeriod(fom: string | Date, tom: string | Date): st
     } else {
         return `${toReadableDate(fom)} - ${toReadableDate(tom)}`
     }
+}
+
+export function dateOnly(date: string | Date): string {
+    return formatISO(date, { representation: 'date' })
 }

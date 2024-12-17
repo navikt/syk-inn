@@ -10,6 +10,7 @@ import {
 } from '@navikt/ds-react'
 
 import { cn } from '@utils/tw'
+import { dateOnly } from '@utils/date'
 
 import { AktivitetIkkeMuligType, useController, useFormContext } from '../NySykmeldingFormValues'
 
@@ -49,7 +50,6 @@ function AktivitetSection(): ReactElement {
         },
     })
     const { datepickerProps, toInputProps, fromInputProps } = useRangeDatepicker({
-        fromDate: new Date('Aug 23 2019'),
         onRangeChange: (range) => {
             if (!range) {
                 aktivitetField.field.onChange({
@@ -62,8 +62,8 @@ function AktivitetSection(): ReactElement {
 
             aktivitetField.field.onChange({
                 ...aktivitetField.field.value,
-                fom: range.from,
-                tom: range.to,
+                fom: range.from ? dateOnly(range.from) : null,
+                tom: range.to ? dateOnly(range.to) : null,
             })
         },
         onValidate: (range) => {
