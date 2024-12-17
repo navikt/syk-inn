@@ -32,7 +32,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@leos-dotfolder
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
         id: build-and-publish
         with:
           app: ${{ env.APP }}
@@ -68,7 +68,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@leos-dotfolder
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
         id: build-and-publish
         with:
           app: ${{ env.APP }}
