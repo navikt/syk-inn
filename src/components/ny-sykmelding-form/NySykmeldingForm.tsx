@@ -22,7 +22,7 @@ import PasientSection from './pasient/PasientSection'
 import { NySykmeldingOpprettProgressModal } from './NySykmeldingOpprettProgressModal'
 import FormErrors, { useFormErrors } from './errors/FormErrors'
 import { NySykmeldingFormValues } from './NySykmeldingFormValues'
-import { createSykmelding } from './ny-sykmelding-actions'
+import { createSykmelding } from './ny-sykmelding-api'
 
 function NySykmeldingForm(): ReactElement {
     const [errorSectionRef, focusErrorSection] = useFormErrors()
