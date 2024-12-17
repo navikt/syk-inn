@@ -7,6 +7,7 @@ import {
     launchWithMock,
     pickHoveddiagnose,
 } from './fhir-actions'
+import { clickAndWait, waitForHttp } from './request-utils'
 
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
@@ -18,9 +19,28 @@ test('can submit 100% sykmelding', async ({ page }) => {
         tom: '18.02.2024',
     })(page)
 
-    await page.getByRole('button', { name: 'Opprett sykmelding' }).click()
+    const request = await clickAndWait(
+        page.getByRole('button', { name: 'Opprett sykmelding' }).click(),
+        waitForHttp('/api/sykmelding/submit', 'POST')(page),
+    )
 
     await expect(page.getByRole('heading', { name: 'Takk for i dag' })).toBeVisible()
+    const payload = request.postDataJSON()
+    expect(payload).toEqual({
+        behandlerHpr: '9144889',
+        values: {
+            pasient: '21037712323',
+            diagnoser: {
+                hoved: { code: 'P74', system: 'ICPC2', text: 'Angstlidelse' },
+            },
+            aktivitet: {
+                type: 'AKTIVITET_IKKE_MULIG',
+                fom: '2024-02-14T23:00:00.000Z',
+                tom: '2024-02-17T23:00:00.000Z',
+                grad: null,
+            },
+        },
+    })
 })
 
 test('shall be able to edit diagnose', async ({ page }) => {
@@ -36,9 +56,26 @@ test('shall be able to edit diagnose', async ({ page }) => {
         tom: '18.02.2024',
     })(page)
 
-    await page.getByRole('button', { name: 'Opprett sykmelding' }).click()
+    const request = await clickAndWait(
+        page.getByRole('button', { name: 'Opprett sykmelding' }).click(),
+        waitForHttp('/api/sykmelding/submit', 'POST')(page),
+    )
 
     await expect(page.getByRole('heading', { name: 'Takk for i dag' })).toBeVisible()
+    const payload = request.postDataJSON()
+    expect(payload).toEqual({
+        behandlerHpr: '9144889',
+        values: {
+            pasient: '21037712323',
+            diagnoser: { hoved: { code: 'D290', system: 'ICD10', text: 'Godartet svulst i penis' } },
+            aktivitet: {
+                type: 'AKTIVITET_IKKE_MULIG',
+                fom: '2024-02-14T23:00:00.000Z',
+                tom: '2024-02-17T23:00:00.000Z',
+                grad: null,
+            },
+        },
+    })
 })
 
 test('can submit gradert sykmelding', async ({ page }) => {
@@ -51,7 +88,26 @@ test('can submit gradert sykmelding', async ({ page }) => {
         tom: '18.02.2024',
     })(page)
 
-    await page.getByRole('button', { name: 'Opprett sykmelding' }).click()
+    const request = await clickAndWait(
+        page.getByRole('button', { name: 'Opprett sykmelding' }).click(),
+        waitForHttp('/api/sykmelding/submit', 'POST')(page),
+    )
 
     await expect(page.getByRole('heading', { name: 'Takk for i dag' })).toBeVisible()
+    const payload = request.postDataJSON()
+    expect(payload).toEqual({
+        behandlerHpr: '9144889',
+        values: {
+            pasient: '21037712323',
+            diagnoser: {
+                hoved: { system: 'ICPC2', code: 'P74', text: 'Angstlidelse' },
+            },
+            aktivitet: {
+                type: 'GRADERT',
+                fom: '2024-02-14T23:00:00.000Z',
+                tom: '2024-02-17T23:00:00.000Z',
+                grad: '50',
+            },
+        },
+    })
 })
