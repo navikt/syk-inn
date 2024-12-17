@@ -32,7 +32,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@leos-dotfolder
         id: build-and-publish
         with:
           app: ${{ env.APP }}
@@ -54,7 +54,7 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: nais/nais-dev.yaml
+          RESOURCE: .nais/nais-dev.yaml
           VAR: image=${{ needs.build-dev.outputs.image }}
 
   build-demo:
@@ -68,7 +68,7 @@ jobs:
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@leos-dotfolder
         id: build-and-publish
         with:
           app: ${{ env.APP }}
@@ -91,7 +91,7 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: nais/nais-demo.yaml
+          RESOURCE: .nais/nais-demo.yaml
           VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }},appname=${{ env.APP }},replicas=1,branchState=alive
 
   prebuild-app-for-playwright:
@@ -106,7 +106,7 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Build e2e version of app
         run: |
-          cp nais/envs/.env.demo .env.production
+          cp .nais/envs/.env.demo .env.production
           yarn build:e2e
       - name: Log in to the Container registry
         uses: docker/login-action@v3

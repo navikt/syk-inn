@@ -3,10 +3,9 @@ on:
   push:
     paths:
       - .github/workflows/deploy-wonderwall.yml
-      - nais/nais-dev-wonderwall.yaml
+      - .nais/nais-dev-wonderwall.yaml
     branches:
       - main
-      - chore/wonderpoc
 
 permissions:
   id-token: write
@@ -23,4 +22,4 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: nais/nais-dev-wonderwall.yaml
+          RESOURCE: .nais/nais-dev-wonderwall.yaml
