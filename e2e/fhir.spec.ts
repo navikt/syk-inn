@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 import { launchWithMock } from './actions/fhir-actions'
-import { clickAndWait, waitForHttp } from './request-utils'
+import { clickAndWait, waitForHttp } from './utils/request-utils'
 import {
     assertPreloadedPatient,
     editHoveddiagnose,

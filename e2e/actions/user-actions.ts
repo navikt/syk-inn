@@ -9,6 +9,14 @@ export function assertPreloadedPatient({ name, fnr }: { name: string; fnr: strin
     }
 }
 
+export function fillManualPasient({ fnr }: { fnr: string }) {
+    return async (page: Page) => {
+        const pasientInfoRegion = page.getByRole('region', { name: 'Info om pasienten' })
+        await expect(pasientInfoRegion).toBeVisible()
+        await pasientInfoRegion.getByRole('textbox', { name: 'Fødselsnummer' }).fill(fnr)
+    }
+}
+
 export function pickHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
     return async (page: Page) => {
         const diagnoseRegion = page.getByRole('region', { name: 'Diagnose' })
