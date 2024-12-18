@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test'
 
+import { launchWithMock } from './actions/fhir-actions'
+import { clickAndWait, waitForHttp } from './request-utils'
 import {
     assertPreloadedPatient,
     editHoveddiagnose,
     fillAktivitetsPeriode,
-    launchWithMock,
     pickHoveddiagnose,
-} from './fhir-actions'
-import { clickAndWait, waitForHttp } from './request-utils'
+} from './actions/user-actions'
 
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
