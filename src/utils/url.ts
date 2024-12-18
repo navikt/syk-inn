@@ -26,6 +26,8 @@ export function getLoopbackURL(): string {
     }
 
     switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
+        case 'e2e':
+            return `http://${process.env.HOSTNAME ?? '0.0.0.0'}:${process.env.PORT ?? '3000'}`
         case 'demo':
             return `http://syk-inn-demo:${process.env.PORT ?? '3000'}`
         default:
