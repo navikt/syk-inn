@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 import { launchStandalone } from './actions/standalone-actions'
-import { fillAktivitetsPeriode, fillManualPasient, pickHoveddiagnose } from './actions/user-actions'
-import { clickAndWait, waitForHttp } from './utils/request-utils'
+import { fillAktivitetsPeriode, fillManualPasient, pickHoveddiagnose, submitSykmelding } from './actions/user-actions'
 
 test('can submit 100% sykmelding without prefilled pasient', async ({ page }) => {
     await launchStandalone(page)
@@ -14,14 +13,7 @@ test('can submit 100% sykmelding without prefilled pasient', async ({ page }) =>
         tom: '18.02.2024',
     })(page)
 
-    const request = await clickAndWait(
-        page.getByRole('button', { name: 'Opprett sykmelding' }).click(),
-        waitForHttp('/api/sykmelding/submit', 'POST')(page),
-    )
-
-    await expect(page.getByRole('heading', { name: 'Takk for i dag' })).toBeVisible()
-
-    const payload = request.postDataJSON()
+    const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
         behandlerHpr: '565501872',
         values: {

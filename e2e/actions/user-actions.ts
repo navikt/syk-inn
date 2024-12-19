@@ -1,5 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test'
 
+import { clickAndWait, waitForHttp } from '../utils/request-utils'
+
 export function assertPreloadedPatient({ name, fnr }: { name: string; fnr: string }) {
     return async (page: Page) => {
         const pasientInfoRegion = page.getByRole('region', { name: 'Info om pasienten' })
@@ -61,5 +63,18 @@ export function fillAktivitetsPeriode({
         }
 
         return aktivitetRegion
+    }
+}
+
+export function submitSykmelding() {
+    return async (page: Page): Promise<unknown> => {
+        const request = await clickAndWait(
+            page.getByRole('button', { name: 'Opprett sykmelding' }).click(),
+            waitForHttp('/api/sykmelding/submit', 'POST')(page),
+        )
+
+        await expect(page.getByRole('heading', { name: 'Takk for i dag' })).toBeVisible()
+
+        return request.postDataJSON()
     }
 }

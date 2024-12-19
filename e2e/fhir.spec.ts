@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test'
 
 import { launchWithMock } from './actions/fhir-actions'
-import { clickAndWait, waitForHttp } from './utils/request-utils'
 import {
     assertPreloadedPatient,
     editHoveddiagnose,
     fillAktivitetsPeriode,
     pickHoveddiagnose,
+    submitSykmelding,
 } from './actions/user-actions'
 
 test('can submit 100% sykmelding', async ({ page }) => {
@@ -19,13 +19,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
         tom: '18.02.2024',
     })(page)
 
-    const request = await clickAndWait(
-        page.getByRole('button', { name: 'Opprett sykmelding' }).click(),
-        waitForHttp('/api/sykmelding/submit', 'POST')(page),
-    )
-
-    await expect(page.getByRole('heading', { name: 'Takk for i dag' })).toBeVisible()
-    const payload = request.postDataJSON()
+    const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
         behandlerHpr: '9144889',
         values: {
@@ -56,13 +50,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
         tom: '18.02.2024',
     })(page)
 
-    const request = await clickAndWait(
-        page.getByRole('button', { name: 'Opprett sykmelding' }).click(),
-        waitForHttp('/api/sykmelding/submit', 'POST')(page),
-    )
-
-    await expect(page.getByRole('heading', { name: 'Takk for i dag' })).toBeVisible()
-    const payload = request.postDataJSON()
+    const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
         behandlerHpr: '9144889',
         values: {
@@ -88,13 +76,7 @@ test('can submit gradert sykmelding', async ({ page }) => {
         tom: '18.02.2024',
     })(page)
 
-    const request = await clickAndWait(
-        page.getByRole('button', { name: 'Opprett sykmelding' }).click(),
-        waitForHttp('/api/sykmelding/submit', 'POST')(page),
-    )
-
-    await expect(page.getByRole('heading', { name: 'Takk for i dag' })).toBeVisible()
-    const payload = request.postDataJSON()
+    const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
         behandlerHpr: '9144889',
         values: {
