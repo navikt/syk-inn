@@ -1,6 +1,7 @@
 import { logger } from '@navikt/next-logger'
 
 import { NySykmeldingFormValues } from '@components/ny-sykmelding-form/NySykmeldingFormValues'
+import { pathWithBasePath } from '@utils/url'
 
 type CreateResult = { ok: 'ok'; id: string } | { errors: { message: string } }[]
 
@@ -10,7 +11,7 @@ export async function createSykmelding(
         hpr: string
     },
 ): Promise<CreateResult> {
-    const response = await fetch('/api/sykmelding/submit', {
+    const response = await fetch(pathWithBasePath('/api/sykmelding/submit'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
