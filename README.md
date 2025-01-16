@@ -83,8 +83,9 @@ The form is built specifically to handle multiple "contexts" without the form ha
 
 (Use mise? `mise i` to install the required prerequisites)
 
-- [Node.js](https://nodejs.org/en/) v20 (LTS)
+- [Node.js](https://nodejs.org/en/) v22 (LTS)
 - [Yarn](https://yarnpkg.com/) (`corepack enable`)
+- [Docker](https://www.docker.com/)
 
 This project relies on a Github PAT with `package:read` available as `NPM_AUTH_TOKEN`-environment variable for
 authenticated access to the Github Package Registry.
@@ -97,15 +98,7 @@ Install dependencies:
 yarn
 ```
 
-(Once): Start Redis docker image locally:
-
-```bash
-yarn dev:redis
-```
-
-Alternatively, you can edit ``
-
-Start the development server:
+Start the development server (automatically starts redis, this is why Docker is needed):
 
 ```bash
 yarn dev
