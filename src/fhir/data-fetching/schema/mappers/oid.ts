@@ -1,6 +1,6 @@
 import { logger } from '@navikt/next-logger'
 
-import { FhirPractitioner } from '../practitioner'
+import { GeneralIdentifier } from '@fhir/data-fetching/schema/common'
 
 const FNR_OID = '2.16.578.1.12.4.1.4.1'
 const DNR_OID = '2.16.578.1.12.4.1.4.2'
@@ -23,8 +23,9 @@ export function urnToOidType(urn: string, value: string): 'fnr' | 'dnr' | 'hpr' 
     }
 }
 
-export function getHpr(identifiers: FhirPractitioner['identifier']): string | null {
-    const hprIdentifier = identifiers.find((id) => id.system.startsWith('urn:oid') && id.system.includes(HPR_OID))
+export function getHpr(identifiers: GeneralIdentifier | GeneralIdentifier[]): string | null {
+    const ids = Array.isArray(identifiers) ? identifiers : [identifiers]
+    const hprIdentifier = ids.find((id) => id.system.startsWith('urn:oid') && id.system.includes(HPR_OID))
 
     if (hprIdentifier == null) {
         return null

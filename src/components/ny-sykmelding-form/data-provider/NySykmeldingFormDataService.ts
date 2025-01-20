@@ -34,6 +34,10 @@ export type PasientInfo = {
         nr: string
     } | null
     navn: string
+    fastlege: {
+        navn: string
+        hpr: string
+    } | null
 }
 
 export type ArbeidsgiverInfo = {

@@ -38,10 +38,21 @@ function PasientInfo(): ReactElement {
                     <Detail>Navn</Detail>
                     <BodyShort spacing>{pasientQuery.data.navn}</BodyShort>
                     <Detail>ID-nummer</Detail>
-                    <BodyShort>
+                    <BodyShort spacing>
                         {pasientQuery.data.oid?.nr ?? 'ukjent'}{' '}
                         {pasientQuery.data.oid?.type && (
                             <span className="text-xs">({oidTypeToReadableText(pasientQuery.data.oid.type)})</span>
+                        )}
+                    </BodyShort>
+                    <Detail>Fastlege</Detail>
+                    <BodyShort>
+                        {pasientQuery.data.fastlege ? (
+                            <>
+                                {pasientQuery.data.fastlege.navn}{' '}
+                                <span className="text-xs">({pasientQuery.data.fastlege.hpr})</span>
+                            </>
+                        ) : (
+                            <>Ingen registrert fastlege</>
                         )}
                     </BodyShort>
                     <input {...formContext.register('pasient')} type="hidden" value={pasientQuery.data.oid?.nr} />

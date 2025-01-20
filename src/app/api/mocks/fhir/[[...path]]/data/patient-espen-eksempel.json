@@ -89,8 +89,8 @@
     "generalPractitioner": [
         {
             "identifier": {
-                "system": "urn:oid:2.16.578.1.12.4.1.2",
-                "value": "720"
+                "system": "urn:oid:2.16.578.1.12.4.1.4.4",
+                "value": "720123123"
             },
             "display": "SIDSEL AASE JAVERY"
         }
