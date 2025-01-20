@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useCallback, useState } from 'react'
 import {
     Detail,
     DatePicker,
@@ -7,7 +7,9 @@ import {
     RangeValidationT,
     TextField,
     useRangeDatepicker,
+    Button,
 } from '@navikt/ds-react'
+import { addWeeks } from 'date-fns'
 
 import { cn } from '@utils/tw'
 import { dateOnly } from '@utils/date'
@@ -49,7 +51,7 @@ function AktivitetSection(): ReactElement {
             },
         },
     })
-    const { datepickerProps, toInputProps, fromInputProps } = useRangeDatepicker({
+    const { datepickerProps, toInputProps, fromInputProps, setSelected } = useRangeDatepicker({
         onRangeChange: (range) => {
             if (!range) {
                 aktivitetField.field.onChange({
@@ -71,6 +73,19 @@ function AktivitetSection(): ReactElement {
         },
     })
 
+    const setWeeks = useCallback(
+        (weeks: number): void => {
+            const today = new Date()
+            const tom = addWeeks(today, weeks)
+
+            setSelected({
+                from: today,
+                to: tom,
+            })
+        },
+        [setSelected],
+    )
+
     return (
         <div>
             <Detail spacing>Pasientens begrensninger i aktivitet</Detail>
@@ -91,6 +106,45 @@ function AktivitetSection(): ReactElement {
                         onBlur={aktivitetField.field.onBlur}
                     />
                 </DatePicker>
+            </div>
+
+            <div className="mb-3 flex gap-3 w-[42ch]">
+                <Button
+                    variant="secondary-neutral"
+                    size="small"
+                    type="button"
+                    className="grow"
+                    onClick={() => setWeeks(1)}
+                >
+                    1 uke
+                </Button>
+                <Button
+                    variant="secondary-neutral"
+                    size="small"
+                    type="button"
+                    className="grow"
+                    onClick={() => setWeeks(2)}
+                >
+                    2 uker
+                </Button>
+                <Button
+                    variant="secondary-neutral"
+                    size="small"
+                    type="button"
+                    className="grow"
+                    onClick={() => setWeeks(3)}
+                >
+                    3 uker
+                </Button>
+                <Button
+                    variant="secondary-neutral"
+                    size="small"
+                    type="button"
+                    className="grow"
+                    onClick={() => setWeeks(4)}
+                >
+                    4 uker
+                </Button>
             </div>
 
             <RadioGroup

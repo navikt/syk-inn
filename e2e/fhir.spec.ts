@@ -1,4 +1,7 @@
 import { test, expect } from '@playwright/test'
+import { addWeeks } from 'date-fns'
+
+import { dateOnly } from '@utils/date'
 
 import { launchWithMock } from './actions/fhir-actions'
 import {
@@ -6,6 +9,7 @@ import {
     editHoveddiagnose,
     fillAktivitetsPeriode,
     pickHoveddiagnose,
+    pickNumberOfWeeks,
     submitSykmelding,
 } from './actions/user-actions'
 
@@ -31,6 +35,30 @@ test('can submit 100% sykmelding', async ({ page }) => {
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: '2024-02-15',
                 tom: '2024-02-18',
+                grad: null,
+            },
+        },
+    })
+})
+
+test('can submit 100% sykmelding and use week picker', async ({ page }) => {
+    await launchWithMock(page)
+    await assertPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+    await pickNumberOfWeeks(2)(page)
+
+    const payload = await submitSykmelding()(page)
+    expect(payload).toEqual({
+        behandlerHpr: '9144889',
+        values: {
+            pasient: '21037712323',
+            diagnoser: {
+                hoved: { code: 'P74', system: 'ICPC2', text: 'Angstlidelse' },
+            },
+            aktivitet: {
+                type: 'AKTIVITET_IKKE_MULIG',
+                fom: dateOnly(new Date()),
+                tom: dateOnly(addWeeks(new Date(), 2)),
                 grad: null,
             },
         },
