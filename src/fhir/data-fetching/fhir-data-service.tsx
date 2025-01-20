@@ -15,7 +15,7 @@ import { wait } from '@utils/wait'
 import { getHpr } from '@fhir/data-fetching/schema/mappers/oid'
 
 import { FhirBundleOrPatientSchema } from './schema/patient'
-import { getName, getValidPatientOid } from './schema/mappers/patient'
+import { getFastlege, getName, getValidPatientOid } from './schema/mappers/patient'
 import { FhirPractitionerQualification, FhirPractitionerSchema } from './schema/practitioner'
 
 type FhirClient = ReturnType<typeof fhirClient>
@@ -53,6 +53,7 @@ function createGetFhirPasientFn(client: FhirClient) {
         return {
             navn: getName(patient.name),
             oid: getValidPatientOid(patient),
+            fastlege: getFastlege(patient),
         }
     }
 }

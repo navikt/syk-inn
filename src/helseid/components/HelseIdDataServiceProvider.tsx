@@ -25,6 +25,8 @@ function HelseIdDataServiceProvider({ behandler, children }: PropsWithChildren<P
                 // TODO: Hvor søke, PDL?
                 oid: { type: 'fnr', nr: fnr },
                 navn: 'Stand Alonessen',
+                // TODO: mulig å finne standalone?
+                fastlege: null,
             }),
         },
     }

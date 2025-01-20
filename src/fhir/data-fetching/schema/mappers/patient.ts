@@ -1,4 +1,7 @@
-import { urnToOidType } from '@fhir/data-fetching/schema/mappers/oid'
+import { logger } from '@navikt/next-logger'
+
+import { getHpr, urnToOidType } from '@fhir/data-fetching/schema/mappers/oid'
+import { raise } from '@utils/ts'
 
 import { FhirPatient } from '../patient'
 import { Name } from '../common'
@@ -46,4 +49,26 @@ export function getValidPatientOid(patient: FhirPatient): {
     }
 
     return null
+}
+
+export function getFastlege(patient: FhirPatient): {
+    hpr: string
+    navn: string
+} | null {
+    if (patient.generalPractitioner == null) {
+        return null
+    }
+
+    const legeMedHpr = patient.generalPractitioner.find((it) => getHpr(it.identifier) != null)
+    if (legeMedHpr == null) {
+        logger.warn('Fant liste med fastleger, men ingen hadde gyldig HPR identifier')
+        return null
+    }
+
+    return {
+        hpr:
+            getHpr(legeMedHpr.identifier) ??
+            raise('Fastlege uten HPR, men vi har allerede funnet personen så dette er umulig'),
+        navn: legeMedHpr.display,
+    }
 }
