@@ -66,6 +66,15 @@ export function fillAktivitetsPeriode({
     }
 }
 
+export function pickNumberOfWeeks(weeks: number) {
+    return async (page: Page) => {
+        const aktivitetRegion = page.getByRole('region', { name: 'Aktivitet' })
+        await expect(aktivitetRegion).toBeVisible()
+
+        await aktivitetRegion.getByRole('button', { name: weeks === 1 ? `1 uke` : `${weeks} uker` }).click()
+    }
+}
+
 export function submitSykmelding() {
     return async (page: Page): Promise<unknown> => {
         const request = await clickAndWait(
