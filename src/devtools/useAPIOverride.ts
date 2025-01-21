@@ -13,6 +13,7 @@ export function withFailInterceptor(dataService: NySykmeldingFormDataService): N
     return {
         context: {
             pasient: failIfOverride('context', 'pasient', dataService.context.pasient),
+            konsultasjon: failIfOverride('context', 'konsultasjon', dataService.context.konsultasjon),
             arbeidsgivere: failIfOverride('context', 'arbeidsgivere', dataService.context.arbeidsgivere),
             behandler: dataService.context.behandler,
         },

@@ -1,6 +1,6 @@
 import { logger } from '@navikt/next-logger'
 
-import { getHpr, urnToOidType } from '@fhir/data-fetching/schema/mappers/oid'
+import { getHpr, userUrnToOidType } from '@fhir/data-fetching/schema/mappers/practitioner'
 import { raise } from '@utils/ts'
 
 import { FhirPatient } from '../patient'
@@ -24,7 +24,7 @@ export function getValidPatientOid(patient: FhirPatient): {
     }
 
     const oidsByType = oids.map((it) => ({
-        type: urnToOidType(it.system, it.value),
+        type: userUrnToOidType(it.system, it.value),
         nr: it.value,
     }))
 

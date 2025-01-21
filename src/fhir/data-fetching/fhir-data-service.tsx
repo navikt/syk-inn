@@ -1,18 +1,22 @@
 import * as R from 'remeda'
 import { client as fhirClient } from 'fhirclient'
 import { logger } from '@navikt/next-logger'
+import { z } from 'zod'
 
 import {
     ArbeidsgiverInfo,
     Autorisasjoner,
     BehandlerInfo,
+    KonsultasjonInfo,
     NotAvailable,
     NySykmeldingFormDataService,
     PasientInfo,
 } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { raise } from '@utils/ts'
 import { wait } from '@utils/wait'
-import { getHpr } from '@fhir/data-fetching/schema/mappers/oid'
+import { getHpr } from '@fhir/data-fetching/schema/mappers/practitioner'
+import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/data-fetching/schema/mappers/diagnosis'
+import { FhirConditionSchema } from '@fhir/data-fetching/schema/condition'
 
 import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getFastlege, getName, getValidPatientOid } from './schema/mappers/patient'
@@ -30,6 +34,7 @@ export const createFhirDataService = async (client: FhirClient): Promise<NySykme
             behandler: await getFhirPractitioner(client),
             // TODO: Better name to describe this curried function?
             pasient: createGetFhirPasientFn(client),
+            konsultasjon: createGetFhirEncounterFn(client),
             arbeidsgivere: getArbeidsgivere,
         },
         query: {
@@ -54,6 +59,43 @@ function createGetFhirPasientFn(client: FhirClient) {
             navn: getName(patient.name),
             oid: getValidPatientOid(patient),
             fastlege: getFastlege(patient),
+        }
+    }
+}
+
+function createGetFhirEncounterFn(client: FhirClient) {
+    return async (): Promise<KonsultasjonInfo> => {
+        await wait()
+
+        const encounter = await client.request(`Condition?patient=${client.patient.id}`)
+        const parsed = z.array(FhirConditionSchema).safeParse(encounter)
+
+        if (!parsed.success) {
+            logger.error('Failed to parse conditions', parsed.error)
+            throw parsed.error
+        }
+
+        const [relevanteDignoser, irrelevanteDiagnoser] = parsed.data
+            ? R.partition(parsed.data, (diagnosis) =>
+                  diagnosis.code.coding.some((coding) => diagnosisUrnToOidType(coding.system) != null),
+              )
+            : [[], []]
+
+        logger.info(
+            `Fant ${relevanteDignoser.length} med gyldig ICPC-2 eller ICD-10 kode, ${irrelevanteDiagnoser.length} uten gyldig kode`,
+        )
+
+        return {
+            diagnoser: R.pipe(
+                relevanteDignoser,
+                R.map((diagnosis) => getDiagnosis(diagnosis.code.coding)),
+                R.filter(R.isTruthy),
+                R.map((it) => ({
+                    system: it.system,
+                    kode: it.code,
+                    tekst: it.display,
+                })),
+            ),
         }
     }
 }

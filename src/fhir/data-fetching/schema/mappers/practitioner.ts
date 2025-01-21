@@ -9,7 +9,7 @@ const HPR_OID = '2.16.578.1.12.4.1.4.4'
 /**
  * Kilde: https://www.ehelse.no/teknisk-dokumentasjon/oid-identifikatorserier-i-helse-og-omsorgstjenesten
  */
-export function urnToOidType(urn: string, value: string): 'fnr' | 'dnr' | 'hpr' | 'annet' {
+export function userUrnToOidType(urn: string, value: string): 'fnr' | 'dnr' | 'hpr' | 'annet' {
     switch (urn.replace('urn:oid:', '')) {
         case FNR_OID:
             return 'fnr'
