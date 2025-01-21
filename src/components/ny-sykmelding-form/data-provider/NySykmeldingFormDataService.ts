@@ -18,6 +18,7 @@ export type NySykmeldingFormDataService = {
         behandler: BehandlerInfo
         pasient: (() => Promise<PasientInfo>) | NotAvailable
         arbeidsgivere: (() => Promise<ArbeidsgiverInfo[]>) | NotAvailable
+        konsultasjon: (() => Promise<KonsultasjonInfo>) | NotAvailable
     }
     /**
      * Query data can be anything that requires an argument to fetch, such as a specific patient.
@@ -38,6 +39,15 @@ export type PasientInfo = {
         navn: string
         hpr: string
     } | null
+}
+
+export type KonsultasjonInfo = {
+    diagnoser: {
+        system: 'ICD10' | 'ICPC2'
+        kode: string
+        tekst: string
+        vekt?: number
+    }[]
 }
 
 export type ArbeidsgiverInfo = {

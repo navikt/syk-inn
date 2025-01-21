@@ -18,6 +18,7 @@ function HelseIdDataServiceProvider({ behandler, children }: PropsWithChildren<P
         context: {
             pasient: NotAvailable,
             arbeidsgivere: NotAvailable,
+            konsultasjon: NotAvailable,
             behandler: behandler,
         },
         query: {

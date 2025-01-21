@@ -99,6 +99,11 @@ function ToggleAPIFailures(): ReactElement {
                 Pasient
             </Checkbox>
         ),
+        konsultasjon: (
+            <Checkbox key="konsultasjon" value="konsultasjon">
+                Konsultasjon
+            </Checkbox>
+        ),
         arbeidsgivere: (
             <Checkbox key="arbeidsgivere" value="arbeidsgivere">
                 Arbeidsgivere
