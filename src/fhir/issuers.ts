@@ -24,7 +24,11 @@ switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
 
 export function isKnownIssuer(iss: string): boolean {
     const [withoutQuery] = iss.split('?')
-    const withoutTrailingSlash = withoutQuery.replace(/\/$/, '')
+    const withoutTrailingSlash = removeTrailingSlash(withoutQuery)
 
     return knownIssuers.map((it) => it.replace(/\/$/, '')).includes(withoutTrailingSlash)
+}
+
+export function removeTrailingSlash(url: string): string {
+    return url.replace(/\/$/, '')
 }

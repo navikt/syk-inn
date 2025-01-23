@@ -7,7 +7,7 @@ import { logger } from '@navikt/next-logger'
 import { isLocalOrDemo } from '@utils/env'
 import { saveSessionIssuer } from '@fhir/sessions/session-lifecycle'
 import FhirLaunchInitialization from '@fhir/components/FhirLaunchInitialization'
-import { isKnownIssuer } from '@fhir/issuers'
+import { isKnownIssuer, removeTrailingSlash } from '@fhir/issuers'
 
 type Props = {
     searchParams: Promise<{ iss: string | undefined }>
@@ -55,7 +55,7 @@ async function Page({ searchParams }: Props): Promise<ReactElement> {
          * Launch is server side rendered with ?iss=<issuer> when the EPJ launches the application. We store the issuer
          * together with the current users session-ID to be able to verify the token at a later time.
          */
-        await saveSessionIssuer(params.iss)
+        await saveSessionIssuer(removeTrailingSlash(params.iss))
     }
 
     return (
