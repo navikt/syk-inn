@@ -2,11 +2,11 @@ import { createRemoteJWKSet, jwtVerify } from 'jose'
 import { logger } from '@navikt/next-logger'
 
 import { getSessionIssuer } from '../sessions/session-lifecycle'
-import { knownIssuers } from '../issuers'
+import { isKnownIssuer } from '../issuers'
 
 export async function verifyFhirToken(token: string): Promise<void> {
     const issuer = await getSessionIssuer()
-    if (!knownIssuers.find((it) => it.startsWith(issuer))) {
+    if (!isKnownIssuer(issuer)) {
         throw new Error(`Non-allow-listed issuer: ${issuer}. Somebody is hacking! :shock:`)
     }
 
