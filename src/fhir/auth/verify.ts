@@ -10,10 +10,11 @@ export async function verifyFhirToken(token: string): Promise<void> {
         throw new Error(`Non-allow-listed issuer: ${issuer}. Somebody is hacking! :shock:`)
     }
 
-    logger.info(`Current users issuer: ${issuer}`)
+    logger.info(`Current users issuer: ${issuer}, looking for well known at ${issuer}/.well-known/smart-configuration`)
     const wellKnown = await fetch(`${issuer}/.well-known/smart-configuration`).then((it) => it.json())
     const cleanToken = token.replace('Bearer ', '')
 
+    logger.info(`Fetched well known configuration from issuer, jwks_uri: ${wellKnown['jwks_uri']}`)
     try {
         const verifyResult = await jwtVerify(cleanToken, getJwkSet(wellKnown['jwks_uri']), {
             issuer: wellKnown['issuer'],
