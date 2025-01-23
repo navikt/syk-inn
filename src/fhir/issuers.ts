@@ -5,8 +5,8 @@ import { bundledEnv } from '@utils/env'
  */
 export const knownIssuers: string[] = [
     'https://launch.smarthealthit.org/v/r4/fhir',
-    'https://fhir.ekstern.dev.nav.no/',
-    'https://fhirapi.public.webmedepj.no/',
+    'https://fhir.ekstern.dev.nav.no',
+    'https://fhirapi.public.webmedepj.no',
 ]
 
 switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
