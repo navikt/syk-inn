@@ -8,6 +8,7 @@ import {
     NotAvailable,
     NySykmeldingFormDataService,
 } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
+import { raise } from '@utils/ts'
 
 type Props = {
     behandler: BehandlerInfo
@@ -29,6 +30,11 @@ function HelseIdDataServiceProvider({ behandler, children }: PropsWithChildren<P
                 // TODO: mulig å finne standalone?
                 fastlege: null,
             }),
+        },
+        mutation: {
+            sendSykmelding: async () => {
+                raise('Standalone is not supported in Pilot')
+            },
         },
     }
 

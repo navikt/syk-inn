@@ -26,6 +26,9 @@ export type NySykmeldingFormDataService = {
     query: {
         pasient: ((fnr: string) => Promise<PasientInfo>) | NotAvailable
     }
+    mutation: {
+        sendSykmelding: (sykmelding: unknown) => Promise<NySykmelding>
+    }
 }
 
 export type PasientInfo = {
@@ -78,6 +81,10 @@ export type BehandlerInfo = {
     hpr: string
     epjDescription?: string
     autorisasjoner: Autorisasjoner
+}
+
+export type NySykmelding = {
+    id: string
 }
 
 /**

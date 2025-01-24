@@ -9,6 +9,7 @@ import {
     BehandlerInfo,
     KonsultasjonInfo,
     NotAvailable,
+    NySykmelding,
     NySykmeldingFormDataService,
     PasientInfo,
 } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
@@ -17,6 +18,7 @@ import { wait } from '@utils/wait'
 import { getHpr } from '@fhir/data-fetching/schema/mappers/practitioner'
 import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/data-fetching/schema/mappers/diagnosis'
 import { FhirConditionSchema } from '@fhir/data-fetching/schema/condition'
+import { pathWithBasePath } from '@utils/url'
 
 import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getFastlege, getName, getValidPatientOid } from './schema/mappers/patient'
@@ -29,9 +31,11 @@ type FhirClient = ReturnType<typeof fhirClient>
  * the actual data through the fhirclient-context.
  */
 export const createFhirDataService = async (client: FhirClient): Promise<NySykmeldingFormDataService> => {
+    const behandler = await getFhirPractitioner(client)
+
     return {
         context: {
-            behandler: await getFhirPractitioner(client),
+            behandler,
             // TODO: Better name to describe this curried function?
             pasient: createGetFhirPasientFn(client),
             konsultasjon: createGetFhirEncounterFn(client),
@@ -39,6 +43,9 @@ export const createFhirDataService = async (client: FhirClient): Promise<NySykme
         },
         query: {
             pasient: NotAvailable,
+        },
+        mutation: {
+            sendSykmelding: createSendSykmeldingFn(client, behandler.hpr),
         },
     }
 }
@@ -151,6 +158,37 @@ async function getArbeidsgivere(): Promise<ArbeidsgiverInfo[]> {
             organisasjonsnummer: '987654321',
         },
     ]
+}
+
+function createSendSykmeldingFn(client: FhirClient, hpr: string) {
+    return async (values: unknown): Promise<NySykmelding> => {
+        await wait()
+        const response = await fetch(pathWithBasePath('/fhir/sykmelding/submit'), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: client.state.tokenResponse?.id_token ?? raise('No active Smart Session'),
+            },
+            body: JSON.stringify({
+                values,
+                behandlerHpr: hpr,
+            }),
+        })
+
+        if (!response.ok) {
+            if (response.headers.get('content-type')?.includes('application/json')) {
+                const errors = await response.json()
+                logger.error(`Sykmelding creation failed (${response.status} ${response.statusText}), errors`, {
+                    cause: errors,
+                })
+            } else {
+                logger.error(`API Responded with error ${response.status} ${response.statusText}`)
+            }
+            throw new Error('API Responded with error')
+        }
+
+        return response.json()
+    }
 }
 
 function getAutorisasjoner(qualification: FhirPractitionerQualification[]): Autorisasjoner {

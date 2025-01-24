@@ -11,7 +11,7 @@ export async function GET(): Promise<Response> {
     }
 
     try {
-        await verifyFhirToken(token!)
+        await verifyFhirToken(token)
         return Response.json({ ok: 'ok' })
     } catch (e) {
         logger.error(e)

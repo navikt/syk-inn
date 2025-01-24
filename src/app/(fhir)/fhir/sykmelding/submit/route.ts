@@ -1,12 +1,17 @@
 import { z } from 'zod'
 import { logger } from '@navikt/next-logger'
+import { headers } from 'next/headers'
 
 import { DateOnly } from '@utils/zod'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { wait } from '@utils/wait'
 import { createNewSykmelding } from '@services/SykInnApiService'
 import { raise } from '@utils/ts'
+import { verifyFhirToken } from '@fhir/auth/verify'
 
+/**
+ * TODO: Payload will be identical for standalone and FHIR
+ */
 const SubmitSykmeldingFormValuesSchema = z.object({
     pasient: z.string().optional(),
     diagnoser: z.object({
@@ -42,6 +47,18 @@ const SubmitSykmeldingPayloadSchema = z.object({
 type SubmitResult = { ok: 'ok'; id: string } | { errors: { message: string } }[]
 
 export async function POST(request: Request): Promise<Response> {
+    const token = (await headers()).get('Authorization')
+    if (token == null) {
+        return Response.json({ message: 'Unauthorized' }, { status: 401 })
+    }
+
+    try {
+        await verifyFhirToken(token)
+    } catch (e) {
+        logger.error('User tried submitting a sykmelding with an invalid token', { cause: e })
+        return Response.json({ message: 'Unauthorized' }, { status: 401 })
+    }
+
     const verifiedPayload = SubmitSykmeldingPayloadSchema.safeParse(await request.json())
     if (!verifiedPayload.success) {
         logger.error(`Invalid payload: ${JSON.stringify(verifiedPayload.error, null, 2)}`)
@@ -77,6 +94,5 @@ export async function POST(request: Request): Promise<Response> {
         ] satisfies SubmitResult)
     }
 
-    // TODO(3): Redirect to /<mode>/sykmelding/<id> (how to get mode?)
     return Response.json({ ok: 'ok', id: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d' } satisfies SubmitResult)
 }

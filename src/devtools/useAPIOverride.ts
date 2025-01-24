@@ -20,6 +20,9 @@ export function withFailInterceptor(dataService: NySykmeldingFormDataService): N
         query: {
             pasient: failIfOverride('query', 'pasient', dataService.query.pasient),
         },
+        mutation: {
+            sendSykmelding: dataService.mutation.sendSykmelding,
+        },
     }
 }
 

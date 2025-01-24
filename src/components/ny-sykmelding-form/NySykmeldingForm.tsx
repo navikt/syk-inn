@@ -22,7 +22,6 @@ import PasientSection from './pasient/PasientSection'
 import { NySykmeldingOpprettProgressModal } from './NySykmeldingOpprettProgressModal'
 import FormErrors, { useFormErrors } from './errors/FormErrors'
 import { NySykmeldingFormValues } from './NySykmeldingFormValues'
-import { createSykmelding } from './ny-sykmelding-api'
 
 function NySykmeldingForm(): ReactElement {
     const [errorSectionRef, focusErrorSection] = useFormErrors()
@@ -34,19 +33,17 @@ function NySykmeldingForm(): ReactElement {
         mutationFn: async (values: NySykmeldingFormValues) => {
             logger.info('(Client) Submitting values,', values)
 
-            const createResult = await createSykmelding(values, {
-                hpr: dataService.context.behandler.hpr,
-            })
-
-            if ('ok' in createResult) {
+            try {
+                const createResult = dataService.mutation.sendSykmelding(values)
+                // TODO: Redirect to appropriate kvittering page
                 return createResult
+            } catch (e) {
+                logger.error(`Sykmelding creation failed, errors`, { cause: e })
+                throw new Error(`Sykmelding creation failed`)
             }
-
-            logger.error(`Sykmelding creation failed, errors: ${JSON.stringify(createResult)}`)
-            throw new Error(`Sykmelding creation failed: ${createResult[0].errors.message}`)
         },
         onSuccess: (data) => {
-            logger.info(`Sykmelding created successfully: ${data.ok}`)
+            logger.info(`Sykmelding created successfully: ${data.id}`)
         },
     })
 
