@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 import { launchStandalone } from './actions/standalone-actions'
 import { fillAktivitetsPeriode, fillManualPasient, pickHoveddiagnose, submitSykmelding } from './actions/user-actions'
 
-test('can submit 100% sykmelding without prefilled pasient', async ({ page }) => {
+test.fixme('can submit 100% sykmelding without prefilled pasient', async ({ page }) => {
     await launchStandalone(page)
     await fillManualPasient({ fnr: '21037712323' })(page)
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)

@@ -79,7 +79,7 @@ export function submitSykmelding() {
     return async (page: Page): Promise<unknown> => {
         const request = await clickAndWait(
             page.getByRole('button', { name: 'Opprett sykmelding' }).click(),
-            waitForHttp('/api/sykmelding/submit', 'POST')(page),
+            waitForHttp('/fhir/sykmelding/submit', 'POST')(page),
         )
 
         await expect(page.getByRole('heading', { name: 'Takk for i dag' })).toBeVisible()
