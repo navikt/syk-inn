@@ -76,12 +76,12 @@ function ResetSmartContext(): ReactElement {
                     size="small"
                     variant="secondary-neutral"
                     onClick={async () => {
-                        await fetch(pathWithBasePath('/api/verify-token'), {
+                        await fetch(pathWithBasePath('/fhir/verify-token'), {
                             headers: { Authorization: `Bearer ${getFhirIdTokenFromSessionStorage()}` },
                         })
                     }}
                 >
-                    Validate current access token
+                    Validate current access token (FHIR)
                 </Button>
                 <Detail>(See server log for result)</Detail>
             </div>

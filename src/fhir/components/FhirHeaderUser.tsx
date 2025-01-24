@@ -47,7 +47,7 @@ function VerifiedBadge(): ReactElement {
     const { data, isLoading, error } = useQuery({
         queryKey: ['fhir-user-token-verification'],
         queryFn: async (): Promise<{ ok: 'ok' } | { message: string }> => {
-            const result = await fetch(pathWithBasePath('/api/verify-token'), {
+            const result = await fetch(pathWithBasePath('/fhir/verify-token'), {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${getFhirIdTokenFromSessionStorage()}`,
