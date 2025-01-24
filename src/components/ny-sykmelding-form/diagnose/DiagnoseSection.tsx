@@ -21,7 +21,7 @@ function DiagnoseSection(): ReactElement {
         },
         enabled: isResourceAvailable(dataService.context.konsultasjon),
     })
-
+    console.log('data: ', data)
     return (
         <div>
             <Detail spacing>Pasientens medisinske diagnose. Søket søker i både ICPC-2 og ICD-10 diagnosekoder.</Detail>

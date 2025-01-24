@@ -23,6 +23,7 @@ import { pathWithBasePath } from '@utils/url'
 import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getFastlege, getName, getValidPatientOid } from './schema/mappers/patient'
 import { FhirPractitionerQualification, FhirPractitionerSchema } from './schema/practitioner'
+import { FhirEncounterSchema } from '@fhir/data-fetching/schema/encounter'
 
 type FhirClient = ReturnType<typeof fhirClient>
 
@@ -76,6 +77,9 @@ function createGetFhirEncounterFn(client: FhirClient) {
 
         const encounter = await client.request(`Condition?patient=${client.patient.id}`)
         const parsed = z.array(FhirConditionSchema).safeParse(encounter)
+        const enc = await client.request(`Encounter/${client.encounter.id}`)
+
+        const safeParse = FhirEncounterSchema.safeParse(enc)
 
         if (!parsed.success) {
             logger.error('Failed to parse conditions', parsed.error)
@@ -92,6 +96,8 @@ function createGetFhirEncounterFn(client: FhirClient) {
             `Fant ${relevanteDignoser.length} med gyldig ICPC-2 eller ICD-10 kode, ${irrelevanteDiagnoser.length} uten gyldig kode`,
         )
 
+        const fhirDiagnose = safeParse.data?.reasonCode ? getDiagnosis(safeParse.data.reasonCode[0].coding) : null
+
         return {
             diagnoser: R.pipe(
                 relevanteDignoser,
@@ -103,6 +109,13 @@ function createGetFhirEncounterFn(client: FhirClient) {
                     tekst: it.display,
                 })),
             ),
+            diagnose: fhirDiagnose
+                ? {
+                      system: fhirDiagnose.system,
+                      kode: fhirDiagnose.code,
+                      tekst: fhirDiagnose.display,
+                  }
+                : null,
         }
     }
 }

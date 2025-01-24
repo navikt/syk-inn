@@ -51,6 +51,11 @@ export type KonsultasjonInfo = {
         tekst: string
         vekt?: number
     }[]
+    diagnose: {
+        system: 'ICD10' | 'ICPC2'
+        kode: string
+        tekst: string
+    } | null
 }
 
 export type ArbeidsgiverInfo = {
