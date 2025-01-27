@@ -3,6 +3,7 @@ import { logger } from '@navikt/next-logger'
 import { ensureFhirApiAuthenticated } from '@fhir/auth/api-utils'
 import { getSykmelding } from '@services/SykInnApiService'
 import { isE2E, isLocalOrDemo } from '@utils/env'
+import { ExistingSykmelding } from '@services/SykInnApiSchema'
 
 export async function GET(
     request: Request,
@@ -22,8 +23,20 @@ export async function GET(
     if (isLocalOrDemo || isE2E) {
         logger.warn('Is in demo, local or e2e, returning mocked sykmelding data')
         return Response.json({
-            id: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
-        })
+            sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
+            pasient: {
+                fnr: '12345678910',
+            },
+            periode: {
+                fom: '2021-06-01',
+                tom: '2021-06-15',
+            },
+            hovedDiagnose: {
+                system: 'ICD-10',
+                code: 'L87',
+                text: 'Allergisk kontakte',
+            },
+        } satisfies ExistingSykmelding)
     }
 
     const sykmelding = await getSykmelding(sykmeldingId, hpr)
@@ -32,5 +45,5 @@ export async function GET(
         return new Response('Failed to retrieve sykmelding', { status: 500 })
     }
 
-    return Response.json(sykmelding, { status: 200 })
+    return Response.json(sykmelding satisfies ExistingSykmelding, { status: 200 })
 }

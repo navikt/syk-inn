@@ -18,6 +18,7 @@ import {
     KonsultasjonInfo,
     NotAvailable,
     NySykmelding,
+    ExistingSykmelding,
     DataService,
     PasientInfo,
 } from '../../data-fetcher/data-service'
@@ -177,7 +178,7 @@ async function getArbeidsgivere(): Promise<ArbeidsgiverInfo[]> {
 }
 
 function createGetSykmeldingFn(client: FhirClient, hpr: string) {
-    return async (sykmeldingId: string): Promise<NySykmelding> => {
+    return async (sykmeldingId: string): Promise<ExistingSykmelding> => {
         await wait()
         const response = await fetch(pathWithBasePath(`/fhir/sykmelding/${sykmeldingId}`), {
             method: 'GET',
@@ -200,6 +201,7 @@ function createGetSykmeldingFn(client: FhirClient, hpr: string) {
             throw new Error('API Responded with error')
         }
 
+        // TODO: Delt sterk typing med zod schema i route fetchern?
         return response.json()
     }
 }
@@ -231,6 +233,7 @@ function createSendSykmeldingFn(client: FhirClient, hpr: string) {
             throw new Error('API Responded with error')
         }
 
+        // TODO: Delt sterk typing med zod schema i route fetchern?
         return response.json()
     }
 }

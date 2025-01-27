@@ -16,11 +16,12 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
         queryFn: async () => dataService.query.sykmelding(sykmeldingId),
     })
 
+
     return (
         <div>
             {isLoading && <p>Loading...</p>}
             {error && <p>Error: {error.message}</p>}
-            {data && <p>Existing sykmelding: {JSON.stringify(data)}</p>}
+            {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
         </div>
     )
 }

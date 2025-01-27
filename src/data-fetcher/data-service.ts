@@ -29,7 +29,7 @@ export type DataService = {
      */
     query: {
         pasient: ((fnr: string) => Promise<PasientInfo>) | NotAvailable
-        sykmelding: (id: string) => Promise<NySykmelding>
+        sykmelding: (id: string) => Promise<ExistingSykmelding>
     }
     mutation: {
         sendSykmelding: (sykmelding: unknown) => Promise<NySykmelding>
@@ -95,6 +95,22 @@ export type BehandlerInfo = {
 
 export type NySykmelding = {
     id: string
+}
+
+export type ExistingSykmelding = {
+    sykmeldingId: string
+    periode: {
+        fom: string
+        tom: string
+    }
+    pasient: {
+        fnr: string
+    }
+    hovedDiagnose: {
+        system: string
+        code: string
+        text: string
+    }
 }
 
 /**

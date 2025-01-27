@@ -27,7 +27,7 @@ function FhirDataProvider({ children }: PropsWithChildren): ReactElement {
     })
     const fhirDataService = useQuery({
         queryKey: ['fhir-data-service'],
-        queryFn: client.data != null ? () => createFhirDataService(client.data) : skipToken,
+        queryFn: client.isSuccess ? () => createFhirDataService(client.data) : skipToken,
     })
 
     return (
