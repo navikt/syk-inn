@@ -6,7 +6,7 @@ import { PageBlock } from '@navikt/ds-react/Page'
 
 import { isLocalOrDemo } from '@utils/env'
 import { saveSessionCompleted } from '@fhir/sessions/session-lifecycle'
-import FhirClientProvider from '@fhir/components/FhirClientProvider'
+import FhirDataProvider from '@fhir/components/FhirDataProvider'
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 
 type Props = {
@@ -51,9 +51,9 @@ async function Page(props: Props): Promise<ReactElement> {
                     <ListItem>Det må kun være èn periode, enten 100% eller gradert sykmelding</ListItem>
                 </List>
             </section>
-            <FhirClientProvider>
+            <FhirDataProvider>
                 <NySykmeldingForm />
-            </FhirClientProvider>
+            </FhirDataProvider>
         </PageBlock>
     )
 }

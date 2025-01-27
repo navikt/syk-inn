@@ -1,6 +1,6 @@
 import { logger } from '@navikt/next-logger'
 
-import { GeneralIdentifier } from '@fhir/data-fetching/schema/common'
+import { GeneralIdentifier } from '@fhir/fhir-data/schema/common'
 
 const FNR_OID = '2.16.578.1.12.4.1.4.1'
 const DNR_OID = '2.16.578.1.12.4.1.4.2'

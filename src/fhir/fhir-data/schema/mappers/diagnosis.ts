@@ -1,4 +1,4 @@
-import { CodeableConcept } from '@fhir/data-fetching/schema/common'
+import { CodeableConcept } from '@fhir/fhir-data/schema/common'
 import { raise } from '@utils/ts'
 
 const ICDC2_OID = '2.16.578.1.12.4.1.1.7170'

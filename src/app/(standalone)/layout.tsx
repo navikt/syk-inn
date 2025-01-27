@@ -6,12 +6,12 @@ import type { Metadata } from 'next'
 
 import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
-import { Autorisasjoner } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
+import { Autorisasjoner } from '../../data-fetcher/data-service'
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../providers'
 import Preload from '../preload'
-import HelseIdDataServiceProvider from '../../helseid/components/HelseIdDataServiceProvider'
+import HelseIdDataProvider from '../../helseid/components/HelseIdDataProvider'
 import { getHelseIdUserInfo, HprDetails } from '../../helseid/helseid-userinfo'
 import HelseIdHeader from '../../helseid/components/HelseIdHeader'
 
@@ -45,7 +45,7 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                 <Page footerPosition="belowFold">
                     {isLocalOrDemo && <DemoWarning />}
                     <Providers>
-                        <HelseIdDataServiceProvider
+                        <HelseIdDataProvider
                             behandler={{
                                 navn: 'TODO',
                                 hpr: behandler?.hpr_number ?? 'TODO',
@@ -54,7 +54,7 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                         >
                             {children}
                             {isLocalOrDemo && <LazyDevTools />}
-                        </HelseIdDataServiceProvider>
+                        </HelseIdDataProvider>
                     </Providers>
                 </Page>
             </body>

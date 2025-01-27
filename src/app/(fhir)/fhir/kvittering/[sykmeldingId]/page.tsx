@@ -4,7 +4,7 @@ import { Heading } from '@navikt/ds-react'
 import { PageBlock } from '@navikt/ds-react/Page'
 
 import { isLocalOrDemo } from '@utils/env'
-import FhirClientProvider from '@fhir/components/FhirClientProvider'
+import FhirDataProvider from '@fhir/components/FhirDataProvider'
 import ExistingSykmeldingKvittering from '@components/existing-sykmelding-kvittering/ExistingSykmeldingKvittering'
 
 type Props = {
@@ -26,9 +26,9 @@ async function Page({ params }: Props): Promise<ReactElement> {
             <Heading level="2" size="medium" spacing>
                 Kvittering på innsendt sykmelding
             </Heading>
-            <FhirClientProvider>
+            <FhirDataProvider>
                 <ExistingSykmeldingKvittering sykmeldingId={sykmeldingId} />
-            </FhirClientProvider>
+            </FhirDataProvider>
         </PageBlock>
     )
 }

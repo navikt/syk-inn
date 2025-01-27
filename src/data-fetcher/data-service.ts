@@ -10,7 +10,7 @@ export const NotAvailable = {
  * The form will be able to conditionally render pre-filled fields or interactive inputs based on whether or not the data
  * is fetchable.
  */
-export type NySykmeldingFormDataService = {
+export type DataService = {
     /**
      * Used for certain specific behaviour, such as which route to navigate after submitting the form.
      */

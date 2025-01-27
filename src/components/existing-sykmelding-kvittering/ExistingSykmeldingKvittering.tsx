@@ -3,14 +3,14 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
-import { useNySykmeldingDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
+import { useDataService } from '../../data-fetcher/data-provider'
 
 type Props = {
     sykmeldingId: string
 }
 
 function ExistingSykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
-    const dataService = useNySykmeldingDataService()
+    const dataService = useDataService()
     const { isLoading, data, error } = useQuery({
         queryKey: ['sykmelding', sykmeldingId],
         queryFn: async () => dataService.query.sykmelding(sykmeldingId),

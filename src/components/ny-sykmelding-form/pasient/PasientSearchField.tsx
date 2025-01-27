@@ -2,12 +2,12 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Alert, BodyShort, Detail, Loader, TextField } from '@navikt/ds-react'
 
-import { assertResourceAvailable, isResourceAvailable, PasientInfo } from '../data-provider/NySykmeldingFormDataService'
+import { assertResourceAvailable, isResourceAvailable, PasientInfo } from '../../../data-fetcher/data-service'
 import { useController, useFormContext } from '../NySykmeldingFormValues'
-import { useNySykmeldingDataService } from '../data-provider/NySykmeldingFormDataProvider'
+import { useDataService } from '../../../data-fetcher/data-provider'
 
 export function PasientSearchField({ children }: PropsWithChildren): ReactElement {
-    const dataService = useNySykmeldingDataService()
+    const dataService = useDataService()
 
     const formContext = useFormContext()
     const value = formContext.watch('pasient')

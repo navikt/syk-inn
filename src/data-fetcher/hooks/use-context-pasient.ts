@@ -1,16 +1,12 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 
-import {
-    assertResourceAvailable,
-    isResourceAvailable,
-    PasientInfo,
-} from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
-import { useNySykmeldingDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
+import { assertResourceAvailable, isResourceAvailable, PasientInfo } from '../data-service'
+import { useDataService } from '../data-provider'
 
 export function useContextPasient(
     opts: { allowContextless: boolean } = { allowContextless: false },
 ): UseQueryResult<PasientInfo, Error> {
-    const dataService = useNySykmeldingDataService()
+    const dataService = useDataService()
     return useQuery({
         queryKey: ['pasient'],
         queryFn: async () => {

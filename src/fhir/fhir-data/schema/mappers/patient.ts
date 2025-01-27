@@ -1,6 +1,6 @@
 import { logger } from '@navikt/next-logger'
 
-import { getHpr, userUrnToOidType } from '@fhir/data-fetching/schema/mappers/practitioner'
+import { getHpr, userUrnToOidType } from '@fhir/fhir-data/schema/mappers/practitioner'
 import { raise } from '@utils/ts'
 
 import { FhirPatient } from '../patient'

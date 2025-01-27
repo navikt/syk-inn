@@ -3,7 +3,8 @@ import { Button, Detail } from '@navikt/ds-react'
 
 import { useController } from '@components/ny-sykmelding-form/NySykmeldingFormValues'
 import DiagnoseCombobox from '@components/ny-sykmelding-form/diagnose/combobox/DiagnoseCombobox'
-import { KonsultasjonInfo } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
+
+import { KonsultasjonInfo } from '../../../data-fetcher/data-service'
 
 type Props = {
     suggestedDiagnoser: KonsultasjonInfo['diagnoser'] | null

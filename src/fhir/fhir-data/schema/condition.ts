@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { CobeableConceptSchema } from '@fhir/data-fetching/schema/common'
+import { CobeableConceptSchema } from '@fhir/fhir-data/schema/common'
 
 export type FhirCondition = z.infer<typeof FhirConditionSchema>
 export const FhirConditionSchema = z.object({

@@ -1,10 +1,11 @@
 import { ReactElement } from 'react'
 import { BodyShort, Table } from '@navikt/ds-react'
 
-import { useContextBehandler } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-behandler'
+import { useDataService } from '../../../data-fetcher/data-provider'
 
 export function PractitionerSection(): ReactElement {
-    const behandler = useContextBehandler()
+    const dataService = useDataService()
+    const behandler = dataService.context.behandler
 
     return (
         <div className="mt-2">

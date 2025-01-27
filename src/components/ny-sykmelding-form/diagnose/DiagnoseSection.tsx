@@ -3,15 +3,12 @@ import { Detail, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@tanstack/react-query'
 
 import DiagnoseSmartPicker from '@components/ny-sykmelding-form/diagnose/DiagnoseSmartPicker'
-import {
-    assertResourceAvailable,
-    isResourceAvailable,
-    KonsultasjonInfo,
-} from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
-import { useNySykmeldingDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
+
+import { assertResourceAvailable, isResourceAvailable, KonsultasjonInfo } from '../../../data-fetcher/data-service'
+import { useDataService } from '../../../data-fetcher/data-provider'
 
 function DiagnoseSection(): ReactElement {
-    const dataService = useNySykmeldingDataService()
+    const dataService = useDataService()
     const { data, isLoading, error } = useQuery({
         queryKey: ['konsultasjon'],
         queryFn: (): Promise<KonsultasjonInfo> => {
@@ -21,7 +18,7 @@ function DiagnoseSection(): ReactElement {
         },
         enabled: isResourceAvailable(dataService.context.konsultasjon),
     })
-    console.log('data: ', data)
+
     return (
         <div>
             <Detail spacing>Pasientens medisinske diagnose. Søket søker i både ICPC-2 og ICD-10 diagnosekoder.</Detail>
