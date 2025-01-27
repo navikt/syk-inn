@@ -7,6 +7,7 @@ import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react'
 import { DevTool } from '@hookform/devtools'
 import { useMutation } from '@tanstack/react-query'
 import { FloppydiskIcon, HandBandageIcon, PersonIcon, StethoscopeIcon, VitalsIcon } from '@navikt/aksel-icons'
+import { useRouter } from 'next/navigation'
 
 import { FormSection } from '@components/ui/form'
 import NySykmeldingFormSummary from '@components/ny-sykmelding-form/aktivitet/form-summary/NySykmeldingFormSummary'
@@ -27,6 +28,7 @@ function NySykmeldingForm(): ReactElement {
     const [errorSectionRef, focusErrorSection] = useFormErrors()
     const form = useForm<NySykmeldingFormValues>()
     const dataService = useNySykmeldingDataService()
+    const router = useRouter()
 
     const opprettSykmelding = useMutation({
         mutationKey: ['opprett-sykmelding'],
@@ -34,8 +36,10 @@ function NySykmeldingForm(): ReactElement {
             logger.info('(Client) Submitting values,', values)
 
             try {
-                const createResult = dataService.mutation.sendSykmelding(values)
-                // TODO: Redirect to appropriate kvittering page
+                const createResult = await dataService.mutation.sendSykmelding(values)
+
+                router.push(`${dataService.mode === 'fhir' ? 'fhir' : 'ny'}/kvittering/${createResult.id}`)
+
                 return createResult
             } catch (e) {
                 logger.error(`Sykmelding creation failed, errors`, { cause: e })

@@ -3,7 +3,6 @@
 import { logger } from '@navikt/next-logger'
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs'
 
-import type { NotAvailable } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import {
     isResourceAvailable,
     NySykmeldingFormDataService,
@@ -11,17 +10,27 @@ import {
 
 export function withFailInterceptor(dataService: NySykmeldingFormDataService): NySykmeldingFormDataService {
     return {
+        mode: dataService.mode,
         context: {
-            pasient: failIfOverride('context', 'pasient', dataService.context.pasient),
-            konsultasjon: failIfOverride('context', 'konsultasjon', dataService.context.konsultasjon),
-            arbeidsgivere: failIfOverride('context', 'arbeidsgivere', dataService.context.arbeidsgivere),
+            pasient: isResourceAvailable(dataService.context.pasient)
+                ? failIfOverride('context', 'pasient', dataService.context.pasient)
+                : dataService.context.pasient,
+            konsultasjon: isResourceAvailable(dataService.context.konsultasjon)
+                ? failIfOverride('context', 'konsultasjon', dataService.context.konsultasjon)
+                : dataService.context.konsultasjon,
+            arbeidsgivere: isResourceAvailable(dataService.context.arbeidsgivere)
+                ? failIfOverride('context', 'arbeidsgivere', dataService.context.arbeidsgivere)
+                : dataService.context.arbeidsgivere,
             behandler: dataService.context.behandler,
         },
         query: {
-            pasient: failIfOverride('query', 'pasient', dataService.query.pasient),
+            pasient: isResourceAvailable(dataService.query.pasient)
+                ? failIfOverride('query', 'pasient', dataService.query.pasient)
+                : dataService.query.pasient,
+            sykmelding: failIfOverride('query', 'sykmelding', dataService.query.sykmelding),
         },
         mutation: {
-            sendSykmelding: dataService.mutation.sendSykmelding,
+            sendSykmelding: failIfOverride('mutation', 'sendSykmelding', dataService.mutation.sendSykmelding),
         },
     }
 }
@@ -52,11 +61,7 @@ export function useAPIOverride(): {
 /**
  * Legal use of any: The function signature here is irrelevant, and will be inferred as the correct type by the caller
  */
-function failIfOverride<Fn extends (...args: any[]) => Promise<any>>(
-    group: string,
-    what: string,
-    fn: Fn | NotAvailable,
-): Fn | NotAvailable {
+function failIfOverride<Fn extends (...args: any[]) => Promise<any>>(group: string, what: string, fn: Fn): Fn {
     if (!isResourceAvailable(fn)) return fn
 
     const interceptor: Fn = ((...args) => {

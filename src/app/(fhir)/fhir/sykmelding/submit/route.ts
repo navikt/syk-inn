@@ -1,13 +1,12 @@
 import { z } from 'zod'
 import { logger } from '@navikt/next-logger'
-import { headers } from 'next/headers'
 
 import { DateOnly } from '@utils/zod'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { wait } from '@utils/wait'
 import { createNewSykmelding } from '@services/SykInnApiService'
 import { raise } from '@utils/ts'
-import { verifyFhirToken } from '@fhir/auth/verify'
+import { ensureFhirApiAuthenticated } from '@fhir/auth/api-utils'
 
 /**
  * TODO: Payload will be identical for standalone and FHIR
@@ -47,16 +46,9 @@ const SubmitSykmeldingPayloadSchema = z.object({
 type SubmitResult = { ok: 'ok'; id: string } | { errors: { message: string } }[]
 
 export async function POST(request: Request): Promise<Response> {
-    const token = (await headers()).get('Authorization')
-    if (token == null) {
-        return Response.json({ message: 'Unauthorized' }, { status: 401 })
-    }
-
-    try {
-        await verifyFhirToken(token)
-    } catch (e) {
-        logger.error('User tried submitting a sykmelding with an invalid token', { cause: e })
-        return Response.json({ message: 'Unauthorized' }, { status: 401 })
+    const authStatus = await ensureFhirApiAuthenticated()
+    if (authStatus !== 'ok') {
+        return authStatus
     }
 
     const verifiedPayload = SubmitSykmeldingPayloadSchema.safeParse(await request.json())
@@ -76,8 +68,8 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     const result = await createNewSykmelding({
-        // TODO: Get from context, TODO-2, maybe not? Form provides using hidden inputs
-        pasientFnr: verifiedPayload.data.values.pasient ?? raise('TODO: Pasient from context is not supported yet'),
+        pasientFnr:
+            verifiedPayload.data.values.pasient ?? raise('Form did not provide pasient. Is hidden input missing?'),
         sykmelderHpr: verifiedPayload.data.behandlerHpr,
         sykmelding: {
             hoveddiagnose: {

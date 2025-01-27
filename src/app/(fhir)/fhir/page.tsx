@@ -20,10 +20,10 @@ async function Page(props: Props): Promise<ReactElement> {
          * Server component:
          *
          * Similar to /launch/page.tsx, the ?code=<code> parameter is only available at server component rendering time
-         * when the user is returned here after authenticating with the FHIR server. The fhircliest-library will remove
+         * when the user is returned here after authenticating with the FHIR server. The fhirclient-library will remove
          * the code from the URL client side.
          */
-        await saveSessionCompleted(searchParams.code)
+        await saveSessionCompleted()
     }
 
     return (

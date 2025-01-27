@@ -117,6 +117,11 @@ function ToggleAPIFailures(): ReactElement {
     }
 
     const query: Record<keyof NySykmeldingFormDataService['query'], ReactElement> = {
+        sykmelding: (
+            <Checkbox key="sykmelding" value="sykmelding">
+                Sykmelding
+            </Checkbox>
+        ),
         pasient: (
             <Checkbox key="pasient" value="pasient">
                 Pasient by OID (fnr/dnr)

@@ -35,6 +35,7 @@ export const createFhirDataService = async (client: FhirClient): Promise<NySykme
     const behandler = await getFhirPractitioner(client)
 
     return {
+        mode: 'fhir',
         context: {
             behandler,
             // TODO: Better name to describe this curried function?
@@ -44,6 +45,7 @@ export const createFhirDataService = async (client: FhirClient): Promise<NySykme
         },
         query: {
             pasient: NotAvailable,
+            sykmelding: createGetSykmeldingFn(client, behandler.hpr),
         },
         mutation: {
             sendSykmelding: createSendSykmeldingFn(client, behandler.hpr),
@@ -171,6 +173,34 @@ async function getArbeidsgivere(): Promise<ArbeidsgiverInfo[]> {
             organisasjonsnummer: '987654321',
         },
     ]
+}
+
+function createGetSykmeldingFn(client: FhirClient, hpr: string) {
+    return async (sykmeldingId: string): Promise<NySykmelding> => {
+        await wait()
+        const response = await fetch(pathWithBasePath(`/fhir/sykmelding/${sykmeldingId}`), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: client.state.tokenResponse?.id_token ?? raise('No active Smart Session'),
+                'X-HPR': hpr,
+            },
+        })
+
+        if (!response.ok) {
+            if (response.headers.get('content-type')?.includes('application/json')) {
+                const errors = await response.json()
+                logger.error(`Sykmelding get failed (${response.status} ${response.statusText}), errors`, {
+                    cause: errors,
+                })
+            } else {
+                logger.error(`API Responded with error ${response.status} ${response.statusText}`)
+            }
+            throw new Error('API Responded with error')
+        }
+
+        return response.json()
+    }
 }
 
 function createSendSykmeldingFn(client: FhirClient, hpr: string) {

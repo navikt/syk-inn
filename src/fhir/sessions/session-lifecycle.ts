@@ -21,10 +21,7 @@ export async function saveSessionIssuer(issuer: string): Promise<void> {
 /**
  * Mark the current session as completed, i.e. that the user has authenticated with the FHIR server and returned to us.
  */
-export async function saveSessionCompleted(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    accessToken: string,
-): Promise<void> {
+export async function saveSessionCompleted(): Promise<void> {
     const sessionId = (await cookies()).get('syk-inn-session-id')?.value ?? null
 
     if (sessionId == null) {

@@ -12,6 +12,10 @@ export const NotAvailable = {
  */
 export type NySykmeldingFormDataService = {
     /**
+     * Used for certain specific behaviour, such as which route to navigate after submitting the form.
+     */
+    mode: 'fhir' | 'standalone'
+    /**
      * Contextually available data will be fetched without any arguments, and is based on the current session.
      */
     context: {
@@ -25,6 +29,7 @@ export type NySykmeldingFormDataService = {
      */
     query: {
         pasient: ((fnr: string) => Promise<PasientInfo>) | NotAvailable
+        sykmelding: (id: string) => Promise<NySykmelding>
     }
     mutation: {
         sendSykmelding: (sykmelding: unknown) => Promise<NySykmelding>

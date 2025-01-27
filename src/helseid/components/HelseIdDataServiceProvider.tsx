@@ -16,6 +16,7 @@ type Props = {
 
 function HelseIdDataServiceProvider({ behandler, children }: PropsWithChildren<Props>): ReactElement {
     const StandaloneDataService: NySykmeldingFormDataService = {
+        mode: 'standalone',
         context: {
             pasient: NotAvailable,
             arbeidsgivere: NotAvailable,
@@ -30,6 +31,9 @@ function HelseIdDataServiceProvider({ behandler, children }: PropsWithChildren<P
                 // TODO: mulig å finne standalone?
                 fastlege: null,
             }),
+            sykmelding: async () => {
+                raise('Standalone is not supported in Pilot')
+            },
         },
         mutation: {
             sendSykmelding: async () => {

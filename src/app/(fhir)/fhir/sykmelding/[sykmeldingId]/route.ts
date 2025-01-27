@@ -1,0 +1,36 @@
+import { logger } from '@navikt/next-logger'
+
+import { ensureFhirApiAuthenticated } from '@fhir/auth/api-utils'
+import { getSykmelding } from '@services/SykInnApiService'
+import { isE2E, isLocalOrDemo } from '@utils/env'
+
+export async function GET(
+    request: Request,
+    { params }: { params: Promise<{ sykmeldingId: string }> },
+): Promise<Response> {
+    const authStatus = await ensureFhirApiAuthenticated()
+    if (authStatus !== 'ok') {
+        return authStatus
+    }
+
+    const sykmeldingId = (await params).sykmeldingId
+    const hpr = request.headers.get('X-HPR')
+    if (hpr == null) {
+        return new Response('Missing X-HPR header', { status: 400 })
+    }
+
+    if (isLocalOrDemo || isE2E) {
+        logger.warn('Is in demo, local or e2e, returning mocked sykmelding data')
+        return Response.json({
+            id: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
+        })
+    }
+
+    const sykmelding = await getSykmelding(sykmeldingId, hpr)
+
+    if ('errorType' in sykmelding) {
+        return new Response('Failed to retrieve sykmelding', { status: 500 })
+    }
+
+    return Response.json(sykmelding, { status: 200 })
+}
