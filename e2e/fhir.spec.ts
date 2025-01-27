@@ -39,6 +39,8 @@ test('can submit 100% sykmelding', async ({ page }) => {
             },
         },
     })
+
+    await page.waitForURL('**/kvittering/**')
 })
 
 test('can submit 100% sykmelding and use week picker', async ({ page }) => {
@@ -63,6 +65,8 @@ test('can submit 100% sykmelding and use week picker', async ({ page }) => {
             },
         },
     })
+
+    await page.waitForURL('**/kvittering/**')
 })
 
 test('shall be able to edit diagnose', async ({ page }) => {
@@ -92,6 +96,8 @@ test('shall be able to edit diagnose', async ({ page }) => {
             },
         },
     })
+
+    await page.waitForURL('**/kvittering/**')
 })
 
 test('can submit gradert sykmelding', async ({ page }) => {
@@ -120,4 +126,6 @@ test('can submit gradert sykmelding', async ({ page }) => {
             },
         },
     })
+
+    await page.waitForURL('**/kvittering/**')
 })

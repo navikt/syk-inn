@@ -82,8 +82,6 @@ export function submitSykmelding() {
             waitForHttp('/fhir/sykmelding/submit', 'POST')(page),
         )
 
-        await expect(page.getByRole('heading', { name: 'Takk for i dag' })).toBeVisible()
-
         return request.postDataJSON()
     }
 }
