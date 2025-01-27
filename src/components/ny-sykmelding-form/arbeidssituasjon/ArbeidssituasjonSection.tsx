@@ -1,14 +1,14 @@
 import { Detail } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 
-import { useNySykmeldingDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
-import { isResourceAvailable } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
+import { useDataService } from '../../../data-fetcher/data-provider'
+import { isResourceAvailable } from '../../../data-fetcher/data-service'
 
 import ArbeidsgiverWithDataField from './ArbeidsgiverWithDataField'
 import ArbeidsgiverField from './ArbeidsgiverField'
 
 function ArbeidssituasjonSection(): ReactElement {
-    const dataService = useNySykmeldingDataService()
+    const dataService = useDataService()
     return (
         <div>
             <Detail spacing>Pasient sin arbeidssituasjon under sykmeldingsperioden</Detail>

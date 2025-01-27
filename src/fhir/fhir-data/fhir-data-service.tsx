@@ -3,6 +3,14 @@ import { client as fhirClient } from 'fhirclient'
 import { logger } from '@navikt/next-logger'
 import { z } from 'zod'
 
+import { raise } from '@utils/ts'
+import { wait } from '@utils/wait'
+import { getHpr } from '@fhir/fhir-data/schema/mappers/practitioner'
+import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/fhir-data/schema/mappers/diagnosis'
+import { FhirConditionSchema } from '@fhir/fhir-data/schema/condition'
+import { pathWithBasePath } from '@utils/url'
+import { FhirEncounterSchema } from '@fhir/fhir-data/schema/encounter'
+
 import {
     ArbeidsgiverInfo,
     Autorisasjoner,
@@ -10,20 +18,13 @@ import {
     KonsultasjonInfo,
     NotAvailable,
     NySykmelding,
-    NySykmeldingFormDataService,
+    DataService,
     PasientInfo,
-} from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
-import { raise } from '@utils/ts'
-import { wait } from '@utils/wait'
-import { getHpr } from '@fhir/data-fetching/schema/mappers/practitioner'
-import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/data-fetching/schema/mappers/diagnosis'
-import { FhirConditionSchema } from '@fhir/data-fetching/schema/condition'
-import { pathWithBasePath } from '@utils/url'
+} from '../../data-fetcher/data-service'
 
 import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getFastlege, getName, getValidPatientOid } from './schema/mappers/patient'
 import { FhirPractitionerQualification, FhirPractitionerSchema } from './schema/practitioner'
-import { FhirEncounterSchema } from '@fhir/data-fetching/schema/encounter'
 
 type FhirClient = ReturnType<typeof fhirClient>
 
@@ -31,7 +32,7 @@ type FhirClient = ReturnType<typeof fhirClient>
  * FHIR-specific implementation of NySykmeldingFormDataService. Used to create the generic interface the form uses to
  * the actual data through the fhirclient-context.
  */
-export const createFhirDataService = async (client: FhirClient): Promise<NySykmeldingFormDataService> => {
+export const createFhirDataService = async (client: FhirClient): Promise<DataService> => {
     const behandler = await getFhirPractitioner(client)
 
     return {

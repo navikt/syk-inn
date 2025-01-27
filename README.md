@@ -68,8 +68,8 @@ In standalone mode, there are no FHIR-resources, so the domain will be refered t
 The form is built specifically to handle multiple "contexts" without the form having context-specific implementations. This is achieved using a variant of Dependency Injection of the possible data the form can use, using React Context.
 
 - Root form: [src/components/ny-sykmelding-form/NySykmeldingForm.tsx](src/components/ny-sykmelding-form/NySykmeldingForm.tsx)
-- The data available to the form: [src/components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService.ts](src/components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService.ts)
-    - Form data dependency injection: [src/components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider.tsx](src/components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider.tsx)
+- The data available to the form: [src/components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService.ts](src/data-fetcher/data-service.ts)
+    - Form data dependency injection: [src/components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider.tsx](src/data-fetcher/data-provider.tsx)
     - See specific form implementations (form routes above) for usage of this provider
 
 ### FHIR mocking for local development (and demo application)

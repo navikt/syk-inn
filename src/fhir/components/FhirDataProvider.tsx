@@ -9,10 +9,10 @@ import dynamic from 'next/dynamic'
 
 import { isLocalOrDemo } from '@utils/env'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
-import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
 import Test from '@fhir/components/Test'
+import { createFhirDataService } from '@fhir/fhir-data/fhir-data-service'
 
-import { createFhirDataService } from '../data-fetching/fhir-data-service'
+import { DataProvider } from '../../data-fetcher/data-provider'
 
 const FhirHeaderUser = dynamic(() => import('@fhir/components/FhirHeaderUser'), { ssr: false })
 
@@ -20,7 +20,7 @@ const FhirHeaderUser = dynamic(() => import('@fhir/components/FhirHeaderUser'), 
  * The FHIR library requires asynchronous initialization, so this component is used to handle the loading state, error state
  * and wraps the rest of the tree in a provider when the client is ready.
  */
-function FhirClientProvider({ children }: PropsWithChildren): ReactElement {
+function FhirDataProvider({ children }: PropsWithChildren): ReactElement {
     const client = useQuery({
         queryKey: ['fhir-client'],
         queryFn: () => oauth2.ready(),
@@ -71,11 +71,7 @@ function FhirClientProvider({ children }: PropsWithChildren): ReactElement {
                     </Alert>
                 </div>
             )}
-            {fhirDataService.data && (
-                <NySykmeldingFormDataProvider dataService={fhirDataService.data}>
-                    {children}
-                </NySykmeldingFormDataProvider>
-            )}
+            {fhirDataService.data && <DataProvider dataService={fhirDataService.data}>{children}</DataProvider>}
             {/* TODO: This is debug-only development code, used only to inspect the JSON payload, will be removed. */}
             {isLocalOrDemo && (
                 <ErrorBoundary fallback={<div className="mt-8">Test komponent tryna</div>}>
@@ -86,4 +82,4 @@ function FhirClientProvider({ children }: PropsWithChildren): ReactElement {
     )
 }
 
-export default FhirClientProvider
+export default FhirDataProvider

@@ -13,10 +13,8 @@ import { FormSection } from '@components/ui/form'
 import NySykmeldingFormSummary from '@components/ny-sykmelding-form/aktivitet/form-summary/NySykmeldingFormSummary'
 import { PractitionerSection } from '@components/ny-sykmelding-form/practitioner/PractitionerSection'
 
-import {
-    useIsNySykmeldingDataServiceInitialized,
-    useNySykmeldingDataService,
-} from './data-provider/NySykmeldingFormDataProvider'
+import { useIsDataServiceInitialized, useDataService } from '../../data-fetcher/data-provider'
+
 import AktivitetSection from './aktivitet/AktivitetSection'
 import DiagnoseSection from './diagnose/DiagnoseSection'
 import PasientSection from './pasient/PasientSection'
@@ -27,7 +25,7 @@ import { NySykmeldingFormValues } from './NySykmeldingFormValues'
 function NySykmeldingForm(): ReactElement {
     const [errorSectionRef, focusErrorSection] = useFormErrors()
     const form = useForm<NySykmeldingFormValues>()
-    const dataService = useNySykmeldingDataService()
+    const dataService = useDataService()
     const router = useRouter()
 
     const opprettSykmelding = useMutation({
@@ -51,7 +49,7 @@ function NySykmeldingForm(): ReactElement {
         },
     })
 
-    if (!useIsNySykmeldingDataServiceInitialized()) {
+    if (!useIsDataServiceInitialized()) {
         return (
             <div className="max-w-prose p-8">
                 <Alert variant="error">

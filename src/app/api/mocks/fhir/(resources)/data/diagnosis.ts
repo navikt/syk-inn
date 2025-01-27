@@ -1,6 +1,6 @@
 import { logger } from '@navikt/next-logger'
 
-import { FhirCondition } from '@fhir/data-fetching/schema/condition'
+import { FhirCondition } from '@fhir/fhir-data/schema/condition'
 
 const conditions: FhirCondition[] = [
     {

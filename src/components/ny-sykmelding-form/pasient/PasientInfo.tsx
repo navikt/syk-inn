@@ -4,9 +4,10 @@ import { Alert, BodyShort, Button, Detail, Skeleton } from '@navikt/ds-react'
 
 import { PasientSearchField } from '@components/ny-sykmelding-form/pasient/PasientSearchField'
 import SubtleRetryIndicator from '@components/misc/SubtleRetryIndicator'
-import { useContextPasient } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-pasient'
-import type { PasientInfo } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { useFormContext } from '@components/ny-sykmelding-form/NySykmeldingFormValues'
+
+import { useContextPasient } from '../../../data-fetcher/hooks/use-context-pasient'
+import type { PasientInfo } from '../../../data-fetcher/data-service'
 
 function PasientInfo(): ReactElement {
     const pasientQuery = useContextPasient()

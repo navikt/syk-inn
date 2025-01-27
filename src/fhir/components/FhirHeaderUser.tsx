@@ -7,8 +7,8 @@ import { useQuery } from '@tanstack/react-query'
 import { CheckmarkIcon, XMarkOctagonIcon } from '@navikt/aksel-icons'
 
 import { pathWithBasePath } from '@utils/url'
-import { BehandlerInfo } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 
+import { BehandlerInfo } from '../../data-fetcher/data-service'
 import { getFhirIdTokenFromSessionStorage } from '../auth/session'
 
 type Props = {

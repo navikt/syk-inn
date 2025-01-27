@@ -2,18 +2,14 @@ import React, { ReactElement } from 'react'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { Alert, BodyShort, Button, Checkbox, CheckboxGroup, Skeleton } from '@navikt/ds-react'
 
-import { useNySykmeldingDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
-import {
-    ArbeidsgiverInfo,
-    assertResourceAvailable,
-} from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
-
+import { useDataService } from '../../../data-fetcher/data-provider'
+import { ArbeidsgiverInfo, assertResourceAvailable } from '../../../data-fetcher/data-service'
 import { useController } from '../NySykmeldingFormValues'
 
 import ArbeidsgiverField from './ArbeidsgiverField'
 
 function ArbeidsgiverWithDataField(): ReactElement {
-    const dataService = useNySykmeldingDataService()
+    const dataService = useDataService()
     const arbeidstakerQuery = useQuery({
         queryKey: ['arbeidstaker'],
         queryFn: () => {

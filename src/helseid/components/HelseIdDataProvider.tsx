@@ -2,20 +2,17 @@
 
 import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { NySykmeldingFormDataProvider } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider'
-import {
-    BehandlerInfo,
-    NotAvailable,
-    NySykmeldingFormDataService,
-} from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { raise } from '@utils/ts'
+
+import { DataProvider } from '../../data-fetcher/data-provider'
+import { BehandlerInfo, NotAvailable, DataService } from '../../data-fetcher/data-service'
 
 type Props = {
     behandler: BehandlerInfo
 }
 
-function HelseIdDataServiceProvider({ behandler, children }: PropsWithChildren<Props>): ReactElement {
-    const StandaloneDataService: NySykmeldingFormDataService = {
+function HelseIdDataProvider({ behandler, children }: PropsWithChildren<Props>): ReactElement {
+    const StandaloneDataService: DataService = {
         mode: 'standalone',
         context: {
             pasient: NotAvailable,
@@ -42,7 +39,7 @@ function HelseIdDataServiceProvider({ behandler, children }: PropsWithChildren<P
         },
     }
 
-    return <NySykmeldingFormDataProvider dataService={StandaloneDataService}>{children}</NySykmeldingFormDataProvider>
+    return <DataProvider dataService={StandaloneDataService}>{children}</DataProvider>
 }
 
-export default HelseIdDataServiceProvider
+export default HelseIdDataProvider

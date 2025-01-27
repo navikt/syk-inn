@@ -4,8 +4,9 @@ import { XMarkIcon } from '@navikt/aksel-icons'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
-import { NySykmeldingFormDataService } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { getFhirIdTokenFromSessionStorage } from '@fhir/auth/session'
+
+import { DataService } from '../data-fetcher/data-service'
 
 import { DevToolItem } from './InternalDevToolItem'
 import { useAPIOverride } from './useAPIOverride'
@@ -93,7 +94,7 @@ function ToggleAPIFailures(): ReactElement {
     const queryClient = useQueryClient()
     const { queryOverrides, setQueryOverrides, contextOverrides, setContextOverrides } = useAPIOverride()
 
-    const context: Record<keyof NySykmeldingFormDataService['context'], ReactElement> = {
+    const context: Record<keyof DataService['context'], ReactElement> = {
         pasient: (
             <Checkbox key="pasient" value="pasient">
                 Pasient
@@ -116,7 +117,7 @@ function ToggleAPIFailures(): ReactElement {
         ),
     }
 
-    const query: Record<keyof NySykmeldingFormDataService['query'], ReactElement> = {
+    const query: Record<keyof DataService['query'], ReactElement> = {
         sykmelding: (
             <Checkbox key="sykmelding" value="sykmelding">
                 Sykmelding

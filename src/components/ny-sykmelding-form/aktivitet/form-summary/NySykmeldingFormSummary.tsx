@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react'
 import { List } from '@navikt/ds-react'
 import { CheckmarkCircleFillIcon, CircleIcon } from '@navikt/aksel-icons'
 
-import { useContextPasient } from '@components/ny-sykmelding-form/data-provider/hooks/use-context-pasient'
-import { PasientInfo } from '@components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService'
 import { toReadableDatePeriod } from '@utils/date'
 import { NonNullableObject } from '@utils/ts'
 
+import { useContextPasient } from '../../../../data-fetcher/hooks/use-context-pasient'
+import { PasientInfo } from '../../../../data-fetcher/data-service'
 import { AktivitetFormValue, useFormContext } from '../../NySykmeldingFormValues'
 
 function NySykmeldingFormSummary(): ReactElement {

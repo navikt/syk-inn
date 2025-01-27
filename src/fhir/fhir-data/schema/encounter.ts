@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { CobeableConceptSchema, ReferenceSchema } from '@fhir/data-fetching/schema/common'
+import { CobeableConceptSchema, ReferenceSchema } from '@fhir/fhir-data/schema/common'
 
 export type FhirEncounterDiagnosis = z.infer<typeof FhirEncounterDiagnosisSchema>
 export const FhirEncounterDiagnosisSchema = z.object({
