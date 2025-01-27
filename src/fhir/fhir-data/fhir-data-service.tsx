@@ -32,7 +32,7 @@ type FhirClient = ReturnType<typeof fhirClient>
  * FHIR-specific implementation of NySykmeldingFormDataService. Used to create the generic interface the form uses to
  * the actual data through the fhirclient-context.
  */
-export const createFhirDataService = async (client: FhirClient): Promise<DataService> => {
+export async function createFhirDataService(client: FhirClient): Promise<DataService> {
     const behandler = await getFhirPractitioner(client)
 
     return {
