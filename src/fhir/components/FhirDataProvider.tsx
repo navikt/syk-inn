@@ -4,12 +4,10 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 import { skipToken, useQuery } from '@tanstack/react-query'
 import { oauth2 } from 'fhirclient'
 import { Alert, BodyShort, Detail, Heading, Skeleton } from '@navikt/ds-react'
-import { ErrorBoundary } from 'react-error-boundary'
 import dynamic from 'next/dynamic'
 
 import { isLocalOrDemo } from '@utils/env'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
-import Test from '@fhir/components/Test'
 import { createFhirDataService } from '@fhir/fhir-data/fhir-data-service'
 
 import { DataProvider } from '../../data-fetcher/data-provider'
@@ -72,12 +70,6 @@ function FhirDataProvider({ children }: PropsWithChildren): ReactElement {
                 </div>
             )}
             {fhirDataService.data && <DataProvider dataService={fhirDataService.data}>{children}</DataProvider>}
-            {/* TODO: This is debug-only development code, used only to inspect the JSON payload, will be removed. */}
-            {isLocalOrDemo && (
-                <ErrorBoundary fallback={<div className="mt-8">Test komponent tryna</div>}>
-                    <Test />
-                </ErrorBoundary>
-            )}
         </div>
     )
 }

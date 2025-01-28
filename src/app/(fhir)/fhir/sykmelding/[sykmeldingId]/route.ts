@@ -15,6 +15,7 @@ export async function GET(
     }
 
     const sykmeldingId = (await params).sykmeldingId
+    // TODO: This should come from a non-fickleable source
     const hpr = request.headers.get('X-HPR')
     if (hpr == null) {
         return new Response('Missing X-HPR header', { status: 400 })
