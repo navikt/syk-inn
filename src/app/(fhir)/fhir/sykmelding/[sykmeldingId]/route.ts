@@ -23,21 +23,8 @@ export async function GET(
 
     if (isLocalOrDemo || isE2E) {
         logger.warn('Is in demo, local or e2e, returning mocked sykmelding data')
-        return Response.json({
-            sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
-            pasient: {
-                fnr: '12345678910',
-            },
-            periode: {
-                fom: '2021-06-01',
-                tom: '2021-06-15',
-            },
-            hovedDiagnose: {
-                system: 'ICD-10',
-                code: 'L87',
-                text: 'Allergisk kontakte',
-            },
-        } satisfies ExistingSykmelding)
+
+        return handleMockedRoute()
     }
 
     const sykmelding = await getSykmelding(sykmeldingId, hpr)
@@ -47,4 +34,22 @@ export async function GET(
     }
 
     return Response.json(sykmelding satisfies ExistingSykmelding, { status: 200 })
+}
+
+function handleMockedRoute(): Response {
+    return Response.json({
+        sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
+        pasient: {
+            fnr: '12345678910',
+        },
+        periode: {
+            fom: '2021-06-01',
+            tom: '2021-06-15',
+        },
+        hovedDiagnose: {
+            system: 'ICD-10',
+            code: 'L87',
+            text: 'Allergisk kontakte',
+        },
+    } satisfies ExistingSykmelding)
 }

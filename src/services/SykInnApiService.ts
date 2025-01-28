@@ -1,7 +1,17 @@
 import { requestAzureClientCredentialsToken } from '@navikt/oasis'
 import { logger } from '@navikt/next-logger'
 
-import { ExistingSykmelding, ExistingSykmeldingSchema } from '@services/SykInnApiSchema'
+import {
+    ExistingSykmelding,
+    ExistingSykmeldingSchema,
+    NySykmelding,
+    NySykmeldingSchema,
+} from '@services/SykInnApiSchema'
+
+const API_CONFIG = {
+    URL: 'http://syk-inn-api',
+    SCOPE: 'api://dev-gcp.tsm.syk-inn-api/.default',
+}
 
 type NySykmeldingPayload = {
     pasientFnr: string
@@ -26,24 +36,21 @@ type NySykmeldingPayload = {
     }
 }
 
-const SYK_INN_API_URL = 'http://syk-inn-api'
-const SYK_INN_API_SCOPE = 'api://dev-gcp.tsm.syk-inn-api/.default'
-
 export async function createNewSykmelding(payload: NySykmeldingPayload): Promise<
-    | 'ok'
+    | NySykmelding
     | {
-          errorType: 'TOKEN_EXCHANGE_FAILED' | 'API_CALL_FAILED'
+          errorType: 'TOKEN_EXCHANGE_FAILED' | 'API_CALL_FAILED' | 'API_BODY_INVALID'
       }
 > {
-    const tokenResult = await requestAzureClientCredentialsToken(SYK_INN_API_SCOPE)
+    const tokenResult = await requestAzureClientCredentialsToken(API_CONFIG.SCOPE)
     if (!tokenResult.ok) {
-        logger.error(`Unable to exchange client credentials token for ${SYK_INN_API_SCOPE}`, {
+        logger.error(`Unable to exchange client credentials token for ${API_CONFIG.SCOPE}`, {
             cause: tokenResult.error,
         })
         return { errorType: 'TOKEN_EXCHANGE_FAILED' }
     }
 
-    const response = await fetch(`${SYK_INN_API_URL}/api/v1/sykmelding/create`, {
+    const response = await fetch(`${API_CONFIG.SCOPE}/api/v1/sykmelding/create`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${tokenResult.token}`,
@@ -58,7 +65,14 @@ export async function createNewSykmelding(payload: NySykmeldingPayload): Promise
         return { errorType: 'API_CALL_FAILED' }
     }
 
-    return 'ok'
+    const parsed = NySykmeldingSchema.safeParse(await response.json())
+
+    if (!parsed.success) {
+        logger.error('Failed to parse ny sykmelding response', parsed.error)
+        return { errorType: 'API_BODY_INVALID' }
+    }
+
+    return parsed.data
 }
 
 export async function getSykmelding(
@@ -70,15 +84,15 @@ export async function getSykmelding(
           errorType: 'TOKEN_EXCHANGE_FAILED' | 'API_CALL_FAILED' | 'API_BODY_INVALID'
       }
 > {
-    const tokenResult = await requestAzureClientCredentialsToken(SYK_INN_API_SCOPE)
+    const tokenResult = await requestAzureClientCredentialsToken(API_CONFIG.SCOPE)
     if (!tokenResult.ok) {
-        logger.error(`Unable to exchange client credentials token for ${SYK_INN_API_SCOPE}`, {
+        logger.error(`Unable to exchange client credentials token for ${API_CONFIG.SCOPE}`, {
             cause: tokenResult.error,
         })
         return { errorType: 'TOKEN_EXCHANGE_FAILED' }
     }
 
-    const response = await fetch(`${SYK_INN_API_URL}/api/v1/sykmelding/${sykmeldingId}`, {
+    const response = await fetch(`${API_CONFIG.URL}/api/v1/sykmelding/${sykmeldingId}`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${tokenResult.token}`,

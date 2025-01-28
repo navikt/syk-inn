@@ -18,3 +18,8 @@ export const ExistingSykmeldingSchema = z.object({
         text: z.string(),
     }),
 })
+
+export type NySykmelding = z.infer<typeof NySykmeldingSchema>
+export const NySykmeldingSchema = z.object({
+    id: z.string(),
+})
