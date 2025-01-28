@@ -82,7 +82,6 @@ export async function getSykmelding(
         method: 'GET',
         headers: {
             Authorization: `Bearer ${tokenResult.token}`,
-            'Content-Type': 'application/json',
             'X-HPR': hpr,
         },
     })
