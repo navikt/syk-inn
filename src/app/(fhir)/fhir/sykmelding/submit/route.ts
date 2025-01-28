@@ -59,12 +59,10 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     if (isLocalOrDemo || isE2E) {
-        logger.info(`Submitting values ${JSON.stringify(verifiedPayload.data, null, 2)}`)
-
-        // Fake dev loading
-        await wait(5000, 2000)
-
-        return Response.json({ ok: 'ok', id: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d' } satisfies SubmitResult)
+        logger.warn(
+            `Is in demo, local or e2e, submitting send sykmelding values ${JSON.stringify(verifiedPayload.data, null, 2)}`,
+        )
+        return await handleMockedRoute()
     }
 
     const result = await createNewSykmelding({
@@ -80,11 +78,18 @@ export async function POST(request: Request): Promise<Response> {
         },
     })
 
-    if (result !== 'ok') {
+    if ('errorType' in result) {
         return Response.json([
             { errors: { message: `Sykmelding creation failed: ${result.errorType}` } },
         ] satisfies SubmitResult)
     }
+
+    return Response.json({ ok: 'ok', id: result.id } satisfies SubmitResult)
+}
+
+async function handleMockedRoute(): Promise<Response> {
+    // Fake dev loading
+    await wait(2500, 500)
 
     return Response.json({ ok: 'ok', id: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d' } satisfies SubmitResult)
 }

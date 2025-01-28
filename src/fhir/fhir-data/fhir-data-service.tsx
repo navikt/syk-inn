@@ -8,18 +8,16 @@ import { wait } from '@utils/wait'
 import { getHpr } from '@fhir/fhir-data/schema/mappers/practitioner'
 import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/fhir-data/schema/mappers/diagnosis'
 import { FhirConditionSchema } from '@fhir/fhir-data/schema/condition'
-import { pathWithBasePath } from '@utils/url'
 import { FhirEncounterSchema } from '@fhir/fhir-data/schema/encounter'
+import { getSykmelding, sendSykmelding } from '@fhir/fhir-data/non-fhir-data'
 
 import {
     ArbeidsgiverInfo,
     Autorisasjoner,
     BehandlerInfo,
+    DataService,
     KonsultasjonInfo,
     NotAvailable,
-    NySykmelding,
-    ExistingSykmelding,
-    DataService,
     PasientInfo,
 } from '../../data-fetcher/data-service'
 
@@ -27,10 +25,10 @@ import { FhirBundleOrPatientSchema } from './schema/patient'
 import { getFastlege, getName, getValidPatientOid } from './schema/mappers/patient'
 import { FhirPractitionerQualification, FhirPractitionerSchema } from './schema/practitioner'
 
-type FhirClient = ReturnType<typeof fhirClient>
+export type FhirClient = ReturnType<typeof fhirClient>
 
 /**
- * FHIR-specific implementation of NySykmeldingFormDataService. Used to create the generic interface the form uses to
+ * FHIR-specific implementation of DataService. Used to create the generic interface the form uses to
  * the actual data through the fhirclient-context.
  */
 export async function createFhirDataService(client: FhirClient): Promise<DataService> {
@@ -40,87 +38,82 @@ export async function createFhirDataService(client: FhirClient): Promise<DataSer
         mode: 'fhir',
         context: {
             behandler,
-            // TODO: Better name to describe this curried function?
-            pasient: createGetFhirPasientFn(client),
-            konsultasjon: createGetFhirEncounterFn(client),
-            arbeidsgivere: getArbeidsgivere,
+            pasient: () => getFhirPatient(client),
+            konsultasjon: () => getFhirEncounter(client),
+            arbeidsgivere: () => getArbeidsgivere(),
         },
         query: {
             pasient: NotAvailable,
-            sykmelding: createGetSykmeldingFn(client, behandler.hpr),
+            sykmelding: (id) => getSykmelding(client, behandler.hpr, id),
         },
         mutation: {
-            sendSykmelding: createSendSykmeldingFn(client, behandler.hpr),
+            sendSykmelding: (values) => sendSykmelding(client, behandler.hpr, values),
         },
     }
 }
 
-function createGetFhirPasientFn(client: FhirClient) {
-    return async (): Promise<PasientInfo> => {
-        await wait()
-        // TODO: Handle client.patient.id being null (can we launch without patient?)
-        const patient = await client.request(`Patient/${client.patient.id ?? raise('client.patient.id is null')}`)
-        const parsed = FhirBundleOrPatientSchema.safeParse(patient)
+async function getFhirPatient(client: FhirClient): Promise<PasientInfo> {
+    await wait()
+    // TODO: Handle client.patient.id being null (can we launch without patient?)
+    const patient = await client.request(`Patient/${client.patient.id ?? raise('client.patient.id is null')}`)
+    const parsed = FhirBundleOrPatientSchema.safeParse(patient)
 
-        if (!parsed.success) {
-            logger.error('Failed to parse patient', parsed.error)
-            throw parsed.error
-        }
+    if (!parsed.success) {
+        logger.error('Failed to parse patient', parsed.error)
+        throw parsed.error
+    }
 
-        return {
-            navn: getName(patient.name),
-            oid: getValidPatientOid(patient),
-            fastlege: getFastlege(patient),
-        }
+    return {
+        navn: getName(patient.name),
+        oid: getValidPatientOid(patient),
+        fastlege: getFastlege(patient),
     }
 }
 
-function createGetFhirEncounterFn(client: FhirClient) {
-    return async (): Promise<KonsultasjonInfo> => {
-        await wait()
+async function getFhirEncounter(client: FhirClient): Promise<KonsultasjonInfo> {
+    await wait()
 
-        const encounter = await client.request(`Condition?patient=${client.patient.id}`)
-        const parsed = z.array(FhirConditionSchema).safeParse(encounter)
-        const enc = await client.request(`Encounter/${client.encounter.id}`)
+    const encounter = await client.request(`Condition?patient=${client.patient.id}`)
+    const parsed = z.array(FhirConditionSchema).safeParse(encounter)
+    const enc = await client.request(`Encounter/${client.encounter.id}`)
 
-        const safeParse = FhirEncounterSchema.safeParse(enc)
+    const safeParse = FhirEncounterSchema.safeParse(enc)
 
-        if (!parsed.success) {
-            logger.error('Failed to parse conditions', parsed.error)
-            throw parsed.error
-        }
+    if (!parsed.success) {
+        logger.error('Failed to parse conditions', parsed.error)
+        throw parsed.error
+    }
 
-        const [relevanteDignoser, irrelevanteDiagnoser] = parsed.data
-            ? R.partition(parsed.data, (diagnosis) =>
-                  diagnosis.code.coding.some((coding) => diagnosisUrnToOidType(coding.system) != null),
-              )
-            : [[], []]
+    const [relevanteDignoser, irrelevanteDiagnoser] = parsed.data
+        ? R.partition(parsed.data, (diagnosis) =>
+              diagnosis.code.coding.some((coding) => diagnosisUrnToOidType(coding.system) != null),
+          )
+        : [[], []]
 
-        logger.info(
-            `Fant ${relevanteDignoser.length} med gyldig ICPC-2 eller ICD-10 kode, ${irrelevanteDiagnoser.length} uten gyldig kode`,
-        )
+    logger.info(
+        `Fant ${relevanteDignoser.length} med gyldig ICPC-2 eller ICD-10 kode, ${irrelevanteDiagnoser.length} uten gyldig kode`,
+    )
 
-        const fhirDiagnose = safeParse.data?.reasonCode ? getDiagnosis(safeParse.data.reasonCode[0].coding) : null
+    const fhirDiagnose = safeParse.data?.reasonCode ? getDiagnosis(safeParse.data.reasonCode[0].coding) : null
 
-        return {
-            diagnoser: R.pipe(
-                relevanteDignoser,
-                R.map((diagnosis) => getDiagnosis(diagnosis.code.coding)),
-                R.filter(R.isTruthy),
-                R.map((it) => ({
-                    system: it.system,
-                    kode: it.code,
-                    tekst: it.display,
-                })),
-            ),
-            diagnose: fhirDiagnose
-                ? {
-                      system: fhirDiagnose.system,
-                      kode: fhirDiagnose.code,
-                      tekst: fhirDiagnose.display,
-                  }
-                : null,
-        }
+    return {
+        diagnoser: R.pipe(
+            relevanteDignoser,
+            R.map((diagnosis) => getDiagnosis(diagnosis.code.coding)),
+            R.filter(R.isTruthy),
+            R.map((it) => ({
+                system: it.system,
+                kode: it.code,
+                tekst: it.display,
+            })),
+        ),
+        diagnose: fhirDiagnose
+            ? {
+                  system: fhirDiagnose.system,
+                  kode: fhirDiagnose.code,
+                  tekst: fhirDiagnose.display,
+              }
+            : null,
     }
 }
 
@@ -175,67 +168,6 @@ async function getArbeidsgivere(): Promise<ArbeidsgiverInfo[]> {
             organisasjonsnummer: '987654321',
         },
     ]
-}
-
-function createGetSykmeldingFn(client: FhirClient, hpr: string) {
-    return async (sykmeldingId: string): Promise<ExistingSykmelding> => {
-        await wait()
-        const response = await fetch(pathWithBasePath(`/fhir/sykmelding/${sykmeldingId}`), {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: client.state.tokenResponse?.id_token ?? raise('No active Smart Session'),
-                'X-HPR': hpr,
-            },
-        })
-
-        if (!response.ok) {
-            if (response.headers.get('content-type')?.includes('application/json')) {
-                const errors = await response.json()
-                logger.error(`Sykmelding get failed (${response.status} ${response.statusText}), errors`, {
-                    cause: errors,
-                })
-            } else {
-                logger.error(`API Responded with error ${response.status} ${response.statusText}`)
-            }
-            throw new Error('API Responded with error')
-        }
-
-        // TODO: Delt sterk typing med zod schema i route fetchern?
-        return response.json()
-    }
-}
-
-function createSendSykmeldingFn(client: FhirClient, hpr: string) {
-    return async (values: unknown): Promise<NySykmelding> => {
-        await wait()
-        const response = await fetch(pathWithBasePath('/fhir/sykmelding/submit'), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: client.state.tokenResponse?.id_token ?? raise('No active Smart Session'),
-            },
-            body: JSON.stringify({
-                values,
-                behandlerHpr: hpr,
-            }),
-        })
-
-        if (!response.ok) {
-            if (response.headers.get('content-type')?.includes('application/json')) {
-                const errors = await response.json()
-                logger.error(`Sykmelding creation failed (${response.status} ${response.statusText}), errors`, {
-                    cause: errors,
-                })
-            } else {
-                logger.error(`API Responded with error ${response.status} ${response.statusText}`)
-            }
-            throw new Error('API Responded with error')
-        }
-
-        // TODO: Delt sterk typing med zod schema i route fetchern?
-        return response.json()
-    }
 }
 
 function getAutorisasjoner(qualification: FhirPractitionerQualification[]): Autorisasjoner {
