@@ -7,7 +7,7 @@ import { logger } from '@navikt/next-logger'
 import { isLocalOrDemo } from '@utils/env'
 import { saveSessionIssuer } from '@fhir/sessions/session-lifecycle'
 import FhirLaunchInitialization from '@fhir/components/FhirLaunchInitialization'
-import { isKnownIssuer, removeTrailingSlash } from '@fhir/issuers'
+import { isKnownFhirServer, removeTrailingSlash } from '@fhir/issuers'
 
 type Props = {
     searchParams: Promise<{ iss: string | undefined }>
@@ -16,7 +16,7 @@ type Props = {
 async function Page({ searchParams }: Props): Promise<ReactElement> {
     const params = await searchParams
 
-    if (params.iss && !isKnownIssuer(params.iss)) {
+    if (params.iss && !isKnownFhirServer(params.iss)) {
         logger.warn(`Attempted to launch with unknown issuer: ${params.iss}`)
 
         /**

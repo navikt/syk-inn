@@ -1,10 +1,10 @@
 import { raise } from '@utils/ts'
 
-export function getFhirIdTokenFromSessionStorage(): string {
+export function getFhirAccessTokenFromSessionStorage(): string {
     const item = getSmartSession()
 
     if ('id_token' in item.tokenResponse) {
-        return item.tokenResponse.id_token
+        return item.tokenResponse.access_token
     }
 
     raise('No id_token')

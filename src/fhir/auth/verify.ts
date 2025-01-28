@@ -2,11 +2,11 @@ import { createRemoteJWKSet, jwtVerify } from 'jose'
 import { logger } from '@navikt/next-logger'
 
 import { getSessionIssuer } from '../sessions/session-lifecycle'
-import { isKnownIssuer } from '../issuers'
+import { isKnownFhirServer, knownIssuers } from '../issuers'
 
 export async function verifyFhirToken(token: string): Promise<void> {
     const issuer = await getSessionIssuer()
-    if (!isKnownIssuer(issuer)) {
+    if (!isKnownFhirServer(issuer)) {
         throw new Error(`Non-allow-listed issuer: ${issuer}. Somebody is hacking! :shock:`)
     }
 
@@ -15,10 +15,10 @@ export async function verifyFhirToken(token: string): Promise<void> {
     const cleanToken = token.replace('Bearer ', '')
 
     logger.info(`Fetched well known configuration from issuer, jwks_uri: ${wellKnown['jwks_uri']}`)
+
     try {
         const verifyResult = await jwtVerify(cleanToken, getJwkSet(wellKnown['jwks_uri']), {
-            issuer: wellKnown['issuer'],
-            audience: ['syk-inn'],
+            issuer: [issuer, ...knownIssuers[issuer].issuers],
             algorithms: ['RS256'],
         })
 

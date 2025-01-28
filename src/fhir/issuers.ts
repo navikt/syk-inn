@@ -1,32 +1,40 @@
 import { bundledEnv } from '@utils/env'
 
-/**
- * Should be provided by an external configuration or self-service system. But for now we'll hardcode the trusted issuers.
- */
-export const knownIssuers: string[] = [
-    'https://launch.smarthealthit.org/v/r4/fhir',
-    'https://fhir.ekstern.dev.nav.no',
-    'https://fhirapi.public.webmedepj.no',
-]
+export const knownIssuers: Record<string, { issuers: string[] }> = {
+    'https://launch.smarthealthit.org/v/r4/fhir': {
+        issuers: [],
+    },
+    'https://fhir.ekstern.dev.nav.no': {
+        issuers: [],
+    },
+    'https://fhirapi.public.webmedepj.no': {
+        issuers: ['https://security.public.webmedepj.no'],
+    },
+}
 
 switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
     case 'local':
     case 'e2e':
-        knownIssuers.push('http://localhost:3000/api/mocks/fhir')
+        knownIssuers['http://localhost:3000/api/mocks/fhir'] = { issuers: [] }
         break
     case 'demo':
-        knownIssuers.push('https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding/api/mocks/fhir')
+        knownIssuers['https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding/api/mocks/fhir'] = { issuers: [] }
         break
     case 'dev-gcp':
     case 'prod-gcp':
         break
 }
 
-export function isKnownIssuer(iss: string): boolean {
+/**
+ * Should be provided by an external configuration or self-service system. But for now we'll hardcode the trusted issuers.
+ */
+export const knownFhirServers: string[] = Object.keys(knownIssuers)
+
+export function isKnownFhirServer(iss: string): boolean {
     const [withoutQuery] = iss.split('?')
     const withoutTrailingSlash = removeTrailingSlash(withoutQuery)
 
-    return knownIssuers.map((it) => it.replace(/\/$/, '')).includes(withoutTrailingSlash)
+    return knownFhirServers.map((it) => it.replace(/\/$/, '')).includes(withoutTrailingSlash)
 }
 
 export function removeTrailingSlash(url: string): string {

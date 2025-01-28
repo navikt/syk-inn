@@ -16,9 +16,22 @@ export async function createIdToken(): Promise<string> {
     })
         .setProtectedHeader({ alg: 'RS256', kid: 'very-cool-kid' }) // Use the same 'kid' as in /keys
         .setIssuedAt()
-        .setIssuer('http://localhost:3000/api/mocks/fhir/fhir')
+        .setIssuer('http://localhost:3000/api/mocks/fhir')
         .setAudience('syk-inn')
         .setExpirationTime('2h')
+        .sign((await keyPair).privateKey)
+
+    return token
+}
+
+export async function createAccessToken(audience: string): Promise<string> {
+    const token = await new SignJWT({
+        yo: 'sup',
+    })
+        .setProtectedHeader({ alg: 'RS256', kid: 'very-cool-kid' }) // Use the same 'kid' as in /keys
+        .setIssuedAt()
+        .setIssuer('http://localhost:3000/api/mocks/fhir')
+        .setAudience(audience)
         .sign((await keyPair).privateKey)
 
     return token

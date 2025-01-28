@@ -16,7 +16,6 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
         queryFn: async () => dataService.query.sykmelding(sykmeldingId),
     })
 
-
     return (
         <div>
             {isLoading && <p>Loading...</p>}
