@@ -9,7 +9,7 @@ import { CheckmarkIcon, XMarkOctagonIcon } from '@navikt/aksel-icons'
 import { pathWithBasePath } from '@utils/url'
 
 import { BehandlerInfo } from '../../data-fetcher/data-service'
-import { getFhirIdTokenFromSessionStorage } from '../auth/session'
+import { getFhirAccessTokenFromSessionStorage } from '../auth/session'
 
 type Props = {
     isLoading: boolean
@@ -50,7 +50,7 @@ function VerifiedBadge(): ReactElement {
             const result = await fetch(pathWithBasePath('/fhir/verify-token'), {
                 method: 'GET',
                 headers: {
-                    Authorization: `Bearer ${getFhirIdTokenFromSessionStorage()}`,
+                    Authorization: `Bearer ${getFhirAccessTokenFromSessionStorage()}`,
                 },
             })
             if (!result.ok) {

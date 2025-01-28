@@ -29,7 +29,7 @@ export async function getSykmelding(
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: client.state.tokenResponse?.id_token ?? raise('No active Smart Session'),
+            Authorization: client.state.tokenResponse?.access_token ?? raise('No active Smart Session'),
             'X-HPR': hpr,
         },
     })
@@ -47,7 +47,7 @@ export async function sendSykmelding(client: FhirClient, hpr: string, values: un
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: client.state.tokenResponse?.id_token ?? raise('No active Smart Session'),
+            Authorization: client.state.tokenResponse?.access_token ?? raise('No active Smart Session'),
         },
         body: JSON.stringify({
             values,
@@ -69,7 +69,8 @@ async function handleAPIError(response: Response): Promise<never> {
             cause: errors,
         })
     } else {
-        logger.error(`API Responded with error ${response.status} ${response.statusText}`)
+        logger.error(`Next API Responded with error ${response.status} ${response.statusText}`)
     }
-    throw new Error('API Responded with error')
+
+    throw new Error('Next API Responded with error')
 }

@@ -50,7 +50,7 @@ export async function createNewSykmelding(payload: NySykmeldingPayload): Promise
         return { errorType: 'TOKEN_EXCHANGE_FAILED' }
     }
 
-    const response = await fetch(`${API_CONFIG.SCOPE}/api/v1/sykmelding/create`, {
+    const response = await fetch(`${API_CONFIG.URL}/api/v1/sykmelding/create`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${tokenResult.token}`,

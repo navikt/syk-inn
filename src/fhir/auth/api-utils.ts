@@ -6,6 +6,7 @@ import { verifyFhirToken } from '@fhir/auth/verify'
 export async function ensureFhirApiAuthenticated(): Promise<Response | 'ok'> {
     const token = (await headers()).get('Authorization')
     if (token == null) {
+        logger.warn('User tried submitting a sykmelding without a token')
         return Response.json({ message: 'Unauthorized' }, { status: 401 })
     }
 

@@ -6,7 +6,8 @@ import { notFound } from 'next/navigation'
 import { getAbsoluteURL } from '@utils/url'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 
-import { createIdToken } from '../../jwt'
+import { createAccessToken, createIdToken } from '../../jwt'
+import testData from '../../(resources)/data'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
 
@@ -37,8 +38,11 @@ async function handler(req: Request): Promise<Response> {
         }
         case 'POST - /auth/token': {
             const body = await req.formData()
+
+            logger.info(`Got code=${body.get('code')}`)
+
             return Response.json({
-                access_token: body.get('code'),
+                access_token: await createAccessToken(testData.fhirServer.wellKnown.issuer),
                 id_token: await createIdToken(),
                 token_type: 'Bearer',
                 expires_in: 3600,
