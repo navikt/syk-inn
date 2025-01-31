@@ -19,6 +19,7 @@ export class SessionStoreRedis implements SessionStore {
                 connectTimeout: 5000,
                 keepAlive: 5000,
             },
+            pingInterval: 10 * 1000,
         })
 
         this.client.on('error', (err) => logger.error(err))
