@@ -19,7 +19,6 @@ export type AktivitetFormValue = {
 
 export type NySykmeldingFormValues = {
     context: {
-        pasientOid: string | null
         arbeidsgiverOrgnummer: string[] | null
     } | null
     pasient: string | null

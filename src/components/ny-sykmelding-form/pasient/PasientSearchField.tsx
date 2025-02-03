@@ -2,9 +2,11 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Alert, BodyShort, Detail, Loader, TextField } from '@navikt/ds-react'
 
-import { assertResourceAvailable, isResourceAvailable, PasientInfo } from '../../../data-fetcher/data-service'
+import { assertResourceAvailable, isResourceAvailable } from '../../../data-fetcher/data-service'
 import { useController, useFormContext } from '../NySykmeldingFormValues'
 import { useDataService } from '../../../data-fetcher/data-provider'
+
+import { oidTypeToReadableText } from './pasient-utils'
 
 export function PasientSearchField({ children }: PropsWithChildren): ReactElement {
     const dataService = useDataService()
@@ -14,12 +16,17 @@ export function PasientSearchField({ children }: PropsWithChildren): ReactElemen
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['form', value] as const,
-        queryFn: (): Promise<PasientInfo> => {
+        queryFn: () => {
             assertResourceAvailable(dataService.query.pasient)
 
             return dataService.query.pasient(value ?? '')
         },
         enabled: value?.length === 11 && isResourceAvailable(dataService.query.pasient),
+        retry: (count, error) => {
+            // Stop retry when PDL doesn't find the person
+            if (error.message === 'Fant ikke person i registeret') return false
+            return count >= 3
+        },
     })
     const oidField = useController({
         name: 'pasient',
@@ -43,18 +50,30 @@ export function PasientSearchField({ children }: PropsWithChildren): ReactElemen
                 error={oidField.fieldState.error?.message}
                 placeholder="11 siffer"
                 maxLength={11}
+                disabled={isLoading}
             />
-            <div className="flex">
-                {!isResourceAvailable(dataService.query.pasient) ? (
+            <div className="flex flex-col">
+                {!isResourceAvailable(dataService.query.pasient) && (
                     <BodyShort className="mt-2">Pasient søk er ikke tilgjengelig</BodyShort>
-                ) : (
-                    <Detail className="mt-2">
-                        Valgt pasient: {data?.oid?.nr ?? 'N/A'}, {data?.navn ?? 'N/A'}
-                    </Detail>
+                )}
+                {data && (
+                    <div className="mt-2">
+                        <Detail>Navn</Detail>
+                        <BodyShort spacing>{data.navn}</BodyShort>
+                        <Detail>ID-nummer</Detail>
+                        <BodyShort spacing>
+                            {data.ident?.nr ?? 'ukjent'}{' '}
+                            {data.ident?.type && (
+                                <span className="text-xs">({oidTypeToReadableText(data.ident.type)})</span>
+                            )}
+                        </BodyShort>
+                    </div>
                 )}
 
-                {isLoading && <Loader size="xsmall" />}
-                {error && <Alert variant="error">Error: {error.message}</Alert>}
+                <div className="mt-2">
+                    {isLoading && <Loader variant="interaction" size="small" title="Henter person..." />}
+                    {error && <Alert variant="error">{error.message}</Alert>}
+                </div>
             </div>
         </div>
     )

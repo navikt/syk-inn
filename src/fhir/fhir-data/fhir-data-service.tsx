@@ -9,7 +9,7 @@ import { getHpr } from '@fhir/fhir-data/schema/mappers/practitioner'
 import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/fhir-data/schema/mappers/diagnosis'
 import { FhirConditionSchema } from '@fhir/fhir-data/schema/condition'
 import { FhirEncounterSchema } from '@fhir/fhir-data/schema/encounter'
-import { getSykmelding, sendSykmelding } from '@fhir/fhir-data/non-fhir-data'
+import { getPerson, getSykmelding, sendSykmelding } from '@fhir/fhir-data/non-fhir-data'
 
 import {
     ArbeidsgiverInfo,
@@ -17,7 +17,6 @@ import {
     BehandlerInfo,
     DataService,
     KonsultasjonInfo,
-    NotAvailable,
     PasientInfo,
 } from '../../data-fetcher/data-service'
 
@@ -43,7 +42,7 @@ export async function createFhirDataService(client: FhirClient): Promise<DataSer
             arbeidsgivere: () => getArbeidsgivere(),
         },
         query: {
-            pasient: NotAvailable,
+            pasient: (ident) => getPerson(client, ident),
             sykmelding: (id) => getSykmelding(client, behandler.hpr, id),
         },
         mutation: {

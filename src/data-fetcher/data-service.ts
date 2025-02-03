@@ -28,7 +28,7 @@ export type DataService = {
      * Query data can be anything that requires an argument to fetch, such as a specific patient.
      */
     query: {
-        pasient: ((fnr: string) => Promise<PasientInfo>) | NotAvailable
+        pasient: ((ident: string) => Promise<PasientQueryInfo>) | NotAvailable
         sykmelding: (id: string) => Promise<ExistingSykmelding>
     }
     mutation: {
@@ -47,6 +47,15 @@ export type PasientInfo = {
         navn: string
         hpr: string
     } | null
+}
+
+export type PasientQueryInfo = {
+    ident: {
+        // TODO: Are we supporting multiple oid types here?
+        type: 'fnr' | 'dnr' | 'annet'
+        nr: string
+    } | null
+    navn: string
 }
 
 export type KonsultasjonInfo = {

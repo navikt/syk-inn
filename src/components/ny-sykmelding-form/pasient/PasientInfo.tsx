@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { UseQueryResult } from '@tanstack/react-query'
 import { Alert, BodyShort, Button, Detail, Skeleton } from '@navikt/ds-react'
 
@@ -7,9 +7,11 @@ import SubtleRetryIndicator from '@components/misc/SubtleRetryIndicator'
 import { useFormContext } from '@components/ny-sykmelding-form/NySykmeldingFormValues'
 
 import { useContextPasient } from '../../../data-fetcher/hooks/use-context-pasient'
-import type { PasientInfo } from '../../../data-fetcher/data-service'
+
+import { oidTypeToReadableText } from './pasient-utils'
 
 function PasientInfo(): ReactElement {
+    const [overridePasient, setOverridePasient] = useState(false)
     const pasientQuery = useContextPasient()
     const formContext = useFormContext()
 
@@ -17,6 +19,26 @@ function PasientInfo(): ReactElement {
         return (
             <PasientSearchField>
                 <PasientInfoDegredationInfo query={pasientQuery} />
+            </PasientSearchField>
+        )
+    }
+
+    if (overridePasient) {
+        return (
+            <PasientSearchField>
+                <div className="flex my-2">
+                    <BodyShort>Du har valgt å bruke en annen pasient enn den som er hentet fra EPJ.</BodyShort>
+                    <div className="shrink-0 ml-2">
+                        <Button
+                            type="button"
+                            variant="secondary-neutral"
+                            size="xsmall"
+                            onClick={() => setOverridePasient(false)}
+                        >
+                            Bytt til systempasient
+                        </Button>
+                    </div>
+                </div>
             </PasientSearchField>
         )
     }
@@ -36,8 +58,22 @@ function PasientInfo(): ReactElement {
             )}
             {pasientQuery.data && (
                 <div>
-                    <Detail>Navn</Detail>
-                    <BodyShort spacing>{pasientQuery.data.navn}</BodyShort>
+                    <div className="flex justify-between">
+                        <div>
+                            <Detail>Navn</Detail>
+                            <BodyShort spacing>{pasientQuery.data.navn}</BodyShort>
+                        </div>
+                        <div className="mt-2">
+                            <Button
+                                type="button"
+                                variant="secondary-neutral"
+                                size="xsmall"
+                                onClick={() => setOverridePasient(true)}
+                            >
+                                Endre pasient
+                            </Button>
+                        </div>
+                    </div>
                     <Detail>ID-nummer</Detail>
                     <BodyShort spacing>
                         {pasientQuery.data.oid?.nr ?? 'ukjent'}{' '}
@@ -82,17 +118,6 @@ function PasientInfoDegredationInfo({ query }: { query: UseQueryResult }): React
             <BodyShort>Du kan fortsette utfyllingen ved å manuelt hente opp pasienten dersom du ønsker.</BodyShort>
         </Alert>
     )
-}
-
-function oidTypeToReadableText(type: NonNullable<PasientInfo['oid']>['type']): string {
-    switch (type) {
-        case 'fnr':
-            return 'fødselsnummer'
-        case 'dnr':
-            return 'd-nummer'
-        default:
-            return 'ukjent nummer'
-    }
 }
 
 export default PasientInfo
