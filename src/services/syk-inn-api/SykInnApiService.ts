@@ -6,7 +6,7 @@ import {
     ExistingSykmeldingSchema,
     NySykmelding,
     NySykmeldingSchema,
-} from '@services/SykInnApiSchema'
+} from '@services/syk-inn-api/SykInnApiSchema'
 
 const API_CONFIG = {
     URL: 'http://syk-inn-api',

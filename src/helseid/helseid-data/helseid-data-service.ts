@@ -12,13 +12,7 @@ export function createHelseIdDataService(behandler: BehandlerInfo): DataService 
             behandler: behandler,
         },
         query: {
-            pasient: async (fnr) => ({
-                // TODO: Hvor søke, PDL?
-                oid: { type: 'fnr', nr: fnr },
-                navn: 'Stand Alonessen',
-                // TODO: mulig å finne standalone?
-                fastlege: null,
-            }),
+            pasient: NotAvailable,
             sykmelding: async () => {
                 raise('Standalone is not supported in Pilot')
             },

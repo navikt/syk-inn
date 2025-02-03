@@ -1,8 +1,8 @@
 import { logger } from '@navikt/next-logger'
 
 import { ensureFhirApiAuthenticated } from '@fhir/auth/api-utils'
-import { getSykmelding } from '@services/SykInnApiService'
-import { ExistingSykmelding } from '@services/SykInnApiSchema'
+import { getSykmelding } from '@services/syk-inn-api/SykInnApiService'
+import { ExistingSykmelding } from '@services/syk-inn-api/SykInnApiSchema'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 
 export async function GET(
