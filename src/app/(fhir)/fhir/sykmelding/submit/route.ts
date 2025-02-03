@@ -5,6 +5,7 @@ import { DateOnly } from '@utils/zod'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { wait } from '@utils/wait'
 import { createNewSykmelding } from '@services/SykInnApiService'
+import { NySykmelding } from '@services/SykInnApiSchema'
 import { raise } from '@utils/ts'
 import { ensureFhirApiAuthenticated } from '@fhir/auth/api-utils'
 
@@ -43,7 +44,7 @@ const SubmitSykmeldingPayloadSchema = z.object({
     behandlerHpr: z.string(),
 })
 
-type SubmitResult = { ok: 'ok'; id: string } | { errors: { message: string } }[]
+type SubmitResult = NySykmelding | { errors: { message: string } }[]
 
 export async function POST(request: Request): Promise<Response> {
     const authStatus = await ensureFhirApiAuthenticated()
@@ -84,12 +85,12 @@ export async function POST(request: Request): Promise<Response> {
         ] satisfies SubmitResult)
     }
 
-    return Response.json({ ok: 'ok', id: result.id } satisfies SubmitResult)
+    return Response.json({ sykmeldingId: result.sykmeldingId } satisfies SubmitResult)
 }
 
 async function handleMockedRoute(): Promise<Response> {
     // Fake dev loading
     await wait(2500, 500)
 
-    return Response.json({ ok: 'ok', id: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d' } satisfies SubmitResult)
+    return Response.json({ sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d' } satisfies SubmitResult)
 }

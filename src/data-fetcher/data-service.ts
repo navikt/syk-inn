@@ -94,7 +94,7 @@ export type BehandlerInfo = {
 }
 
 export type NySykmelding = {
-    id: string
+    sykmeldingId: string
 }
 
 export type ExistingSykmelding = {

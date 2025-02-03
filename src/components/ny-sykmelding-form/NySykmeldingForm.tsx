@@ -36,7 +36,7 @@ function NySykmeldingForm(): ReactElement {
             try {
                 const createResult = await dataService.mutation.sendSykmelding(values)
 
-                router.push(`${dataService.mode === 'fhir' ? 'fhir' : 'ny'}/kvittering/${createResult.id}`)
+                router.push(`${dataService.mode === 'fhir' ? 'fhir' : 'ny'}/kvittering/${createResult.sykmeldingId}`)
 
                 return createResult
             } catch (e) {
@@ -45,7 +45,7 @@ function NySykmeldingForm(): ReactElement {
             }
         },
         onSuccess: (data) => {
-            logger.info(`Sykmelding created successfully: ${data.id}`)
+            logger.info(`Sykmelding created successfully: ${data.sykmeldingId}`)
         },
     })
 

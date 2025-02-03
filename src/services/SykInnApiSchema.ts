@@ -21,5 +21,5 @@ export const ExistingSykmeldingSchema = z.object({
 
 export type NySykmelding = z.infer<typeof NySykmeldingSchema>
 export const NySykmeldingSchema = z.object({
-    id: z.string(),
+    sykmeldingId: z.string(),
 })
