@@ -42,6 +42,7 @@ spec:
         - application: syk-inn-wonderwall
     outbound:
       external:
+        - host: 'tsm-unleash-api.nav.cloud.nais.io'
         - host: 'fhirapi.public.webmedepj.no'
         - host: 'helseid-sts.test.nhn.no'
       rules:
@@ -53,3 +54,5 @@ spec:
     requests:
       cpu: 50m
       memory: 256Mi
+  envFrom:
+    - secret: tsm-unleash-api-token
