@@ -54,7 +54,7 @@ export async function createFhirDataService(client: FhirClient): Promise<DataSer
 async function getFhirPatient(client: FhirClient): Promise<PasientInfo> {
     await wait()
     // TODO: Handle client.patient.id being null (can we launch without patient?)
-    const patient = await client.request(`Patient/${client.patient.id ?? raise('client.patient.id is null')}`)
+    const patient: unknown = await client.request(`Patient/${client.patient.id ?? raise('client.patient.id is null')}`)
     const parsed = FhirBundleOrPatientSchema.safeParse(patient)
 
     if (!parsed.success) {
@@ -62,10 +62,14 @@ async function getFhirPatient(client: FhirClient): Promise<PasientInfo> {
         throw parsed.error
     }
 
+    if (parsed.data.resourceType === 'Bundle') {
+        raise("We don't support bundles haha")
+    }
+
     return {
-        navn: getName(patient.name),
-        oid: getValidPatientOid(patient),
-        fastlege: getFastlege(patient),
+        navn: getName(parsed.data.name),
+        oid: getValidPatientOid(parsed.data),
+        fastlege: getFastlege(parsed.data),
     }
 }
 

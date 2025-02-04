@@ -16,7 +16,7 @@ type Props = {
 async function Page({ searchParams }: Props): Promise<ReactElement> {
     const params = await searchParams
 
-    if (params.iss && !isKnownFhirServer(params.iss)) {
+    if (params.iss == null || !isKnownFhirServer(params.iss)) {
         logger.warn(`Attempted to launch with unknown issuer: ${params.iss}`)
 
         /**
@@ -48,15 +48,13 @@ async function Page({ searchParams }: Props): Promise<ReactElement> {
         )
     }
 
-    if (params.iss) {
-        /**
-         * Server component:
-         *
-         * Launch is server side rendered with ?iss=<issuer> when the EPJ launches the application. We store the issuer
-         * together with the current users session-ID to be able to verify the token at a later time.
-         */
-        await saveSessionIssuer(removeTrailingSlash(params.iss))
-    }
+    /**
+     * Server component:
+     *
+     * Launch is server side rendered with ?iss=<issuer> when the EPJ launches the application. We store the issuer
+     * together with the current users session-ID to be able to verify the token at a later time.
+     */
+    await saveSessionIssuer(removeTrailingSlash(params.iss))
 
     return (
         <PageBlock as="main" width="xl" gutters className="pt-4">
