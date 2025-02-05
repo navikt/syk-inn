@@ -30,6 +30,7 @@ spec:
       external:
         - host: 'launch.smarthealthit.org'
         - host: 'syk-inn.ekstern.dev.nav.no'
+        - host: 'tsm-unleash-api.nav.cloud.nais.io'
   resources:
     limits:
       memory: 600Mi

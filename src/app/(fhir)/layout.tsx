@@ -11,12 +11,15 @@ import FhirHeader from '@fhir/components/FhirHeader'
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../providers'
 import Preload from '../preload'
+import { getToggles } from '../../toggles/rsc'
 
 export const metadata: Metadata = {
     title: '(FHIR) Innsending av Sykmeldinger',
 }
 
-export default function FhirLayout({ children }: PropsWithChildren): ReactElement {
+export default async function FhirLayout({ children }: PropsWithChildren): Promise<ReactElement> {
+    const toggles = await getToggles()
+
     return (
         <html lang="nb">
             <head>
@@ -30,7 +33,7 @@ export default function FhirLayout({ children }: PropsWithChildren): ReactElemen
             <Preload />
             <body>
                 <Page footerPosition="belowFold">
-                    <Providers>
+                    <Providers toggles={toggles}>
                         <FhirHeader />
                         {isLocalOrDemo && <DemoWarning />}
                         {children}

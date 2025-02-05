@@ -45,6 +45,7 @@ spec:
         - host: 'tsm-unleash-api.nav.cloud.nais.io'
         - host: 'fhirapi.public.webmedepj.no'
         - host: 'helseid-sts.test.nhn.no'
+        - host: 'tsm-unleash-api.nav.cloud.nais.io'
       rules:
         - application: syk-inn-api
         - application: tsm-pdl-cache

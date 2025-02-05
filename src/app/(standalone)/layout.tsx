@@ -14,6 +14,7 @@ import Preload from '../preload'
 import HelseIdDataProvider from '../../helseid/components/HelseIdDataProvider'
 import { getHelseIdUserInfo, HprDetails } from '../../helseid/helseid-userinfo'
 import HelseIdHeader from '../../helseid/components/HelseIdHeader'
+import { getToggles } from '../../toggles/rsc'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 }
 
 export default async function StandaloneLayout({ children }: PropsWithChildren): Promise<ReactElement> {
-    const behandler = await getHelseIdUserInfo()
+    const [behandler, toggles] = await Promise.all([getHelseIdUserInfo(), getToggles()])
 
     return (
         <html lang="nb">
@@ -44,7 +45,7 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                 />
                 <Page footerPosition="belowFold">
                     {isLocalOrDemo && <DemoWarning />}
-                    <Providers>
+                    <Providers toggles={toggles}>
                         <HelseIdDataProvider
                             behandler={{
                                 navn: 'TODO',
