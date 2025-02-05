@@ -7,11 +7,14 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 import { bundledEnv } from '@utils/env'
 
+import { Toggles } from '../toggles/toggles'
+import { ToggleProvider } from '../toggles/context'
+
 configureLogger({
     basePath: bundledEnv.NEXT_PUBLIC_BASE_PATH ?? undefined,
 })
 
-function Providers({ children }: PropsWithChildren): ReactElement {
+function Providers({ children, toggles }: PropsWithChildren<{ toggles: Toggles }>): ReactElement {
     const [queryClient] = React.useState(
         () =>
             new QueryClient({
@@ -34,9 +37,11 @@ function Providers({ children }: PropsWithChildren): ReactElement {
     )
 
     return (
-        <NuqsAdapter>
-            <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-        </NuqsAdapter>
+        <ToggleProvider toggles={toggles}>
+            <NuqsAdapter>
+                <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+            </NuqsAdapter>
+        </ToggleProvider>
     )
 }
 
