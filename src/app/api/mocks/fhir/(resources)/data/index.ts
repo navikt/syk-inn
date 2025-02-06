@@ -2,7 +2,7 @@ import { getAbsoluteURL } from '@utils/url'
 
 import patientEspenEksempel from './patient-espen-eksempel.json'
 import practitionerKomanMagnar from './practitioner-koman-magnar.json'
-import encounterEspenKoman from './encounter-espen-komar.json'
+import { encounterEspenKomar } from './encounter-espen-komar'
 import { createWellKnown } from './fhir-server/well-known'
 import { createKeys } from './fhir-server/keys'
 import metadata from './fhir-server/metadata.json'
@@ -20,7 +20,7 @@ const testData = {
         'Koman Magnar': practitionerKomanMagnar,
     },
     encounter: {
-        'Espen hos Koman': encounterEspenKoman,
+        'Espen hos Koman': encounterEspenKomar,
     },
     fhirServer: {
         wellKnown: createWellKnown(`${getAbsoluteURL()}/api/mocks/fhir`),

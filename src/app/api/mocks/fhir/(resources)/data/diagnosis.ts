@@ -5,6 +5,23 @@ import { FhirCondition } from '@fhir/fhir-data/schema/condition'
 const conditions: FhirCondition[] = [
     {
         resourceType: 'Condition',
+        id: 'ff0dba18-b879-4fd2-b047-15f58f21696e',
+        subject: {
+            type: 'Patient',
+            reference: 'Patient/cd09f5d4-55f7-4a24-a25d-a5b65c7a8805',
+        },
+        code: {
+            coding: [
+                {
+                    system: 'urn:oid:2.16.578.1.12.4.1.1.7170',
+                    display: 'Brudd legg/ankel',
+                    code: 'L73',
+                },
+            ],
+        },
+    } satisfies FhirCondition,
+    {
+        resourceType: 'Condition',
         id: 'cbc02cc5-ca4a-4802-982c-31745d86dafc',
         subject: {
             type: 'Patient',

@@ -76,19 +76,19 @@ async function getFhirPatient(client: FhirClient): Promise<PasientInfo> {
 async function getFhirEncounter(client: FhirClient): Promise<KonsultasjonInfo> {
     await wait()
 
-    const encounter = await client.request(`Condition?patient=${client.patient.id}`)
-    const parsed = z.array(FhirConditionSchema).safeParse(encounter)
-    const enc = await client.request(`Encounter/${client.encounter.id}`)
+    const patientConditionList: unknown = await client.request(`Condition?patient=${client.patient.id}`)
+    const parsedConditionList = z.array(FhirConditionSchema).safeParse(patientConditionList)
 
-    const safeParse = FhirEncounterSchema.safeParse(enc)
+    const encounter: unknown = await client.request(`Encounter/${client.encounter.id}`)
+    const parsedEncounter = FhirEncounterSchema.safeParse(encounter)
 
-    if (!parsed.success) {
-        logger.error('Failed to parse conditions', parsed.error)
-        throw parsed.error
+    if (!parsedConditionList.success) {
+        logger.error('Failed to parse conditions', parsedConditionList.error)
+        throw parsedConditionList.error
     }
 
-    const [relevanteDignoser, irrelevanteDiagnoser] = parsed.data
-        ? R.partition(parsed.data, (diagnosis) =>
+    const [relevanteDignoser, irrelevanteDiagnoser] = parsedConditionList.data
+        ? R.partition(parsedConditionList.data, (diagnosis) =>
               diagnosis.code.coding.some((coding) => diagnosisUrnToOidType(coding.system) != null),
           )
         : [[], []]
@@ -97,7 +97,9 @@ async function getFhirEncounter(client: FhirClient): Promise<KonsultasjonInfo> {
         `Fant ${relevanteDignoser.length} med gyldig ICPC-2 eller ICD-10 kode, ${irrelevanteDiagnoser.length} uten gyldig kode`,
     )
 
-    const fhirDiagnose = safeParse.data?.reasonCode ? getDiagnosis(safeParse.data.reasonCode[0].coding) : null
+    const fhirDiagnose = parsedEncounter.data?.reasonCode
+        ? getDiagnosis(parsedEncounter.data.reasonCode[0].coding)
+        : null
 
     return {
         diagnoser: R.pipe(
