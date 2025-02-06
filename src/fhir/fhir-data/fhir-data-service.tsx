@@ -76,6 +76,22 @@ async function getFhirPatient(client: FhirClient): Promise<PasientInfo> {
 async function getFhirEncounter(client: FhirClient): Promise<KonsultasjonInfo> {
     await wait()
 
+    // Detect if we are in WebMed
+    if (client.user.fhirUser == null) {
+        logger.warn("We're in WebMed, using temporary hardcoded konsultasjonsinfo")
+
+        return {
+            diagnoser: [
+                {
+                    system: 'ICPC2',
+                    kode: 'L73',
+                    tekst: 'Brudd legg/ankel',
+                },
+            ],
+            diagnose: null,
+        }
+    }
+
     const patientConditionList: unknown = await client.request(`Condition?patient=${client.patient.id}`)
     const parsedConditionList = z.array(FhirConditionSchema).safeParse(patientConditionList)
 
