@@ -23,6 +23,8 @@ export function pickHoveddiagnose({ search, select }: { search: string; select: 
     return async (page: Page) => {
         const diagnoseRegion = page.getByRole('region', { name: 'Diagnose' })
         await expect(diagnoseRegion).toBeVisible()
+
+        await page.getByRole('button', { name: 'Endre hoveddiagnose' }).click() // Diagnose is pre-filled
         await diagnoseRegion.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
         await diagnoseRegion.getByRole('option', { name: select }).click()
 
