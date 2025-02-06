@@ -118,7 +118,7 @@ function NySykmeldingForm(): ReactElement {
                         <FormErrors ref={errorSectionRef} />
 
                         {opprettSykmelding.error && (
-                            <Alert variant="error">
+                            <Alert variant="error" className="mb-4">
                                 <Heading level="3" size="medium">
                                     Kunne ikke opprette sykmelding
                                 </Heading>

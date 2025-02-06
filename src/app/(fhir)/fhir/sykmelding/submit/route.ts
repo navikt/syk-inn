@@ -90,7 +90,7 @@ export async function POST(request: Request): Promise<Response> {
 
 async function handleMockedRoute(): Promise<Response> {
     // Fake dev loading
-    await wait(2500, 500)
+    await wait(1000, 500)
 
     return Response.json({ sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d' } satisfies SubmitResult)
 }
