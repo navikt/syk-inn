@@ -48,8 +48,8 @@ function handleMockedRoute(): Response {
         },
         hovedDiagnose: {
             system: 'ICD-10',
-            code: 'L87',
-            text: 'Allergisk kontakte',
+            code: 'L73',
+            text: 'Brudd legg/ankel',
         },
     } satisfies ExistingSykmelding)
 }

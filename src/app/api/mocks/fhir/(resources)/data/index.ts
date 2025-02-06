@@ -6,7 +6,7 @@ import { encounterEspenKomar } from './encounter-espen-komar'
 import { createWellKnown } from './fhir-server/well-known'
 import { createKeys } from './fhir-server/keys'
 import metadata from './fhir-server/metadata.json'
-import { getConditionById, getConditionsByPatientId } from './diagnosis'
+import { getConditionById, getConditionsByPatientId } from './condition'
 
 const testData = {
     condition: {
