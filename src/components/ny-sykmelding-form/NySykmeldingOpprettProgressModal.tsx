@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import { BodyShort, Modal } from '@navikt/ds-react'
+import { CheckmarkCircleFillIcon } from '@navikt/aksel-icons'
 
 import useInterval from '@utils/hooks/useInterval'
 
@@ -13,7 +14,13 @@ const funnyLoadingMessagesNorwegian = [
     'Nesten ferdig...',
 ]
 
-export function NySykmeldingOpprettProgressModal({ isPending }: { isPending: boolean }): ReactElement {
+export function NySykmeldingOpprettProgressModal({
+    isPending,
+    isTransitioning,
+}: {
+    isPending: boolean
+    isTransitioning: boolean
+}): ReactElement {
     const [loadingMessage, setLoadingMessage] = useState(0)
 
     useInterval(() => {
@@ -21,12 +28,26 @@ export function NySykmeldingOpprettProgressModal({ isPending }: { isPending: boo
     }, 3500)
 
     return (
-        <Modal header={{ heading: 'Oppretter sykmelding...', closeButton: false }} open={isPending} onClose={void 0}>
+        <Modal
+            header={{ heading: 'Oppretter sykmelding...', closeButton: false }}
+            open={isPending || isPending}
+            onClose={void 0}
+        >
             <Modal.Body className="min-h-40 min-w-96 flex flex-col justify-center items-center">
-                <BodyShort size="large" spacing className="text-text-subtle">
-                    {funnyLoadingMessagesNorwegian[loadingMessage]}
-                </BodyShort>
-                <div className={styles.loader}></div>
+                {isPending && !isTransitioning && (
+                    <>
+                        <BodyShort size="large" spacing className="text-text-subtle">
+                            {funnyLoadingMessagesNorwegian[loadingMessage]}
+                        </BodyShort>
+                        <div className={styles.loader}></div>
+                    </>
+                )}
+                {isTransitioning && (
+                    <>
+                        <CheckmarkCircleFillIcon className="text-6xl text-green-500" />
+                        <BodyShort>OK! Går til kvittering...</BodyShort>
+                    </>
+                )}
             </Modal.Body>
         </Modal>
     )

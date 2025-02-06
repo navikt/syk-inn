@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useTransition } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { logger } from '@navikt/next-logger'
 import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react'
@@ -27,6 +27,7 @@ function NySykmeldingForm(): ReactElement {
     const form = useForm<NySykmeldingFormValues>()
     const dataService = useDataService()
     const router = useRouter()
+    const [navigationPending, startTransition] = useTransition()
 
     const opprettSykmelding = useMutation({
         mutationKey: ['opprett-sykmelding'],
@@ -36,7 +37,10 @@ function NySykmeldingForm(): ReactElement {
             try {
                 const createResult = await dataService.mutation.sendSykmelding(values)
 
-                router.push(`${dataService.mode === 'fhir' ? 'fhir' : 'ny'}/kvittering/${createResult.sykmeldingId}`)
+                startTransition(() => {
+                    const target = `${dataService.mode === 'fhir' ? 'fhir' : 'ny'}/kvittering/${createResult.sykmeldingId}`
+                    router.push(target)
+                })
 
                 return createResult
             } catch (e) {
@@ -60,22 +64,11 @@ function NySykmeldingForm(): ReactElement {
         )
     }
 
-    if (opprettSykmelding.data && 'ok' in opprettSykmelding.data) {
-        return (
-            <div className="flex flex-col gap-3 max-w-prose">
-                <FormSection title="Takk for i dag">
-                    <Alert variant="success" className="mt-4">
-                        Sykmelding opprettet!
-                    </Alert>
-                </FormSection>
-            </div>
-        )
-    }
-
     return (
         <>
             <FormProvider {...form}>
                 <form
+                    id="ny-sykmelding-form"
                     onSubmit={form.handleSubmit(
                         (values) => {
                             logger.info(`Form submit OK, values: ${JSON.stringify(values, null, 2)}`)
@@ -128,7 +121,7 @@ function NySykmeldingForm(): ReactElement {
                         )}
 
                         <div className="flex gap-3 justify-end">
-                            <Button type="submit" loading={opprettSykmelding.isPending}>
+                            <Button type="submit" formTarget="ny-sykmelding-form" loading={opprettSykmelding.isPending}>
                                 Opprett sykmelding
                             </Button>
                         </div>
@@ -136,7 +129,10 @@ function NySykmeldingForm(): ReactElement {
                 </form>
                 <DevTool control={form.control} placement="bottom-left" />
             </FormProvider>
-            <NySykmeldingOpprettProgressModal isPending={opprettSykmelding.isPending} />
+            <NySykmeldingOpprettProgressModal
+                isPending={opprettSykmelding.isPending}
+                isTransitioning={navigationPending}
+            />
         </>
     )
 }
