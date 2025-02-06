@@ -90,10 +90,6 @@ function NySykmeldingForm(): ReactElement {
                     )}
                     className="flex flex-col gap-3 max-w-prose"
                 >
-                    <FormSection title="Sykmelder" icon={<StethoscopeIcon />}>
-                        <PractitionerSection />
-                    </FormSection>
-
                     <FormSection title="Info om pasienten" icon={<PersonIcon />}>
                         <PasientSection />
                     </FormSection>
@@ -104,6 +100,10 @@ function NySykmeldingForm(): ReactElement {
 
                     <FormSection title="Aktivitet" icon={<VitalsIcon />}>
                         <AktivitetSection />
+                    </FormSection>
+
+                    <FormSection title="Sykmelder" icon={<StethoscopeIcon />}>
+                        <PractitionerSection />
                     </FormSection>
 
                     <FormSection title="Oppsummering" icon={<FloppydiskIcon />}>

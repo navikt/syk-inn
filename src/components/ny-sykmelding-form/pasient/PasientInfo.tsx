@@ -10,6 +10,8 @@ import { useContextPasient } from '../../../data-fetcher/hooks/use-context-pasie
 
 import { oidTypeToReadableText } from './pasient-utils'
 
+const FASTLEGE_INFO_ENABLED = false
+
 function PasientInfo(): ReactElement {
     const [overridePasient, setOverridePasient] = useState(false)
     const pasientQuery = useContextPasient()
@@ -81,17 +83,21 @@ function PasientInfo(): ReactElement {
                             <span className="text-xs">({oidTypeToReadableText(pasientQuery.data.oid.type)})</span>
                         )}
                     </BodyShort>
-                    <Detail>Fastlege</Detail>
-                    <BodyShort>
-                        {pasientQuery.data.fastlege ? (
-                            <>
-                                {pasientQuery.data.fastlege.navn}{' '}
-                                <span className="text-xs">({pasientQuery.data.fastlege.hpr})</span>
-                            </>
-                        ) : (
-                            <>Ingen registrert fastlege</>
-                        )}
-                    </BodyShort>
+                    {FASTLEGE_INFO_ENABLED && (
+                        <>
+                            <Detail>Fastlege</Detail>
+                            <BodyShort>
+                                {pasientQuery.data.fastlege ? (
+                                    <>
+                                        {pasientQuery.data.fastlege.navn}{' '}
+                                        <span className="text-xs">({pasientQuery.data.fastlege.hpr})</span>
+                                    </>
+                                ) : (
+                                    <>Ingen registrert fastlege</>
+                                )}
+                            </BodyShort>
+                        </>
+                    )}
                     <input {...formContext.register('pasient')} type="hidden" value={pasientQuery.data.oid?.nr} />
                 </div>
             )}
