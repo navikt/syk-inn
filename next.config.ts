@@ -8,12 +8,25 @@ const nextConfig: NextConfig = {
     serverExternalPackages: ['@navikt/next-logger', 'next-logger', 'pino', 'pino-roll'],
     experimental: {
         optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
+        authInterrupts: true,
     },
     logging: {
         fetches: {
             fullUrl: true,
             hmrRefreshes: true,
         },
+    },
+    rewrites: async () => {
+        return {
+            beforeFiles: [
+                {
+                    source: '/fhir/:path*',
+                    destination: '/fhir-secure/:path*',
+                },
+            ],
+            afterFiles: [],
+            fallback: [],
+        }
     },
 }
 
