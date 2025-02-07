@@ -14,6 +14,7 @@ import NySykmeldingFormSummary from '@components/ny-sykmelding-form/aktivitet/fo
 import { PractitionerSection } from '@components/ny-sykmelding-form/practitioner/PractitionerSection'
 
 import { useIsDataServiceInitialized, useDataService } from '../../data-fetcher/data-provider'
+import { DataService } from '../../data-fetcher/data-service'
 
 import AktivitetSection from './aktivitet/AktivitetSection'
 import DiagnoseSection from './diagnose/DiagnoseSection'
@@ -25,7 +26,7 @@ import { NySykmeldingFormValues } from './NySykmeldingFormValues'
 function NySykmeldingForm(): ReactElement {
     const [errorSectionRef, focusErrorSection] = useFormErrors()
     const form = useForm<NySykmeldingFormValues>()
-    const dataService = useDataService()
+    const dataService: DataService = useDataService()
     const router = useRouter()
     const [navigationPending, startTransition] = useTransition()
     const opprettSykmelding = useMutation({

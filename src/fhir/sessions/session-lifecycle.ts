@@ -23,7 +23,7 @@ export async function saveSessionIssuer(issuer: string): Promise<void> {
  */
 export async function saveSessionCompleted(): Promise<void> {
     const sessionId = (await cookies()).get('syk-inn-session-id')?.value ?? null
-
+''
     if (sessionId == null) {
         raise('User without session ID trying to launch FHIR-session. Is middleware not middlewaring?')
     }
