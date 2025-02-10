@@ -1,14 +1,20 @@
-import { nextleton } from 'nextleton'
-import { exportJWK, generateKeyPair, JWK, SignJWT } from 'jose'
+import { lazyNextleton } from 'nextleton'
+import { exportJWK, generateKeyPair, JWK, KeyLike, SignJWT } from 'jose'
 
 import testData from './(resources)/data'
 
-export const keyPair = nextleton('key-pair', async () => await generateKeyPair('RS256'))
+export const keyPair = lazyNextleton('key-pair', async () => await generateKeyPair('RS256'))
 
-export const publicJwk = async (): Promise<JWK> => {
-    const { publicKey } = await keyPair
+export async function publicJwk(): Promise<JWK> {
+    const { publicKey } = await keyPair()
 
     return await exportJWK(publicKey)
+}
+
+export async function privateKey(): Promise<KeyLike> {
+    const { privateKey } = await keyPair()
+
+    return privateKey
 }
 
 export async function createIdToken(): Promise<string> {
@@ -21,7 +27,7 @@ export async function createIdToken(): Promise<string> {
         .setIssuer('http://localhost:3000/api/mocks/fhir')
         .setAudience('syk-inn')
         .setExpirationTime('2h')
-        .sign((await keyPair).privateKey)
+        .sign(await privateKey())
 
     return token
 }
@@ -34,7 +40,7 @@ export async function createAccessToken(audience: string): Promise<string> {
         .setIssuedAt()
         .setIssuer(testData.fhirServer.wellKnown.issuer)
         .setAudience(audience)
-        .sign((await keyPair).privateKey)
+        .sign(await privateKey())
 
     return token
 }

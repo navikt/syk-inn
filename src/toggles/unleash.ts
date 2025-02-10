@@ -3,6 +3,7 @@ import { logger as pinoLogger } from '@navikt/next-logger'
 import * as R from 'remeda'
 import { cookies } from 'next/headers'
 import NodeCache from 'node-cache'
+import { connection } from 'next/server'
 
 import { isLocalOrDemo } from '@utils/env'
 import { raise } from '@utils/ts'
@@ -14,6 +15,8 @@ import { UNLEASH_COOKIE_NAME } from './cookie'
 const logger = pinoLogger.child({}, { msgPrefix: '[UNLEASH-TOGGLES] ' })
 
 export async function getToggles(): Promise<Toggles> {
+    await connection()
+
     if ((EXPECTED_TOGGLES as readonly string[]).length === 0) {
         logger.info('Currently no expected toggles defined, not fetching toggles from unleash')
         return []
