@@ -61,9 +61,13 @@ async function getAndValidateDefinitions(): Promise<Awaited<ReturnType<typeof ge
     }
 
     const definitions = await getDefinitions({
-        url: `${process.env.UNLEASH_SERVER_API_URL ?? raise('Missing UNLEASH_SERVER_API_URL')}/api/client/features`,
         appName: 'syk-inn',
+        url: `${process.env.UNLEASH_SERVER_API_URL ?? raise('Missing UNLEASH_SERVER_API_URL')}/api/client/features`,
     })
+    if ('message' in definitions) {
+        throw new Error(`Toggle was 200 OK, but server said: ${definitions.message}`)
+    }
+
     unleashCache.set('toggles', definitions)
 
     const diff = R.difference(

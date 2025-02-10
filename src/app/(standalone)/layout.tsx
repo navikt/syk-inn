@@ -14,7 +14,7 @@ import Preload from '../preload'
 import HelseIdDataProvider from '../../helseid/components/HelseIdDataProvider'
 import { getHelseIdUserInfo, HprDetails } from '../../helseid/helseid-userinfo'
 import HelseIdHeader from '../../helseid/components/HelseIdHeader'
-import { getToggles } from '../../toggles/rsc'
+import { getToggles } from '../../toggles/unleash'
 
 export const dynamic = 'force-dynamic'
 

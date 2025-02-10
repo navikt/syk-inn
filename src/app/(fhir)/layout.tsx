@@ -11,7 +11,7 @@ import FhirHeader from '@fhir/components/FhirHeader'
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../providers'
 import Preload from '../preload'
-import { getToggles } from '../../toggles/rsc'
+import { getToggles } from '../../toggles/unleash'
 
 export const metadata: Metadata = {
     title: '(FHIR) Innsending av Sykmeldinger',
