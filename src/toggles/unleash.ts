@@ -9,7 +9,7 @@ import { isLocalOrDemo } from '@utils/env'
 import { raise } from '@utils/ts'
 
 import { getUnleashEnvironment, localDevelopmentToggles } from './env'
-import { EXPECTED_TOGGLES, Toggle, Toggles } from './toggles'
+import { EXPECTED_TOGGLES, ExpectedToggles, Toggle, Toggles } from './toggles'
 import { UNLEASH_COOKIE_NAME } from './cookie'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[UNLEASH-TOGGLES] ' })
@@ -50,6 +50,16 @@ export async function getToggles(): Promise<Toggles> {
             }),
         )
     }
+}
+
+export function getFlag(flag: ExpectedToggles, toggles: Toggles): Toggle {
+    const toggle = toggles.find((it) => it.name === flag)
+
+    if (toggle == null) {
+        return { name: flag, enabled: false, impressionData: false, variant: { name: 'disabled', enabled: false } }
+    }
+
+    return toggle
 }
 
 const unleashCache = new NodeCache({ stdTTL: 15 })

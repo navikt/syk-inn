@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 
-const Page = () => {
+function Page(): ReactElement {
     // TODO: Better error page
     return <div>OOOF! Thats not an valid issuer lol</div>
 }

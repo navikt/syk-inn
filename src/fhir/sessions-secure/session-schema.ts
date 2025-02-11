@@ -8,7 +8,7 @@ export const WellKnownSchema = z.object({
     token_endpoint: z.string(),
 })
 
-export const TokenResponse = z.infer<typeof TokenResponseSchema>
+export type TokenResponse = z.infer<typeof TokenResponseSchema>
 export const TokenResponseSchema = z.object({
     // OIDC:
     access_token: z.string(),
