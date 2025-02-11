@@ -17,11 +17,11 @@ export function createSecureFhirDataService(behandler: BehandlerInfo): DataServi
             arbeidsgivere: NotAvailable,
         },
         query: {
-            pasient: (ident) => raise('TODO'),
-            sykmelding: (id) => raise('TODO'),
+            pasient: () => raise('TODO'),
+            sykmelding: () => raise('TODO'),
         },
         mutation: {
-            sendSykmelding: (values) => raise('TODO'),
+            sendSykmelding: () => raise('TODO'),
         },
     }
 }

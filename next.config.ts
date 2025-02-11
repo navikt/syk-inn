@@ -16,18 +16,6 @@ const nextConfig: NextConfig = {
             hmrRefreshes: true,
         },
     },
-    rewrites: async () => {
-        return {
-            beforeFiles: [
-                {
-                    source: '/fhir/:path*',
-                    destination: '/fhir-secure/:path*',
-                },
-            ],
-            afterFiles: [],
-            fallback: [],
-        }
-    },
 }
 
 export default nextConfig
