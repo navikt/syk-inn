@@ -48,9 +48,9 @@ For preutfylling fra EPJ til Nav forventes det at følgende FHIR ressurser er ti
   ]
 }
 ```
-> Begrunnelse
->> 
-> Notater
+> **Begrunnelse**
+>> Vi trenger fødselsnummer eller d-nummer for å kunne identifisere pasienten. Navnet er mest for brukervennlighet og for å kunne bekrefte at vi har riktig pasient.
+> **Notater**
 >> *Extension.Citizenship* - Kreves av no-basis-Patient, men ikke av Nav. Hvis vi sløyfer dette kan det være at EPJ også gjør det som da bryter med standarden. Risiko? 
 
 ---
