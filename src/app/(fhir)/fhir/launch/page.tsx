@@ -9,12 +9,20 @@ import { saveSessionIssuer } from '@fhir/sessions/session-lifecycle'
 import FhirLaunchInitialization from '@fhir/components/FhirLaunchInitialization'
 import { isKnownFhirServer, removeTrailingSlash } from '@fhir/issuers'
 
+import { getFlag, getToggles } from '../../../../toggles/unleash'
+
 type Props = {
     searchParams: Promise<{ iss: string | undefined }>
 }
 
 async function Page({ searchParams }: Props): Promise<ReactElement> {
     const params = await searchParams
+
+    const debugWait = getFlag('SYK_INN_DEBUG_WAIT_BEFORE_LAUNCH', await getToggles())
+    if (debugWait.enabled) {
+        logger.warn('Debug wait enabled, waiting 10 seconds before launching')
+        await new Promise((resolve) => setTimeout(resolve, 10000))
+    }
 
     if (params.iss == null || !isKnownFhirServer(params.iss)) {
         logger.warn(`Attempted to launch with unknown issuer: ${params.iss}`)
