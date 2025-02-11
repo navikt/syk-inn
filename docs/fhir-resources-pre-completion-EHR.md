@@ -169,7 +169,7 @@ For preutfylling fra EPJ til Nav forventes det at følgende FHIR ressurser er ti
 }
 ```
 
-ICPC-2 Condition
+> **JSON-struktur for *ICPC-2 Condition:***
   ```json
 {
   "resourceType": "Condition",
@@ -239,14 +239,19 @@ ICPC-2 Condition
   ]
 }
 ```
-- Begrunnelse
-  - Context.Encounter MÅ inneholde referanse til konsultasjon da Nav loven krever konsultasjon for sykmelding.
-- Notater 
-  - Custodian.Identifier krever at EPJ har forhåndslagret Nav som organisasjon i sitt FHIR API. Nav er da lagret med organisasjonsnummer som identifier. Skal dette inkluderes?
-  ```json "custodian": [{
-    "identifier": "Referanse til Nav organization i EPJ FHIR API. Eks: api.no/fhir/Organization?identifier=889640782"
-    }]
-    ```
-  Content.Attachment.Title - hva skal tittelen inneholde?
+>**Begrunnelse**
+>> *Context.Encounter* MÅ inneholde referanse til konsultasjon da Lov om folketrygd (folketrygdloven) §8-7 krever konsultasjon for sykmelding.
+
+> **Notater** 
+>> *Custodian.Identifier* krever at EPJ har forhåndslagret Nav som organisasjon i sitt FHIR API. Nav er da lagret med organisasjonsnummer som identifier. Skal dette inkluderes?
+>
+> ```json 
+> {
+> "custodian": [{
+>     "identifier": "Referanse til Nav organization i EPJ FHIR API. Eks: api.no/fhir/Organization?identifier=889640782"
+>     }]
+> }
+> ```
+>> *Content.Attachment.Title* - hva skal tittelen inneholde?
   fom og tom? noe slikt: sykmelding 01.01.2019 - 01.02.2019
  
