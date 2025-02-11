@@ -1,12 +1,17 @@
+import { randomBytes, getRandomValues } from 'node:crypto'
+
 import { cookies } from 'next/headers'
 import { logger as pinoLogger } from '@navikt/next-logger/dist/logger'
 import { redirect, RedirectType, unauthorized } from 'next/navigation'
-import { calculatePKCECodeChallenge, randomPKCECodeVerifier } from 'openid-client'
+import { calculatePKCECodeChallenge } from 'openid-client'
+import { fromUint8Array } from 'js-base64'
 
 import { isKnownFhirServer, removeTrailingSlash } from '@fhir/issuers'
 import { WellKnownSchema } from '@fhir/sessions-secure/session-schema'
 import { getSessionStore } from '@fhir/sessions-secure/session-store'
-import { getAbsoluteURL } from '@utils/url'
+import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
+
+import { getFlag, getToggles } from '../../../../toggles/unleash'
 
 type Props = {
     searchParams: Promise<{ iss: string; launch: string }>
@@ -19,6 +24,12 @@ const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR] ' })
  * when the handler is within the same HTTP request. But server components have access to cookies set in middleware.
  */
 async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
+    const debugWait = getFlag('SYK_INN_DEBUG_WAIT_BEFORE_LAUNCH', await getToggles())
+    if (debugWait.enabled) {
+        logger.warn('Debug wait enabled, waiting 10 seconds before launching')
+        await new Promise((resolve) => setTimeout(resolve, 10000))
+    }
+
     const cookieStore = await cookies()
     const sessionId = cookieStore.get('syk-inn-session-id')?.value
 
@@ -33,7 +44,7 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
     if (issuerParam == null || launch == null || !isKnownFhirServer(issuerParam)) {
         logger.error(`Invalid issuer or launch parameter ${issuerParam}, ${launch}`)
         // TODO: Mer spesifikk feilhåndtering
-        redirect('/fhir/invalid-issuer')
+        redirect(pathWithBasePath('/fhir/invalid-issuer'))
     }
 
     const issuer = removeTrailingSlash(issuerParam)
@@ -58,11 +69,13 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
     }
 
     logger.info(`Issuer ${issuer} validated, creating secure session`)
-    const codeVerifier = randomPKCECodeVerifier()
+    const codeVerifier = createCodeVerifier(96)
+    const state = randomBytes(32).toString('base64url')
     const sessionStore = await getSessionStore()
     await sessionStore.initializeSecureUserSession(sessionId, {
         issuer,
         codeVerifier,
+        state,
         authorizationEndpoint: validatedWellKnown.data.authorization_endpoint,
         tokenEndpoint: validatedWellKnown.data.token_endpoint,
     })
@@ -72,8 +85,12 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
         issuer,
         authorizationEndpoint: validatedWellKnown.data.authorization_endpoint,
         codeVerifier,
+        state,
         launch,
     })
+
+    // TODO: Don't log auth URL
+    logger.debug(`Redirecting to: ${authUrl}`)
     redirect(authUrl, RedirectType.replace)
 }
 
@@ -81,6 +98,7 @@ async function getAuthUrl(opts: {
     issuer: string
     authorizationEndpoint: string
     codeVerifier: string
+    state: string
     launch: string
 }): Promise<string> {
     const code_challenge = await calculatePKCECodeChallenge(opts.codeVerifier)
@@ -89,12 +107,19 @@ async function getAuthUrl(opts: {
         client_id: 'syk-inn',
         scope: 'openid profile launch fhirUser patient/*.read user/*.read offline_access',
         redirect_uri: `${getAbsoluteURL()}/fhir/callback`,
-        audience: opts.issuer,
+        aud: opts.issuer,
         launch: opts.launch,
+        state: opts.state,
         code_challenge: code_challenge,
         code_challenge_method: 'S256',
     })
     return `${opts.authorizationEndpoint}?${params.toString()}`
+}
+
+function createCodeVerifier(count: number): string {
+    const inputBytes = getRandomValues(new Uint8Array(count))
+
+    return fromUint8Array(inputBytes, true)
 }
 
 export default HackyPageAsRouteHandler

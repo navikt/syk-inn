@@ -10,6 +10,7 @@ export type SessionId = string
 export type InitialSession = {
     issuer: string
     codeVerifier: string
+    state: string
     authorizationEndpoint: string
     tokenEndpoint: string
 }
