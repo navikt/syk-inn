@@ -189,7 +189,7 @@ For preutfylling fra EPJ til Nav forventes det at følgende FHIR ressurser er ti
   }
 }
   ```
-> Begrunnelse
+> **Begrunnelse**
 >> *Code.System* - må være av type urn:oid:2.16.578.1.12.4.1.1.7170 eller urn:oid:2.16.578.1.12.4.1.1.7110
 >
 >> *Code.Code* - må være en godkjent *ICD-10* eller *ICPC-2 kode*
