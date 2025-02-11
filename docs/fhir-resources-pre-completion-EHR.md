@@ -2,7 +2,7 @@
 
 ## Kontekst
 Nav skal utvikle en SMART on FHIR applikasjon for ny sykmelding.
-Under er ein beskrivelse av hvilke FHIR ressurser Nav trenger for preutfylling for sykmelding. 
+Under er ein beskrivelse av hvilke FHIR ressurser Nav trenger for preutfylling av sykmelding. 
 
 
 ### Preutfylling

@@ -2,10 +2,10 @@
 
 ## Kontekst
 Nav skal utvikle en SMART on FHIR applikasjon for ny sykmelding.
-Under er ein beskrivelse av hvilke FHIR ressurser Nav trenger for tilbakeskriving for sykmelding. 
+Under er ein beskrivelse av hvilke FHIR ressurser Nav trenger for tilbakeskriving av sykmelding til EPJ. 
 
 
-### tilbakeskriving
+### Tilbakeskriving
 For tilbakeskriving fra Nav til EPJ forventes det at følgende FHIR ressurser er tilgjengelige i EPJ (SMART on FHIR) eller overføres til web-applikasjonen:
  - DocumentReference ([DocumentReference](https://www.hl7.org/fhir/documentreference.html]))
 ---
