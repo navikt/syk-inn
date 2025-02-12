@@ -4,6 +4,7 @@ import { raise } from '@utils/ts'
 import { wait } from '@utils/wait'
 import { FhirBundleOrPatientSchema } from '@fhir/fhir-data/schema/patient'
 import { getFastlege, getName, getValidPatientOid } from '@fhir/fhir-data/schema/mappers/patient'
+import { pathWithBasePath } from '@utils/url'
 
 import { BehandlerInfo, DataService, NotAvailable, PasientInfo } from '../../data-fetcher/data-service'
 
@@ -30,7 +31,7 @@ async function getFhirPatient(): Promise<PasientInfo> {
     await wait()
 
     // TODO: Bedre feilhåndtering
-    const patient: unknown = await fetch(`/fhir/resources/context/Patient`).then((it) => it.json())
+    const patient: unknown = await fetch(pathWithBasePath(`/fhir/resources/context/Patient`)).then((it) => it.json())
     const parsed = FhirBundleOrPatientSchema.safeParse(patient)
 
     if (!parsed.success) {

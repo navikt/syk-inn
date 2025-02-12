@@ -50,7 +50,7 @@ export async function GET(request: Request): Promise<Response> {
         grant_type: 'authorization_code',
         code,
         code_verifier: existingSession.codeVerifier,
-        redirect_uri: `${getAbsoluteURL()}/fhir/callback`, // TODO trailing slash?
+        redirect_uri: `${getAbsoluteURL()}/fhir/callback`,
     })
 
     logger.info(`Token request body: ${formUrlEncodedBody.toString()}`)
@@ -96,6 +96,8 @@ export async function GET(request: Request): Promise<Response> {
         accessToken: parsedTokenResponse.data.access_token,
         patient: parsedTokenResponse.data.patient,
         encounter: parsedTokenResponse.data.encounter,
+        //webmed fix
+        webmedPractitioner: parsedTokenResponse.data.practitioner,
     })
 
     // TODO: 2.5. verifisere jwt?

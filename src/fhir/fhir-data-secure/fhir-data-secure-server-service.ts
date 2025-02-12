@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers'
 import { decodeJwt } from 'jose'
+import { logger } from '@navikt/next-logger'
 
 import { getSessionStore } from '@fhir/sessions-secure/session-store'
 import { FhirPractitionerSchema } from '@fhir/fhir-data/schema/practitioner'
@@ -19,19 +20,37 @@ export async function getBehandlerFromSecureFhirSession(): Promise<BehandlerInfo
     const currentSession = await sessionStore.getSecureSession(sessionId)
 
     const decodedIdToken = decodeJwt(currentSession.idToken)
-    const fhirUserResponse = await fetch(`${currentSession.issuer}/${decodedIdToken.fhirUser}`, {
+    // TODO: fix webmed fallback - practitioner should not be used
+    const fhirUser = currentSession.webmedPractitioner
+        ? `Practitioner/${currentSession.webmedPractitioner}`
+        : decodedIdToken.fhirUser
+    const fhirUserResourcePath = `${currentSession.issuer}/${fhirUser}`
+
+    logger.info(`Trying to fetch fhirUser from ${fhirUserResourcePath}`)
+    const fhirUserResponse = await fetch(fhirUserResourcePath, {
         headers: {
             Authorization: `Bearer ${currentSession.accessToken}`,
         },
     })
     if (!fhirUserResponse.ok) {
-        throw new Error(':(')
+        logger.error(
+            `fhirUser resource failed, responed with ${fhirUserResponse.status} ${fhirUserResponse.statusText}`,
+        )
+        if (fhirUserResponse.headers.get('Content-Type')?.includes('text/plain')) {
+            const text = await fhirUserResponse.text()
+            logger.error(`fhirUser resource failed with text: ${text}`)
+        } else if (fhirUserResponse.headers.get('Content-Type')?.includes('application/json')) {
+            const json = await fhirUserResponse.json()
+            logger.error(`fhirUser resource failed with json: ${JSON.stringify(json)}`)
+        }
+
+        throw new Error('Unable to get fhirUser')
     }
 
     const fhirUserResult = await fhirUserResponse.json()
     const parsedFhirUser = FhirPractitionerSchema.safeParse(fhirUserResult)
     if (!parsedFhirUser.success) {
-        throw new Error('Doctor Wrong', {
+        throw new Error('fhirUser was not a valid FhirPractitioner', {
             cause: parsedFhirUser.error,
         })
     }

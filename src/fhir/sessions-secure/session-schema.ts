@@ -16,6 +16,8 @@ export const TokenResponseSchema = z.object({
     // SMART:
     patient: z.string(),
     encounter: z.string(),
+    //webmed fix
+    practitioner: z.string().optional(),
 })
 
 /*
