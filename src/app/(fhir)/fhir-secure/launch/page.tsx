@@ -98,7 +98,7 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
     // TODO: Don't log auth URL
     logger.debug(`Redirecting to: ${authUrl}`)
     /**
-     * PKCE STEP 2
+     * PKCE STEP 3
      * Redirect the user to the /authorize endpoint along with the code_challenge
      */
     redirect(authUrl, RedirectType.replace)
@@ -112,7 +112,7 @@ async function getAuthUrl(opts: {
     launch: string
 }): Promise<string> {
     /**
-     * PKCE STEP 1.5
+     * PKCE STEP 2
      * Generate a code_challenge from the code_verifier in step 1
      */
     const code_challenge = await calculatePKCECodeChallenge(opts.codeVerifier)
