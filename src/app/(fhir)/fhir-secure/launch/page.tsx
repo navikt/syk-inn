@@ -1,4 +1,4 @@
-import { randomBytes, getRandomValues } from 'node:crypto'
+import { getRandomValues, randomBytes } from 'node:crypto'
 
 import { cookies } from 'next/headers'
 import { logger as pinoLogger } from '@navikt/next-logger/dist/logger'
@@ -11,7 +11,7 @@ import { WellKnownSchema } from '@fhir/sessions-secure/session-schema'
 import { getSessionStore } from '@fhir/sessions-secure/session-store'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 
-import { getFlag, getToggles } from '../../../../toggles/unleash'
+//import { getFlag, getToggles } from '../../../../toggles/unleash'
 
 type Props = {
     searchParams: Promise<{ iss: string; launch: string }>
@@ -24,11 +24,11 @@ const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR] ' })
  * when the handler is within the same HTTP request. But server components have access to cookies set in middleware.
  */
 async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
-    const debugWait = getFlag('SYK_INN_DEBUG_WAIT_BEFORE_LAUNCH', await getToggles())
-    if (debugWait.enabled) {
-        logger.warn('Debug wait enabled, waiting 10 seconds before launching')
-        await new Promise((resolve) => setTimeout(resolve, 10000))
-    }
+    //const debugWait = getFlag('SYK_INN_DEBUG_WAIT_BEFORE_LAUNCH', await getToggles())
+    //if (debugWait.enabled) {
+    //    logger.warn('Debug wait enabled, waiting 10 seconds before launching')
+    //    await new Promise((resolve) => setTimeout(resolve, 10000))
+    //}
 
     const cookieStore = await cookies()
     const sessionId = cookieStore.get('syk-inn-session-id')?.value
@@ -41,7 +41,8 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
     const params = await searchParams
     const issuerParam = params['iss']
     const launch = params['launch']
-    if (issuerParam == null || launch == null || !isKnownFhirServer(issuerParam)) {
+    if (issuerParam == null || launch == null) {
+        // } || !isKnownFhirServer(issuerParam)) {
         logger.error(`Invalid issuer or launch parameter ${issuerParam}, ${launch}`)
         // TODO: Mer spesifikk feilhåndtering
         redirect(pathWithBasePath('/fhir/invalid-issuer'))
@@ -69,6 +70,11 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
     }
 
     logger.info(`Issuer ${issuer} validated, creating secure session`)
+
+    /**
+     * PKCE STEP 1
+     * Create a cryptographically-random code_verifier and from this generates a code_challenge
+     */
     const codeVerifier = createCodeVerifier(96)
     const state = randomBytes(32).toString('base64url')
     const sessionStore = await getSessionStore()
@@ -91,6 +97,10 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
 
     // TODO: Don't log auth URL
     logger.debug(`Redirecting to: ${authUrl}`)
+    /**
+     * PKCE STEP 2
+     * Redirect the user to the /authorize endpoint along with the code_challenge
+     */
     redirect(authUrl, RedirectType.replace)
 }
 
