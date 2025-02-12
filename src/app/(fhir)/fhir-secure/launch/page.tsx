@@ -6,7 +6,7 @@ import { redirect, RedirectType, unauthorized } from 'next/navigation'
 import { calculatePKCECodeChallenge } from 'openid-client'
 import { fromUint8Array } from 'js-base64'
 
-import { isKnownFhirServer, removeTrailingSlash } from '@fhir/issuers'
+import { removeTrailingSlash } from '@fhir/issuers'
 import { WellKnownSchema } from '@fhir/sessions-secure/session-schema'
 import { getSessionStore } from '@fhir/sessions-secure/session-store'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
