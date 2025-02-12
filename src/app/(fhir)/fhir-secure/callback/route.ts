@@ -11,7 +11,7 @@ const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
 export async function GET(request: Request): Promise<Response> {
     const url = new URL(request.url)
     /**
-     * PKCE STEP 3
+     * PKCE STEP 4
      * Authorization server stores the code_challenge and redirects the user back to the application with an authorization code, which is good for one use.
      */
     const code = url.searchParams.get('code')
@@ -42,7 +42,7 @@ export async function GET(request: Request): Promise<Response> {
     logger.info(`Exchanging code for token with issuer ${existingSession.tokenEndpoint}`)
 
     /**
-     * PKCE STEP 4
+     * PKCE STEP 5
      * Send code and the code_verifier (created in step 1) to the authorization servers /oauth/token endpoint.
      */
     const formUrlEncodedBody = new URLSearchParams({
