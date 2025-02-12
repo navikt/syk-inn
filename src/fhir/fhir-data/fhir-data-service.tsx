@@ -165,7 +165,7 @@ async function getFhirPractitioner(client: FhirClient): Promise<BehandlerInfo> {
     const hpr = getHpr(parsed.data.identifier)
     if (hpr == null) {
         // TODO: Don't log name?
-        throw new Error(`Practitioner without HPR (${parsed.data.name})`)
+        throw new Error(`Practitioner without HPR (${parsed.data.name[0].family})`)
     }
 
     return {

@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import { logger as pinoLogger } from '@navikt/next-logger/dist/logger'
+import { logger as pinoLogger } from '@navikt/next-logger'
 import { redirect, RedirectType, unauthorized } from 'next/navigation'
 import { calculatePKCECodeChallenge, randomPKCECodeVerifier, randomState } from 'openid-client'
 
@@ -8,7 +8,7 @@ import { WellKnownSchema } from '@fhir/sessions-secure/session-schema'
 import { getSessionStore } from '@fhir/sessions-secure/session-store'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 
-//import { getFlag, getToggles } from '../../../../toggles/unleash'
+import { getFlag, getToggles } from '../../../../toggles/unleash'
 
 type Props = {
     searchParams: Promise<{ iss: string; launch: string }>
@@ -21,11 +21,11 @@ const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR] ' })
  * when the handler is within the same HTTP request. But server components have access to cookies set in middleware.
  */
 async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
-    //const debugWait = getFlag('SYK_INN_DEBUG_WAIT_BEFORE_LAUNCH', await getToggles())
-    //if (debugWait.enabled) {
-    //    logger.warn('Debug wait enabled, waiting 10 seconds before launching')
-    //    await new Promise((resolve) => setTimeout(resolve, 10000))
-    //}
+    const debugWait = getFlag('SYK_INN_DEBUG_WAIT_BEFORE_LAUNCH', await getToggles())
+    if (debugWait.enabled) {
+        logger.warn('Debug wait enabled, waiting 10 seconds before launching')
+        await new Promise((resolve) => setTimeout(resolve, 10000))
+    }
 
     const cookieStore = await cookies()
     const sessionId = cookieStore.get('syk-inn-session-id')?.value
