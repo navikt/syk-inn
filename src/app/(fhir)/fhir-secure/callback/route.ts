@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { logger as pinoLogger } from '@navikt/next-logger'
 
-import { getSessionStore } from '@fhir/sessions-secure/session-store'
+import { CompleteSession, getSessionStore } from '@fhir/sessions-secure/session-store'
 import { TokenResponseSchema } from '@fhir/sessions-secure/session-schema'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 
@@ -86,14 +86,19 @@ export async function GET(request: Request): Promise<Response> {
         return new Response('Token response failed', { status: 400 })
     }
 
-    await sessionStore.completeSecureUserSession(sessionId, {
+    const secureUserSessionValues: CompleteSession = {
         idToken: parsedTokenResponse.data.id_token,
         accessToken: parsedTokenResponse.data.access_token,
         patient: parsedTokenResponse.data.patient,
         encounter: parsedTokenResponse.data.encounter,
-        //webmed fix
-        webmedPractitioner: parsedTokenResponse.data.practitioner,
-    })
+    }
+
+    // WebMed fallback hack (practitioner shall not be in token response)
+    if (parsedTokenResponse.data.practitioner) {
+        secureUserSessionValues.webmedPractitioner = parsedTokenResponse.data.practitioner
+    }
+
+    await sessionStore.completeSecureUserSession(sessionId, secureUserSessionValues)
 
     redirect(pathWithBasePath('/fhir'))
 }
