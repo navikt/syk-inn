@@ -10,6 +10,10 @@ const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
 
 export async function GET(request: Request): Promise<Response> {
     const url = new URL(request.url)
+    /**
+     * PKCE STEP 3
+     * Authorization server stores the code_challenge and redirects the user back to the application with an authorization code, which is good for one use.
+     */
     const code = url.searchParams.get('code')
     const state = url.searchParams.get('state')
 
@@ -37,30 +41,34 @@ export async function GET(request: Request): Promise<Response> {
 
     logger.info(`Exchanging code for token with issuer ${existingSession.tokenEndpoint}`)
 
-    /* Old body:
+    /**
+     * PKCE STEP 4
+     * Send code and the code_verifier (created in step 1) to the authorization servers /oauth/token endpoint.
+     */
     const formUrlEncodedBody = new URLSearchParams({
         client_id: 'syk-inn',
         grant_type: 'authorization_code',
         code,
         code_verifier: existingSession.codeVerifier,
-        redirect_uri: `${getAbsoluteURL()}/fhir/`,
+        redirect_uri: `${getAbsoluteURL()}/fhir`, // TODO trailing slash?
     })
-    
-    logger.info(`Token request body: ${formUrlEncodedBody.toString()}`)
-  
-     */
 
-    const rawdogFormUrlencodedBody = `code=${code}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(`${getAbsoluteURL()}/fhir/`)}&client_id=${encodeURIComponent('syk-inn')}&code_verifier=${encodeURIComponent(existingSession.codeVerifier)}`
-    logger.info(`Token request body: ${rawdogFormUrlencodedBody}`)
+    logger.info(`Token request body: ${formUrlEncodedBody.toString()}`)
+
     const response = await fetch(existingSession.tokenEndpoint, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: rawdogFormUrlencodedBody,
+        body: formUrlEncodedBody,
     })
 
+    /**
+     * PKCE STEP 5
+     * Authorization server verifies the code_challenge and code_verifier.
+     * Upon successful verification the authorization server issues id_token, access_token and (optional) refresh_token.
+     */
     if (!response.ok) {
         logger.error(`Token exchange failed, token_endpoint responed with ${response.status} ${response.statusText}`)
         if (response.headers.get('Content-Type')?.includes('text/plain')) {
