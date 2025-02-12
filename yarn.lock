@@ -4938,7 +4938,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-base64@npm:^3.7.2, js-base64@npm:^3.7.7":
+"js-base64@npm:^3.7.2":
   version: 3.7.7
   resolution: "js-base64@npm:3.7.7"
   checksum: 10c0/3c905a7e78b601e4751b5e710edd0d6d045ce2d23eb84c9df03515371e1b291edc72808dc91e081cb9855aef6758292a2407006f4608ec3705373dd8baf2f80f
@@ -7469,7 +7469,6 @@ __metadata:
     html-react-parser: "npm:^5.2.2"
     husky: "npm:^9.1.7"
     jose: "npm:^5.9.6"
-    js-base64: "npm:^3.7.7"
     lint-staged: "npm:^15.4.3"
     next: "npm:15.1.7"
     next-logger: "npm:^5.0.1"
