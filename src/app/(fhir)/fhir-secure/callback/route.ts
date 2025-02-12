@@ -50,7 +50,7 @@ export async function GET(request: Request): Promise<Response> {
         grant_type: 'authorization_code',
         code,
         code_verifier: existingSession.codeVerifier,
-        redirect_uri: `${getAbsoluteURL()}/fhir`, // TODO trailing slash?
+        redirect_uri: `${getAbsoluteURL()}/fhir/callback`, // TODO trailing slash?
     })
 
     logger.info(`Token request body: ${formUrlEncodedBody.toString()}`)
