@@ -100,5 +100,5 @@ export async function GET(request: Request): Promise<Response> {
 
     // TODO: 2.5. verifisere jwt?
 
-    redirect('/fhir')
+    redirect(pathWithBasePath('/fhir'))
 }
