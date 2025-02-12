@@ -40,7 +40,6 @@
         "fuse.js": "^7.1.0",
         "html-react-parser": "^5.2.2",
         "jose": "^5.9.6",
-        "js-base64": "^3.7.7",
         "next": "15.1.7",
         "next-logger": "^5.0.1",
         "nextleton": "^0.6.1",

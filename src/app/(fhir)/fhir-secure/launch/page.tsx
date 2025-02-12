@@ -1,10 +1,7 @@
-import { getRandomValues, randomBytes } from 'node:crypto'
-
 import { cookies } from 'next/headers'
 import { logger as pinoLogger } from '@navikt/next-logger/dist/logger'
 import { redirect, RedirectType, unauthorized } from 'next/navigation'
-import { calculatePKCECodeChallenge } from 'openid-client'
-import { fromUint8Array } from 'js-base64'
+import { calculatePKCECodeChallenge, randomPKCECodeVerifier, randomState } from 'openid-client'
 
 import { removeTrailingSlash } from '@fhir/issuers'
 import { WellKnownSchema } from '@fhir/sessions-secure/session-schema'
@@ -35,6 +32,7 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
 
     if (sessionId == null) {
         logger.error(`Missing sessionId cookie, session expired or middleware not middlewaring?`)
+        // TODO: Just render error state since this is RSC?
         unauthorized()
     }
 
@@ -44,7 +42,7 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
     if (issuerParam == null || launch == null) {
         // } || !isKnownFhirServer(issuerParam)) {
         logger.error(`Invalid issuer or launch parameter ${issuerParam}, ${launch}`)
-        // TODO: Mer spesifikk feilhåndtering
+        // TODO: Just render error state since this is RSC?
         redirect(pathWithBasePath('/fhir/invalid-issuer'))
     }
 
@@ -65,6 +63,7 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
             cause: validatedWellKnown.error,
         })
 
+        // TODO: Just render error state since this is RSC?
         // Redirect?
         throw new Error('Invalid well-known for issuer')
     }
@@ -75,8 +74,8 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
      * PKCE STEP 1
      * Create a cryptographically-random code_verifier
      */
-    const codeVerifier = createCodeVerifier(96)
-    const state = randomBytes(32).toString('base64url')
+    const codeVerifier = randomPKCECodeVerifier()
+    const state = randomState()
     const sessionStore = await getSessionStore()
     await sessionStore.initializeSecureUserSession(sessionId, {
         issuer,
@@ -128,12 +127,6 @@ async function getAuthUrl(opts: {
         code_challenge_method: 'S256',
     })
     return `${opts.authorizationEndpoint}?${params.toString()}`
-}
-
-function createCodeVerifier(count: number): string {
-    const inputBytes = getRandomValues(new Uint8Array(count))
-
-    return fromUint8Array(inputBytes, true)
 }
 
 export default HackyPageAsRouteHandler

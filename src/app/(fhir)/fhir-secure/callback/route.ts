@@ -30,7 +30,6 @@ export async function GET(request: Request): Promise<Response> {
         return new Response('No valid session', { status: 401 })
     }
 
-    // TODO: 1. Hente issuer/token, med code og verifier (ligger i redis)
     const sessionStore = await getSessionStore()
     const existingSession = await sessionStore.getSecurePartialSession(sessionId)
 
@@ -45,23 +44,19 @@ export async function GET(request: Request): Promise<Response> {
      * PKCE STEP 5
      * Send code and the code_verifier (created in step 1) to the authorization servers /oauth/token endpoint.
      */
-    const formUrlEncodedBody = new URLSearchParams({
-        client_id: 'syk-inn',
-        grant_type: 'authorization_code',
-        code,
-        code_verifier: existingSession.codeVerifier,
-        redirect_uri: `${getAbsoluteURL()}/fhir/callback`,
-    })
-
-    logger.info(`Token request body: ${formUrlEncodedBody.toString()}`)
-
     const response = await fetch(existingSession.tokenEndpoint, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: formUrlEncodedBody,
+        body: new URLSearchParams({
+            client_id: 'syk-inn',
+            grant_type: 'authorization_code',
+            code,
+            code_verifier: existingSession.codeVerifier,
+            redirect_uri: `${getAbsoluteURL()}/fhir/callback`,
+        }),
     })
 
     /**
@@ -99,8 +94,6 @@ export async function GET(request: Request): Promise<Response> {
         //webmed fix
         webmedPractitioner: parsedTokenResponse.data.practitioner,
     })
-
-    // TODO: 2.5. verifisere jwt?
 
     redirect(pathWithBasePath('/fhir'))
 }
