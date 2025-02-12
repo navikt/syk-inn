@@ -73,7 +73,7 @@ async function HackyPageAsRouteHandler({ searchParams }: Props): Promise<null> {
 
     /**
      * PKCE STEP 1
-     * Create a cryptographically-random code_verifier and from this generates a code_challenge
+     * Create a cryptographically-random code_verifier
      */
     const codeVerifier = createCodeVerifier(96)
     const state = randomBytes(32).toString('base64url')
@@ -111,6 +111,10 @@ async function getAuthUrl(opts: {
     state: string
     launch: string
 }): Promise<string> {
+    /**
+     * PKCE STEP 1.5
+     * Generate a code_challenge from the code_verifier in step 1
+     */
     const code_challenge = await calculatePKCECodeChallenge(opts.codeVerifier)
     const params = new URLSearchParams({
         response_type: 'code',
