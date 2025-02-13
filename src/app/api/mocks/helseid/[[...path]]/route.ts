@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { logger as pinoLogger } from '@navikt/next-logger/dist/logger'
+import { logger as pinoLogger } from '@navikt/next-logger'
 
 import { isE2E, isLocalOrDemo } from '@utils/env'
 

@@ -27,7 +27,7 @@
         "@navikt/ds-css": "^7.11.0",
         "@navikt/ds-react": "^7.11.0",
         "@navikt/ds-tailwind": "^7.11.0",
-        "@navikt/next-logger": "^1.35.0",
+        "@navikt/next-logger": "^2.0.0-20250213083941",
         "@navikt/oasis": "^3.6.0",
         "@redis/client": "^1.6.0",
         "@tanstack/react-query": "^5.66.0",
