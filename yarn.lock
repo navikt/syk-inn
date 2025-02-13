@@ -957,13 +957,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^1.35.0":
-  version: 1.35.0
-  resolution: "@navikt/next-logger@npm:1.35.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.35.0%2Fd8db3f9b5719486d8b7a61e29f4c18dd1f2a5033"
+"@navikt/next-logger@npm:^2.0.0-20250213083941":
+  version: 2.0.0-20250213083941
+  resolution: "@navikt/next-logger@npm:2.0.0-20250213083941::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F2.0.0-20250213083941%2F8eedb77f30e095c7f9d4ee5a20e56576a2ebadb7"
+  dependencies:
+    pino-roll: "npm:3"
   peerDependencies:
     next: 14 || 15
     pino: 8 || 9
-  checksum: 10c0/1044a56a866f79c8ec6d56da03ca2048ae8232016c5bf10d57b7b56c829a6092c396cd95bd264153cd3ed0a2671d68359487433d308f81b74685ca7a920dd5ce
+  dependenciesMeta:
+    pino-roll:
+      optional: true
+  checksum: 10c0/18d2ef6e8a4981d13fe322d23df5d0c7e49755af2fd3c062115c82b3192e0a26c3b683c8449c8cf6b6be18f05dec29d69db21da7ae7a442dd1edd5f2c49d884f
   languageName: node
   linkType: hard
 
@@ -6067,6 +6072,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pino-roll@npm:3":
+  version: 3.0.0
+  resolution: "pino-roll@npm:3.0.0"
+  dependencies:
+    date-fns: "npm:^4.1.0"
+    sonic-boom: "npm:^4.0.1"
+  checksum: 10c0/5b4485d0d670ce451f1fbb0d2fbebee8816a04c5810f572815d886bfd095114309970975d67ae19ad3870757a19e7ce274ff645ae653f39d1d0f83b4cf556163
+  languageName: node
+  linkType: hard
+
 "pino-std-serializers@npm:^7.0.0":
   version: 7.0.0
   resolution: "pino-std-serializers@npm:7.0.0"
@@ -7398,7 +7413,7 @@ __metadata:
     "@navikt/ds-react": "npm:^7.11.0"
     "@navikt/ds-tailwind": "npm:^7.11.0"
     "@navikt/eslint-config-teamsykmelding": "npm:^7.1.0"
-    "@navikt/next-logger": "npm:^1.35.0"
+    "@navikt/next-logger": "npm:^2.0.0-20250213083941"
     "@navikt/oasis": "npm:^3.6.0"
     "@playwright/test": "npm:1.50.1"
     "@redis/client": "npm:^1.6.0"

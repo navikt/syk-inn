@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
-import { logger as pinoLogger } from '@navikt/next-logger/dist/logger'
+import { logger as pinoLogger } from '@navikt/next-logger'
 import { notFound } from 'next/navigation'
 
 import { getAbsoluteURL } from '@utils/url'
