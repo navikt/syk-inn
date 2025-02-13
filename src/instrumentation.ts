@@ -5,6 +5,7 @@ export async function register(): Promise<void> {
          * otherwise never seen by the module tracer.
          */
         await require('pino')
+        await require('pino-roll')
         await require('next-logger')
     }
 }

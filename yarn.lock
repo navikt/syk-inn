@@ -957,9 +957,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^2.0.0-20250213083941":
-  version: 2.0.0-20250213083941
-  resolution: "@navikt/next-logger@npm:2.0.0-20250213083941::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F2.0.0-20250213083941%2F8eedb77f30e095c7f9d4ee5a20e56576a2ebadb7"
+"@navikt/next-logger@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@navikt/next-logger@npm:2.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F2.0.0%2F2635e5dce4180196bfeb61ad6fd51f63b7dc1670"
   dependencies:
     pino-roll: "npm:3"
   peerDependencies:
@@ -968,7 +968,7 @@ __metadata:
   dependenciesMeta:
     pino-roll:
       optional: true
-  checksum: 10c0/18d2ef6e8a4981d13fe322d23df5d0c7e49755af2fd3c062115c82b3192e0a26c3b683c8449c8cf6b6be18f05dec29d69db21da7ae7a442dd1edd5f2c49d884f
+  checksum: 10c0/9560caf2548af009b14562ebe468a17126d2674f862b2c16749a0cb2c4a29127c3666ee29379859bac61423a8d9acf984eeb5c1a545c9a184940a6573b3aa564
   languageName: node
   linkType: hard
 
@@ -6072,7 +6072,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino-roll@npm:3":
+"pino-roll@npm:3, pino-roll@npm:^3.0.0":
   version: 3.0.0
   resolution: "pino-roll@npm:3.0.0"
   dependencies:
@@ -7413,7 +7413,7 @@ __metadata:
     "@navikt/ds-react": "npm:^7.11.0"
     "@navikt/ds-tailwind": "npm:^7.11.0"
     "@navikt/eslint-config-teamsykmelding": "npm:^7.1.0"
-    "@navikt/next-logger": "npm:^2.0.0-20250213083941"
+    "@navikt/next-logger": "npm:^2.0.0"
     "@navikt/oasis": "npm:^3.6.0"
     "@playwright/test": "npm:1.50.1"
     "@redis/client": "npm:^1.6.0"
@@ -7442,6 +7442,7 @@ __metadata:
     nuqs: "npm:^2.3.2"
     pino: "npm:^9.6.0"
     pino-pretty: "npm:^13.0.0"
+    pino-roll: "npm:^3.0.0"
     postcss: "npm:^8.5.1"
     prettier: "npm:^3.4.2"
     react: "npm:^19.0.0"
