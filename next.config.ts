@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
     eslint: { ignoreDuringBuilds: true },
-    serverExternalPackages: ['@navikt/next-logger', 'next-logger', 'pino'],
+    serverExternalPackages: ['@navikt/next-logger', 'next-logger', 'pino', 'pino-roll'],
     experimental: {
         optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
     },

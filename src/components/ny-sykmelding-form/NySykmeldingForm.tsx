@@ -28,7 +28,6 @@ function NySykmeldingForm(): ReactElement {
     const dataService = useDataService()
     const router = useRouter()
     const [navigationPending, startTransition] = useTransition()
-
     const opprettSykmelding = useMutation({
         mutationKey: ['opprett-sykmelding'],
         mutationFn: async (values: NySykmeldingFormValues) => {
