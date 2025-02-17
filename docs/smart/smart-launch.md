@@ -22,14 +22,15 @@ sequenceDiagram
         actor PAT as Patient (Espen Eksempel)
         actor DOC as Doctor (Grønn Vits)
         participant EHR as EHR system
-        participant EHR as EHR system
         participant AUTH as FHIR auth server
         participant FHIR as FHIR server
     end
+    box rgba(155, 36, 36, 0.5) Browser
+        participant APP_FRONTEND as Smart app
+    end
     box rgba(217, 56, 56, 0.5) NAV
-        participant APP_SERVER as Smart app (server)
+        participant APP_SERVER as App Server
         participant APP_SESSION as Session store
-        participant APP_FRONTEND as Smart app (browser)
         participant NAV_API as NAV API
         participant NAV_EXTERNAL as NAV External services
         participant NAV_AZURE as NAV Auth server
