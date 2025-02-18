@@ -11,6 +11,12 @@ specification, and stores the metadata and tokens in the server's key-value stor
 
 ## Sequence of server side launch (detailed)
 
+### Pre-condition
+
+The SMART app is registered in the EHR system, and the EHR system has a client ID and secret for the app.
+
+See: [HL-7: Register App with EHR](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-1-register)
+
 ```mermaid
 ---
 title: Server side launch
