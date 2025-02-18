@@ -17,6 +17,16 @@ The SMART app is registered in the EHR system, and the EHR system has a client I
 
 See: [HL-7: Register App with EHR](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-1-register)
 
+### Sequence diagram
+
+#### References
+
+[//]: # 'These steps are autonumbered in mermaid, and must be kept in sync manually'
+
+Step 6. Launch request, see: [HL-7: Smart app launch](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-2-launch-ehr)
+
+Step 7. Discovery request, see: [HL-7: Discovery request](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-3-discovery)
+
 ```mermaid
 ---
 title: Server side launch
@@ -55,6 +65,7 @@ sequenceDiagram
     DOC ->> EHR: Launch SoF app
     Note over EHR, APP_SERVER: <app>/fhir/launch?iss=https://fhir.ekstern.dev.nav.no<br>&launch=xyz123
     EHR ->> APP_SERVER: Launch request
+
     Note over APP_SERVER, FHIR: <FHIR-server>/<br>.well-known/smart-configuration
     APP_SERVER -->> FHIR: Discovery request
     FHIR -->> APP_SERVER: Discovery response
