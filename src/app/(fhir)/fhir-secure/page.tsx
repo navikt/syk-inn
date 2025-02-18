@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { isLocalOrDemo } from '@utils/env'
 import FhirSecureDataProvider from '@fhir/components/FhirSecureDataProvider'
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
-import { getBehandlerFromSecureFhirSession } from '@fhir/fhir-data-secure/fhir-data-secure-server-service'
+import { getBehandlerFromSecureFhirSession } from '@fhir-secure/fhir-data/fhir-data-server'
 
 import { BehandlerInfo } from '../../../data-fetcher/data-service'
 

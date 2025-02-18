@@ -4,7 +4,7 @@ import { logger } from '@navikt/next-logger'
 import { DateOnly } from '@utils/zod'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { wait } from '@utils/wait'
-import { createNewSykmelding } from '@services/syk-inn-api/SykInnApiService'
+import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { NySykmelding } from '@services/syk-inn-api/SykInnApiSchema'
 import { raise } from '@utils/ts'
 import { ensureFhirApiAuthenticated } from '@fhir/auth/api-utils'
@@ -66,7 +66,7 @@ export async function POST(request: Request): Promise<Response> {
         return await handleMockedRoute()
     }
 
-    const result = await createNewSykmelding({
+    const result = await sykInnApiService.createNewSykmelding({
         pasientFnr:
             verifiedPayload.data.values.pasient ?? raise('Form did not provide pasient. Is hidden input missing?'),
         sykmelderHpr: verifiedPayload.data.behandlerHpr,

@@ -2,10 +2,10 @@ import { cookies } from 'next/headers'
 import { decodeJwt } from 'jose'
 import { logger } from '@navikt/next-logger'
 
-import { getSessionStore } from '@fhir/sessions-secure/session-store'
+import { getSessionStore } from '@fhir-secure/sessions/session-store'
 import { FhirPractitionerSchema } from '@fhir/fhir-data/schema/practitioner'
-import { getName } from '@fhir/fhir-data/schema/mappers/patient'
 import { getHpr } from '@fhir/fhir-data/schema/mappers/practitioner'
+import { getName } from '@fhir/fhir-data/schema/mappers/patient'
 
 import { BehandlerInfo } from '../../data-fetcher/data-service'
 

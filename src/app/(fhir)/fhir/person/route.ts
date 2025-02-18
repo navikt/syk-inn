@@ -1,7 +1,7 @@
 import { logger } from '@navikt/next-logger'
 
 import { ensureFhirApiAuthenticated } from '@fhir/auth/api-utils'
-import { getPdlPerson } from '@services/pdl/PdlApiService'
+import { pdlApiService } from '@services/pdl/PdlApiService'
 import { wait } from '@utils/wait'
 import { PdlPerson } from '@services/pdl/PdlApiSchema'
 import { isLocalOrDemo } from '@utils/env'
@@ -25,7 +25,7 @@ export async function GET(request: Request): Promise<Response> {
         return handleMockedRoute()
     }
 
-    const person = await getPdlPerson(ident)
+    const person = await pdlApiService.getPdlPerson(ident)
     if ('errorType' in person) {
         if (person.errorType === 'PERSON_NOT_FOUND') {
             return Response.json({ errors: [{ message: 'Person not found' }] } satisfies PersonResult, { status: 404 })
