@@ -4,8 +4,8 @@ import { redirect, RedirectType, unauthorized } from 'next/navigation'
 import { calculatePKCECodeChallenge, randomPKCECodeVerifier, randomState } from 'openid-client'
 
 import { removeTrailingSlash } from '@fhir/issuers'
-import { WellKnownSchema } from '@fhir/sessions-secure/session-schema'
-import { getSessionStore } from '@fhir/sessions-secure/session-store'
+import { WellKnownSchema } from '@fhir-secure/sessions/session-schema'
+import { getSessionStore } from '@fhir-secure/sessions/session-store'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 
 import { getFlag, getToggles } from '../../../../toggles/unleash'

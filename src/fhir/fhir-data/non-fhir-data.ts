@@ -8,7 +8,7 @@ import { ExistingSykmeldingSchema, NySykmeldingSchema } from '@services/syk-inn-
 import { PdlPersonSchema } from '@services/pdl/PdlApiSchema'
 import { getFnrIdent } from '@services/pdl/PdlApiUtils'
 
-import { ExistingSykmelding, NySykmelding, PasientQueryInfo } from '../../data-fetcher/data-service'
+import { ArbeidsgiverInfo, ExistingSykmelding, NySykmelding, PasientQueryInfo } from '../../data-fetcher/data-service'
 
 const AvailableResources = {
     sykmelding: {
@@ -113,4 +113,19 @@ async function handleAPIError(response: Response): Promise<never> {
     }
 
     throw new Error('Next API Responded with error')
+}
+
+export async function getArbeidsgivere(): Promise<ArbeidsgiverInfo[]> {
+    await wait()
+
+    return [
+        {
+            navn: 'Arbeidsgiver 1',
+            organisasjonsnummer: '123456789',
+        },
+        {
+            navn: 'Arbeidsgiver 2',
+            organisasjonsnummer: '987654321',
+        },
+    ]
 }

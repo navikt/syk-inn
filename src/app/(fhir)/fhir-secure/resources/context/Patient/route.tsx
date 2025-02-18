@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { logger } from '@navikt/next-logger'
 
-import { getSessionStore } from '@fhir/sessions-secure/session-store'
+import { getSessionStore } from '@fhir-secure/sessions/session-store'
 
 export async function GET(): Promise<Response> {
     const cookieStore = await cookies()

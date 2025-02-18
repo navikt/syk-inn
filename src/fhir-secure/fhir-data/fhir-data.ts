@@ -6,28 +6,9 @@ import { FhirBundleOrPatientSchema } from '@fhir/fhir-data/schema/patient'
 import { getFastlege, getName, getValidPatientOid } from '@fhir/fhir-data/schema/mappers/patient'
 import { pathWithBasePath } from '@utils/url'
 
-import { BehandlerInfo, DataService, NotAvailable, PasientInfo } from '../../data-fetcher/data-service'
+import { PasientInfo } from '../../data-fetcher/data-service'
 
-export function createSecureFhirDataService(behandler: BehandlerInfo): DataService {
-    return {
-        mode: 'fhir',
-        context: {
-            behandler,
-            pasient: () => getFhirPatient(),
-            konsultasjon: NotAvailable,
-            arbeidsgivere: NotAvailable,
-        },
-        query: {
-            pasient: () => raise('TODO'),
-            sykmelding: () => raise('TODO'),
-        },
-        mutation: {
-            sendSykmelding: () => raise('TODO'),
-        },
-    }
-}
-
-async function getFhirPatient(): Promise<PasientInfo> {
+export async function getFhirPatient(): Promise<PasientInfo> {
     await wait()
 
     // TODO: Bedre feilhåndtering

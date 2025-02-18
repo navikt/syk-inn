@@ -1,7 +1,7 @@
 import { logger } from '@navikt/next-logger'
 
 import { ensureFhirApiAuthenticated } from '@fhir/auth/api-utils'
-import { getSykmelding } from '@services/syk-inn-api/SykInnApiService'
+import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { ExistingSykmelding } from '@services/syk-inn-api/SykInnApiSchema'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 
@@ -27,7 +27,7 @@ export async function GET(
         return handleMockedRoute()
     }
 
-    const sykmelding = await getSykmelding(sykmeldingId, hpr)
+    const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
 
     if ('errorType' in sykmelding) {
         return new Response('Failed to retrieve sykmelding', { status: 500 })

@@ -2,7 +2,7 @@
 
 import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { createSecureFhirDataService } from '@fhir/fhir-data-secure/fhir-data-secure-service'
+import { createSecureFhirDataService } from '@fhir-secure/fhir-data/fhir-data-service'
 
 import { BehandlerInfo } from '../../data-fetcher/data-service'
 import { DataProvider } from '../../data-fetcher/data-provider'

@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { logger as pinoLogger } from '@navikt/next-logger'
 
-import { CompleteSession, getSessionStore } from '@fhir/sessions-secure/session-store'
-import { TokenResponseSchema } from '@fhir/sessions-secure/session-schema'
+import { CompleteSession, getSessionStore } from '@fhir-secure/sessions/session-store'
+import { TokenResponseSchema } from '@fhir-secure/sessions/session-schema'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
