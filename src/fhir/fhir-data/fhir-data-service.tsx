@@ -3,7 +3,7 @@ import { client as fhirClient } from 'fhirclient'
 import { DataService } from '../../data-fetcher/data-service'
 
 import { getArbeidsgivere, getPerson, getSykmelding, sendSykmelding } from './non-fhir-data'
-import { getFhirEncounter, getFhirPatient, getFhirPractitioner } from './fhir-data'
+import { getFhirEncounter, getFhirPatient, getFhirPractitioner, getTidligereSykmeldinger } from './fhir-data'
 
 export type FhirClient = ReturnType<typeof fhirClient>
 
@@ -21,6 +21,7 @@ export async function createFhirDataService(client: FhirClient): Promise<DataSer
             pasient: () => getFhirPatient(client),
             konsultasjon: () => getFhirEncounter(client),
             arbeidsgivere: () => getArbeidsgivere(),
+            tidligereSykmeldinger: () => getTidligereSykmeldinger(client),
         },
         query: {
             pasient: (ident) => getPerson(client, ident),

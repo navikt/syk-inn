@@ -8,6 +8,7 @@ import { isLocalOrDemo } from '@utils/env'
 import { saveSessionCompleted } from '@fhir/sessions/session-lifecycle'
 import FhirDataProvider from '@fhir/components/FhirDataProvider'
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
+import TidligereSykmeldingerTimeline from '@components/tidligere-sykmeldinger/TidligereSykmeldingerTimeline'
 
 type Props = {
     searchParams: Promise<{ code: string | undefined }>
@@ -52,6 +53,7 @@ async function Page(props: Props): Promise<ReactElement> {
                 </List>
             </section>
             <FhirDataProvider>
+                <TidligereSykmeldingerTimeline />
                 <NySykmeldingForm />
             </FhirDataProvider>
         </PageBlock>

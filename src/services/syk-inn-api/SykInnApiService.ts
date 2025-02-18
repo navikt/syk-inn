@@ -52,4 +52,15 @@ export const sykInnApiService = {
             },
             responseSchema: ExistingSykmeldingSchema,
         }),
+    getTidligereSykmeldinger: async (ident: string): Promise<ExistingSykmelding[] | ApiFetchErrors> =>
+        fetchInternalAPI({
+            api: 'syk-inn-api',
+            path: `/api/v1/sykmelding`,
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-IDENT': ident,
+            },
+            responseSchema: ExistingSykmeldingSchema.array(),
+        }),
 }

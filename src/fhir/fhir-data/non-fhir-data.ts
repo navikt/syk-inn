@@ -31,7 +31,7 @@ export async function getSykmelding(
     sykmeldingId: string,
 ): Promise<ExistingSykmelding> {
     await wait()
-    const response = await fetch(AvailableResources.sykmelding.getPath(sykmeldingId), {
+    const response = await fetch(pathWithBasePath(`/fhir/sykmelding/${sykmeldingId}`), {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export async function getPerson(client: FhirClient, ident: string): Promise<Pasi
     }
 }
 
-async function handleAPIError(response: Response): Promise<never> {
+export async function handleAPIError(response: Response): Promise<never> {
     if (response.headers.get('content-type')?.includes('application/json')) {
         const errors = await response.json()
         logger.error(`${response.url} failed (${response.status} ${response.statusText}), errors`, {
