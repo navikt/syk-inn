@@ -2,8 +2,8 @@ import { client as fhirClient } from 'fhirclient'
 
 import { DataService } from '../../data-fetcher/data-service'
 
-import { getArbeidsgivere, getPerson, getSykmelding, sendSykmelding } from './non-fhir-data'
-import { getFhirEncounter, getFhirPatient, getFhirPractitioner, getTidligereSykmeldinger } from './fhir-data'
+import { getArbeidsgivere, getPerson, getSykmelding, getTidligereSykmeldinger, sendSykmelding } from './non-fhir-data'
+import { getFhirEncounter, getFhirPatient, getFhirPractitioner } from './fhir-data'
 
 export type FhirClient = ReturnType<typeof fhirClient>
 

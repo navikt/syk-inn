@@ -12,17 +12,8 @@ import { FhirConditionSchema } from '@fhir/fhir-data/schema/condition'
 import { FhirEncounterSchema } from '@fhir/fhir-data/schema/encounter'
 import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/fhir-data/schema/mappers/diagnosis'
 import { FhirClient } from '@fhir/fhir-data/fhir-data-service'
-import { pathWithBasePath } from '@utils/url'
-import { ExistingSykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
-import { handleAPIError } from '@fhir/fhir-data/non-fhir-data'
 
-import {
-    Autorisasjoner,
-    BehandlerInfo,
-    ExistingSykmelding,
-    KonsultasjonInfo,
-    PasientInfo,
-} from '../../data-fetcher/data-service'
+import { Autorisasjoner, BehandlerInfo, KonsultasjonInfo, PasientInfo } from '../../data-fetcher/data-service'
 
 export async function getFhirPatient(client: FhirClient): Promise<PasientInfo> {
     await wait()
@@ -44,25 +35,6 @@ export async function getFhirPatient(client: FhirClient): Promise<PasientInfo> {
         ident: getValidPatientIdent(parsed.data) ?? raise('Patient without valid FNR/DNR'),
         fastlege: getFastlege(parsed.data),
     }
-}
-
-export async function getTidligereSykmeldinger(client: FhirClient): Promise<ExistingSykmelding[]> {
-    const pasientInfo = await getFhirPatient(client)
-    const ident = pasientInfo.ident
-
-    const response = await fetch(pathWithBasePath(`/fhir/sykmelding/`), {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-IDENT': ident,
-        },
-    })
-
-    if (!response.ok) {
-        await handleAPIError(response)
-    }
-
-    return ExistingSykmeldingSchema.array().parse(await response.json())
 }
 
 export async function getFhirEncounter(client: FhirClient): Promise<KonsultasjonInfo> {
