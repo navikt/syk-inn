@@ -61,21 +61,21 @@ In standalone mode, there are no FHIR-resources, so the domain will be refered t
 
 - FHIR Launch route: [src/app/(fhir)/fhir/launch/page.tsx](<src/app/(fhir)/fhir/launch/page.tsx>)
 - FHIR Form route: [src/app/(fhir)/fhir/page.tsx](<src/app/(fhir)/fhir/page.tsx>)
-- Standalone Form route: [src/app/(standalone)ny/page.tsx](<src/app/(standalone)/ny/page.tsx>)
+- Standalone Form route: [src/app/(standalone)/ny/page.tsx](<src/app/(standalone)/ny/page.tsx>)
 
 ### The actual form:
 
 The form is built specifically to handle multiple "contexts" without the form having context-specific implementations. This is achieved using a variant of Dependency Injection of the possible data the form can use, using React Context.
 
 - Root form: [src/components/ny-sykmelding-form/NySykmeldingForm.tsx](src/components/ny-sykmelding-form/NySykmeldingForm.tsx)
-- The data available to the form: [src/components/ny-sykmelding-form/data-provider/NySykmeldingFormDataService.ts](src/data-fetcher/data-service.ts)
-    - Form data dependency injection: [src/components/ny-sykmelding-form/data-provider/NySykmeldingFormDataProvider.tsx](src/data-fetcher/data-provider.tsx)
+- The data available to the form: [src/data-fetcher/data-service.ts](src/data-fetcher/data-service.ts)
+    - Form data dependency injection: [src/data-fetcher/data-provider.tsx](src/data-fetcher/data-provider.tsx)
     - See specific form implementations (form routes above) for usage of this provider
 
 ### FHIR mocking for local development (and demo application)
 
 - FHIR server authentication mocks: [src/app/api/mocks/fhir/auth/[[...path]]/route.ts](src/app/api/mocks/fhir/auth/%5B%5B...path%5D%5D/route.ts)
-- FHIR server mocks: [src/app/api/mocks/fhir/auth/[[...path]]/route.ts](src/app/api/mocks/fhir/%5B%5B...path%5D%5D/route.ts)
+- FHIR server mocks: [src/app/api/mocks/fhir/(resources)/[[...path]]/route.ts](<src/app/api/mocks/fhir/(resources)/%5B%5B...path%5D%5D/route.ts>)
 
 ## Local Development
 
