@@ -27,6 +27,19 @@ Step 6. Launch request, see: [HL-7: Smart app launch](https://hl7.org/fhir/smart
 
 Step 7. Discovery request, see: [HL-7: Discovery request](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-3-discovery)
 
+Step 9. Authorizanion flow, see: [HL-7: Obtain authorization code](https://hl7.org/fhir/smart-app-launch/app-launch.html#obtain-authorization-code)
+
+Step 10. Token exchange, see: [HL-7: Obtain access token](https://hl7.org/fhir/smart-app-launch/app-launch.html#obtain-access-token)
+
+Step 24, 32, 39. Accessing FHIR data, see: [HL-7: Access FHIR data](https://hl7.org/fhir/smart-app-launch/app-launch.html#access-fhir-api)
+
+Step 23, 31, 38. Validating access token:
+
+- The specification requires that the access token shall be validated before accessing FHIR resources. See, [HL-7: Accessing FHIR data](https://hl7.org/fhir/smart-app-launch/app-launch.html#response-6)
+- The access_token (JWT) is validated using OIDC-mechanism, using the keys provided by the issuers well-known. See: [OIDC: Validating access tokens](https://datatracker.ietf.org/doc/html/rfc9068#name-validating-jwt-access-token)
+
+#### Diagram
+
 ```mermaid
 ---
 title: Server side launch
@@ -90,6 +103,7 @@ sequenceDiagram
     # SMART app use
     APP_SERVER -->> APP_SESSION: Get session
     APP_SESSION -->> APP_SERVER: Current session
+    APP_SERVER ->> APP_SERVER: Validates access_token
     APP_SERVER -->> FHIR: /Practitioner/<session.practitioner>
     FHIR -->> APP_SERVER: Practitioner FHIR data
     APP_SERVER ->> APP_FRONTEND: Initializes app with practitioner data
