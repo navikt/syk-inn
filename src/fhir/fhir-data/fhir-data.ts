@@ -48,11 +48,7 @@ export async function getFhirPatient(client: FhirClient): Promise<PasientInfo> {
 
 export async function getTidligereSykmeldinger(client: FhirClient): Promise<ExistingSykmelding[]> {
     const pasientInfo = await getFhirPatient(client)
-
-    if (pasientInfo.oid == null) {
-        throw new Error('Pasient har ikke gyldig OID')
-    }
-    const ident = pasientInfo.oid.nr
+    const ident = pasientInfo.ident
 
     const response = await fetch(pathWithBasePath(`/fhir/sykmelding/`), {
         method: 'GET',

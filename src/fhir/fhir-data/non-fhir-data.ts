@@ -31,7 +31,7 @@ export async function getSykmelding(
     sykmeldingId: string,
 ): Promise<ExistingSykmelding> {
     await wait()
-    const response = await fetch(pathWithBasePath(`/fhir/sykmelding/${sykmeldingId}`), {
+    const response = await fetch(AvailableResources.sykmelding.getPath(sykmeldingId), {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

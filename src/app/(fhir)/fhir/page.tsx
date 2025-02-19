@@ -10,6 +10,8 @@ import FhirDataProvider from '@fhir/components/FhirDataProvider'
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 import TidligereSykmeldingerTimeline from '@components/tidligere-sykmeldinger/TidligereSykmeldingerTimeline'
 
+import { getFlag, getToggles } from '../../../toggles/unleash'
+
 type Props = {
     searchParams: Promise<{ code: string | undefined }>
 }
@@ -26,6 +28,8 @@ async function Page(props: Props): Promise<ReactElement> {
          */
         await saveSessionCompleted()
     }
+
+    const tidligereSykmeldingerToggle = getFlag('SYK_INN_TIDLIGERE_SYKMELDINGER', await getToggles())
 
     return (
         <PageBlock as="main" width="xl" gutters className="pt-4">
@@ -53,7 +57,7 @@ async function Page(props: Props): Promise<ReactElement> {
                 </List>
             </section>
             <FhirDataProvider>
-                <TidligereSykmeldingerTimeline />
+                {tidligereSykmeldingerToggle.enabled && <TidligereSykmeldingerTimeline />}
                 <NySykmeldingForm />
             </FhirDataProvider>
         </PageBlock>
