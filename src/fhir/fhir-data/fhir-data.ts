@@ -54,7 +54,7 @@ export async function getTidligereSykmeldinger(client: FhirClient): Promise<Exis
     }
     const ident = pasientInfo.oid.nr
 
-    const response = await fetch(pathWithBasePath(`/fhir/sykmelding/}`), {
+    const response = await fetch(pathWithBasePath(`/fhir/sykmelding/`), {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

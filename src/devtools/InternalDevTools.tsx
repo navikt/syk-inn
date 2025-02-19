@@ -115,6 +115,11 @@ function ToggleAPIFailures(): ReactElement {
                 Bruker
             </Checkbox>
         ),
+        tidligereSykmeldinger: (
+            <Checkbox key="tidligereSykmeldinger" value="tidligereSykmeldinger">
+                Tidligere sykmeldinger
+            </Checkbox>
+        ),
     }
 
     const query: Record<keyof DataService['query'], ReactElement> = {

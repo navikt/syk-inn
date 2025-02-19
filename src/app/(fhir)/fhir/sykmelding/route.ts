@@ -49,5 +49,35 @@ function handleMockedRoute(): Response {
                 text: 'Brudd legg/ankel',
             },
         },
+        {
+            sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8a',
+            pasient: {
+                fnr: '12345678910',
+            },
+            periode: {
+                fom: '2022-04-01',
+                tom: '2022-05-15',
+            },
+            hovedDiagnose: {
+                system: 'ICD-10',
+                code: 'Y01',
+                text: 'Smerte i penis',
+            },
+        },
+        {
+            sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8e',
+            pasient: {
+                fnr: '12345678910',
+            },
+            periode: {
+                fom: '2024-08-01',
+                tom: '2024-09-15',
+            },
+            hovedDiagnose: {
+                system: 'ICD-10',
+                code: 'L73',
+                text: 'Brudd legg/ankel',
+            },
+        },
     ] satisfies ExistingSykmelding[])
 }

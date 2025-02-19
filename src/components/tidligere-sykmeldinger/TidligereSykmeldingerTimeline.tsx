@@ -2,19 +2,22 @@
 
 import React, { ReactElement } from 'react'
 import { BodyShort } from '@navikt/ds-react'
-import { FaceCryIcon, FileLoadingIcon } from '@navikt/aksel-icons'
+import { FaceCryIcon, FileLoadingIcon, TasklistSendIcon } from '@navikt/aksel-icons'
 import { useQuery } from '@tanstack/react-query'
 
 import { FormSection } from '@components/ui/form'
 
 import { useDataService } from '../../data-fetcher/data-provider'
-import { DataService } from '../../data-fetcher/data-service'
+import { assertResourceAvailable, DataService } from '../../data-fetcher/data-service'
 
 function TidligereSykmeldingerTimeline(): ReactElement {
     const dataService: DataService = useDataService()
     const { data, error, isLoading } = useQuery({
         queryKey: ['tidligereSykmeldinger'],
-        queryFn: async () => dataService.context.tidligereSykmeldinger,
+        queryFn: async () => {
+            assertResourceAvailable(dataService.context.tidligereSykmeldinger)
+            return dataService.context.tidligereSykmeldinger()
+        },
     })
 
     if (isLoading) {
@@ -39,42 +42,23 @@ function TidligereSykmeldingerTimeline(): ReactElement {
     }
 
     return (
-        <div>
-            <h2>Tidligere Sykmeldinger</h2>
-            {data && Array.isArray(data) ? (
-                data.map((sykmelding) => (
-                    <div key={sykmelding.sykmeldingId} style={{ marginBottom: '8px' }}>
-                        <BodyShort spacing>
-                            <strong>Periode:</strong> {sykmelding.periode.fom} - {sykmelding.periode.tom}
-                        </BodyShort>
-                    </div>
-                ))
-            ) : (
-                <div className="flex flex-col gap-3 max-w-prose mb-3">
-                    <FormSection title="Forsøkte å laste sykmeldinger" icon={<FaceCryIcon />}>
-                        <div>Fant ingen tidligere sykmeldinger - Pasient ikke funnet</div>
-                    </FormSection>
-                </div>
-            )}
+        <div className="flex flex-col max-w-prose mb-3">
+            <FormSection title="Tidligere sykmeldinger med følgende perioder" icon={<TasklistSendIcon />}>
+                {data && Array.isArray(data) ? (
+                    data.map((sykmelding) => (
+                        <div key={sykmelding.sykmeldingId}>
+                            <BodyShort spacing>
+                                <strong>Periode:</strong> <b>fra:</b> {sykmelding.periode.fom}
+                                <b> til:</b> {sykmelding.periode.tom}
+                            </BodyShort>
+                        </div>
+                    ))
+                ) : (
+                    <div>Fant ingen tidligere sykmeldinger - Pasient ikke funnet</div>
+                )}
+            </FormSection>
         </div>
     )
-    // return (
-    //     <div className="flex flex-col gap-3 max-w-prose mb-3">
-    //         <Detail>Tidligere sykmeldinger</Detail>
-    //
-    //         {data && Array.isArray(data) ? (
-    //             data.map((sykmelding) => (
-    //                 <div key={sykmelding.sykmeldingId}>
-    //             <div key={sykmelding.sykmeldingId} style={{ marginBottom: '8px' }}>
-    //                 <BodyShort spacing>
-    //                     <strong>Periode:</strong> {sykmelding.periode.fom} - {sykmelding.periode.tom}
-    //                 </BodyShort>
-    //             </div>
-    //                 </div>
-    //
-    //             ))
-    //     </div>
-    // )
 }
 
 export default TidligereSykmeldingerTimeline
