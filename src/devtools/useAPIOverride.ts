@@ -19,6 +19,9 @@ export function withFailInterceptor(dataService: DataService): DataService {
                 ? failIfOverride('context', 'arbeidsgivere', dataService.context.arbeidsgivere)
                 : dataService.context.arbeidsgivere,
             behandler: dataService.context.behandler,
+            tidligereSykmeldinger: isResourceAvailable(dataService.context.tidligereSykmeldinger)
+                ? failIfOverride('context', 'tidligereSykmeldinger', dataService.context.tidligereSykmeldinger)
+                : dataService.context.tidligereSykmeldinger,
         },
         query: {
             pasient: isResourceAvailable(dataService.query.pasient)
