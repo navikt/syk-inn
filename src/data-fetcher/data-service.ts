@@ -37,11 +37,7 @@ export type DataService = {
 }
 
 export type PasientInfo = {
-    oid: {
-        // TODO: Are we supporting multiple oid types here?
-        type: 'fnr' | 'dnr' | 'annet'
-        nr: string
-    } | null
+    ident: string
     navn: string
     fastlege: {
         navn: string
@@ -50,11 +46,7 @@ export type PasientInfo = {
 }
 
 export type PasientQueryInfo = {
-    ident: {
-        // TODO: Are we supporting multiple oid types here?
-        type: 'fnr' | 'dnr' | 'annet'
-        nr: string
-    } | null
+    ident: string | null
     navn: string
 }
 

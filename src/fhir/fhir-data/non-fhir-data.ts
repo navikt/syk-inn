@@ -95,10 +95,7 @@ export async function getPerson(client: FhirClient, ident: string): Promise<Pasi
 
     return {
         navn: `${parsed.navn.fornavn}${parsed.navn.mellomnavn ? ` ${parsed.navn.mellomnavn}` : ''} ${parsed.navn.etternavn}`,
-        ident: {
-            type: 'fnr',
-            nr: fnrOrDnr,
-        },
+        ident: fnrOrDnr,
     }
 }
 

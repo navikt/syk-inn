@@ -7,7 +7,7 @@ export function assertPreloadedPatient({ name, fnr }: { name: string; fnr: strin
         const pasientInfoRegion = page.getByRole('region', { name: 'Info om pasienten' })
         await expect(pasientInfoRegion).toBeVisible()
         await expect(pasientInfoRegion.getByText(name)).toBeVisible()
-        await expect(pasientInfoRegion.getByText(`${fnr} (fødselsnummer)`)).toBeVisible()
+        await expect(pasientInfoRegion.getByText(`${fnr}`)).toBeVisible()
     }
 }
 

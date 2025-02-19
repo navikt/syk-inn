@@ -6,8 +6,6 @@ import { assertResourceAvailable, isResourceAvailable } from '../../../data-fetc
 import { useController, useFormContext } from '../NySykmeldingFormValues'
 import { useDataService } from '../../../data-fetcher/data-provider'
 
-import { oidTypeToReadableText } from './pasient-utils'
-
 export function PasientSearchField({ children }: PropsWithChildren): ReactElement {
     const dataService = useDataService()
 
@@ -61,12 +59,7 @@ export function PasientSearchField({ children }: PropsWithChildren): ReactElemen
                         <Detail>Navn</Detail>
                         <BodyShort spacing>{data.navn}</BodyShort>
                         <Detail>ID-nummer</Detail>
-                        <BodyShort spacing>
-                            {data.ident?.nr ?? 'ukjent'}{' '}
-                            {data.ident?.type && (
-                                <span className="text-xs">({oidTypeToReadableText(data.ident.type)})</span>
-                            )}
-                        </BodyShort>
+                        <BodyShort spacing>{data.ident}</BodyShort>
                     </div>
                 )}
 

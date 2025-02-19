@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 import { raise } from '@utils/ts'
 import { wait } from '@utils/wait'
 import { FhirBundleOrPatientSchema } from '@fhir/fhir-data/schema/patient'
-import { getFastlege, getName, getValidPatientOid } from '@fhir/fhir-data/schema/mappers/patient'
+import { getFastlege, getName, getValidPatientIdent } from '@fhir/fhir-data/schema/mappers/patient'
 import { pathWithBasePath } from '@utils/url'
 
 import { PasientInfo } from '../../data-fetcher/data-service'
@@ -26,7 +26,7 @@ export async function getFhirPatient(): Promise<PasientInfo> {
 
     return {
         navn: getName(parsed.data.name),
-        oid: getValidPatientOid(parsed.data),
+        ident: getValidPatientIdent(parsed.data) ?? raise('Patient without valid FNR/DNR'),
         fastlege: getFastlege(parsed.data),
     }
 }

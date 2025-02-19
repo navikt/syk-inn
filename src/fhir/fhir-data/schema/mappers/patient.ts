@@ -10,10 +10,7 @@ export function getName(name: Name): string {
     return `${name[0].given[0]} ${name[0].family}`
 }
 
-export function getValidPatientOid(patient: FhirPatient): {
-    type: 'fnr' | 'dnr'
-    nr: string
-} | null {
+export function getValidPatientIdent(patient: FhirPatient): string | null {
     if (patient.identifier == null) {
         return null
     }
@@ -34,18 +31,12 @@ export function getValidPatientOid(patient: FhirPatient): {
 
     const fnr = oidsByType.find((oid) => oid.type === 'fnr')
     if (fnr != null) {
-        return {
-            type: 'fnr',
-            nr: fnr.nr,
-        }
+        return fnr.nr
     }
 
     const dnr = oidsByType.find((oid) => oid.type === 'dnr')
     if (dnr != null) {
-        return {
-            type: 'dnr',
-            nr: dnr.nr,
-        }
+        return dnr.nr
     }
 
     return null

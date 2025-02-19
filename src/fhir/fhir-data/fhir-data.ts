@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { wait } from '@utils/wait'
 import { FhirPractitionerQualification, FhirPractitionerSchema } from '@fhir/fhir-data/schema/practitioner'
 import { getHpr } from '@fhir/fhir-data/schema/mappers/practitioner'
-import { getFastlege, getName, getValidPatientOid } from '@fhir/fhir-data/schema/mappers/patient'
+import { getFastlege, getName, getValidPatientIdent } from '@fhir/fhir-data/schema/mappers/patient'
 import { raise } from '@utils/ts'
 import { FhirBundleOrPatientSchema } from '@fhir/fhir-data/schema/patient'
 import { FhirConditionSchema } from '@fhir/fhir-data/schema/condition'
@@ -32,7 +32,7 @@ export async function getFhirPatient(client: FhirClient): Promise<PasientInfo> {
 
     return {
         navn: getName(parsed.data.name),
-        oid: getValidPatientOid(parsed.data),
+        ident: getValidPatientIdent(parsed.data) ?? raise('Patient without valid FNR/DNR'),
         fastlege: getFastlege(parsed.data),
     }
 }

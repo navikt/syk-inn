@@ -26,7 +26,7 @@ function PasientListItem(): ReactElement | null {
         allowContextless: true,
     })
 
-    if (pasient?.length !== 11 && pasientQuery.data?.oid == null) {
+    if (pasient?.length !== 11 && pasientQuery.data == null) {
         return (
             <List.Item
                 icon={<CircleIcon aria-hidden className="text-text-subtle" />}
@@ -111,8 +111,8 @@ function aktivitetDescription(aktivitet: NonNullableObject<AktivitetFormValue>):
     }
 }
 
-function pasientInfoName(data: PasientInfo): string {
-    return `${data.navn} ${data.oid ? `(${data.oid.nr})` : ''}`
+function pasientInfoName(pasient: PasientInfo): string {
+    return `${pasient.navn} (${pasient.ident})`
 }
 
 export default NySykmeldingFormSummary

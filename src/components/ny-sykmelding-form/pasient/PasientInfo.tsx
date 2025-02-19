@@ -8,8 +8,6 @@ import { useFormContext } from '@components/ny-sykmelding-form/NySykmeldingFormV
 
 import { useContextPasient } from '../../../data-fetcher/hooks/use-context-pasient'
 
-import { oidTypeToReadableText } from './pasient-utils'
-
 const FASTLEGE_INFO_ENABLED = false
 
 function PasientInfo(): ReactElement {
@@ -77,12 +75,7 @@ function PasientInfo(): ReactElement {
                         </div>
                     </div>
                     <Detail>ID-nummer</Detail>
-                    <BodyShort spacing>
-                        {pasientQuery.data.oid?.nr ?? 'ukjent'}{' '}
-                        {pasientQuery.data.oid?.type && (
-                            <span className="text-xs">({oidTypeToReadableText(pasientQuery.data.oid.type)})</span>
-                        )}
-                    </BodyShort>
+                    <BodyShort spacing>{pasientQuery.data.ident}</BodyShort>
                     {FASTLEGE_INFO_ENABLED && (
                         <>
                             <Detail>Fastlege</Detail>
@@ -98,7 +91,7 @@ function PasientInfo(): ReactElement {
                             </BodyShort>
                         </>
                     )}
-                    <input {...formContext.register('pasient')} type="hidden" value={pasientQuery.data.oid?.nr} />
+                    <input {...formContext.register('pasient')} type="hidden" value={pasientQuery.data.ident} />
                 </div>
             )}
         </div>
