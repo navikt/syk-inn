@@ -10,6 +10,8 @@ import { bundledEnv } from '@utils/env'
 import { Toggles } from '../toggles/toggles'
 import { ToggleProvider } from '../toggles/context'
 
+import StoreProvider from './redux/StoreProvider'
+
 configureLogger({
     basePath: bundledEnv.NEXT_PUBLIC_BASE_PATH ?? undefined,
 })
@@ -37,11 +39,13 @@ function Providers({ children, toggles }: PropsWithChildren<{ toggles: Toggles }
     )
 
     return (
-        <ToggleProvider toggles={toggles}>
-            <NuqsAdapter>
-                <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-            </NuqsAdapter>
-        </ToggleProvider>
+        <StoreProvider>
+            <ToggleProvider toggles={toggles}>
+                <NuqsAdapter>
+                    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+                </NuqsAdapter>
+            </ToggleProvider>
+        </StoreProvider>
     )
 }
 

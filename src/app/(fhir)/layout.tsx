@@ -9,7 +9,7 @@ import DemoWarning from '@components/demo-warning'
 import FhirHeader from '@fhir/components/FhirHeader'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
-import Providers from '../providers'
+import Providers from '../../providers/Providers'
 import Preload from '../preload'
 import { getToggles } from '../../toggles/unleash'
 

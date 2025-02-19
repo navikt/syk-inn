@@ -8,6 +8,9 @@ import { isLocalOrDemo } from '@utils/env'
 import { saveSessionCompleted } from '@fhir/sessions/session-lifecycle'
 import FhirDataProvider from '@fhir/components/FhirDataProvider'
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
+import NySykmeldingFormMultiStep from '@components/ny-sykmelding-form-multi-step/NySykmeldingFormMultiStep'
+
+import { getFlag, getToggles } from '../../../toggles/unleash'
 
 type Props = {
     searchParams: Promise<{ code: string | undefined }>
@@ -25,6 +28,8 @@ async function Page(props: Props): Promise<ReactElement> {
          */
         await saveSessionCompleted()
     }
+
+    const multistepToggle = getFlag('SYK_INN_MULTISTEP_FORM_V1', await getToggles())
 
     return (
         <PageBlock as="main" width="xl" gutters className="pt-4">
@@ -52,7 +57,7 @@ async function Page(props: Props): Promise<ReactElement> {
                 </List>
             </section>
             <FhirDataProvider>
-                <NySykmeldingForm />
+                {multistepToggle.enabled ? <NySykmeldingFormMultiStep /> : <NySykmeldingForm />}
             </FhirDataProvider>
         </PageBlock>
     )
