@@ -21,16 +21,16 @@ sequenceDiagram
         actor DOC as Doctor (Grønn Vits)
         participant EHR as EHR system
     end
+    box rgba(155, 36, 36, 0.5) Browser
+        participant APP_FRONTEND as Smart app
+    end
     box rgba(217, 56, 56, 0.5) NAV
-        participant APP_SERVER as Smart app (server + session)
-        participant APP_FRONTEND as Smart app (browser)
-        participant NAV as NAV API, External services, and Auth server
+        participant APP_SERVER as App server
+        participant NAV as NAV app API<br>NAV external services<br>NAV auth server
     end
 
 # Initial EHR login, not relevant for SMART app
     DOC ->> EHR: Login to EHR
-    EHR -->>+ NAV: Authorization requested
-    NAV -->>- EHR: Authorization granted
 
 # Patient visit
     PAT -->> DOC: Comes in for appointment
@@ -47,14 +47,12 @@ sequenceDiagram
     APP_SERVER -->> APP_SERVER: Create session
     Note over APP_SERVER: Store: <br>issuer <br>codeVerifier <br>state <br>authorizationEndpoint <br>tokenEndpoint
     APP_SERVER ->> EHR: Authorization URL with redirect_uri
-    EHR -->> NAV: Smart authorization request
-    NAV -->> EHR: Smart authorization granted
     EHR ->> APP_SERVER: Redirect to redirect_uri with code and state (/fhir/callback)
     APP_SERVER -->> APP_SERVER: Get session
-    APP_SERVER -->> NAV: Exchange code for token from token_endpoint
-    Note over APP_SERVER, NAV: grant_type: authorization_code<br>code: code param<br>code_verifier: from session
-    NAV -->> APP_SERVER: Token response
-    Note over NAV, APP_SERVER: Token response: <br>access_token, id_token, encounter, patient
+    APP_SERVER -->> EHR: Exchange code for token from token_endpoint
+    Note over APP_SERVER, EHR: grant_type: authorization_code<br>code: code param<br>code_verifier: from session
+    EHR -->> APP_SERVER: Token response
+    Note over EHR, APP_SERVER: Token response: <br>access_token, id_token, encounter, patient
     APP_SERVER -->> APP_SERVER: Update session
     Note over APP_SERVER: Store: <br>id_token <br>access_token <br>patient <br>encounter
     APP_SERVER ->> EHR: Launch complete, 302 redirect: /fhir
