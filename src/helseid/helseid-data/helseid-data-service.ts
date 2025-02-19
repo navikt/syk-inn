@@ -10,6 +10,7 @@ export function createHelseIdDataService(behandler: BehandlerInfo): DataService 
             arbeidsgivere: NotAvailable,
             konsultasjon: NotAvailable,
             behandler: behandler,
+            tidligereSykmeldinger: NotAvailable,
         },
         query: {
             pasient: NotAvailable,

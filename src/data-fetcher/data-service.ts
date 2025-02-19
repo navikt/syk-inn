@@ -23,6 +23,7 @@ export type DataService = {
         pasient: (() => Promise<PasientInfo>) | NotAvailable
         arbeidsgivere: (() => Promise<ArbeidsgiverInfo[]>) | NotAvailable
         konsultasjon: (() => Promise<KonsultasjonInfo>) | NotAvailable
+        tidligereSykmeldinger: (() => Promise<ExistingSykmelding[]>) | NotAvailable
     }
     /**
      * Query data can be anything that requires an argument to fetch, such as a specific patient.

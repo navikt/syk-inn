@@ -12,6 +12,7 @@ export function createSecureFhirDataService(behandler: BehandlerInfo): DataServi
             pasient: () => getFhirPatient(),
             konsultasjon: NotAvailable,
             arbeidsgivere: NotAvailable,
+            tidligereSykmeldinger: NotAvailable,
         },
         query: {
             pasient: () => raise('TODO'),

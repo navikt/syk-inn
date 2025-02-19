@@ -7,6 +7,7 @@ import { FhirClient } from '@fhir/fhir-data/fhir-data-service'
 import { ExistingSykmeldingSchema, NySykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
 import { PdlPersonSchema } from '@services/pdl/PdlApiSchema'
 import { getFnrIdent } from '@services/pdl/PdlApiUtils'
+import { getFhirPatient } from '@fhir/fhir-data/fhir-data'
 
 import { ArbeidsgiverInfo, ExistingSykmelding, NySykmelding, PasientQueryInfo } from '../../data-fetcher/data-service'
 
@@ -23,6 +24,26 @@ const AvailableResources = {
         getPath: () => pathWithBasePath(`/fhir/person`),
         schema: PdlPersonSchema,
     },
+}
+
+export async function getTidligereSykmeldinger(client: FhirClient): Promise<ExistingSykmelding[]> {
+    const pasientInfo = await getFhirPatient(client)
+    const ident = pasientInfo.ident
+
+    const response = await fetch(pathWithBasePath(`/fhir/sykmelding/`), {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: client.state.tokenResponse?.access_token ?? raise('No active Smart Session'),
+            'X-IDENT': ident,
+        },
+    })
+
+    if (!response.ok) {
+        await handleAPIError(response)
+    }
+
+    return ExistingSykmeldingSchema.array().parse(await response.json())
 }
 
 export async function getSykmelding(
@@ -99,7 +120,7 @@ export async function getPerson(client: FhirClient, ident: string): Promise<Pasi
     }
 }
 
-async function handleAPIError(response: Response): Promise<never> {
+export async function handleAPIError(response: Response): Promise<never> {
     if (response.headers.get('content-type')?.includes('application/json')) {
         const errors = await response.json()
         logger.error(`${response.url} failed (${response.status} ${response.statusText}), errors`, {
