@@ -2,6 +2,17 @@
 
 ## Introduction
 
+> **Note**: This is a simplified version of the SMART launch flow. For detailed technical implementation including security validations, session management, and component details, please refer to [smart-launch.md](smart-launch.md).
+>
+> Key simplifications in this diagram:
+>
+> - Security token validation steps are omitted
+> - Session management details are abstracted
+> - AUTH and FHIR servers are combined
+> - NAV components are merged for clarity
+>
+> These simplifications are made for better readability while the actual implementation follows the security measures detailed in the complete version.
+
 The smarthealthit client library [fhirclient](https://docs.smarthealthit.org/client-js/) provides an implementation for
 launching a SMART on FHIR app. While it does provide some mechanisms for server-to-server communication, it's launch
 implementation is only client-side, and stores ID-token and access tokens in the browser's local storage.
