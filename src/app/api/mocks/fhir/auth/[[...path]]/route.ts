@@ -33,8 +33,16 @@ async function handler(req: Request): Promise<Response> {
                 return new Response('Missing redirect_uri', { status: 400 })
             }
 
+            const state = url.searchParams.get('state')
+            if (!state) {
+                return new Response('Missing state', { status: 400 })
+            }
+
             const notAToken = randomUUID()
-            return Response.redirect(`${redirectUri}?code=${notAToken}`, 302)
+            const redirectUrl = `${redirectUri}?code=${notAToken}&state=${state}`
+
+            logger.info(`/auth/authorize good, redirecting to ${redirectUrl}`)
+            return Response.redirect(redirectUrl, 302)
         }
         case 'POST - /auth/token': {
             const body = await req.formData()

@@ -6,12 +6,12 @@ import type { Metadata } from 'next'
 
 import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
+import { getToggles } from '@toggles/unleash'
 import FhirHeader from '@fhir/components/FhirHeader'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../providers'
 import Preload from '../preload'
-import { getToggles } from '../../toggles/unleash'
 
 export const metadata: Metadata = {
     title: '(FHIR) Innsending av Sykmeldinger',

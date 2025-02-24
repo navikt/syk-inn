@@ -19,17 +19,13 @@ const off: Omit<IToggle, 'name'> = {
 }
 
 const devToggles: Record<ExpectedToggles, IToggle> = {
-    SYK_INN_SECURE_AUTH: {
-        name: 'SYK_INN_SECURE_AUTH',
-        ...off,
-    },
     SYK_INN_DEBUG_WAIT_BEFORE_LAUNCH: {
         name: 'SYK_INN_DEBUG_WAIT_BEFORE_LAUNCH',
         ...off,
     },
     SYK_INN_TIDLIGERE_SYKMELDINGER: {
         name: 'SYK_INN_TIDLIGERE_SYKMELDINGER',
-        ...on,
+        ...off,
     },
 }
 

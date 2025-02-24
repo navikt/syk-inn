@@ -4,7 +4,6 @@ import { XMarkIcon } from '@navikt/aksel-icons'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
-import { getFhirAccessTokenFromSessionStorage } from '@fhir/auth/session'
 
 import { DataService } from '../data-fetcher/data-service'
 
@@ -70,21 +69,6 @@ function ResetSmartContext(): ReactElement {
                         Reset and re-launch
                     </Button>
                 </div>
-            </div>
-            <div>
-                <Detail>Test auth stuff</Detail>
-                <Button
-                    size="small"
-                    variant="secondary-neutral"
-                    onClick={async () => {
-                        await fetch(pathWithBasePath('/fhir/verify-token'), {
-                            headers: { Authorization: `Bearer ${getFhirAccessTokenFromSessionStorage()}` },
-                        })
-                    }}
-                >
-                    Validate current access token (FHIR)
-                </Button>
-                <Detail>(See server log for result)</Detail>
             </div>
         </DevToolItem>
     )

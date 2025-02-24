@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { logger } from '@navikt/next-logger'
 
 import { UNLEASH_COOKIE_NAME } from './toggles/cookie'
-import { getFlag, getToggles } from './toggles/unleash'
 
-export function middleware(request: NextRequest): Promise<NextResponse> {
+export function middleware(request: NextRequest): NextResponse {
     const response = NextResponse.next()
 
     if (request.cookies.get('syk-inn-session-id')?.value == null) {
@@ -21,25 +19,7 @@ export function middleware(request: NextRequest): Promise<NextResponse> {
         response.cookies.set(UNLEASH_COOKIE_NAME, crypto.randomUUID())
     }
 
-    return rewriteToggledPath(request, response)
-}
-
-async function rewriteToggledPath(request: NextRequest, response: NextResponse): Promise<NextResponse> {
-    const secureAuthToggle = getFlag('SYK_INN_SECURE_AUTH', await getToggles())
-
-    logger.info(
-        `Should path (${request.nextUrl.pathname}) be rewritten? Toggle (${secureAuthToggle?.name}): ${secureAuthToggle?.enabled}`,
-    )
-    if (!secureAuthToggle.enabled || !request.nextUrl.pathname.startsWith('/fhir')) {
-        logger.info('No rewrite')
-        return response
-    }
-
-    const nextUrl = request.nextUrl
-    nextUrl.pathname = nextUrl.pathname.replace('/fhir', '/fhir-secure')
-
-    logger.info(`Rewriting to ${nextUrl.pathname}`)
-    return NextResponse.rewrite(nextUrl, response)
+    return response
 }
 
 export const config = {

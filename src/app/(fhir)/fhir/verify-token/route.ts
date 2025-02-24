@@ -1,24 +1,16 @@
-import { headers } from 'next/headers'
-import { logger } from '@navikt/next-logger'
+import { ensureValidFhirAuth } from '@fhir/auth/verify'
 
-import { verifyFhirToken } from '@fhir/auth/verify'
-
+/**
+ * Used to show current status of the token verification lazily in the header
+ *
+ * Only used for testing purposes in this early phase
+ */
 export async function GET(): Promise<Response> {
-    const token = (await headers()).get('Authorization')
+    const secureAuth = await ensureValidFhirAuth()
 
-    if (!token) {
-        return Response.json({ message: 'No token provided' })
+    if (secureAuth !== 'ok') {
+        return secureAuth
     }
 
-    try {
-        await verifyFhirToken(token)
-        return Response.json({ ok: 'ok' })
-    } catch (e) {
-        logger.error(e)
-        if (e instanceof Error) {
-            return Response.json({ message: e.message ?? 'Unknown error' })
-        } else {
-            return Response.json({ message: e?.toString() ?? 'Unknown error' })
-        }
-    }
+    return Response.json({ ok: 'ok' })
 }

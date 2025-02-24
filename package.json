@@ -36,7 +36,6 @@
         "clsx": "^2.1.1",
         "csp-header": "^6.0.1",
         "date-fns": "^4.1.0",
-        "fhirclient": "^2.5.4",
         "fuse.js": "^7.1.0",
         "html-react-parser": "^5.2.2",
         "jose": "^5.9.6",

@@ -3,9 +3,6 @@
 import React, { ReactElement } from 'react'
 import { Alert, BodyLong, Button, Heading } from '@navikt/ds-react'
 
-import { getAbsoluteURL } from '@utils/url'
-import { getSmartSession } from '@fhir/auth/session'
-
 export function FhirError(): ReactElement {
     return (
         <div className="max-w-prose">
@@ -20,23 +17,16 @@ export function FhirError(): ReactElement {
                 <BodyLong>
                     Du kan prøve å starte applikasjonen på nytt i din EPJ, eller så kan prøve å{' '}
                     <Button
-                        as="a"
-                        href={getReInitializationURL()}
+                        onClick={() => window.location.reload()}
                         size="xsmall"
                         variant="secondary-neutral"
                         type="button"
                     >
-                        restarte applikasjonen
+                        restarte applikasjonen på nytt
                     </Button>{' '}
                     her.
                 </BodyLong>
             </Alert>
         </div>
     )
-}
-
-function getReInitializationURL(): string {
-    const iss = getSmartSession().serverUrl
-
-    return `${getAbsoluteURL()}/fhir/launch?iss=${iss}`
 }
