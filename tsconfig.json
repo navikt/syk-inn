@@ -18,7 +18,8 @@
             "@fhir-secure/*": ["./src/fhir-secure/*"],
             "@utils/*": ["./src/utils/*"],
             "@components/*": ["./src/components/*"],
-            "@services/*": ["./src/services/*"]
+            "@services/*": ["./src/services/*"],
+            "@toggles/*": ["./src/toggles/*"]
         },
         "target": "ES2017"
     },

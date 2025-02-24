@@ -48,7 +48,7 @@ export const sykInnApiService = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'X-HPR': hpr,
+                HPR: hpr,
             },
             responseSchema: ExistingSykmeldingSchema,
         }),
@@ -59,7 +59,7 @@ export const sykInnApiService = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'X-IDENT': ident,
+                Ident: ident,
             },
             responseSchema: ExistingSykmeldingSchema.array(),
         }),

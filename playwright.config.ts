@@ -32,9 +32,6 @@ const opts: OptionsType = process.env.CI
                 url: `http://localhost:${PORT}`,
                 timeout: 120 * 1000,
                 reuseExistingServer: true,
-                env: {
-                    NEXT_PUBLIC_IS_E2E: 'true',
-                },
                 stderr: 'pipe',
                 stdout: 'pipe',
             },

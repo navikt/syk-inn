@@ -1,21 +1,36 @@
 import { lazyNextleton } from 'nextleton'
 
 import { bundledEnv } from '@utils/env'
+import { SessionStoreInMem } from '@fhir/sessions/session-store-in-mem'
 
-import { SessionStoreInMem } from './session-store-in-mem'
 import { SessionStoreRedis } from './session-store-redis'
 
 export type SessionId = string
 
-export type PartialSession = { iss: string }
+export type InitialSession = {
+    issuer: string
+    codeVerifier: string
+    state: string
+    authorizationEndpoint: string
+    tokenEndpoint: string
+}
 
-export type CompleteSession = PartialSession & { complete: true }
+export type CompleteSession = {
+    accessToken: string
+    idToken: string
+    patient: string
+    encounter: string
+    webmedPractitioner?: string
+}
+
+export type Session = InitialSession & CompleteSession
 
 export interface SessionStore {
-    initSession(sessionId: SessionId, issuer: string): Promise<PartialSession>
-    completeAuth(sessionId: string): Promise<CompleteSession>
-    isSessionInitiated(sessionId: SessionId): Promise<boolean>
-    get(sessionId: SessionId): Promise<PartialSession | CompleteSession>
+    initializeUserSession(sessionId: string, values: InitialSession): Promise<void>
+    completeUserSession(sessionId: string, values: CompleteSession): Promise<void>
+
+    getSession(sessionId: string): Promise<Session>
+    getPartialSession(sessionId: string): Promise<InitialSession>
 
     setup(): Promise<void>
     cleanup(): Promise<void>

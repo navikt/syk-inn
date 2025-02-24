@@ -1,149 +1,87 @@
 import { logger } from '@navikt/next-logger'
 
-import { wait } from '@utils/wait'
 import { pathWithBasePath } from '@utils/url'
-import { raise } from '@utils/ts'
-import { FhirClient } from '@fhir/fhir-data/fhir-data-service'
+import { fhirResources } from '@fhir/fhir-data/fhir-data'
 import { ExistingSykmeldingSchema, NySykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
 import { PdlPersonSchema } from '@services/pdl/PdlApiSchema'
 import { getFnrIdent } from '@services/pdl/PdlApiUtils'
-import { getFhirPatient } from '@fhir/fhir-data/fhir-data'
 
-import { ArbeidsgiverInfo, ExistingSykmelding, NySykmelding, PasientQueryInfo } from '../../data-fetcher/data-service'
-
-const AvailableResources = {
-    sykmelding: {
-        getPath: (sykmeldingId: string) => pathWithBasePath(`/fhir/sykmelding/${sykmeldingId}`),
-        schema: ExistingSykmeldingSchema,
-    },
-    sendSykmelding: {
-        getPath: () => pathWithBasePath('/fhir/sykmelding/submit'),
-        schema: NySykmeldingSchema,
-    },
-    person: {
-        getPath: () => pathWithBasePath(`/fhir/person`),
-        schema: PdlPersonSchema,
-    },
-}
-
-export async function getTidligereSykmeldinger(client: FhirClient): Promise<ExistingSykmelding[]> {
-    const pasientInfo = await getFhirPatient(client)
-    const ident = pasientInfo.ident
-
-    const response = await fetch(pathWithBasePath(`/fhir/sykmelding/`), {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: client.state.tokenResponse?.access_token ?? raise('No active Smart Session'),
-            'X-IDENT': ident,
-        },
-    })
-
-    if (!response.ok) {
-        await handleAPIError(response)
-    }
-
-    return ExistingSykmeldingSchema.array().parse(await response.json())
-}
-
-export async function getSykmelding(
-    client: FhirClient,
-    hpr: string,
-    sykmeldingId: string,
-): Promise<ExistingSykmelding> {
-    await wait()
-    const response = await fetch(AvailableResources.sykmelding.getPath(sykmeldingId), {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: client.state.tokenResponse?.access_token ?? raise('No active Smart Session'),
-            'X-HPR': hpr,
-        },
-    })
-
-    if (!response.ok) {
-        await handleAPIError(response)
-    }
-
-    return AvailableResources.sykmelding.schema.parse(await response.json())
-}
-
-export async function sendSykmelding(client: FhirClient, hpr: string, values: unknown): Promise<NySykmelding> {
-    await wait()
-    const response = await fetch(AvailableResources.sendSykmelding.getPath(), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: client.state.tokenResponse?.access_token ?? raise('No active Smart Session'),
-        },
-        body: JSON.stringify({
-            values,
-            behandlerHpr: hpr,
-        }),
-    })
-
-    if (!response.ok) {
-        await handleAPIError(response)
-    }
-
-    return AvailableResources.sendSykmelding.schema.parse(await response.json())
-}
-
-export async function getPerson(client: FhirClient, ident: string): Promise<PasientQueryInfo> {
-    await wait()
-    const response = await fetch(AvailableResources.person.getPath(), {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: client.state.tokenResponse?.access_token ?? raise('No active Smart Session'),
-            'X-Ident': ident,
-        },
-    })
-
-    if (!response.ok) {
-        if (response.status === 404) {
-            throw new Error('Fant ikke person i registeret')
-        }
-
-        await handleAPIError(response)
-    }
-
-    const parsed = AvailableResources.person.schema.parse(await response.json())
-    const fnrOrDnr = getFnrIdent(parsed.identer)
-    if (!fnrOrDnr) {
-        throw new Error('No valid fnr or dnr found')
-    }
-
-    return {
-        navn: `${parsed.navn.fornavn}${parsed.navn.mellomnavn ? ` ${parsed.navn.mellomnavn}` : ''} ${parsed.navn.etternavn}`,
-        ident: fnrOrDnr,
-    }
-}
-
-export async function handleAPIError(response: Response): Promise<never> {
-    if (response.headers.get('content-type')?.includes('application/json')) {
-        const errors = await response.json()
-        logger.error(`${response.url} failed (${response.status} ${response.statusText}), errors`, {
-            cause: errors,
+/**
+ * These are resources that are not FHIR resources, but are available in the browser runtime and proxied
+ * through the backend. The schema is validated in the browser.
+ *
+ * Each of these resources are implemented as their own API route handlers that have access to the current
+ * session, and validates the session before returning the resource.
+ */
+export const nonFhirResources = {
+    getTidligereSykmeldinger: async () => {
+        const fhirPatient = await fhirResources.getFhirPatient()
+        const result = await getSecuredResource('/sykmelding', {
+            method: 'GET',
+            headers: {
+                Ident: fhirPatient.ident,
+            },
         })
-    } else {
-        logger.error(`Next API Responded with error ${response.status} ${response.statusText}`)
-    }
 
-    throw new Error('Next API Responded with error')
+        // TODO: Better error handling
+        return ExistingSykmeldingSchema.array().parse(result)
+    },
+    getPasient: async (ident: string) => {
+        const result = await getSecuredResource(`/person`, {
+            method: 'GET',
+            headers: {
+                Ident: ident,
+            },
+        })
+
+        // TODO: Better error handling
+        const parsed = PdlPersonSchema.parse(result)
+        const fnrOrDnr = getFnrIdent(parsed.identer)
+
+        return {
+            navn: `${parsed.navn.fornavn}${parsed.navn.mellomnavn ? ` ${parsed.navn.mellomnavn}` : ''} ${parsed.navn.etternavn}`,
+            ident: fnrOrDnr,
+        }
+    },
+    getSykmelding: async (id: string, hpr: string) => {
+        const result = await getSecuredResource(`/sykmelding/${id}`, {
+            method: 'GET',
+            headers: {
+                // TODO: Use session probably
+                HPR: hpr,
+            },
+        })
+
+        // TODO: Better error handling
+        return ExistingSykmeldingSchema.parse(result)
+    },
+    sendSykmelding: async (values: unknown, hpr: string) => {
+        const result = await getSecuredResource(`/sykmelding/submit`, {
+            method: 'POST',
+            body: JSON.stringify({
+                values,
+                // TODO: Use session probably
+                behandlerHpr: hpr,
+            }),
+        })
+
+        // TODO: Better error handling
+        return NySykmeldingSchema.parse(result)
+    },
 }
 
-export async function getArbeidsgivere(): Promise<ArbeidsgiverInfo[]> {
-    await wait()
+async function getSecuredResource(path: `/${string}`, fetchOptions: RequestInit): Promise<unknown> {
+    const response = await fetch(pathWithBasePath(`/fhir/resources${path}`), {
+        ...fetchOptions,
+        headers: {
+            ...fetchOptions.headers,
+            'Content-Type': 'application/json',
+        },
+    })
+    if (!response.ok) {
+        logger.error(`Secured Resource ${path} failed with ${response.status} ${response.statusText}`)
+        throw new Error(`Failed to fetch secured resource ${path}`)
+    }
 
-    return [
-        {
-            navn: 'Arbeidsgiver 1',
-            organisasjonsnummer: '123456789',
-        },
-        {
-            navn: 'Arbeidsgiver 2',
-            organisasjonsnummer: '987654321',
-        },
-    ]
+    return response.json()
 }

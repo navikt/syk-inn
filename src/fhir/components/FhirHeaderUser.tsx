@@ -9,7 +9,6 @@ import { CheckmarkIcon, XMarkOctagonIcon } from '@navikt/aksel-icons'
 import { pathWithBasePath } from '@utils/url'
 
 import { BehandlerInfo } from '../../data-fetcher/data-service'
-import { getFhirAccessTokenFromSessionStorage } from '../auth/session'
 
 type Props = {
     isLoading: boolean
@@ -49,10 +48,8 @@ function VerifiedBadge(): ReactElement {
         queryFn: async (): Promise<{ ok: 'ok' } | { message: string }> => {
             const result = await fetch(pathWithBasePath('/fhir/verify-token'), {
                 method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${getFhirAccessTokenFromSessionStorage()}`,
-                },
             })
+
             if (!result.ok) {
                 throw new Error('Failed to verify token')
             }

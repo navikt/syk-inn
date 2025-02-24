@@ -1,11 +1,9 @@
 import { logger } from '@navikt/next-logger'
 
-import { raise } from '@utils/ts'
-
-import { CompleteSession, PartialSession, SessionId, SessionStore } from './session-store'
+import { Session, InitialSession, SessionStore, SessionId, CompleteSession } from './session-store'
 
 export class SessionStoreInMem implements SessionStore {
-    private _sessions: Record<SessionId, PartialSession | CompleteSession> = {}
+    private _sessions: Record<SessionId, InitialSession | CompleteSession> = {}
 
     public async setup(): Promise<void> {
         logger.info('Setting up in-memory session store (stub)')
@@ -17,35 +15,40 @@ export class SessionStoreInMem implements SessionStore {
         this._sessions = {}
     }
 
-    public async initSession(sessionId: SessionId, issuer: string): Promise<PartialSession> {
-        logger.info(`Initiating session ${sessionId} with issuer ${issuer}`)
+    async initializeUserSession(sessionId: string, values: InitialSession): Promise<void> {
+        logger.info(`Initiating session ${sessionId} with issuer ${values.issuer}`)
 
-        this._sessions[sessionId] = { iss: issuer }
-
-        return this._sessions[sessionId]
+        this._sessions[sessionId] = values
     }
 
-    public async isSessionInitiated(sessionId: SessionId): Promise<boolean> {
-        logger.info(`Session ${sessionId} initiated: ${this._sessions[sessionId] != null}`)
-
-        return this._sessions[sessionId] != null
-    }
-
-    public async completeAuth(sessionId: string): Promise<CompleteSession> {
+    async completeUserSession(sessionId: string, values: CompleteSession): Promise<void> {
         logger.info(`Completing auth for session ${sessionId}`)
 
-        const session = this._sessions[sessionId]
-
-        if (session == null) {
-            throw new Error('Session not initiated')
-        }
-
-        this._sessions[sessionId] = { ...session, complete: true }
-
-        return this._sessions[sessionId] as CompleteSession
+        const partialSession = await this.getPartialSession(sessionId)
+        this._sessions[sessionId] = {
+            ...partialSession,
+            ...values,
+        } satisfies Session
     }
 
-    public async get(sessionId: SessionId): Promise<PartialSession | CompleteSession> {
-        return this._sessions[sessionId] ?? raise('No session found')
+    async getSession(sessionId: string): Promise<Session> {
+        const session = this._sessions[sessionId]
+        if (session == null) {
+            throw new Error(`Session ${sessionId} not found`)
+        }
+        if (!('accessToken' in session)) {
+            throw new Error(`Session ${sessionId} is not complete`)
+        }
+
+        return session as Session
+    }
+
+    async getPartialSession(sessionId: string): Promise<InitialSession> {
+        const session = this._sessions[sessionId]
+        if (session == null) {
+            throw new Error(`Session ${sessionId} not found`)
+        }
+
+        return session as InitialSession
     }
 }

@@ -1,34 +1,18 @@
-import { raise } from '@utils/ts'
+import { cookies } from 'next/headers'
 
-export function getFhirAccessTokenFromSessionStorage(): string {
-    const item = getSmartSession()
+import { getSessionStore, Session } from '../sessions/session-store'
 
-    if ('id_token' in item.tokenResponse) {
-        return item.tokenResponse.access_token
+export async function getSession(sessionId?: string): Promise<Session | null> {
+    let session: string | null = sessionId ?? null
+    if (sessionId == null) {
+        const cookieStore = await cookies()
+        session = cookieStore.get('syk-inn-session-id')?.value ?? null
     }
 
-    raise('No id_token')
-}
+    if (session == null) {
+        return null
+    }
 
-export function getSmartSession(): FhirSessionType {
-    const smartKey: string = JSON.parse(
-        sessionStorage.getItem('SMART_KEY') ?? raise('No SMART_KEY, seems like FHIR session is not launched maybe?'),
-    )
-
-    return JSON.parse(sessionStorage.getItem(smartKey) ?? raise(`No item in session storage for SMART_KEY=${smartKey}`))
-}
-
-export type FhirSessionType = {
-    clientId: string
-    scope: string
-    redirectUri: string
-    serverUrl: string
-    tokenResponse: { in_token: string } | Record<string, never>
-    key: string
-    registrationUri: string
-    authorizeUri: string
-    tokenUri: string
-    codeChallengeMethods: Array<string>
-    codeChallenge: string
-    codeVerifier: string
+    const store = await getSessionStore()
+    return await store.getSession(session)
 }

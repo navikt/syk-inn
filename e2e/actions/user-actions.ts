@@ -81,7 +81,7 @@ export function submitSykmelding() {
     return async (page: Page): Promise<unknown> => {
         const request = await clickAndWait(
             page.getByRole('button', { name: 'Opprett sykmelding' }).click(),
-            waitForHttp('/fhir/sykmelding/submit', 'POST')(page),
+            waitForHttp('/fhir/resources/sykmelding/submit', 'POST')(page),
         )
 
         return request.postDataJSON()
