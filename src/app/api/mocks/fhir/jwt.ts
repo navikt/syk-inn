@@ -1,5 +1,5 @@
 import { lazyNextleton } from 'nextleton'
-import { exportJWK, generateKeyPair, JWK, KeyLike, SignJWT } from 'jose'
+import { exportJWK, generateKeyPair, JWK, SignJWT } from 'jose'
 
 import testData from './(resources)/data'
 
@@ -11,7 +11,7 @@ export async function publicJwk(): Promise<JWK> {
     return await exportJWK(publicKey)
 }
 
-export async function privateKey(): Promise<KeyLike> {
+export async function privateKey(): Promise<CryptoKey> {
     const { privateKey } = await keyPair()
 
     return privateKey

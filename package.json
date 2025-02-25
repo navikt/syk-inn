@@ -38,7 +38,7 @@
         "date-fns": "^4.1.0",
         "fuse.js": "^7.1.0",
         "html-react-parser": "^5.2.2",
-        "jose": "^5.10.0",
+        "jose": "^6.0.6",
         "next": "15.1.7",
         "next-logger": "^5.0.1",
         "nextleton": "^0.6.1",
