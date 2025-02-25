@@ -27,7 +27,7 @@ Step 6. Launch request, see: [HL-7: Smart app launch](https://hl7.org/fhir/smart
 
 Step 7. Discovery request, see: [HL-7: Discovery request](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-3-discovery)
 
-Step 9. Authorizanion flow, see: [HL-7: Obtain authorization code](https://hl7.org/fhir/smart-app-launch/app-launch.html#obtain-authorization-code)
+Step 9. Authorization flow, see: [HL-7: Obtain authorization code](https://hl7.org/fhir/smart-app-launch/app-launch.html#obtain-authorization-code)
 
 Step 10. Token exchange, see: [HL-7: Obtain access token](https://hl7.org/fhir/smart-app-launch/app-launch.html#obtain-access-token)
 
