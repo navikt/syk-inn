@@ -24,7 +24,7 @@ const testData = {
     },
     fhirServer: {
         wellKnown: createWellKnown(`${getAbsoluteURL()}/api/mocks/fhir`),
-        keys: createKeys(),
+        keys: () => createKeys(),
         metadata: metadata,
     },
 }

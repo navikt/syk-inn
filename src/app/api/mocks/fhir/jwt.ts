@@ -11,7 +11,7 @@ export async function publicJwk(): Promise<JWK> {
     return await exportJWK(publicKey)
 }
 
-export async function privateKey(): Promise<CryptoKey> {
+async function privateKey(): Promise<CryptoKey> {
     const { privateKey } = await keyPair()
 
     return privateKey
