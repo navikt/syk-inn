@@ -2,7 +2,7 @@ import { logger } from '@navikt/next-logger'
 
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
-import { ExistingSykmelding } from '@services/syk-inn-api/SykInnApiSchema'
+import { ExistingSykmeldinger } from '@services/syk-inn-api/SykInnApiSchema'
 import { ensureValidFhirAuth } from '@fhir/auth/verify'
 
 export async function GET(request: Request): Promise<Response> {
@@ -29,7 +29,7 @@ export async function GET(request: Request): Promise<Response> {
         return new Response('Failed to retrieve sykmeldinger', { status: 500 })
     }
 
-    return Response.json(sykmeldinger satisfies ExistingSykmelding[], { status: 200 })
+    return Response.json(sykmeldinger satisfies ExistingSykmeldinger[], { status: 200 })
 }
 
 function handleMockedRoute(): Response {
@@ -39,9 +39,11 @@ function handleMockedRoute(): Response {
             pasient: {
                 fnr: '12345678910',
             },
-            periode: {
+            aktivitet: {
+                type: 'GRADERT',
                 fom: '2021-06-01',
                 tom: '2021-06-15',
+                grad: 50,
             },
             hovedDiagnose: {
                 system: 'ICD-10',
@@ -54,7 +56,8 @@ function handleMockedRoute(): Response {
             pasient: {
                 fnr: '12345678910',
             },
-            periode: {
+            aktivitet: {
+                type: 'AKTIVITET_IKKE_MULIG',
                 fom: '2022-04-01',
                 tom: '2022-05-15',
             },
@@ -69,7 +72,8 @@ function handleMockedRoute(): Response {
             pasient: {
                 fnr: '12345678910',
             },
-            periode: {
+            aktivitet: {
+                type: 'AKTIVITET_IKKE_MULIG',
                 fom: '2024-08-01',
                 tom: '2024-09-15',
             },
@@ -79,5 +83,5 @@ function handleMockedRoute(): Response {
                 text: 'Brudd legg/ankel',
             },
         },
-    ] satisfies ExistingSykmelding[])
+    ] satisfies ExistingSykmeldinger[])
 }

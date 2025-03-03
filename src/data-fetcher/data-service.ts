@@ -101,10 +101,18 @@ export type NySykmelding = {
 
 export type ExistingSykmelding = {
     sykmeldingId: string
-    periode: {
-        fom: string
-        tom: string
-    }
+    aktivitet:
+        | {
+              type: 'AKTIVITET_IKKE_MULIG'
+              fom: string
+              tom: string
+          }
+        | {
+              type: 'GRADERT'
+              grad: number
+              fom: string
+              tom: string
+          }
     pasient: {
         fnr: string
     }
@@ -113,6 +121,7 @@ export type ExistingSykmelding = {
         code: string
         text: string
     }
+    pdf: string
 }
 
 /**

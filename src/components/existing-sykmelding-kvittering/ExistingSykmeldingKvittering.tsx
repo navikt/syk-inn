@@ -63,7 +63,7 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: ExistingSykmelding }
                 </FormSection>
                 <FormSection title="Aktivitet" icon={<VitalsIcon />}>
                     <Detail>Sykmeldingsperiode</Detail>
-                    <BodyShort>{toReadableDatePeriod(sykmelding.periode.fom, sykmelding.periode.tom)}</BodyShort>
+                    <BodyShort>{toReadableDatePeriod(sykmelding.aktivitet.fom, sykmelding.aktivitet.tom)}</BodyShort>
                 </FormSection>
             </div>
             <div className="mt-4">
