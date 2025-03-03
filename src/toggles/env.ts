@@ -7,7 +7,7 @@ import { bundledEnv } from '@utils/env'
 import { ExpectedToggles } from './toggles'
 
 const on: Omit<IToggle, 'name'> = {
-    enabled: false,
+    enabled: true,
     impressionData: false,
     variant: { enabled: true, name: 'default' },
 }
@@ -26,6 +26,10 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
     SYK_INN_TIDLIGERE_SYKMELDINGER: {
         name: 'SYK_INN_TIDLIGERE_SYKMELDINGER',
         ...off,
+    },
+    SYK_INN_MULTISTEP_FORM_V1: {
+        name: 'SYK_INN_MULTISTEP_FORM_V1',
+        ...on,
     },
 }
 

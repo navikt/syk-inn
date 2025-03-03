@@ -28,13 +28,24 @@ interface Props {
     className?: string
     value: DiagnoseSuggestion | null
     label: string
+    description?: string
     onSelect: (value: DiagnoseSuggestion) => void
     onChange: () => void
     onBlur: () => void
     error: string | undefined
 }
 
-function DiagnoseCombobox({ id, className, value, label, onSelect, onChange, onBlur, error }: Props): ReactElement {
+function DiagnoseCombobox({
+    id,
+    className,
+    value,
+    label,
+    description,
+    onSelect,
+    onChange,
+    onBlur,
+    error,
+}: Props): ReactElement {
     const combobox = useComboboxStore({
         defaultValue: value ? createUniqueValue(value) : '',
         selectedValue: value ? createUniqueValue(value) : '',
@@ -51,6 +62,8 @@ function DiagnoseCombobox({ id, className, value, label, onSelect, onChange, onB
             }
 
             onSelect(selectedSuggestion as DiagnoseSuggestion)
+
+            document.getElementById('step-navigation-next')?.focus()
         },
         setValue: () => {
             startTransition(() => {
@@ -69,12 +82,14 @@ function DiagnoseCombobox({ id, className, value, label, onSelect, onChange, onB
                 })}
             >
                 <AkselifiedComboboxWrapper labelId={`${id}-label`} label={label} className={className} store={combobox}>
+                    {description && <BodyShort className="navds-form-field__description">{description}</BodyShort>}
                     <AkselifiedCombobox
                         id={id}
                         aria-labelledby={`${id}-label`}
                         placeholder="Søk på kode eller beskrivelse"
                         onBlur={onBlur}
                         error={error}
+                        autoFocus
                     >
                         <AkselifiedComboboxDisclosure loading={suggestions.length > 0 && isLoading} />
                     </AkselifiedCombobox>
@@ -140,7 +155,6 @@ function DiagnoseCombobox({ id, className, value, label, onSelect, onChange, onB
                                 combobox.setValue(resetValue)
                                 onChange()
                             }}
-                            autoFocus
                         >
                             Endre hoveddiagnose
                         </Button>

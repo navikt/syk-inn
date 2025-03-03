@@ -9,7 +9,7 @@ import DemoWarning from '@components/demo-warning'
 
 import { Autorisasjoner } from '../../data-fetcher/data-service'
 import { LazyDevTools } from '../../devtools/LazyDevTools'
-import Providers from '../providers'
+import Providers from '../../providers/Providers'
 import Preload from '../preload'
 import HelseIdDataProvider from '../../helseid/components/HelseIdDataProvider'
 import { getHelseIdUserInfo, HprDetails } from '../../helseid/helseid-userinfo'

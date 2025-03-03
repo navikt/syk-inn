@@ -1,3 +1,5 @@
+import { SubmitSykmeldingFormValues } from '@services/syk-inn-api/SykInnApiSchema'
+
 export type NotAvailable = typeof NotAvailable
 export const NotAvailable = {
     type: 'resource-not-available',
@@ -33,7 +35,7 @@ export type DataService = {
         sykmelding: (id: string) => Promise<ExistingSykmelding>
     }
     mutation: {
-        sendSykmelding: (sykmelding: unknown) => Promise<NySykmelding>
+        sendSykmelding: (sykmelding: SubmitSykmeldingFormValues) => Promise<NySykmelding>
     }
 }
 

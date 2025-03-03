@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import { FormSection } from '@components/ui/form'
 import NySykmeldingFormSummary from '@components/ny-sykmelding-form/aktivitet/form-summary/NySykmeldingFormSummary'
 import { PractitionerSection } from '@components/ny-sykmelding-form/practitioner/PractitionerSection'
+import { raise } from '@utils/ts'
 
 import { useIsDataServiceInitialized, useDataService } from '../../data-fetcher/data-provider'
 import { DataService } from '../../data-fetcher/data-service'
@@ -35,7 +36,22 @@ function NySykmeldingForm(): ReactElement {
             logger.info('(Client) Submitting values,', values)
 
             try {
-                const createResult = await dataService.mutation.sendSykmelding(values)
+                const createResult = await dataService.mutation.sendSykmelding({
+                    pasient: values.pasient ?? raise('Ingen pasient'),
+                    aktivitet: {
+                        type: values.aktivitet.type,
+                        fom: values.aktivitet.fom ?? raise('Ingen fom'),
+                        tom: values.aktivitet.tom ?? raise('Ingen tom'),
+                        // @ts-expect-error TODO proper mapping
+                        grad: values.aktivitet.grad,
+                    },
+                    diagnoser: {
+                        hoved: {
+                            system: values.diagnoser.hoved?.system ?? raise('Ingen system'),
+                            code: values.diagnoser.hoved?.code ?? raise('Ingen code'),
+                        },
+                    },
+                })
 
                 startTransition(() => {
                     const target = `${dataService.mode === 'fhir' ? 'fhir' : 'ny'}/kvittering/${createResult.sykmeldingId}`
