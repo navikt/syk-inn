@@ -48,8 +48,8 @@ function TidligereSykmeldingerTimeline(): ReactElement {
                     data.map((sykmelding) => (
                         <div key={sykmelding.sykmeldingId}>
                             <BodyShort spacing>
-                                <strong>Periode:</strong> <b>fra:</b> {sykmelding.periode.fom}
-                                <b> til:</b> {sykmelding.periode.tom}
+                                <strong>Periode:</strong> <b>fra:</b> {sykmelding.aktivitet.fom}
+                                <b> til:</b> {sykmelding.aktivitet.tom}
                             </BodyShort>
                         </div>
                     ))

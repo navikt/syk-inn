@@ -42,14 +42,16 @@ function handleMockedRoute(): Response {
         pasient: {
             fnr: '12345678910',
         },
-        periode: {
-            fom: '2021-06-01',
-            tom: '2021-06-15',
+        aktivitet: {
+            type: 'AKTIVITET_IKKE_MULIG',
+            fom: '2024-02-15',
+            tom: '2024-02-18',
         },
         hovedDiagnose: {
             system: 'ICD-10',
             code: 'L73',
             text: 'Brudd legg/ankel',
         },
+        pdf: 'asdasdda',
     } satisfies ExistingSykmelding)
 }

@@ -1,3 +1,5 @@
+import { ExistingSykmeldinger } from '@services/syk-inn-api/SykInnApiSchema'
+
 export type NotAvailable = typeof NotAvailable
 export const NotAvailable = {
     type: 'resource-not-available',
@@ -23,7 +25,7 @@ export type DataService = {
         pasient: (() => Promise<PasientInfo>) | NotAvailable
         arbeidsgivere: (() => Promise<ArbeidsgiverInfo[]>) | NotAvailable
         konsultasjon: (() => Promise<KonsultasjonInfo>) | NotAvailable
-        tidligereSykmeldinger: (() => Promise<ExistingSykmelding[]>) | NotAvailable
+        tidligereSykmeldinger: (() => Promise<ExistingSykmeldinger[]>) | NotAvailable
     }
     /**
      * Query data can be anything that requires an argument to fetch, such as a specific patient.
@@ -101,10 +103,18 @@ export type NySykmelding = {
 
 export type ExistingSykmelding = {
     sykmeldingId: string
-    periode: {
-        fom: string
-        tom: string
-    }
+    aktivitet:
+        | {
+              type: 'AKTIVITET_IKKE_MULIG'
+              fom: string
+              tom: string
+          }
+        | {
+              type: 'GRADERT'
+              grad: number
+              fom: string
+              tom: string
+          }
     pasient: {
         fnr: string
     }
@@ -113,6 +123,7 @@ export type ExistingSykmelding = {
         code: string
         text: string
     }
+    pdf: string
 }
 
 /**
