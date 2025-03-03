@@ -10,7 +10,7 @@ import { getToggles } from '@toggles/unleash'
 import FhirHeader from '@fhir/components/FhirHeader'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
-import Providers from '../providers'
+import Providers from '../../providers/Providers'
 import Preload from '../preload'
 
 export const metadata: Metadata = {

@@ -1,42 +1,12 @@
 import { z } from 'zod'
 import { logger } from '@navikt/next-logger'
 
-import { DateOnly } from '@utils/zod'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { wait } from '@utils/wait'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
-import { NySykmelding } from '@services/syk-inn-api/SykInnApiSchema'
+import { NySykmelding, SubmitSykmeldingFormValuesSchema } from '@services/syk-inn-api/SykInnApiSchema'
 import { raise } from '@utils/ts'
 import { ensureValidFhirAuth } from '@fhir/auth/verify'
-
-/**
- * TODO: Payload will be identical for standalone and FHIR
- */
-const SubmitSykmeldingFormValuesSchema = z.object({
-    pasient: z.string().optional(),
-    diagnoser: z.object({
-        hoved: z.object({
-            system: z.union([z.literal('ICD10'), z.literal('ICPC2')]),
-            code: z.string(),
-        }),
-    }),
-    aktivitet: z.discriminatedUnion('type', [
-        z.object({
-            type: z.literal('AKTIVITET_IKKE_MULIG'),
-            fom: DateOnly,
-            tom: DateOnly,
-        }),
-        z.object({
-            type: z.literal('GRADERT'),
-            fom: DateOnly,
-            tom: DateOnly,
-            grad: z
-                .string()
-                .transform((it) => +it)
-                .pipe(z.number().min(1).max(99)),
-        }),
-    ]),
-})
 
 const SubmitSykmeldingPayloadSchema = z.object({
     values: SubmitSykmeldingFormValuesSchema,
