@@ -23,8 +23,11 @@ export async function getToggles(): Promise<Toggles> {
     }
 
     if (isLocalOrDemo) {
-        logger.warn('Running in local or demo mode, falling back to development toggles.')
-        return localDevelopmentToggles()
+        const devToggles = localDevelopmentToggles()
+        logger.warn(
+            `Running in local or demo mode, falling back to development toggles, current toggles: \n${devToggles.map((it) => `\t${it.name}: ${it.enabled}`).join('\n')}`,
+        )
+        return devToggles
     }
 
     try {

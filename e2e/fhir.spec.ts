@@ -29,7 +29,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
         values: {
             pasient: '21037712323',
             diagnoser: {
-                hoved: { code: 'P74', system: 'ICPC2', text: 'Angstlidelse' },
+                hoved: { code: 'P74', system: 'ICPC2' },
             },
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
@@ -55,7 +55,7 @@ test('can submit 100% sykmelding and use week picker', async ({ page }) => {
         values: {
             pasient: '21037712323',
             diagnoser: {
-                hoved: { code: 'P74', system: 'ICPC2', text: 'Angstlidelse' },
+                hoved: { code: 'P74', system: 'ICPC2' },
             },
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
@@ -87,7 +87,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
         behandlerHpr: '9144889',
         values: {
             pasient: '21037712323',
-            diagnoser: { hoved: { code: 'D290', system: 'ICD10', text: 'Godartet svulst i penis' } },
+            diagnoser: { hoved: { code: 'D290', system: 'ICD10' } },
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: '2024-02-15',
@@ -116,7 +116,7 @@ test('can submit gradert sykmelding', async ({ page }) => {
         values: {
             pasient: '21037712323',
             diagnoser: {
-                hoved: { system: 'ICPC2', code: 'P74', text: 'Angstlidelse' },
+                hoved: { system: 'ICPC2', code: 'P74' },
             },
             aktivitet: {
                 type: 'GRADERT',
