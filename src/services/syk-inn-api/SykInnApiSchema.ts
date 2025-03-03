@@ -20,21 +20,6 @@ export const ExistingSykmeldingSchema = z.object({
                 .transform((it) => +it)
                 .pipe(z.number().min(1).max(99)),
         }),
-        z.object({
-            type: z.literal('AVVENTENDE'),
-            fom: DateOnly,
-            tom: DateOnly,
-        }),
-        z.object({
-            type: z.literal('BEHANDLINGSDAGER'),
-            fom: DateOnly,
-            tom: DateOnly,
-        }),
-        z.object({
-            type: z.literal('REISETILSKUDD'),
-            fom: DateOnly,
-            tom: DateOnly,
-        }),
     ]),
     pasient: z.object({
         fnr: z.string(),
