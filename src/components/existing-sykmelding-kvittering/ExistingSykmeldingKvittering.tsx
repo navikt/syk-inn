@@ -38,7 +38,65 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
         <div>
             {isLoading && <SykmeldingKvitteringSkeleton />}
             {error && <SykmeldingKvitteringError error={error} refetch={refetch} />}
-            {data && <SykmeldingKvittering sykmelding={data} />}
+            {data && (
+                <div>
+                    <SykmeldingKvittering sykmelding={data} />
+                    <WritebackStatus sykmelding={data} />
+                </div>
+            )}
+        </div>
+    )
+}
+
+function WritebackStatus({ sykmelding }: { sykmelding: ExistingSykmelding }): ReactElement {
+    const dataService = useDataService()
+
+    const { isLoading, data, error, refetch } = useQuery({
+        queryKey: ['sykmelding', sykmelding],
+        queryFn: async () => dataService.mutation.writeToEhr(sykmelding),
+    })
+
+    return (
+        <div>
+            {isLoading && (
+                <div className="max-w-prose">
+                    <div className="my-4">
+                        <Skeleton variant="rectangle" height={62} />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <Skeleton variant="rectangle" height={108} />
+                        <Skeleton variant="rectangle" height={132} />
+                        <Skeleton variant="rectangle" height={108} />
+                    </div>
+                    <div className="mt-4"></div>
+                </div>
+            )}
+            {error && (
+                <div className="max-w-prose">
+                    <div className="my-4">
+                        <Heading size="small" level="3">
+                            Kunne ikke skrive tilbake sykmeldingen
+                        </Heading>
+                    </div>
+
+                    <div className="mt-4">
+                        <Alert variant="error">Teknisk feilmelding: {error.message}</Alert>
+                    </div>
+
+                    <div className="mt-4">
+                        <Button variant="secondary-neutral" onClick={() => refetch()}>
+                            Prøv å skrive sykmeldingen på nytt
+                        </Button>
+                    </div>
+                </div>
+            )}
+            {data && (
+                <div className="my-4">
+                    <Heading size="small" level="3">
+                        Sykmelding med id: {data?.id} er skrevet til EPJ systemet
+                    </Heading>
+                </div>
+            )}
         </div>
     )
 }
