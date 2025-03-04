@@ -65,7 +65,7 @@ export const sykInnApiService = {
             },
             responseSchema: ExistingSykmeldingSchema.array(),
         }),
-    getSykmeldingPdf: async (sykmeldingId: string): Promise<SykmeldingPdf | ApiFetchErrors> =>
+    getSykmeldingPdf: async (sykmeldingId: string, hpr: string): Promise<SykmeldingPdf | ApiFetchErrors> =>
         fetchInternalAPI({
             api: 'syk-inn-api',
             path: `/api/v1/sykmelding/${sykmeldingId}/pdf`,
@@ -73,6 +73,7 @@ export const sykInnApiService = {
             headers: {
                 'Content-Type': 'application/json',
                 sykmeldingId: sykmeldingId,
+                HPR: hpr,
             },
             responseSchema: SykmeldingPdfSchema,
         }),
