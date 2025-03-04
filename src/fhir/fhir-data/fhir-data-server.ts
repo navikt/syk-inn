@@ -2,10 +2,7 @@ import { decodeJwt } from 'jose'
 import { logger } from '@navikt/next-logger'
 
 import { getSession } from '@fhir/auth/session'
-import {
-    FhirDocumentReference,
-    FhirDocumentReferenceResponseSchema,
-} from '@fhir/fhir-data/schema/documentReference'
+import { FhirDocumentReference, FhirDocumentReferenceResponseSchema } from '@fhir/fhir-data/schema/documentReference'
 
 import { FhirPractitionerSchema } from '../fhir-data/schema/practitioner'
 import { getHpr } from '../fhir-data/schema/mappers/practitioner'
@@ -34,43 +31,42 @@ export const serverFhirResources = {
 
         const encounterId = currentSession.encounter
 
-        if (typeof practitionerId === 'string') {
-            const documentReference = getDocRefWithB64Data(practitionerId, patientId, encounterId, pdf)
-
-            const documentReferenceResponse = await fetch(`DocumentReference/`, {
-                method: 'POST',
-                body: JSON.stringify(documentReference),
-                headers: {
-                    Authorization: `Bearer ${currentSession.accessToken}`,
-                    ContentType: 'application/fhir+json',
-                },
-            })
-
-            if (!documentReferenceResponse.ok) {
-                logger.error('Request to create DocumentReference failed', documentReferenceResponse)
-                if (documentReferenceResponse.headers.get('Content-Type')?.includes('text/plain')) {
-                    const text = await documentReferenceResponse.text()
-                    logger.error(`Request to create DocumentReference failed with text: ${text}`)
-                } else if (documentReferenceResponse.headers.get('Content-Type')?.includes('application/json')) {
-                    const json = await documentReferenceResponse.json()
-                    logger.error(`Request to create DocumentReference failed with json: ${JSON.stringify(json)}`)
-                }
-
-                throw new Error('Unable to create DocumentReference')
-            }
-
-            const docRefResult = await documentReferenceResponse.json()
-            const parsedDocRefResult = FhirDocumentReferenceResponseSchema.safeParse(docRefResult)
-            if (!parsedDocRefResult.success) {
-                throw new Error('DocumentReference was not a valid FhirDocumentReference', {
-                    cause: parsedDocRefResult.error,
-                })
-            }
-
-            return parsedDocRefResult.data
-        } else {
+        if (typeof practitionerId !== 'string') {
             throw new Error('practitionerId is not string')
         }
+        const documentReference = getDocRefWithB64Data(practitionerId, patientId, encounterId, pdf)
+
+        const documentReferenceResponse = await fetch(`DocumentReference/`, {
+            method: 'POST',
+            body: JSON.stringify(documentReference),
+            headers: {
+                Authorization: `Bearer ${currentSession.accessToken}`,
+                ContentType: 'application/fhir+json',
+            },
+        })
+
+        if (!documentReferenceResponse.ok) {
+            logger.error('Request to create DocumentReference failed', documentReferenceResponse)
+            if (documentReferenceResponse.headers.get('Content-Type')?.includes('text/plain')) {
+                const text = await documentReferenceResponse.text()
+                logger.error(`Request to create DocumentReference failed with text: ${text}`)
+            } else if (documentReferenceResponse.headers.get('Content-Type')?.includes('application/json')) {
+                const json = await documentReferenceResponse.json()
+                logger.error(`Request to create DocumentReference failed with json: ${JSON.stringify(json)}`)
+            }
+
+            throw new Error('Unable to create DocumentReference')
+        }
+
+        const docRefResult = await documentReferenceResponse.json()
+        const parsedDocRefResult = FhirDocumentReferenceResponseSchema.safeParse(docRefResult)
+        if (!parsedDocRefResult.success) {
+            throw new Error('DocumentReference was not a valid FhirDocumentReference', {
+                cause: parsedDocRefResult.error,
+            })
+        }
+
+        return parsedDocRefResult.data
     },
 
     getBehandlerInfo: async (): Promise<BehandlerInfo> => {

@@ -41,62 +41,77 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
             {data && (
                 <div>
                     <SykmeldingKvittering sykmelding={data} />
-                    <WritebackStatus sykmelding={data} />
+                    <WritebackStatus sykmeldingId={data.sykmeldingId} />
                 </div>
             )}
         </div>
     )
 }
 
-function WritebackStatus({ sykmelding }: { sykmelding: ExistingSykmelding }): ReactElement {
+function WritebackStatus({ sykmeldingId }: Props): ReactElement {
     const dataService = useDataService()
 
     const { isLoading, data, error, refetch } = useQuery({
-        queryKey: ['sykmelding', sykmelding],
-        queryFn: async () => dataService.mutation.writeToEhr(sykmelding),
+        queryKey: ['sykmeldingId', sykmeldingId],
+        queryFn: async () => dataService.mutation.writeToEhr(sykmeldingId),
     })
 
-    return (
-        <div>
-            {isLoading && (
-                <div className="max-w-prose">
-                    <div className="my-4">
-                        <Skeleton variant="rectangle" height={62} />
-                    </div>
-                    <div className="flex flex-col gap-3">
-                        <Skeleton variant="rectangle" height={108} />
-                        <Skeleton variant="rectangle" height={132} />
-                        <Skeleton variant="rectangle" height={108} />
-                    </div>
-                    <div className="mt-4"></div>
+    if (isLoading) {
+        return (
+            <div className="max-w-prose">
+                <div className="my-4">
+                    <Skeleton variant="rectangle" height={62} />
                 </div>
-            )}
-            {error && (
-                <div className="max-w-prose">
-                    <div className="my-4">
-                        <Heading size="small" level="3">
-                            Kunne ikke skrive tilbake sykmeldingen
-                        </Heading>
-                    </div>
-
-                    <div className="mt-4">
-                        <Alert variant="error">Teknisk feilmelding: {error.message}</Alert>
-                    </div>
-
-                    <div className="mt-4">
-                        <Button variant="secondary-neutral" onClick={() => refetch()}>
-                            Prøv å skrive sykmeldingen på nytt
-                        </Button>
-                    </div>
+                <div className="flex flex-col gap-3">
+                    <Skeleton variant="rectangle" height={108} />
+                    <Skeleton variant="rectangle" height={132} />
+                    <Skeleton variant="rectangle" height={108} />
                 </div>
-            )}
-            {data && (
+                <div className="mt-4"></div>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="max-w-prose">
                 <div className="my-4">
                     <Heading size="small" level="3">
-                        Sykmelding med id: {data?.id} er skrevet til EPJ systemet
+                        Kunne ikke skrive sykmeldingen til EPJ-systemet.
                     </Heading>
                 </div>
-            )}
+
+                <div className="mt-4">
+                    <Alert variant="error">Teknisk feilmelding: {error.message}</Alert>
+                </div>
+
+                <div className="mt-4">
+                    <Button variant="secondary-neutral" onClick={() => refetch()}>
+                        Prøv å skrive til EPJ på nytt
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+
+    if (!data || !data.id) {
+        return (
+            <div className="mt-4">
+                <Alert variant="warning">Data er ikke tilgjengelig ennå. Vennligst prøv igjen senere.</Alert>
+                <div className="mt-4">
+                    <Button variant="secondary-neutral" onClick={() => refetch()}>
+                        Prøv igjen
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div className="my-4">
+            <Heading size="small" level="3">
+                Sykmelding er skrevet til EPJ-systemet og lagret på DokumentReferanse: ${data.id}
+            </Heading>
         </div>
     )
 }
