@@ -21,7 +21,12 @@ export async function POST(request: Request): Promise<Response | DocRefResponseR
         return new Response('Missing sykmeldingId header', { status: 400 })
     }
 
-    const sykmeldingPdf = await sykInnApiService.getSykmeldingPdf(sykmeldingId)
+    const hpr = request.headers.get('HPR')
+    if (hpr == null) {
+        return new Response('Missing HPR header', { status: 400 })
+    }
+
+    const sykmeldingPdf = await sykInnApiService.getSykmeldingPdf(sykmeldingId, hpr)
     if ('errorType' in sykmeldingPdf) {
         return new Response('Failed to retrieve sykmelding pdf', { status: 500 })
     }
