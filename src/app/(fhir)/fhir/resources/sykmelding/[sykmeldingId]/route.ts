@@ -52,6 +52,5 @@ function handleMockedRoute(): Response {
             code: 'L73',
             text: 'Brudd legg/ankel',
         },
-        pdf: 'asdasdda',
     } satisfies ExistingSykmelding)
 }

@@ -1,7 +1,5 @@
 import {
     ExistingSykmelding,
-    ExistingSykmeldinger,
-    ExistingSykmeldingerSchema,
     ExistingSykmeldingSchema,
     NySykmelding,
     NySykmeldingSchema,
@@ -54,7 +52,7 @@ export const sykInnApiService = {
             },
             responseSchema: ExistingSykmeldingSchema,
         }),
-    getTidligereSykmeldinger: async (ident: string): Promise<ExistingSykmeldinger[] | ApiFetchErrors> =>
+    getTidligereSykmeldinger: async (ident: string): Promise<ExistingSykmelding[] | ApiFetchErrors> =>
         fetchInternalAPI({
             api: 'syk-inn-api',
             path: `/api/v1/sykmelding`,
@@ -63,6 +61,6 @@ export const sykInnApiService = {
                 'Content-Type': 'application/json',
                 Ident: ident,
             },
-            responseSchema: ExistingSykmeldingerSchema.array(),
+            responseSchema: ExistingSykmeldingSchema.array(),
         }),
 }

@@ -2,7 +2,7 @@ import { logger } from '@navikt/next-logger'
 
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
-import { ExistingSykmeldinger } from '@services/syk-inn-api/SykInnApiSchema'
+import { ExistingSykmelding } from '@services/syk-inn-api/SykInnApiSchema'
 import { ensureValidFhirAuth } from '@fhir/auth/verify'
 
 export async function GET(request: Request): Promise<Response> {
@@ -29,7 +29,7 @@ export async function GET(request: Request): Promise<Response> {
         return new Response('Failed to retrieve sykmeldinger', { status: 500 })
     }
 
-    return Response.json(sykmeldinger satisfies ExistingSykmeldinger[], { status: 200 })
+    return Response.json(sykmeldinger satisfies ExistingSykmelding[], { status: 200 })
 }
 
 function handleMockedRoute(): Response {
@@ -83,5 +83,5 @@ function handleMockedRoute(): Response {
                 text: 'Brudd legg/ankel',
             },
         },
-    ] satisfies ExistingSykmeldinger[])
+    ] satisfies ExistingSykmelding[])
 }
