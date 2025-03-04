@@ -7,6 +7,7 @@ import {
 } from '@fhir/fhir-data/schema/documentReference'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { serverFhirResources } from '@fhir/fhir-data/fhir-data-server'
+import { isE2E, isLocalOrDemo } from '@utils/env'
 
 type DocRefResponseResult = FhirDocumentReferenceResponse | [{ errors: { message: string } }]
 
@@ -19,6 +20,12 @@ export async function POST(request: Request): Promise<Response | DocRefResponseR
     const sykmeldingId = request.headers.get('sykmeldingId')
     if (sykmeldingId == null) {
         return new Response('Missing sykmeldingId header', { status: 400 })
+    }
+
+    if (isLocalOrDemo || isE2E) {
+        logger.warn('Is in demo, local or e2e, returning mocked sykmelding data')
+
+        return handleMockedRoute()
     }
 
     const sykmeldingPdf = await sykInnApiService.getSykmeldingPdf(sykmeldingId)
@@ -46,7 +53,7 @@ export async function POST(request: Request): Promise<Response | DocRefResponseR
     }
 
     // create document reference as it didn't exist
-    const createdDocRef = await serverFhirResources.createDocumentReference(sykmeldingPdf.pdf)
+    const createdDocRef = await serverFhirResources.createDocumentReference(sykmeldingPdf.dokument, sykmeldingPdf.title)
     if ('errorType' in createdDocRef) {
         logger.error(`Failed to create DocumentReference: ${JSON.stringify(createdDocRef, null, 2)}`)
 
@@ -71,4 +78,15 @@ export async function POST(request: Request): Promise<Response | DocRefResponseR
     }
 
     return Response.json(verifiedCreatedDocRef.data satisfies DocRefResponseResult)
+}
+
+function handleMockedRoute(): Response {
+    return Response.json({
+        resourceType: 'DocumentReference',
+        id: 'aa66036d-b63c-4c5a-b3d5-b1d1f812da8d',
+        meta: {
+            versionId: '1',
+            lastUpdated: '2025-03-04T03:21:36.880-05:00',
+        },
+    })
 }

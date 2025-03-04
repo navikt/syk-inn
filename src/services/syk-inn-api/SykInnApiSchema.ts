@@ -65,5 +65,6 @@ export const NySykmeldingSchema = z.object({
 
 export type SykmeldingPdf = z.infer<typeof SykmeldingPdfSchema>
 export const SykmeldingPdfSchema = z.object({
-    pdf: z.string(),
+    dokument: z.string(),
+    title: z.string(),
 })
