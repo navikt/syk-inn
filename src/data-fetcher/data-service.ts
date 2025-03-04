@@ -34,7 +34,7 @@ export type DataService = {
     }
     mutation: {
         sendSykmelding: (sykmelding: unknown) => Promise<NySykmelding>
-        writeToEhr: (sykmelding: unknown) => Promise<DocumentReferenceResponse>
+        writeToEhr: (sykmeldingId: string) => Promise<DocumentReferenceResponse>
     }
 }
 
