@@ -1,5 +1,3 @@
-import { SubmitSykmeldingFormValues } from '@services/syk-inn-api/SykInnApiSchema'
-
 export type NotAvailable = typeof NotAvailable
 export const NotAvailable = {
     type: 'resource-not-available',
@@ -36,6 +34,7 @@ export type DataService = {
     }
     mutation: {
         sendSykmelding: (sykmelding: SubmitSykmeldingFormValues) => Promise<NySykmelding>
+        writeToEhr: (sykmelding: unknown) => Promise<DocumentReferenceResponse>
     }
 }
 
@@ -125,6 +124,14 @@ export type ExistingSykmelding = {
     }
 }
 
+export type DocumentReferenceResponse = {
+    resourceType: string
+    id: string
+    meta: {
+        versionId: string
+        lastUpdated: string
+    }
+}
 /**
  * Type guard to check if a resource (i.e. a data service function) is available or not. Used to conditionally render
  * the form based on whether the data is configured to be available.
