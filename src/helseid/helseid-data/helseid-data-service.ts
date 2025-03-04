@@ -22,6 +22,9 @@ export function createHelseIdDataService(behandler: BehandlerInfo): DataService 
             sendSykmelding: async () => {
                 raise('Standalone is not supported in Pilot')
             },
+            writeToEhr: async () => {
+                raise('Standalone is not supported in Pilot')
+            },
         },
     } satisfies DataService
 }
