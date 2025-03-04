@@ -7,14 +7,14 @@ import { FhirDocumentReference, FhirDocumentReferenceResponseSchema } from '@fhi
 import { FhirPractitionerSchema } from '../fhir-data/schema/practitioner'
 import { getHpr } from '../fhir-data/schema/mappers/practitioner'
 import { getName } from '../fhir-data/schema/mappers/patient'
-import { BehandlerInfo } from '../../data-fetcher/data-service'
+import { BehandlerInfo, DocumentReferenceResponse } from '../../data-fetcher/data-service'
 
 /**
  * These FHIR resources are only available in the server runtime. They are not proxied through the backend.
  * They will use the session store and fetch resources directly from the FHIR server.
  */
 export const serverFhirResources = {
-    createDocumentReference: async (pdf: string) => {
+    createDocumentReference: async (pdf: string): Promise<DocumentReferenceResponse> => {
         const currentSession = await getSession()
         if (currentSession == null) {
             throw new Error('Active session is required')
@@ -67,6 +67,44 @@ export const serverFhirResources = {
         }
 
         return parsedDocRefResult.data
+    },
+
+    getDocumentReference: async (sykmeldingId: string): Promise<DocumentReferenceResponse> => {
+        const currentSession = await getSession()
+        if (currentSession == null) {
+            throw new Error('Active session is required')
+        }
+
+        const documentReferenceResponse = await fetch(`DocumentReference/${sykmeldingId}`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${currentSession.accessToken}`,
+                ContentType: 'application/fhir+json',
+            },
+        })
+
+        if (!documentReferenceResponse.ok) {
+            logger.error('Request to get DocumentReference failed', documentReferenceResponse)
+            if (documentReferenceResponse.headers.get('Content-Type')?.includes('text/plain')) {
+                const text = await documentReferenceResponse.text()
+                logger.error(`Request to get DocumentReference failed with text: ${text}`)
+            } else if (documentReferenceResponse.headers.get('Content-Type')?.includes('application/json')) {
+                const json = await documentReferenceResponse.json()
+                logger.error(`Request to get DocumentReference failed with json: ${JSON.stringify(json)}`)
+            }
+
+            throw new Error('Unable to get DocumentReference')
+        }
+
+        const safeParsedDocumentReferenceResponse = FhirDocumentReferenceResponseSchema.safeParse(
+            await documentReferenceResponse.json(),
+        )
+        if (!safeParsedDocumentReferenceResponse.success) {
+            throw new Error('DocumentReference was not a valid FhirDocumentReference', {
+                cause: safeParsedDocumentReferenceResponse.error,
+            })
+        }
+        return safeParsedDocumentReferenceResponse.data
     },
 
     getBehandlerInfo: async (): Promise<BehandlerInfo> => {

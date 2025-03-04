@@ -3,6 +3,8 @@ import {
     ExistingSykmeldingSchema,
     NySykmelding,
     NySykmeldingSchema,
+    SykmeldingPdf,
+    SykmeldingPdfSchema,
 } from '@services/syk-inn-api/SykInnApiSchema'
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
 
@@ -62,5 +64,16 @@ export const sykInnApiService = {
                 Ident: ident,
             },
             responseSchema: ExistingSykmeldingSchema.array(),
+        }),
+    getSykmeldingPdf: async (sykmeldingId: string): Promise<SykmeldingPdf | ApiFetchErrors> =>
+        fetchInternalAPI({
+            api: 'syk-inn-api',
+            path: `/api/v1/sykmelding/${sykmeldingId}/pdf`,
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                sykmeldingId: sykmeldingId,
+            },
+            responseSchema: SykmeldingPdfSchema,
         }),
 }
