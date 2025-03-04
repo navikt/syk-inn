@@ -35,7 +35,8 @@ export const serverFhirResources = {
         }
         const documentReference = prepareDocRefWithB64Data(practitionerId, patientId, encounterId, pdf, title)
 
-        const documentReferenceResponse = await fetch(`DocumentReference/`, {
+        const resourcePath = `${currentSession.issuer}/DocumentReference/`
+        const documentReferenceResponse = await fetch(resourcePath, {
             method: 'POST',
             body: JSON.stringify(documentReference),
             headers: {
@@ -73,8 +74,10 @@ export const serverFhirResources = {
         if (currentSession == null) {
             throw new Error('Active session is required')
         }
-
-        const documentReferenceResponse = await fetch(`DocumentReference/${sykmeldingId}`, {
+        // her kan vi bruke mocken. currentSession er meg sjølv.
+        // shit , ta med resten av url
+        const resourcePath = `${currentSession.issuer}/DocumentReference/${sykmeldingId}`
+        const documentReferenceResponse = await fetch(resourcePath, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${currentSession.accessToken}`,

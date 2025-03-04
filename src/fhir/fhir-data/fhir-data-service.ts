@@ -19,7 +19,7 @@ export function createFhirDataService(behandler: BehandlerInfo): DataService {
         },
         mutation: {
             sendSykmelding: (sykmelding) => nonFhirResources.sendSykmelding(sykmelding, behandler.hpr),
-            writeToEhr: (sykmelding) => nonFhirResources.writeToEhr(sykmelding),
+            writeToEhr: (sykmeldingId) => nonFhirResources.writeToEhr(sykmeldingId),
         },
     }
 }
