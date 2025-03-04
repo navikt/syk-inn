@@ -77,6 +77,7 @@ export const serverFhirResources = {
         // her kan vi bruke mocken. currentSession er meg sjølv.
         // shit , ta med resten av url
         const resourcePath = `${currentSession.issuer}/DocumentReference/${sykmeldingId}`
+        logger.info(`Resource path: ${resourcePath}`)
         const documentReferenceResponse = await fetch(resourcePath, {
             method: 'GET',
             headers: {

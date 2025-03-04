@@ -72,14 +72,3 @@ export async function POST(request: Request): Promise<Response | DocRefResponseR
 
     return Response.json(verifiedCreatedDocRef.data satisfies DocRefResponseResult)
 }
-
-// function handleMockedRoute(): Response {
-//     return Response.json({
-//         resourceType: 'DocumentReference',
-//         id: 'aa66036d-b63c-4c5a-b3d5-b1d1f812da8d',
-//         meta: {
-//             versionId: '1',
-//             lastUpdated: '2025-03-04T03:21:36.880-05:00',
-//         },
-//     })
-// }
