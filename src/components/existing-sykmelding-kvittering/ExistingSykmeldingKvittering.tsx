@@ -23,11 +23,15 @@ import { toReadableDatePeriod } from '@utils/date'
 import { useDataService } from '../../data-fetcher/data-provider'
 import { ExistingSykmelding } from '../../data-fetcher/data-service'
 
-type Props = {
+type ExistingSykmeldingKvitteringProps = {
     sykmeldingId: string
 }
 
-function ExistingSykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
+type WritebackStatusProps = {
+    sykmeldingId: string
+}
+
+function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitteringProps): ReactElement {
     const dataService = useDataService()
     const { isLoading, data, error, refetch } = useQuery({
         queryKey: ['sykmelding', sykmeldingId],
@@ -48,7 +52,7 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
     )
 }
 
-function WritebackStatus({ sykmeldingId }: Props): ReactElement {
+function WritebackStatus({ sykmeldingId }: WritebackStatusProps): ReactElement {
     const dataService = useDataService()
 
     const { isLoading, data, error, refetch } = useQuery({
