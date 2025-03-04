@@ -87,7 +87,7 @@ function WritebackStatus({ sykmeldingId }: Props): ReactElement {
 
                 <div className="mt-4">
                     <Button variant="secondary-neutral" onClick={() => refetch()}>
-                        Prøv å skrive til EPJ på nytt
+                        Prøv igjen
                     </Button>
                 </div>
             </div>

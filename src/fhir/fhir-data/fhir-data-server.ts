@@ -14,7 +14,7 @@ import { BehandlerInfo, DocumentReferenceResponse } from '../../data-fetcher/dat
  * They will use the session store and fetch resources directly from the FHIR server.
  */
 export const serverFhirResources = {
-    createDocumentReference: async (pdf: string): Promise<DocumentReferenceResponse> => {
+    createDocumentReference: async (pdf: string, title: string): Promise<DocumentReferenceResponse> => {
         const currentSession = await getSession()
         if (currentSession == null) {
             throw new Error('Active session is required')
@@ -28,13 +28,12 @@ export const serverFhirResources = {
             : decodedIdToken.fhirUser
 
         const patientId = currentSession.patient
-
         const encounterId = currentSession.encounter
 
         if (typeof practitionerId !== 'string') {
             throw new Error('practitionerId is not string')
         }
-        const documentReference = getDocRefWithB64Data(practitionerId, patientId, encounterId, pdf)
+        const documentReference = prepareDocRefWithB64Data(practitionerId, patientId, encounterId, pdf, title)
 
         const documentReferenceResponse = await fetch(`DocumentReference/`, {
             method: 'POST',
@@ -164,11 +163,12 @@ export const serverFhirResources = {
     },
 }
 
-function getDocRefWithB64Data(
+function prepareDocRefWithB64Data(
     patientId: string,
     practitionerId: string,
     encounterId: string,
     pdf: string,
+    title: string,
 ): FhirDocumentReference {
     return {
         resourceType: 'DocumentReference',
@@ -190,11 +190,11 @@ function getDocRefWithB64Data(
                 reference: `Practitioner/${practitionerId}`,
             },
         ],
-        description: 'My cool document description with a b64 data',
+        description: 'Sykmelding PDF lagret som b64 enkodet data med tittel ${title}',
         content: [
             {
                 attachment: {
-                    title: 'My cool sykmelding document',
+                    title: title,
                     language: 'NO-nb',
                     contentType: 'application/pdf',
                     data: pdf,
