@@ -5,9 +5,7 @@ import { fhirResources } from '@fhir/fhir-data/fhir-data'
 import { ExistingSykmeldingSchema, NySykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
 import { PdlPersonSchema } from '@services/pdl/PdlApiSchema'
 import { getFnrIdent } from '@services/pdl/PdlApiUtils'
-import {
-    FhirDocumentReferenceResponseSchema,
-} from "@fhir/fhir-data/schema/documentReference";
+import { FhirDocumentReferenceResponseSchema } from '@fhir/fhir-data/schema/documentReference'
 
 /**
  * These are resources that are not FHIR resources, but are available in the browser runtime and proxied
