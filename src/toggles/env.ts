@@ -2,8 +2,6 @@
 
 import { IToggle } from '@unleash/nextjs'
 
-import { bundledEnv } from '@utils/env'
-
 import { ExpectedToggles } from './toggles'
 
 const on: Omit<IToggle, 'name'> = {
@@ -33,13 +31,4 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
     },
 }
 
-export function localDevelopmentToggles(): IToggle[] {
-    return Object.values(devToggles)
-}
-
-export function getUnleashEnvironment(): 'development' | 'production' {
-    if (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'prod-gcp') {
-        return 'production'
-    }
-    return 'development'
-}
+export const localDevelopmentToggles: IToggle[] = Object.values(devToggles)

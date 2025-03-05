@@ -9,6 +9,8 @@ import { DataService } from '../data-fetcher/data-service'
 
 import { DevToolItem } from './InternalDevToolItem'
 import { useAPIOverride } from './useAPIOverride'
+import { useFeatureToggleOverride } from './useFeatureToggleOverride'
+import { togglesChangedAction } from './InternalDevToolsAction'
 
 type Props = { onClose: () => void }
 
@@ -28,10 +30,51 @@ export function InternalDevToolsPanel({ onClose }: Props): ReactElement {
                 Collection of actions and utilities used for local development only.
             </BodyShort>
             <div className="grid grid-cols-1 gap-6 mt-6">
+                <FeatureToggles />
                 <ToggleAPIFailures />
                 <ResetSmartContext />
             </div>
         </div>
+    )
+}
+
+function FeatureToggles(): ReactElement {
+    const { toggles, toggledToggles, setToggledToggles, resetOverrides } = useFeatureToggleOverride()
+
+    return (
+        <DevToolItem title="Feature toggles" description="Overwrite feature toggles">
+            <CheckboxGroup
+                legend="Enabled toggles"
+                value={toggledToggles}
+                size="small"
+                onChange={(values) => {
+                    setToggledToggles(values)
+                }}
+            >
+                {toggles.map((toggle) => (
+                    <Checkbox key={toggle.name} value={toggle.name}>
+                        {toggle.name}
+                    </Checkbox>
+                ))}
+            </CheckboxGroup>
+
+            <div className="mt-4 flex gap-3">
+                <Button variant="secondary-neutral" size="small" onClick={resetOverrides}>
+                    Clear all overrides
+                </Button>
+                <Button
+                    variant="secondary-neutral"
+                    size="small"
+                    onClick={() => {
+                        startTransition(async () => {
+                            await togglesChangedAction()
+                        })
+                    }}
+                >
+                    Apply changed toggles
+                </Button>
+            </div>
+        </DevToolItem>
     )
 }
 

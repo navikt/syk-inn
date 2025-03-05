@@ -5,14 +5,16 @@ import { cookies } from 'next/headers'
 import NodeCache from 'node-cache'
 import { connection } from 'next/server'
 
-import { isE2E, isLocalOrDemo } from '@utils/env'
+import { bundledEnv, isE2E, isLocalOrDemo } from '@utils/env'
 import { raise } from '@utils/ts'
 
-import { getUnleashEnvironment, localDevelopmentToggles } from './env'
+import { localDevelopmentToggles } from './env'
 import { EXPECTED_TOGGLES, ExpectedToggles, Toggle, Toggles } from './toggles'
 import { UNLEASH_COOKIE_NAME } from './cookie'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[UNLEASH-TOGGLES] ' })
+
+const unleashEnvironment = bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'prod-gcp' ? 'production' : 'development'
 
 export async function getToggles(): Promise<Toggles> {
     await connection()
@@ -23,11 +25,15 @@ export async function getToggles(): Promise<Toggles> {
     }
 
     if (isLocalOrDemo || isE2E) {
-        const devToggles = localDevelopmentToggles()
         logger.warn(
-            `Running in local or demo mode, falling back to development toggles, current toggles: \n${devToggles.map((it) => `\t${it.name}: ${it.enabled}`).join('\n')}`,
+            `Running in local or demo mode, falling back to development toggles, current toggles: \n${localDevelopmentToggles.map((it) => `\t${it.name}: ${it.enabled}`).join('\n')}`,
         )
-        return devToggles
+
+        const cookieStore = await cookies()
+        return localDevelopmentToggles.map((it) => ({
+            ...it,
+            enabled: cookieStore.get(it.name)?.value.includes('true') ?? it.enabled,
+        }))
     }
 
     try {
@@ -35,7 +41,7 @@ export async function getToggles(): Promise<Toggles> {
         const definitions = await getAndValidateDefinitions()
         const evaluatedFlags = evaluateFlags(definitions, {
             sessionId,
-            environment: getUnleashEnvironment(),
+            environment: unleashEnvironment,
         })
         return evaluatedFlags.toggles
     } catch (e) {
