@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactElement, useEffect, useMemo } from 'react'
 import { DefaultValues, useForm } from 'react-hook-form'
-import { BodyShort, Skeleton } from '@navikt/ds-react'
+import { BodyShort, Heading, Skeleton } from '@navikt/ds-react'
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 
 import { DiagnoseSuggestion } from '@components/ny-sykmelding-form/diagnose/combobox/DiagnoseCombobox'
@@ -68,7 +68,10 @@ function DiagnoseSectionWithData({
     }, [defaultValues.hoved])
 
     return (
-        <div>
+        <section aria-labelledby="diagnose-section-heading">
+            <Heading level="3" size="small" id="diagnose-section-heading">
+                Diagnose
+            </Heading>
             <form
                 onSubmit={form.handleSubmit((values) => {
                     dispatch(
@@ -84,7 +87,7 @@ function DiagnoseSectionWithData({
                 {children}
                 <StepNavigation previous={2} />
             </form>
-        </div>
+        </section>
     )
 }
 
