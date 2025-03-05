@@ -5,7 +5,7 @@ import { cookies } from 'next/headers'
 import NodeCache from 'node-cache'
 import { connection } from 'next/server'
 
-import { isLocalOrDemo } from '@utils/env'
+import { isE2E, isLocalOrDemo } from '@utils/env'
 import { raise } from '@utils/ts'
 
 import { getUnleashEnvironment, localDevelopmentToggles } from './env'
@@ -22,7 +22,7 @@ export async function getToggles(): Promise<Toggles> {
         return []
     }
 
-    if (isLocalOrDemo) {
+    if (isLocalOrDemo || isE2E) {
         const devToggles = localDevelopmentToggles()
         logger.warn(
             `Running in local or demo mode, falling back to development toggles, current toggles: \n${devToggles.map((it) => `\t${it.name}: ${it.enabled}`).join('\n')}`,

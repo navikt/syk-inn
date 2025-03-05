@@ -29,7 +29,7 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
     },
     SYK_INN_MULTISTEP_FORM_V1: {
         name: 'SYK_INN_MULTISTEP_FORM_V1',
-        ...on,
+        ...off,
     },
 }
 
