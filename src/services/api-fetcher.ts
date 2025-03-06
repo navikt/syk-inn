@@ -23,7 +23,13 @@ export type ApiFetchErrors<AdditionalErrors extends string = never> = {
     errorType: ErrorTypes | AdditionalErrors
 }
 
-type FetchInternalAPIOptionsWithSchema<T extends z.ZodType, AdditionalErrors> = {
+type NonZodResponses = {
+    ArrayBuffer: ArrayBuffer
+}
+
+type ValidNonZodResponses = keyof NonZodResponses
+
+type FetchInternalAPIOptionsWithSchema<T extends z.ZodType | ValidNonZodResponses, AdditionalErrors> = {
     api: keyof typeof internalApis
     path: `/${string}`
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD'
@@ -33,7 +39,15 @@ type FetchInternalAPIOptionsWithSchema<T extends z.ZodType, AdditionalErrors> = 
     onApiError?: (response: Response) => AdditionalErrors | undefined
 }
 
-export async function fetchInternalAPI<Schema extends z.ZodType, AdditionalErrors extends string = never>({
+export async function fetchInternalAPI<
+    Schema extends z.ZodType | ValidNonZodResponses,
+    AdditionalErrors extends string = never,
+    InferredReturnValue = Schema extends z.ZodType
+        ? z.infer<Schema>
+        : Schema extends ValidNonZodResponses
+          ? NonZodResponses[Schema]
+          : never,
+>({
     api,
     path,
     headers,
@@ -42,7 +56,7 @@ export async function fetchInternalAPI<Schema extends z.ZodType, AdditionalError
     responseSchema,
     onApiError,
 }: FetchInternalAPIOptionsWithSchema<Schema, AdditionalErrors>): Promise<
-    z.infer<Schema> | ApiFetchErrors<AdditionalErrors>
+    InferredReturnValue | ApiFetchErrors<AdditionalErrors>
 > {
     const apiConfig = internalApis[api]
     const scope = `api://dev-gcp.${apiConfig.namespace}.${api}/.default`
@@ -66,15 +80,22 @@ export async function fetchInternalAPI<Schema extends z.ZodType, AdditionalError
     })
 
     if (!response.ok) {
-        const additionalError = onApiError?.(response)
+        const additionalError: AdditionalErrors | undefined = onApiError?.(response)
         if (additionalError) {
-            return additionalError
+            return { errorType: additionalError }
         }
 
         const responseBody = await getFailedResponseBody(response)
         logger.error(`Unable to fetch ${path} (${response.status} ${response.statusText}), details: ${responseBody}`)
 
         return { errorType: 'API_CALL_FAILED' }
+    }
+
+    const isPdfResponse: boolean = response.headers.get('Content-Type')?.includes('application/pdf') ?? false
+    if (typeof responseSchema === 'string' && responseSchema === 'ArrayBuffer') {
+        return (await response.arrayBuffer()) as InferredReturnValue
+    } else if (isPdfResponse && responseSchema !== 'ArrayBuffer') {
+        raise(`Got PDF but expected response was not ArrayBuffer, for ${api}${path}, whats up?`)
     }
 
     const isJsonResponse: boolean = response.headers.get('Content-Type')?.includes('application/json') ?? false
