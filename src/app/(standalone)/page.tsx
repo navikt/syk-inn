@@ -1,14 +1,12 @@
 import { BodyShort, Detail, Heading } from '@navikt/ds-react'
 import { VirusIcon } from '@navikt/aksel-icons'
-import { ReactElement, Suspense } from 'react'
+import { ReactElement } from 'react'
 import { notFound } from 'next/navigation'
 import { PageBlock } from '@navikt/ds-react/Page'
 
 import { bundledEnv, isLocalOrDemo } from '@utils/env'
 
 import ScenarioLinks from '../../devtools/ScenarioLinks'
-import { getHelseIdWellKnown } from '../../helseid/helseid-resources'
-import { getHelseIdUserInfo } from '../../helseid/helseid-userinfo'
 
 export default function Home(): ReactElement {
     if (!isLocalOrDemo) {
@@ -26,6 +24,7 @@ export default function Home(): ReactElement {
                     </div>
                 </Heading>
 
+                <ScenarioLinks />
                 <div className="border border-border-subtle p-3 rounded-sm mt-2">
                     <Heading size="small" className="-mt-7 bg-white w-fit px-2 py-0">
                         Metadata
@@ -33,29 +32,11 @@ export default function Home(): ReactElement {
                     <BodyShort size="small" className="mt-2">
                         Runtime environment: <span className="font-bold">{bundledEnv.NEXT_PUBLIC_RUNTIME_ENV}</span>
                     </BodyShort>
-                    <Suspense fallback={<div>Loading user info...</div>}>
-                        <TestHelseIdUserInfo />
-                    </Suspense>
+                    <BodyShort size="small" className="mt-2">
+                        Basepath: <span className="font-bold">{bundledEnv.NEXT_PUBLIC_BASE_PATH || '/'}</span>
+                    </BodyShort>
                 </div>
-
-                <ScenarioLinks />
             </div>
         </PageBlock>
-    )
-}
-
-async function TestHelseIdUserInfo(): Promise<ReactElement> {
-    const wellKnown = await getHelseIdWellKnown()
-    const userInfo = await getHelseIdUserInfo()
-
-    return (
-        <>
-            <BodyShort size="small" className="mt-2">
-                User info endpoint: <span className="font-bold">{wellKnown.userinfo_endpoint}</span>
-            </BodyShort>
-            <BodyShort size="small" className="mt-2">
-                User info: <span className="font-bold">{JSON.stringify(userInfo)}</span>
-            </BodyShort>
-        </>
     )
 }
