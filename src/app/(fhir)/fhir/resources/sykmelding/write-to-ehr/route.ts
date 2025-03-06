@@ -18,18 +18,23 @@ export async function POST(request: Request): Promise<Response | DocRefResponseR
 
     const sykmeldingId = request.headers.get('sykmeldingId')
     if (sykmeldingId == null) {
+        logger.error('Missing sykmeldingId header')
         return new Response('Missing sykmeldingId header', { status: 400 })
     }
 
     const hpr = request.headers.get('HPR')
     if (hpr == null) {
+        logger.error('Missing HPR header')
         return new Response('Missing HPR header', { status: 400 })
     }
 
-    const sykmeldingPdf = await sykInnApiService.getSykmeldingPdf(sykmeldingId, hpr)
-    if ('errorType' in sykmeldingPdf) {
+    const sykmeldingPdfArrayBuffer = await sykInnApiService.getSykmeldingPdf(sykmeldingId, hpr)
+    if ('errorType' in sykmeldingPdfArrayBuffer) {
+        logger.error(`Failed to retrieve sykmelding pdf ${sykmeldingPdfArrayBuffer.errorType}`)
         return new Response('Failed to retrieve sykmelding pdf', { status: 500 })
     }
+
+    const sykmeldingBase64 = Buffer.from(sykmeldingPdfArrayBuffer).toString('base64')
 
     // check if document reference already exists
     const existingDocumentReference = await serverFhirResources.getDocumentReference(sykmeldingId)
@@ -51,7 +56,7 @@ export async function POST(request: Request): Promise<Response | DocRefResponseR
     }
 
     // create document reference as it didn't exist
-    const createdDocRef = await serverFhirResources.createDocumentReference(sykmeldingPdf.dokument, sykmeldingPdf.title)
+    const createdDocRef = await serverFhirResources.createDocumentReference(sykmeldingBase64, 'Sykmelding for Foo Bar') // TODO title
     if ('errorType' in createdDocRef) {
         logger.error(`Failed to create DocumentReference: ${JSON.stringify(createdDocRef, null, 2)}`)
 

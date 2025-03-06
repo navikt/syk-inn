@@ -1,12 +1,15 @@
+import { logger } from '@navikt/next-logger'
+
 import {
     ExistingSykmelding,
     ExistingSykmeldingSchema,
     NySykmelding,
     NySykmeldingSchema,
-    SykmeldingPdf,
-    SykmeldingPdfSchema,
 } from '@services/syk-inn-api/SykInnApiSchema'
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
+import { isE2E, isLocalOrDemo } from '@utils/env'
+
+import { pdf } from '../../app/api/mocks/fhir/(resources)/data/base64pdf'
 
 type NySykmeldingPayload = {
     pasientFnr: string
@@ -65,8 +68,19 @@ export const sykInnApiService = {
             },
             responseSchema: ExistingSykmeldingSchema.array(),
         }),
-    getSykmeldingPdf: async (sykmeldingId: string, hpr: string): Promise<SykmeldingPdf | ApiFetchErrors> =>
-        fetchInternalAPI({
+    getSykmeldingPdf: async (sykmeldingId: string, hpr: string): Promise<ArrayBuffer | ApiFetchErrors> => {
+        if (isLocalOrDemo || isE2E) {
+            logger.warn('Is in demo, local or e2e, returning mocked sykmelding data')
+
+            const response = new Response(Buffer.from(pdf), {
+                headers: { 'Content-Type': 'application/pdf' },
+                status: 200,
+            })
+
+            return await response.arrayBuffer()
+        }
+
+        return await fetchInternalAPI({
             api: 'syk-inn-api',
             path: `/api/v1/sykmelding/${sykmeldingId}/pdf`,
             method: 'GET',
@@ -75,6 +89,7 @@ export const sykInnApiService = {
                 sykmeldingId: sykmeldingId,
                 HPR: hpr,
             },
-            responseSchema: SykmeldingPdfSchema,
-        }),
+            responseSchema: 'ArrayBuffer',
+        })
+    },
 }

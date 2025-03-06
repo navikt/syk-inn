@@ -1,4 +1,4 @@
-import {SubmitSykmeldingFormValues} from "@services/syk-inn-api/SykInnApiSchema";
+import { SubmitSykmeldingFormValues } from '@services/syk-inn-api/SykInnApiSchema'
 
 export type NotAvailable = typeof NotAvailable
 export const NotAvailable = {

@@ -74,8 +74,6 @@ export const serverFhirResources = {
         if (currentSession == null) {
             throw new Error('Active session is required')
         }
-        // her kan vi bruke mocken. currentSession er meg sjølv.
-        // shit , ta med resten av url
         const resourcePath = `${currentSession.issuer}/DocumentReference/${sykmeldingId}`
         logger.info(`Resource path: ${resourcePath}`)
         const documentReferenceResponse = await fetch(resourcePath, {

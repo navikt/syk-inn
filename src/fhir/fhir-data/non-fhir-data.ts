@@ -70,11 +70,12 @@ export const nonFhirResources = {
         return NySykmeldingSchema.parse(result)
     },
 
-    writeToEhr: async (sykmeldingId: string) => {
+    writeToEhr: async (sykmeldingId: string, hpr: string) => {
         const result = await getSecuredResource(`/sykmelding/write-to-ehr`, {
             method: 'POST',
             headers: {
                 sykmeldingId: sykmeldingId,
+                HPR: hpr,
             },
         })
 
