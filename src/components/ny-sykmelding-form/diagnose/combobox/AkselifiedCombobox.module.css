@@ -4,7 +4,9 @@
     right: 0.5rem;
     height: 2rem;
     width: 2rem;
-    @apply p-0 flex justify-center items-center;
+    padding: 0;
+
+    @apply flex justify-center items-center;
 }
 
 .comboboxItem:hover {

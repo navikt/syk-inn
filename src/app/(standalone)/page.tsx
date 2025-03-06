@@ -26,7 +26,7 @@ export default function Home(): ReactElement {
                     </div>
                 </Heading>
 
-                <div className="border border-border-subtle p-3 rounded mt-2">
+                <div className="border border-border-subtle p-3 rounded-sm mt-2">
                     <Heading size="small" className="-mt-7 bg-white w-fit px-2 py-0">
                         Metadata
                     </Heading>
