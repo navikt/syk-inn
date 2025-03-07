@@ -1,10 +1,12 @@
 import { redirect } from 'next/navigation'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { logger as pinoLogger } from '@navikt/next-logger'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 import { CompleteSession, getSessionStore } from '@fhir/sessions/session-store'
 import { TokenResponseSchema } from '@fhir/sessions/session-schema'
+import serverSmart from '@navikt/fhirclient-next'
+import { getFhirSessionStorage } from '@fhir/fhirclient-session'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
 
@@ -14,10 +16,6 @@ const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
  */
 export async function GET(request: Request): Promise<Response> {
     const url = new URL(request.url)
-    /**
-     * PKCE STEP 4
-     * Authorization server stores the code_challenge and redirects the user back to the application with an authorization code, which is good for one use.
-     */
     const code = url.searchParams.get('code')
     const state = url.searchParams.get('state')
 
@@ -25,6 +23,8 @@ export async function GET(request: Request): Promise<Response> {
         logger.warn(`Missing code or state parameter in callback request code: ${code == null} state: ${state == null}`)
         redirect(pathWithBasePath('/fhir/invalid-code'))
     }
+
+    await serverSmart(await headers(), await getFhirSessionStorage()).ready({})
 
     const cookieStore = await cookies()
     const sessionId = cookieStore.get('syk-inn-session-id')?.value

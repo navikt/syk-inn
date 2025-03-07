@@ -6,6 +6,9 @@
     "engines": {
         "node": "22"
     },
+    "workspaces": [
+        "libs/*"
+    ],
     "scripts": {
         "dev": "./scripts/pre-dev.sh && next dev --turbo | pino-pretty",
         "dev:redis": "docker run --name syk-inn-dev-redis -p 6379:6379 -d redis",
@@ -27,6 +30,7 @@
         "@navikt/ds-css": "^7.17.0",
         "@navikt/ds-react": "^7.17.0",
         "@navikt/ds-tailwind": "^7.17.0",
+        "@navikt/fhirclient-next": "workspace:*",
         "@navikt/next-logger": "^2.0.0",
         "@navikt/oasis": "^3.7.0",
         "@redis/client": "^1.6.0",

@@ -16,3 +16,8 @@ export async function getSession(sessionId?: string): Promise<Session | null> {
     const store = await getSessionStore()
     return await store.getSession(session)
 }
+
+export async function getSessionId(): Promise<string | null> {
+    const cookieStore = await cookies()
+    return cookieStore.get('syk-inn-session-id')?.value ?? null
+}

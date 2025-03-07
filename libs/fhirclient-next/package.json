@@ -1,0 +1,14 @@
+{
+    "name": "@navikt/fhirclient-next",
+    "version": "1.0.0",
+    "exports": {
+        ".": "./src/next.ts"
+    },
+    "dependencies": {
+        "fhirclient": "^2.5.5"
+    },
+    "peerDependencies": {
+        "jose": "*",
+        "next": ">=14"
+    }
+}

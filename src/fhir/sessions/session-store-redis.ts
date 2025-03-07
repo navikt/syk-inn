@@ -1,36 +1,18 @@
-import * as R from 'remeda'
-import { createClient, RedisClientType } from '@redis/client'
 import { logger } from '@navikt/next-logger'
 
-import { raise } from '@utils/ts'
-import { getServerEnv } from '@utils/env'
+import { redisClient } from '../../valkey/redis-client'
 
 import { CompleteSession, InitialSession, Session, SessionId, SessionStore } from './session-store'
 
 export class SessionStoreRedis implements SessionStore {
-    private readonly client: RedisClientType
+    private readonly client: ReturnType<typeof redisClient>
 
     constructor() {
-        const redisConfig = getServerEnv().redisConfig ?? raise('Redis config is not set! :(')
-
-        this.client = createClient({
-            ...R.omit(redisConfig, ['runtimeEnv']),
-            socket: {
-                connectTimeout: 5000,
-                keepAlive: 5000,
-            },
-            pingInterval: 10 * 1000,
-        })
-
-        this.client.on('error', (err) => logger.error(err))
-        this.client.on('connect', () => logger.info('Redis Client Connected'))
-        this.client.on('ready', () => logger.info('Redis Client Ready'))
+        this.client = redisClient()
     }
 
     async setup(): Promise<void> {
-        if (this.client.isOpen) {
-            return
-        }
+        if (this.client.isOpen) return
 
         try {
             await this.client.connect()
