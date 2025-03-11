@@ -1,4 +1,5 @@
 import { SubmitSykmeldingFormValues } from '@services/syk-inn-api/SykInnApiSchema'
+import { FhirDocumentReferenceBase } from '@fhir/fhir-data/schema/documentReference'
 
 export type NotAvailable = typeof NotAvailable
 export const NotAvailable = {
@@ -36,7 +37,7 @@ export type DataService = {
     }
     mutation: {
         sendSykmelding: (sykmelding: SubmitSykmeldingFormValues) => Promise<NySykmelding>
-        writeToEhr: (sykmeldingId: string) => Promise<DocumentReferenceResponse>
+        writeToEhr: (sykmeldingId: string) => Promise<WriteToEhrResult>
     }
 }
 
@@ -126,14 +127,11 @@ export type ExistingSykmelding = {
     }
 }
 
-export type DocumentReferenceResponse = {
-    resourceType: string
-    id: string
-    meta: {
-        versionId: string
-        lastUpdated: string
-    }
+export type WriteToEhrResult = {
+    outcome: 'NEWLY_CREATED' | 'ALREADY_EXISTS'
+    documentReference: FhirDocumentReferenceBase
 }
+
 /**
  * Type guard to check if a resource (i.e. a data service function) is available or not. Used to conditionally render
  * the form based on whether the data is configured to be available.

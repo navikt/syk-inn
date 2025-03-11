@@ -5,7 +5,9 @@ import { fhirResources } from '@fhir/fhir-data/fhir-data'
 import { ExistingSykmeldingSchema, NySykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
 import { PdlPersonSchema } from '@services/pdl/PdlApiSchema'
 import { getFnrIdent } from '@services/pdl/PdlApiUtils'
-import { FhirDocumentReferenceResponseSchema } from '@fhir/fhir-data/schema/documentReference'
+import { FhirDocumentReferenceBaseSchema } from '@fhir/fhir-data/schema/documentReference'
+
+import { WriteToEhrResult } from '../../data-fetcher/data-service'
 
 /**
  * These are resources that are not FHIR resources, but are available in the browser runtime and proxied
@@ -69,8 +71,7 @@ export const nonFhirResources = {
         // TODO: Better error handling
         return NySykmeldingSchema.parse(result)
     },
-
-    writeToEhr: async (sykmeldingId: string, hpr: string) => {
+    writeToEhr: async (sykmeldingId: string, hpr: string): Promise<WriteToEhrResult> => {
         const result = await getSecuredResource(`/sykmelding/write-to-ehr`, {
             method: 'POST',
             headers: {
@@ -79,7 +80,10 @@ export const nonFhirResources = {
             },
         })
 
-        return FhirDocumentReferenceResponseSchema.parse(result)
+        const safeResult = FhirDocumentReferenceBaseSchema.parse(result)
+
+        // TODO: Better error handling
+        return { outcome: 'NEWLY_CREATED', documentReference: safeResult }
     },
 }
 

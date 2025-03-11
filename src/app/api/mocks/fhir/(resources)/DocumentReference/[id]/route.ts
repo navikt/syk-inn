@@ -1,15 +1,23 @@
 import { logger as pinoLogger } from '@navikt/next-logger'
 
-import { cleanPath } from '../../utils'
-
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK] ' })
 
-export async function GET(req: Request): Promise<Response> {
-    const url = new URL(req.url)
-    const fhirPath = cleanPath(url.pathname)
-    logger.info(`Incoming request: ${req.method} - ${fhirPath}`)
+const shouldReturn = false
+
+type RouteParams = {
+    params: Promise<{ id: string }>
+}
+
+export async function GET(_: Request, { params }: RouteParams): Promise<Response> {
+    const docRefId = (await params).id
+
+    logger.info(`Incoming request: GET DocumentReference/${docRefId}`)
 
     // verifyAuthed(req)
+    if (!shouldReturn) {
+        logger.info("Pretending document reference doesn't exist")
+        return new Response('Not found', { status: 404 })
+    }
 
     return mockedDocumentReference()
 }

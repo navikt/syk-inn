@@ -98,7 +98,7 @@ function WritebackStatus({ sykmeldingId }: WritebackStatusProps): ReactElement {
         )
     }
 
-    if (!data || !data.id) {
+    if (!data || !data.documentReference.id) {
         return (
             <div className="mt-4">
                 <Alert variant="warning">Data er ikke tilgjengelig ennå. Vennligst prøv igjen senere.</Alert>
@@ -114,7 +114,7 @@ function WritebackStatus({ sykmeldingId }: WritebackStatusProps): ReactElement {
     return (
         <div className="my-4">
             <Heading size="small" level="3">
-                Sykmelding er skrevet til EPJ-systemet og lagret på DokumentReferanse: ${data.id}
+                Sykmelding er lagret i EPJ-systemet på DokumentReferanse: ${data.documentReference.id}
             </Heading>
         </div>
     )

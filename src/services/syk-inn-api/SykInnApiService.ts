@@ -70,7 +70,7 @@ export const sykInnApiService = {
         }),
     getSykmeldingPdf: async (sykmeldingId: string, hpr: string): Promise<ArrayBuffer | ApiFetchErrors> => {
         if (isLocalOrDemo || isE2E) {
-            logger.warn('Is in demo, local or e2e, returning mocked sykmelding data')
+            logger.warn('Is in demo, local or e2e, returning mocked PDF')
 
             const response = new Response(Buffer.from(pdf), {
                 headers: { 'Content-Type': 'application/pdf' },

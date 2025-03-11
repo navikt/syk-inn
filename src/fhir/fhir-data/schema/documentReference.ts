@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-export type FhirDocumentReferenceResponse = z.infer<typeof FhirDocumentReferenceResponseSchema>
-export const FhirDocumentReferenceResponseSchema = z.object({
+export type FhirDocumentReferenceBase = z.infer<typeof FhirDocumentReferenceBaseSchema>
+export const FhirDocumentReferenceBaseSchema = z.object({
     resourceType: z.literal('DocumentReference'),
     id: z.string(),
     meta: z.object({
@@ -13,6 +13,7 @@ export const FhirDocumentReferenceResponseSchema = z.object({
 export type FhirDocumentReference = z.infer<typeof FhirDocumentReferenceSchema>
 export const FhirDocumentReferenceSchema = z.object({
     resourceType: z.literal('DocumentReference'),
+    id: z.string(),
     status: z.string(),
     type: z.object({
         coding: z.array(
@@ -22,6 +23,10 @@ export const FhirDocumentReferenceSchema = z.object({
                 display: z.string(),
             }),
         ),
+    }),
+    meta: z.object({
+        versionId: z.string(),
+        lastUpdated: z.string(),
     }),
     subject: z.object({ reference: z.string() }),
     author: z.array(

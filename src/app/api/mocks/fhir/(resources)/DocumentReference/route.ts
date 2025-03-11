@@ -12,10 +12,6 @@ export async function POST(req: Request): Promise<Response> {
 
     verifyAuthed(req)
 
-    if (req.method !== 'POST') {
-        return new Response('DocumentReference without a specific id parameter only supports POST')
-    }
-
     return mockedDocumentReference()
 }
 
