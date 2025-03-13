@@ -6,7 +6,7 @@ metadata:
   labels:
     team: tsm
 spec:
-  image: ghcr.io/nais/wonderwall:latest
+  image: europe-north1-docker.pkg.dev/nais-io/nais/images/wonderwall:latest
   redis:
     # Same redis as syk-inn, will be owned by syk-inn because it created it
     - instance: syk-inn
