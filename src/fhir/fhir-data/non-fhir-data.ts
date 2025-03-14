@@ -5,7 +5,6 @@ import { fhirResources } from '@fhir/fhir-data/fhir-data'
 import { ExistingSykmeldingSchema, NySykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
 import { PdlPersonSchema } from '@services/pdl/PdlApiSchema'
 import { getFnrIdent } from '@services/pdl/PdlApiUtils'
-import { FhirDocumentReferenceBaseSchema } from '@fhir/fhir-data/schema/documentReference'
 
 import { WriteToEhrResult } from '../../data-fetcher/data-service'
 
@@ -75,15 +74,13 @@ export const nonFhirResources = {
         const result = await getSecuredResource(`/sykmelding/write-to-ehr`, {
             method: 'POST',
             headers: {
-                sykmeldingId: sykmeldingId,
+                sykmeldingId: sykmeldingId, //TODO move to body
                 HPR: hpr,
             },
         })
 
-        const safeResult = FhirDocumentReferenceBaseSchema.parse(result)
-
         // TODO: Better error handling
-        return { outcome: 'NEWLY_CREATED', documentReference: safeResult }
+        return result as WriteToEhrResult // todo actually illegal
     },
 }
 

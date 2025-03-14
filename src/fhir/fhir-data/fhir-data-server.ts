@@ -3,12 +3,16 @@ import { logger } from '@navikt/next-logger'
 import { ZodIssue } from 'zod'
 
 import { getSession } from '@fhir/auth/session'
-import { FhirDocumentReference, FhirDocumentReferenceBaseSchema } from '@fhir/fhir-data/schema/documentReference'
+import {
+    FhirDocumentReference,
+    FhirDocumentReferenceBase,
+    FhirDocumentReferenceBaseSchema,
+} from '@fhir/fhir-data/schema/documentReference'
 
 import { FhirPractitionerSchema } from '../fhir-data/schema/practitioner'
 import { getHpr } from '../fhir-data/schema/mappers/practitioner'
 import { getName } from '../fhir-data/schema/mappers/patient'
-import { BehandlerInfo, WriteToEhrResult } from '../../data-fetcher/data-service'
+import { BehandlerInfo } from '../../data-fetcher/data-service'
 
 /**
  * These FHIR resources are only available in the server runtime. They are not proxied through the backend.
@@ -20,7 +24,7 @@ export const serverFhirResources = {
         title: string,
         sykmeldingId: string,
     ): Promise<
-        | WriteToEhrResult
+        | FhirDocumentReferenceBase
         | { errorType: 'INVALID_FHIR_RESPONSE'; zodErrors: ZodIssue[] }
         | { errorType: 'INVALID_PRACTITIONER_ID'; zodErrors: ZodIssue[] }
         | { errorType: 'INACTIVE_USER_SESSION'; zodErrors: ZodIssue[] }
@@ -81,13 +85,13 @@ export const serverFhirResources = {
             return { errorType: 'INVALID_FHIR_RESPONSE', zodErrors: [] }
         }
 
-        return { outcome: 'NEWLY_CREATED', documentReference: parsedDocRefResult.data }
+        return parsedDocRefResult.data
     },
 
     getDocumentReference: async (
         sykmeldingId: string,
     ): Promise<
-        | WriteToEhrResult
+        | FhirDocumentReferenceBase
         | { errorType: 'DOCUMENT_NOT_FOUND' }
         | { errorType: 'INVALID_FHIR_RESPONSE'; zodErrors: ZodIssue[] }
         | { errorType: 'INACTIVE_USER_SESSION'; zodErrors: ZodIssue[] }
@@ -134,7 +138,7 @@ export const serverFhirResources = {
             }
         }
 
-        return { outcome: 'ALREADY_EXISTS', documentReference: safeParsedDocumentReferenceResponse.data }
+        return safeParsedDocumentReferenceResponse.data
     },
 
     getBehandlerInfo: async (): Promise<BehandlerInfo> => {

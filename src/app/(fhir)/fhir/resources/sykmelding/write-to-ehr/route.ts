@@ -1,7 +1,6 @@
 import { logger } from '@navikt/next-logger'
 
 import { ensureValidFhirAuth } from '@fhir/auth/verify'
-import { FhirDocumentReferenceBaseSchema } from '@fhir/fhir-data/schema/documentReference'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { serverFhirResources } from '@fhir/fhir-data/fhir-data-server'
 
@@ -35,8 +34,11 @@ export async function POST(request: Request): Promise<Response> {
     const sykmeldingBase64 = Buffer.from(sykmeldingPdfArrayBuffer).toString('base64')
 
     const existingDocumentReference = await serverFhirResources.getDocumentReference(sykmeldingId)
-    if ('outcome' in existingDocumentReference) {
-        return Response.json(existingDocumentReference satisfies WriteToEhrResult)
+    if ('resourceType' in existingDocumentReference && existingDocumentReference.resourceType === 'DocumentReference') {
+        return Response.json({
+            outcome: 'ALREADY_EXISTS',
+            documentReference: existingDocumentReference,
+        } satisfies WriteToEhrResult)
     }
 
     if ('errorType' in existingDocumentReference && existingDocumentReference.errorType === 'INVALID_FHIR_RESPONSE') {
@@ -52,7 +54,7 @@ export async function POST(request: Request): Promise<Response> {
     // Doesn't already exist, and hasn't returned invalid FHIR response, we can try and create it
     const createdDocRef = await serverFhirResources.createDocumentReference(
         sykmeldingBase64,
-        'Sykmelding for Foo Bar',
+        'Sykmelding title goes here',
         sykmeldingId,
     ) // TODO title
     if ('errorType' in createdDocRef) {
@@ -62,17 +64,8 @@ export async function POST(request: Request): Promise<Response> {
         })
     }
 
-    const verifiedCreatedDocRef = FhirDocumentReferenceBaseSchema.safeParse(createdDocRef)
-    if (!verifiedCreatedDocRef.success) {
-        logger.error(`Invalid created DocumentReference: ${JSON.stringify(verifiedCreatedDocRef.error, null, 2)}`)
-
-        return Response.json({ errors: [verifiedCreatedDocRef.error] } satisfies WriteToEhrResponse, {
-            status: 400,
-        })
-    }
-
     return Response.json({
         outcome: 'NEWLY_CREATED',
-        documentReference: verifiedCreatedDocRef.data,
+        documentReference: createdDocRef,
     } satisfies WriteToEhrResult)
 }

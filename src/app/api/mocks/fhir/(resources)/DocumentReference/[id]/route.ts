@@ -13,7 +13,6 @@ export async function GET(_: Request, { params }: RouteParams): Promise<Response
 
     logger.info(`Incoming request: GET DocumentReference/${docRefId}`)
 
-    // verifyAuthed(req)
     if (!shouldReturn) {
         logger.info("Pretending document reference doesn't exist")
         return new Response('Not found', { status: 404 })
@@ -21,13 +20,6 @@ export async function GET(_: Request, { params }: RouteParams): Promise<Response
 
     return mockedDocumentReference()
 }
-
-// function verifyAuthed(req: Request): void {
-//     if (req.headers.get('Authorization') == null) {
-//         logger.warn('Mock resource was unauthed, 401ing >:(')
-//         unauthorized()
-//     }
-// }
 
 function mockedDocumentReference(): Response {
     return Response.json(
