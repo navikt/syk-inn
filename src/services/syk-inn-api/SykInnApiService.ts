@@ -86,7 +86,7 @@ export const sykInnApiService = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                sykmeldingId: sykmeldingId,
+                Accept: 'application/pdf',
                 HPR: hpr,
             },
             responseSchema: 'ArrayBuffer',

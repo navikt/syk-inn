@@ -52,7 +52,7 @@ export async function POST(request: Request): Promise<Response> {
     // Doesn't already exist, and hasn't returned invalid FHIR response, we can try and create it
     const createdDocRef = await serverFhirResources.createDocumentReference(
         sykmeldingBase64,
-        'Sykmelding for Foo Bar',
+        'Sykmelding title goes here',
         sykmeldingId,
     ) // TODO title
     if ('errorType' in createdDocRef) {
