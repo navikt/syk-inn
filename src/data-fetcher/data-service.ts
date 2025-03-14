@@ -1,4 +1,5 @@
 import { SubmitSykmeldingFormValues } from '@services/syk-inn-api/SykInnApiSchema'
+import { FhirDocumentReferenceBase } from '@fhir/fhir-data/schema/documentReference'
 
 export type NotAvailable = typeof NotAvailable
 export const NotAvailable = {
@@ -36,6 +37,7 @@ export type DataService = {
     }
     mutation: {
         sendSykmelding: (sykmelding: SubmitSykmeldingFormValues) => Promise<NySykmelding>
+        writeToEhr: (sykmeldingId: string) => Promise<WriteToEhrResult>
     }
 }
 
@@ -123,6 +125,11 @@ export type ExistingSykmelding = {
         code: string
         text: string
     }
+}
+
+export type WriteToEhrResult = {
+    outcome: 'NEWLY_CREATED' | 'ALREADY_EXISTS'
+    documentReference: FhirDocumentReferenceBase
 }
 
 /**
