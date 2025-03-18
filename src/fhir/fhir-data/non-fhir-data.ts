@@ -6,6 +6,8 @@ import { ExistingSykmeldingSchema, NySykmeldingSchema } from '@services/syk-inn-
 import { PdlPersonSchema } from '@services/pdl/PdlApiSchema'
 import { getFnrIdent } from '@services/pdl/PdlApiUtils'
 
+import { WriteToEhrResult } from '../../data-fetcher/data-service'
+
 /**
  * These are resources that are not FHIR resources, but are available in the browser runtime and proxied
  * through the backend. The schema is validated in the browser.
@@ -67,6 +69,18 @@ export const nonFhirResources = {
 
         // TODO: Better error handling
         return NySykmeldingSchema.parse(result)
+    },
+    writeToEhr: async (sykmeldingId: string, hpr: string): Promise<WriteToEhrResult> => {
+        const result = await getSecuredResource(`/sykmelding/write-to-ehr`, {
+            method: 'POST',
+            headers: {
+                sykmeldingId: sykmeldingId, //TODO move to body
+                HPR: hpr,
+            },
+        })
+
+        // TODO: Better error handling
+        return result as WriteToEhrResult // todo actually illegal
     },
 }
 

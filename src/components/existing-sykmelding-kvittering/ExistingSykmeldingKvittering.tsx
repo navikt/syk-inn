@@ -23,11 +23,15 @@ import { toReadableDatePeriod } from '@utils/date'
 import { useDataService } from '../../data-fetcher/data-provider'
 import { ExistingSykmelding } from '../../data-fetcher/data-service'
 
-type Props = {
+type ExistingSykmeldingKvitteringProps = {
     sykmeldingId: string
 }
 
-function ExistingSykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
+type WritebackStatusProps = {
+    sykmeldingId: string
+}
+
+function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitteringProps): ReactElement {
     const dataService = useDataService()
     const { isLoading, data, error, refetch } = useQuery({
         queryKey: ['sykmelding', sykmeldingId],
@@ -38,7 +42,80 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
         <div>
             {isLoading && <SykmeldingKvitteringSkeleton />}
             {error && <SykmeldingKvitteringError error={error} refetch={refetch} />}
-            {data && <SykmeldingKvittering sykmelding={data} />}
+            {data && (
+                <div>
+                    <SykmeldingKvittering sykmelding={data} />
+                    <WritebackStatus sykmeldingId={data.sykmeldingId} />
+                </div>
+            )}
+        </div>
+    )
+}
+
+function WritebackStatus({ sykmeldingId }: WritebackStatusProps): ReactElement {
+    const dataService = useDataService()
+
+    const { isLoading, data, error, refetch } = useQuery({
+        queryKey: ['sykmeldingId', sykmeldingId],
+        queryFn: async () => dataService.mutation.writeToEhr(sykmeldingId),
+    })
+
+    if (isLoading) {
+        return (
+            <div className="max-w-prose">
+                <div className="my-4">
+                    <Skeleton variant="rectangle" height={62} />
+                </div>
+                <div className="flex flex-col gap-3">
+                    <Skeleton variant="rectangle" height={108} />
+                    <Skeleton variant="rectangle" height={132} />
+                    <Skeleton variant="rectangle" height={108} />
+                </div>
+                <div className="mt-4"></div>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="max-w-prose">
+                <div className="my-4">
+                    <Heading size="small" level="3">
+                        Kunne ikke skrive sykmeldingen til EPJ-systemet.
+                    </Heading>
+                </div>
+
+                <div className="mt-4">
+                    <Alert variant="error">Teknisk feilmelding: {error.message}</Alert>
+                </div>
+
+                <div className="mt-4">
+                    <Button variant="secondary-neutral" onClick={() => refetch()}>
+                        Prøv igjen
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+
+    if (!data || !data.documentReference.id) {
+        return (
+            <div className="mt-4">
+                <Alert variant="warning">Data er ikke tilgjengelig ennå. Vennligst prøv igjen senere.</Alert>
+                <div className="mt-4">
+                    <Button variant="secondary-neutral" onClick={() => refetch()}>
+                        Prøv igjen
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div className="my-4">
+            <Heading size="small" level="3">
+                Sykmelding er lagret i EPJ-systemet på DokumentReferanse: ${data.documentReference.id}
+            </Heading>
         </div>
     )
 }
