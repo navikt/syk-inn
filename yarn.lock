@@ -1179,17 +1179,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@redis/client@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "@redis/client@npm:1.6.0"
-  dependencies:
-    cluster-key-slot: "npm:1.1.2"
-    generic-pool: "npm:3.9.0"
-    yallist: "npm:4.0.0"
-  checksum: 10c0/c80a01b4f72d32284515dac6d1aefe0e9c881d08b8db33281f87b51650c1c116b18074a29ca81599d15dccb37b29eef9b26a75a5755150ae27d163e680c34bf6
-  languageName: node
-  linkType: hard
-
 "@reduxjs/toolkit@npm:^2.6.0":
   version: 2.6.0
   resolution: "@reduxjs/toolkit@npm:2.6.0"
@@ -7225,7 +7214,6 @@ __metadata:
     "@navikt/next-logger": "npm:^2.0.0"
     "@navikt/oasis": "npm:^3.7.0"
     "@playwright/test": "npm:1.50.1"
-    "@redis/client": "npm:^1.6.0"
     "@reduxjs/toolkit": "npm:^2.6.0"
     "@tailwindcss/postcss": "npm:^4.0.10"
     "@tanstack/react-query": "npm:^5.67.1"
@@ -7266,6 +7254,7 @@ __metadata:
     tailwind-merge: "npm:^2.6.0"
     tailwindcss: "npm:^4.0.10"
     typescript: "npm:^5.8.2"
+    valkey: "npm:^0.0.3"
     vite-tsconfig-paths: "npm:^5.1.4"
     vitest: "npm:^3.0.7"
     zod: "npm:^3.24.2"
@@ -7713,6 +7702,76 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: 10c0/1607dd32ac7fc22f2d8f77051e6a64845c9bce5cd3dd8aa0070c074ec73e666a1f63c7b4e0f4bf2bc8b9d59dc85a15e17807446d9d2b17c8485fbc2147b27f9b
+  languageName: node
+  linkType: hard
+
+"valkey-bloom@npm:0.0.1":
+  version: 0.0.1
+  resolution: "valkey-bloom@npm:0.0.1"
+  peerDependencies:
+    valkey-client: ^1.0.0
+  checksum: 10c0/af28f250d5edf26816a2b64e5a2a3b889e273d04d7043734eb9024dd0b2fd5cc673483b903440f908ee465f6ae9978b766dc55eae42cee909cd3c93f6005dfd0
+  languageName: node
+  linkType: hard
+
+"valkey-client@npm:0.0.1":
+  version: 0.0.1
+  resolution: "valkey-client@npm:0.0.1"
+  dependencies:
+    cluster-key-slot: "npm:1.1.2"
+    generic-pool: "npm:3.9.0"
+    yallist: "npm:4.0.0"
+  checksum: 10c0/373e3a78c7cdad2a368c8392b4f564a7c1472598b0c5ee1c84f07a40108494f1a6bab7bba1bcee04a9d05653de6e3fb75ad60f76ee615a27b974de4084cebc65
+  languageName: node
+  linkType: hard
+
+"valkey-graph@npm:0.0.1":
+  version: 0.0.1
+  resolution: "valkey-graph@npm:0.0.1"
+  peerDependencies:
+    valkey-client: ^1.0.0
+  checksum: 10c0/afffc691cd4602b927c47e918af03255560c63efaef116b094305415264b206bafc63d619a3fd0d6ada9e8b4eed3ce17a3f3b0f7bf7f5f13f9dcf4a27215ebc8
+  languageName: node
+  linkType: hard
+
+"valkey-json@npm:0.0.1":
+  version: 0.0.1
+  resolution: "valkey-json@npm:0.0.1"
+  peerDependencies:
+    valkey-client: ^1.0.0
+  checksum: 10c0/fbf06302dd1f24dd4e9fc6751e93179fcb5c1c982f6220cbc39d9ff98f4e089c2321efd7d04d5ea1fdaa379475803d6ac498cf585574ba597b6429e0cc3f17a0
+  languageName: node
+  linkType: hard
+
+"valkey-search@npm:0.0.1":
+  version: 0.0.1
+  resolution: "valkey-search@npm:0.0.1"
+  peerDependencies:
+    valkey-client: ^1.0.0
+  checksum: 10c0/cdcac2b7f062cbae986db8484f98971251dcbbe913d25a0ae94852dd013ac6a175bf47861be2621c2544b53ff4eca0827fcf4e8aef64b88e555c9883a062faac
+  languageName: node
+  linkType: hard
+
+"valkey-time-series@npm:0.0.1":
+  version: 0.0.1
+  resolution: "valkey-time-series@npm:0.0.1"
+  peerDependencies:
+    valkey-client: ^1.0.0
+  checksum: 10c0/767c8ad421a0f3e19096df52d4fb0edd37f84ba776c887d36b6c80729311e36bb42e76933deba30d83ba7362e45919c0dd0e2ff6f7391e299d595444c8f25dd4
+  languageName: node
+  linkType: hard
+
+"valkey@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "valkey@npm:0.0.3"
+  dependencies:
+    valkey-bloom: "npm:0.0.1"
+    valkey-client: "npm:0.0.1"
+    valkey-graph: "npm:0.0.1"
+    valkey-json: "npm:0.0.1"
+    valkey-search: "npm:0.0.1"
+    valkey-time-series: "npm:0.0.1"
+  checksum: 10c0/80ecd31cda641e581846df925cfa057578cf0fe70776514ac4c946fa27b09581d22b03e8896d9f2f0f603fcf78169381cef10e846c7b668ee8603b7a9723b1a5
   languageName: node
   linkType: hard
 

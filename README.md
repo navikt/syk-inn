@@ -10,7 +10,7 @@ This application will be used by health care professionals to send "sykmeldinger
     - Launching the application in a Smart on FHIR context
     - Uses the application directly using HelseID login (referered to as "standalone")
 - Any asynchronous data loading or actions are using tanstack/query, and **should** have both loading **and** error state.
-- Users sessions are stored in Redis, any action will validate the token using the appropriate issuer.
+- Users sessions are stored in Valkey, any action will validate the token using the appropriate issuer.
 
 ## High level flow
 
@@ -98,7 +98,7 @@ Install dependencies:
 yarn
 ```
 
-Start the development server (automatically starts redis, this is why Docker is needed):
+Start the development server (automatically starts Valkey, this is why Docker is needed):
 
 ```bash
 yarn dev

@@ -11,7 +11,7 @@ spec:
   replicas:
     min: 1
     max: 2
-  redis:
+  valkey:
     - instance: syk-inn
       access: readwrite
   observability:

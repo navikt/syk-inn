@@ -1,5 +1,5 @@
 import * as R from 'remeda'
-import { createClient, RedisClientType } from '@redis/client'
+import { createClient, ValkeyClientType } from 'valkey'
 import { logger } from '@navikt/next-logger'
 
 import { raise } from '@utils/ts'
@@ -7,14 +7,14 @@ import { getServerEnv } from '@utils/env'
 
 import { CompleteSession, InitialSession, Session, SessionId, SessionStore } from './session-store'
 
-export class SessionStoreRedis implements SessionStore {
-    private readonly client: RedisClientType
+export class SessionStoreValkey implements SessionStore {
+    private readonly client: ValkeyClientType
 
     constructor() {
-        const redisConfig = getServerEnv().redisConfig ?? raise('Redis config is not set! :(')
+        const valkeyConfig = getServerEnv().valkeyConfig ?? raise('Valkey config is not set! :(')
 
         this.client = createClient({
-            ...R.omit(redisConfig, ['runtimeEnv']),
+            ...R.omit(valkeyConfig, ['runtimeEnv']),
             socket: {
                 connectTimeout: 5000,
                 keepAlive: 5000,
@@ -22,9 +22,9 @@ export class SessionStoreRedis implements SessionStore {
             pingInterval: 10 * 1000,
         })
 
-        this.client.on('error', (err) => logger.error(err))
-        this.client.on('connect', () => logger.info('Redis Client Connected'))
-        this.client.on('ready', () => logger.info('Redis Client Ready'))
+        this.client.on('error', (err: Error) => logger.error(err))
+        this.client.on('connect', () => logger.info('Valkey Client Connected'))
+        this.client.on('ready', () => logger.info('Valkey Client Ready'))
     }
 
     async setup(): Promise<void> {
@@ -35,7 +35,7 @@ export class SessionStoreRedis implements SessionStore {
         try {
             await this.client.connect()
         } catch (e) {
-            logger.error(new Error('Unable to connect to session redis', { cause: e }))
+            logger.error(new Error('Unable to connect to session valkey', { cause: e }))
             throw e
         }
     }
@@ -60,7 +60,7 @@ export class SessionStoreRedis implements SessionStore {
     async getPartialSession(sessionId: string): Promise<InitialSession> {
         const sessionData = await this.client.hGetAll(sessionIdKey(sessionId))
         if (!sessionData || Object.keys(sessionData).length === 0) {
-            throw new Error('No secure session found in redis')
+            throw new Error('No secure session found in valkey')
         }
 
         // TODO: Should probably zod it
@@ -70,7 +70,7 @@ export class SessionStoreRedis implements SessionStore {
     async getSession(sessionId: string): Promise<Session> {
         const sessionData = await this.client.hGetAll(sessionIdKey(sessionId))
         if (!sessionData || Object.keys(sessionData).length === 0) {
-            throw new Error('No secure session found in redis')
+            throw new Error('No secure session found in valkey')
         }
 
         // TODO: Should probably zod it

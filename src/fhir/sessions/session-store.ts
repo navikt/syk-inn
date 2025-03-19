@@ -3,7 +3,7 @@ import { lazyNextleton } from 'nextleton'
 import { bundledEnv } from '@utils/env'
 import { SessionStoreInMem } from '@fhir/sessions/session-store-in-mem'
 
-import { SessionStoreRedis } from './session-store-redis'
+import { SessionStoreValkey } from './session-store-valkey'
 
 export type SessionId = string
 
@@ -44,7 +44,7 @@ function getSessionStoreImplementation(): SessionStore {
         case 'local':
         case 'prod-gcp':
         case 'dev-gcp':
-            return new SessionStoreRedis()
+            return new SessionStoreValkey()
     }
 }
 
