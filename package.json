@@ -2,7 +2,7 @@
     "name": "syk-inn",
     "version": "0.1.0",
     "private": true,
-    "packageManager": "yarn@4.6.0",
+    "packageManager": "yarn@4.7.0",
     "engines": {
         "node": "22"
     },
