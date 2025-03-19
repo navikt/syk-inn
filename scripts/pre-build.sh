@@ -13,7 +13,7 @@ if [ ! -f ".env.production" ]; then
 
 
   if [[ "$response" == "y" || "$response" == "Y" ]]; then
-    cp nais/envs/.env.dev .env.production
+    cp .nais/envs/.env.dev .env.production
     runtimeEnv=$(grep "^NEXT_PUBLIC_RUNTIME_ENV=" .env.production | cut -d '=' -f2)
     printf "\e[32m  👍 .env.production has been created. Building application as \e[44;97m $runtimeEnv \e[32m\e[0m"
   else
