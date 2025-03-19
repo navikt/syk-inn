@@ -25,10 +25,10 @@ export const bundledEnv = BundledEnvSchema.parse({
     NEXT_PUBLIC_ASSET_PREFIX: process.env.NEXT_PUBLIC_ASSET_PREFIX,
 })
 
-type RedisConfig = z.infer<typeof RedisConfigSchema>
-const RedisConfigSchema = z.union([
+type ValkeyConfig = z.infer<typeof ValkeyConfigSchema>
+const ValkeyConfigSchema = z.union([
     /**
-     * Defines a union type for strongly typing Redis configurations for local and production environments.
+     * Defines a union type for strongly typing Valkey configurations for local and production environments.
      * The local setup doesn't require authentication but does need the Docker image URL.
      */
     z.object({
@@ -46,7 +46,7 @@ const RedisConfigSchema = z.union([
 type ServerEnv = z.infer<typeof ServerEnvSchema>
 const ServerEnvSchema = z.object({
     helseIdWellKnown: z.string(),
-    redisConfig: RedisConfigSchema.nullish(),
+    valkeyConfig: ValkeyConfigSchema.nullish(),
 })
 
 /**
@@ -58,18 +58,18 @@ const ServerEnvSchema = z.object({
  * the server is configured correctly before receiving any traffic.
  */
 export function getServerEnv(): ServerEnv {
-    const redisConfig =
+    const valkeyConfig =
         bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'demo' && bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'e2e'
             ? ({
                   runtimeEnv: process.env.NEXT_PUBLIC_RUNTIME_ENV,
-                  url: process.env.REDIS_URI_SYK_INN,
-                  username: process.env.REDIS_USERNAME_SYK_INN,
-                  password: process.env.REDIS_PASSWORD_SYK_INN,
-              } satisfies Record<KeysOfUnion<RedisConfig>, unknown | undefined>)
+                  url: process.env.VALKEY_URI_SYK_INN,
+                  username: process.env.VALKEY_USERNAME_SYK_INN,
+                  password: process.env.VALKEY_PASSWORD_SYK_INN,
+              } satisfies Record<KeysOfUnion<ValkeyConfig>, unknown | undefined>)
             : undefined
 
     return ServerEnvSchema.parse({
-        redisConfig,
+        valkeyConfig: valkeyConfig,
         helseIdWellKnown: process.env.HELSE_ID_WELL_KNOWN_URL,
     } satisfies Record<keyof ServerEnv, unknown | undefined>)
 }

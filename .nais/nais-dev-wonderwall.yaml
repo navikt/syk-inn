@@ -7,8 +7,8 @@ metadata:
     team: tsm
 spec:
   image: europe-north1-docker.pkg.dev/nais-io/nais/images/wonderwall:latest
-  redis:
-    # Same redis as syk-inn, will be owned by syk-inn because it created it
+  valkey:
+    # Same valkey as syk-inn, will be owned by syk-inn because it created it
     - instance: syk-inn
       access: readwrite
   envFrom:
@@ -52,11 +52,11 @@ spec:
     - name: WONDERWALL_OPENID_WELL_KNOWN_URL
       value: https://helseid-sts.test.nhn.no/.well-known/openid-configuration
     - name: WONDERWALL_REDIS_URI
-      value: $(REDIS_URI_SYK_INN)
+      value: $(VALKEY_URI_SYK_INN)
     - name: WONDERWALL_REDIS_USERNAME
-      value: $(REDIS_USERNAME_SYK_INN)
+      value: $(VALKEY_USERNAME_SYK_INN)
     - name: WONDERWALL_REDIS_PASSWORD
-      value: $(REDIS_PASSWORD_SYK_INN)
+      value: $(VALKEY_PASSWORD_SYK_INN)
     - name: WONDERWALL_BIND_ADDRESS
       value: $(BIND_ADDRESS)
     - name: WONDERWALL_AUTO_LOGIN
