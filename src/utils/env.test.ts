@@ -36,10 +36,12 @@ describe('getServerEnv', () => {
 
             expect(env.valkeyConfig).toEqual({
                 runtimeEnv: 'dev-gcp',
-                host: 'foo',
+                tls: {
+                    host: 'foo',
+                    port: 1234,
+                },
                 username: 'bar',
                 password: 'baz',
-                port: 1234,
             })
         })
 
@@ -54,10 +56,12 @@ describe('getServerEnv', () => {
 
             expect(env.valkeyConfig).toEqual({
                 runtimeEnv: 'prod-gcp',
-                host: 'foo',
+                tls: {
+                    host: 'foo',
+                    port: 1234,
+                },
                 username: 'bar',
                 password: 'baz',
-                port: 1234,
             })
         })
 

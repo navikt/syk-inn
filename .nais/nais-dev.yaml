@@ -53,7 +53,7 @@ spec:
     outbound:
       external:
         - host: 'tsm-unleash-api.nav.cloud.nais.io'
-        - host: 'fhirapi.public.webmedepj.no'
+        - host: 'fhir-api-auth.public.webmedepj.no'
         - host: 'helseid-sts.test.nhn.no'
         - host: 'tsm-unleash-api.nav.cloud.nais.io'
         # TODO: Remove

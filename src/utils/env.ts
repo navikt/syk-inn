@@ -33,10 +33,12 @@ const ValkeyConfigSchema = z.union([
      */
     z.object({
         runtimeEnv: z.union([z.literal('dev-gcp'), z.literal('prod-gcp')]),
-        host: z.string(),
         username: z.string(),
         password: z.string(),
-        port: z.coerce.number(),
+        tls: z.object({
+            host: z.string(),
+            port: z.coerce.number(),
+        }),
     }),
     z.object({
         runtimeEnv: z.literal('local'),
@@ -63,10 +65,15 @@ export function getServerEnv(): ServerEnv {
         bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'demo' && bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'e2e'
             ? ({
                   runtimeEnv: process.env.NEXT_PUBLIC_RUNTIME_ENV,
-                  host: process.env.VALKEY_HOST_SYK_INN,
                   username: process.env.VALKEY_USERNAME_SYK_INN,
                   password: process.env.VALKEY_PASSWORD_SYK_INN,
-                  port: process.env.VALKEY_PORT_SYK_INN,
+                  // Local
+                  host: process.env.VALKEY_HOST_SYK_INN,
+                  // Cloud
+                  tls: {
+                      host: process.env.VALKEY_HOST_SYK_INN,
+                      port: process.env.VALKEY_PORT_SYK_INN,
+                  },
               } satisfies Record<KeysOfUnion<ValkeyConfig>, unknown | undefined>)
             : undefined
 
