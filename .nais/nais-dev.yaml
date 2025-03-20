@@ -7,6 +7,15 @@ metadata:
     team: tsm
 spec:
   image: {{image}}
+  login:
+    provider: openid
+    enforce:
+      enabled: true
+      excludePaths:
+        - /samarbeidspartner/sykmelding/fhir/**
+        - /samarbeidspartner/sykmelding/api/**
+  ingresses:
+    - 'https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
   valkey:
     # Same valkey as syk-inn, will be owned by syk-inn because it created it
     - instance: syk-inn
