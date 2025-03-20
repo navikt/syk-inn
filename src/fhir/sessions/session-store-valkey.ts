@@ -1,25 +1,25 @@
-import * as R from 'remeda'
-import { createClient, ValkeyClientType } from 'valkey'
+import Valkey from 'iovalkey'
 import { logger } from '@navikt/next-logger'
+import * as R from 'remeda'
 
-import { raise } from '@utils/ts'
 import { getServerEnv } from '@utils/env'
 
 import { CompleteSession, InitialSession, Session, SessionId, SessionStore } from './session-store'
 
 export class SessionStoreValkey implements SessionStore {
-    private readonly client: ValkeyClientType
+    private client: Valkey
 
     constructor() {
-        const valkeyConfig = getServerEnv().valkeyConfig ?? raise('Valkey config is not set! :(')
+        const valkeyConfig =
+            getServerEnv().valkeyConfig ??
+            (() => {
+                throw new Error('Valkey config is not set! :(')
+            })()
 
-        this.client = createClient({
+        this.client = new Valkey({
             ...R.omit(valkeyConfig, ['runtimeEnv']),
-            socket: {
-                connectTimeout: 5000,
-                keepAlive: 5000,
-            },
-            pingInterval: 10 * 1000,
+            connectTimeout: 5000,
+            keepAlive: 5000,
         })
 
         this.client.on('error', (err: Error) => logger.error(err))
@@ -27,38 +27,25 @@ export class SessionStoreValkey implements SessionStore {
         this.client.on('ready', () => logger.info('Valkey Client Ready'))
     }
 
-    async setup(): Promise<void> {
-        if (this.client.isOpen) {
-            return
-        }
-
-        try {
-            await this.client.connect()
-        } catch (e) {
-            logger.error(new Error('Unable to connect to session valkey', { cause: e }))
-            throw e
-        }
-    }
-
     async cleanup(): Promise<void> {
-        if (!this.client.isOpen) {
+        if (this.client.status !== 'close') {
             return
         }
 
-        await this.client.disconnect()
+        this.client.disconnect()
     }
 
     async initializeUserSession(sessionId: string, partialSession: InitialSession): Promise<void> {
-        await this.client.hSet(sessionIdKey(sessionId), partialSession)
+        await this.client.hset(sessionIdKey(sessionId), partialSession)
         await this.client.expire(sessionIdKey(sessionId), 8 * 60 * 60)
     }
 
     async completeUserSession(sessionId: string, values: CompleteSession): Promise<void> {
-        await this.client.hSet(sessionIdKey(sessionId), values)
+        await this.client.hset(sessionIdKey(sessionId), values)
     }
 
     async getPartialSession(sessionId: string): Promise<InitialSession> {
-        const sessionData = await this.client.hGetAll(sessionIdKey(sessionId))
+        const sessionData = await this.client.hgetall(sessionIdKey(sessionId))
         if (!sessionData || Object.keys(sessionData).length === 0) {
             throw new Error('No secure session found in valkey')
         }
@@ -68,7 +55,7 @@ export class SessionStoreValkey implements SessionStore {
     }
 
     async getSession(sessionId: string): Promise<Session> {
-        const sessionData = await this.client.hGetAll(sessionIdKey(sessionId))
+        const sessionData = await this.client.hgetall(sessionIdKey(sessionId))
         if (!sessionData || Object.keys(sessionData).length === 0) {
             throw new Error('No secure session found in valkey')
         }

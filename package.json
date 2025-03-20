@@ -8,7 +8,7 @@
     },
     "scripts": {
         "dev": "./scripts/pre-dev.sh && next dev --turbo | pino-pretty",
-        "dev:valkey": "docker run --name syk-inn-dev-valkey -p 6379:6379 -d valkey",
+        "dev:valkey": "docker run --name syk-inn-dev-valkey -p 6379:6379 -d valkey/valkey:latest",
         "build": "./scripts/pre-build.sh && next build",
         "build:e2e": "./scripts/build-e2e.sh",
         "start": "next start",
@@ -38,6 +38,7 @@
         "date-fns": "^4.1.0",
         "fuse.js": "^7.1.0",
         "html-react-parser": "^5.2.2",
+        "iovalkey": "^0.3.1",
         "jose": "^6.0.8",
         "motion": "^12.4.10",
         "next": "15.2.1",
@@ -57,7 +58,6 @@
         "remeda": "^2.21.0",
         "server-only": "^0.0.1",
         "tailwind-merge": "^2.6.0",
-        "valkey": "^0.0.3",
         "zod": "^3.24.2"
     },
     "devDependencies": {
