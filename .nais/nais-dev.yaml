@@ -7,13 +7,14 @@ metadata:
     team: tsm
 spec:
   image: {{image}}
+  valkey:
+    # Same valkey as syk-inn, will be owned by syk-inn because it created it
+    - instance: syk-inn
+      access: readwrite
   port: 3000
   replicas:
     min: 1
     max: 2
-  valkey:
-    - instance: syk-inn
-      access: readwrite
   observability:
     autoInstrumentation:
       enabled: true

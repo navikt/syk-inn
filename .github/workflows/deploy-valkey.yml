@@ -1,0 +1,22 @@
+name: Deploy Valkey
+on:
+  push:
+    paths:
+      - .github/workflows/deploy-valkey.yml
+      - .nais/nais-dev-valkey.yaml
+    branches:
+      - main
+
+permissions:
+  id-token: write
+
+jobs:
+  deploy-valkey-dev:
+    name: Deploy Valkey to dev
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-dev-valkey.yaml

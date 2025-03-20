@@ -32,7 +32,6 @@ export interface SessionStore {
     getSession(sessionId: string): Promise<Session>
     getPartialSession(sessionId: string): Promise<InitialSession>
 
-    setup(): Promise<void>
     cleanup(): Promise<void>
 }
 
@@ -49,9 +48,5 @@ function getSessionStoreImplementation(): SessionStore {
 }
 
 export const getSessionStore = lazyNextleton('session-store', async () => {
-    const store = getSessionStoreImplementation()
-
-    await store.setup()
-
-    return store
+    return getSessionStoreImplementation()
 })

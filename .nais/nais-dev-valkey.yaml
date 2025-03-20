@@ -1,0 +1,11 @@
+apiVersion: aiven.io/v1alpha1
+kind: Valkey
+metadata:
+  labels:
+    app: syk-inn
+    team: tsm
+  name: valkey-tsm-syk-inn
+  namespace: tsm
+spec:
+  plan: startup-4
+  project: nav-dev

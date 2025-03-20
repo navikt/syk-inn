@@ -5,10 +5,6 @@ import { Session, InitialSession, SessionStore, SessionId, CompleteSession } fro
 export class SessionStoreInMem implements SessionStore {
     private _sessions: Record<SessionId, InitialSession | CompleteSession> = {}
 
-    public async setup(): Promise<void> {
-        logger.info('Setting up in-memory session store (stub)')
-    }
-
     public async cleanup(): Promise<void> {
         logger.info('Cleaning up in-memory session store')
 
