@@ -7,8 +7,8 @@ export const knownIssuers: Record<string, { issuers: string[] }> = {
     'https://fhir.ekstern.dev.nav.no': {
         issuers: [],
     },
-    'https://fhirapi.public.webmedepj.no': {
-        issuers: ['https://security.public.webmedepj.no'],
+    'https://fhir-api-auth.public.webmedepj.no': {
+        issuers: ['https://authority.public.webmedepj.no'],
     },
 }
 
