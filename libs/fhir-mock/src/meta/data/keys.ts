@@ -1,6 +1,6 @@
 import { JSONWebKeySet } from 'jose'
 
-import { publicJwk } from '../../../jwt'
+import { publicJwk } from '../../jwt/jwt'
 
 export const createKeys = async (): Promise<JSONWebKeySet> => {
     const jwk = await publicJwk()

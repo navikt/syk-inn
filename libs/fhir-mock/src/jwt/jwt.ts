@@ -1,7 +1,7 @@
 import { lazyNextleton } from 'nextleton'
 import { exportJWK, generateKeyPair, JWK, SignJWT } from 'jose'
 
-import testData from './(resources)/data'
+import { fhirServerTestData } from '../meta/data/fhir-server'
 
 export const keyPair = lazyNextleton('key-pair', async () => await generateKeyPair('RS256'))
 
@@ -38,7 +38,7 @@ export async function createAccessToken(audience: string): Promise<string> {
     })
         .setProtectedHeader({ alg: 'RS256', kid: 'very-cool-kid' }) // Use the same 'kid' as in /keys
         .setIssuedAt()
-        .setIssuer(testData.fhirServer.wellKnown.issuer)
+        .setIssuer(fhirServerTestData.wellKnown().issuer)
         .setAudience(audience)
         .sign(await privateKey())
 

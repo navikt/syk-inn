@@ -1,17 +1,10 @@
 import { randomUUID } from 'node:crypto'
 
 import { logger as pinoLogger } from '@navikt/next-logger'
-import { notFound } from 'next/navigation'
-
-import { isE2E, isLocalOrDemo } from '@utils/env'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
 
-export function GET(request: Request): Response {
-    if (!isLocalOrDemo && !isE2E) {
-        notFound()
-    }
-
+export function authorize(request: Request): Response {
     const url = new URL(request.url)
 
     logger.info(`/auth/authorize request with params: \n\t${Array.from(url.searchParams.entries()).join('\n\t')}`)

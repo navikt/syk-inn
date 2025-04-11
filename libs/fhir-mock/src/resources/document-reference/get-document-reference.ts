@@ -4,13 +4,7 @@ const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK] ' })
 
 const shouldReturn = false
 
-type RouteParams = {
-    params: Promise<{ id: string }>
-}
-
-export async function GET(_: Request, { params }: RouteParams): Promise<Response> {
-    const docRefId = (await params).id
-
+export async function getDocumentReference(req: Request, docRefId: string): Promise<Response> {
     logger.info(`Incoming request: GET DocumentReference/${docRefId}`)
 
     if (!shouldReturn) {
