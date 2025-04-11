@@ -1,0 +1,22 @@
+{
+    "name": "@navikt/fhir-mock",
+    "scripts": {
+        "tsc": "tsc"
+    },
+    "exports": {
+        ".": {
+            "import": "./src/index.ts"
+        }
+    },
+    "devDependencies": {
+        "@types/node": "^22.14.0"
+    },
+    "dependencies": {
+        "itty-router": "^5.0.18",
+        "nextleton": "^0.6.1"
+    },
+    "peerDependencies": {
+        "@navikt/next-logger": "2",
+        "jose": "6"
+    }
+}

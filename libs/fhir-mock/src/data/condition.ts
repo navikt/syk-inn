@@ -1,6 +1,7 @@
 import { logger } from '@navikt/next-logger'
 
-import { FhirCondition } from '@fhir/fhir-data/schema/condition'
+// TODO: make @navikt/fhir-zod?
+type FhirCondition = Record<string, unknown>
 
 const conditions: FhirCondition[] = [
     {
@@ -67,5 +68,7 @@ export function getConditionById(id: string): FhirCondition | null {
 }
 
 export function getConditionsByPatientId(patientId: string): FhirCondition[] | null {
-    return conditions.filter((it) => it.subject.reference === `Patient/${patientId}`)
+    // TODO: see comment above
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return conditions.filter((it) => (it.subject as any).reference === `Patient/${patientId}`)
 }
