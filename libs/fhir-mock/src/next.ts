@@ -1,5 +1,7 @@
+import { handle } from 'hono/vercel'
+
 import { FhirMockConfig, setConfig } from './config'
-import { router } from './router'
+import { createMockFhirApp } from './router'
 
 /**
  * Creates a (req: Request) => Promise<Response> handler for the fhir mock server.
@@ -7,8 +9,10 @@ import { router } from './router'
  * Required, you need to inform the mock routes about paths and stuff
  * @param config
  */
-export function createFhirHandler(config: FhirMockConfig) {
+export function createFhirHandler(config: FhirMockConfig): (req: Request) => Promise<Response> | Response {
     setConfig(config)
 
-    return async (request: Request) => router.fetch(request)
+    const app = createMockFhirApp(config)
+
+    return handle(app)
 }

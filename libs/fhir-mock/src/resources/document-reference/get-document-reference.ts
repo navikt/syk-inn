@@ -1,10 +1,11 @@
 import { logger as pinoLogger } from '@navikt/next-logger'
+import { HonoRequest } from 'hono'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK] ' })
 
 const shouldReturn = false
 
-export async function getDocumentReference(req: Request, docRefId: string): Promise<Response> {
+export async function getDocumentReference(_: HonoRequest, docRefId: string): Promise<Response> {
     logger.info(`Incoming request: GET DocumentReference/${docRefId}`)
 
     if (!shouldReturn) {

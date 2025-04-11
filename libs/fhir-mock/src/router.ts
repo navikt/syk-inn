@@ -1,16 +1,23 @@
-import { AutoRouter, error } from 'itty-router'
+import { Hono } from 'hono'
 
 import { authRouter } from './auth/router'
 import { documentReferenceRouter } from './resources/document-reference/router'
-import { simpleResourceRouter } from './resources/simple-resources/router'
-import { metaRouter } from './meta/router'
+import { simpleResourcesRoutes } from './resources/simple-resources/router'
+import { metaRoutes } from './meta/router'
 import { conditionRouter } from './resources/condition/router'
+import { FhirMockConfig } from './config'
 
-export const router = AutoRouter({})
-    .get('/api/mocks/fhir/.well-known/smart-configuration')
-    .all('/auth/*', authRouter.fetch)
-    .all('/DocumentReference', documentReferenceRouter.fetch)
-    .all('/Condition', conditionRouter.fetch)
-    .all('*', simpleResourceRouter.fetch)
-    .all('*', metaRouter.fetch)
-    .all('*', () => error(404, "Couldn't find FHIR mock path"))
+export function createMockFhirApp(config: FhirMockConfig): Hono {
+    const app = new Hono().basePath(config.fhirPath)
+
+    app.route('/auth', authRouter)
+    app.route('/DocumentReference/', documentReferenceRouter)
+    app.route('/Condition', conditionRouter)
+
+    simpleResourcesRoutes(app)
+    metaRoutes(app)
+
+    app.notFound((c) => c.text(`Path ${c.req.path} is not a configured resource in the FHIR mock server.`))
+
+    return app
+}

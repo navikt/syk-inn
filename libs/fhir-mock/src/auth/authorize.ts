@@ -1,10 +1,11 @@
 import { randomUUID } from 'node:crypto'
 
 import { logger as pinoLogger } from '@navikt/next-logger'
+import { HonoRequest } from 'hono'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
 
-export function authorize(request: Request): Response {
+export function authorize(request: HonoRequest): Response {
     const url = new URL(request.url)
 
     logger.info(`/auth/authorize request with params: \n\t${Array.from(url.searchParams.entries()).join('\n\t')}`)
