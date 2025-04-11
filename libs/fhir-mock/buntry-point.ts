@@ -3,9 +3,11 @@ import { logger } from '@navikt/next-logger'
 import { createMockFhirApp } from './src/router'
 import { FhirMockConfig, setConfig } from './src/config'
 
+const port = process.env.PORT ?? 5000
+
 const config: FhirMockConfig = {
     fhirPath: '',
-    baseUrl: 'http://localhost:3000',
+    baseUrl: `http://localhost:${port}`,
 }
 
 setConfig(config)
@@ -14,9 +16,9 @@ const app = createMockFhirApp(config)
 
 // @ts-expect-error Just a bun script, no types
 await Bun.serve({
-    port: process.env.PORT ?? 3000,
+    port,
     fetch: app.fetch,
-    idleTimeout: 0,
+    idleTimeout: 10,
 })
 
 logger.info(
