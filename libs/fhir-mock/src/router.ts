@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 
 import { authRouter } from './auth/router'
 import { documentReferenceRouter } from './resources/document-reference/router'
@@ -10,6 +11,7 @@ import { FhirMockConfig } from './config'
 export function createMockFhirApp(config: FhirMockConfig): Hono {
     const app = new Hono().basePath(config.fhirPath)
 
+    app.use('*', cors())
     app.route('/auth', authRouter)
     app.route('/DocumentReference/', documentReferenceRouter)
     app.route('/Condition', conditionRouter)
