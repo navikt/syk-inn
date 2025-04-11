@@ -1,9 +1,9 @@
-import { error, Router } from 'itty-router'
+import { Hono } from 'hono'
 
 import { authorize } from './authorize'
 import { tokenExchange } from './token'
 
-export const authRouter = Router({ base: '/auth/*' })
-    .post('/token', tokenExchange)
-    .get('/authorize', authorize)
-    .all('*', () => error(404, 'Invalid auth path'))
+export const authRouter = new Hono()
+    .post('/token', (c) => tokenExchange(c.req))
+    .get('/authorize', (c) => authorize(c.req))
+    .notFound((c) => c.text('Invalid auth path'))

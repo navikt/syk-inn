@@ -1,11 +1,12 @@
 import { logger as pinoLogger } from '@navikt/next-logger'
+import { HonoRequest } from 'hono'
 
 import { createAccessToken, createIdToken } from '../jwt/jwt'
 import { fhirServerTestData } from '../meta/data/fhir-server'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
 
-export async function tokenExchange(request: Request): Promise<Response> {
+export async function tokenExchange(request: HonoRequest): Promise<Response> {
     const body = await request.formData()
 
     if (body.has('code')) {

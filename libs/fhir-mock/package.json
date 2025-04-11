@@ -1,19 +1,27 @@
 {
     "name": "@navikt/fhir-mock",
     "scripts": {
-        "tsc": "tsc"
+        "tsc": "tsc",
+        "dev": "bun run --watch buntry-point.ts | pino-pretty"
     },
     "exports": {
-        ".": {
-            "import": "./src/index.ts"
+        "./router": {
+            "import": "./src/router.ts"
+        },
+        "./next": {
+            "import": "./src/next.ts"
+        },
+        "./pdfs": {
+            "import": "./src/data/pdfs/index.ts"
         }
     },
-    "devDependencies": {
-        "@types/node": "^22.14.0"
-    },
     "dependencies": {
-        "itty-router": "^5.0.18",
+        "hono": "^4.7.6",
         "nextleton": "^0.6.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.14.0",
+        "pino-pretty": "^13.0.0"
     },
     "peerDependencies": {
         "@navikt/next-logger": "2",

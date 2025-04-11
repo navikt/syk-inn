@@ -8,7 +8,7 @@ export const fhirServerTestData = {
     wellKnown: () => {
         const config = getConfig()
 
-        return createWellKnown(`${config.baseUrl}${config.basePath}${config.fhirPath}`)
+        return createWellKnown(`${config.baseUrl}${config.basePath ?? ''}${config.fhirPath}`)
     },
     keys: () => createKeys(),
     metadata: () => metadata,

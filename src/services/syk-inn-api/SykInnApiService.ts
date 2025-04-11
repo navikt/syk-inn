@@ -8,8 +8,7 @@ import {
 } from '@services/syk-inn-api/SykInnApiSchema'
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
 import { isE2E, isLocalOrDemo } from '@utils/env'
-
-import { pdf } from '../../app/api/mocks/fhir/(resources)/data/base64pdf'
+import { base64ExamplePdf } from '@navikt/fhir-mock/pdfs'
 
 type NySykmeldingPayload = {
     pasientFnr: string
@@ -72,7 +71,7 @@ export const sykInnApiService = {
         if (isLocalOrDemo || isE2E) {
             logger.warn('Is in demo, local or e2e, returning mocked PDF')
 
-            const response = new Response(Buffer.from(pdf), {
+            const response = new Response(Buffer.from(base64ExamplePdf), {
                 headers: { 'Content-Type': 'application/pdf' },
                 status: 200,
             })

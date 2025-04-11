@@ -1,14 +1,14 @@
 import { logger } from '@navikt/next-logger'
-import { IRequest } from 'itty-router'
+import { MiddlewareHandler } from 'hono'
 
-export function withAuthed(req: IRequest): Response | void {
-    if (req.headers.get('Authorization') == null) {
-        const path = new URL(req.url).pathname
-
+export const withAuthed: MiddlewareHandler = async (c, next) => {
+    const authHeader = c.req.header('Authorization')
+    if (!authHeader) {
+        const path = new URL(c.req.url).pathname
         logger.warn(`Mock resource (${path}) was unauthed, 401ing >:(`)
 
-        return new Response(`Resource ${path} is supposed to be authed, but no Authorized header was found.`, {
-            status: 401,
-        })
+        return c.text(`Resource ${path} is supposed to be authed, but no Authorization header was found.`, 401)
     }
+
+    await next()
 }
