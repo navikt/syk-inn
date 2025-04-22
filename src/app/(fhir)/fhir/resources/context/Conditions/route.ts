@@ -15,11 +15,12 @@ export async function GET(): Promise<Response> {
     const sessionStore = await getSessionStore()
     const currentSession = await sessionStore.getSession(sessionId)
 
-    const patientFhirResponse = await fetch(`${currentSession.issuer}/Condition?patient=${currentSession.patient}`, {
-        headers: {
-            Authorization: `Bearer ${currentSession.accessToken}`,
+    const patientFhirResponse = await fetch(
+        `${currentSession.issuer}/Condition?encounter=${currentSession.encounter}`,
+        {
+            headers: { Authorization: `Bearer ${currentSession.accessToken}` },
         },
-    })
+    )
 
     const response: unknown = await patientFhirResponse.json()
     return Response.json(response)

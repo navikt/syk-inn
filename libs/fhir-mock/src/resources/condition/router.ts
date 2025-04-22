@@ -13,10 +13,10 @@ export const conditionRouter = new Hono()
         return Response.json(condition)
     })
     .get('/', async (c) => {
-        const patientId = c.req.query('patient')
-        if (patientId == null) {
-            return new Response('Only patient search is implemented', { status: 400 })
+        const encounterId = c.req.query('encounter')
+        if (encounterId == null) {
+            return new Response('Only encounter search is implemented', { status: 400 })
         }
-        return Response.json(testData.condition.byPatientId(patientId), { status: 200 })
+        return Response.json(testData.condition.byEncounterId(encounterId), { status: 200 })
     })
     .notFound((c) => c.text('Invalid /Condition resource or path'))

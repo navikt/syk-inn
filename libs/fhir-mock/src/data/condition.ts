@@ -11,6 +11,9 @@ const conditions: FhirCondition[] = [
             type: 'Patient',
             reference: 'Patient/cd09f5d4-55f7-4a24-a25d-a5b65c7a8805',
         },
+        encounter: {
+            reference: 'Encounter/320fd29a-31b9-4c9f-963c-c6c88332d89a',
+        },
         code: {
             coding: [
                 {
@@ -28,6 +31,9 @@ const conditions: FhirCondition[] = [
             type: 'Patient',
             reference: 'Patient/cd09f5d4-55f7-4a24-a25d-a5b65c7a8805',
         },
+        encounter: {
+            reference: 'Encounter/320fd29a-31b9-4c9f-963c-c6c88332d89a',
+        },
         code: {
             coding: [
                 {
@@ -44,6 +50,9 @@ const conditions: FhirCondition[] = [
         subject: {
             type: 'Patient',
             reference: 'Patient/cd09f5d4-55f7-4a24-a25d-a5b65c7a8805',
+        },
+        encounter: {
+            reference: 'Encounter/320fd29a-31b9-4c9f-963c-c6c88332d89a',
         },
         code: {
             coding: [
@@ -67,8 +76,8 @@ export function getConditionById(id: string): FhirCondition | null {
     return condition
 }
 
-export function getConditionsByPatientId(patientId: string): FhirCondition[] | null {
+export function getConditionsByEncounterId(encounterId: string): FhirCondition[] | null {
     // TODO: see comment above
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return conditions.filter((it) => (it.subject as any).reference === `Patient/${patientId}`)
+    return conditions.filter((it) => (it.encounter as any).reference === `Encounter/${encounterId}`)
 }

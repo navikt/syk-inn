@@ -1,12 +1,12 @@
 import patientEspenEksempel from './patient-espen-eksempel.json'
 import practitionerKomanMagnar from './practitioner-koman-magnar.json'
 import { encounterEspenKomar } from './encounter-espen-komar'
-import { getConditionById, getConditionsByPatientId } from './condition'
+import { getConditionById, getConditionsByEncounterId } from './condition'
 
 const testData = {
     condition: {
         byId: (id: string) => getConditionById(id),
-        byPatientId: (patientId: string) => getConditionsByPatientId(patientId),
+        byEncounterId: (encounterId: string) => getConditionsByEncounterId(encounterId),
     },
     patient: {
         'Espen Eksempel': patientEspenEksempel,

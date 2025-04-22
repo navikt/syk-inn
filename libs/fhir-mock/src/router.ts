@@ -13,13 +13,13 @@ export function createMockFhirApp(config: FhirMockConfig): Hono {
 
     app.use('*', cors())
     app.route('/auth', authRouter)
-    app.route('/DocumentReference/', documentReferenceRouter)
+    app.route('/DocumentReference', documentReferenceRouter)
     app.route('/Condition', conditionRouter)
 
     simpleResourcesRoutes(app)
     metaRoutes(app)
 
-    app.notFound((c) => c.text(`Path ${c.req.path} is not a configured resource in the FHIR mock server.`))
+    app.notFound((c) => c.text(`Path ${c.req.path} is not a configured resource in the FHIR mock server.`, 404))
 
     return app
 }

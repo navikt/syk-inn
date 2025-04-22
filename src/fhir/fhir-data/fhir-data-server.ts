@@ -236,7 +236,6 @@ function prepareDocRefWithB64Data({
                 reference: `Practitioner/${practitionerId}`,
             },
         ],
-        description: 'Sykmelding PDF lagret som b64 enkodet data med tittel ${title}',
         content: [
             {
                 attachment: {

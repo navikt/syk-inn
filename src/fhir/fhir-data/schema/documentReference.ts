@@ -34,7 +34,6 @@ export const FhirDocumentReferenceSchema = z.object({
             reference: z.string(),
         }),
     ),
-    description: z.string(),
     content: z.array(
         z.object({
             attachment: z.object({
