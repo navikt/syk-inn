@@ -46,7 +46,7 @@ jobs:
         run: |
           ./scripts/libs/create-release.sh fhir-mock
           ./scripts/libs/set-version.sh fhir-mock
-          yarn workspace @navikt/fhir-mock-server npm publish
+          cd libs/fhir-mock && yarn npm publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
