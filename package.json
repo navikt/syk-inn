@@ -30,7 +30,7 @@
         "@navikt/ds-css": "^7.17.0",
         "@navikt/ds-react": "^7.17.0",
         "@navikt/ds-tailwind": "^7.17.0",
-        "@navikt/fhir-mock": "workspace:*",
+        "@navikt/fhir-mock-server": "workspace:*",
         "@navikt/next-logger": "^2.0.0",
         "@navikt/oasis": "^3.7.0",
         "@reduxjs/toolkit": "^2.6.0",

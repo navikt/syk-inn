@@ -28,7 +28,7 @@ export function setConfig(newConfig: FhirMockConfig): FhirMockConfig {
 export function getConfig(): FhirMockConfig {
     if (config == null) {
         throw new Error(
-            '@navikt/fhir-mock config not set. Please configure a route with createFhirHandler with proper options.',
+            '@navikt/fhir-mock-server config not set. Please configure a route with createFhirHandler with proper options.',
         )
     }
 

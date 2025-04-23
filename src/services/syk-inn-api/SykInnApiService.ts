@@ -8,7 +8,7 @@ import {
 } from '@services/syk-inn-api/SykInnApiSchema'
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
 import { isE2E, isLocalOrDemo } from '@utils/env'
-import { base64ExamplePdf } from '@navikt/fhir-mock/pdfs'
+import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
 
 type NySykmeldingPayload = {
     pasientFnr: string

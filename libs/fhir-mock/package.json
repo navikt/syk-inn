@@ -1,5 +1,10 @@
 {
-    "name": "@navikt/fhir-mock",
+    "name": "@navikt/fhir-mock-server",
+    "version": "0.0.0",
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://npm.pkg.github.com/"
+    },
     "scripts": {
         "tsc": "tsc",
         "dev": "bun run --watch buntry-point.ts | pino-pretty"

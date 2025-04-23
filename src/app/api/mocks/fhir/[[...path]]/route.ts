@@ -1,7 +1,6 @@
 import { getAbsoluteURL } from '@utils/url'
 import { bundledEnv } from '@utils/env'
-
-import { createFhirHandler } from '../../../../../../libs/fhir-mock/src/next'
+import { createFhirHandler } from '@navikt/fhir-mock-server/next'
 
 const handler = createFhirHandler({
     baseUrl: getAbsoluteURL(),
