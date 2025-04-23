@@ -16,25 +16,13 @@ else
   BASE_COMMIT="$LAST_TAG"
 fi
 
-# Filter commits for this project
-RAW_COMMITS=$(git log ${BASE_COMMIT:+$BASE_COMMIT..HEAD} --pretty=format:"%s%n%b%n---" | \
-  awk -v proj="^([a-zA-Z]+)(${PROJECT}):" '
-    BEGIN { RS="---"; ORS=""; }
-    $0 ~ proj { print $0 "\n---\n"; }
-  ')
+SECOND_LINE=$(git log -1 --pretty=format:"%b" | sed -n '2p')
 
-if [ -z "$RAW_COMMITS" ]; then
-  echo "No new matching commits for project $PROJECT since $LAST_TAG"
-fi
-
-# Determine bump type
-BUMP="patch"
-if echo "$RAW_COMMITS" | grep -q "^MINOR$"; then
-  BUMP="minor"
-fi
-if echo "$RAW_COMMITS" | grep -q "^MAJOR$"; then
-  BUMP="major"
-fi
+case "$SECOND_LINE" in
+  MAJOR) BUMP="major" ;;
+  MINOR) BUMP="minor" ;;
+  *)     BUMP="patch" ;;
+esac
 
 
 # Parse last version
@@ -52,6 +40,16 @@ case "$BUMP" in
 esac
 NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
 NEW_TAG="${PROJECT}-${NEW_VERSION}"
+
+# Filter commits for this project
+RAW_COMMITS=$(git log ${BASE_COMMIT:+$BASE_COMMIT..HEAD} --pretty=format:"%s%n%b%n---" | \
+  awk -v proj="^([a-zA-Z]+)(${PROJECT}):" '
+    BEGIN { RS="---"; ORS=""; }
+    $0 ~ proj { print $0 "\n---\n"; }
+  ')
+
+echo "Relevant commits:"
+echo "$RAW_COMMITS"
 
 RELEASE_NOTES=$(echo "$RAW_COMMITS" | awk -v proj="^[a-zA-Z]+(${PROJECT}):[[:space:]]*" '
   BEGIN { RS="---"; ORS=""; }

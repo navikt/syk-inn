@@ -4,6 +4,7 @@ on:
     paths:
       - .github/workflows/fhir-mock-release.yml
       - 'libs/fhir-mock/**'
+      - 'scripts/libs/**'
 
 jobs:
   should_release:
