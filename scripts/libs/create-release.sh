@@ -16,7 +16,7 @@ else
   BASE_COMMIT="$LAST_TAG"
 fi
 
-SECOND_LINE=$(git log -1 --pretty=format:"%b" | sed -n '2p')
+SECOND_LINE=$(git log -1 --pretty=format:"%b")
 
 case "$SECOND_LINE" in
   MAJOR) BUMP="major" ;;
