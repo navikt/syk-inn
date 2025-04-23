@@ -3,15 +3,21 @@ import { logger } from '@navikt/next-logger'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { ExistingSykmelding } from '@services/syk-inn-api/SykInnApiSchema'
 import { isE2E, isLocalOrDemo } from '@utils/env'
-import { ensureValidFhirAuth } from '@fhir/auth/verify'
+import { getReadyClient } from '@fhir/smart-client'
 
 export async function GET(
     request: Request,
     { params }: { params: Promise<{ sykmeldingId: string }> },
 ): Promise<Response> {
-    const authStatus = await ensureValidFhirAuth()
-    if (authStatus !== 'ok') {
-        return authStatus
+    const client = await getReadyClient({ validate: true })
+    if ('error' in client) {
+        if (client.error === 'INVALID_TOKEN') {
+            logger.error('Session expired or invalid token')
+            return new Response('Unauthorized', { status: 401 })
+        }
+
+        logger.error(`Failed to instantiate SmartClient(ReadyClient), reason: ${client.error}`)
+        return new Response('Internal server error', { status: 500 })
     }
 
     // TODO: This should come from a non-fickleable source, use session?

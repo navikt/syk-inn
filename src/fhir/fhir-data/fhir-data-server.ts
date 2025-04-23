@@ -1,16 +1,10 @@
-import { decodeJwt } from 'jose'
 import { logger } from '@navikt/next-logger'
-import { ZodIssue } from 'zod'
 
-import {
-    FhirDocumentReference,
-    FhirDocumentReferenceBase,
-    FhirDocumentReferenceBaseSchema,
-    FhirPractitionerSchema,
-} from '@navikt/fhir-zod'
-import { getSession } from '@fhir/auth/session'
+import { FhirDocumentReference, FhirDocumentReferenceBase } from '@navikt/fhir-zod'
+import { ResourceRequestErrors, SmartClientReadyErrors, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { getHpr } from '@fhir/fhir-data/mappers/practitioner'
 import { getName } from '@fhir/fhir-data/mappers/patient'
+import { getReadyClient } from '@fhir/smart-client'
 
 import { BehandlerInfo } from '../../data-fetcher/data-service'
 
@@ -23,30 +17,16 @@ export const serverFhirResources = {
         pdf: string,
         title: string,
         sykmeldingId: string,
-    ): Promise<
-        | FhirDocumentReferenceBase
-        | { errorType: 'INVALID_FHIR_RESPONSE'; zodErrors: ZodIssue[] }
-        | { errorType: 'INVALID_PRACTITIONER_ID'; zodErrors: ZodIssue[] }
-        | { errorType: 'INACTIVE_USER_SESSION'; zodErrors: ZodIssue[] }
-    > => {
-        const currentSession = await getSession()
-        if (currentSession == null) {
-            return { errorType: 'INACTIVE_USER_SESSION', zodErrors: [] }
+    ): Promise<FhirDocumentReferenceBase | SmartClientReadyErrors | ResourceCreateErrors> => {
+        const client = await getReadyClient({ validate: true })
+        if ('error' in client) {
+            return { error: client.error }
         }
 
-        const decodedIdToken = decodeJwt(currentSession.idToken)
-        // TODO: fix webmed fallback - practitioner should not be used
+        const practitionerId = client.fhirUser
+        const patientId = client.patient
+        const encounterId = client.encounter
 
-        const practitionerId = currentSession.webmedPractitioner
-            ? `Practitioner/${currentSession.webmedPractitioner}`
-            : decodedIdToken.fhirUser
-
-        const patientId = currentSession.patient
-        const encounterId = currentSession.encounter
-
-        if (typeof practitionerId !== 'string') {
-            return { errorType: 'INVALID_PRACTITIONER_ID', zodErrors: [] }
-        }
         const documentReferencePayload = prepareDocRefWithB64Data({
             title,
             pdf,
@@ -56,141 +36,63 @@ export const serverFhirResources = {
             practitionerId,
         })
 
-        const resourcePath = `${currentSession.issuer}/DocumentReference/`
-        const documentReferenceResponse = await fetch(resourcePath, {
-            method: 'POST',
-            body: JSON.stringify(documentReferencePayload),
-            headers: {
-                Authorization: `Bearer ${currentSession.accessToken}`,
-                ContentType: 'application/fhir+json',
-            },
+        const createResult = await client.create('/DocumentReference', {
+            payload: documentReferencePayload,
         })
 
-        if (!documentReferenceResponse.ok) {
-            logger.error('Request to create DocumentReference failed', documentReferenceResponse)
-            if (documentReferenceResponse.headers.get('Content-Type')?.includes('text/plain')) {
-                const text = await documentReferenceResponse.text()
-                logger.error(`Request to create DocumentReference failed with text: ${text}`)
-            } else if (documentReferenceResponse.headers.get('Content-Type')?.includes('application/json')) {
-                const json = await documentReferenceResponse.json()
-                logger.error(`Request to create DocumentReference failed with json: ${JSON.stringify(json)}`)
-            }
-
-            return { errorType: 'INVALID_FHIR_RESPONSE', zodErrors: [] }
+        if ('error' in createResult) {
+            logger.error('Failed to create DocumentReference', createResult.error)
+            return createResult
         }
 
-        const docRefResult = await documentReferenceResponse.json()
-        const parsedDocRefResult = FhirDocumentReferenceBaseSchema.safeParse(docRefResult)
-        if (!parsedDocRefResult.success) {
-            return { errorType: 'INVALID_FHIR_RESPONSE', zodErrors: [] }
-        }
-
-        return parsedDocRefResult.data
+        return createResult
     },
 
     getDocumentReference: async (
         sykmeldingId: string,
-    ): Promise<
-        | FhirDocumentReferenceBase
-        | { errorType: 'DOCUMENT_NOT_FOUND' }
-        | { errorType: 'INVALID_FHIR_RESPONSE'; zodErrors: ZodIssue[] }
-        | { errorType: 'INACTIVE_USER_SESSION'; zodErrors: ZodIssue[] }
-        | { errorType: 'FAILED_TO_GET_DOCUMENT_REFERENCE'; zodErrors: ZodIssue[] }
-    > => {
-        const currentSession = await getSession()
-        if (currentSession == null) {
-            return { errorType: 'INACTIVE_USER_SESSION', zodErrors: [] }
+    ): Promise<FhirDocumentReferenceBase | SmartClientReadyErrors | ResourceRequestErrors> => {
+        const client = await getReadyClient({ validate: true })
+        if ('error' in client) {
+            return { error: client.error }
         }
-        const resourcePath = `${currentSession.issuer}/DocumentReference/${sykmeldingId}`
+
+        const resourcePath = `/DocumentReference/${sykmeldingId}` as const
         logger.info(`Resource path: ${resourcePath}`)
-        const documentReferenceResponse = await fetch(resourcePath, {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${currentSession.accessToken}`,
-                ContentType: 'application/fhir+json',
-            },
-        })
+        const documentReference = await client.request(resourcePath)
 
-        if (documentReferenceResponse.status === 404) {
-            logger.info(`DocumentReference/${sykmeldingId} was not found on FHIR server`)
-            return { errorType: 'DOCUMENT_NOT_FOUND' }
+        if ('error' in documentReference) {
+            return { error: documentReference.error }
         }
 
-        if (!documentReferenceResponse.ok) {
-            logger.error('Request to get DocumentReference failed', documentReferenceResponse)
-            if (documentReferenceResponse.headers.get('Content-Type')?.includes('text/plain')) {
-                const text = await documentReferenceResponse.text()
-                logger.error(`Request to get DocumentReference failed with text: ${text}`)
-            } else if (documentReferenceResponse.headers.get('Content-Type')?.includes('application/json')) {
-                const json = await documentReferenceResponse.json()
-                logger.error(`Request to get DocumentReference failed with json: ${JSON.stringify(json)}`)
-            }
-            return { errorType: 'FAILED_TO_GET_DOCUMENT_REFERENCE', zodErrors: [] }
-        }
-
-        const safeParsedDocumentReferenceResponse = FhirDocumentReferenceBaseSchema.safeParse(
-            await documentReferenceResponse.json(),
-        )
-        if (!safeParsedDocumentReferenceResponse.success) {
-            return {
-                errorType: 'INVALID_FHIR_RESPONSE',
-                zodErrors: safeParsedDocumentReferenceResponse.error.errors,
-            }
-        }
-
-        return safeParsedDocumentReferenceResponse.data
+        return documentReference
     },
 
     getBehandlerInfo: async (): Promise<BehandlerInfo> => {
-        const currentSession = await getSession()
-        if (currentSession == null) {
-            throw new Error('Active session is required')
+        const client = await getReadyClient({ validate: true })
+        if ('error' in client) {
+            throw new Error(`Unable to get fhirUser, cause: ${client.error}`)
         }
 
-        const decodedIdToken = decodeJwt(currentSession.idToken)
-        // TODO: fix webmed fallback - practitioner should not be used
-        const fhirUser = currentSession.webmedPractitioner
-            ? `Practitioner/${currentSession.webmedPractitioner}`
-            : decodedIdToken.fhirUser
-        const fhirUserResourcePath = `${currentSession.issuer}/${fhirUser}`
-
-        logger.info(`Trying to fetch fhirUser from ${fhirUserResourcePath}`)
-        const fhirUserResponse = await fetch(fhirUserResourcePath, {
-            headers: {
-                Authorization: `Bearer ${currentSession.accessToken}`,
-            },
-        })
-        if (!fhirUserResponse.ok) {
-            logger.error(
-                `fhirUser resource failed, responed with ${fhirUserResponse.status} ${fhirUserResponse.statusText}`,
-            )
-            if (fhirUserResponse.headers.get('Content-Type')?.includes('text/plain')) {
-                const text = await fhirUserResponse.text()
-                logger.error(`fhirUser resource failed with text: ${text}`)
-            } else if (fhirUserResponse.headers.get('Content-Type')?.includes('application/json')) {
-                const json = await fhirUserResponse.json()
-                logger.error(`fhirUser resource failed with json: ${JSON.stringify(json)}`)
-            }
-
-            throw new Error('Unable to get fhirUser')
+        if (!client.fhirUser.startsWith('Practitioner/')) {
+            logger.error(`fhirUser is not a Practitioner, was: ${client.fhirUser}`)
+            throw new Error('fhirUser is not a Practitioner')
         }
 
-        const fhirUserResult = await fhirUserResponse.json()
-        const parsedFhirUser = FhirPractitionerSchema.safeParse(fhirUserResult)
-        if (!parsedFhirUser.success) {
-            throw new Error('fhirUser was not a valid FhirPractitioner', {
-                cause: parsedFhirUser.error,
-            })
+        logger.info(`Trying to fetch fhirUser from /Practitioner/${client.fhirUser}`)
+        const practitionerResponse = await client.request(`/${client.fhirUser}` as `/Practitioner/${string}`)
+
+        if ('error' in practitionerResponse) {
+            throw new Error(`Unable to fetch 'behandler', reason: ${practitionerResponse.error}`)
         }
 
-        const hpr = getHpr(parsedFhirUser.data.identifier)
+        const hpr = getHpr(practitionerResponse.identifier)
         if (hpr == null) {
-            // TODO: Don't log name?
-            throw new Error(`Practitioner without HPR (${parsedFhirUser.data.name})`)
+            // TODO: Don't log name? :shrug:
+            throw new Error(`Practitioner without HPR (${practitionerResponse.name})`)
         }
 
         return {
-            navn: getName(parsedFhirUser.data.name),
+            navn: getName(practitionerResponse.name),
             epjDescription: 'Fake EPJ V0.89',
             hpr: hpr,
             autorisasjoner: [],

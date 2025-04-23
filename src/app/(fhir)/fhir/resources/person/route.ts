@@ -4,14 +4,20 @@ import { pdlApiService } from '@services/pdl/PdlApiService'
 import { wait } from '@utils/wait'
 import { PdlPerson } from '@services/pdl/PdlApiSchema'
 import { isLocalOrDemo } from '@utils/env'
-import { ensureValidFhirAuth } from '@fhir/auth/verify'
+import { getReadyClient } from '@fhir/smart-client'
 
 type PersonResult = PdlPerson | { errors: { message: string }[] }
 
 export async function GET(request: Request): Promise<Response> {
-    const authStatus = await ensureValidFhirAuth()
-    if (authStatus !== 'ok') {
-        return authStatus
+    const client = await getReadyClient({ validate: true })
+    if ('error' in client) {
+        if (client.error === 'INVALID_TOKEN') {
+            logger.error('Session expired or invalid token')
+            return new Response('Unauthorized', { status: 401 })
+        }
+
+        logger.error(`Failed to instantiate SmartClient(ReadyClient), reason: ${client.error}`)
+        return new Response('Internal server error', { status: 500 })
     }
 
     const ident = request.headers.get('Ident')
