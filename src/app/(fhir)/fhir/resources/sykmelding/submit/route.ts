@@ -6,7 +6,7 @@ import { wait } from '@utils/wait'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { NySykmelding, SubmitSykmeldingFormValuesSchema } from '@services/syk-inn-api/SykInnApiSchema'
 import { raise } from '@utils/ts'
-import { ensureValidFhirAuth } from '@fhir/auth/verify'
+import { getReadyClient } from '@fhir/smart-client'
 
 const SubmitSykmeldingPayloadSchema = z.object({
     values: SubmitSykmeldingFormValuesSchema,
@@ -17,9 +17,15 @@ const SubmitSykmeldingPayloadSchema = z.object({
 type SubmitResult = NySykmelding | { errors: { message: string } }[]
 
 export async function POST(request: Request): Promise<Response> {
-    const authStatus = await ensureValidFhirAuth()
-    if (authStatus !== 'ok') {
-        return authStatus
+    const client = await getReadyClient({ validate: true })
+    if ('error' in client) {
+        if (client.error === 'INVALID_TOKEN') {
+            logger.error('Session expired or invalid token')
+            return new Response('Unauthorized', { status: 401 })
+        }
+
+        logger.error(`Failed to instantiate SmartClient(ReadyClient), reason: ${client.error}`)
+        return new Response('Internal server error', { status: 500 })
     }
 
     const verifiedPayload = SubmitSykmeldingPayloadSchema.safeParse(await request.json())

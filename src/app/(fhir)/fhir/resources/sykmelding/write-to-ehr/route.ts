@@ -1,17 +1,23 @@
 import { logger } from '@navikt/next-logger'
 
-import { ensureValidFhirAuth } from '@fhir/auth/verify'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { serverFhirResources } from '@fhir/fhir-data/fhir-data-server'
+import { getReadyClient } from '@fhir/smart-client'
 
 import { WriteToEhrResult } from '../../../../../../data-fetcher/data-service'
 
 type WriteToEhrResponse = WriteToEhrResult | { errors: [{ message: string }] }
 
 export async function POST(request: Request): Promise<Response> {
-    const authStatus = await ensureValidFhirAuth()
-    if (authStatus !== 'ok') {
-        return authStatus
+    const client = await getReadyClient({ validate: true })
+    if ('error' in client) {
+        if (client.error === 'INVALID_TOKEN') {
+            logger.error('Session expired or invalid token')
+            return new Response('Unauthorized', { status: 401 })
+        }
+
+        logger.error(`Failed to instantiate SmartClient(ReadyClient), reason: ${client.error}`)
+        return new Response('Internal server error', { status: 500 })
     }
 
     const sykmeldingId = request.headers.get('sykmeldingId')
@@ -20,6 +26,7 @@ export async function POST(request: Request): Promise<Response> {
         return new Response('Missing sykmeldingId header', { status: 400 })
     }
 
+    // TODO: Don't use HPR header, use the HPR from the token instead
     const hpr = request.headers.get('HPR')
     if (hpr == null) {
         logger.error('Missing HPR header')
@@ -42,7 +49,7 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     if ('errorType' in existingDocumentReference && existingDocumentReference.errorType === 'INVALID_FHIR_RESPONSE') {
-        logger.error(new Error(existingDocumentReference.errorType, { cause: existingDocumentReference.zodErrors }))
+        logger.error(new Error(existingDocumentReference.errorType))
         return Response.json(
             { errors: [{ message: existingDocumentReference.errorType }] } satisfies WriteToEhrResponse,
             {
@@ -57,9 +64,9 @@ export async function POST(request: Request): Promise<Response> {
         'Sykmelding title goes here',
         sykmeldingId,
     ) // TODO title
-    if ('errorType' in createdDocRef) {
-        logger.error(new Error(createdDocRef.errorType, { cause: createdDocRef.zodErrors }))
-        return Response.json({ errors: [{ message: createdDocRef.errorType }] } satisfies WriteToEhrResponse, {
+    if ('error' in createdDocRef) {
+        logger.error(new Error(createdDocRef.error))
+        return Response.json({ errors: [{ message: createdDocRef.error }] } satisfies WriteToEhrResponse, {
             status: 500,
         })
     }

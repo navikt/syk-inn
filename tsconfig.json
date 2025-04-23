@@ -15,7 +15,6 @@
         "plugins": [{ "name": "next" }],
         "paths": {
             "@fhir/*": ["./src/fhir/*"],
-            "@fhir-secure/*": ["./src/fhir-secure/*"],
             "@utils/*": ["./src/utils/*"],
             "@components/*": ["./src/components/*"],
             "@services/*": ["./src/services/*"],

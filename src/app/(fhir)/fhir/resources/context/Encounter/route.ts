@@ -1,26 +1,26 @@
-import { cookies } from 'next/headers'
 import { logger } from '@navikt/next-logger'
 
-import { getSessionStore } from '@fhir/sessions/session-store'
+import { getReadyClient } from '@fhir/smart-client'
 
 export async function GET(): Promise<Response> {
-    const cookieStore = await cookies()
-    const sessionId = cookieStore.get('syk-inn-session-id')?.value
+    const client = await getReadyClient({ validate: true })
+    if ('error' in client) {
+        if (client.error === 'INVALID_TOKEN') {
+            logger.error('Session expired or invalid token')
+            return new Response('Unauthorized', { status: 401 })
+        }
 
-    if (sessionId == null) {
-        logger.error(`Missing sessionId cookie, session expired or middleware not middlewaring?`)
+        logger.error(
+            `Missing sessionId cookie (actual cause: ${client.error}), session expired or middleware not middlewaring?`,
+        )
         return new Response('No valid session', { status: 401 })
     }
 
-    const sessionStore = await getSessionStore()
-    const currentSession = await sessionStore.getSession(sessionId)
+    const encounter = await client.request(`/Encounter/${client.encounter}`)
+    if ('error' in encounter) {
+        logger.error(`Error fetching encounter: ${encounter.error}`)
+        return new Response('Error fetching encounter', { status: 500 })
+    }
 
-    const patientFhirResponse = await fetch(`${currentSession.issuer}/Encounter/${currentSession.encounter}`, {
-        headers: {
-            Authorization: `Bearer ${currentSession.accessToken}`,
-        },
-    })
-
-    const response: unknown = await patientFhirResponse.json()
-    return Response.json(response)
+    return Response.json(encounter)
 }

@@ -1,18 +1,9 @@
 import { cookies } from 'next/headers'
 
-import { getSessionStore, Session } from '../sessions/session-store'
+const SESSION_COOKIE_NAME = 'syk-inn-session-id'
 
-export async function getSession(sessionId?: string): Promise<Session | null> {
-    let session: string | null = sessionId ?? null
-    if (sessionId == null) {
-        const cookieStore = await cookies()
-        session = cookieStore.get('syk-inn-session-id')?.value ?? null
-    }
+export async function getSessionId(): Promise<string | null> {
+    const cookieStore = await cookies()
 
-    if (session == null) {
-        return null
-    }
-
-    const store = await getSessionStore()
-    return await store.getSession(session)
+    return cookieStore.get(SESSION_COOKIE_NAME)?.value ?? null
 }

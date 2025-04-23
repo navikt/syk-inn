@@ -1,4 +1,6 @@
-import { ensureValidFhirAuth } from '@fhir/auth/verify'
+import { logger } from '@navikt/next-logger'
+
+import { getReadyClient } from '@fhir/smart-client'
 
 /**
  * Used to show current status of the token verification lazily in the header
@@ -6,10 +8,15 @@ import { ensureValidFhirAuth } from '@fhir/auth/verify'
  * Only used for testing purposes in this early phase
  */
 export async function GET(): Promise<Response> {
-    const secureAuth = await ensureValidFhirAuth()
+    const client = await getReadyClient({ validate: true })
+    if ('error' in client) {
+        if (client.error === 'INVALID_TOKEN') {
+            logger.error('Session expired or invalid token')
+            return new Response('Unauthorized', { status: 401 })
+        }
 
-    if (secureAuth !== 'ok') {
-        return secureAuth
+        logger.error(`Failed to instantiate SmartClient(ReadyClient), reason: ${client.error}`)
+        return new Response('Internal server error', { status: 500 })
     }
 
     return Response.json({ ok: 'ok' })
