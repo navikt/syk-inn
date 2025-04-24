@@ -8,7 +8,7 @@ import { metaRoutes } from './meta/router'
 import { conditionRouter } from './resources/condition/router'
 import { FhirMockConfig } from './config'
 
-export { setConfig, FhirMockConfig } from './config'
+export { setConfig, type FhirMockConfig } from './config'
 
 export function createMockFhirApp(config: FhirMockConfig): Hono {
     const app = new Hono().basePath(config.fhirPath)
