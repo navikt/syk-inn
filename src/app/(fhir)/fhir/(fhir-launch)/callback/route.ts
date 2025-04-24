@@ -97,11 +97,6 @@ export async function GET(request: Request): Promise<Response> {
         encounter: parsedTokenResponse.data.encounter,
     }
 
-    // WebMed fallback hack (practitioner shall not be in token response)
-    if (parsedTokenResponse.data.practitioner) {
-        secureUserSessionValues.webmedPractitioner = parsedTokenResponse.data.practitioner
-    }
-
     await sessionStore.completeUserSession(sessionId, secureUserSessionValues)
 
     redirect(pathWithBasePath('/fhir'))

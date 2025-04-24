@@ -35,11 +35,7 @@ export const serverFhirResources = {
         }
 
         const decodedIdToken = decodeJwt(currentSession.idToken)
-        // TODO: fix webmed fallback - practitioner should not be used
-
-        const practitionerId = currentSession.webmedPractitioner
-            ? `Practitioner/${currentSession.webmedPractitioner}`
-            : decodedIdToken.fhirUser
+        const practitionerId = decodedIdToken.fhirUser
 
         const patientId = currentSession.patient
         const encounterId = currentSession.encounter
@@ -148,10 +144,7 @@ export const serverFhirResources = {
         }
 
         const decodedIdToken = decodeJwt(currentSession.idToken)
-        // TODO: fix webmed fallback - practitioner should not be used
-        const fhirUser = currentSession.webmedPractitioner
-            ? `Practitioner/${currentSession.webmedPractitioner}`
-            : decodedIdToken.fhirUser
+        const fhirUser = decodedIdToken.fhirUser
         const fhirUserResourcePath = `${currentSession.issuer}/${fhirUser}`
 
         logger.info(`Trying to fetch fhirUser from ${fhirUserResourcePath}`)

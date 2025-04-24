@@ -20,7 +20,6 @@ export type CompleteSession = {
     idToken: string
     patient: string
     encounter: string
-    webmedPractitioner?: string
 }
 
 export type Session = InitialSession & CompleteSession
