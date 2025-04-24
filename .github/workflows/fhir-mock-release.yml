@@ -51,6 +51,8 @@ jobs:
       - run: yarn --immutable
         env:
           NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: yarn tsc
+        working-directory: libs/fhir-mock
       - name: Publish package
         if: github.ref == 'refs/heads/main' && needs.should_release.outputs.skip == 'false'
         run: |
