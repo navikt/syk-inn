@@ -1,4 +1,4 @@
-import { logger } from '@navikt/next-logger'
+import { logger } from '@navikt/pino-logger'
 import { MiddlewareHandler } from 'hono'
 
 export const withAuthed: MiddlewareHandler = async (c, next) => {

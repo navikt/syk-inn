@@ -1,4 +1,4 @@
-import { logger } from '@navikt/next-logger'
+import { logger } from '@navikt/pino-logger'
 
 // TODO: make @navikt/fhir-zod?
 type FhirCondition = Record<string, unknown>

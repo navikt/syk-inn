@@ -1,4 +1,4 @@
-import { logger } from '@navikt/next-logger'
+import { logger } from '@navikt/pino-logger'
 
 import { createMockFhirApp } from './src/router'
 import { FhirMockConfig, setConfig } from './src/config'

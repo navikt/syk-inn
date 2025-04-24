@@ -1,4 +1,4 @@
-import { logger as pinoLogger } from '@navikt/next-logger'
+import { logger as pinoLogger } from '@navikt/pino-logger'
 import { HonoRequest } from 'hono'
 
 import { createAccessToken, createIdToken } from '../jwt/jwt'

@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { logger } from '@navikt/next-logger'
+import { logger } from '@navikt/pino-logger'
 
 import { withAuthed } from '../../auth/verify-authed'
 
