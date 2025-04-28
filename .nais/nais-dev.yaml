@@ -70,4 +70,5 @@ spec:
   secureLogs:
     enabled: true
   envFrom:
+    - secret: login-config-syk-inn
     - secret: tsm-unleash-api-token
