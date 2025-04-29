@@ -1,10 +1,10 @@
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
-import { z } from 'zod'
 
 import { raise } from '@utils/ts'
 import { wait } from '@utils/wait'
 import { pathWithBasePath } from '@utils/url'
+import { createFhirBundleSchema } from '@navikt/smart-on-fhir/zod'
 
 import { FhirBundleOrPatientSchema } from '../fhir-data/schema/patient'
 import { getFastlege, getName, getValidPatientIdent } from '../fhir-data/schema/mappers/patient'
@@ -41,19 +41,21 @@ export const fhirResources = {
         }
     },
     getFhirKonsultasjon: async () => {
-        const patientConditionList: unknown = await getSecuredResource(`/context/Conditions`)
-        const parsedConditionList = z.array(FhirConditionSchema).safeParse(patientConditionList)
+        const patientConditionBundle: unknown = await getSecuredResource(`/context/Conditions`)
+        const parsedConditionBundle = createFhirBundleSchema(FhirConditionSchema).safeParse(patientConditionBundle)
 
         const encounter: unknown = await getSecuredResource(`/context/Encounter`)
         const parsedEncounter = FhirEncounterSchema.safeParse(encounter)
 
-        if (!parsedConditionList.success) {
-            logger.error('Failed to parse conditions', parsedConditionList.error)
-            throw parsedConditionList.error
+        if (!parsedConditionBundle.success) {
+            logger.error('Failed to parse conditions', parsedConditionBundle.error)
+            throw parsedConditionBundle.error
         }
 
-        const [relevanteDignoser, irrelevanteDiagnoser] = parsedConditionList.data
-            ? R.partition(parsedConditionList.data, (diagnosis) =>
+        const conditionList = parsedConditionBundle.data?.entry.map((it) => it.resource)
+
+        const [relevanteDignoser, irrelevanteDiagnoser] = conditionList
+            ? R.partition(conditionList, (diagnosis) =>
                   diagnosis.code.coding.some((coding) => diagnosisUrnToOidType(coding.system) != null),
               )
             : [[], []]

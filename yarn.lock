@@ -1062,7 +1062,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@workspace:libs/smart-on-fhir":
+"@navikt/smart-on-fhir@workspace:*, @navikt/smart-on-fhir@workspace:libs/smart-on-fhir":
   version: 0.0.0-use.local
   resolution: "@navikt/smart-on-fhir@workspace:libs/smart-on-fhir"
   dependencies:
@@ -7533,6 +7533,7 @@ __metadata:
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/next-logger": "npm:^3.0.3"
     "@navikt/oasis": "npm:^3.7.0"
+    "@navikt/smart-on-fhir": "workspace:*"
     "@playwright/test": "npm:1.52.0"
     "@reduxjs/toolkit": "npm:^2.7.0"
     "@tailwindcss/postcss": "npm:^4.1.4"

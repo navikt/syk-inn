@@ -33,6 +33,7 @@
         "@navikt/fhir-mock-server": "workspace:*",
         "@navikt/next-logger": "^3.0.3",
         "@navikt/oasis": "^3.7.0",
+        "@navikt/smart-on-fhir": "workspace:*",
         "@reduxjs/toolkit": "^2.7.0",
         "@tanstack/react-query": "^5.74.4",
         "@tanstack/react-query-devtools": "^5.74.6",
