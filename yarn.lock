@@ -1081,6 +1081,7 @@ __metadata:
     "@navikt/pino-logger": "npm:^3.0.3"
     jose: "npm:^6.0.10"
     openid-client: "npm:^6.4.2"
+    pino: "npm:^9.6.0"
     zod: "npm:^3.24.3"
   languageName: unknown
   linkType: soft
