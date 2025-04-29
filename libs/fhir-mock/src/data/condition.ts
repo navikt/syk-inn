@@ -3,6 +3,14 @@ import { logger } from '@navikt/pino-logger'
 // TODO: make @navikt/fhir-zod?
 type FhirCondition = Record<string, unknown>
 
+type Bundle<T> = {
+    resourceType: 'Bundle'
+    type: 'searchset'
+    entry: Array<{
+        resource: T
+    }>
+}
+
 const conditions: FhirCondition[] = [
     {
         resourceType: 'Condition',
@@ -76,8 +84,16 @@ export function getConditionById(id: string): FhirCondition | null {
     return condition
 }
 
-export function getConditionsByEncounterId(encounterId: string): FhirCondition[] | null {
+export function getConditionsByEncounterId(encounterId: string): Bundle<FhirCondition> | null {
     // TODO: see comment above
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return conditions.filter((it) => (it.encounter as any).reference === `Encounter/${encounterId}`)
+    const relevantConditions = conditions.filter((it) => (it.encounter as any).reference === `Encounter/${encounterId}`)
+
+    return {
+        resourceType: 'Bundle',
+        type: 'searchset',
+        entry: relevantConditions.map((condition) => ({
+            resource: condition,
+        })),
+    }
 }
