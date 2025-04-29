@@ -15,5 +15,4 @@ export const CompleteSessionSchema = InitialSessionSchema.extend({
     idToken: z.string(),
     patient: z.string(),
     encounter: z.string(),
-    // webmedPractitioner?: string
 })

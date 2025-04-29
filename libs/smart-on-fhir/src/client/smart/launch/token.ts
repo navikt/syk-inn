@@ -1,6 +1,7 @@
-import { TokenResponseSchema, TokenResponse } from '../../schema/TokenResponse'
 import { InitialSession } from '../../storage/schema'
 import { logger } from '../../logger'
+
+import { TokenResponseSchema, TokenResponse } from './token-schema'
 
 export type TokenExchangeErrors = {
     error: 'TOKEN_EXCHANGE_FAILED' | 'TOKEN_EXCHANGE_INVALID_BODY' | 'UNKNOWN_ERROR'
