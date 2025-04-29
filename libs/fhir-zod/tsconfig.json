@@ -9,8 +9,9 @@
         "strict": true,
         "skipLibCheck": true,
         "isolatedModules": true,
-        "outDir": "dist"
+        "outDir": "dist",
+        "rootDir": "src"
     },
     "include": ["src/**/*.ts"],
-    "exclude": ["**/*.test.ts", "./buntry-point.ts"]
+    "exclude": ["**/*.test.ts"]
 }

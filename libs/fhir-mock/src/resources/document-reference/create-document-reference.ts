@@ -1,4 +1,4 @@
-import { FhirDocumentReference } from '../../../../../src/fhir/fhir-data/schema/documentReference'
+import { FhirDocumentReference } from '@navikt/fhir-zod'
 
 export function createDocumentReference(): FhirDocumentReference {
     return {

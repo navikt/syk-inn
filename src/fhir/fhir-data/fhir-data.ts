@@ -4,13 +4,15 @@ import * as R from 'remeda'
 import { raise } from '@utils/ts'
 import { wait } from '@utils/wait'
 import { pathWithBasePath } from '@utils/url'
-import { createFhirBundleSchema } from '@navikt/smart-on-fhir/zod'
+import {
+    createFhirBundleSchema,
+    FhirBundleOrPatientSchema,
+    FhirConditionSchema,
+    FhirEncounterSchema,
+} from '@navikt/fhir-zod'
+import { getFastlege, getName, getValidPatientIdent } from '@fhir/fhir-data/mappers/patient'
+import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/fhir-data/mappers/diagnosis'
 
-import { FhirBundleOrPatientSchema } from '../fhir-data/schema/patient'
-import { getFastlege, getName, getValidPatientIdent } from '../fhir-data/schema/mappers/patient'
-import { diagnosisUrnToOidType, getDiagnosis } from '../fhir-data/schema/mappers/diagnosis'
-import { FhirConditionSchema } from '../fhir-data/schema/condition'
-import { FhirEncounterSchema } from '../fhir-data/schema/encounter'
 import { PasientInfo } from '../../data-fetcher/data-service'
 
 /**

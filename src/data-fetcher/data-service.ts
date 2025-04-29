@@ -1,5 +1,5 @@
+import { FhirDocumentReferenceBase } from '@navikt/fhir-zod'
 import { SubmitSykmeldingFormValues } from '@services/syk-inn-api/SykInnApiSchema'
-import { FhirDocumentReferenceBase } from '@fhir/fhir-data/schema/documentReference'
 
 export type NotAvailable = typeof NotAvailable
 export const NotAvailable = {
@@ -129,6 +129,7 @@ export type ExistingSykmelding = {
 
 export type WriteToEhrResult = {
     outcome: 'NEWLY_CREATED' | 'ALREADY_EXISTS'
+    // TODO: Don't bleed zod types into data service
     documentReference: FhirDocumentReferenceBase
 }
 

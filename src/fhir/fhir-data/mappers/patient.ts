@@ -1,10 +1,9 @@
 import { logger } from '@navikt/next-logger'
 
-import { getHpr, userUrnToOidType } from '@fhir/fhir-data/schema/mappers/practitioner'
 import { raise } from '@utils/ts'
+import { FhirPatient, Name } from '@navikt/fhir-zod'
 
-import { FhirPatient } from '../patient'
-import { Name } from '../common'
+import { getHpr, userUrnToOidType } from './practitioner'
 
 export function getName(name: Name): string {
     return `${name[0].given[0]} ${name[0].family}`

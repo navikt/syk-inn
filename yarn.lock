@@ -1012,12 +1012,23 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
+    "@navikt/fhir-zod": "workspace:^"
     "@navikt/pino-logger": "npm:^3.0.3"
     "@types/node": "npm:^22.14.1"
     hono: "npm:^4.7.7"
     jose: "npm:^6.0.10"
     nextleton: "npm:^0.6.1"
+    pino: "npm:^9.6.0"
     pino-pretty: "npm:^13.0.0"
+    zod: "npm:^3.24.3"
+  languageName: unknown
+  linkType: soft
+
+"@navikt/fhir-zod@workspace:*, @navikt/fhir-zod@workspace:^, @navikt/fhir-zod@workspace:libs/fhir-zod":
+  version: 0.0.0-use.local
+  resolution: "@navikt/fhir-zod@workspace:libs/fhir-zod"
+  peerDependencies:
+    zod: 3
   languageName: unknown
   linkType: soft
 
@@ -1066,6 +1077,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@navikt/smart-on-fhir@workspace:libs/smart-on-fhir"
   dependencies:
+    "@navikt/fhir-zod": "workspace:^"
     "@navikt/pino-logger": "npm:^3.0.3"
     jose: "npm:^6.0.10"
     openid-client: "npm:^6.4.2"
@@ -7531,6 +7543,7 @@ __metadata:
     "@navikt/ds-tailwind": "npm:^7.20.0"
     "@navikt/eslint-config-teamsykmelding": "npm:^7.1.0"
     "@navikt/fhir-mock-server": "workspace:*"
+    "@navikt/fhir-zod": "workspace:*"
     "@navikt/next-logger": "npm:^3.0.3"
     "@navikt/oasis": "npm:^3.7.0"
     "@navikt/smart-on-fhir": "workspace:*"

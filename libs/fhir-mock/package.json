@@ -1,6 +1,7 @@
 {
     "name": "@navikt/fhir-mock-server",
     "version": "0.0.0",
+    "type": "module",
     "publishConfig": {
         "access": "public",
         "registry": "https://npm.pkg.github.com/"
@@ -21,10 +22,13 @@
         }
     },
     "dependencies": {
+        "@navikt/fhir-zod": "workspace:^",
         "@navikt/pino-logger": "^3.0.3",
         "hono": "^4.7.7",
         "jose": "^6.0.10",
-        "nextleton": "^0.6.1"
+        "nextleton": "^0.6.1",
+        "pino": "^9.6.0",
+        "zod": "^3.24.3"
     },
     "devDependencies": {
         "@types/node": "^22.14.1",

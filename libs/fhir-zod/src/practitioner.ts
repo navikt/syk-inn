@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { NameSchema } from './common'
+import { NameSchema } from '@navikt/fhir-zod'
 
 export type FhirPractitionerQualification = z.infer<typeof FhirPractitionerQualificationSchema>
 const FhirPractitionerQualificationSchema = z.object({

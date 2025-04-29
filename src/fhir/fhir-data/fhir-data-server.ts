@@ -2,16 +2,16 @@ import { decodeJwt } from 'jose'
 import { logger } from '@navikt/next-logger'
 import { ZodIssue } from 'zod'
 
-import { getSession } from '@fhir/auth/session'
 import {
     FhirDocumentReference,
     FhirDocumentReferenceBase,
     FhirDocumentReferenceBaseSchema,
-} from '@fhir/fhir-data/schema/documentReference'
+    FhirPractitionerSchema,
+} from '@navikt/fhir-zod'
+import { getSession } from '@fhir/auth/session'
+import { getHpr } from '@fhir/fhir-data/mappers/practitioner'
+import { getName } from '@fhir/fhir-data/mappers/patient'
 
-import { FhirPractitionerSchema } from '../fhir-data/schema/practitioner'
-import { getHpr } from '../fhir-data/schema/mappers/practitioner'
-import { getName } from '../fhir-data/schema/mappers/patient'
 import { BehandlerInfo } from '../../data-fetcher/data-service'
 
 /**

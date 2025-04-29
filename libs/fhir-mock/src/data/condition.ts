@@ -1,22 +1,11 @@
+import { FhirBundle, FhirCondition } from '@navikt/fhir-zod'
 import { logger } from '@navikt/pino-logger'
-
-// TODO: make @navikt/fhir-zod?
-type FhirCondition = Record<string, unknown>
-
-type Bundle<T> = {
-    resourceType: 'Bundle'
-    type: 'searchset'
-    entry: Array<{
-        resource: T
-    }>
-}
 
 const conditions: FhirCondition[] = [
     {
         resourceType: 'Condition',
         id: 'ff0dba18-b879-4fd2-b047-15f58f21696e',
         subject: {
-            type: 'Patient',
             reference: 'Patient/cd09f5d4-55f7-4a24-a25d-a5b65c7a8805',
         },
         encounter: {
@@ -36,7 +25,6 @@ const conditions: FhirCondition[] = [
         resourceType: 'Condition',
         id: 'cbc02cc5-ca4a-4802-982c-31745d86dafc',
         subject: {
-            type: 'Patient',
             reference: 'Patient/cd09f5d4-55f7-4a24-a25d-a5b65c7a8805',
         },
         encounter: {
@@ -56,7 +44,6 @@ const conditions: FhirCondition[] = [
         resourceType: 'Condition',
         id: '3473fdfa-7182-4f9d-ae3d-a8a967658a35',
         subject: {
-            type: 'Patient',
             reference: 'Patient/cd09f5d4-55f7-4a24-a25d-a5b65c7a8805',
         },
         encounter: {
@@ -84,10 +71,8 @@ export function getConditionById(id: string): FhirCondition | null {
     return condition
 }
 
-export function getConditionsByEncounterId(encounterId: string): Bundle<FhirCondition> | null {
-    // TODO: see comment above
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const relevantConditions = conditions.filter((it) => (it.encounter as any).reference === `Encounter/${encounterId}`)
+export function getConditionsByEncounterId(encounterId: string): FhirBundle<FhirCondition> | null {
+    const relevantConditions = conditions.filter((it) => it.encounter.reference === `Encounter/${encounterId}`)
 
     return {
         resourceType: 'Bundle',
