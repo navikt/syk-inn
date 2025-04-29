@@ -31,6 +31,7 @@
         "@navikt/ds-react": "^7.20.0",
         "@navikt/ds-tailwind": "^7.20.0",
         "@navikt/fhir-mock-server": "workspace:*",
+        "@navikt/fhir-zod": "workspace:*",
         "@navikt/next-logger": "^3.0.3",
         "@navikt/oasis": "^3.7.0",
         "@navikt/smart-on-fhir": "workspace:*",

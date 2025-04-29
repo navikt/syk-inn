@@ -1,12 +1,6 @@
 import { randomPKCECodeVerifier, randomState } from 'openid-client'
 import { decodeJwt, jwtVerify } from 'jose'
 import { ZodSchema } from 'zod'
-
-import { SmartStorage, safeSmartStorage, SafeSmartStorage, SmartStorageErrors } from '../storage'
-import { assertNotBrowser } from '../utils'
-import { logger } from '../logger'
-import { CompleteSession, InitialSession } from '../storage/schema'
-import { IdToken, IdTokenSchema } from '../schema/TokenResponse'
 import {
     FhirPractitioner,
     FhirPractitionerSchema,
@@ -21,7 +15,13 @@ import {
     FhirEncounterSchema,
     FhirConditionSchema,
     createFhirBundleSchema,
-} from '../../zod'
+} from '@navikt/fhir-zod'
+
+import { SmartStorage, safeSmartStorage, SafeSmartStorage, SmartStorageErrors } from '../storage'
+import { assertNotBrowser } from '../utils'
+import { logger } from '../logger'
+import { CompleteSession, InitialSession } from '../storage/schema'
+import { IdToken, IdTokenSchema } from '../schema/TokenResponse'
 
 import { fetchSmartConfiguration, getJwkSet, SmartConfigurationErrors } from './smart-configuration'
 import { buildAuthUrl } from './launch/authorization'

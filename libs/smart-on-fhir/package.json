@@ -4,12 +4,10 @@
     "exports": {
         "./client": {
             "import": "./src/client/index.ts"
-        },
-        "./zod": {
-            "import": "./src/zod/index.ts"
         }
     },
     "dependencies": {
+        "@navikt/fhir-zod": "workspace:^",
         "@navikt/pino-logger": "^3.0.3",
         "jose": "^6.0.10",
         "openid-client": "^6.4.2",
