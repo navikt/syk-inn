@@ -1,7 +1,7 @@
 import { calculatePKCECodeChallenge } from 'openid-client'
 
 import { InitialSession } from '../../storage/schema'
-import { SmartClientConfiguration } from '../client'
+import { SmartClientConfiguration } from '../SmartClient'
 
 type AuthUrlOpts = Pick<InitialSession, 'issuer' | 'state' | 'codeVerifier' | 'authorizationEndpoint'> & {
     launch: string

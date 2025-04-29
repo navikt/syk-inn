@@ -1,7 +1,8 @@
 import { createRemoteJWKSet } from 'jose'
 
-import { logger } from '../logger'
-import { SmartConfiguration, SmartConfigurationSchema } from '../schema/SmartConfiguration'
+import { logger } from '../../logger'
+
+import { SmartConfiguration, SmartConfigurationSchema } from './smart-configuration-schema'
 
 export type SmartConfigurationErrors = {
     error: 'WELL_KNOWN_INVALID_BODY' | 'WELL_KNOWN_INVALID_RESPONSE' | 'UNKNOWN_ERROR'

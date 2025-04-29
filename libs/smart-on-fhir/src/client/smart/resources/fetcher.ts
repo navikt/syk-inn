@@ -1,4 +1,4 @@
-import { CompleteSession } from '../storage/schema'
+import { CompleteSession } from '../../storage/schema'
 
 type FhirPath = {
     session: CompleteSession
