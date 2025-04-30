@@ -1,7 +1,7 @@
 import { randomPKCECodeVerifier, randomState } from 'openid-client'
 
 import { safeSmartStorage, SafeSmartStorage, SmartStorage, SmartStorageErrors } from '../storage'
-import { assertNotBrowser } from '../utils'
+import { assertNotBrowser, removeTrailingSlash } from '../utils'
 import { logger } from '../logger'
 import { CompleteSession, InitialSession } from '../storage/schema'
 
@@ -43,10 +43,10 @@ export class SmartClient {
 
     async launch(params: {
         sessionId: string
-        issuer: string
+        iss: string
         launch: string
     }): Promise<Launch | LaunchError | SmartConfigurationErrors> {
-        const smartConfig = await fetchSmartConfiguration(params.issuer)
+        const smartConfig = await fetchSmartConfiguration(params.iss)
         if ('error' in smartConfig) {
             return { error: smartConfig.error }
         }
@@ -58,6 +58,7 @@ export class SmartClient {
         const codeVerifier = randomPKCECodeVerifier()
         const state = randomState()
         const initialSessionPayload: InitialSession = {
+            server: removeTrailingSlash(params.iss),
             issuer: smartConfig.issuer,
             authorizationEndpoint: smartConfig.authorization_endpoint,
             tokenEndpoint: smartConfig.token_endpoint,
@@ -115,6 +116,7 @@ export class SmartClient {
             accessToken: tokenResponse.access_token,
             patient: tokenResponse.patient,
             encounter: tokenResponse.encounter,
+            webmedPractitioner: tokenResponse.practitioner,
         }
 
         await this._storage.set(params.sessionId, completeSessionValues)
@@ -126,17 +128,32 @@ export class SmartClient {
 
     async ready(
         sessionId: string | null,
-    ): Promise<ReadyClient | (SmartClientReadyErrors & { validate: () => Promise<false> })> {
-        if (sessionId == null) return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
+    ): Promise<ReadyClient | (SmartClientReadyErrors & { validate: ReadyClient['validate'] })> {
+        if (sessionId == null) {
+            logger.warn(`Tried to .ready SmartClient without active sessionId (was null)`)
+            return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
+        }
 
         const session = await this._storage.get(sessionId)
 
-        if (session == null) return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
-        if (!('idToken' in session)) return { error: 'INCOMPLETE_SESSION', validate: async () => false }
+        if (session == null) {
+            logger.warn(`Tried to .ready SmartClient, but found no active session for id "${sessionId}"`)
+            return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
+        }
+
+        if (!('idToken' in session)) {
+            logger.warn(`Tried to .ready SmartClient, but session was inpcomplete for id "${sessionId}"`)
+            return { error: 'INCOMPLETE_SESSION', validate: async () => false }
+        }
 
         try {
             return new ReadyClient(this, session)
-        } catch (e) {
+        } catch (error) {
+            logger.error(
+                new Error(`Tried to .ready SmartClient, ReadyClient failed to instanciate for id "${sessionId}"`, {
+                    cause: error,
+                }),
+            )
             return { error: 'INVALID_ID_TOKEN', validate: async () => false }
         }
     }

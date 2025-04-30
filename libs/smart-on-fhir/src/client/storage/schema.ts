@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export type InitialSession = z.infer<typeof InitialSessionSchema>
 export const InitialSessionSchema = z.object({
+    server: z.string(),
     issuer: z.string(),
     authorizationEndpoint: z.string(),
     tokenEndpoint: z.string(),
@@ -15,4 +16,6 @@ export const CompleteSessionSchema = InitialSessionSchema.extend({
     idToken: z.string(),
     patient: z.string(),
     encounter: z.string(),
+    // TODO: Temporary hack
+    webmedPractitioner: z.string().optional(),
 })

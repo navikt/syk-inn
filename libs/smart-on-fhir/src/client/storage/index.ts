@@ -28,7 +28,9 @@ export function safeSmartStorage(smartStorage: SmartStorage | Promise<SmartStora
             const initialParsed = InitialSessionSchema.safeParse(raw)
             if (initialParsed.error) {
                 logger.error(
-                    new Error(`SmartSession state for session ${sessionId} is broken`, { cause: initialParsed.error }),
+                    new Error(`SmartSession state for session ${sessionId} is broken`, {
+                        cause: initialParsed.error,
+                    }),
                 )
                 return { error: 'INVALID_SESSION_STATE' }
             }

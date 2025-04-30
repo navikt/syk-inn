@@ -45,6 +45,14 @@ export class ReadyClient {
     }
 
     public get fhirUser(): string {
+        if (this._session.webmedPractitioner) {
+            return `Practitioner/${this._session.webmedPractitioner}`
+        }
+
+        if (this._idToken.fhirUser == null) {
+            throw new Error('WebMed hack: No webmedPractitioner and no idToken.fhirUser, what up?')
+        }
+
         return this._idToken.fhirUser
     }
 
@@ -53,7 +61,7 @@ export class ReadyClient {
             `Current users issuer: ${this._session.issuer}, looking for well known at /.well-known/smart-configuration`,
         )
 
-        const smartConfig = await fetchSmartConfiguration(this._session.issuer)
+        const smartConfig = await fetchSmartConfiguration(this._session.server)
         if ('error' in smartConfig) {
             logger.error(`Failed to fetch smart configuration: ${smartConfig.error}`)
             return false
@@ -62,11 +70,7 @@ export class ReadyClient {
         logger.info(`Fetched well known configuration from session.issuer, jwks_uri: ${smartConfig['jwks_uri']}`)
         try {
             await jwtVerify(this._session.accessToken, getJwkSet(smartConfig['jwks_uri']), {
-                issuer: [
-                    this._session.issuer,
-                    // TODO: token can be issued by a differen auth server than the smart launched issuer
-                    // ...knownIssuers[session.issuer].issuers
-                ],
+                issuer: this._session.issuer,
                 algorithms: ['RS256'],
             })
 

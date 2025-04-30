@@ -1,6 +1,7 @@
 import { createRemoteJWKSet } from 'jose'
 
 import { logger } from '../../logger'
+import { removeTrailingSlash } from '../../utils'
 
 import { SmartConfiguration, SmartConfigurationSchema } from './smart-configuration-schema'
 
@@ -8,40 +9,37 @@ export type SmartConfigurationErrors = {
     error: 'WELL_KNOWN_INVALID_BODY' | 'WELL_KNOWN_INVALID_RESPONSE' | 'UNKNOWN_ERROR'
 }
 
-export async function fetchSmartConfiguration(issuer: string): Promise<SmartConfiguration | SmartConfigurationErrors> {
-    issuer = removeTrailingSlash(issuer)
+export async function fetchSmartConfiguration(
+    fhirServer: string,
+): Promise<SmartConfiguration | SmartConfigurationErrors> {
+    fhirServer = removeTrailingSlash(fhirServer)
 
-    const smartConfigurationUrl = `${issuer}/.well-known/smart-configuration`
+    const smartConfigurationUrl = `${fhirServer}/.well-known/smart-configuration`
     logger.info(`Fetching smart-configuration from ${smartConfigurationUrl}`)
 
     try {
         const response = await fetch(smartConfigurationUrl)
         if (!response.ok) {
-            logger.error(`Issuer responded with ${response.status} ${response.statusText}`)
+            logger.error(`FHIR Server responded with ${response.status} ${response.statusText}`)
             return { error: 'WELL_KNOWN_INVALID_RESPONSE' }
         }
 
         const result: unknown = await response.json()
         const validatedWellKnown = SmartConfigurationSchema.safeParse(result)
         if (!validatedWellKnown.success) {
-            logger.error(`Issuer ${issuer} responded with weird smart-configuration`, {
+            logger.error(`FHIR Server ${fhirServer} responded with weird smart-configuration`, {
                 cause: validatedWellKnown.error,
             })
 
             return { error: 'WELL_KNOWN_INVALID_BODY' }
         }
 
-        logger.info(`Issuer ${issuer} validated, creating secure session`)
-
+        logger.info(`FHIR Server ${fhirServer} response validated`)
         return validatedWellKnown.data
     } catch (e) {
         logger.error('Fatal error fetching smart configuration', { cause: e })
         return { error: 'UNKNOWN_ERROR' }
     }
-}
-
-function removeTrailingSlash(url: string): string {
-    return url.replace(/\/$/, '')
 }
 
 const remoteJWKSetCache: Record<string, ReturnType<typeof createRemoteJWKSet>> = {}

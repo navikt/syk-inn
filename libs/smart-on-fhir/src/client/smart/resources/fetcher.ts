@@ -10,7 +10,7 @@ type PostFhir = {
 }
 
 export async function postFhir({ session, path }: FhirPath, { payload }: PostFhir): Promise<Response> {
-    const resourcePath = `${session.issuer}${path}`
+    const resourcePath = `${session.server}${path}`
     return await fetch(resourcePath, {
         method: 'POST',
         body: JSON.stringify(payload),
@@ -23,7 +23,7 @@ export async function postFhir({ session, path }: FhirPath, { payload }: PostFhi
 }
 
 export async function getFhir({ session, path }: FhirPath): Promise<Response> {
-    const resourcePath = `${session.issuer}${path}`
+    const resourcePath = `${session.server}${path}`
     return await fetch(resourcePath, {
         method: 'GET',
         headers: {

@@ -15,5 +15,5 @@ export const TokenResponseSchema = z.object({
 export type IdToken = z.infer<typeof IdTokenSchema>
 export const IdTokenSchema = z.object({
     // SMART:
-    fhirUser: z.string(),
+    fhirUser: z.string().optional(), // TODO: Opitonalness is part of webmed hack
 })
