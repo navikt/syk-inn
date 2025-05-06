@@ -25,6 +25,8 @@
     },
     "dependencies": {
         "@ariakit/react": "^0.4.17",
+        "@grafana/faro-web-sdk": "^1.18.1",
+        "@grafana/faro-web-tracing": "^1.18.1",
         "@navikt/aksel-icons": "^7.21.1",
         "@navikt/diagnosekoder": "^1.2025.0",
         "@navikt/ds-css": "^7.21.1",
@@ -60,7 +62,7 @@
         "react-error-boundary": "^6.0.0",
         "react-hook-form": "^7.56.3",
         "react-redux": "^9.2.0",
-        "remeda": "^2.21.5",
+        "remeda": "^2.21.6",
         "server-only": "^0.0.1",
         "tailwind-merge": "^3.3.0",
         "zod": "^3.24.4"
