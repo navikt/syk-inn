@@ -25,6 +25,8 @@
     },
     "dependencies": {
         "@ariakit/react": "^0.4.17",
+        "@grafana/faro-web-sdk": "^1.17.2",
+        "@grafana/faro-web-tracing": "^1.17.2",
         "@navikt/aksel-icons": "^7.21.0",
         "@navikt/diagnosekoder": "^1.2025.0",
         "@navikt/ds-css": "^7.21.0",

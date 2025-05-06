@@ -2,19 +2,13 @@
 
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { QueryClient, QueryClientProvider, QueryCache } from '@tanstack/react-query'
-import { configureLogger, logger } from '@navikt/next-logger'
+import { logger } from '@navikt/next-logger'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
-import { bundledEnv } from '@utils/env'
-
-import { Toggles } from '../toggles/toggles'
-import { ToggleProvider } from '../toggles/context'
+import { Toggles } from '@toggles/toggles'
+import { ToggleProvider } from '@toggles/context'
 
 import StoreProvider from './redux/StoreProvider'
-
-configureLogger({
-    basePath: bundledEnv.NEXT_PUBLIC_BASE_PATH ?? undefined,
-})
 
 function Providers({ children, toggles }: PropsWithChildren<{ toggles: Toggles }>): ReactElement {
     const [queryClient] = React.useState(
