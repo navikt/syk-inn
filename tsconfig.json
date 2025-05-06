@@ -18,7 +18,8 @@
             "@utils/*": ["./src/utils/*"],
             "@components/*": ["./src/components/*"],
             "@services/*": ["./src/services/*"],
-            "@toggles/*": ["./src/toggles/*"]
+            "@toggles/*": ["./src/toggles/*"],
+            "@faro/*": ["./src/faro/*"]
         },
         "target": "ES2017"
     },
