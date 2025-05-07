@@ -8,14 +8,11 @@ import { isLocalOrDemo } from '@utils/env'
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 import NySykmeldingFormMultiStep from '@components/ny-sykmelding-form-multi-step/NySykmeldingFormMultiStep'
 import TidligereSykmeldingerTimeline from '@components/tidligere-sykmeldinger/TidligereSykmeldingerTimeline'
-import FhirDataProvider from '@fhir/components/FhirDataProvider'
-import { serverFhirResources } from '@fhir/fhir-data/fhir-data-server'
 import { getFlag, getToggles } from '@toggles/unleash'
 
-import { BehandlerInfo } from '../../../data-fetcher/data-service'
-
 async function Page(): Promise<ReactElement> {
-    const [behandler, toggles] = await Promise.all([serverFhirResources.getBehandlerInfo(), getToggles()])
+    const toggles = await getToggles()
+
     const tidligereSykmeldingerToggle = getFlag('SYK_INN_TIDLIGERE_SYKMELDINGER', toggles)
     const multistepToggle = getFlag('SYK_INN_MULTISTEP_FORM_V1', toggles)
 
@@ -27,21 +24,15 @@ async function Page(): Promise<ReactElement> {
                 </div>
             )}
             {multistepToggle.enabled ? (
-                <MultistepFhir behandler={behandler} />
+                <NySykmeldingFormMultiStep />
             ) : (
-                <NormalFhir behandler={behandler} tidligereSykmeldingerEnabled={tidligereSykmeldingerToggle.enabled} />
+                <NormalFhir tidligereSykmeldingerEnabled={tidligereSykmeldingerToggle.enabled} />
             )}
         </PageBlock>
     )
 }
 
-function NormalFhir({
-    behandler,
-    tidligereSykmeldingerEnabled,
-}: {
-    behandler: BehandlerInfo
-    tidligereSykmeldingerEnabled: boolean
-}): ReactElement {
+function NormalFhir({ tidligereSykmeldingerEnabled }: { tidligereSykmeldingerEnabled: boolean }): ReactElement {
     return (
         <>
             <section className="max-w-prose mb-8">
@@ -62,19 +53,9 @@ function NormalFhir({
                     <ListItem>Det må kun være èn periode, enten 100% eller gradert sykmelding</ListItem>
                 </List>
             </section>
-            <FhirDataProvider behandler={behandler}>
-                {tidligereSykmeldingerEnabled && <TidligereSykmeldingerTimeline />}
-                <NySykmeldingForm />
-            </FhirDataProvider>
+            {tidligereSykmeldingerEnabled && <TidligereSykmeldingerTimeline />}
+            <NySykmeldingForm />
         </>
-    )
-}
-
-function MultistepFhir({ behandler }: { behandler: BehandlerInfo }): ReactElement {
-    return (
-        <FhirDataProvider behandler={behandler}>
-            <NySykmeldingFormMultiStep />
-        </FhirDataProvider>
     )
 }
 

@@ -159,7 +159,7 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: ExistingSykmelding }
             </div>
             <div className="mt-8">
                 <Link href="/fhir" className="underline">
-                    Lag en ny sykmelding for samme pasient
+                    Tilbake til pasientoversikt
                 </Link>
             </div>
         </div>
