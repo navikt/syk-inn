@@ -18,10 +18,10 @@ test('can submit 100% sykmelding (multi step)', async ({ page, context }) => {
     ])
     await launchWithMock(page)
 
-    await expect(page.getByRole('heading', { name: 'Sykmelding for Espen Eksempel' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Oversikt over Espen Eksempel sitt sykefravær' })).toBeVisible()
     await expect(page.getByText(/ID-nummer(.*)21037712323/)).toBeVisible()
 
-    await page.getByRole('button', { name: 'Start sykmelding' }).click()
+    await page.getByRole('button', { name: 'Opprett sykmelding' }).click()
 
     await page.getByRole('textbox', { name: 'Fra og med' }).fill('15.02.2024')
     await page.getByRole('textbox', { name: 'Til og med' }).fill('18.02.2024')

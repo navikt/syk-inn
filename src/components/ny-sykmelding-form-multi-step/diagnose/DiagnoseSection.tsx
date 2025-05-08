@@ -80,7 +80,7 @@ function DiagnoseSectionWithData({
                             bi: [],
                         }),
                     )
-                    setStep(4)
+                    setStep(3)
                 })}
             >
                 <DiagnosePicker control={form.control} suggestedDiagnoser={suggestions?.diagnoser ?? null} />

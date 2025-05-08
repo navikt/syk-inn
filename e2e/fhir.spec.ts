@@ -5,7 +5,7 @@ import { dateOnly } from '@utils/date'
 
 import { launchWithMock } from './actions/fhir-actions'
 import {
-    assertPreloadedPatient,
+    initPreloadedPatient,
     editHoveddiagnose,
     fillAktivitetsPeriode,
     pickHoveddiagnose,
@@ -15,7 +15,7 @@ import {
 
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
-    await assertPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
     await fillAktivitetsPeriode({
         type: '100%',
@@ -45,7 +45,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
 
 test('can submit 100% sykmelding and use week picker', async ({ page }) => {
     await launchWithMock(page)
-    await assertPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
     await pickNumberOfWeeks(2)(page)
 
@@ -71,7 +71,7 @@ test('can submit 100% sykmelding and use week picker', async ({ page }) => {
 
 test('shall be able to edit diagnose', async ({ page }) => {
     await launchWithMock(page)
-    await assertPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     const diagnoseRegion = await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
     await editHoveddiagnose({ search: 'D290', select: /D290/ })(diagnoseRegion)
@@ -102,7 +102,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
 
 test('can submit gradert sykmelding', async ({ page }) => {
     await launchWithMock(page)
-    await assertPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
     await fillAktivitetsPeriode({
         type: { grad: 50 },

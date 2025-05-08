@@ -30,7 +30,7 @@ function SummarySection(): ReactElement {
             <FormSummary>
                 <FormSummary.Header>
                     <FormSummary.Heading level="2">Periode og grad</FormSummary.Heading>
-                    <FormSummary.EditLink as="button" onClick={() => setStep(2)} />
+                    <FormSummary.EditLink as="button" onClick={() => setStep(1)} />
                 </FormSummary.Header>
 
                 <AktivitetSummaryAnswers aktivitet={formState.aktivitet} />
@@ -38,14 +38,14 @@ function SummarySection(): ReactElement {
             <FormSummary>
                 <FormSummary.Header>
                     <FormSummary.Heading level="2">Diagnose</FormSummary.Heading>
-                    <FormSummary.EditLink as="button" onClick={() => setStep(3)} />
+                    <FormSummary.EditLink as="button" onClick={() => setStep(2)} />
                 </FormSummary.Header>
 
                 <DiagnoseSummaryAnswers diagnose={formState.diagnose} />
             </FormSummary>
 
             <ButtonsGroup>
-                <PreviousStepButton onClick={() => setStep(3)} disabled={nySykmelding.isPending} />
+                <PreviousStepButton onClick={() => setStep(2)} disabled={nySykmelding.isPending} />
                 <Button
                     type="button"
                     variant="primary"
