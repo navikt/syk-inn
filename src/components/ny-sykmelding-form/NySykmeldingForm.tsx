@@ -54,7 +54,7 @@ function NySykmeldingForm(): ReactElement {
                 })
 
                 startTransition(() => {
-                    const target = `${dataService.mode === 'fhir' ? 'fhir' : 'ny'}/kvittering/${createResult.sykmeldingId}`
+                    const target = `/${dataService.mode === 'fhir' ? 'fhir' : 'ny'}/kvittering/${createResult.sykmeldingId}`
                     router.push(target)
                 })
 

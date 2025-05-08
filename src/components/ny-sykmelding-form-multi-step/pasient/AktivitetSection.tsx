@@ -34,7 +34,7 @@ function AktivitetSection(): ReactElement {
                             tom: values.periode.tom,
                         }),
                     )
-                    setStep(3)
+                    setStep(2)
                 })}
             >
                 <PeriodePicker control={form.control} />

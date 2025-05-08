@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from 'motion/react'
 
 import { StepSection, useFormStep } from './steps/useFormStep'
 import AktivitetSection from './pasient/AktivitetSection'
-import FormStart from './start/FormStart'
 import DiagnoseSection from './diagnose/DiagnoseSection'
 import SummarySection from './summary/SummarySection'
 
@@ -43,12 +42,10 @@ function NySykmeldingFormSections(): ReactElement {
 function Sections({ section }: { section: StepSection }): ReactElement {
     switch (section) {
         case 1:
-            return <FormStart />
-        case 2:
             return <AktivitetSection />
-        case 3:
+        case 2:
             return <DiagnoseSection />
-        case 4:
+        case 3:
             return <SummarySection />
     }
 }

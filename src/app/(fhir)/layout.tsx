@@ -1,13 +1,11 @@
 import '../globals.css'
 
 import React, { PropsWithChildren, ReactElement } from 'react'
-import { Page } from '@navikt/ds-react'
 import type { Metadata } from 'next'
 
 import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
 import { getToggles } from '@toggles/unleash'
-import FhirHeader from '@fhir/components/FhirHeader'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../../providers/Providers'
@@ -32,14 +30,11 @@ export default async function FhirLayout({ children }: PropsWithChildren): Promi
             </head>
             <Preload />
             <body>
-                <Page footerPosition="belowFold">
-                    <Providers toggles={toggles}>
-                        <FhirHeader />
-                        {isLocalOrDemo && <DemoWarning />}
-                        {children}
-                        {isLocalOrDemo && <LazyDevTools />}
-                    </Providers>
-                </Page>
+                <Providers toggles={toggles}>
+                    {isLocalOrDemo && <DemoWarning />}
+                    {children}
+                    {isLocalOrDemo && <LazyDevTools />}
+                </Providers>
             </body>
         </html>
     )

@@ -2,18 +2,20 @@ import { expect, Locator, Page } from '@playwright/test'
 
 import { clickAndWait, waitForHttp } from '../utils/request-utils'
 
-export function assertPreloadedPatient({ name, fnr }: { name: string; fnr: string }) {
+export function initPreloadedPatient({ name, fnr }: { name: string; fnr: string }) {
     return async (page: Page) => {
-        const pasientInfoRegion = page.getByRole('region', { name: 'Info om pasienten' })
+        const pasientInfoRegion = page.getByRole('region', { name: 'Opprett ny sykmelding' })
         await expect(pasientInfoRegion).toBeVisible()
         await expect(pasientInfoRegion.getByText(name)).toBeVisible()
         await expect(pasientInfoRegion.getByText(`${fnr}`)).toBeVisible()
+
+        await pasientInfoRegion.getByRole('button', { name: 'Opprett sykmelding' }).click()
     }
 }
 
 export function fillManualPasient({ fnr }: { fnr: string }) {
     return async (page: Page) => {
-        const pasientInfoRegion = page.getByRole('region', { name: 'Info om pasienten' })
+        const pasientInfoRegion = page.getByRole('region', { name: 'Pasientopplysningen' })
         await expect(pasientInfoRegion).toBeVisible()
         await pasientInfoRegion.getByRole('textbox', { name: 'Fødselsnummer' }).fill(fnr)
     }
