@@ -7,6 +7,7 @@ import { simpleResourcesRoutes } from './resources/simple-resources/router'
 import { metaRoutes } from './meta/router'
 import { conditionRouter } from './resources/condition/router'
 import { FhirMockConfig } from './config'
+import { organizationRouter } from './resources/organization/router'
 
 export { setConfig, type FhirMockConfig } from './config'
 
@@ -17,6 +18,7 @@ export function createMockFhirApp(config: FhirMockConfig): Hono {
     app.route('/auth', authRouter)
     app.route('/DocumentReference', documentReferenceRouter)
     app.route('/Condition', conditionRouter)
+    app.route('/Organization', organizationRouter)
 
     simpleResourcesRoutes(app)
     metaRoutes(app)

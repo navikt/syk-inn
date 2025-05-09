@@ -25,6 +25,7 @@ Detaljerte beskrivelser per ressurs:
 - [Practitioner](./practitioner.md)
 - [Condition](./condition.md)
 - [Encounter](./encounter.md)
+- [Organization](./organization.md)
 
 # FHIR ressurser for tilbakeskriving til EPJ
 

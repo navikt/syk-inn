@@ -2,6 +2,7 @@ import patientEspenEksempel from './patient-espen-eksempel.json'
 import practitionerKomanMagnar from './practitioner-koman-magnar.json'
 import { encounterEspenKomar } from './encounter-espen-komar'
 import { getConditionById, getConditionsByEncounterId } from './condition'
+import { getOrganizationById, organizations } from './organization'
 
 const testData = {
     condition: {
@@ -16,6 +17,10 @@ const testData = {
     },
     encounter: {
         'Espen hos Koman': encounterEspenKomar,
+    },
+    organization: {
+        byId: (id: string) => getOrganizationById(id),
+        all: () => organizations,
     },
 }
 
