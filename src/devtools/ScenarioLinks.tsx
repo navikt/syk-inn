@@ -3,10 +3,9 @@
 import React, { ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { LinkPanel, LinkPanelDescription, LinkPanelTitle } from '@navikt/ds-react/LinkPanel'
-import { Density2Icon, NumberListIcon } from '@navikt/aksel-icons'
+import { Density2Icon } from '@navikt/aksel-icons'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
-import { ExpectedToggles } from '@toggles/toggles'
 
 function ScenarioLinks(): ReactElement {
     return (
@@ -25,36 +24,12 @@ function ScenarioLinks(): ReactElement {
                             `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}`,
                         )}
                         border
-                        onClick={() => {
-                            document.cookie = `${'SYK_INN_MULTISTEP_FORM_V1' satisfies ExpectedToggles}=true; path=/`
-                        }}
                     >
                         <div className="flex items-center gap-3">
                             <Density2Icon aria-hidden fontSize="2rem" />
                             <div>
                                 <LinkPanelTitle className="text-medium leading-5">
                                     Start demo med multi-steg skjema
-                                </LinkPanelTitle>
-                                <LinkPanelDescription className="text-sm">
-                                    Har norske data, hardkodet testdata
-                                </LinkPanelDescription>
-                            </div>
-                        </div>
-                    </LinkPanel>
-                    <LinkPanel
-                        href={pathWithBasePath(
-                            `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}`,
-                        )}
-                        border
-                        onClick={() => {
-                            document.cookie = `${'SYK_INN_MULTISTEP_FORM_V1' satisfies ExpectedToggles}=false; path=/`
-                        }}
-                    >
-                        <div className="flex items-center gap-3">
-                            <NumberListIcon aria-hidden fontSize="2rem" />
-                            <div>
-                                <LinkPanelTitle className="text-medium leading-5">
-                                    Start demo med monolitisk skjema
                                 </LinkPanelTitle>
                                 <LinkPanelDescription className="text-sm">
                                     Har norske data, hardkodet testdata

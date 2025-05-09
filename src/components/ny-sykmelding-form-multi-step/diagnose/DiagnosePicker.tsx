@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Control, useController } from 'react-hook-form'
 
-import DiagnoseCombobox from '@components/ny-sykmelding-form/diagnose/combobox/DiagnoseCombobox'
+import DiagnoseCombobox from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
 import { KonsultasjonInfo } from '../../../data-fetcher/data-service'
 

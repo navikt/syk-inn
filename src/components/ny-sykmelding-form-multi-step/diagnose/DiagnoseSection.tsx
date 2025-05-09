@@ -3,7 +3,7 @@ import { DefaultValues, useForm } from 'react-hook-form'
 import { BodyShort, Heading, Skeleton } from '@navikt/ds-react'
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 
-import { DiagnoseSuggestion } from '@components/ny-sykmelding-form/diagnose/combobox/DiagnoseCombobox'
+import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 import { raise } from '@utils/ts'
 
 import { StepNavigation } from '../steps/StepNavigation'

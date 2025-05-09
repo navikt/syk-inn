@@ -1,21 +1,10 @@
 import { test, expect } from '@playwright/test'
 
-import { ExpectedToggles } from '@toggles/toggles'
-
 import { launchWithMock } from './actions/fhir-actions'
 import { pickHoveddiagnose } from './actions/user-actions'
 import { clickAndWait, waitForHttp } from './utils/request-utils'
 
-test('can submit 100% sykmelding (multi step)', async ({ page, context }) => {
-    await context.addCookies([
-        // Enable multi-step form feature toggle
-        {
-            name: 'SYK_INN_MULTISTEP_FORM_V1' satisfies ExpectedToggles,
-            value: 'true',
-            domain: 'localhost',
-            path: '/',
-        },
-    ])
+test('can submit 100% sykmelding (multi step)', async ({ page }) => {
     await launchWithMock(page)
 
     await expect(page.getByRole('heading', { name: 'Oversikt over Espen Eksempel sitt sykefravær' })).toBeVisible()
