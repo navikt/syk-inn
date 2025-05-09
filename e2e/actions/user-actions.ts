@@ -7,7 +7,7 @@ export function initPreloadedPatient({ name, fnr }: { name: string; fnr: string 
         const pasientInfoRegion = page.getByRole('region', { name: 'Opprett ny sykmelding' })
         await expect(pasientInfoRegion).toBeVisible()
         await expect(pasientInfoRegion.getByText(name)).toBeVisible()
-        await expect(pasientInfoRegion.getByText(`${fnr}`)).toBeVisible()
+        await expect(page.getByText(new RegExp(`ID-nummer(.*)${fnr}`))).toBeVisible()
 
         await pasientInfoRegion.getByRole('button', { name: 'Opprett sykmelding' }).click()
     }
@@ -52,40 +52,60 @@ export function fillAktivitetsPeriode({
     tom: string
 }) {
     return async (page: Page) => {
-        const aktivitetRegion = page.getByRole('region', { name: 'Aktivitet' })
-        await expect(aktivitetRegion).toBeVisible()
-        await aktivitetRegion.getByRole('textbox', { name: 'Fra og med' }).fill(fom)
-        await aktivitetRegion.getByRole('textbox', { name: 'Til og med' }).fill(tom)
+        const periodeRegion = page.getByRole('region', { name: 'Periode' })
+        await expect(periodeRegion).toBeVisible()
+        await periodeRegion.getByRole('textbox', { name: 'Fra og med' }).fill(fom)
+        await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(tom)
 
         if (typeof type !== 'string' && 'grad' in type) {
-            await aktivitetRegion
+            await page
                 .getByRole('group', { name: 'Aktivitetsbegrensning' })
-                .getByRole('radio', { name: 'Noe mulighet for aktivitet' })
+                .getByRole('radio', { name: /Noe mulighet for aktivitet/ })
                 .click()
 
-            await aktivitetRegion.getByRole('textbox', { name: 'Grad' }).fill(`${type.grad}`)
+            await page.getByRole('spinbutton', { name: 'Sykmeldingsgrad' }).fill(`${type.grad}`)
         }
-
-        return aktivitetRegion
     }
 }
 
-export function pickNumberOfWeeks(weeks: number) {
+export function pickSuggestedPeriod(weeks: '3 dager' | 'tom søndag' | '1 uke') {
     return async (page: Page) => {
-        const aktivitetRegion = page.getByRole('region', { name: 'Aktivitet' })
+        const aktivitetRegion = page.getByRole('region', { name: 'Periode' })
         await expect(aktivitetRegion).toBeVisible()
 
-        await aktivitetRegion.getByRole('button', { name: weeks === 1 ? `1 uke` : `${weeks} uker` }).click()
+        let label
+        switch (weeks) {
+            case '3 dager':
+                label = '3 dager'
+                break
+            case 'tom søndag':
+                label = 'Til og med søndag'
+                break
+            case '1 uke':
+                label = '1 uke'
+                break
+            default:
+                throw new Error(`Unknown period: ${weeks}`)
+        }
+        await aktivitetRegion.getByRole('button', { name: label }).click()
     }
 }
 
 export function submitSykmelding() {
     return async (page: Page): Promise<unknown> => {
         const request = await clickAndWait(
-            page.getByRole('button', { name: 'Opprett sykmelding' }).click(),
+            page.getByRole('button', { name: 'Send inn' }).click(),
             waitForHttp('/fhir/resources/sykmelding/submit', 'POST')(page),
         )
 
         return request.postDataJSON()
+    }
+}
+
+export function nextStep() {
+    return async (page: Page) => {
+        const nextButton = page.getByRole('button', { name: 'Neste steg' })
+        await expect(nextButton).toBeVisible()
+        await nextButton.click()
     }
 }

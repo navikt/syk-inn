@@ -76,8 +76,8 @@ function PeriodePicker({ control }: Props): ReactElement {
     const rangeDescription = getRangeDescription(periodeField?.field?.value ?? null)
 
     return (
-        <div>
-            <Heading size="small" level="3" spacing>
+        <section aria-labelledby="periode-section-heading">
+            <Heading id="periode-section-heading" size="small" level="3" spacing>
                 Periode
             </Heading>
             <div className={cn(styles.periodePicker)}>
@@ -200,7 +200,7 @@ function PeriodePicker({ control }: Props): ReactElement {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </section>
     )
 }
 

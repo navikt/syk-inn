@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { addWeeks } from 'date-fns'
+import { addDays } from 'date-fns'
 
 import { dateOnly } from '@utils/date'
 
@@ -9,19 +9,26 @@ import {
     editHoveddiagnose,
     fillAktivitetsPeriode,
     pickHoveddiagnose,
-    pickNumberOfWeeks,
+    pickSuggestedPeriod,
     submitSykmelding,
+    nextStep,
 } from './actions/user-actions'
 
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
-    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+
     await fillAktivitetsPeriode({
         type: '100%',
         fom: '15.02.2024',
         tom: '18.02.2024',
     })(page)
+
+    await nextStep()(page)
+
+    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+
+    await nextStep()(page)
 
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
@@ -35,7 +42,6 @@ test('can submit 100% sykmelding', async ({ page }) => {
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: '2024-02-15',
                 tom: '2024-02-18',
-                grad: null,
             },
         },
     })
@@ -46,8 +52,14 @@ test('can submit 100% sykmelding', async ({ page }) => {
 test('can submit 100% sykmelding and use week picker', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await pickSuggestedPeriod('3 dager')(page)
+
+    await nextStep()(page)
+
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-    await pickNumberOfWeeks(2)(page)
+
+    await nextStep()(page)
 
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
@@ -60,8 +72,7 @@ test('can submit 100% sykmelding and use week picker', async ({ page }) => {
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: dateOnly(new Date()),
-                tom: dateOnly(addWeeks(new Date(), 2)),
-                grad: null,
+                tom: dateOnly(addDays(new Date(), 3)),
             },
         },
     })
@@ -73,14 +84,18 @@ test('shall be able to edit diagnose', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
-    const diagnoseRegion = await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-    await editHoveddiagnose({ search: 'D290', select: /D290/ })(diagnoseRegion)
-
     await fillAktivitetsPeriode({
         type: '100%',
         fom: '15.02.2024',
         tom: '18.02.2024',
     })(page)
+
+    await nextStep()(page)
+
+    const diagnoseRegion = await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+    await editHoveddiagnose({ search: 'D290', select: /D290/ })(diagnoseRegion)
+
+    await nextStep()(page)
 
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
@@ -92,7 +107,6 @@ test('shall be able to edit diagnose', async ({ page }) => {
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: '2024-02-15',
                 tom: '2024-02-18',
-                grad: null,
             },
         },
     })
@@ -103,12 +117,18 @@ test('shall be able to edit diagnose', async ({ page }) => {
 test('can submit gradert sykmelding', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
-    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+
     await fillAktivitetsPeriode({
         type: { grad: 50 },
         fom: '15.02.2024',
         tom: '18.02.2024',
     })(page)
+
+    await nextStep()(page)
+
+    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+
+    await nextStep()(page)
 
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
