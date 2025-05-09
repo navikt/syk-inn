@@ -44,3 +44,7 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# local dev
+.git-co-authors.yaml
+.husky/prepare-commit-msg
