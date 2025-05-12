@@ -18,7 +18,7 @@ function DashboardPage(): ReactElement {
                 <Heading level="2" size="medium" spacing>
                     <span>Oversikt over</span>
                     {pasient.isLoading && <Skeleton width={140} className="inline-block mx-2" />}
-                    {pasient.isSuccess && ` ${pasient.data.navn} `}
+                    {pasient.isSuccess && pasient.data && ` ${pasient.data.navn} `}
                     <span>sitt sykefravær</span>
                 </Heading>
 

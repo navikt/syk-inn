@@ -5,7 +5,7 @@ import { useDataService } from '../data-provider'
 
 export function useContextPasient(
     opts: { allowContextless: boolean } = { allowContextless: false },
-): UseQueryResult<PasientInfo, Error> {
+): UseQueryResult<PasientInfo | null, Error> {
     const dataService = useDataService()
     return useQuery({
         queryKey: ['pasient'],
