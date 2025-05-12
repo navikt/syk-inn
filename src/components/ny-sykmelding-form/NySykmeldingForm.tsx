@@ -11,7 +11,7 @@ import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-
 import StepsSummary from './steps/StepsSummary'
 import NySykmeldingFormSections from './NySykmeldingFormSections'
 
-function NySykmeldingFormMultiStep(): ReactElement {
+function NySykmeldingForm(): ReactElement {
     const { isLoading, data, error } = useContextPasient()
     const dispatch = useAppDispatch()
 
@@ -53,4 +53,4 @@ function NySykmeldingFormMultiStep(): ReactElement {
     )
 }
 
-export default NySykmeldingFormMultiStep
+export default NySykmeldingForm

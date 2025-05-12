@@ -3,7 +3,7 @@ import { PageBlock } from '@navikt/ds-react/Page'
 import Link from 'next/link'
 
 import { isLocalOrDemo } from '@utils/env'
-import NySykmeldingFormMultiStep from '@components/ny-sykmelding-form-multi-step/NySykmeldingFormMultiStep'
+import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 
 async function Page(): Promise<ReactElement> {
     return (
@@ -13,7 +13,7 @@ async function Page(): Promise<ReactElement> {
                     <Link href="/">← Back to development page</Link>
                 </div>
             )}
-            <NySykmeldingFormMultiStep />
+            <NySykmeldingForm />
         </PageBlock>
     )
 }

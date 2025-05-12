@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Heading } from '@navikt/ds-react'
 import { PageBlock } from '@navikt/ds-react/Page'
 
-import NySykmeldingForm from '@components/ny-sykmelding-form-multi-step/NySykmeldingFormMultiStep'
+import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 import { isLocalOrDemo } from '@utils/env'
 
 async function Page(): Promise<ReactElement> {
