@@ -8,7 +8,6 @@ import { useContextKonsultasjon } from '../../data-fetcher/hooks/use-context-kon
 import { useAppDispatch } from '../../providers/redux/hooks'
 import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
-import StepsSummary from './steps/StepsSummary'
 import NySykmeldingFormSections from './NySykmeldingFormSections'
 
 function NySykmeldingForm(): ReactElement {
@@ -45,9 +44,6 @@ function NySykmeldingForm(): ReactElement {
             <div className="flex">
                 <div className="w-full">
                     <NySykmeldingFormSections />
-                </div>
-                <div className="w-full ml-8">
-                    <StepsSummary />
                 </div>
             </div>
         </>
