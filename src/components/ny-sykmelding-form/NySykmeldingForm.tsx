@@ -12,7 +12,7 @@ import StepsSummary from './steps/StepsSummary'
 import NySykmeldingFormSections from './NySykmeldingFormSections'
 
 function NySykmeldingForm(): ReactElement {
-    const { isLoading, data, error } = useContextPasient()
+    const { isLoading, isSuccess, data, error } = useContextPasient()
     const dispatch = useAppDispatch()
 
     // Preload data for next steps
@@ -36,10 +36,11 @@ function NySykmeldingForm(): ReactElement {
     }
 
     return (
-        <div className="mt-8">
-            <Heading size="large" level="2" spacing className="flex gap-3">
-                Sykmelding for{' '}
-                {!isLoading && data ? <span>{data.navn}</span> : <Skeleton width={240} className="-my-4" />}
+        <>
+            <Heading level="2" size="medium">
+                <span>Sykmelding for</span>
+                {isLoading && <Skeleton width={140} className="inline-block mx-2" />}
+                {isSuccess && data && ` ${data.navn} `}
             </Heading>
             <div className="flex">
                 <div className="w-full">
@@ -49,7 +50,7 @@ function NySykmeldingForm(): ReactElement {
                     <StepsSummary />
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

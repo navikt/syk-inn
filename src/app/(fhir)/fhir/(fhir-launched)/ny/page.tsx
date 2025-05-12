@@ -1,21 +1,16 @@
 import React, { ReactElement } from 'react'
-import { PageBlock } from '@navikt/ds-react/Page'
-import Link from 'next/link'
+import { Page, PageBlock } from '@navikt/ds-react/Page'
 
-import { isLocalOrDemo } from '@utils/env'
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 
-async function Page(): Promise<ReactElement> {
+async function NySykmeldingPage(): Promise<ReactElement> {
     return (
-        <PageBlock as="main" width="xl" gutters className="pt-4">
-            {isLocalOrDemo && (
-                <div className="mb-2">
-                    <Link href="/">← Back to development page</Link>
-                </div>
-            )}
-            <NySykmeldingForm />
-        </PageBlock>
+        <Page>
+            <PageBlock as="main" gutters className="pt-4">
+                <NySykmeldingForm />
+            </PageBlock>
+        </Page>
     )
 }
 
-export default Page
+export default NySykmeldingPage
