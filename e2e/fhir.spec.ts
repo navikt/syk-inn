@@ -24,8 +24,6 @@ test('can submit 100% sykmelding', async ({ page }) => {
         tom: '18.02.2024',
     })(page)
 
-    await nextStep()(page)
-
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
     await nextStep()(page)
@@ -54,8 +52,6 @@ test('can submit 100% sykmelding and use week picker', async ({ page }) => {
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await pickSuggestedPeriod('3 dager')(page)
-
-    await nextStep()(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
@@ -90,8 +86,6 @@ test('shall be able to edit diagnose', async ({ page }) => {
         tom: '18.02.2024',
     })(page)
 
-    await nextStep()(page)
-
     const diagnoseRegion = await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
     await editHoveddiagnose({ search: 'D290', select: /D290/ })(diagnoseRegion)
 
@@ -123,8 +117,6 @@ test('can submit gradert sykmelding', async ({ page }) => {
         fom: '15.02.2024',
         tom: '18.02.2024',
     })(page)
-
-    await nextStep()(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 

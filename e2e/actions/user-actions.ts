@@ -52,7 +52,7 @@ export function fillAktivitetsPeriode({
     tom: string
 }) {
     return async (page: Page) => {
-        const periodeRegion = page.getByRole('region', { name: 'Periode' })
+        const periodeRegion = page.getByRole('region', { name: 'Sykmeldingsperiode' })
         await expect(periodeRegion).toBeVisible()
         await periodeRegion.getByRole('textbox', { name: 'Fra og med' }).fill(fom)
         await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(tom)

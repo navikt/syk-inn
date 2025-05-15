@@ -36,15 +36,13 @@ function NySykmeldingForm(): ReactElement {
 
     return (
         <>
-            <Heading level="2" size="medium">
+            <Heading level="2" size="medium" spacing>
                 <span>Sykmelding for</span>
                 {isLoading && <Skeleton width={140} className="inline-block mx-2" />}
                 {isSuccess && data && ` ${data.navn} `}
             </Heading>
-            <div className="flex">
-                <div className="w-full">
-                    <NySykmeldingFormSections />
-                </div>
+            <div className="w-full">
+                <NySykmeldingFormSections />
             </div>
         </>
     )

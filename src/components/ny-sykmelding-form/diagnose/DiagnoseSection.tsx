@@ -1,32 +1,32 @@
-import React, { PropsWithChildren, ReactElement, useEffect, useMemo } from 'react'
-import { DefaultValues, useForm } from 'react-hook-form'
+import React, { PropsWithChildren, ReactElement, useEffect } from 'react'
 import { BodyShort, Heading, Skeleton } from '@navikt/ds-react'
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 
-import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
-import { raise } from '@utils/ts'
-
-import { StepNavigation } from '../steps/StepNavigation'
-import { DiagnoseStep, nySykmeldingMultistepActions } from '../../../providers/redux/reducers/ny-sykmelding-multistep'
-import { useAppDispatch, useAppSelector } from '../../../providers/redux/hooks'
-import { useFormStep } from '../steps/useFormStep'
-import { KonsultasjonInfo } from '../../../data-fetcher/data-service'
 import { useContextKonsultasjon } from '../../../data-fetcher/hooks/use-context-konsultasjon'
+import { useFormContext } from '../form'
 
 import DiagnosePicker from './DiagnosePicker'
 
-export type DiagnoseFormValues = {
-    hoved: DiagnoseSuggestion | null
-    bi: DiagnoseSuggestion[]
-}
-
 function DiagnoseSection(): ReactElement {
+    const { setValue } = useFormContext()
     const { data, isLoading, error } = useContextKonsultasjon()
 
+    useEffect(() => {
+        if (data == null || data.diagnoser.length === 0) return
+
+        const [first] = data.diagnoser
+
+        setValue('diagnoser.hoved', {
+            code: first.kode,
+            system: first.system,
+            text: first.tekst,
+        })
+    }, [data, setValue])
+
     return (
-        <div className="mt-8">
+        <div>
             {!isLoading ? (
-                <DiagnoseSectionWithData suggestions={data}>
+                <DiagnoseSectionWithData>
                     {error && (
                         <BodyShort className="mt-2 flex gap-1 items-center">
                             <ExclamationmarkTriangleIcon aria-hidden />
@@ -41,80 +41,16 @@ function DiagnoseSection(): ReactElement {
     )
 }
 
-interface DiagnoseSectionWithDataProps {
-    suggestions?: KonsultasjonInfo | undefined
-}
-
-function DiagnoseSectionWithData({
-    suggestions,
-    children,
-}: PropsWithChildren<DiagnoseSectionWithDataProps>): ReactElement {
-    const [, setStep] = useFormStep()
-    const dispatch = useAppDispatch()
-    const existingStep = useAppSelector((state) => state.nySykmeldingMultistep.diagnose)
-    const defaultValues = useMemo(() => createDefaultValues(suggestions, existingStep), [existingStep, suggestions])
-    const form = useForm<DiagnoseFormValues>({
-        defaultValues: defaultValues,
-    })
-
-    useEffect(() => {
-        const wasPrefilled = defaultValues.hoved != null
-
-        if (wasPrefilled) {
-            setTimeout(() => {
-                document.getElementById('step-navigation-next')?.focus()
-            }, 10)
-        }
-    }, [defaultValues.hoved])
-
+function DiagnoseSectionWithData({ children }: PropsWithChildren): ReactElement {
     return (
-        <section aria-labelledby="diagnose-section-heading">
-            <Heading level="3" size="small" id="diagnose-section-heading">
+        <div>
+            <Heading level="3" size="small">
                 Diagnose
             </Heading>
-            <form
-                onSubmit={form.handleSubmit((values) => {
-                    dispatch(
-                        nySykmeldingMultistepActions.completeDiagnose({
-                            hoved: values.hoved ?? raise('Submit without hoveddiagnose'),
-                            bi: [],
-                        }),
-                    )
-                    setStep(3)
-                })}
-            >
-                <DiagnosePicker control={form.control} suggestedDiagnoser={suggestions?.diagnoser ?? null} />
-                {children}
-                <StepNavigation previous={2} />
-            </form>
-        </section>
+            <DiagnosePicker />
+            {children}
+        </div>
     )
-}
-
-function createDefaultValues(
-    suggestions: KonsultasjonInfo | undefined,
-    existingStep: DiagnoseStep | null,
-): DefaultValues<DiagnoseFormValues> {
-    if (existingStep != null) {
-        return {
-            hoved: existingStep.hoved,
-            bi: existingStep.bi,
-        }
-    }
-
-    if (suggestions == null || suggestions.diagnoser.length === 0) {
-        return {}
-    }
-
-    const [first] = suggestions.diagnoser
-    return {
-        hoved: {
-            code: first.kode,
-            system: first.system,
-            text: first.tekst,
-        },
-        bi: [],
-    }
 }
 
 function DiagnoseSectionSkeleton(): ReactElement {

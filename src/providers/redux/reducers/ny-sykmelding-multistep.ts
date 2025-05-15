@@ -51,11 +51,9 @@ const nySykmeldingMultistep = createSlice({
         autoPatient(state, action: PayloadAction<AutoPatientStep>) {
             state.pasient = action.payload
         },
-        completeAktivitet(state, action: PayloadAction<AktivitetStep>) {
-            state.aktivitet = action.payload
-        },
-        completeDiagnose(state, action: PayloadAction<DiagnoseStep>) {
-            state.diagnose = action.payload
+        completeMainStep(state, action: PayloadAction<{ diagnose: DiagnoseStep; aktivitet: AktivitetStep }>) {
+            state.aktivitet = action.payload.aktivitet
+            state.diagnose = action.payload.diagnose
         },
     },
 })

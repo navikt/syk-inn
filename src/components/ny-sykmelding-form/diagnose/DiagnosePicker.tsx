@@ -1,21 +1,12 @@
 import React, { ReactElement } from 'react'
-import { Control, useController } from 'react-hook-form'
 
 import DiagnoseCombobox from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
-import { KonsultasjonInfo } from '../../../data-fetcher/data-service'
+import { useController } from '../form'
 
-import { DiagnoseFormValues } from './DiagnoseSection'
-
-type Props = {
-    control: Control<DiagnoseFormValues>
-    suggestedDiagnoser: KonsultasjonInfo['diagnoser'] | null
-}
-
-function DiagnosePicker({ control }: Props): ReactElement {
+function DiagnosePicker(): ReactElement {
     const { field, fieldState } = useController({
-        control,
-        name: 'hoved',
+        name: 'diagnoser.hoved',
         rules: {
             validate: (value) => {
                 if (value?.code == null) return `Du må velge en diagnosekode`

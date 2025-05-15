@@ -5,7 +5,6 @@ import { PaperplaneIcon } from '@navikt/aksel-icons'
 import { toReadableDatePeriod } from '@utils/date'
 
 import { useFormStep } from '../steps/useFormStep'
-import { ButtonsGroup, PreviousStepButton } from '../steps/StepNavigation'
 import { useAppSelector } from '../../../providers/redux/hooks'
 import { useNySykmeldingMutation } from '../useNySykmeldingMutation'
 import { AktivitetStep, DiagnoseStep, PasientStep } from '../../../providers/redux/reducers/ny-sykmelding-multistep'
@@ -30,7 +29,7 @@ function SummarySection(): ReactElement {
             <FormSummary>
                 <FormSummary.Header>
                     <FormSummary.Heading level="2">Periode og grad</FormSummary.Heading>
-                    <FormSummary.EditLink as="button" onClick={() => setStep(1)} />
+                    <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
                 </FormSummary.Header>
 
                 <AktivitetSummaryAnswers aktivitet={formState.aktivitet} />
@@ -38,14 +37,21 @@ function SummarySection(): ReactElement {
             <FormSummary>
                 <FormSummary.Header>
                     <FormSummary.Heading level="2">Diagnose</FormSummary.Heading>
-                    <FormSummary.EditLink as="button" onClick={() => setStep(2)} />
+                    <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
                 </FormSummary.Header>
 
                 <DiagnoseSummaryAnswers diagnose={formState.diagnose} />
             </FormSummary>
 
-            <ButtonsGroup>
-                <PreviousStepButton onClick={() => setStep(2)} disabled={nySykmelding.isPending} />
+            <div className="w-full flex justify-end gap-3 mt-16">
+                <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setStep('main')}
+                    disabled={nySykmelding.isPending}
+                >
+                    Forrige steg
+                </Button>
                 <Button
                     type="button"
                     variant="primary"
@@ -56,7 +62,7 @@ function SummarySection(): ReactElement {
                 >
                     Send inn
                 </Button>
-            </ButtonsGroup>
+            </div>
 
             {nySykmelding.error && (
                 <Alert variant="error">Det skjedde en feil under innsending av sykmeldingen. Prøv igjen senere.</Alert>

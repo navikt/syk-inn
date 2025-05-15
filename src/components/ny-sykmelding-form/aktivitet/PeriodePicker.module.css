@@ -7,7 +7,7 @@
     display: grid;
     place-items: start;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: 42ch;
+    width: 46ch;
 }
 
 .dateRangePicker :global(.navds-text-field__input[size]) {
