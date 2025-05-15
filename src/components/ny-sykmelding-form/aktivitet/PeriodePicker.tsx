@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import { BodyShort, Button, DatePicker, Heading, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
-import { Control, useController } from 'react-hook-form'
+import { BodyShort, Button, DatePicker, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
 import { addDays, addWeeks, differenceInDays, endOfWeek, format, isSameDay, parseISO, subDays } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 import { AnimatePresence, motion } from 'motion/react'
@@ -9,23 +8,16 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import { dateOnly } from '@utils/date'
 import { cn } from '@utils/tw'
 
-import { AktivitetFormValues } from './AktivitetSection'
+import { PeriodeField, useController, useFormContext } from '../form'
+
 import styles from './PeriodePicker.module.css'
 
-export type PeriodeField = {
-    fom: string
-    tom: string
-}
-
-type Props = {
-    control: Control<AktivitetFormValues>
-}
-
-function PeriodePicker({ control }: Props): ReactElement {
+function PeriodePicker(): ReactElement {
+    const { control } = useFormContext()
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
     const periodeField = useController({
         control,
-        name: 'periode',
+        name: 'perioder.0.periode' as const,
         rules: {
             validate: (value) => {
                 if (rangeError?.from.isInvalid) {
@@ -76,12 +68,9 @@ function PeriodePicker({ control }: Props): ReactElement {
     const rangeDescription = getRangeDescription(periodeField?.field?.value ?? null)
 
     return (
-        <section aria-labelledby="periode-section-heading">
-            <Heading id="periode-section-heading" size="small" level="3" spacing>
-                Periode
-            </Heading>
+        <div>
             <div className={cn(styles.periodePicker)}>
-                <div className="flex items-end mr-2 -ml-10">
+                <div className="flex items-end mr-2 -ml-2">
                     <Button
                         icon={<ChevronLeftIcon title="Forskyv fra dato en dag bak" />}
                         type="button"
@@ -200,7 +189,7 @@ function PeriodePicker({ control }: Props): ReactElement {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </section>
+        </div>
     )
 }
 

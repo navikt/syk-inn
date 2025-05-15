@@ -4,9 +4,8 @@ import React, { ReactElement, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 
 import { StepSection, useFormStep } from './steps/useFormStep'
-import AktivitetSection from './pasient/AktivitetSection'
-import DiagnoseSection from './diagnose/DiagnoseSection'
 import SummarySection from './summary/SummarySection'
+import MainSection from './MainSection'
 
 function NySykmeldingFormSections(): ReactElement {
     const [step] = useFormStep()
@@ -21,7 +20,7 @@ function NySykmeldingFormSections(): ReactElement {
     const goingLeft = direction === 1
 
     return (
-        <div className="max-w-prose relative">
+        <div className="relative">
             <AnimatePresence initial={false} custom={goingLeft}>
                 <motion.div
                     className="absolute w-full pb-16"
@@ -41,11 +40,9 @@ function NySykmeldingFormSections(): ReactElement {
 
 function Sections({ section }: { section: StepSection }): ReactElement {
     switch (section) {
-        case 1:
-            return <AktivitetSection />
-        case 2:
-            return <DiagnoseSection />
-        case 3:
+        case 'main':
+            return <MainSection />
+        case 'summary':
             return <SummarySection />
     }
 }

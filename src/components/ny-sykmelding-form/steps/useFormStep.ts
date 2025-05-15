@@ -1,10 +1,10 @@
-import { parseAsNumberLiteral, useQueryState, UseQueryStateReturn } from 'nuqs'
+import { useQueryState, UseQueryStateReturn, parseAsStringLiteral } from 'nuqs'
+
+export const formSteps = ['main', 'summary'] as const
 
 export type StepSection = (typeof formSteps)[number]
 
-export const formSteps = [1, 2, 3] as const
-
-const stepsParser = parseAsNumberLiteral(formSteps).withDefault(1).withOptions({
+const stepsParser = parseAsStringLiteral(formSteps).withDefault('main').withOptions({
     history: 'push',
 })
 

@@ -1,24 +1,11 @@
 import React, { ReactElement } from 'react'
-import { Control, useController } from 'react-hook-form'
 import { BodyShort, Detail, Heading, Radio, RadioGroup, TextField } from '@navikt/ds-react'
 
-import { AktivitetFormValues } from './AktivitetSection'
+import { AktivitetIkkeMuligType, useController } from '../form'
 
-export type AktivitetIkkeMuligType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT'
-
-export type AktivitetField = {
-    type: AktivitetIkkeMuligType
-    grad: number
-}
-
-type Props = {
-    control: Control<AktivitetFormValues>
-}
-
-function AktivitetPicker({ control }: Props): ReactElement {
+function AktivitetPicker(): ReactElement {
     const aktivitetField = useController({
-        control,
-        name: 'aktivitet.type',
+        name: 'perioder.0.aktivitet.type',
         defaultValue: 'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType,
         rules: {
             required: 'Du må velge en aktivitetstype',
@@ -26,7 +13,7 @@ function AktivitetPicker({ control }: Props): ReactElement {
     })
 
     return (
-        <div className="mt-12">
+        <div className="mt-8">
             <Heading level="3" size="small" spacing>
                 Mulighet for arbeid
             </Heading>
@@ -54,15 +41,14 @@ function AktivitetPicker({ control }: Props): ReactElement {
                 </Radio>
             </RadioGroup>
 
-            {aktivitetField.field.value === 'GRADERT' && <GradertGradPicker control={control} />}
+            {aktivitetField.field.value === 'GRADERT' && <GradertGradPicker />}
         </div>
     )
 }
 
-function GradertGradPicker({ control }: Pick<Props, 'control'>): ReactElement {
+function GradertGradPicker(): ReactElement {
     const gradertField = useController({
-        control,
-        name: 'aktivitet.grad' as const,
+        name: 'perioder.0.aktivitet.grad' as const,
         defaultValue: 50,
         rules: {
             required: 'Du må fylle inn sykmeldingsgrad',
