@@ -34,7 +34,7 @@ export type NySykmeldingMainFormValues = {
 export const useFormContext = useRhfFormContext<NySykmeldingMainFormValues>
 
 export function useController<TFieldName extends FieldPath<NySykmeldingMainFormValues>>(
-    props: UseControllerProps<NySykmeldingMainFormValues, TFieldName>,
+    props: Omit<UseControllerProps<NySykmeldingMainFormValues, TFieldName>, 'control'>,
 ): UseControllerReturn<NySykmeldingMainFormValues, TFieldName> {
     return useRhfController<NySykmeldingMainFormValues, TFieldName>(props)
 }

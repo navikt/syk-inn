@@ -8,15 +8,13 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 import { dateOnly } from '@utils/date'
 import { cn } from '@utils/tw'
 
-import { PeriodeField, useController, useFormContext } from '../form'
+import { PeriodeField, useController } from '../form'
 
 import styles from './PeriodePicker.module.css'
 
 function PeriodePicker(): ReactElement {
-    const { control } = useFormContext()
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
     const periodeField = useController({
-        control,
         name: 'perioder.0.periode' as const,
         rules: {
             validate: (value) => {
@@ -70,7 +68,7 @@ function PeriodePicker(): ReactElement {
     return (
         <div>
             <div className={cn(styles.periodePicker)}>
-                <div className="flex items-end mr-2 -ml-2">
+                <div className="flex items-start mt-8 mr-2 -ml-2">
                     <Button
                         icon={<ChevronLeftIcon title="Forskyv fra dato en dag bak" />}
                         type="button"
@@ -101,7 +99,7 @@ function PeriodePicker(): ReactElement {
                         onBlur={periodeField.field.onBlur}
                     />
                 </DatePicker>
-                <div className="flex items-end ml-2">
+                <div className="flex items-start mt-8 ml-2">
                     <Button
                         icon={<ChevronRightIcon title="Forskyv til-dato en dag frem" />}
                         type="button"
