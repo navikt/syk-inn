@@ -42,13 +42,9 @@ export async function spanAsync<T>(name: string, fn: () => Promise<T>): Promise<
 
     const tracer = otel.trace.getTracer(APP_NAME)
     const span = tracer.startSpan(name)
-    return otel.context.with(otel.trace.setSpan(otel.context.active(), span), async () => {
-        const result = await fn()
-
-        span.end()
-
-        return result
-    })
+    return otel.context.with(otel.trace.setSpan(otel.context.active(), span), async () =>
+        fn().finally(() => span.end()),
+    )
 }
 
 export function withSpanAsync<T>(name: string, fn: () => Promise<T>): () => Promise<T> {
