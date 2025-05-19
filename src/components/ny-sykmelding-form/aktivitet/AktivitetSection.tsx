@@ -14,11 +14,10 @@ function AktivitetSection(): ReactElement {
     })
     return (
         <>
-            {fields?.map((_, index) => (
+            {fields?.map((periode, index) => (
                 <>
-                    <PeriodePicker index={index} key={`periode-${index}`} />
-
-                    <AktivitetPicker key={`aktivitet-${index}`} index={index} />
+                    <PeriodePicker index={index} key={`periode-${periode.id}`} />
+                    <AktivitetPicker index={index} key={`aktivitet-${periode.id}`} />
                     {index > 0 && (
                         <Button variant="danger" type="button" onClick={() => remove(index)}>
                             Slett periode
