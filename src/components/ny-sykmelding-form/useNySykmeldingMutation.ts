@@ -24,7 +24,7 @@ export function useNySykmeldingMutation(): UseMutationResult<NySykmelding, Error
                 raise('Ingen pasient')
             }
 
-            if (formState.aktivitet == null) {
+            if (formState.aktiviteter == null) {
                 raise('Ingen aktivitet')
             }
 
@@ -38,12 +38,13 @@ export function useNySykmeldingMutation(): UseMutationResult<NySykmelding, Error
                 const createResult = await dataService.mutation.sendSykmelding({
                     pasient: formState.pasient.fnr,
                     aktivitet: {
-                        type: formState.aktivitet.type,
-                        fom: formState.aktivitet.fom,
-                        tom: formState.aktivitet.tom,
+                        type: formState.aktiviteter[0].type,
+                        fom: formState.aktiviteter[0].fom,
+                        tom: formState.aktiviteter[0].tom,
                         // @ts-expect-error TODO proper mapping
-                        grad: formState.aktivitet.grad?.toFixed(0),
+                        grad: formState.aktiviteter[0].grad?.toFixed(0),
                     },
+
                     diagnoser: {
                         hoved: {
                             system: formState.diagnose.hoved.system,
