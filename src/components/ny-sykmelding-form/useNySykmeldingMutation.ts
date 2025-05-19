@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 import { startTransition } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { getTracer } from '@faro/faro'
+import { withSpanAsync } from '@faro/faro'
 import { raise } from '@utils/ts'
 import { pathWithBasePath } from '@utils/url'
 
@@ -17,7 +17,7 @@ export function useNySykmeldingMutation(): UseMutationResult<NySykmelding, Error
     const dataService = useDataService()
     const opprettSykmelding = useMutation({
         mutationKey: ['opprett-sykmelding'],
-        mutationFn: async () => {
+        mutationFn: withSpanAsync<NySykmelding>('submitSykmelding', async () => {
             logger.info('(Client) Submitting values,', formState)
 
             if (formState.pasient == null) {
@@ -33,8 +33,6 @@ export function useNySykmeldingMutation(): UseMutationResult<NySykmelding, Error
             }
 
             try {
-                const span = getTracer()?.startSpan('opprettSykmelding')
-
                 const createResult = await dataService.mutation.sendSykmelding({
                     pasient: formState.pasient.fnr,
                     aktivitet: {
@@ -63,14 +61,12 @@ export function useNySykmeldingMutation(): UseMutationResult<NySykmelding, Error
                     )
                 })
 
-                span?.end()
-
                 return createResult
             } catch (e) {
                 logger.error(`Sykmelding creation failed, errors ${e}`)
                 throw new Error(`Sykmelding creation failed`)
             }
-        },
+        }),
         onSuccess: (data) => {
             logger.info(`Sykmelding created successfully: ${data.sykmeldingId}`)
         },

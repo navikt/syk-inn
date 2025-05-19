@@ -34,11 +34,23 @@ function getOTEL(): OTELApi | null {
     return faro.api.getOTEL() ?? null
 }
 
-type Tracer = ReturnType<OTELApi['trace']['getTracer']>
-
-export function getTracer(): Tracer | null {
+export async function spanAsync<T>(name: string, fn: () => Promise<T>): Promise<T> {
     const otel = getOTEL()
-    if (otel == null) return null
+    if (otel == null) {
+        return fn()
+    }
 
-    return otel.trace.getTracer(APP_NAME)
+    const tracer = otel.trace.getTracer(APP_NAME)
+    const span = tracer.startSpan(name)
+    return otel.context.with(otel.trace.setSpan(otel.context.active(), span), async () => {
+        const result = await fn()
+
+        span.end()
+
+        return result
+    })
+}
+
+export function withSpanAsync<T>(name: string, fn: () => Promise<T>): () => Promise<T> {
+    return async () => spanAsync(name, fn)
 }
