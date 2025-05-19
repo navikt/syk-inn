@@ -6,6 +6,7 @@ import type { Metadata } from 'next'
 
 import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
+import { getToggles } from '@toggles/unleash'
 
 import { Autorisasjoner } from '../../data-fetcher/data-service'
 import { LazyDevTools } from '../../devtools/LazyDevTools'
@@ -14,7 +15,6 @@ import Preload from '../preload'
 import HelseIdDataProvider from '../../helseid/components/HelseIdDataProvider'
 import { getHelseIdUserInfo, HprDetails } from '../../helseid/helseid-userinfo'
 import HelseIdHeader from '../../helseid/components/HelseIdHeader'
-import { getToggles } from '../../toggles/unleash'
 
 export const dynamic = 'force-dynamic'
 

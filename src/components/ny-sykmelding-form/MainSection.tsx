@@ -4,13 +4,15 @@ import { Button } from '@navikt/ds-react'
 import { ArrowRightIcon } from '@navikt/aksel-icons'
 
 import ExpandableFormSection from '@components/form/expandable-form-section/ExpandableFormSection'
-import AktivitetSection from '@components/ny-sykmelding-form/aktivitet/AktivitetSection'
-import { NySykmeldingMainFormValues } from '@components/ny-sykmelding-form/form'
-import DiagnoseSection from '@components/ny-sykmelding-form/diagnose/DiagnoseSection'
-import { useFormStep } from '@components/ny-sykmelding-form/steps/useFormStep'
 
 import { useAppDispatch } from '../../providers/redux/hooks'
 import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
+
+import { NySykmeldingMainFormValues } from './form'
+import AktivitetSection from './aktivitet/AktivitetSection'
+import DiagnoseSection from './diagnose/DiagnoseSection'
+import { useFormStep } from './steps/useFormStep'
+import MeldingerSection from './meldinger/MeldingerSection'
 
 function MainSection(): ReactElement {
     const [, setStep] = useFormStep()
@@ -33,6 +35,10 @@ function MainSection(): ReactElement {
                     grad: values.perioder[0].aktivitet.grad,
                     type: values.perioder[0].aktivitet.type,
                 },
+                meldinger: {
+                    tilNav: values.meldinger.tilNav,
+                    tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
+                },
             }),
         )
 
@@ -47,6 +53,9 @@ function MainSection(): ReactElement {
                 </ExpandableFormSection>
                 <ExpandableFormSection title="Diagnose">
                     <DiagnoseSection />
+                </ExpandableFormSection>
+                <ExpandableFormSection title="Meldinger" defaultClosed>
+                    <MeldingerSection />
                 </ExpandableFormSection>
                 <div className="w-full flex justify-end gap-3 mt-16">
                     <Button
