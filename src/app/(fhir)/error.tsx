@@ -5,6 +5,12 @@ import { logger } from '@navikt/next-logger'
 import { BodyShort, Box, Heading, HGrid, Link, List, VStack } from '@navikt/ds-react'
 import { PageBlock } from '@navikt/ds-react/Page'
 import { ListItem } from '@navikt/ds-react/List'
+import { usePathname } from 'next/navigation'
+import dynamic from 'next/dynamic'
+
+import { isLocalOrDemo } from '@utils/env'
+
+const LazyDevRelauncher = dynamic(() => import('../../devtools/DevRelauncher'), { ssr: false })
 
 type Props = {
     error: Error & { digest?: string }
@@ -14,6 +20,8 @@ type Props = {
  * TODO: These error pages for 404 and 500 should probably be rendered differently based on rendering context (FHIR vs standalone)
  */
 function Error({ error }: Props): ReactElement {
+    const errorPath = usePathname()
+
     useEffect(() => {
         logger.error(error)
     }, [error])
@@ -25,6 +33,9 @@ function Error({ error }: Props): ReactElement {
                     <VStack gap="16">
                         <VStack gap="12" align="start">
                             <div>
+                                {isLocalOrDemo &&
+                                    errorPath.startsWith('/fhir') &&
+                                    error.message.includes('Unable to get fhirUser') && <LazyDevRelauncher />}
                                 <BodyShort textColor="subtle" size="small">
                                     Statuskode 500
                                 </BodyShort>
