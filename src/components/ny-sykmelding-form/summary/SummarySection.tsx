@@ -32,7 +32,7 @@ function SummarySection(): ReactElement {
                     <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
                 </FormSummary.Header>
 
-                <AktivitetSummaryAnswers aktivitet={formState.aktivitet} />
+                <AktivitetSummaryAnswers aktiviteter={formState.aktiviteter} />
             </FormSummary>
             <FormSummary>
                 <FormSummary.Header>
@@ -123,8 +123,8 @@ function SummarySection(): ReactElement {
     )
 }
 
-function AktivitetSummaryAnswers({ aktivitet }: { aktivitet: AktivitetStep | null }): ReactElement {
-    if (aktivitet == null) {
+function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[] | null }): ReactElement {
+    if (aktiviteter == null) {
         return (
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -137,16 +137,20 @@ function AktivitetSummaryAnswers({ aktivitet }: { aktivitet: AktivitetStep | nul
     }
 
     return (
-        <FormSummary.Answers>
-            <FormSummary.Answer>
-                <FormSummary.Label>Periode</FormSummary.Label>
-                <FormSummary.Value>{toReadableDatePeriod(aktivitet.fom, aktivitet.tom)}</FormSummary.Value>
-            </FormSummary.Answer>
-            <FormSummary.Answer>
-                <FormSummary.Label>Mulighet for arbied</FormSummary.Label>
-                <FormSummary.Value>{aktivitetDescription(aktivitet)}</FormSummary.Value>
-            </FormSummary.Answer>
-        </FormSummary.Answers>
+        <>
+            {aktiviteter.map((aktivitet, index) => (
+                <FormSummary.Answers key={index}>
+                    <FormSummary.Answer>
+                        <FormSummary.Label>Periode</FormSummary.Label>
+                        <FormSummary.Value>{toReadableDatePeriod(aktivitet.fom, aktivitet.tom)}</FormSummary.Value>
+                    </FormSummary.Answer>
+                    <FormSummary.Answer>
+                        <FormSummary.Label>Mulighet for arbied</FormSummary.Label>
+                        <FormSummary.Value>{aktivitetDescription(aktivitet)}</FormSummary.Value>
+                    </FormSummary.Answer>
+                </FormSummary.Answers>
+            ))}
+        </>
     )
 }
 

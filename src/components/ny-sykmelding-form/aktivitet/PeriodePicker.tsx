@@ -12,10 +12,10 @@ import { PeriodeField, useController } from '../form'
 
 import styles from './PeriodePicker.module.css'
 
-function PeriodePicker(): ReactElement {
+function PeriodePicker({ index }: { index: number }): ReactElement {
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
     const periodeField = useController({
-        name: 'perioder.0.periode' as const,
+        name: `perioder.${index}.periode` as const,
         rules: {
             validate: (value) => {
                 if (rangeError?.from.isInvalid) {
@@ -192,7 +192,7 @@ function PeriodePicker(): ReactElement {
 }
 
 function getRangeDescription(field: PeriodeField | null): string | null {
-    if (field == null || field.fom == null || field.tom == null) {
+    if (field == null || field.fom == null || field.tom == null || field.fom === '' || field.tom === '') {
         return null
     }
 

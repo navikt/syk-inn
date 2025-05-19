@@ -10,7 +10,7 @@ import AndreSporsmalSection from '@components/ny-sykmelding-form/andre-sporsmal/
 import { useAppDispatch } from '../../providers/redux/hooks'
 import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
-import { NySykmeldingMainFormValues } from './form'
+import { AktivitetsPeriode, NySykmeldingMainFormValues } from './form'
 import AktivitetSection from './aktivitet/AktivitetSection'
 import DiagnoseSection from './diagnose/DiagnoseSection'
 import { useFormStep } from './steps/useFormStep'
@@ -32,13 +32,12 @@ function MainSection(): ReactElement {
                     hoved: values.diagnoser.hoved,
                     bi: [],
                 },
-                aktivitet: {
-                    // TODO: This is garbage, refactor when we implement multi-periode support
-                    fom: values.perioder[0].periode.fom,
-                    tom: values.perioder[0].periode.tom,
-                    grad: values.perioder[0].aktivitet.grad,
-                    type: values.perioder[0].aktivitet.type,
-                },
+                aktiviteter: values.perioder.map((periode) => ({
+                    fom: periode.periode.fom,
+                    tom: periode.periode.tom,
+                    grad: periode.aktivitet.grad,
+                    type: periode.aktivitet.type,
+                })),
                 meldinger: {
                     tilNav: values.meldinger.tilNav,
                     tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
@@ -87,11 +86,25 @@ function MainSection(): ReactElement {
 
 function createDefaultValues(): DefaultValues<NySykmeldingMainFormValues> {
     return {
+        perioder: [getDefaultPeriode()],
         meldinger: {
             tilNav: null,
             tilArbeidsgiver: null,
         },
         andreSporsmal: [],
+    }
+}
+
+export function getDefaultPeriode(): AktivitetsPeriode {
+    return {
+        periode: {
+            fom: '',
+            tom: '',
+        },
+        aktivitet: {
+            type: 'GRADERT',
+            grad: 60,
+        },
     }
 }
 

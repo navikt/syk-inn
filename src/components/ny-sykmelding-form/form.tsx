@@ -19,7 +19,7 @@ export type AktivitetField = {
     type: AktivitetIkkeMuligType
     grad: number
 }
-type AktivitetsPeriode = {
+export type AktivitetsPeriode = {
     periode: PeriodeField
     aktivitet: AktivitetField
 }

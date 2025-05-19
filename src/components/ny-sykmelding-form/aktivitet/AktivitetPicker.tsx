@@ -3,9 +3,9 @@ import { BodyShort, Detail, Heading, Radio, RadioGroup, TextField } from '@navik
 
 import { AktivitetIkkeMuligType, useController } from '../form'
 
-function AktivitetPicker(): ReactElement {
+function AktivitetPicker({ index }: { index: number }): ReactElement {
     const aktivitetField = useController({
-        name: 'perioder.0.aktivitet.type',
+        name: `perioder.${index}.aktivitet.type`,
         defaultValue: 'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType,
         rules: {
             required: 'Du må velge en aktivitetstype',
@@ -41,14 +41,14 @@ function AktivitetPicker(): ReactElement {
                 </Radio>
             </RadioGroup>
 
-            {aktivitetField.field.value === 'GRADERT' && <GradertGradPicker />}
+            {aktivitetField.field.value === 'GRADERT' && <GradertGradPicker index={index} />}
         </div>
     )
 }
 
-function GradertGradPicker(): ReactElement {
+function GradertGradPicker({ index }: { index: number }): ReactElement {
     const gradertField = useController({
-        name: 'perioder.0.aktivitet.grad' as const,
+        name: `perioder.${index}.aktivitet.grad` as const,
         defaultValue: 50,
         rules: {
             required: 'Du må fylle inn sykmeldingsgrad',
