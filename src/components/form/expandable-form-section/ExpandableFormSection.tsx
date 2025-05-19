@@ -6,13 +6,14 @@ import { cleanId } from '@utils/string'
 type Props = {
     title: string
     defaultClosed?: true
+    className?: string
 }
 
-function ExpandableFormSection({ title, children, defaultClosed }: PropsWithChildren<Props>): ReactElement {
+function ExpandableFormSection({ title, children, defaultClosed, className }: PropsWithChildren<Props>): ReactElement {
     const cardTitleId = `expandable-form-section-${cleanId(title)}`
 
     return (
-        <ExpansionCard size="small" aria-labelledby={cardTitleId} defaultOpen={!defaultClosed}>
+        <ExpansionCard size="small" aria-labelledby={cardTitleId} defaultOpen={!defaultClosed} className={className}>
             <ExpansionCard.Header>
                 <ExpansionCard.Title id={cardTitleId}>{title}</ExpansionCard.Title>
             </ExpansionCard.Header>

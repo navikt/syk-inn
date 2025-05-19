@@ -69,6 +69,32 @@ function SummarySection(): ReactElement {
                 </FormSummary.Answers>
             </FormSummary>
 
+            <FormSummary>
+                <FormSummary.Header>
+                    <FormSummary.Heading level="2">Andre spørsmål</FormSummary.Heading>
+                    <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
+                </FormSummary.Header>
+
+                <FormSummary.Answers>
+                    <FormSummary.Answer>
+                        <FormSummary.Label>Svangerskapsrelatert</FormSummary.Label>
+                        {formState.andreSporsmal?.svangerskapsrelatert ? (
+                            <FormSummary.Value>Ja</FormSummary.Value>
+                        ) : (
+                            <FormSummary.Value>Nei</FormSummary.Value>
+                        )}
+                    </FormSummary.Answer>
+                    <FormSummary.Answer>
+                        <FormSummary.Label>Yrkesskade</FormSummary.Label>
+                        {formState.andreSporsmal?.yrkesskade ? (
+                            <FormSummary.Value>Ja</FormSummary.Value>
+                        ) : (
+                            <FormSummary.Value>Nei</FormSummary.Value>
+                        )}
+                    </FormSummary.Answer>
+                </FormSummary.Answers>
+            </FormSummary>
+
             <div className="w-full flex justify-end gap-3 mt-16">
                 <Button
                     type="button"

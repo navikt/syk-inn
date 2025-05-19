@@ -28,8 +28,8 @@ export type AktivitetStep = {
 )
 
 export type MeldingerStep = {
-    tilNav: string
-    tilArbeidsgiver: string
+    tilNav: string | null
+    tilArbeidsgiver: string | null
 }
 
 export type DiagnoseStep = {
@@ -37,11 +37,17 @@ export type DiagnoseStep = {
     bi: DiagnoseSuggestion[]
 }
 
+export type AndreSporsmalStep = {
+    svangerskapsrelatert: boolean
+    yrkesskade: boolean
+}
+
 type NySykmeldingMultiStepState = {
     pasient: PasientStep | null
     aktivitet: AktivitetStep | null
     diagnose: DiagnoseStep | null
     meldinger: MeldingerStep | null
+    andreSporsmal: AndreSporsmalStep | null
 }
 
 const initialState: NySykmeldingMultiStepState = {
@@ -49,6 +55,7 @@ const initialState: NySykmeldingMultiStepState = {
     aktivitet: null,
     diagnose: null,
     meldinger: null,
+    andreSporsmal: null,
 }
 
 const nySykmeldingMultistep = createSlice({
@@ -60,11 +67,17 @@ const nySykmeldingMultistep = createSlice({
         },
         completeMainStep(
             state,
-            action: PayloadAction<{ diagnose: DiagnoseStep; aktivitet: AktivitetStep; meldinger: MeldingerStep }>,
+            action: PayloadAction<{
+                diagnose: DiagnoseStep
+                aktivitet: AktivitetStep
+                meldinger: MeldingerStep
+                andreSporsmal: AndreSporsmalStep
+            }>,
         ) {
             state.aktivitet = action.payload.aktivitet
             state.diagnose = action.payload.diagnose
             state.meldinger = action.payload.meldinger
+            state.andreSporsmal = action.payload.andreSporsmal
         },
     },
 })

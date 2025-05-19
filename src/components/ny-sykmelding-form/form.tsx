@@ -30,9 +30,10 @@ export type NySykmeldingMainFormValues = {
         hoved: DiagnoseSuggestion
     }
     meldinger: {
-        tilNav: string
-        tilArbeidsgiver: string
+        tilNav: string | null
+        tilArbeidsgiver: string | null
     }
+    andreSporsmal: ('svangerskapsrelatert' | 'yrkesskade')[]
 }
 
 export const useFormContext = useRhfFormContext<NySykmeldingMainFormValues>
