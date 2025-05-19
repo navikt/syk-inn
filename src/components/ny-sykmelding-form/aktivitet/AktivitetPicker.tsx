@@ -79,6 +79,7 @@ function GradertGradPicker({ index }: { index: number }): ReactElement {
                     type="number"
                     label="Sykmeldingsgrad"
                     {...gradertField.field}
+                    value={gradertField.field.value ?? ''}
                     error={gradertField.fieldState.error?.message}
                 />
             </div>

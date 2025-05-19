@@ -17,7 +17,7 @@ export type AktivitetIkkeMuligType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT'
 
 export type AktivitetField = {
     type: AktivitetIkkeMuligType
-    grad: number
+    grad: number | null
 }
 export type AktivitetsPeriode = {
     periode: PeriodeField

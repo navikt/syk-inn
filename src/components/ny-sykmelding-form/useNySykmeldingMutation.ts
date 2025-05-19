@@ -42,7 +42,7 @@ export function useNySykmeldingMutation(): UseMutationResult<NySykmelding, Error
                         fom: formState.aktiviteter[0].fom,
                         tom: formState.aktiviteter[0].tom,
                         // @ts-expect-error TODO proper mapping
-                        grad: formState.aktiviteter[0].grad?.toFixed(0),
+                        grad: formState.aktiviteter[0].grad,
                     },
 
                     diagnoser: {
@@ -67,7 +67,7 @@ export function useNySykmeldingMutation(): UseMutationResult<NySykmelding, Error
 
                 return createResult
             } catch (e) {
-                logger.error(`Sykmelding creation failed, errors`, { cause: e })
+                logger.error(`Sykmelding creation failed, errors ${e}`)
                 throw new Error(`Sykmelding creation failed`)
             }
         },

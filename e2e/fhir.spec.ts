@@ -40,6 +40,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: '2024-02-15',
                 tom: '2024-02-18',
+                grad: null,
             },
         },
     })
@@ -69,6 +70,7 @@ test('can submit 100% sykmelding and use week picker', async ({ page }) => {
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: dateOnly(new Date()),
                 tom: dateOnly(addDays(new Date(), 3)),
+                grad: null,
             },
         },
     })
@@ -101,6 +103,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: '2024-02-15',
                 tom: '2024-02-18',
+                grad: null,
             },
         },
     })
