@@ -20,8 +20,8 @@ test('can submit 100% sykmelding', async ({ page }) => {
 
     await fillAktivitetsPeriode({
         type: '100%',
-        fom: '15.02.2024',
-        tom: '18.02.2024',
+        fomRelativeToToday: 0,
+        tomRelativeToToday: 3,
     })(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
@@ -38,8 +38,8 @@ test('can submit 100% sykmelding', async ({ page }) => {
             },
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
-                fom: '2024-02-15',
-                tom: '2024-02-18',
+                fom: dateOnly(new Date()),
+                tom: dateOnly(addDays(new Date(), 3)),
                 grad: null,
             },
         },
@@ -84,8 +84,8 @@ test('shall be able to edit diagnose', async ({ page }) => {
 
     await fillAktivitetsPeriode({
         type: '100%',
-        fom: '15.02.2024',
-        tom: '18.02.2024',
+        fomRelativeToToday: 0,
+        tomRelativeToToday: 3,
     })(page)
 
     const diagnoseRegion = await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
@@ -101,8 +101,8 @@ test('shall be able to edit diagnose', async ({ page }) => {
             diagnoser: { hoved: { code: 'D290', system: 'ICD10' } },
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
-                fom: '2024-02-15',
-                tom: '2024-02-18',
+                fom: dateOnly(new Date()),
+                tom: dateOnly(addDays(new Date(), 3)),
                 grad: null,
             },
         },
@@ -117,8 +117,8 @@ test('can submit gradert sykmelding', async ({ page }) => {
 
     await fillAktivitetsPeriode({
         type: { grad: 50 },
-        fom: '15.02.2024',
-        tom: '18.02.2024',
+        fomRelativeToToday: 0,
+        tomRelativeToToday: 3,
     })(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
@@ -135,8 +135,8 @@ test('can submit gradert sykmelding', async ({ page }) => {
             },
             aktivitet: {
                 type: 'GRADERT',
-                fom: '2024-02-15',
-                tom: '2024-02-18',
+                fom: dateOnly(new Date()),
+                tom: dateOnly(addDays(new Date(), 3)),
                 grad: '50',
             },
         },

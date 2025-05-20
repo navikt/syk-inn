@@ -85,5 +85,6 @@ export function getServerEnv(): ServerEnv {
     } satisfies Record<keyof ServerEnv, unknown | undefined>)
 }
 
-export const isLocalOrDemo = process.env.NODE_ENV === 'development' || bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'demo'
 export const isE2E = bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'e2e'
+export const isLocalOrDemo =
+    (process.env.NODE_ENV === 'development' || bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'demo') && !isE2E

@@ -1,4 +1,7 @@
 import { test, expect } from '@playwright/test'
+import { addDays } from 'date-fns'
+
+import { dateOnly } from '@utils/date'
 
 import { launchStandalone } from './actions/standalone-actions'
 import { fillAktivitetsPeriode, fillManualPasient, pickHoveddiagnose, submitSykmelding } from './actions/user-actions'
@@ -9,8 +12,8 @@ test.fixme('can submit 100% sykmelding without prefilled pasient', async ({ page
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
     await fillAktivitetsPeriode({
         type: '100%',
-        fom: '15.02.2024',
-        tom: '18.02.2024',
+        fomRelativeToToday: 0,
+        tomRelativeToToday: 3,
     })(page)
 
     const payload = await submitSykmelding()(page)
@@ -23,8 +26,8 @@ test.fixme('can submit 100% sykmelding without prefilled pasient', async ({ page
             },
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
-                fom: '2024-02-15',
-                tom: '2024-02-18',
+                fom: dateOnly(new Date()),
+                tom: dateOnly(addDays(new Date(), 3)),
                 grad: null,
             },
         },

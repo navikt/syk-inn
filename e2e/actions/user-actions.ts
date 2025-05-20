@@ -1,4 +1,5 @@
 import { expect, Locator, Page } from '@playwright/test'
+import { add, format } from 'date-fns'
 
 import { clickAndWait, waitForHttp } from '../utils/request-utils'
 
@@ -44,18 +45,22 @@ export function editHoveddiagnose({ search, select }: { search: string; select: 
 
 export function fillAktivitetsPeriode({
     type,
-    fom,
-    tom,
+    fomRelativeToToday,
+    tomRelativeToToday,
 }: {
     type: '100%' | { grad: number }
-    fom: string
-    tom: string
+    fomRelativeToToday: number
+    tomRelativeToToday: number
 }) {
+    const fom = add(new Date(), { days: fomRelativeToToday })
+
+    const tom = add(new Date(), { days: tomRelativeToToday })
+
     return async (page: Page) => {
         const periodeRegion = page.getByRole('region', { name: 'Sykmeldingsperiode' })
         await expect(periodeRegion).toBeVisible()
-        await periodeRegion.getByRole('textbox', { name: 'Fra og med' }).fill(fom)
-        await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(tom)
+        await periodeRegion.getByRole('textbox', { name: 'Fra og med' }).fill(format(fom, 'dd.MM.yyyy'))
+        await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(format(tom, 'dd.MM.yyyy'))
 
         if (typeof type !== 'string' && 'grad' in type) {
             await page
