@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { Fragment, ReactElement } from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { Button } from '@navikt/ds-react'
 
@@ -15,15 +15,15 @@ function AktivitetSection(): ReactElement {
     return (
         <>
             {fields?.map((periode, index) => (
-                <>
-                    <PeriodePicker index={index} key={`periode-${periode.id}`} />
-                    <AktivitetPicker index={index} key={`aktivitet-${periode.id}`} />
+                <Fragment key={periode.id}>
+                    <PeriodePicker index={index} />
+                    <AktivitetPicker index={index} />
                     {index > 0 && (
                         <Button variant="danger" type="button" onClick={() => remove(index)}>
                             Slett periode
                         </Button>
                     )}
-                </>
+                </Fragment>
             ))}
             <Button
                 variant="secondary"
