@@ -7,67 +7,74 @@ import { getName } from '@fhir/fhir-data/mappers/patient'
 import { getReadyClient } from '@fhir/smart-client'
 
 import { BehandlerInfo } from '../../data-fetcher/data-service'
+import { withSpanAsync } from '../../otel/otel'
 
 /**
  * These FHIR resources are only available in the server runtime. They are not proxied through the backend.
  * They will use the session store and fetch resources directly from the FHIR server.
  */
 export const serverFhirResources = {
-    createDocumentReference: async (
-        pdf: string,
-        title: string,
-        sykmeldingId: string,
-    ): Promise<FhirDocumentReferenceBase | SmartClientReadyErrors | ResourceCreateErrors> => {
-        const client = await getReadyClient({ validate: true })
-        if ('error' in client) {
-            return { error: client.error }
-        }
+    createDocumentReference: withSpanAsync(
+        'fhir create document reference',
+        async (
+            pdf: string,
+            title: string,
+            sykmeldingId: string,
+        ): Promise<FhirDocumentReferenceBase | SmartClientReadyErrors | ResourceCreateErrors> => {
+            const client = await getReadyClient({ validate: true })
+            if ('error' in client) {
+                return { error: client.error }
+            }
 
-        const practitionerId = client.fhirUser
-        const patientId = client.patient
-        const encounterId = client.encounter
+            const practitionerId = client.fhirUser
+            const patientId = client.patient
+            const encounterId = client.encounter
 
-        const documentReferencePayload = prepareDocRefWithB64Data({
-            title,
-            pdf,
-            sykmeldingId,
-            encounterId,
-            patientId,
-            practitionerId,
-        })
+            const documentReferencePayload = prepareDocRefWithB64Data({
+                title,
+                pdf,
+                sykmeldingId,
+                encounterId,
+                patientId,
+                practitionerId,
+            })
 
-        const createResult = await client.create('/DocumentReference', {
-            payload: documentReferencePayload,
-        })
+            const createResult = await client.create('/DocumentReference', {
+                payload: documentReferencePayload,
+            })
 
-        if ('error' in createResult) {
-            logger.error('Failed to create DocumentReference', createResult.error)
+            if ('error' in createResult) {
+                logger.error('Failed to create DocumentReference', createResult.error)
+                return createResult
+            }
+
             return createResult
-        }
+        },
+    ),
 
-        return createResult
-    },
+    getDocumentReference: withSpanAsync(
+        'fhir document by id',
+        async (
+            sykmeldingId: string,
+        ): Promise<FhirDocumentReferenceBase | SmartClientReadyErrors | ResourceRequestErrors> => {
+            const client = await getReadyClient({ validate: true })
+            if ('error' in client) {
+                return { error: client.error }
+            }
 
-    getDocumentReference: async (
-        sykmeldingId: string,
-    ): Promise<FhirDocumentReferenceBase | SmartClientReadyErrors | ResourceRequestErrors> => {
-        const client = await getReadyClient({ validate: true })
-        if ('error' in client) {
-            return { error: client.error }
-        }
+            const resourcePath = `/DocumentReference/${sykmeldingId}` as const
+            logger.info(`Resource path: ${resourcePath}`)
+            const documentReference = await client.request(resourcePath)
 
-        const resourcePath = `/DocumentReference/${sykmeldingId}` as const
-        logger.info(`Resource path: ${resourcePath}`)
-        const documentReference = await client.request(resourcePath)
+            if ('error' in documentReference) {
+                return { error: documentReference.error }
+            }
 
-        if ('error' in documentReference) {
-            return { error: documentReference.error }
-        }
+            return documentReference
+        },
+    ),
 
-        return documentReference
-    },
-
-    getBehandlerInfo: async (): Promise<BehandlerInfo> => {
+    getBehandlerInfo: withSpanAsync('fhir behandler', async (): Promise<BehandlerInfo> => {
         const client = await getReadyClient({ validate: true })
         if ('error' in client) {
             throw new Error(`Unable to get fhirUser, cause: ${client.error}`)
@@ -97,7 +104,7 @@ export const serverFhirResources = {
             hpr: hpr,
             autorisasjoner: [],
         }
-    },
+    }),
 }
 
 type PrepareDocRefOpts = {

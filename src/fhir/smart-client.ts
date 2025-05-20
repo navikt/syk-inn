@@ -9,6 +9,8 @@ import { getValkeyClient } from '@services/valkey/client'
 import { getAbsoluteURL } from '@utils/url'
 import { getSessionId } from '@fhir/auth/session'
 
+import { spanAsync } from '../otel/otel'
+
 const smartClientConfig: SmartClientConfiguration = {
     client_id: 'syk-inn',
     scope: 'openid profile launch fhirUser patient/*.read user/*.read offline_access',
@@ -21,17 +23,19 @@ export function getSmartClient(): SmartClient {
 }
 
 export async function getReadyClient({ validate }: { validate: true }): Promise<ReadyClient | SmartClientReadyErrors> {
-    const actualSessionId = await getSessionId()
-    const readyClient = await getSmartClient().ready(actualSessionId)
+    return spanAsync('smart client init', async () => {
+        const actualSessionId = await getSessionId()
+        const readyClient = await getSmartClient().ready(actualSessionId)
 
-    if (validate) {
-        const validToken = await readyClient.validate()
-        if (!validToken) {
-            return { error: 'INVALID_TOKEN' }
+        if (validate) {
+            const validToken = await readyClient.validate()
+            if (!validToken) {
+                return { error: 'INVALID_TOKEN' }
+            }
         }
-    }
 
-    return readyClient
+        return readyClient
+    })
 }
 
 async function getSmartStorage(): Promise<SmartStorage> {

@@ -3,21 +3,21 @@ import { logger } from '@navikt/next-logger'
 import { startTransition } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { withSpanAsync } from '@faro/faro'
 import { raise } from '@utils/ts'
 import { pathWithBasePath } from '@utils/url'
 
 import { useDataService } from '../../data-fetcher/data-provider'
 import { useAppSelector } from '../../providers/redux/hooks'
 import { NySykmelding } from '../../data-fetcher/data-service'
+import { withSpanAsync } from '../../otel/otel'
 
 export function useNySykmeldingMutation(): UseMutationResult<NySykmelding, Error, void, unknown> {
     const formState = useAppSelector((state) => state.nySykmeldingMultistep)
     const router = useRouter()
     const dataService = useDataService()
-    const opprettSykmelding = useMutation({
+    const opprettSykmelding = useMutation<NySykmelding>({
         mutationKey: ['opprett-sykmelding'],
-        mutationFn: withSpanAsync<NySykmelding>('submitSykmelding', async () => {
+        mutationFn: withSpanAsync('submitSykmelding', async () => {
             logger.info('(Client) Submitting values,', formState)
 
             if (formState.pasient == null) {

@@ -7755,6 +7755,7 @@ __metadata:
     "@navikt/next-logger": "npm:^3.0.3"
     "@navikt/oasis": "npm:^3.8.0"
     "@navikt/smart-on-fhir": "workspace:*"
+    "@opentelemetry/api": "npm:^1.9.0"
     "@playwright/test": "npm:1.52.0"
     "@reduxjs/toolkit": "npm:^2.8.2"
     "@tailwindcss/postcss": "npm:^4.1.6"

@@ -4,7 +4,7 @@ import { lazyNextleton } from 'nextleton'
 
 import { bundledEnv, isLocalOrDemo } from '@utils/env'
 
-const APP_NAME = 'syk-inn'
+import { APP_NAME } from './common'
 
 export const getFaro = lazyNextleton('faro-a', (): Faro | null => {
     if (bundledEnv.NEXT_PUBLIC_TELEMETRY_URL == null) return null
@@ -27,26 +27,9 @@ export const getFaro = lazyNextleton('faro-a', (): Faro | null => {
     })
 })
 
-function getOTEL(): OTELApi | null {
+export function getBrowserOTEL(): OTELApi | null {
     const faro = getFaro()
     if (faro == null) return null
 
     return faro.api.getOTEL() ?? null
-}
-
-export async function spanAsync<T>(name: string, fn: () => Promise<T>): Promise<T> {
-    const otel = getOTEL()
-    if (otel == null) {
-        return fn()
-    }
-
-    const tracer = otel.trace.getTracer(APP_NAME)
-    const span = tracer.startSpan(name)
-    return otel.context.with(otel.trace.setSpan(otel.context.active(), span), async () =>
-        fn().finally(() => span.end()),
-    )
-}
-
-export function withSpanAsync<T>(name: string, fn: () => Promise<T>): () => Promise<T> {
-    return async () => spanAsync(name, fn)
 }

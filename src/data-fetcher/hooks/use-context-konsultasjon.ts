@@ -1,9 +1,8 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 
-import { withSpanAsync } from '@faro/faro'
-
 import { assertResourceAvailable, isResourceAvailable, KonsultasjonInfo } from '../data-service'
 import { useDataService } from '../data-provider'
+import { withSpanAsync } from '../../otel/otel'
 
 export function useContextKonsultasjon(): UseQueryResult<KonsultasjonInfo, Error> {
     const dataService = useDataService()
