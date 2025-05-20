@@ -15,42 +15,15 @@ import AktivitetSection from './aktivitet/AktivitetSection'
 import DiagnoseSection from './diagnose/DiagnoseSection'
 import { useFormStep } from './steps/useFormStep'
 import MeldingerSection from './meldinger/MeldingerSection'
+import DynamicTilbakedateringSection from './tilbakedatering/DynamicTilbakedateringSection'
 
 const FormDevTools = dynamic(() => import('../../devtools/NySykmeldingFormDevTools'), { ssr: false })
 
 function MainSection(): ReactElement {
-    const [, setStep] = useFormStep()
-    const dispatch = useAppDispatch()
+    const onSubmit = useHandleFormSubmit()
     const form = useForm<NySykmeldingMainFormValues>({
         defaultValues: createDefaultValues(),
     })
-
-    const onSubmit = async (values: NySykmeldingMainFormValues): Promise<void> => {
-        dispatch(
-            nySykmeldingMultistepActions.completeMainStep({
-                diagnose: {
-                    hoved: values.diagnoser.hoved,
-                    bi: [],
-                },
-                aktiviteter: values.perioder.map((periode) => ({
-                    fom: periode.periode.fom,
-                    tom: periode.periode.tom,
-                    grad: periode.aktivitet.grad,
-                    type: periode.aktivitet.type,
-                })),
-                meldinger: {
-                    tilNav: values.meldinger.tilNav,
-                    tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
-                },
-                andreSporsmal: {
-                    svangerskapsrelatert: values.andreSporsmal.includes('svangerskapsrelatert'),
-                    yrkesskade: values.andreSporsmal.includes('yrkesskade'),
-                },
-            }),
-        )
-
-        await setStep('summary')
-    }
 
     return (
         <FormProvider {...form}>
@@ -58,6 +31,7 @@ function MainSection(): ReactElement {
                 <ExpandableFormSection title="Sykmeldingsperiode" className="lg:col-span-2">
                     <AktivitetSection />
                 </ExpandableFormSection>
+                <DynamicTilbakedateringSection />
                 <ExpandableFormSection title="Diagnose">
                     <DiagnoseSection />
                 </ExpandableFormSection>
@@ -105,6 +79,44 @@ export function getDefaultPeriode(): AktivitetsPeriode {
             type: 'AKTIVITET_IKKE_MULIG',
             grad: null,
         },
+    }
+}
+
+function useHandleFormSubmit() {
+    const [, setStep] = useFormStep()
+    const dispatch = useAppDispatch()
+
+    return async (values: NySykmeldingMainFormValues): Promise<void> => {
+        dispatch(
+            nySykmeldingMultistepActions.completeMainStep({
+                diagnose: {
+                    hoved: values.diagnoser.hoved,
+                    bi: [],
+                },
+                aktiviteter: values.perioder.map((periode) => ({
+                    fom: periode.periode.fom,
+                    tom: periode.periode.tom,
+                    grad: periode.aktivitet.grad,
+                    type: periode.aktivitet.type,
+                })),
+                tilbakedatering: values.tilbakedatering
+                    ? {
+                          fom: values.tilbakedatering?.fom ?? '',
+                          grunn: values.tilbakedatering?.grunn ?? '',
+                      }
+                    : null,
+                meldinger: {
+                    tilNav: values.meldinger.tilNav,
+                    tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
+                },
+                andreSporsmal: {
+                    svangerskapsrelatert: values.andreSporsmal.includes('svangerskapsrelatert'),
+                    yrkesskade: values.andreSporsmal.includes('yrkesskade'),
+                },
+            }),
+        )
+
+        await setStep('summary')
     }
 }
 

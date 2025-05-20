@@ -24,6 +24,11 @@ export type AktivitetStep = {
     grad: number | null
 }
 
+export type TilbakedateringStep = {
+    fom: string
+    grunn: string
+}
+
 export type MeldingerStep = {
     tilNav: string | null
     tilArbeidsgiver: string | null
@@ -42,6 +47,7 @@ export type AndreSporsmalStep = {
 type NySykmeldingMultiStepState = {
     pasient: PasientStep | null
     aktiviteter: AktivitetStep[] | null
+    tilbakedatering: TilbakedateringStep | null
     diagnose: DiagnoseStep | null
     meldinger: MeldingerStep | null
     andreSporsmal: AndreSporsmalStep | null
@@ -50,6 +56,7 @@ type NySykmeldingMultiStepState = {
 const initialState: NySykmeldingMultiStepState = {
     pasient: null,
     aktiviteter: null,
+    tilbakedatering: null,
     diagnose: null,
     meldinger: null,
     andreSporsmal: null,
@@ -67,11 +74,13 @@ const nySykmeldingMultistep = createSlice({
             action: PayloadAction<{
                 diagnose: DiagnoseStep
                 aktiviteter: AktivitetStep[]
+                tilbakedatering: TilbakedateringStep | null
                 meldinger: MeldingerStep
                 andreSporsmal: AndreSporsmalStep
             }>,
         ) {
             state.aktiviteter = action.payload.aktiviteter
+            state.tilbakedatering = action.payload.tilbakedatering
             state.diagnose = action.payload.diagnose
             state.meldinger = action.payload.meldinger
             state.andreSporsmal = action.payload.andreSporsmal
