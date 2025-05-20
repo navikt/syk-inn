@@ -2,12 +2,17 @@ import { Alert, BodyShort, Button, Detail, FormSummary } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
 
-import { toReadableDatePeriod } from '@utils/date'
+import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 
 import { useFormStep } from '../steps/useFormStep'
 import { useAppSelector } from '../../../providers/redux/hooks'
 import { useNySykmeldingMutation } from '../useNySykmeldingMutation'
-import { AktivitetStep, DiagnoseStep, PasientStep } from '../../../providers/redux/reducers/ny-sykmelding-multistep'
+import {
+    AktivitetStep,
+    DiagnoseStep,
+    PasientStep,
+    TilbakedateringStep,
+} from '../../../providers/redux/reducers/ny-sykmelding-multistep'
 
 import { aktivitetDescription } from './summary-text-utils'
 
@@ -34,6 +39,15 @@ function SummarySection(): ReactElement {
 
                 <AktivitetSummaryAnswers aktiviteter={formState.aktiviteter} />
             </FormSummary>
+            {formState.tilbakedatering && (
+                <FormSummary>
+                    <FormSummary.Header>
+                        <FormSummary.Heading level="2">Tilbakedatering</FormSummary.Heading>
+                        <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
+                    </FormSummary.Header>
+                    <TilbakedateringSummaryAnswers tilbakedatering={formState.tilbakedatering} />
+                </FormSummary>
+            )}
             <FormSummary>
                 <FormSummary.Header>
                     <FormSummary.Heading level="2">Diagnose</FormSummary.Heading>
@@ -151,6 +165,21 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[]
                 </FormSummary.Answers>
             ))}
         </>
+    )
+}
+
+function TilbakedateringSummaryAnswers({ tilbakedatering }: { tilbakedatering: TilbakedateringStep }): ReactElement {
+    return (
+        <FormSummary.Answers>
+            <FormSummary.Answer>
+                <FormSummary.Label>Dato for tilbakedatering</FormSummary.Label>
+                <FormSummary.Value>{toReadableDate(tilbakedatering.fom)}</FormSummary.Value>
+            </FormSummary.Answer>
+            <FormSummary.Answer>
+                <FormSummary.Label>Grunn for tilbakedatering</FormSummary.Label>
+                <FormSummary.Value>{tilbakedatering.grunn}</FormSummary.Value>
+            </FormSummary.Answer>
+        </FormSummary.Answers>
     )
 }
 

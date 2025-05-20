@@ -24,11 +24,17 @@ export type AktivitetsPeriode = {
     aktivitet: AktivitetField
 }
 
+export type TilbakedateringField = {
+    fom: string | null
+    grunn: string | null
+}
+
 export type NySykmeldingMainFormValues = {
     perioder: AktivitetsPeriode[]
     diagnoser: {
         hoved: DiagnoseSuggestion
     }
+    tilbakedatering?: TilbakedateringField
     meldinger: {
         tilNav: string | null
         tilArbeidsgiver: string | null
