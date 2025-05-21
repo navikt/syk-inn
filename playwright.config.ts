@@ -16,7 +16,7 @@ const opts: OptionsType = process.env.CI
             timeout: 30 * 1000,
             server: {
                 command: 'yarn start:e2e',
-                url: `http://localhost:${PORT}`,
+                url: `http://localhost:${PORT}/api/internal/is_alive`,
                 timeout: 120 * 1000,
                 reuseExistingServer: false,
                 stderr: 'pipe',
