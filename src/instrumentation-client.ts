@@ -10,4 +10,6 @@ configureLogger({
 
 const faro = getFaro()
 
-logger.info(`Faro initialized: ${faro == null ? 'no' : 'yes'} (${bundledEnv.NEXT_PUBLIC_TELEMETRY_URL})`)
+logger.info(
+    `Faro initialized: ${faro == null ? 'no' : 'yes'} (${bundledEnv.NEXT_PUBLIC_TELEMETRY_URL || 'null or empty string'})`,
+)
