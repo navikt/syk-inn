@@ -1,27 +1,26 @@
 import { test, expect } from '@playwright/test'
-import { addDays } from 'date-fns'
-
-import { dateOnly } from '@utils/date'
 
 import { launchWithMock } from './actions/fhir-actions'
+import { daysAgo, inDays, today } from './utils/date-utils'
 import {
     initPreloadedPatient,
     editHoveddiagnose,
-    fillAktivitetsPeriode,
+    fillPeriodeRelative,
     pickHoveddiagnose,
     pickSuggestedPeriod,
     submitSykmelding,
     nextStep,
+    fillTilbakedatering,
+    verifySummaryPage,
 } from './actions/user-actions'
 
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
-    await fillAktivitetsPeriode({
+    await fillPeriodeRelative({
         type: '100%',
-        fomRelativeToToday: 0,
-        tomRelativeToToday: 3,
+        days: 3,
     })(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
@@ -38,8 +37,8 @@ test('can submit 100% sykmelding', async ({ page }) => {
             },
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
-                fom: dateOnly(new Date()),
-                tom: dateOnly(addDays(new Date(), 3)),
+                fom: today(),
+                tom: inDays(3),
                 grad: null,
             },
         },
@@ -68,8 +67,8 @@ test('can submit 100% sykmelding and use week picker', async ({ page }) => {
             },
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
-                fom: dateOnly(new Date()),
-                tom: dateOnly(addDays(new Date(), 3)),
+                fom: today(),
+                tom: inDays(3),
                 grad: null,
             },
         },
@@ -82,10 +81,9 @@ test('shall be able to edit diagnose', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
-    await fillAktivitetsPeriode({
+    await fillPeriodeRelative({
         type: '100%',
-        fomRelativeToToday: 0,
-        tomRelativeToToday: 3,
+        days: 3,
     })(page)
 
     const diagnoseRegion = await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
@@ -101,8 +99,8 @@ test('shall be able to edit diagnose', async ({ page }) => {
             diagnoser: { hoved: { code: 'D290', system: 'ICD10' } },
             aktivitet: {
                 type: 'AKTIVITET_IKKE_MULIG',
-                fom: dateOnly(new Date()),
-                tom: dateOnly(addDays(new Date(), 3)),
+                fom: today(),
+                tom: inDays(3),
                 grad: null,
             },
         },
@@ -115,10 +113,9 @@ test('can submit gradert sykmelding', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
-    await fillAktivitetsPeriode({
+    await fillPeriodeRelative({
         type: { grad: 50 },
-        fomRelativeToToday: 0,
-        tomRelativeToToday: 3,
+        days: 3,
     })(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
@@ -135,12 +132,54 @@ test('can submit gradert sykmelding', async ({ page }) => {
             },
             aktivitet: {
                 type: 'GRADERT',
-                fom: dateOnly(new Date()),
-                tom: dateOnly(addDays(new Date(), 3)),
+                fom: today(),
+                tom: inDays(3),
                 grad: '50',
             },
         },
     })
 
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+})
+
+test("should be asked about 'tilbakedatering' when fom is 9 days in the past", async ({ page }) => {
+    await launchWithMock(page)
+    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await fillPeriodeRelative({
+        type: '100%',
+        fromRelative: -9,
+        days: 10,
+    })(page)
+    await fillTilbakedatering({
+        contact: daysAgo(2),
+        reason: 'Ferie eller noe',
+    })(page)
+    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+
+    await nextStep()(page)
+
+    await verifySummaryPage({
+        tilbakedatering: {
+            contact: daysAgo(2),
+            reason: 'Ferie eller noe',
+        },
+    })(page)
+
+    const payload = await submitSykmelding()(page)
+    expect(payload).toEqual({
+        behandlerHpr: '9144889',
+        values: {
+            pasient: '21037712323',
+            diagnoser: {
+                hoved: { system: 'ICPC2', code: 'P74' },
+            },
+            aktivitet: {
+                type: 'AKTIVITET_IKKE_MULIG',
+                fom: daysAgo(9),
+                tom: inDays(1),
+                grad: null,
+            },
+        },
+    })
 })

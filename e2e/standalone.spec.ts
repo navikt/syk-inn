@@ -4,16 +4,15 @@ import { addDays } from 'date-fns'
 import { dateOnly } from '@utils/date'
 
 import { launchStandalone } from './actions/standalone-actions'
-import { fillAktivitetsPeriode, fillManualPasient, pickHoveddiagnose, submitSykmelding } from './actions/user-actions'
+import { fillPeriodeRelative, fillManualPasient, pickHoveddiagnose, submitSykmelding } from './actions/user-actions'
 
 test.fixme('can submit 100% sykmelding without prefilled pasient', async ({ page }) => {
     await launchStandalone(page)
     await fillManualPasient({ fnr: '21037712323' })(page)
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-    await fillAktivitetsPeriode({
+    await fillPeriodeRelative({
         type: '100%',
-        fomRelativeToToday: 0,
-        tomRelativeToToday: 3,
+        days: 3,
     })(page)
 
     const payload = await submitSykmelding()(page)

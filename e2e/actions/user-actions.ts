@@ -1,7 +1,10 @@
 import { expect, Locator, Page } from '@playwright/test'
-import { add, format } from 'date-fns'
+import { add } from 'date-fns'
+
+import { toReadableDate } from '@utils/date'
 
 import { clickAndWait, waitForHttp } from '../utils/request-utils'
+import { inputDate } from '../utils/date-utils'
 
 export function initPreloadedPatient({ name, fnr }: { name: string; fnr: string }) {
     return async (page: Page) => {
@@ -43,24 +46,21 @@ export function editHoveddiagnose({ search, select }: { search: string; select: 
     }
 }
 
-export function fillAktivitetsPeriode({
+export function fillPeriodeRelative({
     type,
-    fomRelativeToToday,
-    tomRelativeToToday,
-}: {
-    type: '100%' | { grad: number }
-    fomRelativeToToday: number
-    tomRelativeToToday: number
-}) {
-    const fom = add(new Date(), { days: fomRelativeToToday })
+    ...params
+}: { type: '100%' | { grad: number } } & ({ days: number } | { fromRelative: number; days: number })) {
+    const [fomRelativeToToday, tomRelativeToToday] =
+        'fromRelative' in params ? [params.fromRelative, params.fromRelative + params.days] : [0, params.days]
 
+    const fom = add(new Date(), { days: fomRelativeToToday })
     const tom = add(new Date(), { days: tomRelativeToToday })
 
     return async (page: Page) => {
         const periodeRegion = page.getByRole('region', { name: 'Sykmeldingsperiode' })
         await expect(periodeRegion).toBeVisible()
-        await periodeRegion.getByRole('textbox', { name: 'Fra og med' }).fill(format(fom, 'dd.MM.yyyy'))
-        await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(format(tom, 'dd.MM.yyyy'))
+        await periodeRegion.getByRole('textbox', { name: 'Fra og med' }).fill(inputDate(fom))
+        await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(tom))
 
         if (typeof type !== 'string' && 'grad' in type) {
             await page
@@ -70,6 +70,16 @@ export function fillAktivitetsPeriode({
 
             await page.getByRole('spinbutton', { name: 'Sykmeldingsgrad' }).fill(`${type.grad}`)
         }
+    }
+}
+
+export function fillTilbakedatering({ contact, reason }: { contact: string; reason: string }) {
+    return async (page: Page) => {
+        const region = page.getByRole('region', { name: 'Tilbakedatering' })
+        await expect(region).toBeVisible()
+
+        await region.getByRole('textbox', { name: 'Når tok pasienten først kontakt' }).fill(inputDate(contact))
+        await region.getByRole('textbox', { name: 'Oppgi årsak for tilbakedatering' }).fill(reason)
     }
 }
 
@@ -93,6 +103,18 @@ export function pickSuggestedPeriod(weeks: '3 dager' | 'tom søndag' | '1 uke') 
                 throw new Error(`Unknown period: ${weeks}`)
         }
         await aktivitetRegion.getByRole('button', { name: label }).click()
+    }
+}
+
+export function verifySummaryPage(sections: { tilbakedatering?: { contact: string; reason: string } }) {
+    return async (page: Page) => {
+        if (sections.tilbakedatering) {
+            // Not be most semantically correct, but this is the only way to get the text because of dd/dt (for now)
+            await expect(
+                page.getByText('Dato for tilbakedatering' + toReadableDate(sections.tilbakedatering.contact)),
+            ).toBeVisible()
+            await expect(page.getByText('Grunn for tilbakedatering' + sections.tilbakedatering.reason)).toBeVisible()
+        }
     }
 }
 
