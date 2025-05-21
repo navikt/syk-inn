@@ -1,16 +1,18 @@
 import React, { ReactElement } from 'react'
-import { DefaultValues, FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { Button } from '@navikt/ds-react'
 import { ArrowRightIcon } from '@navikt/aksel-icons'
 import dynamic from 'next/dynamic'
 
+import { raise } from '@utils/ts'
 import ExpandableFormSection from '@components/form/expandable-form-section/ExpandableFormSection'
 import AndreSporsmalSection from '@components/ny-sykmelding-form/andre-sporsmal/AndreSporsmalSection'
+import { createDefaultValues } from '@components/ny-sykmelding-form/form-default-values'
 
-import { useAppDispatch } from '../../providers/redux/hooks'
+import { useAppDispatch, useAppSelector } from '../../providers/redux/hooks'
 import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
-import { AktivitetsPeriode, NySykmeldingMainFormValues } from './form'
+import { NySykmeldingMainFormValues } from './form'
 import AktivitetSection from './aktivitet/AktivitetSection'
 import DiagnoseSection from './diagnose/DiagnoseSection'
 import { useFormStep } from './steps/useFormStep'
@@ -20,9 +22,10 @@ import DynamicTilbakedateringSection from './tilbakedatering/DynamicTilbakedater
 const FormDevTools = dynamic(() => import('../../devtools/NySykmeldingFormDevTools'), { ssr: false })
 
 function MainSection(): ReactElement {
+    const initialValues = useAppSelector((state) => state.nySykmeldingMultistep)
     const onSubmit = useHandleFormSubmit()
     const form = useForm<NySykmeldingMainFormValues>({
-        defaultValues: createDefaultValues(),
+        defaultValues: createDefaultValues(initialValues),
     })
 
     return (
@@ -38,7 +41,13 @@ function MainSection(): ReactElement {
                 <ExpandableFormSection title="Andre sporsmal">
                     <AndreSporsmalSection />
                 </ExpandableFormSection>
-                <ExpandableFormSection title="Meldinger" defaultClosed className="lg:col-span-2">
+                <ExpandableFormSection
+                    title="Meldinger"
+                    defaultClosed={
+                        initialValues.meldinger?.tilNav == null && initialValues.meldinger?.tilArbeidsgiver == null
+                    }
+                    className="lg:col-span-2"
+                >
                     <MeldingerSection />
                 </ExpandableFormSection>
                 <div className="w-full flex justify-end gap-3 mt-16 lg:col-span-2">
@@ -58,30 +67,6 @@ function MainSection(): ReactElement {
     )
 }
 
-function createDefaultValues(): DefaultValues<NySykmeldingMainFormValues> {
-    return {
-        perioder: [getDefaultPeriode()],
-        meldinger: {
-            tilNav: null,
-            tilArbeidsgiver: null,
-        },
-        andreSporsmal: [],
-    }
-}
-
-export function getDefaultPeriode(): AktivitetsPeriode {
-    return {
-        periode: {
-            fom: '',
-            tom: '',
-        },
-        aktivitet: {
-            type: 'AKTIVITET_IKKE_MULIG',
-            grad: null,
-        },
-    }
-}
-
 function useHandleFormSubmit() {
     const [, setStep] = useFormStep()
     const dispatch = useAppDispatch()
@@ -90,7 +75,7 @@ function useHandleFormSubmit() {
         dispatch(
             nySykmeldingMultistepActions.completeMainStep({
                 diagnose: {
-                    hoved: values.diagnoser.hoved,
+                    hoved: values.diagnoser.hoved ?? raise("Can't submit step without hoveddiagnose"),
                     bi: [],
                 },
                 aktiviteter: values.perioder.map((periode) => ({

@@ -5,7 +5,7 @@ import { cleanId } from '@utils/string'
 
 type Props = {
     title: string
-    defaultClosed?: true
+    defaultClosed?: boolean
     className?: string
 }
 

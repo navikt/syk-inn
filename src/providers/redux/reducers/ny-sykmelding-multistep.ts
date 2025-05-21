@@ -44,7 +44,7 @@ export type AndreSporsmalStep = {
     yrkesskade: boolean
 }
 
-type NySykmeldingMultiStepState = {
+export type NySykmeldingMultiStepState = {
     pasient: PasientStep | null
     aktiviteter: AktivitetStep[] | null
     tilbakedatering: TilbakedateringStep | null

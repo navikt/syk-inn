@@ -2,8 +2,8 @@ import React, { Fragment, ReactElement } from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { Button } from '@navikt/ds-react'
 
-import { getDefaultPeriode } from '@components/ny-sykmelding-form/MainSection'
 import { NySykmeldingMainFormValues } from '@components/ny-sykmelding-form/form'
+import { getDefaultPeriode } from '@components/ny-sykmelding-form/form-default-values'
 
 import AktivitetPicker from './AktivitetPicker'
 import PeriodePicker from './PeriodePicker'

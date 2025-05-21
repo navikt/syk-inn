@@ -29,17 +29,21 @@ export type TilbakedateringField = {
     grunn: string | null
 }
 
+type MeldingerField = {
+    tilNav: string | null
+    tilArbeidsgiver: string | null
+}
+
+export type AndreSporsmalValues = 'svangerskapsrelatert' | 'yrkesskade'
+
 export type NySykmeldingMainFormValues = {
     perioder: AktivitetsPeriode[]
     diagnoser: {
-        hoved: DiagnoseSuggestion
+        hoved: DiagnoseSuggestion | null
     }
-    tilbakedatering?: TilbakedateringField
-    meldinger: {
-        tilNav: string | null
-        tilArbeidsgiver: string | null
-    }
-    andreSporsmal: ('svangerskapsrelatert' | 'yrkesskade')[]
+    tilbakedatering: TilbakedateringField | null
+    meldinger: MeldingerField
+    andreSporsmal: AndreSporsmalValues[]
 }
 
 export const useFormContext = useRhfFormContext<NySykmeldingMainFormValues>
