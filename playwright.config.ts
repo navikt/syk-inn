@@ -29,7 +29,7 @@ const opts: OptionsType = process.env.CI
             timeout: 120 * 2 * 1000,
             server: {
                 command: 'NEXT_PUBLIC_RUNTIME_ENV=e2e yarn dev --turbo',
-                url: `http://localhost:${PORT}`,
+                url: `http://localhost:${PORT}/api/mocks/e2e/prewarm`,
                 timeout: 120 * 1000,
                 reuseExistingServer: true,
                 stderr: 'pipe',
