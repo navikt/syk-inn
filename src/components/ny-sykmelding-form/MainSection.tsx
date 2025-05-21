@@ -38,7 +38,7 @@ function MainSection(): ReactElement {
                 <ExpandableFormSection title="Diagnose">
                     <DiagnoseSection />
                 </ExpandableFormSection>
-                <ExpandableFormSection title="Andre sporsmal">
+                <ExpandableFormSection title="Andre spørsmål">
                     <AndreSporsmalSection />
                 </ExpandableFormSection>
                 <ExpandableFormSection

@@ -83,6 +83,50 @@ export function fillTilbakedatering({ contact, reason }: { contact: string; reas
     }
 }
 
+export function fillAndreSporsmal({
+    svangerskapsrelatert,
+    yrkesskade,
+}: {
+    svangerskapsrelatert: boolean
+    yrkesskade: boolean
+}) {
+    return async (page: Page) => {
+        const region = page.getByRole('region', { name: 'Andre spørsmål' })
+        await expect(region).toBeVisible()
+
+        if (svangerskapsrelatert) {
+            await region.getByRole('checkbox', { name: 'Svangerskapsrelatert' }).check()
+        } else {
+            await region.getByRole('checkbox', { name: 'Svangerskapsrelatert' }).uncheck()
+        }
+
+        if (yrkesskade) {
+            await region.getByRole('checkbox', { name: 'Yrkesskade' }).check()
+        } else {
+            await region.getByRole('checkbox', { name: 'Yrkesskade' }).uncheck()
+        }
+    }
+}
+
+export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | null; tilArbeidsgiver: string | null }) {
+    return async (page: Page) => {
+        const region = page.getByRole('region', { name: 'Meldinger' })
+        await expect(region).toBeVisible()
+
+        if (await region.getByRole('button', { name: 'Vis mer' }).isVisible()) {
+            await region.getByRole('button', { name: 'Vis mer' }).click()
+        }
+
+        if (tilNav) {
+            await region.getByRole('textbox', { name: 'Har du noen tilbakemeldinger?' }).fill(tilNav)
+        }
+
+        if (tilArbeidsgiver) {
+            await region.getByRole('textbox', { name: 'Innspill til arbeidsgiver' }).fill(tilArbeidsgiver)
+        }
+    }
+}
+
 export function pickSuggestedPeriod(weeks: '3 dager' | 'tom søndag' | '1 uke') {
     return async (page: Page) => {
         const aktivitetRegion = page.getByRole('region', { name: 'Periode' })
@@ -134,5 +178,13 @@ export function nextStep() {
         const nextButton = page.getByRole('button', { name: 'Neste steg' })
         await expect(nextButton).toBeVisible()
         await nextButton.click()
+    }
+}
+
+export function previousStep() {
+    return async (page: Page) => {
+        const previousButton = page.getByRole('button', { name: 'Forrige steg' })
+        await expect(previousButton).toBeVisible()
+        await previousButton.click()
     }
 }

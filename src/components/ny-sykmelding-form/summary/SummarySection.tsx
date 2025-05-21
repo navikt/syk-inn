@@ -1,4 +1,4 @@
-import { Alert, BodyShort, Button, Detail, FormSummary } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Detail, FormSummary, Heading } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
 
@@ -23,6 +23,9 @@ function SummarySection(): ReactElement {
 
     return (
         <div className="flex flex-col gap-6 mt-8">
+            <Heading size="medium" level="3">
+                Oppsummering sykmelding
+            </Heading>
             <FormSummary>
                 <FormSummary.Header>
                     <FormSummary.Heading level="2">Pasientopplysninger</FormSummary.Heading>
