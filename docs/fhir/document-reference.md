@@ -8,15 +8,17 @@ Vårt behov: **Lese**, **Skrive**
 {
     "resourceType": "DocumentReference",
     "status": "current",
-    "type": {
-        "coding": [
-            {
-                "system": "urn:oid:2.16.578.1.12.4.1.1.9602",
-                "code": "J01-2",
-                "display": "Sykmeldinger og trygdesaker"
-            }
-        ]
-    },
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "urn:oid:2.16.578.1.12.4.1.1.9602",
+                    "code": "J01-2",
+                    "display": "Sykmeldinger og trygdesaker"
+                }
+            ]
+        }
+    ],
     "subject": {
         "reference": "Pasienten dokumentet gjelder for"
     },
@@ -36,11 +38,9 @@ Vårt behov: **Lese**, **Skrive**
             }
         }
     ],
-    "context": [
-        {
-            "encounter": "Referanse til encounter fordi Nav loven krever konsultasjon for sykmelding"
-        }
-    ]
+    "context": {
+        "encounter": [{ "reference": "Referanse til encounter fordi Nav loven krever konsultasjon for sykmelding" }]
+    }
 }
 ```
 
