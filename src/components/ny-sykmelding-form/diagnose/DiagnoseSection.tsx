@@ -4,14 +4,23 @@ import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 
 import { useContextKonsultasjon } from '../../../data-fetcher/hooks/use-context-konsultasjon'
 import { useFormContext } from '../form'
+import { useAppSelector } from '../../../providers/redux/hooks'
 
 import DiagnosePicker from './DiagnosePicker'
 
 function DiagnoseSection(): ReactElement {
     const { setValue } = useFormContext()
     const { data, isLoading, error } = useContextKonsultasjon()
+    const existingDiagnose = useAppSelector((state) => state.nySykmeldingMultistep.diagnose)
 
     useEffect(() => {
+        /**
+         * Form already has been preloaded with a diagnose, don't use server suggestion
+         *
+         * TODO: These suggestions need to be hoisted to the top of the form, so that we can
+         * weave existing persisted/steps data with server suggestions in a better way
+         */
+        if (existingDiagnose != null) return
         if (data == null || data.diagnoser.length === 0) return
 
         const [first] = data.diagnoser
@@ -21,7 +30,7 @@ function DiagnoseSection(): ReactElement {
             system: first.system,
             text: first.tekst,
         })
-    }, [data, setValue])
+    }, [data, existingDiagnose, setValue])
 
     return (
         <div>
@@ -43,13 +52,13 @@ function DiagnoseSection(): ReactElement {
 
 function DiagnoseSectionWithData({ children }: PropsWithChildren): ReactElement {
     return (
-        <div>
-            <Heading level="3" size="small">
-                Diagnose
+        <section aria-labelledby="hoveddiagnose-section-heading">
+            <Heading level="4" size="small" id="hoveddiagnose-section-heading">
+                Hoveddiagnose
             </Heading>
             <DiagnosePicker />
             {children}
-        </div>
+        </section>
     )
 }
 

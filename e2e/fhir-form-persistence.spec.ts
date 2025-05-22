@@ -50,6 +50,9 @@ test('filling out the form, and returning to main step, should keep all values',
     await previousStep()(page)
 
     // Warning: Highly coupled form assertions ahead
+
+    // Section 1 - Periode/Aktiviteter
+    // TODO: Multiple periods?
     const periodeRegion = page.getByRole('region', { name: 'Sykmeldingsperiode' })
     await expect(periodeRegion.getByRole('textbox', { name: 'Fra og med' })).toHaveValue(inputDate(daysAgo(9)))
     await expect(periodeRegion.getByRole('textbox', { name: 'Til og med' })).toHaveValue(inputDate(inDays(5)))
@@ -61,9 +64,34 @@ test('filling out the form, and returning to main step, should keep all values',
     ).toBeChecked()
     await expect(periodeRegion.getByRole('spinbutton', { name: 'Sykmeldingsgrad' })).toHaveValue('65')
 
-    // TODO: Multiple periods?
-    // TODO: Tilbakedatering
-    // TODO: Diagnose
-    // TODO: Andre sporsmal
-    // TODO: Meldinger
+    // Section 2 - Tilbakedatering
+    const tilbakedateringRegion = page.getByRole('region', { name: 'Tilbakedatering' })
+    await expect(tilbakedateringRegion.getByRole('textbox', { name: 'Når tok pasienten først kontakt' })).toHaveValue(
+        inputDate(daysAgo(4)),
+    )
+    await expect(tilbakedateringRegion.getByRole('textbox', { name: 'Oppgi årsak for tilbakedatering' })).toHaveValue(
+        'Han ringte men fikk ikke time',
+    )
+
+    // Section 3 - Diagnoser
+    const diagnoseRegion = page.getByRole('region', { name: 'Diagnose', exact: true })
+    const hoveddiagnose = diagnoseRegion.getByRole('region', { name: 'Hoveddiagnose', exact: true })
+    await expect(hoveddiagnose).toHaveText(/P74 - Angstlidelse/)
+
+    // Section 4 - Andre spørsmål
+    const andreSporsmalRegion = page.getByRole('region', { name: 'Andre spørsmål' })
+    await expect(andreSporsmalRegion.getByRole('checkbox', { name: 'Sykdommen er svangerskapsrelatert' })).toBeChecked()
+    await expect(
+        andreSporsmalRegion.getByRole('checkbox', { name: 'Sykmeldingen kan skyldes en yrkesskade/yrkessykdom' }),
+    ).toBeChecked()
+
+    // Section 5 - Meldinger
+    const meldingerRegion = page.getByRole('region', { name: 'Meldinger' })
+    await expect(meldingerRegion.getByRole('button', { name: 'Vis mer' })).toHaveAttribute('aria-expanded', 'true')
+    await expect(meldingerRegion.getByRole('textbox', { name: 'Har du noen tilbakemeldinger?' })).toHaveValue(
+        'Trenger mer penger',
+    )
+    await expect(meldingerRegion.getByRole('textbox', { name: 'Innspill til arbeidsgiver' })).toHaveValue(
+        'Trenger sev-henk pult',
+    )
 })

@@ -27,7 +27,7 @@ export function fillManualPasient({ fnr }: { fnr: string }) {
 
 export function pickHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
     return async (page: Page) => {
-        const diagnoseRegion = page.getByRole('region', { name: 'Diagnose' })
+        const diagnoseRegion = page.getByRole('region', { name: 'Diagnose', exact: true })
         await expect(diagnoseRegion).toBeVisible()
 
         await page.getByRole('button', { name: 'Endre hoveddiagnose' }).click() // Diagnose is pre-filled
