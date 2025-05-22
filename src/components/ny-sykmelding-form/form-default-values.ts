@@ -1,5 +1,5 @@
 import { DefaultValues } from 'react-hook-form'
-import { isValid } from 'date-fns'
+import { isValid, toDate } from 'date-fns'
 import * as R from 'remeda'
 
 import { AktivitetsPeriode, AndreSporsmalValues, NySykmeldingMainFormValues } from '@components/ny-sykmelding-form/form'
@@ -27,7 +27,7 @@ export function createDefaultValues(
         tilbakedatering: initialValues.tilbakedatering
             ? {
                   fom:
-                      initialValues.tilbakedatering.fom && isValid(initialValues.tilbakedatering.fom)
+                      initialValues.tilbakedatering.fom && isValid(toDate(initialValues.tilbakedatering.fom))
                           ? initialValues.tilbakedatering.fom
                           : null,
                   grunn: initialValues.tilbakedatering?.grunn ?? null,

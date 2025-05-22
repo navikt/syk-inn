@@ -33,7 +33,6 @@ function DynamicTilbakedateringSection(): ReactElement | null {
     )
 }
 
-// TODO skriv test for business
 export function isTilbakedatering(perioder: Pick<AktivitetsPeriode, 'periode'>[], sykmeldingsDato: Date): boolean {
     const firstPeriode = R.firstBy(perioder, (periode) => periode.periode.fom)
     return firstPeriode ? isBefore(new Date(firstPeriode?.periode.fom), subDays(sykmeldingsDato, 8)) : false

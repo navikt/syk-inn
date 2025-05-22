@@ -1,8 +1,10 @@
-import { DatePicker, useDatepicker } from '@navikt/ds-react'
+import { BodyShort, DatePicker, useDatepicker } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
+import { parseISO } from 'date-fns'
 
 import { useController } from '@components/ny-sykmelding-form/form'
-import { dateOnly } from '@utils/date'
+import { dateOnly, toReadableDate } from '@utils/date'
 
 function TilbakedateringDate(): ReactElement {
     const { field, fieldState } = useController({
@@ -15,7 +17,7 @@ function TilbakedateringDate(): ReactElement {
     })
 
     const { datepickerProps, inputProps } = useDatepicker({
-        defaultSelected: field.value ? new Date(field.value) : undefined,
+        defaultSelected: field.value ? parseISO(field.value) : undefined,
         onDateChange: (date) => {
             if (!date) {
                 field.onChange(null)
@@ -25,14 +27,28 @@ function TilbakedateringDate(): ReactElement {
         },
     })
     return (
-        <DatePicker {...datepickerProps} wrapperClassName={/*styles.dateRangePicker*/ ''}>
+        <DatePicker {...datepickerProps}>
             <DatePicker.Input
                 {...inputProps}
-                className={/*styles.dateRangeInput*/ ''}
                 label="Når tok pasienten først kontakt?"
                 onBlur={field.onBlur}
                 error={fieldState.error?.message}
             />
+            <AnimatePresence>
+                {field.value && (
+                    <motion.div
+                        className="overflow-hidden"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    >
+                        <BodyShort className="mt-1 ml-2" size="small">
+                            {toReadableDate(field.value)}
+                        </BodyShort>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </DatePicker>
     )
 }

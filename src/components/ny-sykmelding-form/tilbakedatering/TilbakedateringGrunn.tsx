@@ -8,7 +8,7 @@ function TilbakedateringGrunn(): ReactElement {
         name: 'tilbakedatering.grunn' as const,
         rules: {
             validate: (value) => {
-                if (value == null) return `Du må velge grunn for tilbaketrekking`
+                if (value == null) return `Du må velge grunn for tilbakedatering`
             },
         },
     })

@@ -5,7 +5,7 @@ import TilbakedateringGrunn from '@components/ny-sykmelding-form/tilbakedatering
 
 function TilbakedateringSection(): ReactElement {
     return (
-        <div>
+        <div className="flex flex-col gap-3">
             <TilbakedateringDate />
             <TilbakedateringGrunn />
         </div>
