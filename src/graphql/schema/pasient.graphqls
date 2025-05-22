@@ -1,0 +1,10 @@
+type Fastlege {
+    navn: String!
+    hpr: String!
+}
+
+type Pasient {
+    ident: String!
+    navn: String!
+    fastlege: Fastlege
+}

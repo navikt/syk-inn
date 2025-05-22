@@ -4,9 +4,11 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 import { QueryClient, QueryClientProvider, QueryCache } from '@tanstack/react-query'
 import { logger } from '@navikt/next-logger'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { ApolloNextAppProvider } from '@apollo/client-integration-nextjs'
 
 import { Toggles } from '@toggles/toggles'
 import { ToggleProvider } from '@toggles/context'
+import { makeApolloClient } from '@graphql/apollo/apollo-client'
 
 import StoreProvider from './redux/StoreProvider'
 
@@ -33,13 +35,15 @@ function Providers({ children, toggles }: PropsWithChildren<{ toggles: Toggles }
     )
 
     return (
-        <StoreProvider>
-            <ToggleProvider toggles={toggles}>
-                <NuqsAdapter>
-                    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-                </NuqsAdapter>
-            </ToggleProvider>
-        </StoreProvider>
+        <ApolloNextAppProvider makeClient={makeApolloClient}>
+            <StoreProvider>
+                <ToggleProvider toggles={toggles}>
+                    <NuqsAdapter>
+                        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+                    </NuqsAdapter>
+                </ToggleProvider>
+            </StoreProvider>
+        </ApolloNextAppProvider>
     )
 }
 

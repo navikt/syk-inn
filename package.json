@@ -21,12 +21,20 @@
         "e2e": "playwright test",
         "e2e:dev": "yarn e2e --ui",
         "e2e:fast": "echo 'Did you run yarn build:e2e? before this?' && FAST=true yarn e2e --ui",
+        "gen": "graphql-codegen",
         "postinstall": "husky"
     },
     "dependencies": {
+        "@apollo/client": "^3.13.8",
+        "@apollo/client-integration-nextjs": "^0.12.2",
+        "@apollo/server": "^4.12.1",
         "@ariakit/react": "^0.4.17",
+        "@as-integrations/next": "^3.2.0",
         "@grafana/faro-web-sdk": "^1.18.2",
         "@grafana/faro-web-tracing": "^1.18.2",
+        "@graphql-tools/graphql-file-loader": "^8.0.19",
+        "@graphql-tools/load": "^8.1.0",
+        "@graphql-tools/schema": "^10.0.23",
         "@navikt/aksel-icons": "^7.22.0",
         "@navikt/diagnosekoder": "^1.2025.0",
         "@navikt/ds-css": "^7.22.0",
@@ -46,6 +54,7 @@
         "csp-header": "^6.1.0",
         "date-fns": "^4.1.0",
         "fuse.js": "^7.1.0",
+        "graphql": "^16.11.0",
         "iovalkey": "^0.3.1",
         "jose": "^6.0.11",
         "motion": "^12.12.1",
@@ -69,6 +78,8 @@
         "zod": "^3.25.20"
     },
     "devDependencies": {
+        "@graphql-codegen/cli": "^5.0.6",
+        "@graphql-codegen/typescript-resolvers": "^4.5.1",
         "@hookform/devtools": "^4.4.0",
         "@navikt/eslint-config-teamsykmelding": "^7.1.0",
         "@playwright/test": "1.52.0",

@@ -19,7 +19,10 @@
             "@components/*": ["./src/components/*"],
             "@services/*": ["./src/services/*"],
             "@toggles/*": ["./src/toggles/*"],
-            "@faro/*": ["./src/faro/*"]
+            "@faro/*": ["./src/faro/*"],
+            "@queries": ["./src/graphql/queries.generated.ts"],
+            "@resolvers": ["./src/graphql/resolvers.generated.ts"],
+            "@graphql/*": ["./src/graphql/*"]
         },
         "target": "ES2017"
     },
