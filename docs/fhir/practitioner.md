@@ -25,18 +25,6 @@ Vårt behov: **Lese**
             "family": "Koman",
             "given": ["Magnar"]
         }
-    ],
-    "telecom": [
-        {
-            "system": "phone",
-            "value": "12345678",
-            "use": "(work | mobile)"
-        },
-        {
-            "system": "email",
-            "value": "lege@epj.no",
-            "use": "work"
-        }
     ]
 }
 ```
