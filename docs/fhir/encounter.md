@@ -8,17 +8,18 @@ Vårt behov: **Lese**
 {
     "resourceType": "Encounter",
     "id": "unik encounter ident",
+    "status": "in-progress",
     "class": {
         "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
         "code": "AMB | VR"
     },
     "subject": {
-        "reference": "Pasienten dokumentet gjelder for"
+        "reference": "Patient/<Pasienten encounter gjelder for>"
     },
     "participant": [
         {
             "individual": {
-                "reference": "Lege som autoriserte dokumentet"
+                "reference": "Practitioner/<Lege som startet encounteret>"
             }
         }
     ],
