@@ -8,6 +8,9 @@ Vårt behov: **Lese**
 {
     "resourceType": "Organization",
     "id": "unik Organization id",
+    "meta": {
+        "profile": ["http://hl7.no/fhir/StructureDefinition/no-basis-Organization"]
+    },
     "identifier": [
         {
             "system": "urn:oid:2.16.578.1.12.4.1.4.101",
