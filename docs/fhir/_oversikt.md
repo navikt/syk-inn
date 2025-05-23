@@ -21,7 +21,7 @@ overføres til web-applikasjonen:
 
 Detaljerte beskrivelser per ressurs:
 
-- [Pasient](./pasient.md)
+- [Pasient](./patient)
 - [Practitioner](./practitioner.md)
 - [Condition](./condition.md)
 - [Encounter](./encounter.md)

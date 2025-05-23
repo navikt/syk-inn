@@ -13,11 +13,11 @@ Vårt behov: **Lese**
     "id": "unik Patient ident",
     "identifier": [
         {
-            "system": "2.16.578.1.12.4.1.4.1",
+            "system": "urn:oid:2.16.578.1.12.4.1.4.1",
             "value": "fødselsnummer"
         },
         {
-            "system": "2.16.578.1.12.4.1.4.2",
+            "system": "urn:oid:2.16.578.1.12.4.1.4.2",
             "value": "d-nummer"
         }
     ],
