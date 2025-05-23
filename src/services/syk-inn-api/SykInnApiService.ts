@@ -37,7 +37,7 @@ export const sykInnApiService = {
     createNewSykmelding: async (payload: NySykmeldingPayload): Promise<NySykmelding | ApiFetchErrors> =>
         fetchInternalAPI({
             api: 'syk-inn-api',
-            path: '/api/sykmelding/create',
+            path: '/api/sykmelding',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
