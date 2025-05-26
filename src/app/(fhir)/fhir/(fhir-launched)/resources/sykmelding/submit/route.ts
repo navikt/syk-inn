@@ -52,6 +52,7 @@ export async function POST(request: Request): Promise<Response> {
             },
             aktivitet: verifiedPayload.data.values.aktivitet,
         },
+        legekontorOrgnr: '999944614', // TODO: Should be retrieved from context/session
     })
 
     if ('errorType' in result) {

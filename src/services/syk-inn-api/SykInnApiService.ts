@@ -31,6 +31,7 @@ type NySykmeldingPayload = {
                   tom: string
               }
     }
+    legekontorOrgnr: string
 }
 
 export const sykInnApiService = {
