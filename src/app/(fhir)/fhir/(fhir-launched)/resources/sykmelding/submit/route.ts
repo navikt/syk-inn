@@ -7,6 +7,7 @@ import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { NySykmelding, SubmitSykmeldingFormValuesSchema } from '@services/syk-inn-api/SykInnApiSchema'
 import { raise } from '@utils/ts'
 import { getReadyClient } from '@fhir/smart-client'
+import { diagnoseSystemToOid } from '@utils/oid'
 
 const SubmitSykmeldingPayloadSchema = z.object({
     values: SubmitSykmeldingFormValuesSchema,
@@ -47,7 +48,7 @@ export async function POST(request: Request): Promise<Response> {
         sykmelderHpr: verifiedPayload.data.behandlerHpr,
         sykmelding: {
             hoveddiagnose: {
-                system: verifiedPayload.data.values.diagnoser.hoved.system,
+                system: diagnoseSystemToOid(verifiedPayload.data.values.diagnoser.hoved.system),
                 code: verifiedPayload.data.values.diagnoser.hoved.code,
             },
             aktivitet: verifiedPayload.data.values.aktivitet,

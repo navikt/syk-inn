@@ -9,13 +9,14 @@ import {
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
+import { ICD10_OID, ICPC2_OID } from '@utils/oid'
 
 type NySykmeldingPayload = {
     pasientFnr: string
     sykmelderHpr: string
     sykmelding: {
         hoveddiagnose: {
-            system: 'ICD10' | 'ICPC2'
+            system: ICD10_OID | ICPC2_OID
             code: string
         }
         aktivitet:
