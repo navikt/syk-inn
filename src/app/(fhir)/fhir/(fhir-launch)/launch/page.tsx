@@ -5,8 +5,8 @@ import { redirect, RedirectType, unauthorized } from 'next/navigation'
 
 import { isKnownFhirServer } from '@fhir/issuers'
 import { getFlag, getToggles } from '@toggles/unleash'
-import { getSmartClient } from '@fhir/smart-client'
 
+import { getSmartClient } from '../../../../../data-layer/fhir/smart-client'
 import { InvalidIssuer, MissingLaunchParams } from '../launch-errors'
 
 type Props = {

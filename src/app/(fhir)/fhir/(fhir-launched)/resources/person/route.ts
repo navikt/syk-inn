@@ -4,7 +4,8 @@ import { pdlApiService } from '@services/pdl/PdlApiService'
 import { wait } from '@utils/wait'
 import { PdlPerson } from '@services/pdl/PdlApiSchema'
 import { isLocalOrDemo } from '@utils/env'
-import { getReadyClient } from '@fhir/smart-client'
+
+import { getReadyClient } from '../../../../../../data-layer/fhir/smart-client'
 
 type PersonResult = PdlPerson | { errors: { message: string }[] }
 

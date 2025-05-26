@@ -3,7 +3,8 @@ import { logger } from '@navikt/next-logger'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { ExistingSykmelding } from '@services/syk-inn-api/SykInnApiSchema'
 import { isE2E, isLocalOrDemo } from '@utils/env'
-import { getReadyClient } from '@fhir/smart-client'
+
+import { getReadyClient } from '../../../../../../../data-layer/fhir/smart-client'
 
 export async function GET(
     request: Request,

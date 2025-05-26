@@ -9,7 +9,7 @@ import { getValkeyClient } from '@services/valkey/client'
 import { getAbsoluteURL } from '@utils/url'
 import { getSessionId } from '@fhir/auth/session'
 
-import { spanAsync } from '../otel/otel'
+import { spanAsync } from '../../otel/otel'
 
 const smartClientConfig: SmartClientConfiguration = {
     client_id: 'syk-inn',

@@ -6,8 +6,9 @@ import { wait } from '@utils/wait'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { NySykmelding, SubmitSykmeldingFormValuesSchema } from '@services/syk-inn-api/SykInnApiSchema'
 import { raise } from '@utils/ts'
-import { getReadyClient } from '@fhir/smart-client'
 import { diagnoseSystemToOid } from '@utils/oid'
+
+import { getReadyClient } from '../../../../../../../data-layer/fhir/smart-client'
 
 const SubmitSykmeldingPayloadSchema = z.object({
     values: SubmitSykmeldingFormValuesSchema,

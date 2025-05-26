@@ -1,6 +1,6 @@
 import { logger } from '@navikt/next-logger'
 
-import { getReadyClient } from '@fhir/smart-client'
+import { getReadyClient } from '../../../../../../../data-layer/fhir/smart-client'
 
 export async function GET(): Promise<Response> {
     const client = await getReadyClient({ validate: true })

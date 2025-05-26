@@ -4,8 +4,8 @@ import { FhirDocumentReference, FhirDocumentReferenceBase } from '@navikt/fhir-z
 import { ResourceRequestErrors, SmartClientReadyErrors, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { getHpr } from '@fhir/fhir-data/mappers/practitioner'
 import { getName } from '@fhir/fhir-data/mappers/patient'
-import { getReadyClient } from '@fhir/smart-client'
 
+import { getReadyClient } from '../../data-layer/fhir/smart-client'
 import { BehandlerInfo } from '../../data-layer/data-fetcher/data-service'
 import { withSpanAsync } from '../../otel/otel'
 
