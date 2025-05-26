@@ -3,10 +3,10 @@ import { cookies } from 'next/headers'
 import { logger as pinoLogger } from '@navikt/next-logger'
 import { redirect, RedirectType, unauthorized } from 'next/navigation'
 
+import { getSmartClient } from '@data-layer/fhir/smart-client'
 import { isKnownFhirServer } from '@fhir/issuers'
 import { getFlag, getToggles } from '@toggles/unleash'
 
-import { getSmartClient } from '../../../../../data-layer/fhir/smart-client'
 import { InvalidIssuer, MissingLaunchParams } from '../launch-errors'
 
 type Props = {

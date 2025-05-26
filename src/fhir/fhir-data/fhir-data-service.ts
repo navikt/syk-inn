@@ -1,4 +1,4 @@
-import { BehandlerInfo, DataService, NotAvailable } from '../../data-layer/data-fetcher/data-service'
+import { BehandlerInfo, DataService, NotAvailable } from '@data-layer/data-fetcher/data-service'
 
 import { fhirResources } from './fhir-data'
 import { nonFhirResources } from './non-fhir-data'

@@ -100,9 +100,7 @@ export const serverFhirResources = {
 
         return {
             navn: getName(practitionerResponse.name),
-            epjDescription: 'Fake EPJ V0.89',
             hpr: hpr,
-            autorisasjoner: [],
         }
     }),
 }

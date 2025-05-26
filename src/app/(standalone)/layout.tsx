@@ -8,12 +8,11 @@ import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
 import { getToggles } from '@toggles/unleash'
 
-import { Autorisasjoner } from '../../data-layer/data-fetcher/data-service'
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../../providers/Providers'
 import Preload from '../preload'
 import HelseIdDataProvider from '../../helseid/components/HelseIdDataProvider'
-import { getHelseIdUserInfo, HprDetails } from '../../helseid/helseid-userinfo'
+import { getHelseIdUserInfo } from '../../helseid/helseid-userinfo'
 import HelseIdHeader from '../../helseid/components/HelseIdHeader'
 
 export const dynamic = 'force-dynamic'
@@ -50,7 +49,6 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                             behandler={{
                                 navn: 'TODO',
                                 hpr: behandler?.hpr_number ?? 'TODO',
-                                autorisasjoner: getAutorisasjonerFromHelseIdUserInfo(behandler?.approvals),
                             }}
                         >
                             {children}
@@ -61,25 +59,4 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
             </body>
         </html>
     )
-}
-
-function getAutorisasjonerFromHelseIdUserInfo(approvals: HprDetails['approvals'] | undefined): Autorisasjoner {
-    if (!approvals) {
-        return []
-    }
-
-    return approvals.map((approval) => ({
-        kategori: {
-            system: 'urn:oid:2.16.578.1.12.4.1.1.9060',
-            code: approval.profession,
-            display: 'TODO',
-        },
-        autorisasjon: {
-            system: 'urn:oid:2.16.578.1.12.4.1.1.7704',
-            code: approval.authorization.value,
-            display: approval.authorization.description,
-        },
-        // TODO
-        spesialisering: null,
-    }))
 }

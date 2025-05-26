@@ -1,5 +1,6 @@
 import { FhirDocumentReferenceBase } from '@navikt/fhir-zod'
 import { SubmitSykmeldingFormValues } from '@services/syk-inn-api/SykInnApiSchema'
+import { Konsultasjon } from '@data-layer/data-fetcher/resources'
 
 export type NotAvailable = typeof NotAvailable
 export const NotAvailable = {
@@ -25,7 +26,7 @@ export type DataService = {
         behandler: BehandlerInfo
         pasient: (() => Promise<PasientInfo>) | NotAvailable
         arbeidsgivere: (() => Promise<ArbeidsgiverInfo[]>) | NotAvailable
-        konsultasjon: (() => Promise<KonsultasjonInfo>) | NotAvailable
+        konsultasjon: (() => Promise<Konsultasjon>) | NotAvailable
         tidligereSykmeldinger: (() => Promise<ExistingSykmelding[]>) | NotAvailable
     }
     /**
@@ -55,43 +56,14 @@ export type PasientQueryInfo = {
     navn: string
 }
 
-export type KonsultasjonInfo = {
-    diagnoser: {
-        system: 'ICD10' | 'ICPC2'
-        kode: string
-        tekst: string
-        vekt?: number
-    }[]
-}
-
 export type ArbeidsgiverInfo = {
     navn: string
     organisasjonsnummer: string
 }
 
-export type Autorisasjoner = Array<{
-    kategori: {
-        system: 'urn:oid:2.16.578.1.12.4.1.1.9060'
-        code: string
-        display: string
-    }
-    autorisasjon: {
-        system: 'urn:oid:2.16.578.1.12.4.1.1.7704'
-        code: string
-        display: string
-    } | null
-    spesialisering: {
-        system: 'urn:oid:2.16.578.1.12.4.1.1.7426'
-        code: string
-        display: string
-    } | null
-}>
-
 export type BehandlerInfo = {
     navn: string
     hpr: string
-    epjDescription?: string
-    autorisasjoner: Autorisasjoner
 }
 
 export type NySykmelding = {

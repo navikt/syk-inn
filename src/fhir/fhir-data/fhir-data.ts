@@ -1,19 +1,12 @@
 import { logger } from '@navikt/next-logger'
-import * as R from 'remeda'
 
 import { raise } from '@utils/ts'
 import { wait } from '@utils/wait'
 import { pathWithBasePath } from '@utils/url'
-import {
-    createFhirBundleSchema,
-    FhirBundleOrPatientSchema,
-    FhirConditionSchema,
-    FhirEncounterSchema,
-} from '@navikt/fhir-zod'
+import { FhirBundleOrPatientSchema } from '@navikt/fhir-zod'
 import { getFastlege, getName, getValidPatientIdent } from '@fhir/fhir-data/mappers/patient'
-import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/fhir-data/mappers/diagnosis'
-
-import { PasientInfo } from '../../data-layer/data-fetcher/data-service'
+import { PasientInfo } from '@data-layer/data-fetcher/data-service'
+import { Konsultasjon, KonsultasjonSchema } from '@data-layer/data-fetcher/resources'
 
 /**
  * These are FHIR resources available in the browser runtime. All of these resources are proxied
@@ -42,53 +35,15 @@ export const fhirResources = {
             fastlege: getFastlege(parsed.data),
         }
     },
-    getFhirKonsultasjon: async () => {
-        const patientConditionBundle: unknown = await getSecuredResource(`/context/Conditions`)
-        const parsedConditionBundle = createFhirBundleSchema(FhirConditionSchema).safeParse(patientConditionBundle)
-
-        const encounter: unknown = await getSecuredResource(`/context/Encounter`)
-        const parsedEncounter = FhirEncounterSchema.safeParse(encounter)
-
-        if (!parsedConditionBundle.success) {
-            logger.error('Failed to parse conditions', parsedConditionBundle.error)
-            throw parsedConditionBundle.error
+    getFhirKonsultasjon: async (): Promise<Konsultasjon> => {
+        const result = await getSecuredResource('/context/konsultasjon')
+        const parsed = KonsultasjonSchema.safeParse(result)
+        if (!parsed.success) {
+            logger.error('Failed to parse konsultasjon', parsed.error)
+            throw parsed.error
         }
 
-        const conditionList = parsedConditionBundle.data?.entry.map((it) => it.resource)
-
-        const [relevanteDignoser, irrelevanteDiagnoser] = conditionList
-            ? R.partition(conditionList, (diagnosis) =>
-                  diagnosis.code.coding.some((coding) => diagnosisUrnToOidType(coding.system) != null),
-              )
-            : [[], []]
-
-        logger.info(
-            `Fant ${relevanteDignoser.length} med gyldig ICPC-2 eller ICD-10 kode, ${irrelevanteDiagnoser.length} uten gyldig kode`,
-        )
-
-        const fhirDiagnose = parsedEncounter.data?.reasonCode
-            ? getDiagnosis(parsedEncounter.data.reasonCode[0].coding)
-            : null
-
-        return {
-            diagnoser: R.pipe(
-                relevanteDignoser,
-                R.map((diagnosis) => getDiagnosis(diagnosis.code.coding)),
-                R.filter(R.isTruthy),
-                R.map((it) => ({
-                    system: it.system,
-                    kode: it.code,
-                    tekst: it.display,
-                })),
-            ),
-            diagnose: fhirDiagnose
-                ? {
-                      system: fhirDiagnose.system,
-                      kode: fhirDiagnose.code,
-                      tekst: fhirDiagnose.display,
-                  }
-                : null,
-        }
+        return parsed.data
     },
 }
 

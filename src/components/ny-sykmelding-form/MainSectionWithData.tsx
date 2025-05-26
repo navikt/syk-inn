@@ -34,19 +34,13 @@ function MainSectionWithData(): ReactElement {
 }
 
 function pickMostRelevantDiagnose(
-    diagnoser: { system: 'ICD10' | 'ICPC2'; kode: string; tekst: string; vekt?: number }[] | undefined,
+    diagnoser: { system: 'ICD10' | 'ICPC2'; code: string; text: string }[] | undefined,
 ): DiagnoseSuggestion | null {
     if (!diagnoser || diagnoser.length === 0) {
         return null
     }
 
-    const [first] = diagnoser
-
-    return {
-        system: first.system,
-        code: first.kode,
-        text: first.tekst,
-    }
+    return diagnoser[0]
 }
 
 export default MainSectionWithData

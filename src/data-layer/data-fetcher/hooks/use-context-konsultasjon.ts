@@ -1,14 +1,16 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 
-import { assertResourceAvailable, isResourceAvailable, KonsultasjonInfo } from '../data-service'
+import { Konsultasjon } from '@data-layer/data-fetcher/resources'
+
+import { assertResourceAvailable, isResourceAvailable } from '../data-service'
 import { useDataService } from '../data-provider'
 import { withSpanAsync } from '../../../otel/otel'
 
-export function useContextKonsultasjon(): UseQueryResult<KonsultasjonInfo, Error> {
+export function useContextKonsultasjon(): UseQueryResult<Konsultasjon, Error> {
     const dataService = useDataService()
     return useQuery({
         queryKey: ['konsultasjon'],
-        queryFn: withSpanAsync('konsultasjonsInfo', (): Promise<KonsultasjonInfo> => {
+        queryFn: withSpanAsync('konsultasjonsInfo', (): Promise<Konsultasjon> => {
             assertResourceAvailable(dataService.context.konsultasjon)
 
             return dataService.context.konsultasjon()
