@@ -14,7 +14,5 @@ export function useContextKonsultasjon(): UseQueryResult<KonsultasjonInfo, Error
             return dataService.context.konsultasjon()
         }),
         enabled: isResourceAvailable(dataService.context.konsultasjon),
-        // TODO: Temporarily disable retry while WebMed doesn't support it
-        retry: false,
     })
 }

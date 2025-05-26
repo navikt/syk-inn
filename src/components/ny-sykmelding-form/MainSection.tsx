@@ -12,7 +12,7 @@ import { createDefaultValues } from '@components/ny-sykmelding-form/form-default
 import { useAppDispatch, useAppSelector } from '../../providers/redux/hooks'
 import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
-import { NySykmeldingMainFormValues } from './form'
+import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
 import AktivitetSection from './aktivitet/AktivitetSection'
 import DiagnoseSection from './diagnose/DiagnoseSection'
 import { useFormStep } from './steps/useFormStep'
@@ -21,11 +21,18 @@ import DynamicTilbakedateringSection from './tilbakedatering/DynamicTilbakedater
 
 const FormDevTools = dynamic(() => import('../../devtools/NySykmeldingFormDevTools'), { ssr: false })
 
-function MainSection(): ReactElement {
+type Props = {
+    initialServerValues: NySykmeldingSuggestions
+}
+
+function MainSection({ initialServerValues }: Props): ReactElement {
     const initialValues = useAppSelector((state) => state.nySykmeldingMultistep)
     const onSubmit = useHandleFormSubmit()
     const form = useForm<NySykmeldingMainFormValues>({
-        defaultValues: createDefaultValues(initialValues),
+        defaultValues: createDefaultValues({
+            initialValues,
+            initialSuggestions: initialServerValues,
+        }),
     })
 
     return (
@@ -36,7 +43,7 @@ function MainSection(): ReactElement {
                 </ExpandableFormSection>
                 <DynamicTilbakedateringSection />
                 <ExpandableFormSection title="Diagnose">
-                    <DiagnoseSection />
+                    <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
                 </ExpandableFormSection>
                 <ExpandableFormSection title="Andre spørsmål">
                     <AndreSporsmalSection />

@@ -8,17 +8,24 @@ import {
 
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
+export type NySykmeldingSuggestions = {
+    diagnose: {
+        value: DiagnoseSuggestion | null
+        error?: { error: 'FHIR_FAILED' }
+    }
+}
+
 export type PeriodeField = {
     fom: string
     tom: string
 }
 
 export type AktivitetIkkeMuligType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT'
-
 export type AktivitetField = {
     type: AktivitetIkkeMuligType
     grad: number | null
 }
+
 export type AktivitetsPeriode = {
     periode: PeriodeField
     aktivitet: AktivitetField
