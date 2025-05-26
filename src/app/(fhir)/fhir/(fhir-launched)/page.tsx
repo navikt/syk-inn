@@ -7,7 +7,7 @@ import { Heading, Skeleton } from '@navikt/ds-react'
 import OpprettNySykmeldingCard from '@components/dashboard/OpprettNySykmeldingCard'
 import PagaendeSykmeldingerCard from '@components/dashboard/PagaendeSykmeldingerCard'
 
-import { useContextPasient } from '../../../../data-fetcher/hooks/use-context-pasient'
+import { useContextPasient } from '../../../../data-layer/data-fetcher/hooks/use-context-pasient'
 
 function DashboardPage(): ReactElement {
     const pasient = useContextPasient()

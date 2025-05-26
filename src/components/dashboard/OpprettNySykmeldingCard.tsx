@@ -3,7 +3,7 @@ import { BodyShort, Button, ConfirmationPanel, Detail, Heading, Skeleton } from 
 
 import AssableNextLink from '@components/misc/AssableNextLink'
 
-import { useContextPasient } from '../../data-fetcher/hooks/use-context-pasient'
+import { useContextPasient } from '../../data-layer/data-fetcher/hooks/use-context-pasient'
 
 function OpprettNySykmeldingCard(): ReactElement {
     const { data: pasient, isLoading } = useContextPasient()

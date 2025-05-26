@@ -6,7 +6,7 @@ import { ExistingSykmeldingSchema, NySykmeldingSchema } from '@services/syk-inn-
 import { PdlPersonSchema } from '@services/pdl/PdlApiSchema'
 import { getFnrIdent } from '@services/pdl/PdlApiUtils'
 
-import { WriteToEhrResult } from '../../data-fetcher/data-service'
+import { WriteToEhrResult } from '../../data-layer/data-fetcher/data-service'
 
 /**
  * These are resources that are not FHIR resources, but are available in the browser runtime and proxied

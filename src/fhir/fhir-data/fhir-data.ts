@@ -13,7 +13,7 @@ import {
 import { getFastlege, getName, getValidPatientIdent } from '@fhir/fhir-data/mappers/patient'
 import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/fhir-data/mappers/diagnosis'
 
-import { PasientInfo } from '../../data-fetcher/data-service'
+import { PasientInfo } from '../../data-layer/data-fetcher/data-service'
 
 /**
  * These are FHIR resources available in the browser runtime. All of these resources are proxied

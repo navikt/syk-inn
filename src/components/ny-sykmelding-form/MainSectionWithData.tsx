@@ -4,7 +4,7 @@ import { Skeleton } from '@navikt/ds-react'
 import MainSection from '@components/ny-sykmelding-form/MainSection'
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
-import { useContextKonsultasjon } from '../../data-fetcher/hooks/use-context-konsultasjon'
+import { useContextKonsultasjon } from '../../data-layer/data-fetcher/hooks/use-context-konsultasjon'
 
 function MainSectionWithData(): ReactElement {
     const { isLoading, data, error } = useContextKonsultasjon()

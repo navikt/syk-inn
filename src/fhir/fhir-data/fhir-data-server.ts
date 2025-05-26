@@ -6,7 +6,7 @@ import { getHpr } from '@fhir/fhir-data/mappers/practitioner'
 import { getName } from '@fhir/fhir-data/mappers/patient'
 import { getReadyClient } from '@fhir/smart-client'
 
-import { BehandlerInfo } from '../../data-fetcher/data-service'
+import { BehandlerInfo } from '../../data-layer/data-fetcher/data-service'
 import { withSpanAsync } from '../../otel/otel'
 
 /**

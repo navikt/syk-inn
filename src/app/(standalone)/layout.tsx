@@ -8,7 +8,7 @@ import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
 import { getToggles } from '@toggles/unleash'
 
-import { Autorisasjoner } from '../../data-fetcher/data-service'
+import { Autorisasjoner } from '../../data-layer/data-fetcher/data-service'
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../../providers/Providers'
 import Preload from '../preload'

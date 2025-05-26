@@ -20,8 +20,8 @@ import Link from 'next/link'
 import { FormSection } from '@components/ui/form'
 import { toReadableDatePeriod } from '@utils/date'
 
-import { useDataService } from '../../data-fetcher/data-provider'
-import { ExistingSykmelding } from '../../data-fetcher/data-service'
+import { useDataService } from '../../data-layer/data-fetcher/data-provider'
+import { ExistingSykmelding } from '../../data-layer/data-fetcher/data-service'
 
 type ExistingSykmeldingKvitteringProps = {
     sykmeldingId: string

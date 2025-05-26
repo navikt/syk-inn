@@ -3,8 +3,8 @@
 import React, { ReactElement, useEffect } from 'react'
 import { Heading, Skeleton } from '@navikt/ds-react'
 
-import { useContextPasient } from '../../data-fetcher/hooks/use-context-pasient'
-import { useContextKonsultasjon } from '../../data-fetcher/hooks/use-context-konsultasjon'
+import { useContextPasient } from '../../data-layer/data-fetcher/hooks/use-context-pasient'
+import { useContextKonsultasjon } from '../../data-layer/data-fetcher/hooks/use-context-konsultasjon'
 import { useAppDispatch } from '../../providers/redux/hooks'
 import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 

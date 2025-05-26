@@ -3,7 +3,7 @@ import { BodyShort, Button, Checkbox, CheckboxGroup, Heading } from '@navikt/ds-
 import { XMarkIcon } from '@navikt/aksel-icons'
 import { useQueryClient } from '@tanstack/react-query'
 
-import { DataService } from '../data-fetcher/data-service'
+import { DataService } from '../data-layer/data-fetcher/data-service'
 
 import { DevToolItem } from './InternalDevToolItem'
 import { useAPIOverride } from './useAPIOverride'

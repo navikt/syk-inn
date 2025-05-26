@@ -4,7 +4,7 @@ import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { serverFhirResources } from '@fhir/fhir-data/fhir-data-server'
 import { getReadyClient } from '@fhir/smart-client'
 
-import { WriteToEhrResult } from '../../../../../../../data-fetcher/data-service'
+import { WriteToEhrResult } from '../../../../../../../data-layer/data-fetcher/data-service'
 
 type WriteToEhrResponse = WriteToEhrResult | { errors: [{ message: string }] }
 

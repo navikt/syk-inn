@@ -3,7 +3,7 @@
 import { logger } from '@navikt/next-logger'
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs'
 
-import { isResourceAvailable, DataService } from '../data-fetcher/data-service'
+import { isResourceAvailable, DataService } from '../data-layer/data-fetcher/data-service'
 
 export function withFailInterceptor(dataService: DataService): DataService {
     return {
