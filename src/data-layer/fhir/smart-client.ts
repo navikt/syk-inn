@@ -7,7 +7,7 @@ import {
 } from '@navikt/smart-on-fhir/client'
 import { getValkeyClient } from '@services/valkey/client'
 import { getAbsoluteURL } from '@utils/url'
-import { getSessionId } from '@fhir/auth/session'
+import { getSessionId } from '@data-layer/fhir/auth/session'
 
 import { spanAsync } from '../../otel/otel'
 

@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 
 import { getReadyClient } from '@data-layer/fhir/smart-client'
 import { konsultasjonRoute } from '@data-layer/api-routes/route-handlers'
-import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/fhir-data/mappers/diagnosis'
+import { diagnosisUrnToOidType, getDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
 
 export const GET = konsultasjonRoute(async () => {
     const client = await getReadyClient({ validate: true })

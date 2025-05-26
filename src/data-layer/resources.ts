@@ -10,3 +10,9 @@ export const KonsultasjonSchema = z.object({
         }),
     ),
 })
+
+export type PasientInfo = z.infer<typeof PasientInfoSchema>
+export const PasientInfoSchema = z.object({
+    ident: z.string(),
+    navn: z.string(),
+})

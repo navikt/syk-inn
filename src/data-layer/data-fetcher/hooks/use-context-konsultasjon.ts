@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 
-import { Konsultasjon } from '@data-layer/data-fetcher/resources'
+import { Konsultasjon } from '@data-layer/resources'
 
 import { assertResourceAvailable, isResourceAvailable } from '../data-service'
 import { useDataService } from '../data-provider'

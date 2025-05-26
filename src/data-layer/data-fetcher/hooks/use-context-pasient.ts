@@ -1,16 +1,16 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 
-import { assertResourceAvailable, isResourceAvailable, PasientInfo } from '../data-service'
+import { PasientInfo } from '@data-layer/resources'
+
+import { assertResourceAvailable, isResourceAvailable } from '../data-service'
 import { useDataService } from '../data-provider'
 
-export function useContextPasient(
-    opts: { allowContextless: boolean } = { allowContextless: false },
-): UseQueryResult<PasientInfo | null, Error> {
+export function useContextPasient(): UseQueryResult<PasientInfo | null, Error> {
     const dataService = useDataService()
     return useQuery({
         queryKey: ['pasient'],
         queryFn: async () => {
-            if (opts.allowContextless && !isResourceAvailable(dataService.context.pasient)) {
+            if (!isResourceAvailable(dataService.context.pasient)) {
                 return null
             }
 

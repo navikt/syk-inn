@@ -2,9 +2,10 @@
 
 import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { createFhirDataService } from '../fhir-data/fhir-data-service'
-import { BehandlerInfo } from '../../data-layer/data-fetcher/data-service'
-import { DataProvider } from '../../data-layer/data-fetcher/data-provider'
+import { createFhirDataService } from '@data-layer/fhir/fhir-data-service'
+
+import { BehandlerInfo } from '../../data-fetcher/data-service'
+import { DataProvider } from '../../data-fetcher/data-provider'
 
 type Props = {
     behandler: BehandlerInfo

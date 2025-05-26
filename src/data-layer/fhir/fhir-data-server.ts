@@ -2,12 +2,13 @@ import { logger } from '@navikt/next-logger'
 
 import { FhirDocumentReference, FhirDocumentReferenceBase } from '@navikt/fhir-zod'
 import { ResourceRequestErrors, SmartClientReadyErrors, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
-import { getHpr } from '@fhir/fhir-data/mappers/practitioner'
-import { getName } from '@fhir/fhir-data/mappers/patient'
+import { getHpr } from '@data-layer/fhir/mappers/practitioner'
+import { getName } from '@data-layer/fhir/mappers/patient'
 
-import { getReadyClient } from '../../data-layer/fhir/smart-client'
-import { BehandlerInfo } from '../../data-layer/data-fetcher/data-service'
+import { BehandlerInfo } from '../data-fetcher/data-service'
 import { withSpanAsync } from '../../otel/otel'
+
+import { getReadyClient } from './smart-client'
 
 /**
  * These FHIR resources are only available in the server runtime. They are not proxied through the backend.
