@@ -2,18 +2,18 @@ import { logger } from '@navikt/next-logger'
 
 import { wait } from '@utils/wait'
 import { pathWithBasePath } from '@utils/url'
-import { Konsultasjon, KonsultasjonSchema, PasientInfo, PasientInfoSchema } from '@data-layer/resources'
+import { Konsultasjon, KonsultasjonSchema, Pasient, PasientSchema } from '@data-layer/resources'
 
 /**
  * These are FHIR resources available in the browser runtime. All of these resources are proxied
  * through the backend, but the schema is validated in the browser.
  */
 export const fhirResources = {
-    getFhirPatient: async (): Promise<PasientInfo> => {
+    getFhirPatient: async (): Promise<Pasient> => {
         await wait()
 
         const result = await getSecuredResource('/context/pasient')
-        const parsed = PasientInfoSchema.safeParse(result)
+        const parsed = PasientSchema.safeParse(result)
         if (!parsed.success) {
             logger.error('Failed to parse pasient', parsed.error)
             throw parsed.error

@@ -4,8 +4,8 @@ import { FhirDocumentReference, FhirDocumentReferenceBase } from '@navikt/fhir-z
 import { ResourceRequestErrors, SmartClientReadyErrors, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getName } from '@data-layer/fhir/mappers/patient'
+import { Behandler } from '@data-layer/resources'
 
-import { BehandlerInfo } from '../data-fetcher/data-service'
 import { withSpanAsync } from '../../otel/otel'
 
 import { getReadyClient } from './smart-client'
@@ -75,7 +75,7 @@ export const serverFhirResources = {
         },
     ),
 
-    getBehandlerInfo: withSpanAsync('fhir behandler', async (): Promise<BehandlerInfo> => {
+    getBehandlerInfo: withSpanAsync('fhir behandler', async (): Promise<Behandler> => {
         const client = await getReadyClient({ validate: true })
         if ('error' in client) {
             throw new Error(`Unable to get fhirUser, cause: ${client.error}`)
