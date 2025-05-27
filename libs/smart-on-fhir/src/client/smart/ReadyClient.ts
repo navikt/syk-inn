@@ -144,15 +144,15 @@ export class ReadyClient {
         if (!response.ok) {
             if (response.headers.get('Content-Type')?.includes('text/plain')) {
                 const text = await response.text()
-                logger.error(`Request to get Practitioner failed with text: ${text}`)
+                logger.error(`Request to get ${resource} failed with text: ${text}`)
             } else if (response.headers.get('Content-Type')?.includes('application/json')) {
                 const json = await response.json()
-                logger.error(`Request to get Practitioner failed with json: ${JSON.stringify(json)}`)
+                logger.error(`Request to get ${resource} failed with json: ${JSON.stringify(json)}`)
             }
 
             logger.error(
                 new Error(
-                    `Request to get Practitioner failed, ${response.url} responded with ${response.status} ${response.statusText}`,
+                    `Request to get ${resource} failed, ${response.url} responded with ${response.status} ${response.statusText}`,
                 ),
             )
 
