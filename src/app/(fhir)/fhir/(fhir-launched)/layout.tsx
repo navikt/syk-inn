@@ -1,12 +1,13 @@
 import { PropsWithChildren, ReactElement } from 'react'
 
 import FhirDataProvider from '@data-layer/fhir/components/FhirDataProvider'
-import { serverFhirResources } from '@data-layer/fhir/fhir-data-server'
+import { getPractitioner } from '@data-layer/fhir/fhir-engine'
+import { practitionerToBehandler } from '@data-layer/fhir/mappers/practitioner'
 
 export async function LaunchedFhirAppLayout({ children }: PropsWithChildren): Promise<ReactElement> {
-    const behandler = await serverFhirResources.getBehandlerInfo()
+    const practitioner = await getPractitioner()
 
-    return <FhirDataProvider behandler={behandler}>{children}</FhirDataProvider>
+    return <FhirDataProvider behandler={practitionerToBehandler(practitioner)}>{children}</FhirDataProvider>
 }
 
 export default LaunchedFhirAppLayout

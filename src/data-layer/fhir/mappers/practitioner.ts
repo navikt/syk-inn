@@ -1,6 +1,8 @@
 import { logger } from '@navikt/next-logger'
 
-import { GeneralIdentifier } from '@navikt/fhir-zod'
+import { FhirPractitioner, GeneralIdentifier } from '@navikt/fhir-zod'
+import { Behandler } from '@data-layer/resources'
+import { getName } from '@data-layer/fhir/mappers/patient'
 
 const FNR_OID = '2.16.578.1.12.4.1.4.1'
 const DNR_OID = '2.16.578.1.12.4.1.4.2'
@@ -32,4 +34,17 @@ export function getHpr(identifiers: GeneralIdentifier | GeneralIdentifier[]): st
     }
 
     return hprIdentifier.value
+}
+
+export function practitionerToBehandler(practitioner: FhirPractitioner): Behandler {
+    const hpr = getHpr(practitioner.identifier)
+    if (hpr == null) {
+        // TODO: Don't log name? :shrug:
+        throw new Error(`Practitioner without HPR (${practitioner.name})`)
+    }
+
+    return {
+        navn: getName(practitioner.name),
+        hpr: hpr,
+    }
 }

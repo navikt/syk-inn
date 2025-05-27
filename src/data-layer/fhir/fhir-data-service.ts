@@ -1,24 +1,26 @@
 import { DataService } from '@data-layer/data-fetcher/data-service'
 import { Behandler } from '@data-layer/resources'
 
-import { fhirResources } from './fhir-data'
-import { nonFhirResources } from './non-fhir-data'
+import { fhirResources } from './fhir-resources'
 
+/**
+ * Implementation of the generic DataService for the FHIR contextually launched app.
+ */
 export function createFhirDataService(behandler: Behandler): DataService {
     return {
         mode: 'fhir',
         context: {
             behandler,
-            pasient: () => fhirResources.getFhirPatient(),
-            konsultasjon: () => fhirResources.getFhirKonsultasjon(),
+            pasient: () => fhirResources.getPasient(),
+            konsultasjon: () => fhirResources.getKonsultasjon(),
         },
         query: {
-            pasient: (ident) => nonFhirResources.getPasient(ident),
-            sykmelding: (id) => nonFhirResources.getSykmelding(id),
+            pasient: (ident) => fhirResources.queryPerson(ident),
+            sykmelding: (id) => fhirResources.getSykmelding(id),
         },
         mutation: {
-            sendSykmelding: (sykmelding) => nonFhirResources.sendSykmelding(sykmelding),
-            synchronize: (sykmeldingId) => nonFhirResources.synchronizeSykmelding(sykmeldingId),
+            sendSykmelding: (sykmelding) => fhirResources.sendSykmelding(sykmelding),
+            synchronize: (sykmeldingId) => fhirResources.synchronizeSykmelding(sykmeldingId),
         },
     }
 }
