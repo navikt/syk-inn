@@ -4,7 +4,6 @@ import { isE2E, isLocalOrDemo } from '@utils/env'
 import { wait } from '@utils/wait'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { raise } from '@utils/ts'
-import { diagnoseSystemToOid } from '@utils/oid'
 import { getReadyClient } from '@data-layer/fhir/smart-client'
 import { submitSykmeldingRoute } from '@data-layer/api-routes/route-handlers'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
@@ -38,7 +37,9 @@ export const POST = submitSykmeldingRoute(async (payload) => {
         sykmelderHpr: hpr,
         sykmelding: {
             hoveddiagnose: {
-                system: diagnoseSystemToOid(payload.diagnoser.hoved.system),
+                // system: diagnoseSystemToOid(payload.diagnoser.hoved.system),
+                // TODO: Temporarily using the old backend for testing
+                system: payload.diagnoser.hoved.system,
                 code: payload.diagnoser.hoved.code,
             },
             aktivitet: payload.aktivitet,

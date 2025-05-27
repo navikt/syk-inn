@@ -9,14 +9,15 @@ import {
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
-import { ICD10_OID, ICPC2_OID } from '@utils/oid'
 
 type NySykmeldingPayload = {
     pasientFnr: string
     sykmelderHpr: string
     sykmelding: {
         hoveddiagnose: {
-            system: ICD10_OID | ICPC2_OID
+            // system: ICD10_OID | ICPC2_OID
+            // TODO: Temporarily using the old backend for testing
+            system: 'ICD10' | 'ICPC2'
             code: string
         }
         aktivitet:
@@ -57,17 +58,6 @@ export const sykInnApiService = {
                 HPR: hpr,
             },
             responseSchema: ExistingSykmeldingSchema,
-        }),
-    getTidligereSykmeldinger: async (ident: string): Promise<ExistingSykmelding[] | ApiFetchErrors> =>
-        fetchInternalAPI({
-            api: 'syk-inn-api',
-            path: `/api/v1/sykmelding`,
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Ident: ident,
-            },
-            responseSchema: ExistingSykmeldingSchema.array(),
         }),
     getSykmeldingPdf: async (sykmeldingId: string, hpr: string): Promise<ArrayBuffer | ApiFetchErrors> => {
         if (isLocalOrDemo || isE2E) {
