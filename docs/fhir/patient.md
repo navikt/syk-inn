@@ -8,7 +8,7 @@ _Relevante referanser:_
 - [no-basis-HumanName](https://simplifier.net/hl7norwayno-basis/nobasishumanname) (simplifier)
 - [Patient](https://hl7.org/fhir/R4/patient.html) (HL7)
 
-## Eksempel JSON-struktur for _no-basis-Patient:_
+## Eksempel JSON-struktur for _no-basis-Patient_
 
 ```json
 {

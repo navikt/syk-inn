@@ -1,8 +1,13 @@
-### Practitioner
+# Practitioner
 
-Vårt behov: **Lese**
+Navs behov: **Lese**
 
-> **Struktur for _Practitioner:_**
+_Relevante referanser:_
+
+- [no-basis-Practitioner](https://simplifier.net/hl7norwayno-basis/nobasispractitioner) (simplifier)
+- [Practitioner](https://www.hl7.org/fhir/R4/practitioner.html) (HL7)
+
+## Eksempel JSON-struktur for _no-basis-Practitioner_
 
 ```json
 {
@@ -19,16 +24,11 @@ Vårt behov: **Lese**
             "system": "urn:oid:2.16.578.1.12.4.1.2",
             "value": "her-id"
         }
-    ],
-    "name": [
-        {
-            "family": "Koman",
-            "given": ["Magnar"]
-        }
     ]
 }
 ```
 
-> **Begrunnelse**
->
-> > Identifier - Vi må vite HER-id for å skille på kontor og behandler sykmeldingen kom fra
+## Begrunnelse
+
+Identifier - Vi bruker HPR-nummer som identifikator for helsepersonellet. HER-ID er påkrevd og brukes
+til å sende dokumenter til riktig helsepersonell i EPJ-systemet.
