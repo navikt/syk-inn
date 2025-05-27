@@ -124,8 +124,8 @@ function prepareDocRefWithB64Data({
     sykmeldingId,
 }: PrepareDocRefOpts): Omit<FhirDocumentReference, 'meta'> {
     return {
-        resourceType: 'DocumentReference',
         id: sykmeldingId,
+        resourceType: 'DocumentReference',
         status: 'current',
         type: {
             coding: [
@@ -136,14 +136,8 @@ function prepareDocRefWithB64Data({
                 },
             ],
         },
-        subject: {
-            reference: `Patient/${patientId}`,
-        },
-        author: [
-            {
-                reference: `Practitioner/${practitionerId}`,
-            },
-        ],
+        subject: { reference: `Patient/${patientId}` },
+        author: [{ reference: `Practitioner/${practitionerId}` }],
         content: [
             {
                 attachment: {

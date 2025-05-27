@@ -88,6 +88,8 @@ export class ReadyClient {
         resource: '/DocumentReference',
         params: { payload: Partial<FhirDocumentReference> },
     ): Promise<FhirDocumentReferenceBase | ResourceCreateErrors> {
+        logger.info(`Creating DocumentReference with id ${params.payload.id}`)
+
         const response = await postFhir({ session: this._session, path: resource }, { payload: params.payload })
 
         if (!response.ok) {
