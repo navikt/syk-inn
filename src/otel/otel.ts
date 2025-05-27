@@ -12,7 +12,7 @@ function getOTEL(): IsomorphicOTEL | null {
     }
 }
 
-export async function spanAsync<T>(name: string, fn: () => Promise<T>): Promise<T> {
+export async function spanAsync<Result>(name: string, fn: () => Promise<Result>): Promise<Result> {
     const otel = getOTEL()
     if (otel == null) {
         return fn()
@@ -29,5 +29,5 @@ export function withSpanAsync<Result, Args extends unknown[]>(
     name: string,
     fn: (...args: Args) => Promise<Result>,
 ): (...args: Args) => Promise<Result> {
-    return async () => spanAsync(name, fn)
+    return async (...args) => spanAsync(name, () => fn(...args))
 }
