@@ -1,4 +1,4 @@
-import { Konsultasjon, PasientInfo, PersonQueryInfo } from '@data-layer/resources'
+import { Konsultasjon, PasientInfo, PersonQueryInfo, Sykmelding } from '@data-layer/resources'
 
 export type AuthError = {
     error: 'AUTH_ERROR'
@@ -68,7 +68,7 @@ export function pasientRoute(handler: () => Promise<PasientInfo | AuthError | Pa
 
 export function personQueryRoute(
     handler: () => Promise<PersonQueryInfo | AuthError | ParsingError | MissingParams | ApiError>,
-): () => Promise<Response> {
+) {
     return async (): Promise<Response> => {
         const pasientInfos = await handler()
 
@@ -88,5 +88,32 @@ export function personQueryRoute(
         }
 
         return Response.json(pasientInfos satisfies PersonQueryInfo, { status: 200 })
+    }
+}
+
+export function sykmeldingByIdRoute(
+    handler: (sykmeldingId: string) => Promise<Sykmelding | AuthError | ParsingError | MissingParams | ApiError>,
+) {
+    return async (request: Request, { params }: { params: Promise<{ sykmeldingId: string }> }): Promise<Response> => {
+        const sykmeldingId = (await params).sykmeldingId
+
+        const sykmelding = await handler(sykmeldingId)
+
+        if ('error' in sykmelding) {
+            switch (sykmelding.error) {
+                case 'MISSING_PARAMS':
+                    return Response.json({ message: 'Missing required parameters' }, { status: 400 })
+                case 'AUTH_ERROR':
+                    return Response.json({ message: 'Not allowed' }, { status: 401 })
+                case 'PARSING_ERROR':
+                    return Response.json({ message: 'Failed to get sykmelding' }, { status: 500 })
+                case 'API_ERROR':
+                default: {
+                    return Response.json({ message: 'Internal server error' }, { status: 500 })
+                }
+            }
+        }
+
+        return Response.json(sykmelding satisfies Sykmelding, { status: 200 })
     }
 }

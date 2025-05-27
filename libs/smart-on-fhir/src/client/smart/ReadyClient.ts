@@ -44,7 +44,7 @@ export class ReadyClient {
         return this._session.encounter
     }
 
-    public get fhirUser(): string {
+    public get fhirUser(): `Practitioner/${string}` {
         if (this._session.webmedPractitioner) {
             return `Practitioner/${this._session.webmedPractitioner}`
         }
@@ -53,7 +53,8 @@ export class ReadyClient {
             throw new Error('WebMed hack: No webmedPractitioner and no idToken.fhirUser, what up?')
         }
 
-        return this._idToken.fhirUser
+        // TODO: Probably shouldn't be as'd
+        return this._idToken.fhirUser as `Practitioner/${string}`
     }
 
     public async validate(): Promise<boolean> {

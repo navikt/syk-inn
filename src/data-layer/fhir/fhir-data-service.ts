@@ -13,7 +13,7 @@ export function createFhirDataService(behandler: BehandlerInfo): DataService {
         },
         query: {
             pasient: (ident) => nonFhirResources.getPasient(ident),
-            sykmelding: (id) => nonFhirResources.getSykmelding(id, behandler.hpr),
+            sykmelding: (id) => nonFhirResources.getSykmelding(id),
         },
         mutation: {
             sendSykmelding: (sykmelding) => nonFhirResources.sendSykmelding(sykmelding, behandler.hpr),

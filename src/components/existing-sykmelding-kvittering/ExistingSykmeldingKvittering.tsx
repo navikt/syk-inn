@@ -11,7 +11,7 @@ import {
     GuidePanel,
     Heading,
     Label,
-    Link as AskelLink,
+    Link as AkselLink,
     Skeleton,
 } from '@navikt/ds-react'
 import { HandBandageIcon, PersonIcon, VitalsIcon } from '@navikt/aksel-icons'
@@ -19,9 +19,8 @@ import Link from 'next/link'
 
 import { FormSection } from '@components/ui/form'
 import { toReadableDatePeriod } from '@utils/date'
-
-import { useDataService } from '../../data-layer/data-fetcher/data-provider'
-import { ExistingSykmelding } from '../../data-layer/data-fetcher/data-service'
+import { useDataService } from '@data-layer/data-fetcher/data-provider'
+import { Sykmelding } from '@data-layer/resources'
 
 type ExistingSykmeldingKvitteringProps = {
     sykmeldingId: string
@@ -120,7 +119,7 @@ function WritebackStatus({ sykmeldingId }: WritebackStatusProps): ReactElement {
     )
 }
 
-function SykmeldingKvittering({ sykmelding }: { sykmelding: ExistingSykmelding }): ReactElement {
+function SykmeldingKvittering({ sykmelding }: { sykmelding: Sykmelding }): ReactElement {
     return (
         <div className="max-w-prose">
             <div className="my-4">
@@ -129,14 +128,14 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: ExistingSykmelding }
             <div className="flex flex-col gap-3">
                 <FormSection title="Den sykmeldte" icon={<PersonIcon />}>
                     <Detail>Fødselsnummer</Detail>
-                    <BodyShort>{sykmelding.pasient.fnr}</BodyShort>
+                    <BodyShort>{sykmelding.pasient.ident}</BodyShort>
                 </FormSection>
                 <FormSection title="Diagnose" icon={<HandBandageIcon />}>
                     <Label>Hoveddiagnose</Label>
                     <BodyShort>
-                        {sykmelding.hovedDiagnose.code} - {sykmelding.hovedDiagnose.text}
+                        {sykmelding.diagnose.hoved.code} - {sykmelding.diagnose.hoved.text}
                     </BodyShort>
-                    <Detail>{sykmelding.hovedDiagnose.system}</Detail>
+                    <Detail>{sykmelding.diagnose.hoved.system}</Detail>
                 </FormSection>
                 <FormSection title="Aktivitet" icon={<VitalsIcon />}>
                     <Detail>Sykmeldingsperiode</Detail>
@@ -147,9 +146,9 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: ExistingSykmelding }
                 <GuidePanel poster>
                     <BodyLong spacing>
                         Den sykmeldte vil kunne logge på{' '}
-                        <AskelLink href="https://www.nav.no/syk/sykefravaer" target="_blank">
+                        <AkselLink href="https://www.nav.no/syk/sykefravaer" target="_blank">
                             Ditt Sykefravær
-                        </AskelLink>{' '}
+                        </AkselLink>{' '}
                         for å sende inn sykmeldingen til arbeidsgiver eller Nav.
                     </BodyLong>
                     <BodyLong>

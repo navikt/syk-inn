@@ -1,63 +1,68 @@
 import { logger } from '@navikt/next-logger'
 
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
-import { ExistingSykmelding } from '@services/syk-inn-api/SykInnApiSchema'
 import { isE2E, isLocalOrDemo } from '@utils/env'
+import { getReadyClient } from '@data-layer/fhir/smart-client'
+import { sykmeldingByIdRoute } from '@data-layer/api-routes/route-handlers'
+import { getHpr } from '@data-layer/fhir/mappers/practitioner'
+import { Sykmelding } from '@data-layer/resources'
 
-import { getReadyClient } from '../../../../../../../data-layer/fhir/smart-client'
-
-export async function GET(
-    request: Request,
-    { params }: { params: Promise<{ sykmeldingId: string }> },
-): Promise<Response> {
+export const GET = sykmeldingByIdRoute(async (sykmeldingId: string) => {
     const client = await getReadyClient({ validate: true })
     if ('error' in client) {
-        if (client.error === 'INVALID_TOKEN') {
-            logger.error('Session expired or invalid token')
-            return new Response('Unauthorized', { status: 401 })
-        }
-
-        logger.error(`Failed to instantiate SmartClient(ReadyClient), reason: ${client.error}`)
-        return new Response('Internal server error', { status: 500 })
+        return { error: 'AUTH_ERROR' }
     }
 
-    // TODO: This should come from a non-fickleable source, use session?
-    const hpr = request.headers.get('HPR')
+    const practitioner = await client.request(`/${client.fhirUser}`)
+    if ('error' in practitioner) {
+        return { error: 'PARSING_ERROR' }
+    }
+
+    const hpr = getHpr(practitioner.identifier)
     if (hpr == null) {
-        return new Response('Missing HPR header', { status: 400 })
+        logger.error('Missing HPR identifier in practitioner resource')
+        return { error: 'PARSING_ERROR' }
     }
-    const sykmeldingId = (await params).sykmeldingId
 
     if (isLocalOrDemo || isE2E) {
-        logger.warn('Is in demo, local or e2e, returning mocked sykmelding data')
-
+        logger.info('Running in local or demo environment, returning mocked sykmelding data')
         return handleMockedRoute()
     }
 
     const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
-
     if ('errorType' in sykmelding) {
-        return new Response('Failed to retrieve sykmelding', { status: 500 })
+        return { error: 'API_ERROR' }
     }
 
-    return Response.json(sykmelding satisfies ExistingSykmelding, { status: 200 })
-}
+    return {
+        sykmeldingId: sykmelding.sykmeldingId,
+        aktivitet: sykmelding.aktivitet,
+        diagnose: {
+            hoved: sykmelding.hovedDiagnose,
+        },
+        pasient: {
+            ident: sykmelding.pasient.fnr,
+        },
+    }
+})
 
-function handleMockedRoute(): Response {
-    return Response.json({
+function handleMockedRoute(): Sykmelding {
+    return {
         sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
         pasient: {
-            fnr: '12345678910',
+            ident: '12345678910',
         },
         aktivitet: {
             type: 'AKTIVITET_IKKE_MULIG',
             fom: '2024-02-15',
             tom: '2024-02-18',
         },
-        hovedDiagnose: {
-            system: 'ICD-10',
-            code: 'L73',
-            text: 'Brudd legg/ankel',
+        diagnose: {
+            hoved: {
+                system: 'ICD-10',
+                code: 'L73',
+                text: 'Brudd legg/ankel',
+            },
         },
-    } satisfies ExistingSykmelding)
+    }
 }

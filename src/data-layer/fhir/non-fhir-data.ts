@@ -1,8 +1,8 @@
 import { logger } from '@navikt/next-logger'
 
 import { pathWithBasePath } from '@utils/url'
-import { ExistingSykmeldingSchema, NySykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
-import { PersonQueryInfoSchema } from '@data-layer/resources'
+import { NySykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
+import { PersonQueryInfoSchema, SykmeldingSchema } from '@data-layer/resources'
 
 import { WriteToEhrResult } from '../data-fetcher/data-service'
 
@@ -31,17 +31,18 @@ export const nonFhirResources = {
             ident: parsed.data.ident,
         }
     },
-    getSykmelding: async (id: string, hpr: string) => {
+    getSykmelding: async (id: string) => {
         const result = await getSecuredResource(`/sykmelding/${id}`, {
             method: 'GET',
-            headers: {
-                // TODO: Use session probably
-                HPR: hpr,
-            },
         })
 
-        // TODO: Better error handling
-        return ExistingSykmeldingSchema.parse(result)
+        const parsed = SykmeldingSchema.safeParse(result)
+        if (!parsed.success) {
+            logger.error('Failed to parse sykmelding', parsed.error)
+            throw parsed.error
+        }
+
+        return parsed.data
     },
     sendSykmelding: async (values: unknown, hpr: string) => {
         const result = await getSecuredResource(`/sykmelding/submit`, {
@@ -53,8 +54,13 @@ export const nonFhirResources = {
             }),
         })
 
-        // TODO: Better error handling
-        return NySykmeldingSchema.parse(result)
+        const parsed = NySykmeldingSchema.safeParse(result)
+        if (!parsed.success) {
+            logger.error('Failed to parse nySykmelding', parsed.error)
+            throw parsed.error
+        }
+
+        return parsed.data
     },
     writeToEhr: async (sykmeldingId: string, hpr: string): Promise<WriteToEhrResult> => {
         const result = await getSecuredResource(`/sykmelding/write-to-ehr`, {

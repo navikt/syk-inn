@@ -39,7 +39,7 @@ export const sykInnApiService = {
     createNewSykmelding: async (payload: NySykmeldingPayload): Promise<NySykmelding | ApiFetchErrors> =>
         fetchInternalAPI({
             api: 'syk-inn-api',
-            path: '/api/sykmelding',
+            path: '/api/v1/sykmelding/create',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export const sykInnApiService = {
     getSykmelding: async (sykmeldingId: string, hpr: string): Promise<ExistingSykmelding | ApiFetchErrors> =>
         fetchInternalAPI({
             api: 'syk-inn-api',
-            path: `/api/sykmelding/${sykmeldingId}`,
+            path: `/api/v1/sykmelding/${sykmeldingId}`,
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export const sykInnApiService = {
     getTidligereSykmeldinger: async (ident: string): Promise<ExistingSykmelding[] | ApiFetchErrors> =>
         fetchInternalAPI({
             api: 'syk-inn-api',
-            path: `/api/sykmelding`,
+            path: `/api/v1/sykmelding`,
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export const sykInnApiService = {
 
         return await fetchInternalAPI({
             api: 'syk-inn-api',
-            path: `/api/sykmelding/${sykmeldingId}/pdf`,
+            path: `/api/v1/sykmelding/${sykmeldingId}/pdf`,
             method: 'GET',
             headers: {
                 Accept: 'application/pdf',
