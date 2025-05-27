@@ -7,13 +7,13 @@ import type { Metadata } from 'next'
 import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
 import { getToggles } from '@toggles/unleash'
+import HelseIdDataProvider from '@data-layer/helseid/components/HelseIdDataProvider'
+import { getHelseIdUserInfo } from '@data-layer/helseid/helseid-userinfo'
+import HelseIdHeader from '@data-layer/helseid/components/HelseIdHeader'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../../providers/Providers'
 import Preload from '../preload'
-import HelseIdDataProvider from '../../helseid/components/HelseIdDataProvider'
-import { getHelseIdUserInfo } from '../../helseid/helseid-userinfo'
-import HelseIdHeader from '../../helseid/components/HelseIdHeader'
 
 export const dynamic = 'force-dynamic'
 

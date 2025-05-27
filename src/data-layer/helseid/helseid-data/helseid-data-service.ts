@@ -1,6 +1,6 @@
 import { raise } from '@utils/ts'
 
-import { BehandlerInfo, DataService, NotAvailable } from '../../data-layer/data-fetcher/data-service'
+import { BehandlerInfo, DataService, NotAvailable } from '../../data-fetcher/data-service'
 
 export function createHelseIdDataService(behandler: BehandlerInfo): DataService {
     return {

@@ -8,6 +8,9 @@ export type ParsingError = {
     error: 'PARSING_ERROR'
 }
 
+/**
+ * Generic route handler for fetching konsultasjon information. This can be used in both FHIR and standalone contexts.
+ */
 export function konsultasjonRoute(handler: () => Promise<Konsultasjon | AuthError | ParsingError>) {
     return async (): Promise<Response> => {
         const konsultasjonInfo = await handler()
@@ -30,6 +33,9 @@ export function konsultasjonRoute(handler: () => Promise<Konsultasjon | AuthErro
     }
 }
 
+/**
+ * Generic route handler for fetching pasient information. This can be used in both FHIR and standalone contexts.
+ */
 export function pasientRoute(handler: () => Promise<PasientInfo | AuthError | ParsingError>) {
     return async (): Promise<Response> => {
         const pasientInfo = await handler()

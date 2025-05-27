@@ -2,8 +2,8 @@
 
 import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { DataProvider } from '../../data-layer/data-fetcher/data-provider'
-import { BehandlerInfo, DataService } from '../../data-layer/data-fetcher/data-service'
+import { DataProvider } from '../../data-fetcher/data-provider'
+import { BehandlerInfo, DataService } from '../../data-fetcher/data-service'
 import { createHelseIdDataService } from '../helseid-data/helseid-data-service'
 
 type Props = {
