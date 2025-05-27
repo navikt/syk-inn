@@ -10,7 +10,7 @@ export function useContextKonsultasjon(): UseQueryResult<Konsultasjon, Error> {
     const dataService = useDataService()
     return useQuery({
         queryKey: ['konsultasjon'],
-        queryFn: withSpanAsync('konsultasjonsInfo', (): Promise<Konsultasjon> => {
+        queryFn: withSpanAsync('konsultasjons info hook', (): Promise<Konsultasjon> => {
             assertResourceAvailable(dataService.context.konsultasjon)
 
             return dataService.context.konsultasjon()

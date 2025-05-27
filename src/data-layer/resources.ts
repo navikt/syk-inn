@@ -16,3 +16,9 @@ export const PasientInfoSchema = z.object({
     ident: z.string(),
     navn: z.string(),
 })
+
+export type PersonQueryInfo = z.infer<typeof PersonQueryInfoSchema>
+export const PersonQueryInfoSchema = z.object({
+    ident: z.string().nullable(),
+    navn: z.string(),
+})

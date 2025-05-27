@@ -1,4 +1,4 @@
-import { Konsultasjon, PasientInfo } from '@data-layer/resources'
+import { Konsultasjon, PasientInfo, PersonQueryInfo } from '@data-layer/resources'
 
 export type AuthError = {
     error: 'AUTH_ERROR'
@@ -6,6 +6,14 @@ export type AuthError = {
 
 export type ParsingError = {
     error: 'PARSING_ERROR'
+}
+
+export type MissingParams = {
+    error: 'MISSING_PARAMS'
+}
+
+export type ApiError = {
+    error: 'API_ERROR'
 }
 
 /**
@@ -55,5 +63,30 @@ export function pasientRoute(handler: () => Promise<PasientInfo | AuthError | Pa
         }
 
         return Response.json(pasientInfo satisfies PasientInfo, { status: 200 })
+    }
+}
+
+export function personQueryRoute(
+    handler: () => Promise<PersonQueryInfo | AuthError | ParsingError | MissingParams | ApiError>,
+): () => Promise<Response> {
+    return async (): Promise<Response> => {
+        const pasientInfos = await handler()
+
+        if ('error' in pasientInfos) {
+            switch (pasientInfos.error) {
+                case 'MISSING_PARAMS':
+                    return Response.json({ message: 'Missing required parameters' }, { status: 400 })
+                case 'AUTH_ERROR':
+                    return Response.json({ message: 'Not allowed' }, { status: 401 })
+                case 'PARSING_ERROR':
+                    return Response.json({ message: 'Failed to get pasient search results' }, { status: 500 })
+                case 'API_ERROR':
+                default: {
+                    return Response.json({ message: 'Internal server error' }, { status: 500 })
+                }
+            }
+        }
+
+        return Response.json(pasientInfos satisfies PersonQueryInfo, { status: 200 })
     }
 }

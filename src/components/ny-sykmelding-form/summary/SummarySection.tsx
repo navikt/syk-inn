@@ -3,6 +3,7 @@ import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
 
 import { toReadableDate, toReadableDatePeriod } from '@utils/date'
+import { usePersonQuery } from '@data-layer/data-fetcher/hooks/use-person-query'
 
 import { useFormStep } from '../steps/useFormStep'
 import { useAppSelector } from '../../../providers/redux/hooks'
@@ -215,6 +216,9 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: DiagnoseStep | null })
 }
 
 function PatientSummaryAnswers({ pasient }: { pasient: PasientStep | null }): ReactElement {
+    // TODO: This is only example usage of usage of person query, not part of current design
+    const personQuery = usePersonQuery(pasient?.ident ?? null)
+
     if (pasient == null) {
         return (
             <FormSummary.Answers>
@@ -232,10 +236,16 @@ function PatientSummaryAnswers({ pasient }: { pasient: PasientStep | null }): Re
             <FormSummary.Answer>
                 <FormSummary.Label>Navn</FormSummary.Label>
                 <FormSummary.Value>{pasient.navn}</FormSummary.Value>
+                {personQuery.data?.navn && (
+                    <FormSummary.Value>({personQuery.data?.navn} i folkeregisteret)</FormSummary.Value>
+                )}
             </FormSummary.Answer>
             <FormSummary.Answer>
                 <FormSummary.Label>Fødselsnummer</FormSummary.Label>
-                <FormSummary.Value>{pasient.fnr}</FormSummary.Value>
+                <FormSummary.Value>{pasient.ident}</FormSummary.Value>
+                {personQuery.data?.ident && (
+                    <FormSummary.Value>({personQuery.data?.ident} i folkeregisteret)</FormSummary.Value>
+                )}
             </FormSummary.Answer>
         </FormSummary.Answers>
     )

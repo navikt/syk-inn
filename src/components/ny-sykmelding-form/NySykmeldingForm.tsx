@@ -22,7 +22,7 @@ function NySykmeldingForm(): ReactElement {
             dispatch(
                 nySykmeldingMultistepActions.autoPatient({
                     type: 'auto',
-                    fnr: data.ident,
+                    ident: data.ident,
                     navn: data.navn,
                 }),
             )
@@ -36,11 +36,13 @@ function NySykmeldingForm(): ReactElement {
 
     return (
         <>
-            <Heading level="2" size="medium" spacing>
-                <span>Sykmelding for</span>
-                {isLoading && <Skeleton width={140} className="inline-block mx-2" />}
-                {isSuccess && data && ` ${data.navn} `}
-            </Heading>
+            <div>
+                <Heading level="2" size="medium" spacing>
+                    <span>Sykmelding for</span>
+                    {isLoading && <Skeleton width={140} className="inline-block mx-2" />}
+                    {isSuccess && data && ` ${data.navn} `}
+                </Heading>
+            </div>
             <div className="w-full">
                 <NySykmeldingFormSections />
             </div>

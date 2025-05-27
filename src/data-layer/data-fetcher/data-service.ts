@@ -1,6 +1,6 @@
 import { FhirDocumentReferenceBase } from '@navikt/fhir-zod'
 import { SubmitSykmeldingFormValues } from '@services/syk-inn-api/SykInnApiSchema'
-import { Konsultasjon, PasientInfo } from '@data-layer/resources'
+import { Konsultasjon, PasientInfo, PersonQueryInfo } from '@data-layer/resources'
 
 export type NotAvailable = typeof NotAvailable
 export const NotAvailable = {
@@ -33,18 +33,13 @@ export type DataService = {
      * Query data can be anything that requires an argument to fetch, such as a specific patient.
      */
     query: {
-        pasient: ((ident: string) => Promise<PasientQueryInfo>) | NotAvailable
+        pasient: ((ident: string) => Promise<PersonQueryInfo>) | NotAvailable
         sykmelding: (id: string) => Promise<ExistingSykmelding>
     }
     mutation: {
         sendSykmelding: (sykmelding: SubmitSykmeldingFormValues) => Promise<NySykmelding>
         writeToEhr: (sykmeldingId: string) => Promise<WriteToEhrResult>
     }
-}
-
-export type PasientQueryInfo = {
-    ident: string | null
-    navn: string
 }
 
 export type ArbeidsgiverInfo = {

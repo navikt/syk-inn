@@ -3,8 +3,7 @@ import { logger } from '@navikt/next-logger'
 import { pathWithBasePath } from '@utils/url'
 import { fhirResources } from '@data-layer/fhir/fhir-data'
 import { ExistingSykmeldingSchema, NySykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
-import { PdlPersonSchema } from '@services/pdl/PdlApiSchema'
-import { getFnrIdent } from '@services/pdl/PdlApiUtils'
+import { PersonQueryInfoSchema } from '@data-layer/resources'
 
 import { WriteToEhrResult } from '../data-fetcher/data-service'
 
@@ -31,18 +30,18 @@ export const nonFhirResources = {
     getPasient: async (ident: string) => {
         const result = await getSecuredResource(`/person`, {
             method: 'GET',
-            headers: {
-                Ident: ident,
-            },
+            headers: { Ident: ident },
         })
 
-        // TODO: Better error handling
-        const parsed = PdlPersonSchema.parse(result)
-        const fnrOrDnr = getFnrIdent(parsed.identer)
+        const parsed = PersonQueryInfoSchema.safeParse(result)
+        if (!parsed.success) {
+            logger.error('Failed to parse pasient (query)', parsed.error)
+            throw parsed.error
+        }
 
         return {
-            navn: `${parsed.navn.fornavn}${parsed.navn.mellomnavn ? ` ${parsed.navn.mellomnavn}` : ''} ${parsed.navn.etternavn}`,
-            ident: fnrOrDnr,
+            navn: parsed.data.navn,
+            ident: parsed.data.ident,
         }
     },
     getSykmelding: async (id: string, hpr: string) => {

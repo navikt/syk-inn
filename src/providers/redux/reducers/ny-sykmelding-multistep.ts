@@ -5,13 +5,13 @@ import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseC
 
 type ManualPatientStep = {
     type: 'manual'
-    fnr: string
+    ident: string
     navn: string
 }
 
 type AutoPatientStep = {
     type: 'auto'
-    fnr: string
+    ident: string
     navn: string
 }
 

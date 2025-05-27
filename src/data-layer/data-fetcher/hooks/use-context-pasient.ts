@@ -4,12 +4,13 @@ import { PasientInfo } from '@data-layer/resources'
 
 import { assertResourceAvailable, isResourceAvailable } from '../data-service'
 import { useDataService } from '../data-provider'
+import { withSpanAsync } from '../../../otel/otel'
 
 export function useContextPasient(): UseQueryResult<PasientInfo | null, Error> {
     const dataService = useDataService()
     return useQuery({
         queryKey: ['pasient'],
-        queryFn: async () => {
+        queryFn: withSpanAsync('pasient info hook', async () => {
             if (!isResourceAvailable(dataService.context.pasient)) {
                 return null
             }
@@ -17,6 +18,6 @@ export function useContextPasient(): UseQueryResult<PasientInfo | null, Error> {
             assertResourceAvailable(dataService.context.pasient)
 
             return dataService.context.pasient()
-        },
+        }),
     })
 }

@@ -11,3 +11,7 @@ export function getFnrIdent(identer: PdlPerson['identer']): string | null {
         )?.ident ?? null
     )
 }
+
+export function getName(navn: PdlPerson['navn']): string {
+    return `${navn.fornavn}${navn.mellomnavn ? ` ${navn.mellomnavn}` : ''} ${navn.etternavn}`
+}

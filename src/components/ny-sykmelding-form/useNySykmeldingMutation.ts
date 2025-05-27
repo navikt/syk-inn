@@ -34,7 +34,7 @@ export function useNySykmeldingMutation(): UseMutationResult<NySykmelding, Error
 
             try {
                 const createResult = await dataService.mutation.sendSykmelding({
-                    pasient: formState.pasient.fnr,
+                    pasient: formState.pasient.ident,
                     aktivitet: {
                         type: formState.aktiviteter[0].type,
                         fom: formState.aktiviteter[0].fom,
