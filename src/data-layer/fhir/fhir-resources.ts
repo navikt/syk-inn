@@ -2,17 +2,25 @@ import { logger } from '@navikt/next-logger'
 
 import { pathWithBasePath } from '@utils/url'
 import { NySykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
-import { PersonQueryInfoSchema, SykmeldingSchema, SynchronizationStatusSchema } from '@data-layer/resources'
+import {
+    Konsultasjon,
+    KonsultasjonSchema,
+    Pasient,
+    PasientSchema,
+    PersonQueryInfoSchema,
+    SykmeldingSchema,
+    SynchronizationStatusSchema,
+} from '@data-layer/resources'
+import { wait } from '@utils/wait'
 
 /**
- * These are resources that are not FHIR resources, but are available in the browser runtime and proxied
- * through the backend. The schema is validated in the browser.
+ * Functions to access the generic resources from the FHIR-implementation.
  *
- * Each of these resources are implemented as their own API route handlers that have access to the current
- * session, and validates the session before returning the resource.
+ * None of these resources are directly related to FHIR, any FHIR-specific implementation is in each
+ * route handler.
  */
-export const nonFhirResources = {
-    getPasient: async (ident: string) => {
+export const fhirResources = {
+    queryPerson: async (ident: string) => {
         const result = await getSecuredResource(`/person`, {
             method: 'GET',
             headers: { Ident: ident },
@@ -61,6 +69,34 @@ export const nonFhirResources = {
         const parsed = SynchronizationStatusSchema.safeParse(result)
         if (!parsed.success) {
             logger.error('Failed to parse sykmelding', parsed.error)
+            throw parsed.error
+        }
+
+        return parsed.data
+    },
+    getPasient: async (): Promise<Pasient> => {
+        await wait()
+
+        const result = await getSecuredResource('/context/pasient', {
+            method: 'GET',
+        })
+        const parsed = PasientSchema.safeParse(result)
+        if (!parsed.success) {
+            logger.error('Failed to parse pasient', parsed.error)
+            throw parsed.error
+        }
+
+        return parsed.data
+    },
+    getKonsultasjon: async (): Promise<Konsultasjon> => {
+        await wait()
+
+        const result = await getSecuredResource('/context/konsultasjon', {
+            method: 'GET',
+        })
+        const parsed = KonsultasjonSchema.safeParse(result)
+        if (!parsed.success) {
+            logger.error('Failed to parse konsultasjon', parsed.error)
             throw parsed.error
         }
 

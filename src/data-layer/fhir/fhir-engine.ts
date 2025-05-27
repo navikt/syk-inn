@@ -1,10 +1,39 @@
+import { logger } from '@navikt/next-logger'
+
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { createNewDocumentReferencePayload } from '@data-layer/fhir/mappers/document-reference'
-import { FhirDocumentReferenceBase } from '@navikt/fhir-zod'
+import { FhirDocumentReferenceBase, FhirPractitioner } from '@navikt/fhir-zod'
 import { toReadableDatePeriod } from '@utils/date'
 import { ExistingSykmelding } from '@services/syk-inn-api/SykInnApiSchema'
+import { getReadyClient } from '@data-layer/fhir/smart-client'
+
+/**
+ * Uses the FHIR client to fetch the Practitioner resource for the current user.
+ *
+ * With required hacks.
+ */
+export async function getPractitioner(): Promise<FhirPractitioner> {
+    const client = await getReadyClient({ validate: true })
+    if ('error' in client) {
+        throw new Error(`Unable to get fhirUser, cause: ${client.error}`)
+    }
+
+    if (!client.fhirUser.startsWith('Practitioner/')) {
+        logger.error(`fhirUser is not a Practitioner, was: ${client.fhirUser}`)
+        throw new Error('fhirUser is not a Practitioner')
+    }
+
+    logger.info(`Trying to fetch fhirUser from /Practitioner/${client.fhirUser}`)
+    const practitioner = await client.request(`/${client.fhirUser}` as `/Practitioner/${string}`)
+
+    if ('error' in practitioner) {
+        throw new Error(`Unable to fetch 'behandler', reason: ${practitioner.error}`)
+    }
+
+    return practitioner
+}
 
 /**
  * Fetches corresponding info from syk-inn-api and creates a new DocumentReference resource in the FHIR server.

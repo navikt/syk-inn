@@ -6,7 +6,6 @@ import { getReadyClient } from '@data-layer/fhir/smart-client'
 import { sykmeldingByIdRoute } from '@data-layer/api-routes/route-handlers'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { Sykmelding } from '@data-layer/resources'
-import { serverFhirResources } from '@data-layer/fhir/fhir-data-server'
 
 export const GET = sykmeldingByIdRoute(async (sykmeldingId: string) => {
     const client = await getReadyClient({ validate: true })
@@ -35,7 +34,7 @@ export const GET = sykmeldingByIdRoute(async (sykmeldingId: string) => {
         return { error: 'API_ERROR' }
     }
 
-    const existingDocumentReference = await serverFhirResources.getDocumentReference(sykmeldingId)
+    const existingDocumentReference = await client.request(`/DocumentReference/${sykmeldingId}` as const)
 
     return {
         sykmeldingId: sykmelding.sykmeldingId,
