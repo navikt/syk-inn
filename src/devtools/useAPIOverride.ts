@@ -25,7 +25,7 @@ export function withFailInterceptor(dataService: DataService): DataService {
         },
         mutation: {
             sendSykmelding: failIfOverride('mutation', 'sendSykmelding', dataService.mutation.sendSykmelding),
-            writeToEhr: failIfOverride('mutation', 'writeToEhr', dataService.mutation.writeToEhr),
+            synchronize: failIfOverride('mutation', 'synchronize', dataService.mutation.synchronize),
         },
     }
 }

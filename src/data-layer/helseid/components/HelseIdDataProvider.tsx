@@ -2,12 +2,14 @@
 
 import React, { PropsWithChildren, ReactElement } from 'react'
 
+import { Behandler } from '@data-layer/resources'
+
 import { DataProvider } from '../../data-fetcher/data-provider'
-import { BehandlerInfo, DataService } from '../../data-fetcher/data-service'
+import { DataService } from '../../data-fetcher/data-service'
 import { createHelseIdDataService } from '../helseid-data/helseid-data-service'
 
 type Props = {
-    behandler: BehandlerInfo
+    behandler: Behandler
 }
 
 function HelseIdDataProvider({ behandler, children }: PropsWithChildren<Props>): ReactElement {

@@ -1,9 +1,10 @@
-import { BehandlerInfo, DataService } from '@data-layer/data-fetcher/data-service'
+import { DataService } from '@data-layer/data-fetcher/data-service'
+import { Behandler } from '@data-layer/resources'
 
 import { fhirResources } from './fhir-data'
 import { nonFhirResources } from './non-fhir-data'
 
-export function createFhirDataService(behandler: BehandlerInfo): DataService {
+export function createFhirDataService(behandler: Behandler): DataService {
     return {
         mode: 'fhir',
         context: {
@@ -17,7 +18,7 @@ export function createFhirDataService(behandler: BehandlerInfo): DataService {
         },
         mutation: {
             sendSykmelding: (sykmelding) => nonFhirResources.sendSykmelding(sykmelding),
-            writeToEhr: (sykmeldingId) => nonFhirResources.writeToEhr(sykmeldingId, behandler.hpr),
+            synchronize: (sykmeldingId) => nonFhirResources.synchronizeSykmelding(sykmeldingId),
         },
     }
 }

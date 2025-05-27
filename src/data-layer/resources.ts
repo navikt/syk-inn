@@ -11,8 +11,8 @@ export const KonsultasjonSchema = z.object({
     ),
 })
 
-export type PasientInfo = z.infer<typeof PasientInfoSchema>
-export const PasientInfoSchema = z.object({
+export type Pasient = z.infer<typeof PasientSchema>
+export const PasientSchema = z.object({
     ident: z.string(),
     navn: z.string(),
 })
@@ -49,9 +49,22 @@ export const SykmeldingSchema = z.object({
             text: z.string(),
         }),
     }),
+    documentStatus: z.union([z.literal('pending'), z.literal('errored'), z.literal('complete')]),
 })
 
 export type CreatedSykmelding = z.infer<typeof CreatedSykmeldingSchema>
 export const CreatedSykmeldingSchema = z.object({
     sykmeldingId: z.string(),
+})
+
+export type Behandler = z.infer<typeof BehandlerSchema>
+export const BehandlerSchema = z.object({
+    hpr: z.string(),
+    navn: z.string(),
+})
+
+export type SynchronizationStatus = z.infer<typeof SynchronizationStatusSchema>
+export const SynchronizationStatusSchema = z.object({
+    nav: z.literal('ok'),
+    documentStatus: z.union([z.literal('pending'), z.literal('errored'), z.literal('complete')]),
 })

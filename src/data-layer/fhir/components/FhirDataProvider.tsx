@@ -3,12 +3,12 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
 
 import { createFhirDataService } from '@data-layer/fhir/fhir-data-service'
+import { Behandler } from '@data-layer/resources'
 
-import { BehandlerInfo } from '../../data-fetcher/data-service'
 import { DataProvider } from '../../data-fetcher/data-provider'
 
 type Props = {
-    behandler: BehandlerInfo
+    behandler: Behandler
 }
 
 function FhirDataProvider({ behandler, children }: PropsWithChildren<Props>): ReactElement {

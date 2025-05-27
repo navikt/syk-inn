@@ -25,15 +25,12 @@ export const FhirDocumentReferenceSchema = z.object({
         ),
     }),
     meta: z.object({
-        versionId: z.string(),
+        versionId: z.string().optional(),
         lastUpdated: z.string(),
     }),
+    description: z.string().optional(),
     subject: z.object({ reference: z.string() }),
-    author: z.array(
-        z.object({
-            reference: z.string(),
-        }),
-    ),
+    author: z.array(z.object({ reference: z.string() })),
     content: z.array(
         z.object({
             attachment: z.object({

@@ -1,6 +1,13 @@
-import { FhirDocumentReferenceBase } from '@navikt/fhir-zod'
 import { SubmitSykmeldingFormValues } from '@services/syk-inn-api/SykInnApiSchema'
-import { CreatedSykmelding, Konsultasjon, PasientInfo, PersonQueryInfo, Sykmelding } from '@data-layer/resources'
+import {
+    Behandler,
+    CreatedSykmelding,
+    Konsultasjon,
+    Pasient,
+    PersonQueryInfo,
+    Sykmelding,
+    SynchronizationStatus,
+} from '@data-layer/resources'
 
 export type NotAvailable = typeof NotAvailable
 export const NotAvailable = {
@@ -23,8 +30,8 @@ export type DataService = {
      * Contextually available data will be fetched without any arguments, and is based on the current session.
      */
     context: {
-        behandler: BehandlerInfo
-        pasient: (() => Promise<PasientInfo>) | NotAvailable
+        behandler: Behandler
+        pasient: (() => Promise<Pasient>) | NotAvailable
         konsultasjon: (() => Promise<Konsultasjon>) | NotAvailable
     }
     /**
@@ -36,19 +43,8 @@ export type DataService = {
     }
     mutation: {
         sendSykmelding: (sykmelding: SubmitSykmeldingFormValues) => Promise<CreatedSykmelding>
-        writeToEhr: (sykmeldingId: string) => Promise<WriteToEhrResult>
+        synchronize: (sykmeldingId: string) => Promise<SynchronizationStatus>
     }
-}
-
-export type BehandlerInfo = {
-    navn: string
-    hpr: string
-}
-
-export type WriteToEhrResult = {
-    outcome: 'NEWLY_CREATED' | 'ALREADY_EXISTS'
-    // TODO: Don't bleed zod types into data service
-    documentReference: FhirDocumentReferenceBase
 }
 
 /**

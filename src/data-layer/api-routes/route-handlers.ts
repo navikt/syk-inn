@@ -1,6 +1,13 @@
 import { z } from 'zod'
 
-import { CreatedSykmelding, Konsultasjon, PasientInfo, PersonQueryInfo, Sykmelding } from '@data-layer/resources'
+import {
+    CreatedSykmelding,
+    Konsultasjon,
+    Pasient,
+    PersonQueryInfo,
+    Sykmelding,
+    SynchronizationStatus,
+} from '@data-layer/resources'
 import { SubmitSykmeldingFormValues, SubmitSykmeldingFormValuesSchema } from '@services/syk-inn-api/SykInnApiSchema'
 
 export type AuthError = {
@@ -47,7 +54,7 @@ export function konsultasjonRoute(handler: () => Promise<Konsultasjon | AuthErro
 /**
  * Generic route handler for fetching pasient information. This can be used in both FHIR and standalone contexts.
  */
-export function pasientRoute(handler: () => Promise<PasientInfo | AuthError | ParsingError>) {
+export function pasientRoute(handler: () => Promise<Pasient | AuthError | ParsingError>) {
     return async (): Promise<Response> => {
         const pasientInfo = await handler()
 
@@ -65,7 +72,7 @@ export function pasientRoute(handler: () => Promise<PasientInfo | AuthError | Pa
             }
         }
 
-        return Response.json(pasientInfo satisfies PasientInfo, { status: 200 })
+        return Response.json(pasientInfo satisfies Pasient, { status: 200 })
     }
 }
 
@@ -154,5 +161,33 @@ export function submitSykmeldingRoute(
         }
 
         return Response.json(result satisfies CreatedSykmelding, { status: 201 })
+    }
+}
+
+export function synchronizeSykmeldingRoute(
+    handler: (
+        sykmeldingId: string,
+    ) => Promise<SynchronizationStatus | AuthError | ParsingError | MissingParams | ApiError>,
+) {
+    return async (_: Request, { params }: { params: Promise<{ sykmeldingId: string }> }): Promise<Response> => {
+        const sykmeldingId = (await params).sykmeldingId
+        const sykmelding = await handler(sykmeldingId)
+
+        if ('error' in sykmelding) {
+            switch (sykmelding.error) {
+                case 'MISSING_PARAMS':
+                    return Response.json({ message: 'Missing required parameters' }, { status: 400 })
+                case 'AUTH_ERROR':
+                    return Response.json({ message: 'Not allowed' }, { status: 401 })
+                case 'PARSING_ERROR':
+                    return Response.json({ message: 'Failed to synchronize sykmelding' }, { status: 500 })
+                case 'API_ERROR':
+                default: {
+                    return Response.json({ message: 'Internal server error' }, { status: 500 })
+                }
+            }
+        }
+
+        return Response.json(sykmelding satisfies SynchronizationStatus, { status: 200 })
     }
 }

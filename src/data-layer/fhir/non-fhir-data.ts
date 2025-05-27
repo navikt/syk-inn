@@ -2,9 +2,7 @@ import { logger } from '@navikt/next-logger'
 
 import { pathWithBasePath } from '@utils/url'
 import { NySykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
-import { PersonQueryInfoSchema, SykmeldingSchema } from '@data-layer/resources'
-
-import { WriteToEhrResult } from '../data-fetcher/data-service'
+import { PersonQueryInfoSchema, SykmeldingSchema, SynchronizationStatusSchema } from '@data-layer/resources'
 
 /**
  * These are resources that are not FHIR resources, but are available in the browser runtime and proxied
@@ -26,10 +24,7 @@ export const nonFhirResources = {
             throw parsed.error
         }
 
-        return {
-            navn: parsed.data.navn,
-            ident: parsed.data.ident,
-        }
+        return parsed.data
     },
     getSykmelding: async (id: string) => {
         const result = await getSecuredResource(`/sykmelding/${id}`, {
@@ -58,17 +53,18 @@ export const nonFhirResources = {
 
         return parsed.data
     },
-    writeToEhr: async (sykmeldingId: string, hpr: string): Promise<WriteToEhrResult> => {
-        const result = await getSecuredResource(`/sykmelding/write-to-ehr`, {
+    synchronizeSykmelding: async (id: string) => {
+        const result = await getSecuredResource(`/sykmelding/${id}/synchronize`, {
             method: 'POST',
-            headers: {
-                sykmeldingId: sykmeldingId, //TODO move to body
-                HPR: hpr,
-            },
         })
 
-        // TODO: Better error handling
-        return result as WriteToEhrResult // todo actually illegal
+        const parsed = SynchronizationStatusSchema.safeParse(result)
+        if (!parsed.success) {
+            logger.error('Failed to parse sykmelding', parsed.error)
+            throw parsed.error
+        }
+
+        return parsed.data
     },
 }
 

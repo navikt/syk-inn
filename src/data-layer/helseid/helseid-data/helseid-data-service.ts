@@ -1,8 +1,9 @@
 import { raise } from '@utils/ts'
+import { Behandler } from '@data-layer/resources'
 
-import { BehandlerInfo, DataService, NotAvailable } from '../../data-fetcher/data-service'
+import { DataService, NotAvailable } from '../../data-fetcher/data-service'
 
-export function createHelseIdDataService(behandler: BehandlerInfo): DataService {
+export function createHelseIdDataService(behandler: Behandler): DataService {
     return {
         mode: 'standalone',
         context: {
@@ -20,7 +21,7 @@ export function createHelseIdDataService(behandler: BehandlerInfo): DataService 
             sendSykmelding: async () => {
                 raise('Standalone is not supported in Pilot')
             },
-            writeToEhr: async () => {
+            synchronize: async () => {
                 raise('Standalone is not supported in Pilot')
             },
         },
