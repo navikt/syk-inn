@@ -1,8 +1,14 @@
-### Pasient
+# Pasient
 
-Vårt behov: **Lese**
+Navs behov: **Lese**
 
-> **JSON-struktur for _Patient:_**
+_Relevante referanser:_
+
+- [no-basis-Patient](https://simplifier.net/HL7Norwayno-basis/NoBasisPatient/) (simplifier)
+- [no-basis-HumanName](https://simplifier.net/hl7norwayno-basis/nobasishumanname) (simplifier)
+- [Patient](https://hl7.org/fhir/R4/patient.html) (HL7)
+
+## Eksempel JSON-struktur for _no-basis-Patient:_
 
 ```json
 {
@@ -30,9 +36,7 @@ Vårt behov: **Lese**
 }
 ```
 
-> **Begrunnelse**
->
-> > Vi trenger fødselsnummer eller d-nummer for å kunne identifisere pasienten. Navnet er mest for brukervennlighet og
-> > for å kunne bekrefte at vi har riktig pasient.
-> > **Notater** >> _Extension.Citizenship_ - Kreves av no-basis-Patient, men ikke av Nav. Hvis vi sløyfer dette kan det
-> > være at EPJ også gjør det som da bryter med standarden. Risiko?
+## Begrunnelse
+
+Vi trenger fødselsnummer eller d-nummer for å kunne identifisere pasienten. Navnet er mest for brukervennlighet og
+for behandler å bekrefte at det er riktig pasient.
