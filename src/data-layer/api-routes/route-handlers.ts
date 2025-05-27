@@ -106,6 +106,9 @@ export function sykmeldingByIdRoute(
 ) {
     return async (request: Request, { params }: { params: Promise<{ sykmeldingId: string }> }): Promise<Response> => {
         const sykmeldingId = (await params).sykmeldingId
+        if (!sykmeldingId) {
+            return Response.json({ message: 'Missing required parameters' }, { status: 400 })
+        }
 
         const sykmelding = await handler(sykmeldingId)
 
@@ -171,6 +174,10 @@ export function synchronizeSykmeldingRoute(
 ) {
     return async (_: Request, { params }: { params: Promise<{ sykmeldingId: string }> }): Promise<Response> => {
         const sykmeldingId = (await params).sykmeldingId
+        if (!sykmeldingId) {
+            return Response.json({ message: 'Missing required parameters' }, { status: 400 })
+        }
+
         const sykmelding = await handler(sykmeldingId)
 
         if ('error' in sykmelding) {

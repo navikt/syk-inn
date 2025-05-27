@@ -19,10 +19,7 @@ export const POST = synchronizeSykmeldingRoute(async (sykmeldingId) => {
     if ('error' in existingDocument && existingDocument.error === 'REQUEST_FAILED_RESOURCE_NOT_FOUND') {
         const createResult = await createDocumentReference(client, sykmeldingId)
         if ('error' in createResult) {
-            return {
-                nav: 'ok',
-                documentStatus: 'errored',
-            }
+            return { error: 'API_ERROR' }
         }
 
         return {
@@ -31,8 +28,5 @@ export const POST = synchronizeSykmeldingRoute(async (sykmeldingId) => {
         }
     }
 
-    return {
-        nav: 'ok',
-        documentStatus: 'errored',
-    }
+    return { error: 'API_ERROR' }
 })

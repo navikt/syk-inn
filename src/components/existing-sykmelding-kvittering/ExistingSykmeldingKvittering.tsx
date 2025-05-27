@@ -34,7 +34,7 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitte
     const { isLoading, data, error, refetch } = useQuery({
         queryKey: ['sykmelding', sykmeldingId],
         queryFn: async () => dataService.query.sykmelding(sykmeldingId),
-        refetchInterval: (query) => (query.state.data?.documentStatus === 'pending' ? 1000 : false),
+        refetchInterval: (query) => (query.state.data?.documentStatus === 'pending' ? 5000 : false),
     })
 
     return (
