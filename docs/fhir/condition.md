@@ -1,44 +1,27 @@
-### Condition
+# Condition
 
 Vårt behov: **Lese**
 
-> **JSON-struktur for _ICD-10 Condition:_**
+_Relevante referanser:_
+
+- [Condition](https://www.hl7.org/fhir/R4/condition.html) (HL7)
+- [ICPC-2](https://www.helsedirektoratet.no/digitalisering-og-e-helse/helsefaglige-kodeverk/icpc) (Helsedirektoratet)
+- [ICD-10](https://www.helsedirektoratet.no/digitalisering-og-e-helse/helsefaglige-kodeverk/icd) (Helsedirektoratet)
+
+## Eksempel JSON-struktur for _ICPC-2 Condition_
 
 ```json
 {
     "resourceType": "Condition",
     "id": "unik Condition ident",
     "subject": {
-        "type": "Patient",
-        "reference": "Pasienten Condition gjelder for"
-    },
-    "code": {
-        "coding": [
-            {
-                "system": "urn:oid:2.16.578.1.12.4.1.1.7110",
-                "display": "Diagnose",
-                "code": "ICD-10 diagnosekode"
-            }
-        ]
-    }
-}
-```
-
-> **JSON-struktur for _ICPC-2 Condition:_**
-
-```json
-{
-    "resourceType": "Condition",
-    "id": "unik Condition ident",
-    "subject": {
-        "type": "Patient",
-        "reference": "Pasienten Condition gjelder for"
+        "reference": "Patient/<Pasienten Condition gjelder for>"
     },
     "code": {
         "coding": [
             {
                 "system": "urn:oid:2.16.578.1.12.4.1.1.7170",
-                "display": "Diagnose",
+                "display": "Diagnosetekst",
                 "code": "ICPC-2 diagnosekode"
             }
         ]
@@ -46,8 +29,31 @@ Vårt behov: **Lese**
 }
 ```
 
-> **Begrunnelse**
->
-> > _Code.System_ - må være av type urn:oid:2.16.578.1.12.4.1.1.7170 eller urn:oid:2.16.578.1.12.4.1.1.7110
->
-> > _Code.Code_ - må være en godkjent _ICD-10_ eller _ICPC-2 kode_
+## Eksempel JSON-struktur for _ICD-10 Condition_
+
+```json
+{
+    "resourceType": "Condition",
+    "id": "unik Condition ident",
+    "subject": {
+        "reference": "Patient/<Pasienten Condition gjelder for>"
+    },
+    "code": {
+        "coding": [
+            {
+                "system": "urn:oid:2.16.578.1.12.4.1.1.7110",
+                "display": "Diagnosetekst",
+                "code": "ICD-10 diagnosekode"
+            }
+        ]
+    }
+}
+```
+
+## Begrunnelse
+
+_coding.system_ - må være av type urn:oid:2.16.578.1.12.4.1.1.7170 eller urn:oid:2.16.578.1.12.4.1.1.7110
+
+_coding.code_ - må være en godkjent _ICD-10_ eller _ICPC-2 kode_
+
+_coding.display_ - tekst som beskriver diagnosen, brukes til visning for helsepersonell
