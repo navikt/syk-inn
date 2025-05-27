@@ -1,7 +1,6 @@
 import { logger } from '@navikt/next-logger'
 
 import { pathWithBasePath } from '@utils/url'
-import { fhirResources } from '@data-layer/fhir/fhir-data'
 import { ExistingSykmeldingSchema, NySykmeldingSchema } from '@services/syk-inn-api/SykInnApiSchema'
 import { PersonQueryInfoSchema } from '@data-layer/resources'
 
@@ -15,18 +14,6 @@ import { WriteToEhrResult } from '../data-fetcher/data-service'
  * session, and validates the session before returning the resource.
  */
 export const nonFhirResources = {
-    getTidligereSykmeldinger: async () => {
-        const fhirPatient = await fhirResources.getFhirPatient()
-        const result = await getSecuredResource('/sykmelding', {
-            method: 'GET',
-            headers: {
-                Ident: fhirPatient.ident,
-            },
-        })
-
-        // TODO: Better error handling
-        return ExistingSykmeldingSchema.array().parse(result)
-    },
     getPasient: async (ident: string) => {
         const result = await getSecuredResource(`/person`, {
             method: 'GET',

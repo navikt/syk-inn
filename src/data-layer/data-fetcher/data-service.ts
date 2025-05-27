@@ -25,9 +25,7 @@ export type DataService = {
     context: {
         behandler: BehandlerInfo
         pasient: (() => Promise<PasientInfo>) | NotAvailable
-        arbeidsgivere: (() => Promise<ArbeidsgiverInfo[]>) | NotAvailable
         konsultasjon: (() => Promise<Konsultasjon>) | NotAvailable
-        tidligereSykmeldinger: (() => Promise<ExistingSykmelding[]>) | NotAvailable
     }
     /**
      * Query data can be anything that requires an argument to fetch, such as a specific patient.
@@ -40,11 +38,6 @@ export type DataService = {
         sendSykmelding: (sykmelding: SubmitSykmeldingFormValues) => Promise<NySykmelding>
         writeToEhr: (sykmeldingId: string) => Promise<WriteToEhrResult>
     }
-}
-
-export type ArbeidsgiverInfo = {
-    navn: string
-    organisasjonsnummer: string
 }
 
 export type BehandlerInfo = {

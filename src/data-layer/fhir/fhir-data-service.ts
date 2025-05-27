@@ -1,4 +1,4 @@
-import { BehandlerInfo, DataService, NotAvailable } from '@data-layer/data-fetcher/data-service'
+import { BehandlerInfo, DataService } from '@data-layer/data-fetcher/data-service'
 
 import { fhirResources } from './fhir-data'
 import { nonFhirResources } from './non-fhir-data'
@@ -10,8 +10,6 @@ export function createFhirDataService(behandler: BehandlerInfo): DataService {
             behandler,
             pasient: () => fhirResources.getFhirPatient(),
             konsultasjon: () => fhirResources.getFhirKonsultasjon(),
-            arbeidsgivere: NotAvailable,
-            tidligereSykmeldinger: () => nonFhirResources.getTidligereSykmeldinger(),
         },
         query: {
             pasient: (ident) => nonFhirResources.getPasient(ident),

@@ -3,7 +3,7 @@
 import { logger } from '@navikt/next-logger'
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs'
 
-import { isResourceAvailable, DataService } from '../data-layer/data-fetcher/data-service'
+import { isResourceAvailable, DataService } from '@data-layer/data-fetcher/data-service'
 
 export function withFailInterceptor(dataService: DataService): DataService {
     return {
@@ -15,13 +15,7 @@ export function withFailInterceptor(dataService: DataService): DataService {
             konsultasjon: isResourceAvailable(dataService.context.konsultasjon)
                 ? failIfOverride('context', 'konsultasjon', dataService.context.konsultasjon)
                 : dataService.context.konsultasjon,
-            arbeidsgivere: isResourceAvailable(dataService.context.arbeidsgivere)
-                ? failIfOverride('context', 'arbeidsgivere', dataService.context.arbeidsgivere)
-                : dataService.context.arbeidsgivere,
             behandler: dataService.context.behandler,
-            tidligereSykmeldinger: isResourceAvailable(dataService.context.tidligereSykmeldinger)
-                ? failIfOverride('context', 'tidligereSykmeldinger', dataService.context.tidligereSykmeldinger)
-                : dataService.context.tidligereSykmeldinger,
         },
         query: {
             pasient: isResourceAvailable(dataService.query.pasient)

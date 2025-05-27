@@ -3,7 +3,7 @@ import { BodyShort, Button, Checkbox, CheckboxGroup, Heading } from '@navikt/ds-
 import { XMarkIcon } from '@navikt/aksel-icons'
 import { useQueryClient } from '@tanstack/react-query'
 
-import { DataService } from '../data-layer/data-fetcher/data-service'
+import { DataService } from '@data-layer/data-fetcher/data-service'
 
 import { DevToolItem } from './InternalDevToolItem'
 import { useAPIOverride } from './useAPIOverride'
@@ -90,19 +90,9 @@ function ToggleAPIFailures(): ReactElement {
                 Konsultasjon
             </Checkbox>
         ),
-        arbeidsgivere: (
-            <Checkbox key="arbeidsgivere" value="arbeidsgivere">
-                Arbeidsgivere
-            </Checkbox>
-        ),
         behandler: (
             <Checkbox key="bruker" value="bruker">
                 Bruker
-            </Checkbox>
-        ),
-        tidligereSykmeldinger: (
-            <Checkbox key="tidligereSykmeldinger" value="tidligereSykmeldinger">
-                Tidligere sykmeldinger
             </Checkbox>
         ),
     }

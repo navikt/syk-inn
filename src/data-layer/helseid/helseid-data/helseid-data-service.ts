@@ -7,10 +7,8 @@ export function createHelseIdDataService(behandler: BehandlerInfo): DataService 
         mode: 'standalone',
         context: {
             pasient: NotAvailable,
-            arbeidsgivere: NotAvailable,
             konsultasjon: NotAvailable,
             behandler: behandler,
-            tidligereSykmeldinger: NotAvailable,
         },
         query: {
             pasient: NotAvailable,
