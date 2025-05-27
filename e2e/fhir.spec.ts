@@ -29,7 +29,6 @@ test('can submit 100% sykmelding', async ({ page }) => {
 
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
-        behandlerHpr: '9144889',
         values: {
             pasient: '21037712323',
             diagnoser: {
@@ -59,7 +58,6 @@ test('can submit 100% sykmelding and use week picker', async ({ page }) => {
 
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
-        behandlerHpr: '9144889',
         values: {
             pasient: '21037712323',
             diagnoser: {
@@ -93,7 +91,6 @@ test('shall be able to edit diagnose', async ({ page }) => {
 
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
-        behandlerHpr: '9144889',
         values: {
             pasient: '21037712323',
             diagnoser: { hoved: { code: 'D290', system: 'ICD10' } },
@@ -124,7 +121,6 @@ test('can submit gradert sykmelding', async ({ page }) => {
 
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
-        behandlerHpr: '9144889',
         values: {
             pasient: '21037712323',
             diagnoser: {
@@ -168,7 +164,6 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
 
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
-        behandlerHpr: '9144889',
         values: {
             pasient: '21037712323',
             diagnoser: {

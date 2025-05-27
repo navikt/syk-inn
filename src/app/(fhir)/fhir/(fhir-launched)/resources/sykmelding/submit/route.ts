@@ -1,75 +1,61 @@
-import { z } from 'zod'
 import { logger } from '@navikt/next-logger'
 
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { wait } from '@utils/wait'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
-import { NySykmelding, SubmitSykmeldingFormValuesSchema } from '@services/syk-inn-api/SykInnApiSchema'
 import { raise } from '@utils/ts'
 import { diagnoseSystemToOid } from '@utils/oid'
+import { getReadyClient } from '@data-layer/fhir/smart-client'
+import { submitSykmeldingRoute } from '@data-layer/api-routes/route-handlers'
+import { getHpr } from '@data-layer/fhir/mappers/practitioner'
+import { CreatedSykmelding } from '@data-layer/resources'
 
-import { getReadyClient } from '../../../../../../../data-layer/fhir/smart-client'
-
-const SubmitSykmeldingPayloadSchema = z.object({
-    values: SubmitSykmeldingFormValuesSchema,
-    // TODO: Should be retrieved from context/session?
-    behandlerHpr: z.string(),
-})
-
-type SubmitResult = NySykmelding | { errors: { message: string } }[]
-
-export async function POST(request: Request): Promise<Response> {
+export const POST = submitSykmeldingRoute(async (payload) => {
     const client = await getReadyClient({ validate: true })
     if ('error' in client) {
-        if (client.error === 'INVALID_TOKEN') {
-            logger.error('Session expired or invalid token')
-            return new Response('Unauthorized', { status: 401 })
-        }
-
-        logger.error(`Failed to instantiate SmartClient(ReadyClient), reason: ${client.error}`)
-        return new Response('Internal server error', { status: 500 })
+        return { error: 'AUTH_ERROR' }
     }
 
-    const verifiedPayload = SubmitSykmeldingPayloadSchema.safeParse(await request.json())
-    if (!verifiedPayload.success) {
-        logger.error(`Invalid payload: ${JSON.stringify(verifiedPayload.error, null, 2)}`)
+    const practitioner = await client.request(`/${client.fhirUser}`)
+    if ('error' in practitioner) {
+        return { error: 'PARSING_ERROR' }
+    }
 
-        return Response.json([{ errors: { message: 'Invalid payload' } }] satisfies SubmitResult)
+    const hpr = getHpr(practitioner.identifier)
+    if (hpr == null) {
+        logger.error('Missing HPR identifier in practitioner resource')
+        return { error: 'PARSING_ERROR' }
     }
 
     if (isLocalOrDemo || isE2E) {
-        logger.warn(
-            `Is in demo, local or e2e, submitting send sykmelding values ${JSON.stringify(verifiedPayload.data, null, 2)}`,
-        )
+        logger.warn(`Is in demo, local or e2e, submitting send sykmelding values ${JSON.stringify(payload, null, 2)}`)
+
         return await handleMockedRoute()
     }
 
     const result = await sykInnApiService.createNewSykmelding({
-        pasientFnr: verifiedPayload.data.values.pasient ?? raise('SecureFhir did not provide pasient'),
-        sykmelderHpr: verifiedPayload.data.behandlerHpr,
+        pasientFnr: payload.pasient ?? raise('SecureFhir did not provide pasient'),
+        sykmelderHpr: hpr,
         sykmelding: {
             hoveddiagnose: {
-                system: diagnoseSystemToOid(verifiedPayload.data.values.diagnoser.hoved.system),
-                code: verifiedPayload.data.values.diagnoser.hoved.code,
+                system: diagnoseSystemToOid(payload.diagnoser.hoved.system),
+                code: payload.diagnoser.hoved.code,
             },
-            aktivitet: verifiedPayload.data.values.aktivitet,
+            aktivitet: payload.aktivitet,
         },
         legekontorOrgnr: '999944614', // TODO: Should be retrieved from context/session
     })
 
     if ('errorType' in result) {
-        return Response.json(
-            [{ errors: { message: `Sykmelding creation failed: ${result.errorType}` } }] satisfies SubmitResult,
-            { status: 400 },
-        )
+        return { error: 'API_ERROR' }
     }
 
-    return Response.json({ sykmeldingId: result.sykmeldingId } satisfies SubmitResult)
-}
+    return { sykmeldingId: result.sykmeldingId }
+})
 
-async function handleMockedRoute(): Promise<Response> {
+async function handleMockedRoute(): Promise<CreatedSykmelding> {
     // Fake dev loading
     await wait(1000, 500)
 
-    return Response.json({ sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d' } satisfies SubmitResult)
+    return { sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d' }
 }

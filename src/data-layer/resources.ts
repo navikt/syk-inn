@@ -50,3 +50,8 @@ export const SykmeldingSchema = z.object({
         }),
     }),
 })
+
+export type CreatedSykmelding = z.infer<typeof CreatedSykmeldingSchema>
+export const CreatedSykmeldingSchema = z.object({
+    sykmeldingId: z.string(),
+})

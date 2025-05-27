@@ -1,4 +1,7 @@
-import { Konsultasjon, PasientInfo, PersonQueryInfo, Sykmelding } from '@data-layer/resources'
+import { z } from 'zod'
+
+import { CreatedSykmelding, Konsultasjon, PasientInfo, PersonQueryInfo, Sykmelding } from '@data-layer/resources'
+import { SubmitSykmeldingFormValues, SubmitSykmeldingFormValuesSchema } from '@services/syk-inn-api/SykInnApiSchema'
 
 export type AuthError = {
     error: 'AUTH_ERROR'
@@ -115,5 +118,41 @@ export function sykmeldingByIdRoute(
         }
 
         return Response.json(sykmelding satisfies Sykmelding, { status: 200 })
+    }
+}
+
+const SubmitSykmeldingPayloadSchema = z.object({
+    values: SubmitSykmeldingFormValuesSchema,
+})
+
+export function submitSykmeldingRoute(
+    handler: (
+        payload: SubmitSykmeldingFormValues,
+    ) => Promise<CreatedSykmelding | AuthError | ParsingError | MissingParams | ApiError>,
+) {
+    return async (request: Request): Promise<Response> => {
+        const parsedPayload = SubmitSykmeldingPayloadSchema.safeParse(await request.json())
+        if (!parsedPayload.success) {
+            return Response.json({ message: 'Invalid body', error: parsedPayload.error.message }, { status: 400 })
+        }
+
+        const result = await handler(parsedPayload.data.values)
+
+        if ('error' in result) {
+            switch (result.error) {
+                case 'MISSING_PARAMS':
+                    return Response.json({ message: 'Missing required parameters' }, { status: 400 })
+                case 'AUTH_ERROR':
+                    return Response.json({ message: 'Not allowed' }, { status: 401 })
+                case 'PARSING_ERROR':
+                    return Response.json({ message: 'Failed to submit sykmelding' }, { status: 500 })
+                case 'API_ERROR':
+                default: {
+                    return Response.json({ message: 'Internal server error' }, { status: 500 })
+                }
+            }
+        }
+
+        return Response.json(result satisfies CreatedSykmelding, { status: 201 })
     }
 }

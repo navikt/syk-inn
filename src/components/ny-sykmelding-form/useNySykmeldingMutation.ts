@@ -5,17 +5,17 @@ import { useRouter } from 'next/navigation'
 
 import { raise } from '@utils/ts'
 import { pathWithBasePath } from '@utils/url'
+import { useDataService } from '@data-layer/data-fetcher/data-provider'
+import { CreatedSykmelding } from '@data-layer/resources'
 
-import { useDataService } from '../../data-layer/data-fetcher/data-provider'
 import { useAppSelector } from '../../providers/redux/hooks'
-import { NySykmelding } from '../../data-layer/data-fetcher/data-service'
 import { withSpanAsync } from '../../otel/otel'
 
-export function useNySykmeldingMutation(): UseMutationResult<NySykmelding, Error, void, unknown> {
+export function useNySykmeldingMutation(): UseMutationResult<CreatedSykmelding, Error, void, unknown> {
     const formState = useAppSelector((state) => state.nySykmeldingMultistep)
     const router = useRouter()
     const dataService = useDataService()
-    const opprettSykmelding = useMutation<NySykmelding>({
+    const opprettSykmelding = useMutation<CreatedSykmelding>({
         mutationKey: ['opprett-sykmelding'],
         mutationFn: withSpanAsync('submitSykmelding', async () => {
             logger.info('(Client) Submitting values,', formState)

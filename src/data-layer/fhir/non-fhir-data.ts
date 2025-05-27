@@ -44,14 +44,10 @@ export const nonFhirResources = {
 
         return parsed.data
     },
-    sendSykmelding: async (values: unknown, hpr: string) => {
+    sendSykmelding: async (values: unknown) => {
         const result = await getSecuredResource(`/sykmelding/submit`, {
             method: 'POST',
-            body: JSON.stringify({
-                values,
-                // TODO: Use session probably
-                behandlerHpr: hpr,
-            }),
+            body: JSON.stringify({ values }),
         })
 
         const parsed = NySykmeldingSchema.safeParse(result)

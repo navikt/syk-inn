@@ -1,6 +1,6 @@
 import { FhirDocumentReferenceBase } from '@navikt/fhir-zod'
 import { SubmitSykmeldingFormValues } from '@services/syk-inn-api/SykInnApiSchema'
-import { Konsultasjon, PasientInfo, PersonQueryInfo, Sykmelding } from '@data-layer/resources'
+import { CreatedSykmelding, Konsultasjon, PasientInfo, PersonQueryInfo, Sykmelding } from '@data-layer/resources'
 
 export type NotAvailable = typeof NotAvailable
 export const NotAvailable = {
@@ -35,7 +35,7 @@ export type DataService = {
         sykmelding: (id: string) => Promise<Sykmelding>
     }
     mutation: {
-        sendSykmelding: (sykmelding: SubmitSykmeldingFormValues) => Promise<NySykmelding>
+        sendSykmelding: (sykmelding: SubmitSykmeldingFormValues) => Promise<CreatedSykmelding>
         writeToEhr: (sykmeldingId: string) => Promise<WriteToEhrResult>
     }
 }
@@ -43,10 +43,6 @@ export type DataService = {
 export type BehandlerInfo = {
     navn: string
     hpr: string
-}
-
-export type NySykmelding = {
-    sykmeldingId: string
 }
 
 export type WriteToEhrResult = {

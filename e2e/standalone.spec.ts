@@ -17,7 +17,6 @@ test.fixme('can submit 100% sykmelding without prefilled pasient', async ({ page
 
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
-        behandlerHpr: '565501872',
         values: {
             pasient: '21037712323',
             diagnoser: {
