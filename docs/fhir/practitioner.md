@@ -12,6 +12,7 @@ _Relevante referanser:_
 ```json
 {
     "resourceType": "Practitioner",
+    "id": "unik Practitioner id",
     "meta": {
         "profile": ["http://hl7.no/fhir/StructureDefinition/no-basis-Practitioner"]
     },

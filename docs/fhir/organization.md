@@ -1,8 +1,13 @@
-### Organization
+# Organization
 
-Vårt behov: **Lese**
+Navs behov: **Lese**
 
-> **Struktur for _Organization:_**
+_Relevante referanser:_
+
+- [no-basis-Organization](https://simplifier.net/hl7norwayno-basis/nobasisorganization) (simplifier)
+- [Organization](https://hl7.org/fhir/R4/organization.html) (HL7)
+
+## Eksempel på JSON-struktur for _no-basis-Organization_
 
 ```json
 {
@@ -17,16 +22,11 @@ Vårt behov: **Lese**
             "value": "org-nummer / ENH"
         },
         {
-            "system": "urn:oid:2.16.578.1.12.4.1.4.102",
-            "value": "RESH ID / RSH"
+            "system": "urn:oid:2.16.578.1.12.4.1.2",
+            "value": "HER-id"
         }
     ],
-    "name": "Navn på organisasjon",
     "telecom": [
-        {
-            "system": "email",
-            "value": "lege@epj.no"
-        },
         {
             "system": "phone",
             "value": "12345678"
@@ -35,6 +35,6 @@ Vårt behov: **Lese**
 }
 ```
 
-> **Begrunnelse**
->
-> > Vi trenger telecom fra organization dersom denne ikke er satt på Practitioner
+## Begrunnelse
+
+Nav trenger telecom fra organization for eventuell saksbehandling.
