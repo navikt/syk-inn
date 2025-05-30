@@ -1,5 +1,8 @@
 name: Build & Deploy
-on: push
+on:
+  push:
+    paths-ignore:
+      - docs/**
 
 env:
   APP: syk-inn
