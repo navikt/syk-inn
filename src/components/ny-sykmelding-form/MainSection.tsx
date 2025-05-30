@@ -3,6 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Button } from '@navikt/ds-react'
 import { ArrowRightIcon } from '@navikt/aksel-icons'
 import dynamic from 'next/dynamic'
+import { isNumber } from 'remeda'
 
 import { raise } from '@utils/ts'
 import ExpandableFormSection from '@components/form/expandable-form-section/ExpandableFormSection'
@@ -88,7 +89,7 @@ function useHandleFormSubmit() {
                 aktiviteter: values.perioder.map((periode) => ({
                     fom: periode.periode.fom,
                     tom: periode.periode.tom,
-                    grad: periode.aktivitet.grad,
+                    grad: isNumber(periode.aktivitet.grad) ? +periode.aktivitet.grad : null,
                     type: periode.aktivitet.type,
                 })),
                 tilbakedatering: values.tilbakedatering

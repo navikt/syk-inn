@@ -8,6 +8,12 @@ export function waitForHttp(url: string, method: string) {
     }
 }
 
+export async function waitForGraphQL(page: Page): Promise<Request> {
+    return await page.waitForRequest((req) => {
+        return req.url().includes('/graphql') && req.method() === 'POST'
+    })
+}
+
 export async function clickAndWait(
     click: Promise<void>,
     waiter: ReturnType<ReturnType<typeof waitForHttp>>,

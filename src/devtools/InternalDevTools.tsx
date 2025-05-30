@@ -1,12 +1,10 @@
 import React, { ReactElement, startTransition } from 'react'
 import { BodyShort, Button, Checkbox, CheckboxGroup, Heading } from '@navikt/ds-react'
 import { XMarkIcon } from '@navikt/aksel-icons'
-import { useQueryClient } from '@tanstack/react-query'
-
-import { DataService } from '@data-layer/data-fetcher/data-service'
+import { useApolloClient } from '@apollo/client'
 
 import { DevToolItem } from './InternalDevToolItem'
-import { useAPIOverride } from './useAPIOverride'
+//import { useAPIOverride } from './useAPIOverride'
 import { useFeatureToggleOverride } from './useFeatureToggleOverride'
 import { togglesChangedAction } from './InternalDevToolsAction'
 
@@ -76,9 +74,10 @@ function FeatureToggles(): ReactElement {
 }
 
 function ToggleAPIFailures(): ReactElement {
-    const queryClient = useQueryClient()
-    const { queryOverrides, setQueryOverrides, contextOverrides, setContextOverrides } = useAPIOverride()
+    const client = useApolloClient()
+    /*const { queryOverrides, setQueryOverrides, contextOverrides, setContextOverrides } = useAPIOverride()*/
 
+    /*
     const context: Record<keyof DataService['context'], ReactElement> = {
         pasient: (
             <Checkbox key="pasient" value="pasient">
@@ -109,6 +108,7 @@ function ToggleAPIFailures(): ReactElement {
             </Checkbox>
         ),
     }
+     */
 
     return (
         <DevToolItem
@@ -116,7 +116,7 @@ function ToggleAPIFailures(): ReactElement {
             description="Toggle specific APIs to fail for testing graceful degredation of components"
             className="flex flex-col gap-3"
         >
-            <CheckboxGroup
+            {/* <CheckboxGroup
                 legend="Context"
                 description="Contextual APIs are based on SMART context or standalone preloading"
                 value={contextOverrides}
@@ -141,13 +141,13 @@ function ToggleAPIFailures(): ReactElement {
                 }}
             >
                 {...Object.values(query)}
-            </CheckboxGroup>
+            </CheckboxGroup>*/}
             <div>
                 <Button
                     variant="secondary-neutral"
                     size="small"
                     onClick={() => {
-                        queryClient.resetQueries()
+                        client.resetStore()
                     }}
                 >
                     Reload all queries

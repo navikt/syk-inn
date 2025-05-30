@@ -1,10 +1,9 @@
 'use client'
 
 import React, { MutableRefObject, ReactElement, useCallback, useEffect, useRef, useState } from 'react'
-import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import { SandboxIcon, TenancyIcon } from '@navikt/aksel-icons'
 import { Button, Detail } from '@navikt/ds-react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useApolloClient } from '@apollo/client'
 
 import { cn } from '@utils/tw'
 
@@ -61,9 +60,6 @@ function DevTools(): ReactElement {
                     </div>
                 )}
             </div>
-            <dialog ref={refs.tanstackDialogRef} className="fixed bottom-0 left-0 w-full z-popover" open={tanstackOpen}>
-                {tanstackOpen && <ReactQueryDevtoolsPanel />}
-            </dialog>
             <dialog
                 ref={refs.internalDialogRef}
                 className="fixed left-auto bottom-0 top-0 right-0 h-full z-popover"
@@ -80,7 +76,7 @@ function useKeyboardShortcuts(
     toggleInternalDevTools: () => void,
     toggleTanstackDevTools: () => void,
 ): void {
-    const queryClient = useQueryClient()
+    const client = useApolloClient()
 
     useEffect(() => {
         const handleKeydown = (e: KeyboardEvent): void => {
@@ -99,7 +95,7 @@ function useKeyboardShortcuts(
             }
 
             if (e.altKey && e.key === 'r') {
-                queryClient.resetQueries()
+                client.resetStore()
             }
         }
         document.addEventListener('keydown', handleKeydown)
@@ -107,12 +103,11 @@ function useKeyboardShortcuts(
         return () => {
             document.removeEventListener('keydown', handleKeydown)
         }
-    }, [queryClient, closeAllDevTools, toggleInternalDevTools, toggleTanstackDevTools])
+    }, [client, closeAllDevTools, toggleInternalDevTools, toggleTanstackDevTools])
 }
 
 type UseDevToolsOverlayState = {
     refs: {
-        tanstackDialogRef: MutableRefObject<HTMLDialogElement | null>
         internalDialogRef: MutableRefObject<HTMLDialogElement | null>
     }
     tanstackOpen: boolean
@@ -163,7 +158,6 @@ function useDevToolsOverlayState(): UseDevToolsOverlayState {
 
     return {
         refs: {
-            tanstackDialogRef,
             internalDialogRef,
         },
         tanstackOpen,

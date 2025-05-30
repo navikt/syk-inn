@@ -1,0 +1,5 @@
+query PersonByIdent($ident: String) {
+    person(ident: $ident) {
+        ...Person
+    }
+}

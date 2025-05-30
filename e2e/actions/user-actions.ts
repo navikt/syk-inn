@@ -1,9 +1,10 @@
 import { expect, Locator, Page } from '@playwright/test'
 import { add } from 'date-fns'
+import { GraphQLRequest } from '@apollo/client'
 
 import { toReadableDate } from '@utils/date'
 
-import { clickAndWait, waitForHttp } from '../utils/request-utils'
+import { clickAndWait, waitForGraphQL } from '../utils/request-utils'
 import { inputDate } from '../utils/date-utils'
 
 export function initPreloadedPatient({ name, fnr }: { name: string; fnr: string }) {
@@ -164,12 +165,10 @@ export function verifySummaryPage(sections: { tilbakedatering?: { contact: strin
 
 export function submitSykmelding() {
     return async (page: Page): Promise<unknown> => {
-        const request = await clickAndWait(
-            page.getByRole('button', { name: 'Send inn' }).click(),
-            waitForHttp('/fhir/resources/sykmelding/submit', 'POST')(page),
-        )
+        const request = await clickAndWait(page.getByRole('button', { name: 'Send inn' }).click(), waitForGraphQL(page))
+        const payload: GraphQLRequest = request.postDataJSON()
 
-        return request.postDataJSON()
+        return payload.variables
     }
 }
 

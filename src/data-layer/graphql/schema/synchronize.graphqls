@@ -1,0 +1,4 @@
+type SynchronizationStatus {
+    navStatus: DocumentStatus!
+    documentStatus: DocumentStatus!
+}

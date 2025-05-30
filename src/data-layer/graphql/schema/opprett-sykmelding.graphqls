@@ -1,0 +1,21 @@
+type OpprettetSykmelding {
+    sykmeldingId: String!
+}
+
+input OpprettSykmelding {
+    pasientIdent: String!
+    hoveddiagnose: InputDiagnose!
+    perioder: [InputPeriode!]!
+}
+
+input InputPeriode {
+    type: String!
+    fom: String!
+    tom: String!
+    grad: Int
+}
+
+input InputDiagnose {
+    code: String!
+    system: DiagnoseSystem!
+}

@@ -1,0 +1,33 @@
+query SykmeldingById($id: String!) {
+    sykmelding(id: $id) {
+        ...Sykmelding
+    }
+}
+
+mutation OpprettSykmelding($values: OpprettSykmelding!) {
+    opprettSykmelding(nySykmelding: $values) {
+        sykmeldingId
+    }
+}
+
+fragment Sykmelding on Sykmelding {
+    sykmeldingId
+    pasient {
+        navn
+        ident
+    }
+    diagnose {
+        hoved {
+            code
+            system
+            text
+        }
+    }
+    aktivitet {
+        type
+        fom
+        tom
+        grad
+    }
+    documentStatus
+}

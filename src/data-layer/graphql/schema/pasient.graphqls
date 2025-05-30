@@ -1,0 +1,4 @@
+type Pasient implements Person {
+    ident: String!
+    navn: String!
+}

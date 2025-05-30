@@ -1,11 +1,8 @@
-import { logger } from '@navikt/next-logger'
-
-import { raise } from '@utils/ts'
 import { FhirPatient, Name } from '@navikt/fhir-zod'
 
-import { getHpr, userUrnToOidType } from './practitioner'
+import { userUrnToOidType } from './practitioner'
 
-export function getName(name: Name): string {
+export function getNameFromFhir(name: Name): string {
     return `${name[0].given[0]} ${name[0].family}`
 }
 
@@ -39,26 +36,4 @@ export function getValidPatientIdent(patient: FhirPatient): string | null {
     }
 
     return null
-}
-
-export function getFastlege(patient: FhirPatient): {
-    hpr: string
-    navn: string
-} | null {
-    if (patient.generalPractitioner == null) {
-        return null
-    }
-
-    const legeMedHpr = patient.generalPractitioner.find((it) => getHpr(it.identifier) != null)
-    if (legeMedHpr == null) {
-        logger.warn('Fant liste med fastleger, men ingen hadde gyldig HPR identifier')
-        return null
-    }
-
-    return {
-        hpr:
-            getHpr(legeMedHpr.identifier) ??
-            raise('Fastlege uten HPR, men vi har allerede funnet personen så dette er umulig'),
-        navn: legeMedHpr.display,
-    }
 }

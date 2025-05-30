@@ -1,0 +1,9 @@
+interface Person {
+    ident: String!
+    navn: String!
+}
+
+type QueriedPerson implements Person {
+    ident: String!
+    navn: String!
+}

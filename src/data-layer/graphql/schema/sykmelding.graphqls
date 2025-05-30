@@ -1,0 +1,34 @@
+type Sykmelding {
+    sykmeldingId: String!
+    aktivitet: Aktivitet!
+    pasient: Pasient!
+    diagnose: SykmeldingDiagnoser!
+    documentStatus: DocumentStatus!
+}
+
+type SykmeldingDiagnoser {
+    hoved: Diagnose!
+    bi: [Diagnose!]!
+}
+
+enum DocumentStatus {
+    PENDING
+    ERRORED
+    COMPLETE
+}
+
+type Aktivitet {
+    type: AktivitetType!
+    fom: String!
+    tom: String!
+    grad: Int
+}
+
+enum AktivitetType {
+    AKTIVITET_IKKE_MULIG
+    GRADERT
+}
+
+type Query {
+    sykmelding(id: String!): Sykmelding
+}
