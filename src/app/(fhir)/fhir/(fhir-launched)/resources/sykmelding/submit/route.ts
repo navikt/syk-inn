@@ -8,6 +8,7 @@ import { getReadyClient } from '@data-layer/fhir/smart-client'
 import { submitSykmeldingRoute } from '@data-layer/api-routes/route-handlers'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { CreatedSykmelding } from '@data-layer/resources'
+import { diagnoseSystemToOid } from '@utils/oid'
 
 export const POST = submitSykmeldingRoute(async (payload) => {
     const client = await getReadyClient({ validate: true })
@@ -37,9 +38,7 @@ export const POST = submitSykmeldingRoute(async (payload) => {
         sykmelderHpr: hpr,
         sykmelding: {
             hoveddiagnose: {
-                // system: diagnoseSystemToOid(payload.diagnoser.hoved.system),
-                // TODO: Temporarily using the old backend for testing
-                system: payload.diagnoser.hoved.system,
+                system: diagnoseSystemToOid(payload.diagnoser.hoved.system),
                 code: payload.diagnoser.hoved.code,
             },
             aktivitet: payload.aktivitet,
