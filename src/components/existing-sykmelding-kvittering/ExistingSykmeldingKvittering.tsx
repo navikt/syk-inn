@@ -1,7 +1,6 @@
 'use client'
 
-import React, { ReactElement } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import React, { ReactElement, useEffect } from 'react'
 import {
     Alert,
     BodyLong,
@@ -16,12 +15,12 @@ import {
 } from '@navikt/ds-react'
 import { HandBandageIcon, PersonIcon, VitalsIcon } from '@navikt/aksel-icons'
 import Link from 'next/link'
+import { useQuery } from '@apollo/client'
 
 import { FormSection } from '@components/ui/form'
 import { toReadableDatePeriod } from '@utils/date'
-import { useDataService } from '@data-layer/data-fetcher/data-provider'
-import { Sykmelding } from '@data-layer/resources'
 import { SykmeldingSynchronization } from '@components/existing-sykmelding-kvittering/SykmeldingSynchronization'
+import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 
@@ -30,21 +29,25 @@ type ExistingSykmeldingKvitteringProps = {
 }
 
 function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitteringProps): ReactElement {
-    const dataService = useDataService()
-    const { isLoading, data, error, refetch } = useQuery({
-        queryKey: ['sykmelding', sykmeldingId],
-        queryFn: async () => dataService.query.sykmelding(sykmeldingId),
-        refetchInterval: (query) => (query.state.data?.documentStatus === 'pending' ? 5000 : false),
+    const { loading, data, error, refetch, stopPolling } = useQuery(SykmeldingByIdDocument, {
+        variables: { id: sykmeldingId },
+        pollInterval: 5000,
     })
+
+    useEffect(() => {
+        if (data?.sykmelding?.documentStatus === 'COMPLETE') {
+            stopPolling()
+        }
+    }, [data?.sykmelding?.documentStatus, stopPolling])
 
     return (
         <div className="max-w-prose">
-            {isLoading && <SykmeldingKvitteringSkeleton />}
+            {loading && <SykmeldingKvitteringSkeleton />}
             {error && <SykmeldingKvitteringError error={error} refetch={refetch} />}
-            {data && (
+            {data?.sykmelding && (
                 <div>
-                    <SykmeldingKvittering sykmelding={data} />
-                    {data.documentStatus === 'complete' ? (
+                    <SykmeldingKvittering sykmelding={data.sykmelding} />
+                    {data.sykmelding?.documentStatus === 'COMPLETE' ? (
                         <DocumentStatusSuccess />
                     ) : (
                         <SykmeldingSynchronization sykmeldingId={sykmeldingId} />
@@ -55,7 +58,7 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitte
     )
 }
 
-function SykmeldingKvittering({ sykmelding }: { sykmelding: Sykmelding }): ReactElement {
+function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
     return (
         <div className="max-w-prose">
             <div className="my-4">

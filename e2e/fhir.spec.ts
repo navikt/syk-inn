@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test'
 
+import { OpprettSykmeldingMutationVariables } from '@queries'
+
 import { launchWithMock } from './actions/fhir-actions'
 import { daysAgo, inDays, today } from './utils/date-utils'
 import {
@@ -30,18 +32,18 @@ test('can submit 100% sykmelding', async ({ page }) => {
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
         values: {
-            pasient: '21037712323',
-            diagnoser: {
-                hoved: { code: 'P74', system: 'ICPC2' },
-            },
-            aktivitet: {
-                type: 'AKTIVITET_IKKE_MULIG',
-                fom: today(),
-                tom: inDays(3),
-                grad: null,
-            },
+            pasientIdent: '21037712323',
+            hoveddiagnose: { code: 'P74', system: 'ICPC2' },
+            perioder: [
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: today(),
+                    tom: inDays(3),
+                    grad: null,
+                },
+            ],
         },
-    })
+    } satisfies OpprettSykmeldingMutationVariables)
 
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
@@ -59,18 +61,18 @@ test('can submit 100% sykmelding and use week picker', async ({ page }) => {
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
         values: {
-            pasient: '21037712323',
-            diagnoser: {
-                hoved: { code: 'P74', system: 'ICPC2' },
-            },
-            aktivitet: {
-                type: 'AKTIVITET_IKKE_MULIG',
-                fom: today(),
-                tom: inDays(3),
-                grad: null,
-            },
+            pasientIdent: '21037712323',
+            hoveddiagnose: { code: 'P74', system: 'ICPC2' },
+            perioder: [
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: today(),
+                    tom: inDays(3),
+                    grad: null,
+                },
+            ],
         },
-    })
+    } satisfies OpprettSykmeldingMutationVariables)
 
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
@@ -92,16 +94,18 @@ test('shall be able to edit diagnose', async ({ page }) => {
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
         values: {
-            pasient: '21037712323',
-            diagnoser: { hoved: { code: 'D290', system: 'ICD10' } },
-            aktivitet: {
-                type: 'AKTIVITET_IKKE_MULIG',
-                fom: today(),
-                tom: inDays(3),
-                grad: null,
-            },
+            pasientIdent: '21037712323',
+            hoveddiagnose: { code: 'D290', system: 'ICD10' },
+            perioder: [
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: today(),
+                    tom: inDays(3),
+                    grad: null,
+                },
+            ],
         },
-    })
+    } satisfies OpprettSykmeldingMutationVariables)
 
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
@@ -122,18 +126,18 @@ test('can submit gradert sykmelding', async ({ page }) => {
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
         values: {
-            pasient: '21037712323',
-            diagnoser: {
-                hoved: { system: 'ICPC2', code: 'P74' },
-            },
-            aktivitet: {
-                type: 'GRADERT',
-                fom: today(),
-                tom: inDays(3),
-                grad: '50',
-            },
+            pasientIdent: '21037712323',
+            hoveddiagnose: { system: 'ICPC2', code: 'P74' },
+            perioder: [
+                {
+                    type: 'GRADERT',
+                    fom: today(),
+                    tom: inDays(3),
+                    grad: '50',
+                },
+            ],
         },
-    })
+    } satisfies OpprettSykmeldingMutationVariables)
 
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
@@ -165,16 +169,16 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
     const payload = await submitSykmelding()(page)
     expect(payload).toEqual({
         values: {
-            pasient: '21037712323',
-            diagnoser: {
-                hoved: { system: 'ICPC2', code: 'P74' },
-            },
-            aktivitet: {
-                type: 'AKTIVITET_IKKE_MULIG',
-                fom: daysAgo(9),
-                tom: inDays(1),
-                grad: null,
-            },
+            pasientIdent: '21037712323',
+            hoveddiagnose: { system: 'ICPC2', code: 'P74' },
+            perioder: [
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: daysAgo(9),
+                    tom: inDays(1),
+                    grad: null,
+                },
+            ],
         },
-    })
+    } satisfies OpprettSykmeldingMutationVariables)
 })

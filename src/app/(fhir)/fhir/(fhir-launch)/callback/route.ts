@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import { logger as pinoLogger } from '@navikt/next-logger'
 
 import { pathWithBasePath } from '@utils/url'
-import { getSmartClient } from '@data-layer/fhir/smart-client'
+import { getSmartClient } from '@fhir/smart/smart-client'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
 

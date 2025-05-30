@@ -1,0 +1,11 @@
+query DiagnoseSearch($query: String!) {
+    diagnose(query: $query) {
+        ...Diagnose
+    }
+}
+
+fragment Diagnose on Diagnose {
+    system
+    code
+    text
+}

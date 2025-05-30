@@ -1,10 +1,10 @@
 import React, { ReactElement, startTransition } from 'react'
 import { Alert, BodyShort, Button, Detail, ErrorMessage, Label } from '@navikt/ds-react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from '@apollo/client'
 
-import { pathWithBasePath } from '@utils/url'
 import { cn } from '@utils/tw'
 import { raise } from '@utils/ts'
+import { DiagnoseSearchDocument } from '@queries'
 
 import {
     AkselifiedCombobox,
@@ -170,20 +170,14 @@ function useSuggestions(value: string): {
     hasError: boolean
     suggestions: DiagnoseSuggestion[]
 } {
-    const { data, isLoading, error } = useQuery({
-        queryKey: ['diagnose-suggestions', value],
-        queryFn: async () => {
-            const response = await fetch(`${pathWithBasePath(`/api/diagnose/query?value=${value}`)}`)
-            if (!response.ok) {
-                throw new Error('Failed to fetch suggestions')
-            }
-            return response.json()
-        },
+    const { data, loading, error } = useQuery(DiagnoseSearchDocument, {
+        variables: { query: value },
+        skip: !value || value.trim() === '',
     })
 
-    const suggestions = data == null ? [] : 'reason' in data ? [] : data
+    const suggestions: DiagnoseSuggestion[] = data == null ? [] : 'reason' in data ? [] : (data.diagnose ?? [])
 
-    return { isLoading, hasError: error != null, suggestions }
+    return { isLoading: loading, hasError: error != null, suggestions }
 }
 
 function createUniqueValue(suggestion: DiagnoseSuggestion): string {

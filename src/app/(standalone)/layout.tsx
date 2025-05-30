@@ -7,9 +7,8 @@ import type { Metadata } from 'next'
 import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
 import { getToggles } from '@toggles/unleash'
-import HelseIdDataProvider from '@data-layer/helseid/components/HelseIdDataProvider'
-import { getHelseIdUserInfo } from '@data-layer/helseid/helseid-userinfo'
-import HelseIdHeader from '@data-layer/helseid/components/HelseIdHeader'
+import { getHelseIdUserInfo } from '@helseid/helseid-userinfo'
+import HelseIdHeader from '@helseid/components/HelseIdHeader'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../../providers/Providers'
@@ -44,16 +43,9 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                 />
                 <Page footerPosition="belowFold">
                     {isLocalOrDemo && <DemoWarning />}
-                    <Providers toggles={toggles}>
-                        <HelseIdDataProvider
-                            behandler={{
-                                navn: 'TODO',
-                                hpr: behandler?.hpr_number ?? 'TODO',
-                            }}
-                        >
-                            {children}
-                            {isLocalOrDemo && <LazyDevTools />}
-                        </HelseIdDataProvider>
+                    <Providers toggles={toggles} mode="HelseID">
+                        {children}
+                        {isLocalOrDemo && <LazyDevTools />}
                     </Providers>
                 </Page>
             </body>

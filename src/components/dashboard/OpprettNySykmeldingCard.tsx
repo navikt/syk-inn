@@ -1,12 +1,12 @@
 import React, { CSSProperties, ReactElement, useState } from 'react'
-import { BodyShort, Button, ConfirmationPanel, Detail, Heading, Skeleton } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, ConfirmationPanel, Detail, Heading, Skeleton } from '@navikt/ds-react'
+import { useQuery } from '@apollo/client'
 
 import AssableNextLink from '@components/misc/AssableNextLink'
-
-import { useContextPasient } from '../../data-layer/data-fetcher/hooks/use-context-pasient'
+import { PasientDocument } from '@queries'
 
 function OpprettNySykmeldingCard(): ReactElement {
-    const { data: pasient, isLoading } = useContextPasient()
+    const { data, loading, error, refetch } = useQuery(PasientDocument)
     const [hasLegged, setHasLegged] = useState(true)
 
     return (
@@ -18,7 +18,7 @@ function OpprettNySykmeldingCard(): ReactElement {
                 Pasientopplysninger
             </Heading>
             <Detail>Denne sykmeldingen opprettes for følgende person</Detail>
-            {isLoading && (
+            {loading && (
                 <div className="flex gap-6 mt-3 mb-2">
                     <div className="min-w-32">
                         <Skeleton width={120} />
@@ -30,15 +30,23 @@ function OpprettNySykmeldingCard(): ReactElement {
                     </div>
                 </div>
             )}
-            {!isLoading && pasient && (
+            {error && (
+                <Alert variant="error">
+                    <BodyShort>Kunne ikke hente pasientopplysninger</BodyShort>
+                    <Button size="xsmall" onClick={() => refetch()}>
+                        Prøv på nytt
+                    </Button>
+                </Alert>
+            )}
+            {!loading && data?.pasient && (
                 <div className="flex gap-6 mt-3">
                     <div className="min-w-32">
                         <Detail>Navn</Detail>
-                        <BodyShort spacing>{pasient.navn}</BodyShort>
+                        <BodyShort spacing>{data.pasient.navn ?? 'what'}</BodyShort>
                     </div>
                     <div>
                         <Detail>ID-nummer</Detail>
-                        <BodyShort spacing>{pasient.ident}</BodyShort>
+                        <BodyShort spacing>{data.pasient.ident}</BodyShort>
                     </div>
                 </div>
             )}
@@ -70,8 +78,8 @@ function OpprettNySykmeldingCard(): ReactElement {
                             as={AssableNextLink}
                             variant="primary"
                             href="/fhir/ny"
-                            disabled={isLoading || !hasLegged}
-                            loading={isLoading}
+                            disabled={loading || !hasLegged}
+                            loading={loading}
                             size="small"
                         >
                             Opprett sykmelding

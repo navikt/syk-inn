@@ -1,44 +1,50 @@
 import React, { ReactElement, startTransition } from 'react'
+import { useApolloClient } from '@apollo/client'
 import { Button, Checkbox, CheckboxGroup } from '@navikt/ds-react'
-import { useQueryClient } from '@tanstack/react-query'
-
-import { DataService } from '@data-layer/data-fetcher/data-service'
 
 import { DevToolItem } from '../InternalDevToolItem'
 
 import { useAPIOverride } from './useAPIOverride'
+import { ToggleableQueries } from './toggleable-queries'
 
 export function ToggleAPIFailures(): ReactElement {
-    const queryClient = useQueryClient()
-    const { queryOverrides, setQueryOverrides, contextOverrides, setContextOverrides } = useAPIOverride()
+    const client = useApolloClient()
+    const { queryOverrides, setQueryOverrides } = useAPIOverride()
 
-    const context: Record<keyof DataService['context'], ReactElement> = {
-        pasient: (
-            <Checkbox key="pasient" value="pasient">
+    const queries: Record<ToggleableQueries, ReactElement> = {
+        Pasient: (
+            <Checkbox key="pasient" value="Pasient">
                 Pasient
             </Checkbox>
         ),
-        konsultasjon: (
-            <Checkbox key="konsultasjon" value="konsultasjon">
+        Konsultasjon: (
+            <Checkbox key="konsultasjon" value="Konsultasjon">
                 Konsultasjon
             </Checkbox>
         ),
-        behandler: (
-            <Checkbox key="bruker" value="bruker">
-                Bruker
+        DiagnoseSearch: (
+            <Checkbox key="diagnose" value="DiagnoseSearch">
+                Diagnose-søk
             </Checkbox>
         ),
-    }
-
-    const query: Record<keyof DataService['query'], ReactElement> = {
-        sykmelding: (
-            <Checkbox key="sykmelding" value="sykmelding">
+        SykmeldingById: (
+            <Checkbox key="sykmelding" value="SykmeldingById">
                 Sykmelding
             </Checkbox>
         ),
-        pasient: (
-            <Checkbox key="pasient" value="pasient">
+        PersonByIdent: (
+            <Checkbox key="person" value="PersonByIdent">
                 Pasient by OID (fnr/dnr)
+            </Checkbox>
+        ),
+        OpprettSykmelding: (
+            <Checkbox key="opprettSykmelding" value="OpprettSykmelding">
+                Opprett sykmelding (Mutation)
+            </Checkbox>
+        ),
+        SynchronizeSykmelding: (
+            <Checkbox key="synchronizeSykmelding" value="SynchronizeSykmelding">
+                Sykmelding-synkronisering (Mutation)
             </Checkbox>
         ),
     }
@@ -51,20 +57,7 @@ export function ToggleAPIFailures(): ReactElement {
         >
             <CheckboxGroup
                 legend="Context"
-                description="Contextual APIs are based on SMART context or standalone preloading"
-                value={contextOverrides}
-                size="small"
-                onChange={(value) => {
-                    startTransition(() => {
-                        setContextOverrides(value)
-                    })
-                }}
-            >
-                {...Object.values(context)}
-            </CheckboxGroup>
-            <CheckboxGroup
-                legend="Query"
-                description="Query APIs are based on user input or external data sources"
+                description="GraphQL query overrides"
                 value={queryOverrides}
                 size="small"
                 onChange={(value) => {
@@ -73,14 +66,16 @@ export function ToggleAPIFailures(): ReactElement {
                     })
                 }}
             >
-                {...Object.values(query)}
+                {...Object.values(queries)}
             </CheckboxGroup>
             <div>
                 <Button
                     variant="secondary-neutral"
                     size="small"
-                    onClick={() => {
-                        queryClient.resetQueries()
+                    onClick={async () => {
+                        await client.refetchQueries({
+                            include: 'all',
+                        })
                     }}
                 >
                     Reload all queries

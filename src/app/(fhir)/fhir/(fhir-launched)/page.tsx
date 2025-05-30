@@ -3,22 +3,27 @@
 import { Page, PageBlock } from '@navikt/ds-react/Page'
 import React, { ReactElement } from 'react'
 import { Heading, Skeleton } from '@navikt/ds-react'
+import { useQuery } from '@apollo/client'
 
+import { FhirError } from '@fhir/components/FhirError'
 import OpprettNySykmeldingCard from '@components/dashboard/OpprettNySykmeldingCard'
 import PagaendeSykmeldingerCard from '@components/dashboard/PagaendeSykmeldingerCard'
-
-import { useContextPasient } from '../../../../data-layer/data-fetcher/hooks/use-context-pasient'
+import { PasientDocument } from '@queries'
 
 function DashboardPage(): ReactElement {
-    const pasient = useContextPasient()
+    const pasientQuery = useQuery(PasientDocument)
+
+    if (pasientQuery.error) {
+        return <FhirError />
+    }
 
     return (
         <Page className="bg-bg-subtle">
             <PageBlock as="main" gutters className="pt-4">
                 <Heading level="2" size="medium" spacing>
                     <span>Oversikt over</span>
-                    {pasient.isLoading && <Skeleton width={140} className="inline-block mx-2" />}
-                    {pasient.isSuccess && pasient.data && ` ${pasient.data.navn} `}
+                    {pasientQuery.loading && <Skeleton width={140} className="inline-block mx-2" />}
+                    {pasientQuery.data?.pasient && ` ${pasientQuery.data.pasient.navn} `}
                     <span>sitt sykefravær</span>
                 </Heading>
 

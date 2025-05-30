@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY next-logger.config.js /app/
 COPY .next/standalone /app/
+COPY src/data-layer/graphql/schema/*.graphqls /app/
 
 EXPOSE 3000
 
