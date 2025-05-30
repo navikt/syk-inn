@@ -9,14 +9,15 @@ import {
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
 import { isE2E, isLocalOrDemo } from '@utils/env'
 import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
-import { ICD10_OID, ICPC2_OID } from '@utils/oid'
 
 type NySykmeldingPayload = {
     pasientFnr: string
     sykmelderHpr: string
     sykmelding: {
         hoveddiagnose: {
-            system: ICD10_OID | ICPC2_OID
+            // system: ICD10_OID | ICPC2_OID
+            // TODO: Temporarily using the old backend for testing
+            system: 'ICD10' | 'ICPC2'
             code: string
         }
         aktivitet:
@@ -39,7 +40,7 @@ export const sykInnApiService = {
     createNewSykmelding: async (payload: NySykmeldingPayload): Promise<NySykmelding | ApiFetchErrors> =>
         fetchInternalAPI({
             api: 'syk-inn-api',
-            path: '/api/sykmelding',
+            path: '/api/v1/sykmelding/create',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +51,7 @@ export const sykInnApiService = {
     getSykmelding: async (sykmeldingId: string, hpr: string): Promise<ExistingSykmelding | ApiFetchErrors> =>
         fetchInternalAPI({
             api: 'syk-inn-api',
-            path: `/api/sykmelding/${sykmeldingId}`,
+            path: `/api/v1/sykmelding/${sykmeldingId}`,
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ export const sykInnApiService = {
 
         return await fetchInternalAPI({
             api: 'syk-inn-api',
-            path: `/api/sykmelding/${sykmeldingId}/pdf`,
+            path: `/api/v1/sykmelding/${sykmeldingId}/pdf`,
             method: 'GET',
             headers: {
                 Accept: 'application/pdf',
