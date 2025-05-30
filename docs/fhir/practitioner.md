@@ -31,5 +31,5 @@ _Relevante referanser:_
 
 ## Begrunnelse
 
-Identifier - Vi bruker HPR-nummer som identifikator for helsepersonellet. HER-ID er påkrevd og brukes
-til å sende dokumenter til riktig helsepersonell i EPJ-systemet.
+Identifier - Vi bruker HPR-nummer som identifikator for helsepersonellet. HER-ID brukes
+til å sende dokumenter asynkront (som Dialogmelding) EPJ hvis synkron tilbakeskriving feiler.
