@@ -1,15 +1,15 @@
 import React, { ReactElement } from 'react'
 import { Skeleton } from '@navikt/ds-react'
+import { useQuery } from '@apollo/client'
 
 import MainSection from '@components/ny-sykmelding-form/MainSection'
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
-
-import { useContextKonsultasjon } from '../../data-layer/data-fetcher/hooks/use-context-konsultasjon'
+import { KonsultasjonDocument } from '@queries'
 
 function MainSectionWithData(): ReactElement {
-    const { isLoading, data, error } = useContextKonsultasjon()
+    const { loading, data, error } = useQuery(KonsultasjonDocument)
 
-    if (isLoading) {
+    if (loading) {
         return (
             // Needs a much better skeleton
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -25,7 +25,7 @@ function MainSectionWithData(): ReactElement {
         <MainSection
             initialServerValues={{
                 diagnose: {
-                    value: pickMostRelevantDiagnose(data?.diagnoser),
+                    value: pickMostRelevantDiagnose(data?.konsultasjon?.diagnoser ?? null),
                     error: error ? { error: 'FHIR_FAILED' } : undefined,
                 },
             }}
@@ -34,7 +34,7 @@ function MainSectionWithData(): ReactElement {
 }
 
 function pickMostRelevantDiagnose(
-    diagnoser: { system: 'ICD10' | 'ICPC2'; code: string; text: string }[] | undefined,
+    diagnoser: { system: 'ICD10' | 'ICPC2'; code: string; text: string }[] | null,
 ): DiagnoseSuggestion | null {
     if (!diagnoser || diagnoser.length === 0) {
         return null

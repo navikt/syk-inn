@@ -1,0 +1,10 @@
+enum DiagnoseSystem {
+    ICD10
+    ICPC2
+}
+
+type Diagnose {
+    system: DiagnoseSystem!
+    code: String!
+    text: String!
+}

@@ -1,0 +1,4 @@
+type Behandler {
+    hpr: String!
+    navn: String!
+}

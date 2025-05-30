@@ -1,0 +1,4 @@
+fragment Person on Person {
+    ident
+    navn
+}

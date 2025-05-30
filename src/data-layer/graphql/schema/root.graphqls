@@ -1,0 +1,14 @@
+type Query {
+    behandler: Behandler
+    pasient: Pasient
+    konsultasjon: Konsultasjon
+    sykmelding(id: String!): Sykmelding
+
+    diagnose(query: String!): [Diagnose!]
+    person(ident: String): QueriedPerson
+}
+
+type Mutation {
+    opprettSykmelding(nySykmelding: OpprettSykmelding!): OpprettetSykmelding!
+    synchronizeSykmelding(id: String!): SynchronizationStatus!
+}

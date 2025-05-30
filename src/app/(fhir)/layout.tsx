@@ -30,7 +30,7 @@ export default async function FhirLayout({ children }: PropsWithChildren): Promi
             </head>
             <Preload />
             <body>
-                <Providers toggles={toggles}>
+                <Providers toggles={toggles} mode="FHIR">
                     {isLocalOrDemo && <DemoWarning />}
                     {children}
                     {isLocalOrDemo && <LazyDevTools />}

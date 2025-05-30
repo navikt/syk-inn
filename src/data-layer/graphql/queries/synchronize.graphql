@@ -1,0 +1,6 @@
+mutation SynchronizeSykmelding($id: String!) {
+    synchronizeSykmelding(id: $id) {
+        documentStatus
+        navStatus
+    }
+}

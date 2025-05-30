@@ -14,8 +14,11 @@
         "incremental": true,
         "plugins": [{ "name": "next" }],
         "paths": {
-            "@data-layer/*": ["./src/data-layer/*"],
-            "@fhir/*": ["./src/fhir/*"],
+            "@fhir/*": ["./src/data-layer/fhir/*"],
+            "@helseid/*": ["./src/data-layer/helseid/*"],
+            "@graphql/*": ["./src/data-layer/graphql/*"],
+            "@queries": ["./src/data-layer/graphql/queries.generated.ts"],
+            "@resolvers": ["./src/data-layer/graphql/resolvers.generated.ts"],
             "@utils/*": ["./src/utils/*"],
             "@components/*": ["./src/components/*"],
             "@services/*": ["./src/services/*"],

@@ -1,22 +1,24 @@
-import React, { ReactElement } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import React, { ReactElement, useEffect } from 'react'
 import { Alert, Button, Heading, Skeleton } from '@navikt/ds-react'
+import { useMutation } from '@apollo/client'
 
-import { useDataService } from '@data-layer/data-fetcher/data-provider'
 import { DocumentStatusSuccess } from '@components/existing-sykmelding-kvittering/DocumentStatus'
+import { SynchronizeSykmeldingDocument } from '@queries'
 
 type Props = {
     sykmeldingId: string
 }
 
 export function SykmeldingSynchronization({ sykmeldingId }: Props): ReactElement {
-    const dataService = useDataService()
-    const { isLoading, data, error, refetch } = useQuery({
-        queryKey: ['sykmelding-synchronization', sykmeldingId],
-        queryFn: async () => dataService.mutation.synchronize(sykmeldingId),
+    const [mutation, { loading, data, error }] = useMutation(SynchronizeSykmeldingDocument, {
+        variables: { id: sykmeldingId },
     })
 
-    if (isLoading) {
+    useEffect(() => {
+        mutation()
+    }, [mutation])
+
+    if (loading) {
         return (
             <div className="max-w-prose">
                 <div className="my-4">
@@ -32,7 +34,7 @@ export function SykmeldingSynchronization({ sykmeldingId }: Props): ReactElement
         )
     }
 
-    if (error || data?.documentStatus === 'errored') {
+    if (error || data?.synchronizeSykmelding.documentStatus === 'ERRORED') {
         return (
             <div className="max-w-prose">
                 <div className="my-4">
@@ -46,7 +48,7 @@ export function SykmeldingSynchronization({ sykmeldingId }: Props): ReactElement
                 </div>
 
                 <div className="mt-2">
-                    <Button variant="secondary-neutral" onClick={() => refetch()}>
+                    <Button variant="secondary-neutral" onClick={() => mutation()}>
                         Prøv igjen
                     </Button>
                 </div>
@@ -54,12 +56,12 @@ export function SykmeldingSynchronization({ sykmeldingId }: Props): ReactElement
         )
     }
 
-    if (!data || data.documentStatus !== 'complete') {
+    if (!data || data.synchronizeSykmelding.documentStatus !== 'COMPLETE') {
         return (
             <div className="mt-4">
                 <Alert variant="warning">Data er ikke tilgjengelig ennå. Vennligst prøv igjen senere.</Alert>
                 <div className="mt-4">
-                    <Button variant="secondary-neutral" onClick={() => refetch()}>
+                    <Button variant="secondary-neutral" onClick={() => mutation()}>
                         Prøv igjen
                     </Button>
                 </div>
