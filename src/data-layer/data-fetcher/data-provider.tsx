@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, ReactElement, useContext } from 'reac
 
 import { isLocalOrDemo } from '@utils/env'
 
-import { withFailInterceptor } from '../../devtools/useAPIOverride'
+import { withFailInterceptor } from '../../devtools/api-fail-toggle/useAPIOverride'
 
 import { DataService } from './data-service'
 

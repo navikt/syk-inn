@@ -2,7 +2,7 @@ import { logger } from '@navikt/next-logger'
 
 import { FhirPractitioner, GeneralIdentifier } from '@navikt/fhir-zod'
 import { Behandler } from '@data-layer/resources'
-import { getName } from '@data-layer/fhir/mappers/patient'
+import { getNameFromFhir } from '@data-layer/fhir/mappers/patient'
 
 const FNR_OID = '2.16.578.1.12.4.1.4.1'
 const DNR_OID = '2.16.578.1.12.4.1.4.2'
@@ -44,7 +44,7 @@ export function practitionerToBehandler(practitioner: FhirPractitioner): Behandl
     }
 
     return {
-        navn: getName(practitioner.name),
+        navn: getNameFromFhir(practitioner.name),
         hpr: hpr,
     }
 }

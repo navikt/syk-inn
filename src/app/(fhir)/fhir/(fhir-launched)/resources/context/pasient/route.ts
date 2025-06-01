@@ -1,5 +1,5 @@
 import { pasientRoute } from '@data-layer/api-routes/route-handlers'
-import { getFastlege, getName, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
+import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { raise } from '@utils/ts'
 import { getReadyClient } from '@data-layer/fhir/smart-client'
 
@@ -15,8 +15,7 @@ export const GET = pasientRoute(async () => {
     }
 
     return {
-        navn: getName(patientInContext.name),
+        navn: getNameFromFhir(patientInContext.name),
         ident: getValidPatientIdent(patientInContext) ?? raise('Patient without valid FNR/DNR'),
-        fastlege: getFastlege(patientInContext),
     }
 })

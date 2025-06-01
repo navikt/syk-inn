@@ -6,7 +6,7 @@ import { wait } from '@utils/wait'
 import { isLocalOrDemo } from '@utils/env'
 import { getReadyClient } from '@data-layer/fhir/smart-client'
 import { personQueryRoute } from '@data-layer/api-routes/route-handlers'
-import { getFnrIdent, getName } from '@services/pdl/PdlApiUtils'
+import { getFnrIdent, getNameFromPdl } from '@services/pdl/PdlApiUtils'
 import { PersonQueryInfo } from '@data-layer/resources'
 
 export const GET = personQueryRoute(async () => {
@@ -33,7 +33,7 @@ export const GET = personQueryRoute(async () => {
 
     return {
         ident: getFnrIdent(person.identer),
-        navn: getName(person.navn),
+        navn: getNameFromPdl(person.navn),
     }
 })
 
