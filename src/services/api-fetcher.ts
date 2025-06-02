@@ -3,6 +3,7 @@ import { logger as pinoLogger } from '@navikt/next-logger'
 import { z } from 'zod'
 
 import { raise } from '@utils/ts'
+import { getServerEnv } from '@utils/env'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[API FETCHER]: ' })
 
@@ -58,22 +59,15 @@ export async function fetchInternalAPI<
 }: FetchInternalAPIOptionsWithSchema<Schema, AdditionalErrors>): Promise<
     InferredReturnValue | ApiFetchErrors<AdditionalErrors>
 > {
-    const apiConfig = internalApis[api]
-    const scope = `api://dev-gcp.${apiConfig.namespace}.${api}/.default`
-
-    const tokenResult = await requestAzureClientCredentialsToken(scope)
-    if (!tokenResult.ok) {
-        logger.error(`Unable to exchange client credentials token for ${scope}`, {
-            cause: tokenResult.error,
-        })
-
-        return { errorType: 'TOKEN_EXCHANGE_FAILED' }
+    const apiConfig = await getApi(api)
+    if ('errorType' in apiConfig) {
+        return apiConfig
     }
 
-    const response = await fetch(`http://${api}${path}`, {
+    const response = await fetch(`http://${apiConfig.host}${path}`, {
         method,
         headers: {
-            Authorization: `Bearer ${tokenResult.token}`,
+            Authorization: apiConfig.authHeader,
             ...headers,
         },
         body,
@@ -114,6 +108,31 @@ export async function fetchInternalAPI<
     }
 
     return parsed.data
+}
+
+async function getApi(
+    api: ValidAPI,
+): Promise<{ host: string; authHeader: string } | { errorType: 'TOKEN_EXCHANGE_FAILED' }> {
+    if (getServerEnv().useLocalSykInnApi) {
+        return { host: 'localhost:8080', authHeader: 'foo-bar-baz' }
+    }
+
+    const apiConfig = internalApis[api]
+    const scope = `api://dev-gcp.${apiConfig.namespace}.${api}/.default`
+
+    const tokenResult = await requestAzureClientCredentialsToken(scope)
+    if (!tokenResult.ok) {
+        logger.error(`Unable to exchange client credentials token for ${scope}`, {
+            cause: tokenResult.error,
+        })
+
+        return { errorType: 'TOKEN_EXCHANGE_FAILED' }
+    }
+
+    return {
+        host: api,
+        authHeader: `Bearer ${tokenResult.token}`,
+    }
 }
 
 async function getFailedResponseBody(response: Response): Promise<string> {

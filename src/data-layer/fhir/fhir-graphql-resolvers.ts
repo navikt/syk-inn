@@ -8,7 +8,7 @@ import { createSchema } from '@graphql/create-schema'
 import { raise } from '@utils/ts'
 import { getNameFromFhir, getValidPatientIdent } from '@fhir/mappers/patient'
 import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/mappers/diagnosis'
-import { isE2E, isLocalOrDemo } from '@utils/env'
+import { getServerEnv, isE2E, isLocalOrDemo } from '@utils/env'
 import { pdlApiService } from '@services/pdl/PdlApiService'
 import { getFnrIdent, getNameFromPdl } from '@services/pdl/PdlApiUtils'
 import { wait } from '@utils/wait'
@@ -110,7 +110,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
-            if (isLocalOrDemo || isE2E) {
+            if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
                 logger.info('Running in local or demo environment, returning mocked sykmelding data')
                 return {
                     sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
@@ -172,7 +172,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('MISSING_IDENT')
             }
 
-            if (isLocalOrDemo) {
+            if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
                 logger.info('Running in local or demo environment, returning mocked person data')
                 // Fake dev loading
                 await wait(2500, 500)
@@ -213,7 +213,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
-            if (isLocalOrDemo || isE2E) {
+            if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
                 logger.warn(
                     `Is in demo, local or e2e, submitting send sykmelding values ${JSON.stringify(nySykmelding, null, 2)}`,
                 )

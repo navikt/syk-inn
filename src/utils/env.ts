@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { KeysOfUnion } from '@utils/ts'
+import { KeysOfUnion, raise } from '@utils/ts'
 
 export type BundledEnv = z.infer<typeof BundledEnvSchema>
 const BundledEnvSchema = z.object({
@@ -52,6 +52,7 @@ type ServerEnv = z.infer<typeof ServerEnvSchema>
 const ServerEnvSchema = z.object({
     helseIdWellKnown: z.string(),
     valkeyConfig: ValkeyConfigSchema.nullish(),
+    useLocalSykInnApi: z.boolean().default(false),
 })
 
 /**
@@ -79,10 +80,17 @@ export function getServerEnv(): ServerEnv {
               } satisfies Record<KeysOfUnion<ValkeyConfig>, unknown | undefined>)
             : undefined
 
-    return ServerEnvSchema.parse({
+    const parsedEnv = ServerEnvSchema.parse({
         valkeyConfig: valkeyConfig,
         helseIdWellKnown: process.env.HELSE_ID_WELL_KNOWN_URL,
+        useLocalSykInnApi: process.env.USE_LOCAL_SYK_INN_API === 'true',
     } satisfies Record<keyof ServerEnv, unknown | undefined>)
+
+    if (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'local' && parsedEnv.useLocalSykInnApi) {
+        raise('USE_LOCAL_SYK_INN_API should only be set to true in local environment')
+    }
+
+    return parsedEnv
 }
 
 export const isE2E = bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'e2e'
