@@ -57,12 +57,8 @@ test('filling out the form, and returning to main step, should keep all values',
     await expect(periodeRegion.getByRole('textbox', { name: 'Fra og med' })).toHaveValue(inputDate(daysAgo(9)))
     await expect(periodeRegion.getByRole('textbox', { name: 'Til og med' })).toHaveValue(inputDate(inDays(5)))
 
-    await expect(
-        periodeRegion
-            .getByRole('group', { name: 'Aktivitetsbegrensning' })
-            .getByRole('radio', { name: /Noe mulighet for aktivitet/ }),
-    ).toBeChecked()
-    await expect(periodeRegion.getByRole('spinbutton', { name: 'Sykmeldingsgrad' })).toHaveValue('65')
+    await expect(periodeRegion.getByRole('combobox', { name: 'Mulighet for arbeid' })).toHaveValue('GRADERT')
+    await expect(periodeRegion.getByRole('textbox', { name: 'Sykmeldingsgrad (%)\n' })).toHaveValue('65')
 
     // Section 2 - Tilbakedatering
     const tilbakedateringRegion = page.getByRole('region', { name: 'Tilbakedatering' })
