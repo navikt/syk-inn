@@ -12,3 +12,4 @@ echo -e "\033[0;32mLooks good, lets build!\033[0m"
 cp .nais/envs/.env.demo .env.production
 NEXT_PUBLIC_ASSET_PREFIX= NEXT_PUBLIC_BASE_PATH= NEXT_PUBLIC_RUNTIME_ENV=e2e yarn build
 cp -R .next/static .next/standalone/.next
+cp -R src/data-layer/graphql/schema/*.graphqls .next/standalone

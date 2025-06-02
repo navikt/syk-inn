@@ -21,7 +21,7 @@
         "lint": "next lint",
         "e2e": "playwright test",
         "e2e:dev": "yarn e2e --ui",
-        "e2e:fast": "echo 'Did you run yarn build:e2e? before this?' && FAST=true yarn e2e --ui",
+        "e2e:fast": "echo 'Did you run yarn build:e2e? before this?' && FAST=true yarn e2e",
         "gen": "graphql-codegen",
         "gen:watch": "graphql-codegen --watch",
         "postinstall": "husky"

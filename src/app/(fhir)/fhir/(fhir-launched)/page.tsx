@@ -5,17 +5,12 @@ import React, { ReactElement } from 'react'
 import { Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
-import { FhirError } from '@fhir/components/FhirError'
 import OpprettNySykmeldingCard from '@components/dashboard/OpprettNySykmeldingCard'
 import PagaendeSykmeldingerCard from '@components/dashboard/PagaendeSykmeldingerCard'
 import { PasientDocument } from '@queries'
 
 function DashboardPage(): ReactElement {
     const pasientQuery = useQuery(PasientDocument)
-
-    if (pasientQuery.error) {
-        return <FhirError />
-    }
 
     return (
         <Page className="bg-bg-subtle">
