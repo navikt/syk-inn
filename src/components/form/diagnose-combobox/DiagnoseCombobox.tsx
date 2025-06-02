@@ -75,7 +75,7 @@ function DiagnoseCombobox({
     const { isLoading, hasError, suggestions } = useSuggestions(state.value)
 
     return (
-        <div>
+        <div className={className}>
             <div
                 className={cn({
                     hidden: value != null,

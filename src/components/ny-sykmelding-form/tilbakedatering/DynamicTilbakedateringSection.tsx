@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { isBefore, subDays } from 'date-fns'
 import * as R from 'remeda'
 
-import ExpandableFormSection from '@components/form/expandable-form-section/ExpandableFormSection'
+import FormSection from '@components/form/form-section/FormSection'
 
 import { AktivitetsPeriode, useFormContext } from '../form'
 
@@ -24,9 +24,9 @@ function DynamicTilbakedateringSection(): ReactElement | null {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 >
-                    <ExpandableFormSection title="Tilbakedatering">
+                    <FormSection title="Tilbakedatering" className="mt-8">
                         <TilbakedateringSection />
-                    </ExpandableFormSection>
+                    </FormSection>
                 </motion.div>
             )}
         </AnimatePresence>
