@@ -103,7 +103,7 @@ export async function fetchInternalAPI<
     const parsed = responseSchema.safeParse(result)
 
     if (!parsed.success) {
-        logger.error(`Invalid response from ${path}, details: ${parsed.error.errors}`)
+        logger.error(`Invalid response from ${path}, details: ${JSON.stringify(parsed.error.errors, null, 2)}`)
         return { errorType: 'API_BODY_INVALID' }
     }
 
