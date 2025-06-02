@@ -298,7 +298,7 @@ export type DiagnoseResolvers<
 > = {
     code?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     system?: Resolver<ResolversTypes['DiagnoseSystem'], ParentType, ContextType>
-    text?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    // text?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 

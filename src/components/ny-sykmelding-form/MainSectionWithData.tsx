@@ -34,7 +34,8 @@ function MainSectionWithData(): ReactElement {
 }
 
 function pickMostRelevantDiagnose(
-    diagnoser: { system: 'ICD10' | 'ICPC2'; code: string; text: string }[] | null,
+    // diagnoser: { system: 'ICD10' | 'ICPC2'; code: string; text: string }[] | null,
+    diagnoser: { system: 'ICD10' | 'ICPC2'; code: string }[] | null,
 ): DiagnoseSuggestion | null {
     if (!diagnoser || diagnoser.length === 0) {
         return null

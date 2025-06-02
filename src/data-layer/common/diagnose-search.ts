@@ -16,7 +16,7 @@ export function searchDiagnose(query: string): DiagnoseSuggestion[] {
                 ({
                     system: it.item.system as DiagnoseSystem,
                     code: it.item.code,
-                    text: it.item.text,
+                    // text: it.item.text,
                 }) satisfies DiagnoseSuggestion,
         )
         .slice(0, 100)

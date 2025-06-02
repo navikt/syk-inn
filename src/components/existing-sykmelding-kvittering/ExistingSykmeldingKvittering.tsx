@@ -72,7 +72,8 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }
                 <FormSection title="Diagnose" icon={<HandBandageIcon />}>
                     <Label>Hoveddiagnose</Label>
                     <BodyShort>
-                        {sykmelding.diagnose.hoved.code} - {sykmelding.diagnose.hoved.text}
+                        {/*{sykmelding.diagnose.hoved.code} - {sykmelding.diagnose.hoved.text}*/}
+                        {sykmelding.diagnose.hoved.code} - sykmelding.diagnose.hoved.text
                     </BodyShort>
                     <Detail>{sykmelding.diagnose.hoved.system}</Detail>
                 </FormSection>

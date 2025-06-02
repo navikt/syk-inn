@@ -157,10 +157,12 @@ export type DiagnoseSearchQueryVariables = Exact<{
 
 export type DiagnoseSearchQuery = {
     __typename?: 'Query'
-    diagnose?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+    // diagnose?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+    diagnose?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; }> | null
 }
 
-export type DiagnoseFragment = { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }
+// export type DiagnoseFragment = { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }
+export type DiagnoseFragment = { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; }
 
 export type KonsultasjonQueryVariables = Exact<{ [key: string]: never }>
 
@@ -168,7 +170,8 @@ export type KonsultasjonQuery = {
     __typename?: 'Query'
     konsultasjon?: {
         __typename?: 'Konsultasjon'
-        diagnoser?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+        // diagnoser?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+        diagnoser?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; }> | null
     } | null
 }
 
@@ -201,7 +204,8 @@ export type SykmeldingByIdQuery = {
         pasient: { __typename?: 'Pasient'; navn: string; ident: string }
         diagnose: {
             __typename?: 'SykmeldingDiagnoser'
-            hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string }
+            // hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string }
+            hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; }
         }
         aktivitet: { __typename?: 'Aktivitet'; type: AktivitetType; fom: string; tom: string; grad?: number | null }
     } | null
@@ -223,7 +227,8 @@ export type SykmeldingFragment = {
     pasient: { __typename?: 'Pasient'; navn: string; ident: string }
     diagnose: {
         __typename?: 'SykmeldingDiagnoser'
-        hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string }
+        // hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string }
+        hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; }
     }
     aktivitet: { __typename?: 'Aktivitet'; type: AktivitetType; fom: string; tom: string; grad?: number | null }
 }
@@ -270,7 +275,7 @@ export const DiagnoseFragmentDoc = {
                 selections: [
                     { kind: 'Field', name: { kind: 'Name', value: 'system' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'code' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+                    // { kind: 'Field', name: { kind: 'Name', value: 'text' } },
                 ],
             },
         },
@@ -312,7 +317,7 @@ export const SykmeldingFragmentDoc = {
                                         selections: [
                                             { kind: 'Field', name: { kind: 'Name', value: 'code' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'system' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+                                            // { kind: 'Field', name: { kind: 'Name', value: 'text' } },
                                         ],
                                     },
                                 },
@@ -382,7 +387,7 @@ export const DiagnoseSearchDocument = {
                 selections: [
                     { kind: 'Field', name: { kind: 'Name', value: 'system' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'code' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+                    // { kind: 'Field', name: { kind: 'Name', value: 'text' } },
                 ],
             },
         },
@@ -429,7 +434,7 @@ export const KonsultasjonDocument = {
                 selections: [
                     { kind: 'Field', name: { kind: 'Name', value: 'system' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'code' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+                    // { kind: 'Field', name: { kind: 'Name', value: 'text' } },
                 ],
             },
         },
@@ -587,7 +592,7 @@ export const SykmeldingByIdDocument = {
                                         selections: [
                                             { kind: 'Field', name: { kind: 'Name', value: 'code' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'system' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+                                            // { kind: 'Field', name: { kind: 'Name', value: 'text' } },
                                         ],
                                     },
                                 },

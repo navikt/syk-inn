@@ -21,7 +21,8 @@ import {
 
 export type DiagnoseSystem = 'ICD10' | 'ICPC2'
 
-export type DiagnoseSuggestion = { system: DiagnoseSystem; code: string; text: string }
+// export type DiagnoseSuggestion = { system: DiagnoseSystem; code: string; text: string }
+export type DiagnoseSuggestion = { system: DiagnoseSystem; code: string }
 
 interface Props {
     id?: string
@@ -127,7 +128,8 @@ function DiagnoseCombobox({
                                         <Detail>{value.system}</Detail>
                                     </div>
                                     <Detail className="text-right break-words ml-2 max-w-48 overflow-hidden">
-                                        {value.text}
+                                        {/*{value.text}*/}
+                                        value.text
                                     </Detail>
                                 </AkselifiedComboboxItem>
                             ))}
@@ -140,7 +142,8 @@ function DiagnoseCombobox({
                     <div>
                         <Label>{label}</Label>
                         <BodyShort>
-                            {value.code} - {value.text}
+                            {/*{value.code} - {value.text}*/}
+                            {value.code} - value.text
                         </BodyShort>
                         <Detail spacing>{value.system}</Detail>
                     </div>

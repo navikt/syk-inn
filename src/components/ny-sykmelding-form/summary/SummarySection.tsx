@@ -169,7 +169,8 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: DiagnoseStep | null })
                 <FormSummary.Label>Hoveddiagnose</FormSummary.Label>
                 <FormSummary.Value>
                     <BodyShort>
-                        {diagnose.hoved.text} ({diagnose.hoved.code})
+                        {/*{diagnose.hoved.text} ({diagnose.hoved.code})*/}
+                        diagnose.hoved.text ({diagnose.hoved.code})
                     </BodyShort>
                     <Detail>{diagnose.hoved.system}</Detail>
                 </FormSummary.Value>

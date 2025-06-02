@@ -87,7 +87,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                             ({
                                 system: it.system,
                                 code: it.code,
-                                text: it.display,
+                                // text: it.display,
                             }) satisfies DiagnoseFragment,
                     ),
                 ),
