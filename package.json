@@ -10,7 +10,8 @@
         "libs/*"
     ],
     "scripts": {
-        "dev": "./scripts/pre-dev.sh && next dev --turbo | pino-pretty",
+        "dev": "./scripts/pre-dev.sh && concurrently --names 'next,gen'  --prefix-colors 'blue,magenta' 'yarn dev:next' 'yarn gen:watch'",
+        "dev:next": "next dev --turbo | pino-pretty",
         "dev:valkey": "docker run --name syk-inn-dev-valkey -p 6379:6379 -d valkey/valkey:latest",
         "build": "./scripts/pre-build.sh && next build",
         "build:e2e": "./scripts/build-e2e.sh",
@@ -22,6 +23,7 @@
         "e2e:dev": "yarn e2e --ui",
         "e2e:fast": "echo 'Did you run yarn build:e2e? before this?' && FAST=true yarn e2e --ui",
         "gen": "graphql-codegen",
+        "gen:watch": "graphql-codegen --watch",
         "postinstall": "husky"
     },
     "dependencies": {
@@ -87,6 +89,7 @@
         "@types/node": "^22.15.29",
         "@types/react": "^19.1.6",
         "@types/react-dom": "^19.1.5",
+        "concurrently": "^9.1.2",
         "eslint": "^8.57.1",
         "eslint-config-next": "15.3.3",
         "husky": "^9.1.7",
