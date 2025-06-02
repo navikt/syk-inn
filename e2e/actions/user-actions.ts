@@ -58,7 +58,7 @@ export function fillPeriodeRelative({
     const tom = add(new Date(), { days: tomRelativeToToday })
 
     return async (page: Page) => {
-        const periodeRegion = page.getByRole('region', { name: 'Sykmeldingsperiode' })
+        const periodeRegion = page.getByRole('region', { name: 'Periode' })
         await expect(periodeRegion).toBeVisible()
         await periodeRegion.getByRole('textbox', { name: 'Fra og med' }).fill(inputDate(fom))
         await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(tom))

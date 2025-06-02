@@ -15,6 +15,7 @@ function TilbakedateringGrunn(): ReactElement {
 
     return (
         <TextField
+            className="max-w-prose"
             label="Oppgi årsak for tilbakedatering"
             onChange={field.onChange}
             value={field.value ?? ''}

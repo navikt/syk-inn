@@ -5,9 +5,9 @@ import { ArrowRightIcon } from '@navikt/aksel-icons'
 import dynamic from 'next/dynamic'
 
 import { raise } from '@utils/ts'
-import ExpandableFormSection from '@components/form/expandable-form-section/ExpandableFormSection'
 import AndreSporsmalSection from '@components/ny-sykmelding-form/andre-sporsmal/AndreSporsmalSection'
 import { createDefaultValues } from '@components/ny-sykmelding-form/form-default-values'
+import FormSection from '@components/form/form-section/FormSection'
 
 import { useAppDispatch, useAppSelector } from '../../providers/redux/hooks'
 import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
@@ -36,41 +36,37 @@ function MainSection({ initialServerValues }: Props): ReactElement {
     })
 
     return (
-        <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <ExpandableFormSection title="Sykmeldingsperiode" className="lg:col-span-2">
-                    <AktivitetSection />
-                </ExpandableFormSection>
-                <DynamicTilbakedateringSection />
-                <ExpandableFormSection title="Diagnose">
-                    <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
-                </ExpandableFormSection>
-                <ExpandableFormSection title="Andre spørsmål">
-                    <AndreSporsmalSection />
-                </ExpandableFormSection>
-                <ExpandableFormSection
-                    title="Meldinger"
-                    defaultClosed={
-                        initialValues.meldinger?.tilNav == null && initialValues.meldinger?.tilArbeidsgiver == null
-                    }
-                    className="lg:col-span-2"
-                >
-                    <MeldingerSection />
-                </ExpandableFormSection>
-                <div className="w-full flex justify-end gap-3 mt-16 lg:col-span-2">
-                    <Button
-                        id="step-navigation-next"
-                        type="submit"
-                        variant="primary"
-                        icon={<ArrowRightIcon aria-hidden />}
-                        iconPosition="right"
-                    >
-                        Neste steg
-                    </Button>
-                </div>
-            </form>
-            <FormDevTools />
-        </FormProvider>
+        <div className="bg-bg-default p-4 rounded">
+            <FormProvider {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <FormSection title="Periode">
+                        <AktivitetSection />
+                    </FormSection>
+                    <DynamicTilbakedateringSection />
+                    <FormSection title="Diagnose" className="mt-8">
+                        <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
+                    </FormSection>
+                    <FormSection title="Andre spørsmål" className="my-8" hideTitle>
+                        <AndreSporsmalSection />
+                    </FormSection>
+                    <FormSection title="Meldinger" className="mt-8">
+                        <MeldingerSection />
+                    </FormSection>
+                    <div className="w-full flex justify-end gap-3 mt-16 lg:col-span-2">
+                        <Button
+                            id="step-navigation-next"
+                            type="submit"
+                            variant="primary"
+                            icon={<ArrowRightIcon aria-hidden />}
+                            iconPosition="right"
+                        >
+                            Neste steg
+                        </Button>
+                    </div>
+                </form>
+                <FormDevTools />
+            </FormProvider>
+        </div>
     )
 }
 

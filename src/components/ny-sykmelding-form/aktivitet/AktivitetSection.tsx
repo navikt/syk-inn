@@ -19,16 +19,17 @@ function AktivitetSection(): ReactElement {
                     <PeriodePicker index={index} />
                     <AktivitetPicker index={index} />
                     {index > 0 && (
-                        <Button variant="danger" type="button" onClick={() => remove(index)}>
+                        <Button variant="danger" type="button" size="small" onClick={() => remove(index)}>
                             Slett periode
                         </Button>
                     )}
                 </Fragment>
             ))}
-            <div className="mt-8">
+            <div className="mt-0">
                 <Button
                     variant="secondary"
                     type="button"
+                    size="small"
                     onClick={() => {
                         append(getDefaultPeriode())
                     }}

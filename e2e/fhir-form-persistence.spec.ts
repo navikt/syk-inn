@@ -53,7 +53,7 @@ test('filling out the form, and returning to main step, should keep all values',
 
     // Section 1 - Periode/Aktiviteter
     // TODO: Multiple periods?
-    const periodeRegion = page.getByRole('region', { name: 'Sykmeldingsperiode' })
+    const periodeRegion = page.getByRole('region', { name: 'Periode' })
     await expect(periodeRegion.getByRole('textbox', { name: 'Fra og med' })).toHaveValue(inputDate(daysAgo(9)))
     await expect(periodeRegion.getByRole('textbox', { name: 'Til og med' })).toHaveValue(inputDate(inDays(5)))
 
@@ -71,8 +71,7 @@ test('filling out the form, and returning to main step, should keep all values',
 
     // Section 3 - Diagnoser
     const diagnoseRegion = page.getByRole('region', { name: 'Diagnose', exact: true })
-    const hoveddiagnose = diagnoseRegion.getByRole('region', { name: 'Hoveddiagnose', exact: true })
-    await expect(hoveddiagnose).toHaveText(/P74 - Angstlidelse/)
+    await expect(diagnoseRegion).toHaveText(/P74 - Angstlidelse/)
 
     // Section 4 - Andre spørsmål
     const andreSporsmalRegion = page.getByRole('region', { name: 'Andre spørsmål' })
@@ -83,7 +82,6 @@ test('filling out the form, and returning to main step, should keep all values',
 
     // Section 5 - Meldinger
     const meldingerRegion = page.getByRole('region', { name: 'Meldinger' })
-    await expect(meldingerRegion.getByRole('button', { name: 'Vis mer' })).toHaveAttribute('aria-expanded', 'true')
     await expect(meldingerRegion.getByRole('textbox', { name: 'Har du noen tilbakemeldinger?' })).toHaveValue(
         'Trenger mer penger',
     )

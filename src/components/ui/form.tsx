@@ -15,7 +15,7 @@ export function FormSection({ children, icon, title }: PropsWithChildren<Props>)
     return (
         <div className="relative">
             <section className="p-4 bg-bg-subtle rounded-sm" aria-labelledby={headingId}>
-                <Heading level="2" size="medium" id={headingId} className="flex items-center gap-1">
+                <Heading level="2" size="medium" id={headingId} className="flex items-center gap-1" spacing>
                     {icon}
                     {title}
                 </Heading>

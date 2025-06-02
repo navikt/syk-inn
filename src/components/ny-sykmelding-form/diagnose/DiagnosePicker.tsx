@@ -20,6 +20,7 @@ function DiagnosePicker(): ReactElement {
                 id="diagnoser.hoved"
                 label="Hoveddiagnose"
                 description="Diagnosekoder fra både  ICPC-2 og ICD-10."
+                className="max-w-prose"
                 value={field.value}
                 onBlur={field.onBlur}
                 error={fieldState.error?.message}
