@@ -1,4 +1,4 @@
-import { Alert, BodyShort, Button, Detail, FormSummary, Heading } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Detail, FormSummary } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
 import { useQuery } from '@apollo/client'
@@ -25,49 +25,18 @@ function SummarySection(): ReactElement {
 
     return (
         <div className="flex flex-col gap-6 mt-8">
-            <Heading size="medium" level="3">
-                Oppsummering sykmelding
-            </Heading>
             <FormSummary>
                 <FormSummary.Header>
-                    <FormSummary.Heading level="2">Pasientopplysninger</FormSummary.Heading>
+                    <FormSummary.Heading level="2">Oppsummering sykmelding</FormSummary.Heading>
+                    <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
                 </FormSummary.Header>
 
                 <PatientSummaryAnswers pasient={formState.pasient} />
-            </FormSummary>
-
-            <FormSummary>
-                <FormSummary.Header>
-                    <FormSummary.Heading level="2">Periode og grad</FormSummary.Heading>
-                    <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
-                </FormSummary.Header>
-
                 <AktivitetSummaryAnswers aktiviteter={formState.aktiviteter} />
-            </FormSummary>
-            {formState.tilbakedatering && (
-                <FormSummary>
-                    <FormSummary.Header>
-                        <FormSummary.Heading level="2">Tilbakedatering</FormSummary.Heading>
-                        <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
-                    </FormSummary.Header>
+                {formState.tilbakedatering && (
                     <TilbakedateringSummaryAnswers tilbakedatering={formState.tilbakedatering} />
-                </FormSummary>
-            )}
-            <FormSummary>
-                <FormSummary.Header>
-                    <FormSummary.Heading level="2">Diagnose</FormSummary.Heading>
-                    <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
-                </FormSummary.Header>
-
+                )}
                 <DiagnoseSummaryAnswers diagnose={formState.diagnose} />
-            </FormSummary>
-
-            <FormSummary>
-                <FormSummary.Header>
-                    <FormSummary.Heading level="2">Meldinger</FormSummary.Heading>
-                    <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
-                </FormSummary.Header>
-
                 <FormSummary.Answers>
                     <FormSummary.Answer>
                         <FormSummary.Label>Til NAV</FormSummary.Label>
@@ -86,13 +55,6 @@ function SummarySection(): ReactElement {
                         )}
                     </FormSummary.Answer>
                 </FormSummary.Answers>
-            </FormSummary>
-
-            <FormSummary>
-                <FormSummary.Header>
-                    <FormSummary.Heading level="2">Andre spørsmål</FormSummary.Heading>
-                    <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
-                </FormSummary.Header>
 
                 <FormSummary.Answers>
                     <FormSummary.Answer>
