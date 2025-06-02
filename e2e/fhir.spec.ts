@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-import { OpprettSykmeldingMutationVariables } from '@queries'
+import { OpprettSykmeldingDocument } from '@queries'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { daysAgo, inDays, today } from './utils/date-utils'
@@ -15,6 +15,7 @@ import {
     fillTilbakedatering,
     verifySummaryPage,
 } from './actions/user-actions'
+import { expectGraphQLRequest } from './utils/assertions'
 
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
@@ -29,8 +30,8 @@ test('can submit 100% sykmelding', async ({ page }) => {
 
     await nextStep()(page)
 
-    const payload = await submitSykmelding()(page)
-    expect(payload).toEqual({
+    const request = await submitSykmelding()(page)
+    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         values: {
             pasientIdent: '21037712323',
             hoveddiagnose: { code: 'P74', system: 'ICPC2' },
@@ -43,7 +44,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
                 },
             ],
         },
-    } satisfies OpprettSykmeldingMutationVariables)
+    })
 
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
@@ -58,8 +59,8 @@ test('can submit 100% sykmelding and use week picker', async ({ page }) => {
 
     await nextStep()(page)
 
-    const payload = await submitSykmelding()(page)
-    expect(payload).toEqual({
+    const request = await submitSykmelding()(page)
+    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         values: {
             pasientIdent: '21037712323',
             hoveddiagnose: { code: 'P74', system: 'ICPC2' },
@@ -72,7 +73,7 @@ test('can submit 100% sykmelding and use week picker', async ({ page }) => {
                 },
             ],
         },
-    } satisfies OpprettSykmeldingMutationVariables)
+    })
 
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
@@ -91,8 +92,8 @@ test('shall be able to edit diagnose', async ({ page }) => {
 
     await nextStep()(page)
 
-    const payload = await submitSykmelding()(page)
-    expect(payload).toEqual({
+    const request = await submitSykmelding()(page)
+    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         values: {
             pasientIdent: '21037712323',
             hoveddiagnose: { code: 'D290', system: 'ICD10' },
@@ -105,7 +106,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
                 },
             ],
         },
-    } satisfies OpprettSykmeldingMutationVariables)
+    })
 
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
@@ -123,8 +124,8 @@ test('can submit gradert sykmelding', async ({ page }) => {
 
     await nextStep()(page)
 
-    const payload = await submitSykmelding()(page)
-    expect(payload).toEqual({
+    const request = await submitSykmelding()(page)
+    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         values: {
             pasientIdent: '21037712323',
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -137,7 +138,7 @@ test('can submit gradert sykmelding', async ({ page }) => {
                 },
             ],
         },
-    } satisfies OpprettSykmeldingMutationVariables)
+    })
 
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
@@ -166,8 +167,8 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
         },
     })(page)
 
-    const payload = await submitSykmelding()(page)
-    expect(payload).toEqual({
+    const request = await submitSykmelding()(page)
+    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         values: {
             pasientIdent: '21037712323',
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -180,5 +181,5 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
                 },
             ],
         },
-    } satisfies OpprettSykmeldingMutationVariables)
+    })
 })

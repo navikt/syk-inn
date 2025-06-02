@@ -164,11 +164,9 @@ export function verifySummaryPage(sections: { tilbakedatering?: { contact: strin
 }
 
 export function submitSykmelding() {
-    return async (page: Page): Promise<unknown> => {
+    return async (page: Page): Promise<GraphQLRequest> => {
         const request = await clickAndWait(page.getByRole('button', { name: 'Send inn' }).click(), waitForGraphQL(page))
-        const payload: GraphQLRequest = request.postDataJSON()
-
-        return payload.variables
+        return request.postDataJSON()
     }
 }
 
