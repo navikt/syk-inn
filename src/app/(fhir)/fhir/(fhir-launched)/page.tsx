@@ -16,7 +16,7 @@ function DashboardPage(): ReactElement {
     useQuery(KonsultasjonDocument)
 
     return (
-        <Page className="bg-bg-subtle">
+        <Page className="bg-transparent">
             <PageBlock as="main" gutters className="pt-4">
                 <Heading level="2" size="medium" spacing>
                     <span>Oversikt over</span>

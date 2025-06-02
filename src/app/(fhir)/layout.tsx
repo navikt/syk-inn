@@ -19,7 +19,7 @@ export default async function FhirLayout({ children }: PropsWithChildren): Promi
     const toggles = await getToggles()
 
     return (
-        <html lang="nb">
+        <html lang="nb" className="bg-bg-subtle">
             <head>
                 <link rel="icon" href="https://cdn.nav.no/personbruker/decorator-next/public/favicon.ico" sizes="any" />
                 <link

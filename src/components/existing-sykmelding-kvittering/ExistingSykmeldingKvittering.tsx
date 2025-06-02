@@ -41,7 +41,7 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitte
     }, [data?.sykmelding?.documentStatus, stopPolling])
 
     return (
-        <div className="max-w-prose">
+        <div className="max-w-prose bg-white p-4 rounded-sm">
             {loading && <SykmeldingKvitteringSkeleton />}
             {error && <SykmeldingKvitteringError error={error} refetch={refetch} />}
             {data?.sykmelding && (
@@ -61,7 +61,7 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitte
 function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
     return (
         <div className="max-w-prose">
-            <div className="my-4">
+            <div className="mb-4">
                 <Alert variant="success">Nav har mottatt sykmeldingen og sendt den til den sykmeldte</Alert>
             </div>
             <div className="flex flex-col gap-3">

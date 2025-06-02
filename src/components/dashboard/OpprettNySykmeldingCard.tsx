@@ -10,7 +10,7 @@ function OpprettNySykmeldingCard(): ReactElement {
     const [hasLegged, setHasLegged] = useState(true)
 
     return (
-        <section className="bg-bg-default rounded p-4" aria-labelledby="opprett-sykmelding-heading">
+        <section className="bg-bg-default rounded-sm p-4" aria-labelledby="opprett-sykmelding-heading">
             <Heading size="medium" level="2" spacing id="opprett-sykmelding-heading">
                 Opprett ny sykmelding
             </Heading>

@@ -3,7 +3,7 @@ import { BodyShort, Heading } from '@navikt/ds-react'
 
 function PagaendeSykmeldingerCard(): ReactElement {
     return (
-        <div className="rounded p-4 bg-bg-default">
+        <div className="rounded-sm p-4 bg-bg-default">
             <Heading size="medium" level="2" spacing>
                 Pågående sykmeldinger (0)
             </Heading>

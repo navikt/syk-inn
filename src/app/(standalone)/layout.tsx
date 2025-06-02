@@ -24,7 +24,7 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
     const [behandler, toggles] = await Promise.all([getHelseIdUserInfo(), getToggles()])
 
     return (
-        <html lang="nb">
+        <html lang="nb" className="bg-bg-subtle">
             <head>
                 <link rel="icon" href="https://cdn.nav.no/personbruker/decorator-next/public/favicon.ico" sizes="any" />
                 <link
