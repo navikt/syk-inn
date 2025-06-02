@@ -82,8 +82,8 @@ function useHandleFormSubmit() {
                     bi: [],
                 },
                 aktiviteter: values.perioder.map((periode) => ({
-                    fom: periode.periode.fom,
-                    tom: periode.periode.tom,
+                    fom: periode.periode.fom ?? raise("Can't submit step without periode fom"),
+                    tom: periode.periode.tom ?? raise("Can't submit step without periode tom"),
                     grad: periode.aktivitet.grad,
                     type: periode.aktivitet.type,
                 })),

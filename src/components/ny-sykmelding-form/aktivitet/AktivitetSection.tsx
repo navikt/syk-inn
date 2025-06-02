@@ -12,6 +12,7 @@ function AktivitetSection(): ReactElement {
     const { fields, append, remove } = useFieldArray<NySykmeldingMainFormValues>({
         name: 'perioder',
     })
+
     return (
         <>
             {fields?.map((periode, index) => (

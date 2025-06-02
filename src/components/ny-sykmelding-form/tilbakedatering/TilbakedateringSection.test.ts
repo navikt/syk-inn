@@ -46,4 +46,17 @@ describe('isTilbakedatering', () => {
         const result = isTilbakedatering(perioder, new Date('2025-01-09'))
         expect(result).toBe(false)
     })
+
+    it('should not think its a tilbakedatering when theres a perode but everything is null', () => {
+        const perioder: Pick<AktivitetsPeriode, 'periode'>[] = [
+            {
+                periode: {
+                    fom: null,
+                    tom: null,
+                },
+            },
+        ]
+        const result = isTilbakedatering(perioder, new Date('2025-01-09'))
+        expect(result).toBe(false)
+    })
 })

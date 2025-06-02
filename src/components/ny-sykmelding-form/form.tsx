@@ -16,8 +16,8 @@ export type NySykmeldingSuggestions = {
 }
 
 export type PeriodeField = {
-    fom: string
-    tom: string
+    fom: string | null
+    tom: string | null
 }
 
 export type AktivitetIkkeMuligType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT'

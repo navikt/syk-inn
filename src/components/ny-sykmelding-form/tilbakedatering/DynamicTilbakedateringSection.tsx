@@ -34,8 +34,14 @@ function DynamicTilbakedateringSection(): ReactElement | null {
 }
 
 export function isTilbakedatering(perioder: Pick<AktivitetsPeriode, 'periode'>[], sykmeldingsDato: Date): boolean {
-    const firstPeriode = R.firstBy(perioder, (periode) => periode.periode.fom)
-    return firstPeriode ? isBefore(new Date(firstPeriode?.periode.fom), subDays(sykmeldingsDato, 8)) : false
+    const firstFom = R.pipe(
+        perioder,
+        R.map((it) => it.periode.fom),
+        R.filter(R.isNonNull),
+        R.firstBy(R.identity()),
+    )
+
+    return firstFom ? isBefore(new Date(firstFom), subDays(sykmeldingsDato, 8)) : false
 }
 
 export default DynamicTilbakedateringSection

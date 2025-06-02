@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'motion/react'
 
 import { dateOnly } from '@utils/date'
 import { cn } from '@utils/tw'
+import { parseShorthand } from '@components/ny-sykmelding-form/aktivitet/periode-shorthand'
 
 import { PeriodeField, useController } from '../form'
 
@@ -38,7 +39,7 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
         },
     })
 
-    const { datepickerProps, toInputProps, fromInputProps } = useRangeDatepicker({
+    const { datepickerProps, toInputProps, fromInputProps, setSelected } = useRangeDatepicker({
         defaultSelected: {
             from: periodeField.field.value?.fom ? parseISO(periodeField.field.value.fom) : undefined,
             to: periodeField.field.value?.tom ? parseISO(periodeField.field.value.tom) : undefined,
@@ -74,6 +75,25 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
                         label="Fra og med"
                         onBlur={periodeField.field.onBlur}
                         error={periodeField.fieldState.error?.message}
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter') {
+                                const shorthand = parseShorthand(event.currentTarget.value)
+                                if (shorthand) {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+
+                                    setSelected({
+                                        from: shorthand.from,
+                                        to: shorthand.to,
+                                    })
+                                    /**
+                                     * There might be a Aksel-bug where the datepicker does not update the error
+                                     * state when a valid date is entered using setSelected
+                                     */
+                                    setRangeError(null)
+                                }
+                            }
+                        }}
                     />
                     <DatePicker.Input
                         className={styles.dateRangeInput}

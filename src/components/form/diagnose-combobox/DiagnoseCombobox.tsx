@@ -148,6 +148,7 @@ function DiagnoseCombobox({
                         <Button
                             variant="secondary-neutral"
                             size="xsmall"
+                            type="button"
                             onClick={() => {
                                 const resetValue = state.selectedValue
                                     ? unwrapUniqueValue(state.selectedValue).code
