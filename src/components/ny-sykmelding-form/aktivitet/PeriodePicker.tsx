@@ -65,7 +65,7 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
     const rangeDescription = getRangeDescription(periodeField?.field?.value ?? null)
 
     return (
-        <div className="flex items-end">
+        <div className="flex flex-col gap-1">
             <div className={cn(styles.periodePicker)}>
                 <DatePicker {...datepickerProps} wrapperClassName={styles.dateRangePicker}>
                     <DatePicker.Input
@@ -86,7 +86,7 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
             <AnimatePresence>
                 {rangeDescription && (
                     <motion.div
-                        className="overflow-hidden ml-3 mb-1"
+                        className="overflow-hidden"
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}

@@ -25,15 +25,17 @@ function AktivitetSection(): ReactElement {
                     )}
                 </Fragment>
             ))}
-            <Button
-                variant="secondary"
-                type="button"
-                onClick={() => {
-                    append(getDefaultPeriode())
-                }}
-            >
-                Legg til ny periode
-            </Button>
+            <div className="mt-8">
+                <Button
+                    variant="secondary"
+                    type="button"
+                    onClick={() => {
+                        append(getDefaultPeriode())
+                    }}
+                >
+                    Legg til ny periode
+                </Button>
+            </div>
         </>
     )
 }

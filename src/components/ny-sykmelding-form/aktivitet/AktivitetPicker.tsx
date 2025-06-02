@@ -1,5 +1,8 @@
 import React, { ReactElement } from 'react'
-import { BodyShort, Detail, Heading, Radio, RadioGroup, TextField } from '@navikt/ds-react'
+import { BodyShort, Select, TextField } from '@navikt/ds-react'
+import { AnimatePresence } from 'motion/react'
+
+import { SimpleReveal } from '@components/animation/Reveal'
 
 import { AktivitetIkkeMuligType, useController } from '../form'
 
@@ -13,35 +16,25 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
     })
 
     return (
-        <div className="mt-8">
-            <Heading level="3" size="small" spacing>
-                Mulighet for arbeid
-            </Heading>
-
-            <RadioGroup
-                hideLegend
-                legend="Aktivitetsbegrensning"
+        <div className="flex gap-8 mt-8">
+            <Select
+                label="Mulighet for arbeid"
+                className="w-60 flex flex-col mb-6"
                 value={aktivitetField.field.value}
-                onChange={(value: AktivitetIkkeMuligType) => {
-                    aktivitetField.field.onChange(value)
+                onChange={(event) => {
+                    aktivitetField.field.onChange(event.target.value)
                 }}
             >
-                <Radio
-                    value={'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType}
-                    description="100% sykmeldingsperiode"
-                >
-                    Aktivitet ikke mulig
-                </Radio>
-                <Radio
-                    value={'GRADERT' satisfies AktivitetIkkeMuligType}
-                    description="Gradert sykmeldingsperiode"
-                    className="flex"
-                >
-                    <div>Noe mulighet for aktivitet</div>
-                </Radio>
-            </RadioGroup>
-
-            {aktivitetField.field.value === 'GRADERT' && <GradertGradPicker index={index} />}
+                <option value={'GRADERT' satisfies AktivitetIkkeMuligType}>Gradert sykmelding</option>
+                <option value={'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType}>Aktivitet ikke mulig</option>
+            </Select>
+            <AnimatePresence>
+                {aktivitetField.field.value === 'GRADERT' && (
+                    <SimpleReveal>
+                        <GradertGradPicker index={index} />
+                    </SimpleReveal>
+                )}
+            </AnimatePresence>
         </div>
     )
 }
@@ -73,25 +66,22 @@ function GradertGradPicker({ index }: { index: number }): ReactElement {
             : null
 
     return (
-        <div className="flex gap-3 items-end">
-            <div className="w-[20ch]">
-                <TextField
-                    type="number"
-                    label="Sykmeldingsgrad"
-                    {...gradertField.field}
-                    value={gradertField.field.value ?? ''}
-                    error={gradertField.fieldState.error?.message}
-                />
-            </div>
-            {coercedValue != null && (
-                <div className="mb-1">
-                    <BodyShort>{100 - coercedValue}% i arbeid</BodyShort>
-                    <Detail>
-                        F.eks. {(37.5 / (100 / (100 - coercedValue))).toFixed(1)} timer i uken gitt 37.5 timers
-                        arbeidsuke
-                    </Detail>
-                </div>
-            )}
+        <div className="flex flex-col gap-1">
+            <TextField
+                inputMode="numeric"
+                label="Sykmeldingsgrad (%)"
+                className="[&>input]:w-[7ch]"
+                {...gradertField.field}
+                value={gradertField.field.value ?? ''}
+                error={gradertField.fieldState.error?.message}
+            />
+            <AnimatePresence>
+                {coercedValue != null && (
+                    <SimpleReveal>
+                        <BodyShort size="small">{100 - coercedValue}% i arbeid</BodyShort>
+                    </SimpleReveal>
+                )}
+            </AnimatePresence>
         </div>
     )
 }
