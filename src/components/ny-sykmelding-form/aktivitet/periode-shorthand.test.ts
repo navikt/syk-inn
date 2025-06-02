@@ -9,12 +9,12 @@ describe('parseShorthand', () => {
     const staticNow = parseISO('2025-06-07')
 
     it.each([
-        { value: '7d', from: '2025-06-07', to: '2025-06-14' },
-        { value: '13d', from: '2025-06-07', to: '2025-06-20' },
-        { value: '60d', from: '2025-06-07', to: '2025-08-06' },
-        { value: '1u', from: '2025-06-07', to: '2025-06-14' },
-        { value: '2u', from: '2025-06-07', to: '2025-06-21' },
-        { value: '1m', from: '2025-06-07', to: '2025-07-07' },
+        { value: '7d', from: '2025-06-07', to: '2025-06-13' },
+        { value: '13d', from: '2025-06-07', to: '2025-06-19' },
+        { value: '60d', from: '2025-06-07', to: '2025-08-05' },
+        { value: '1u', from: '2025-06-07', to: '2025-06-13' },
+        { value: '2u', from: '2025-06-07', to: '2025-06-20' },
+        { value: '1m', from: '2025-06-07', to: '2025-07-06' },
     ])('should handle a simple case, $value', ({ value, from, to }) => {
         const result = parseShorthand(value, staticNow)
 
@@ -27,7 +27,7 @@ describe('parseShorthand', () => {
 
         expect(toAssertableRange(result)).toEqual({
             from: '2025-06-09',
-            to: '2025-06-16',
+            to: '2025-06-15',
         })
     })
 
@@ -37,7 +37,7 @@ describe('parseShorthand', () => {
 
         expect(toAssertableRange(result)).toEqual({
             from: '2025-06-05',
-            to: '2025-06-12',
+            to: '2025-06-11',
         })
     })
 
@@ -47,7 +47,7 @@ describe('parseShorthand', () => {
 
         expect(toAssertableRange(result)).toEqual({
             from: '2025-06-09',
-            to: '2025-06-23',
+            to: '2025-06-22',
         })
     })
 })

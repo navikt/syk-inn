@@ -41,7 +41,8 @@ export function isTilbakedatering(perioder: Pick<AktivitetsPeriode, 'periode'>[]
         R.firstBy(R.identity()),
     )
 
-    return firstFom ? isBefore(new Date(firstFom), subDays(sykmeldingsDato, 8)) : false
+    // 7 seems weird here, but inclusivity both in isBefore and "fom" means we need to subtract 7 days
+    return firstFom ? isBefore(new Date(firstFom), subDays(sykmeldingsDato, 7)) : false
 }
 
 export default DynamicTilbakedateringSection

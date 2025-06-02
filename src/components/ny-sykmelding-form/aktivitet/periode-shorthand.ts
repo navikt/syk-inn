@@ -1,4 +1,4 @@
-import { addDays, addMonths, addWeeks } from 'date-fns'
+import { addDays, addMonths, addWeeks, subDays } from 'date-fns'
 
 type ValidShorthand = 'd' | 'u' | 'm'
 type ShorthandTuple = [unit: ValidShorthand, amount: number]
@@ -55,7 +55,7 @@ function matchShorthand(value: string): ShorthandTuple | null {
 
     const unit = match[2] as 'd' | 'u' | 'm'
 
-    return [unit, amount - 1]
+    return [unit, amount]
 }
 
 function matchOffset(value: string): number | null {
@@ -70,14 +70,16 @@ function matchOffset(value: string): number | null {
 
 /**
  * Takes a shorthand and converts it to the appropriate date range.
+ *
+ * Navs date ranges are inclusive in both ends. This maths handles that.
  */
 function shorthandToRange([unit, amount]: ShorthandTuple, from: Date): { from: Date; to: Date } {
     switch (unit) {
         case 'd':
-            return { from, to: addDays(from, amount) }
+            return { from, to: addDays(from, amount - 1) }
         case 'u':
-            return { from, to: addWeeks(from, amount) }
+            return { from, to: subDays(addWeeks(from, amount), 1) }
         case 'm':
-            return { from, to: addMonths(from, amount) }
+            return { from, to: subDays(addMonths(from, amount), 1) }
     }
 }
