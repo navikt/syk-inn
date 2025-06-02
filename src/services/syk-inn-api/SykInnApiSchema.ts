@@ -72,7 +72,7 @@ export const ExistingSykmeldingSchema = z.object({
         hoveddiagnose: z.object({
             system: z.string(),
             code: z.string(),
-            text: z.string(),
+            // text: z.string(),
         }),
     }),
 })

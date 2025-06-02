@@ -127,7 +127,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                         hoved: {
                             system: 'ICD10',
                             code: 'L73',
-                            text: 'Brudd legg/ankel',
+                            // text: 'Brudd legg/ankel',
                         },
                         bi: [],
                     },
@@ -151,7 +151,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                             diagnosisUrnToOidType(sykmelding.sykmelding.hoveddiagnose.system) ??
                             raise(`Unknown diagnosis system ${sykmelding.sykmelding.hoveddiagnose.system}`),
                         code: sykmelding.sykmelding.hoveddiagnose.code,
-                        text: sykmelding.sykmelding.hoveddiagnose.text,
+                        // text: sykmelding.sykmelding.hoveddiagnose.text,
                     },
                     bi: [],
                 },

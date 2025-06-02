@@ -36,7 +36,7 @@ export type Diagnose = {
     __typename?: 'Diagnose'
     code: Scalars['String']['output']
     system: DiagnoseSystem
-    text: Scalars['String']['output']
+    // text: Scalars['String']['output']
 }
 
 export type DiagnoseSystem = 'ICD10' | 'ICPC2'
