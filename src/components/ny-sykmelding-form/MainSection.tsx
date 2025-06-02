@@ -87,12 +87,13 @@ function useHandleFormSubmit() {
                     grad: periode.aktivitet.grad,
                     type: periode.aktivitet.type,
                 })),
-                tilbakedatering: values.tilbakedatering
-                    ? {
-                          fom: values.tilbakedatering?.fom ?? '',
-                          grunn: values.tilbakedatering?.grunn ?? '',
-                      }
-                    : null,
+                tilbakedatering:
+                    values.tilbakedatering?.fom && values.tilbakedatering?.grunn
+                        ? {
+                              fom: values.tilbakedatering.fom,
+                              grunn: values.tilbakedatering.grunn,
+                          }
+                        : null,
                 meldinger: {
                     tilNav: values.meldinger.tilNav,
                     tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
