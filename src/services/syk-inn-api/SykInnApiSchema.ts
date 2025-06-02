@@ -39,6 +39,18 @@ export const ExistingSykmeldingSchema = z.object({
             tom: DateOnly,
         }),
         z.object({
+            type: z.literal('AVVENTENDE'),
+            fom: DateOnly,
+            tom: DateOnly,
+            innspillTilArbeidsgiver: z.string(),
+        }),
+        z.object({
+            type: z.literal('BEHANDLINGSDAGER'),
+            fom: DateOnly,
+            tom: DateOnly,
+            antallBehandlingsdager: z.number(),
+        }),
+        z.object({
             type: z.literal('GRADERT'),
             fom: DateOnly,
             tom: DateOnly,
@@ -46,6 +58,11 @@ export const ExistingSykmeldingSchema = z.object({
                 .string()
                 .transform((it) => +it)
                 .pipe(z.number().min(1).max(99)),
+        }),
+        z.object({
+            type: z.literal('REISETILSKUDD'),
+            fom: DateOnly,
+            tom: DateOnly,
         }),
     ]),
     pasient: z.object({
@@ -56,6 +73,8 @@ export const ExistingSykmeldingSchema = z.object({
         code: z.string(),
         text: z.string(),
     }),
+    legekontorOrgnr: z.string(),
+    sykmelderHpr: z.string(),
 })
 
 export type NySykmelding = z.infer<typeof NySykmeldingSchema>

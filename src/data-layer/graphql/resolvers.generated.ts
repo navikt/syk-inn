@@ -25,7 +25,7 @@ export type Aktivitet = {
     type: AktivitetType
 }
 
-export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT'
+export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'REISETILSKUDD'
 
 export type Behandler = {
     __typename?: 'Behandler'
@@ -54,6 +54,8 @@ export type InputPeriode = {
     grad?: InputMaybe<Scalars['String']['input']>
     tom: Scalars['String']['input']
     type: Scalars['String']['input']
+    innspillTilArbeidsgiver?: InputMaybe<Scalars['String']['input']>
+    antallBehandlingsdager?: InputMaybe<Scalars['Int']['input']>
 }
 
 export type Konsultasjon = {

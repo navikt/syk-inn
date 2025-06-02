@@ -249,6 +249,28 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                                     tom: periode.tom,
                                 }
                             }
+                            case 'AVVENTENDE': {
+                                return {
+                                    type: 'AVVENTENDE' as const,
+                                    fom: periode.fom,
+                                    tom: periode.tom,
+                                    innspillTilArbeidsgiver: periode.innspillTilArbeidsgiver ?? '',
+                                }
+                            }
+                            case 'BEHANDLINGSDAGER': {
+                                return {
+                                    type: 'BEHANDLINGSDAGER' as const,
+                                    fom: periode.fom,
+                                    tom: periode.tom,
+                                    antallBehandlingsdager: periode.antallBehandlingsdager ?? 0,
+                                }
+                            }
+                            case 'REISETILSKUDD':
+                                return {
+                                    type: 'REISETILSKUDD' as const,
+                                    fom: periode.fom,
+                                    tom: periode.tom,
+                                }
                             default:
                                 raise(`Unknown activity type ${periode.type}`)
                         }

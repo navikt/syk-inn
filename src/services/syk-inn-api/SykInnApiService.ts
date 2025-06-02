@@ -31,6 +31,23 @@ type NySykmeldingPayload = {
                   fom: string
                   tom: string
               }
+            | {
+                  type: 'AVVENTENDE'
+                  fom: string
+                  tom: string
+                  innspillTilArbeidsgiver: string
+              }
+            | {
+                  type: 'BEHANDLINGSDAGER'
+                  fom: string
+                  tom: string
+                  antallBehandlingsdager: number
+              }
+            | {
+                  type: 'REISETILSKUDD'
+                  fom: string
+                  tom: string
+              }
     }
     legekontorOrgnr: string
 }
