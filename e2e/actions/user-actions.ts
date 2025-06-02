@@ -64,12 +64,9 @@ export function fillPeriodeRelative({
         await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(tom))
 
         if (typeof type !== 'string' && 'grad' in type) {
-            await page
-                .getByRole('group', { name: 'Aktivitetsbegrensning' })
-                .getByRole('radio', { name: /Noe mulighet for aktivitet/ })
-                .click()
+            await page.getByRole('combobox', { name: 'Mulighet for arbeid' }).selectOption('Gradert sykmelding')
 
-            await page.getByRole('spinbutton', { name: 'Sykmeldingsgrad' }).fill(`${type.grad}`)
+            await page.getByRole('textbox', { name: 'Sykmeldingsgrad (%)' }).fill(`${type.grad}`)
         }
     }
 }
