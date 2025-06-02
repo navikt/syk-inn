@@ -78,14 +78,14 @@ export async function createDocumentReference(
 
 function getSykmeldingDescription(sykmelding: ExistingSykmelding): string {
     let type
-    switch (sykmelding.aktivitet.type) {
+    switch (sykmelding.sykmelding.aktivitet.type) {
         case 'AKTIVITET_IKKE_MULIG':
             type = '100%'
             break
         case 'GRADERT':
-            type = `${sykmelding.aktivitet.grad}%`
+            type = `${sykmelding.sykmelding.aktivitet.grad}%`
             break
     }
 
-    return `${type} sykmelding, ${toReadableDatePeriod(sykmelding.aktivitet.fom, sykmelding.aktivitet.tom)}`
+    return `${type} sykmelding, ${toReadableDatePeriod(sykmelding.sykmelding.aktivitet.fom, sykmelding.sykmelding.aktivitet.tom)}`
 }

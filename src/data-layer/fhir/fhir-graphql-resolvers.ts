@@ -144,20 +144,20 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             return {
                 sykmeldingId: sykmelding.sykmeldingId,
-                aktivitet: sykmelding.aktivitet,
+                aktivitet: sykmelding.sykmelding.aktivitet,
                 diagnose: {
                     hoved: {
                         system:
-                            diagnosisUrnToOidType(sykmelding.hovedDiagnose.system) ??
-                            raise(`Unknown diagnosis system ${sykmelding.hovedDiagnose.system}`),
-                        code: sykmelding.hovedDiagnose.code,
-                        text: sykmelding.hovedDiagnose.text,
+                            diagnosisUrnToOidType(sykmelding.sykmelding.hoveddiagnose.system) ??
+                            raise(`Unknown diagnosis system ${sykmelding.sykmelding.hoveddiagnose.system}`),
+                        code: sykmelding.sykmelding.hoveddiagnose.code,
+                        text: sykmelding.sykmelding.hoveddiagnose.text,
                     },
                     bi: [],
                 },
                 pasient: {
                     navn: 'TODO',
-                    ident: sykmelding.pasient.fnr,
+                    ident: sykmelding.pasientFnr,
                 },
                 documentStatus: 'resourceType' in existingDocumentReference ? 'COMPLETE' : 'PENDING',
             } satisfies Sykmelding
