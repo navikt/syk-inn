@@ -5,7 +5,7 @@ import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 
 async function NySykmeldingPage(): Promise<ReactElement> {
     return (
-        <Page>
+        <Page className="bg-bg-subtle">
             <PageBlock as="main" gutters className="pt-4">
                 <NySykmeldingForm />
             </PageBlock>

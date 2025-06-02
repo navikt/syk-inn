@@ -7,10 +7,13 @@ import { useQuery } from '@apollo/client'
 
 import OpprettNySykmeldingCard from '@components/dashboard/OpprettNySykmeldingCard'
 import PagaendeSykmeldingerCard from '@components/dashboard/PagaendeSykmeldingerCard'
-import { PasientDocument } from '@queries'
+import { KonsultasjonDocument, PasientDocument } from '@queries'
 
 function DashboardPage(): ReactElement {
     const pasientQuery = useQuery(PasientDocument)
+
+    // Preload Konsultasjon (with diagnosis) for the form
+    useQuery(KonsultasjonDocument)
 
     return (
         <Page className="bg-bg-subtle">

@@ -9,7 +9,6 @@ import {
     editHoveddiagnose,
     fillPeriodeRelative,
     pickHoveddiagnose,
-    pickSuggestedPeriod,
     submitSykmelding,
     nextStep,
     fillTilbakedatering,
@@ -25,35 +24,6 @@ test('can submit 100% sykmelding', async ({ page }) => {
         type: '100%',
         days: 3,
     })(page)
-
-    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-
-    await nextStep()(page)
-
-    const request = await submitSykmelding()(page)
-    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        values: {
-            pasientIdent: '21037712323',
-            hoveddiagnose: { code: 'P74', system: 'ICPC2' },
-            perioder: [
-                {
-                    type: 'AKTIVITET_IKKE_MULIG',
-                    fom: today(),
-                    tom: inDays(3),
-                    grad: null,
-                },
-            ],
-        },
-    })
-
-    await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
-})
-
-test('can submit 100% sykmelding and use week picker', async ({ page }) => {
-    await launchWithMock(page)
-    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
-
-    await pickSuggestedPeriod('3 dager')(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 

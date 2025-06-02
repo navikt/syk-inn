@@ -1,9 +1,8 @@
 import React, { ReactElement, useState } from 'react'
-import { BodyShort, Button, DatePicker, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
-import { addDays, addWeeks, differenceInDays, endOfWeek, format, isSameDay, parseISO, subDays } from 'date-fns'
+import { BodyShort, DatePicker, Detail, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
+import { differenceInDays, format, isSameDay, parseISO } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 import { AnimatePresence, motion } from 'motion/react'
-import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons'
 
 import { dateOnly } from '@utils/date'
 import { cn } from '@utils/tw'
@@ -39,7 +38,7 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
         },
     })
 
-    const { datepickerProps, toInputProps, fromInputProps, setSelected } = useRangeDatepicker({
+    const { datepickerProps, toInputProps, fromInputProps } = useRangeDatepicker({
         defaultSelected: {
             from: periodeField.field.value?.fom ? parseISO(periodeField.field.value.fom) : undefined,
             to: periodeField.field.value?.tom ? parseISO(periodeField.field.value.tom) : undefined,
@@ -66,24 +65,8 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
     const rangeDescription = getRangeDescription(periodeField?.field?.value ?? null)
 
     return (
-        <div>
+        <div className="flex items-end">
             <div className={cn(styles.periodePicker)}>
-                <div className="flex items-start mt-8 mr-2 -ml-2">
-                    <Button
-                        icon={<ChevronLeftIcon title="Forskyv fra dato en dag bak" />}
-                        type="button"
-                        variant="tertiary-neutral"
-                        className="w-8"
-                        onClick={() => {
-                            const fom = subDays(periodeField.field.value?.fom ?? new Date(), 1)
-
-                            setSelected({
-                                from: fom,
-                                to: periodeField.field.value?.tom ? parseISO(periodeField.field.value.tom) : undefined,
-                            })
-                        }}
-                    />
-                </div>
                 <DatePicker {...datepickerProps} wrapperClassName={styles.dateRangePicker}>
                     <DatePicker.Input
                         className={styles.dateRangeInput}
@@ -99,91 +82,18 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
                         onBlur={periodeField.field.onBlur}
                     />
                 </DatePicker>
-                <div className="flex items-start mt-8 ml-2">
-                    <Button
-                        icon={<ChevronRightIcon title="Forskyv til-dato en dag frem" />}
-                        type="button"
-                        variant="tertiary-neutral"
-                        className="w-8"
-                        onClick={() => {
-                            const tom = addDays(periodeField.field.value?.tom ?? new Date(), 1)
-
-                            setSelected({
-                                from: periodeField.field.value?.fom
-                                    ? parseISO(periodeField.field.value.fom)
-                                    : undefined,
-                                to: tom,
-                            })
-                        }}
-                    />
-                </div>
-            </div>
-            <div className="mb-3 flex gap-3 w-[52ch] mt-4">
-                <Button
-                    variant="secondary-neutral"
-                    size="small"
-                    type="button"
-                    className="grow"
-                    onClick={() => {
-                        const today = new Date()
-                        const tom = addDays(today, 3)
-
-                        setSelected({
-                            from: today,
-                            to: tom,
-                        })
-                    }}
-                    autoFocus
-                >
-                    3 dager
-                </Button>
-                <Button
-                    variant="secondary-neutral"
-                    size="small"
-                    type="button"
-                    className="grow"
-                    onClick={() => {
-                        const today = new Date()
-                        const tom = endOfWeek(today, { locale: nb })
-
-                        setSelected({
-                            from: today,
-                            to: tom,
-                        })
-                    }}
-                >
-                    Til og med søndag
-                </Button>
-                <Button
-                    variant="secondary-neutral"
-                    size="small"
-                    type="button"
-                    className="grow"
-                    onClick={() => {
-                        const today = new Date()
-                        const tom = addWeeks(today, 1)
-
-                        setSelected({
-                            from: today,
-                            to: tom,
-                        })
-                    }}
-                >
-                    1 uke (tom. {format(addWeeks(new Date(), 1), 'EEEE', { locale: nb })})
-                </Button>
             </div>
             <AnimatePresence>
                 {rangeDescription && (
                     <motion.div
-                        className="overflow-hidden"
+                        className="overflow-hidden ml-3 mb-1"
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                     >
-                        <BodyShort className="ml-1" size="small">
-                            {rangeDescription}
-                        </BodyShort>
+                        <BodyShort size="small">{rangeDescription.top}</BodyShort>
+                        <Detail>{rangeDescription.bottom}</Detail>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -191,7 +101,7 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
     )
 }
 
-function getRangeDescription(field: PeriodeField | null): string | null {
+function getRangeDescription(field: PeriodeField | null): { top: string; bottom: string } | null {
     if (field == null || field.fom == null || field.tom == null || field.fom === '' || field.tom === '') {
         return null
     }
@@ -199,8 +109,11 @@ function getRangeDescription(field: PeriodeField | null): string | null {
     const isFomToday = isSameDay(field.fom, new Date())
     const isTomToday = isSameDay(field.tom, new Date())
     const daysInclusive = differenceInDays(field.tom, field.fom) + 1
-    // F.eks: onsdag 5. mars (i dag) til fredag 7. mars
-    return `${daysInclusive} dager fra ${format(field.fom, 'EEEE d. MMMM', { locale: nb })}${isFomToday ? ' (i dag)' : ''} til ${format(field.tom, 'EEEE d. MMMM', { locale: nb })}${isTomToday ? ' (i dag)' : ''}`
+
+    return {
+        top: `${daysInclusive} dager`,
+        bottom: `Fra ${format(field.fom, 'EEEE d. MMMM', { locale: nb })}${isFomToday ? ' (i dag)' : ''} til ${format(field.tom, 'EEEE d. MMMM', { locale: nb })}${isTomToday ? ' (i dag)' : ''}`,
+    }
 }
 
 export default PeriodePicker

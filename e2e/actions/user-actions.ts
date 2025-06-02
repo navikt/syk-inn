@@ -128,29 +128,6 @@ export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | nu
     }
 }
 
-export function pickSuggestedPeriod(weeks: '3 dager' | 'tom søndag' | '1 uke') {
-    return async (page: Page) => {
-        const aktivitetRegion = page.getByRole('region', { name: 'Periode' })
-        await expect(aktivitetRegion).toBeVisible()
-
-        let label
-        switch (weeks) {
-            case '3 dager':
-                label = '3 dager'
-                break
-            case 'tom søndag':
-                label = 'Til og med søndag'
-                break
-            case '1 uke':
-                label = '1 uke'
-                break
-            default:
-                throw new Error(`Unknown period: ${weeks}`)
-        }
-        await aktivitetRegion.getByRole('button', { name: label }).click()
-    }
-}
-
 export function verifySummaryPage(sections: { tilbakedatering?: { contact: string; reason: string } }) {
     return async (page: Page) => {
         if (sections.tilbakedatering) {

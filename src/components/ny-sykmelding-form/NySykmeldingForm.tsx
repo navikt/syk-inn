@@ -15,9 +15,6 @@ function NySykmeldingForm(): ReactElement {
     const { loading, data, error } = useQuery(PasientDocument)
     const dispatch = useAppDispatch()
 
-    // Preload data for next steps
-    // useContextKonsultasjon()
-
     useEffect(() => {
         if (data?.pasient != null) {
             dispatch(
