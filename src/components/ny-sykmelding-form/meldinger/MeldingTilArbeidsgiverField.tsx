@@ -1,19 +1,26 @@
 import React, { ReactElement } from 'react'
-import { Heading, Textarea } from '@navikt/ds-react'
+import { Switch, Textarea } from '@navikt/ds-react'
 
 import { useFormContext } from '../form'
 
 function MeldingTilNavField(): ReactElement {
     const form = useFormContext()
 
+    const showTilArbeidsgiver = form.watch('meldinger.showTilArbeidsgiver')
+
     return (
         <div className="max-w-prose">
-            <Heading size="small">Melding til arbeidsgiver</Heading>
-            <Textarea
-                label="Innspill til arbeidsgiver"
-                description="For eksempel tilrettelegging som bør gjøres på arbeidsplassen"
-                {...form.register('meldinger.tilArbeidsgiver')}
-            />
+            <Switch position="right" {...form.register('meldinger.showTilArbeidsgiver')}>
+                Melding til arbeidsgiver
+            </Switch>
+
+            {showTilArbeidsgiver && (
+                <Textarea
+                    label="Innspill til arbeidsgiver"
+                    description="For eksempel tilrettelegging som bør gjøres på arbeidsplassen"
+                    {...form.register('meldinger.tilArbeidsgiver')}
+                />
+            )}
         </div>
     )
 }

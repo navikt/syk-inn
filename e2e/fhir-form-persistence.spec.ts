@@ -82,9 +82,11 @@ test('filling out the form, and returning to main step, should keep all values',
 
     // Section 5 - Meldinger
     const meldingerRegion = page.getByRole('region', { name: 'Meldinger' })
+    await expect(meldingerRegion.getByRole('checkbox', { name: 'Melding til Nav' })).toBeChecked()
     await expect(meldingerRegion.getByRole('textbox', { name: 'Har du noen tilbakemeldinger?' })).toHaveValue(
         'Trenger mer penger',
     )
+    await expect(meldingerRegion.getByRole('checkbox', { name: 'Melding til arbeidsgiver' })).toBeChecked()
     await expect(meldingerRegion.getByRole('textbox', { name: 'Innspill til arbeidsgiver' })).toHaveValue(
         'Trenger sev-henk pult',
     )

@@ -46,6 +46,8 @@ export function createDefaultValues({
               }
             : null,
         meldinger: {
+            showTilNav: initialValues.meldinger?.showTilNav ?? false,
+            showTilArbeidsgiver: initialValues.meldinger?.showTilArbeidsgiver ?? false,
             tilNav: initialValues.meldinger?.tilNav ?? null,
             tilArbeidsgiver: initialValues.meldinger?.tilArbeidsgiver ?? null,
         },

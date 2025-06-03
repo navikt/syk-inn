@@ -30,6 +30,8 @@ export type TilbakedateringStep = {
 }
 
 export type MeldingerStep = {
+    showTilNav: boolean | null
+    showTilArbeidsgiver: boolean | null
     tilNav: string | null
     tilArbeidsgiver: string | null
 }

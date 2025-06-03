@@ -37,7 +37,9 @@ export type TilbakedateringField = {
 }
 
 type MeldingerField = {
+    showTilNav: boolean
     tilNav: string | null
+    showTilArbeidsgiver: boolean
     tilArbeidsgiver: string | null
 }
 

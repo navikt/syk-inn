@@ -95,6 +95,8 @@ function useHandleFormSubmit() {
                           }
                         : null,
                 meldinger: {
+                    showTilNav: values.meldinger.showTilNav,
+                    showTilArbeidsgiver: values.meldinger.showTilArbeidsgiver,
                     tilNav: values.meldinger.tilNav,
                     tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
                 },

@@ -116,10 +116,12 @@ export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | nu
         }
 
         if (tilNav) {
+            await region.getByRole('checkbox', { name: 'Melding til Nav' }).check()
             await region.getByRole('textbox', { name: 'Har du noen tilbakemeldinger?' }).fill(tilNav)
         }
 
         if (tilArbeidsgiver) {
+            await region.getByRole('checkbox', { name: 'Melding til arbeidsgiver' }).check()
             await region.getByRole('textbox', { name: 'Innspill til arbeidsgiver' }).fill(tilArbeidsgiver)
         }
     }
