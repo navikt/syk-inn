@@ -2,6 +2,7 @@ import React, { ReactElement, useEffect } from 'react'
 import { Alert, Button, Heading, Skeleton } from '@navikt/ds-react'
 import { useMutation } from '@apollo/client'
 
+import { spanAsync } from '@otel/otel'
 import { DocumentStatusSuccess } from '@components/existing-sykmelding-kvittering/DocumentStatus'
 import { SynchronizeSykmeldingDocument } from '@queries'
 
@@ -15,7 +16,9 @@ export function SykmeldingSynchronization({ sykmeldingId }: Props): ReactElement
     })
 
     useEffect(() => {
-        mutation()
+        spanAsync('SykmeldingSynchronization.mutation', async () => {
+            await mutation()
+        })
     }, [mutation])
 
     if (loading) {

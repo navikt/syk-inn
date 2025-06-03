@@ -6,9 +6,9 @@ import { MutationResult, useMutation } from '@apollo/client'
 import { raise } from '@utils/ts'
 import { pathWithBasePath } from '@utils/url'
 import { OpprettSykmeldingDocument } from '@queries'
+import { withSpanAsync } from '@otel/otel'
 
 import { useAppSelector } from '../../providers/redux/hooks'
-import { withSpanAsync } from '../../otel/otel'
 import { useMode } from '../../providers/ModeProvider'
 
 export function useNySykmeldingMutation(): {

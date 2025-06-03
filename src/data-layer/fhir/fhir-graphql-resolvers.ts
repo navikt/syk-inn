@@ -17,6 +17,7 @@ import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
 import { createDocumentReference, getPractitioner } from '@fhir/fhir-service'
 import { diagnoseSystemToOid } from '@utils/oid'
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
+import { spanAsync } from '@otel/otel'
 
 import { getDiagnoseText, searchDiagnose } from '../common/diagnose-search'
 
@@ -274,7 +275,9 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('AUTH_ERROR')
             }
 
-            const existingDocument = await client.request(`/DocumentReference/${sykmeldingId}`)
+            const existingDocument = await spanAsync('get document reference', () =>
+                client.request(`/DocumentReference/${sykmeldingId}`),
+            )
             if ('resourceType' in existingDocument) {
                 return {
                     navStatus: 'COMPLETE',
@@ -283,7 +286,9 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             }
 
             if ('error' in existingDocument && existingDocument.error === 'REQUEST_FAILED_RESOURCE_NOT_FOUND') {
-                const createResult = await createDocumentReference(client, sykmeldingId)
+                const createResult = await spanAsync('create document reference', () =>
+                    createDocumentReference(client, sykmeldingId),
+                )
                 if ('error' in createResult) {
                     throw new GraphQLError('API_ERROR')
                 }

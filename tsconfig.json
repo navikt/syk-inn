@@ -23,7 +23,7 @@
             "@components/*": ["./src/components/*"],
             "@services/*": ["./src/services/*"],
             "@toggles/*": ["./src/toggles/*"],
-            "@faro/*": ["./src/faro/*"]
+            "@otel/*": ["./src/otel/*"]
         },
         "target": "ES2017"
     },
