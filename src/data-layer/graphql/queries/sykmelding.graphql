@@ -24,10 +24,32 @@ fragment Sykmelding on Sykmelding {
         }
     }
     aktivitet {
-        type
-        fom
-        tom
-        grad
+        ...Aktivitet
     }
     documentStatus
+}
+
+fragment Aktivitet on Aktivitet {
+    ... on FomTom {
+        fom
+        tom
+    }
+    ... on AktivitetIkkeMulig {
+        type
+    }
+    ... on Avventende {
+        type
+        innspillTilArbeidsgiver
+    }
+    ... on Behandlingsdager {
+        type
+        antallBehandlingsdager
+    }
+    ... on Gradert {
+        type
+        grad
+    }
+    ... on Reisetilskudd {
+        type
+    }
 }

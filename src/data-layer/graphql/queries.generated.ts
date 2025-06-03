@@ -14,22 +14,40 @@ export type Scalars = {
     Boolean: { input: boolean; output: boolean }
     Int: { input: number; output: number }
     Float: { input: number; output: number }
+    DateOnly: { input: any; output: any }
 }
 
-export type Aktivitet = {
-    __typename?: 'Aktivitet'
-    fom: Scalars['String']['output']
-    grad?: Maybe<Scalars['Int']['output']>
-    tom: Scalars['String']['output']
+export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
+
+export type AktivitetIkkeMulig = FomTom & {
+    __typename?: 'AktivitetIkkeMulig'
+    fom: Scalars['DateOnly']['output']
+    tom: Scalars['DateOnly']['output']
     type: AktivitetType
 }
 
-export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT'
+export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'GRADERT' | 'REISETILSKUDD'
+
+export type Avventende = FomTom & {
+    __typename?: 'Avventende'
+    fom: Scalars['DateOnly']['output']
+    innspillTilArbeidsgiver: Scalars['String']['output']
+    tom: Scalars['DateOnly']['output']
+    type: AktivitetType
+}
 
 export type Behandler = {
     __typename?: 'Behandler'
     hpr: Scalars['String']['output']
     navn: Scalars['String']['output']
+}
+
+export type Behandlingsdager = FomTom & {
+    __typename?: 'Behandlingsdager'
+    antallBehandlingsdager: Scalars['Int']['output']
+    fom: Scalars['DateOnly']['output']
+    tom: Scalars['DateOnly']['output']
+    type: AktivitetType
 }
 
 export type Diagnose = {
@@ -42,6 +60,19 @@ export type Diagnose = {
 export type DiagnoseSystem = 'ICD10' | 'ICPC2'
 
 export type DocumentStatus = 'COMPLETE' | 'ERRORED' | 'PENDING'
+
+export type FomTom = {
+    fom: Scalars['DateOnly']['output']
+    tom: Scalars['DateOnly']['output']
+}
+
+export type Gradert = FomTom & {
+    __typename?: 'Gradert'
+    fom: Scalars['DateOnly']['output']
+    grad: Scalars['Int']['output']
+    tom: Scalars['DateOnly']['output']
+    type: AktivitetType
+}
 
 export type InputDiagnose = {
     code: Scalars['String']['input']
@@ -124,6 +155,13 @@ export type QuerySykmeldingArgs = {
     id: Scalars['String']['input']
 }
 
+export type Reisetilskudd = FomTom & {
+    __typename?: 'Reisetilskudd'
+    fom: Scalars['DateOnly']['output']
+    tom: Scalars['DateOnly']['output']
+    type: AktivitetType
+}
+
 export type Sykmelding = {
     __typename?: 'Sykmelding'
     aktivitet: Aktivitet
@@ -203,7 +241,18 @@ export type SykmeldingByIdQuery = {
             __typename?: 'SykmeldingDiagnoser'
             hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string }
         }
-        aktivitet: { __typename?: 'Aktivitet'; type: AktivitetType; fom: string; tom: string; grad?: number | null }
+        aktivitet:
+            | { __typename?: 'AktivitetIkkeMulig'; fom: any; tom: any; type: AktivitetType }
+            | { __typename?: 'Avventende'; fom: any; tom: any; type: AktivitetType; innspillTilArbeidsgiver: string }
+            | {
+                  __typename?: 'Behandlingsdager'
+                  fom: any
+                  tom: any
+                  type: AktivitetType
+                  antallBehandlingsdager: number
+              }
+            | { __typename?: 'Gradert'; fom: any; tom: any; type: AktivitetType; grad: number }
+            | { __typename?: 'Reisetilskudd'; fom: any; tom: any; type: AktivitetType }
     } | null
 }
 
@@ -225,8 +274,47 @@ export type SykmeldingFragment = {
         __typename?: 'SykmeldingDiagnoser'
         hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string }
     }
-    aktivitet: { __typename?: 'Aktivitet'; type: AktivitetType; fom: string; tom: string; grad?: number | null }
+    aktivitet:
+        | { __typename?: 'AktivitetIkkeMulig'; fom: any; tom: any; type: AktivitetType }
+        | { __typename?: 'Avventende'; fom: any; tom: any; type: AktivitetType; innspillTilArbeidsgiver: string }
+        | { __typename?: 'Behandlingsdager'; fom: any; tom: any; type: AktivitetType; antallBehandlingsdager: number }
+        | { __typename?: 'Gradert'; fom: any; tom: any; type: AktivitetType; grad: number }
+        | { __typename?: 'Reisetilskudd'; fom: any; tom: any; type: AktivitetType }
 }
+
+type Aktivitet_AktivitetIkkeMulig_Fragment = {
+    __typename?: 'AktivitetIkkeMulig'
+    fom: any
+    tom: any
+    type: AktivitetType
+}
+
+type Aktivitet_Avventende_Fragment = {
+    __typename?: 'Avventende'
+    fom: any
+    tom: any
+    type: AktivitetType
+    innspillTilArbeidsgiver: string
+}
+
+type Aktivitet_Behandlingsdager_Fragment = {
+    __typename?: 'Behandlingsdager'
+    fom: any
+    tom: any
+    type: AktivitetType
+    antallBehandlingsdager: number
+}
+
+type Aktivitet_Gradert_Fragment = { __typename?: 'Gradert'; fom: any; tom: any; type: AktivitetType; grad: number }
+
+type Aktivitet_Reisetilskudd_Fragment = { __typename?: 'Reisetilskudd'; fom: any; tom: any; type: AktivitetType }
+
+export type AktivitetFragment =
+    | Aktivitet_AktivitetIkkeMulig_Fragment
+    | Aktivitet_Avventende_Fragment
+    | Aktivitet_Behandlingsdager_Fragment
+    | Aktivitet_Gradert_Fragment
+    | Aktivitet_Reisetilskudd_Fragment
 
 export type SynchronizeSykmeldingMutationVariables = Exact<{
     id: Scalars['String']['input']
@@ -276,6 +364,81 @@ export const DiagnoseFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<DiagnoseFragment, unknown>
+export const AktivitetFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Aktivitet' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Aktivitet' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FomTom' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Avventende' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'innspillTilArbeidsgiver' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Behandlingsdager' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'antallBehandlingsdager' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Gradert' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Reisetilskudd' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<AktivitetFragment, unknown>
 export const SykmeldingFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -324,15 +487,80 @@ export const SykmeldingFragmentDoc = {
                         name: { kind: 'Name', value: 'aktivitet' },
                         selectionSet: {
                             kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Aktivitet' } }],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Aktivitet' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Aktivitet' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FomTom' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
                             selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Avventende' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'innspillTilArbeidsgiver' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Behandlingsdager' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'antallBehandlingsdager' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Gradert' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Reisetilskudd' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                        },
+                    },
                 ],
             },
         },
@@ -556,6 +784,76 @@ export const SykmeldingByIdDocument = {
         },
         {
             kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Aktivitet' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Aktivitet' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FomTom' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Avventende' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'innspillTilArbeidsgiver' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Behandlingsdager' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'antallBehandlingsdager' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Gradert' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Reisetilskudd' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
             name: { kind: 'Name', value: 'Sykmelding' },
             typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Sykmelding' } },
             selectionSet: {
@@ -599,12 +897,7 @@ export const SykmeldingByIdDocument = {
                         name: { kind: 'Name', value: 'aktivitet' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Aktivitet' } }],
                         },
                     },
                     { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { GraphQLResolveInfo } from 'graphql'
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -7,6 +7,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never }
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -15,22 +16,40 @@ export type Scalars = {
     Boolean: { input: boolean; output: boolean }
     Int: { input: number; output: number }
     Float: { input: number; output: number }
+    DateOnly: { input: any; output: any }
 }
 
-export type Aktivitet = {
-    __typename?: 'Aktivitet'
-    fom: Scalars['String']['output']
-    grad?: Maybe<Scalars['Int']['output']>
-    tom: Scalars['String']['output']
+export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
+
+export type AktivitetIkkeMulig = FomTom & {
+    __typename?: 'AktivitetIkkeMulig'
+    fom: Scalars['DateOnly']['output']
+    tom: Scalars['DateOnly']['output']
     type: AktivitetType
 }
 
-export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT'
+export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'GRADERT' | 'REISETILSKUDD'
+
+export type Avventende = FomTom & {
+    __typename?: 'Avventende'
+    fom: Scalars['DateOnly']['output']
+    innspillTilArbeidsgiver: Scalars['String']['output']
+    tom: Scalars['DateOnly']['output']
+    type: AktivitetType
+}
 
 export type Behandler = {
     __typename?: 'Behandler'
     hpr: Scalars['String']['output']
     navn: Scalars['String']['output']
+}
+
+export type Behandlingsdager = FomTom & {
+    __typename?: 'Behandlingsdager'
+    antallBehandlingsdager: Scalars['Int']['output']
+    fom: Scalars['DateOnly']['output']
+    tom: Scalars['DateOnly']['output']
+    type: AktivitetType
 }
 
 export type Diagnose = {
@@ -43,6 +62,19 @@ export type Diagnose = {
 export type DiagnoseSystem = 'ICD10' | 'ICPC2'
 
 export type DocumentStatus = 'COMPLETE' | 'ERRORED' | 'PENDING'
+
+export type FomTom = {
+    fom: Scalars['DateOnly']['output']
+    tom: Scalars['DateOnly']['output']
+}
+
+export type Gradert = FomTom & {
+    __typename?: 'Gradert'
+    fom: Scalars['DateOnly']['output']
+    grad: Scalars['Int']['output']
+    tom: Scalars['DateOnly']['output']
+    type: AktivitetType
+}
 
 export type InputDiagnose = {
     code: Scalars['String']['input']
@@ -123,6 +155,13 @@ export type QueryPersonArgs = {
 
 export type QuerySykmeldingArgs = {
     id: Scalars['String']['input']
+}
+
+export type Reisetilskudd = FomTom & {
+    __typename?: 'Reisetilskudd'
+    fom: Scalars['DateOnly']['output']
+    tom: Scalars['DateOnly']['output']
+    type: AktivitetType
 }
 
 export type Sykmelding = {
@@ -216,20 +255,32 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
     info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>
 
+/** Mapping of union types */
+export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
+    Aktivitet: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
+}
+
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
+    FomTom: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
     Person: Pasient | QueriedPerson
 }
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-    Aktivitet: ResolverTypeWrapper<Aktivitet>
+    Aktivitet: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Aktivitet']>
+    AktivitetIkkeMulig: ResolverTypeWrapper<AktivitetIkkeMulig>
     AktivitetType: AktivitetType
+    Avventende: ResolverTypeWrapper<Avventende>
     Behandler: ResolverTypeWrapper<Behandler>
+    Behandlingsdager: ResolverTypeWrapper<Behandlingsdager>
     Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>
+    DateOnly: ResolverTypeWrapper<Scalars['DateOnly']['output']>
     Diagnose: ResolverTypeWrapper<Diagnose>
     DiagnoseSystem: DiagnoseSystem
     DocumentStatus: DocumentStatus
+    FomTom: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['FomTom']>
+    Gradert: ResolverTypeWrapper<Gradert>
     InputDiagnose: InputDiagnose
     InputPeriode: InputPeriode
     Int: ResolverTypeWrapper<Scalars['Int']['output']>
@@ -241,18 +292,25 @@ export type ResolversTypes = {
     Person: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Person']>
     QueriedPerson: ResolverTypeWrapper<QueriedPerson>
     Query: ResolverTypeWrapper<{}>
+    Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>
     String: ResolverTypeWrapper<Scalars['String']['output']>
-    Sykmelding: ResolverTypeWrapper<Sykmelding>
+    Sykmelding: ResolverTypeWrapper<Omit<Sykmelding, 'aktivitet'> & { aktivitet: ResolversTypes['Aktivitet'] }>
     SykmeldingDiagnoser: ResolverTypeWrapper<SykmeldingDiagnoser>
     SynchronizationStatus: ResolverTypeWrapper<SynchronizationStatus>
 }
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-    Aktivitet: Aktivitet
+    Aktivitet: ResolversUnionTypes<ResolversParentTypes>['Aktivitet']
+    AktivitetIkkeMulig: AktivitetIkkeMulig
+    Avventende: Avventende
     Behandler: Behandler
+    Behandlingsdager: Behandlingsdager
     Boolean: Scalars['Boolean']['output']
+    DateOnly: Scalars['DateOnly']['output']
     Diagnose: Diagnose
+    FomTom: ResolversInterfaceTypes<ResolversParentTypes>['FomTom']
+    Gradert: Gradert
     InputDiagnose: InputDiagnose
     InputPeriode: InputPeriode
     Int: Scalars['Int']['output']
@@ -264,8 +322,9 @@ export type ResolversParentTypes = {
     Person: ResolversInterfaceTypes<ResolversParentTypes>['Person']
     QueriedPerson: QueriedPerson
     Query: {}
+    Reisetilskudd: Reisetilskudd
     String: Scalars['String']['output']
-    Sykmelding: Sykmelding
+    Sykmelding: Omit<Sykmelding, 'aktivitet'> & { aktivitet: ResolversParentTypes['Aktivitet'] }
     SykmeldingDiagnoser: SykmeldingDiagnoser
     SynchronizationStatus: SynchronizationStatus
 }
@@ -274,9 +333,30 @@ export type AktivitetResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Aktivitet'] = ResolversParentTypes['Aktivitet'],
 > = {
-    fom?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    grad?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
-    tom?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    __resolveType: TypeResolveFn<
+        'AktivitetIkkeMulig' | 'Avventende' | 'Behandlingsdager' | 'Gradert' | 'Reisetilskudd',
+        ParentType,
+        ContextType
+    >
+}
+
+export type AktivitetIkkeMuligResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['AktivitetIkkeMulig'] = ResolversParentTypes['AktivitetIkkeMulig'],
+> = {
+    fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type AvventendeResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['Avventende'] = ResolversParentTypes['Avventende'],
+> = {
+    fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    innspillTilArbeidsgiver?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
@@ -290,6 +370,21 @@ export type BehandlerResolvers<
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
+export type BehandlingsdagerResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['Behandlingsdager'] = ResolversParentTypes['Behandlingsdager'],
+> = {
+    antallBehandlingsdager?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+    fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export interface DateOnlyScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateOnly'], any> {
+    name: 'DateOnly'
+}
+
 export type DiagnoseResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Diagnose'] = ResolversParentTypes['Diagnose'],
@@ -297,6 +392,30 @@ export type DiagnoseResolvers<
     code?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     system?: Resolver<ResolversTypes['DiagnoseSystem'], ParentType, ContextType>
     text?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type FomTomResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['FomTom'] = ResolversParentTypes['FomTom'],
+> = {
+    __resolveType: TypeResolveFn<
+        'AktivitetIkkeMulig' | 'Avventende' | 'Behandlingsdager' | 'Gradert' | 'Reisetilskudd',
+        ParentType,
+        ContextType
+    >
+    fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+}
+
+export type GradertResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['Gradert'] = ResolversParentTypes['Gradert'],
+> = {
+    fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    grad?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+    tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -383,6 +502,16 @@ export type QueryResolvers<
     >
 }
 
+export type ReisetilskuddResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['Reisetilskudd'] = ResolversParentTypes['Reisetilskudd'],
+> = {
+    fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type SykmeldingResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Sykmelding'] = ResolversParentTypes['Sykmelding'],
@@ -415,8 +544,14 @@ export type SynchronizationStatusResolvers<
 
 export type Resolvers<ContextType = any> = {
     Aktivitet?: AktivitetResolvers<ContextType>
+    AktivitetIkkeMulig?: AktivitetIkkeMuligResolvers<ContextType>
+    Avventende?: AvventendeResolvers<ContextType>
     Behandler?: BehandlerResolvers<ContextType>
+    Behandlingsdager?: BehandlingsdagerResolvers<ContextType>
+    DateOnly?: GraphQLScalarType
     Diagnose?: DiagnoseResolvers<ContextType>
+    FomTom?: FomTomResolvers<ContextType>
+    Gradert?: GradertResolvers<ContextType>
     Konsultasjon?: KonsultasjonResolvers<ContextType>
     Mutation?: MutationResolvers<ContextType>
     OpprettetSykmelding?: OpprettetSykmeldingResolvers<ContextType>
@@ -424,6 +559,7 @@ export type Resolvers<ContextType = any> = {
     Person?: PersonResolvers<ContextType>
     QueriedPerson?: QueriedPersonResolvers<ContextType>
     Query?: QueryResolvers<ContextType>
+    Reisetilskudd?: ReisetilskuddResolvers<ContextType>
     Sykmelding?: SykmeldingResolvers<ContextType>
     SykmeldingDiagnoser?: SykmeldingDiagnoserResolvers<ContextType>
     SynchronizationStatus?: SynchronizationStatusResolvers<ContextType>

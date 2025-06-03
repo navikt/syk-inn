@@ -8,11 +8,17 @@ const config: CodegenConfig = {
     generates: {
         './src/data-layer/graphql/queries.generated.ts': {
             plugins: ['typescript', 'typescript-operations', 'typed-document-node', eslintDisabler],
-            config: { enumsAsTypes: true },
+            config: {
+                enumsAsTypes: true,
+                scalars: { DateTime: 'string' },
+            },
         },
         './src/data-layer/graphql/resolvers.generated.ts': {
             plugins: ['typescript', 'typescript-resolvers', eslintDisabler],
-            config: { enumsAsTypes: true },
+            config: {
+                enumsAsTypes: true,
+                scalars: { DateTime: 'string' },
+            },
         },
         './src/data-layer/graphql/possible-types.generated.ts': {
             plugins: ['fragment-matcher'],

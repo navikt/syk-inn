@@ -2,6 +2,7 @@ import { ICD10, ICPC2 } from '@navikt/diagnosekoder'
 import Fuse from 'fuse.js'
 
 import { DiagnoseSuggestion, DiagnoseSystem } from '@components/form/diagnose-combobox/DiagnoseCombobox'
+import { raise } from '@utils/ts'
 
 const icd10 = ICD10.map((it) => ({ system: 'ICD10', ...it }))
 const icpc2 = ICPC2.map((it) => ({ system: 'ICPC2', ...it }))
@@ -22,4 +23,15 @@ export function searchDiagnose(query: string): DiagnoseSuggestion[] {
         .slice(0, 100)
 
     return fuseResult
+}
+
+export function getDiagnoseText(system: DiagnoseSystem, code: string): string {
+    const diagnoses = system === 'ICD10' ? icd10 : icpc2
+    const diagnose = diagnoses.find((it) => it.code === code)
+
+    if (!diagnose) {
+        raise(`No diagnose found in ${system} with code ${code}`)
+    }
+
+    return diagnose.text
 }

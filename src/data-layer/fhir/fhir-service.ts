@@ -63,7 +63,7 @@ export async function createDocumentReference(
                 encounterId: client.encounter,
                 // TODO: hmmmm
                 practitionerId: client.fhirUser.split('/')[1],
-                description: getSykmeldingDescription(sykmelding),
+                description: getSykmeldingDescription(sykmelding.sykmelding),
             },
             Buffer.from(pdfBuffer).toString('base64'),
         ),
@@ -76,14 +76,23 @@ export async function createDocumentReference(
     return createdDocumentReference
 }
 
-function getSykmeldingDescription(sykmelding: ExistingSykmelding): string {
+function getSykmeldingDescription(sykmelding: ExistingSykmelding['sykmelding']): string {
     let type
     switch (sykmelding.aktivitet.type) {
         case 'AKTIVITET_IKKE_MULIG':
             type = '100%'
             break
+        case 'AVVENTENDE':
+            type = 'Avventende'
+            break
+        case 'BEHANDLINGSDAGER':
+            type = `${sykmelding.aktivitet.antallBehandlingsdager} behandlingsdager`
+            break
         case 'GRADERT':
             type = `${sykmelding.aktivitet.grad}%`
+            break
+        case 'REISETILSKUDD':
+            type = 'Reisetilskudd'
             break
     }
 

@@ -1,0 +1,47 @@
+interface FomTom {
+    fom: DateOnly!
+    tom: DateOnly!
+}
+
+enum AktivitetType {
+    AKTIVITET_IKKE_MULIG
+    AVVENTENDE
+    BEHANDLINGSDAGER
+    GRADERT
+    REISETILSKUDD
+}
+
+type AktivitetIkkeMulig implements FomTom {
+    type: AktivitetType!
+    fom: DateOnly!
+    tom: DateOnly!
+}
+
+type Avventende implements FomTom {
+    type: AktivitetType!
+    fom: DateOnly!
+    tom: DateOnly!
+    innspillTilArbeidsgiver: String!
+}
+
+type Behandlingsdager implements FomTom {
+    type: AktivitetType!
+    fom: DateOnly!
+    tom: DateOnly!
+    antallBehandlingsdager: Int!
+}
+
+type Gradert implements FomTom {
+    type: AktivitetType!
+    fom: DateOnly!
+    tom: DateOnly!
+    grad: Int!
+}
+
+type Reisetilskudd implements FomTom {
+    type: AktivitetType!
+    fom: DateOnly!
+    tom: DateOnly!
+}
+
+union Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd

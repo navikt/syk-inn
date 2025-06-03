@@ -18,7 +18,7 @@ import { createDocumentReference, getPractitioner } from '@fhir/fhir-service'
 import { diagnoseSystemToOid } from '@utils/oid'
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
 
-import { searchDiagnose } from '../common/diagnose-search'
+import { getDiagnoseText, searchDiagnose } from '../common/diagnose-search'
 
 import { getReadyClient } from './smart/smart-client'
 
@@ -144,20 +144,24 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             return {
                 sykmeldingId: sykmelding.sykmeldingId,
-                aktivitet: sykmelding.aktivitet,
+                aktivitet: sykmelding.sykmelding.aktivitet,
                 diagnose: {
                     hoved: {
                         system:
-                            diagnosisUrnToOidType(sykmelding.hovedDiagnose.system) ??
-                            raise(`Unknown diagnosis system ${sykmelding.hovedDiagnose.system}`),
-                        code: sykmelding.hovedDiagnose.code,
-                        text: sykmelding.hovedDiagnose.text,
+                            diagnosisUrnToOidType(sykmelding.sykmelding.hoveddiagnose.system) ??
+                            raise(`Unknown diagnosis system ${sykmelding.sykmelding.hoveddiagnose.system}`),
+                        code: sykmelding.sykmelding.hoveddiagnose.code,
+                        text: getDiagnoseText(
+                            diagnosisUrnToOidType(sykmelding.sykmelding.hoveddiagnose.system) ??
+                                raise('Unknown diagnosis system'),
+                            sykmelding.sykmelding.hoveddiagnose.code,
+                        ),
                     },
                     bi: [],
                 },
                 pasient: {
                     navn: 'TODO',
-                    ident: sykmelding.pasient.fnr,
+                    ident: sykmelding.pasientFnr,
                 },
                 documentStatus: 'resourceType' in existingDocumentReference ? 'COMPLETE' : 'PENDING',
             } satisfies Sykmelding
@@ -291,6 +295,22 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             }
 
             throw new GraphQLError('API_ERROR')
+        },
+    },
+    Aktivitet: {
+        __resolveType: (parent) => {
+            switch (parent.type) {
+                case 'AKTIVITET_IKKE_MULIG':
+                    return 'AktivitetIkkeMulig'
+                case 'AVVENTENDE':
+                    return 'Avventende'
+                case 'BEHANDLINGSDAGER':
+                    return 'Behandlingsdager'
+                case 'GRADERT':
+                    return 'Gradert'
+                case 'REISETILSKUDD':
+                    return 'Reisetilskudd'
+            }
         },
     },
 }

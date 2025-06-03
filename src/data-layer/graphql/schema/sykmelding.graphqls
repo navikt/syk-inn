@@ -16,19 +16,3 @@ enum DocumentStatus {
     ERRORED
     COMPLETE
 }
-
-type Aktivitet {
-    type: AktivitetType!
-    fom: String!
-    tom: String!
-    grad: Int
-}
-
-enum AktivitetType {
-    AKTIVITET_IKKE_MULIG
-    GRADERT
-}
-
-type Query {
-    sykmelding(id: String!): Sykmelding
-}
