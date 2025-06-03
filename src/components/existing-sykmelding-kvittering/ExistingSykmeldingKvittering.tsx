@@ -81,6 +81,11 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }
                     <BodyShort>{toReadableDatePeriod(sykmelding.aktivitet.fom, sykmelding.aktivitet.tom)}</BodyShort>
                 </FormSection>
             </div>
+            <div className="mt-8">
+                <AkselLink href={`/fhir/pdf/${sykmelding.sykmeldingId}`} target="_blank">
+                    Se innsendt dokument
+                </AkselLink>
+            </div>
             <div className="mt-4">
                 <GuidePanel poster>
                     <BodyLong spacing>

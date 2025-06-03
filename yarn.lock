@@ -2188,6 +2188,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@navikt/next-api-proxy@npm:^4.1.4":
+  version: 4.1.4
+  resolution: "@navikt/next-api-proxy@npm:4.1.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-api-proxy%2F4.1.4%2F781f2144baaceb4ff9e9bea9d50d443ed52d2f99"
+  peerDependencies:
+    next: 14 || 15
+  checksum: 10c0/9b7d08f22f7130d988b51aa1dec60e4a6e62a3c9af911cfa003b597e6f37d2c8752eab385fc75e1b81aceb112d105b130ad8f214282f8cbeb76f8e7b6bf36ce9
+  languageName: node
+  linkType: hard
+
 "@navikt/next-logger@npm:^3.0.3":
   version: 3.0.3
   resolution: "@navikt/next-logger@npm:3.0.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F3.0.3%2F207790c463fcfe8b50bfc5639a090b8c4f9565e7"
@@ -10856,6 +10865,7 @@ __metadata:
     "@navikt/eslint-config-teamsykmelding": "npm:^7.1.0"
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/fhir-zod": "workspace:*"
+    "@navikt/next-api-proxy": "npm:^4.1.4"
     "@navikt/next-logger": "npm:^3.0.3"
     "@navikt/oasis": "npm:^3.8.0"
     "@navikt/smart-on-fhir": "workspace:*"

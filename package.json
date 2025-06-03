@@ -44,6 +44,7 @@
         "@navikt/ds-tailwind": "^7.22.0",
         "@navikt/fhir-mock-server": "workspace:*",
         "@navikt/fhir-zod": "workspace:*",
+        "@navikt/next-api-proxy": "^4.1.4",
         "@navikt/next-logger": "^3.0.3",
         "@navikt/oasis": "^3.8.0",
         "@navikt/smart-on-fhir": "workspace:*",

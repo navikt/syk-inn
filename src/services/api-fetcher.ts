@@ -110,7 +110,7 @@ export async function fetchInternalAPI<
     return parsed.data
 }
 
-async function getApi(
+export async function getApi(
     api: ValidAPI,
 ): Promise<{ host: string; authHeader: string } | { errorType: 'TOKEN_EXCHANGE_FAILED' }> {
     if (getServerEnv().useLocalSykInnApi) {
