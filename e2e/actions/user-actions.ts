@@ -129,6 +129,9 @@ export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | nu
 
 export function verifySummaryPage(sections: { tilbakedatering?: { contact: string; reason: string } }) {
     return async (page: Page) => {
+        await expect(page.getByRole('heading', { name: 'Oppsummering sykmelding' })).toBeVisible()
+        await expect(page.getByRole('button', { name: 'Endre svar' })).toBeVisible()
+
         if (sections.tilbakedatering) {
             // Not be most semantically correct, but this is the only way to get the text because of dd/dt (for now)
             await expect(
