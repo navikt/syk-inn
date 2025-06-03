@@ -21,6 +21,7 @@ import { FormSection } from '@components/ui/form'
 import { toReadableDatePeriod } from '@utils/date'
 import { SykmeldingSynchronization } from '@components/existing-sykmelding-kvittering/SykmeldingSynchronization'
 import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
+import { isServerError, isSmartSessionInvalid } from '@graphql/error/Errors'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 
@@ -39,6 +40,14 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitte
             stopPolling()
         }
     }, [data?.sykmelding?.documentStatus, stopPolling])
+
+    useEffect(() => {
+        if (error) {
+            if (isSmartSessionInvalid(error) || isServerError(error)) {
+                stopPolling()
+            }
+        }
+    }, [error, stopPolling])
 
     return (
         <div className="max-w-prose bg-white p-4 rounded-sm">
