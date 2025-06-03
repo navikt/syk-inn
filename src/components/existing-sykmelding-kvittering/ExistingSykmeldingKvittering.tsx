@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement } from 'react'
 import {
     Alert,
     BodyLong,
@@ -21,7 +21,7 @@ import { FormSection } from '@components/ui/form'
 import { toReadableDatePeriod } from '@utils/date'
 import { SykmeldingSynchronization } from '@components/existing-sykmelding-kvittering/SykmeldingSynchronization'
 import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
-import { isServerError, isSmartSessionInvalid } from '@graphql/error/Errors'
+import { pathWithBasePath } from '@utils/url'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 
@@ -30,11 +30,13 @@ type ExistingSykmeldingKvitteringProps = {
 }
 
 function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitteringProps): ReactElement {
-    const { loading, data, error, refetch, stopPolling } = useQuery(SykmeldingByIdDocument, {
+    const { loading, data, error, refetch } = useQuery(SykmeldingByIdDocument, {
         variables: { id: sykmeldingId },
-        pollInterval: 5000,
+        // TODO: Temporarily disabled polling, because we are unable to fetch the DocumentReference back from WebMed
+        // pollInterval: 5000,
     })
 
+    /*
     useEffect(() => {
         if (data?.sykmelding?.documentStatus === 'COMPLETE') {
             stopPolling()
@@ -48,6 +50,7 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitte
             }
         }
     }, [error, stopPolling])
+     */
 
     return (
         <div className="max-w-prose bg-white p-4 rounded-sm">
@@ -91,7 +94,7 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }
                 </FormSection>
             </div>
             <div className="mt-8">
-                <AkselLink href={`/fhir/pdf/${sykmelding.sykmeldingId}`} target="_blank">
+                <AkselLink href={pathWithBasePath(`/fhir/pdf/${sykmelding.sykmeldingId}`)} target="_blank">
                     Se innsendt dokument
                 </AkselLink>
             </div>
