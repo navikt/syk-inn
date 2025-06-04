@@ -19,11 +19,11 @@ _Relevante referanser:_
     "identifier": [
         {
             "system": "urn:oid:2.16.578.1.12.4.1.4.101",
-            "value": "org-nummer / ENH"
+            "value": "organisasjonsnummer / ENH"
         },
         {
             "system": "urn:oid:2.16.578.1.12.4.1.2",
-            "value": "HER-id"
+            "value": "her-id"
         }
     ],
     "telecom": [
@@ -36,5 +36,6 @@ _Relevante referanser:_
 ```
 
 ## Begrunnelse
-
-Nav trenger telecom fra organization for eventuell saksbehandling.
+- Identifier/organisasjonsnummer - Nav benytter organisasjonsnummer som identifikator for organisasjonen sykmelder er tilknyttet (f.eks. fastlegekontor).
+- Identifier/her-id brukes til å sende dokumenter asynkront (som Dialogmelding) til EPJ hvis synkron tilbakeskriving feiler.
+- Telecom/phone - Saksbehandlere og veiledere i Nav trenger telefonnummer for å kontakte sykmelder ved oppfølging av sykmelding.
