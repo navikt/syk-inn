@@ -7,7 +7,7 @@ export type SmartStorage = {
     get: (sessionId: string) => Promise<unknown>
 }
 
-export type SmartStorageErrors = { error: 'INVALID_SESSION_STATE' }
+export type SmartStorageErrors = { error: 'BROKEN_SESSION_STATE' | 'NO_STATE' }
 
 export type SafeSmartStorage = {
     set: (sessionId: string, values: InitialSession | CompleteSession) => Promise<void>
@@ -22,6 +22,11 @@ export function safeSmartStorage(smartStorage: SmartStorage | Promise<SmartStora
         get: async (sessionId) => {
             const raw = await (await smartStorage).get(sessionId)
 
+            if (raw == null) return { error: 'NO_STATE' }
+            if (raw && typeof raw === 'object' && Object.keys(raw).length === 0) {
+                return { error: 'NO_STATE' }
+            }
+
             const completeParsed = CompleteSessionSchema.safeParse(raw)
             if (!completeParsed.error) return completeParsed.data
 
@@ -32,7 +37,7 @@ export function safeSmartStorage(smartStorage: SmartStorage | Promise<SmartStora
                         cause: initialParsed.error,
                     }),
                 )
-                return { error: 'INVALID_SESSION_STATE' }
+                return { error: 'BROKEN_SESSION_STATE' }
             }
 
             return initialParsed.data

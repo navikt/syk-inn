@@ -136,9 +136,15 @@ export class SmartClient {
 
         const session = await this._storage.get(sessionId)
 
-        if (session == null) {
-            logger.warn(`Tried to .ready SmartClient, but found no active session for id "${sessionId}"`)
-            return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
+        if ('error' in session) {
+            switch (session.error) {
+                case 'NO_STATE':
+                    // User has been logged out, no need for spammy logging
+                    return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
+                case 'BROKEN_SESSION_STATE':
+                    // Session is broken, safeStorage already logged the error
+                    return { error: 'INCOMPLETE_SESSION', validate: async () => false }
+            }
         }
 
         if (!('idToken' in session)) {
@@ -150,7 +156,7 @@ export class SmartClient {
             return new ReadyClient(this, session)
         } catch (error) {
             logger.error(
-                new Error(`Tried to .ready SmartClient, ReadyClient failed to instanciate for id "${sessionId}"`, {
+                new Error(`Tried to .ready SmartClient, ReadyClient failed to instantiate for id "${sessionId}"`, {
                     cause: error,
                 }),
             )
