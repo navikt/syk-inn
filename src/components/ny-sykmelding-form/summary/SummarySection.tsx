@@ -30,14 +30,14 @@ function SummarySection(): ReactElement {
                     <FormSummary.Heading level="2">Oppsummering sykmelding</FormSummary.Heading>
                     <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
                 </FormSummary.Header>
-
-                <PatientSummaryAnswers pasient={formState.pasient} />
-                <AktivitetSummaryAnswers aktiviteter={formState.aktiviteter} />
-                {formState.tilbakedatering && (
-                    <TilbakedateringSummaryAnswers tilbakedatering={formState.tilbakedatering} />
-                )}
-                <DiagnoseSummaryAnswers diagnose={formState.diagnose} />
                 <FormSummary.Answers>
+                    <PatientSummaryAnswers pasient={formState.pasient} />
+                    <AktivitetSummaryAnswers aktiviteter={formState.aktiviteter} />
+                    {formState.tilbakedatering && (
+                        <TilbakedateringSummaryAnswers tilbakedatering={formState.tilbakedatering} />
+                    )}
+                    <DiagnoseSummaryAnswers diagnose={formState.diagnose} />
+
                     <FormSummary.Answer>
                         <FormSummary.Label>Til NAV</FormSummary.Label>
                         {formState.meldinger?.tilNav ? (
@@ -54,9 +54,7 @@ function SummarySection(): ReactElement {
                             <FormSummary.Value className="italic">Ingen melding</FormSummary.Value>
                         )}
                     </FormSummary.Answer>
-                </FormSummary.Answers>
 
-                <FormSummary.Answers>
                     <FormSummary.Answer>
                         <FormSummary.Label>Svangerskapsrelatert</FormSummary.Label>
                         {formState.andreSporsmal?.svangerskapsrelatert ? (
@@ -107,20 +105,18 @@ function SummarySection(): ReactElement {
 function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[] | null }): ReactElement {
     if (aktiviteter == null) {
         return (
-            <FormSummary.Answers>
-                <FormSummary.Answer>
-                    <Alert variant="warning">
-                        Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
-                    </Alert>
-                </FormSummary.Answer>
-            </FormSummary.Answers>
+            <FormSummary.Answer>
+                <Alert variant="warning">
+                    Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
+                </Alert>
+            </FormSummary.Answer>
         )
     }
 
     return (
         <>
             {aktiviteter.map((aktivitet, index) => (
-                <FormSummary.Answers key={index}>
+                <React.Fragment key={index}>
                     <FormSummary.Answer>
                         <FormSummary.Label>Periode</FormSummary.Label>
                         <FormSummary.Value>{toReadableDatePeriod(aktivitet.fom, aktivitet.tom)}</FormSummary.Value>
@@ -129,7 +125,7 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[]
                         <FormSummary.Label>Mulighet for arbied</FormSummary.Label>
                         <FormSummary.Value>{aktivitetDescription(aktivitet)}</FormSummary.Value>
                     </FormSummary.Answer>
-                </FormSummary.Answers>
+                </React.Fragment>
             ))}
         </>
     )
@@ -137,7 +133,7 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[]
 
 function TilbakedateringSummaryAnswers({ tilbakedatering }: { tilbakedatering: TilbakedateringStep }): ReactElement {
     return (
-        <FormSummary.Answers>
+        <>
             <FormSummary.Answer>
                 <FormSummary.Label>Dato for tilbakedatering</FormSummary.Label>
                 <FormSummary.Value>{toReadableDate(tilbakedatering.fom)}</FormSummary.Value>
@@ -146,7 +142,7 @@ function TilbakedateringSummaryAnswers({ tilbakedatering }: { tilbakedatering: T
                 <FormSummary.Label>Grunn for tilbakedatering</FormSummary.Label>
                 <FormSummary.Value>{tilbakedatering.grunn}</FormSummary.Value>
             </FormSummary.Answer>
-        </FormSummary.Answers>
+        </>
     )
 }
 
@@ -164,17 +160,15 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: DiagnoseStep | null })
     }
 
     return (
-        <FormSummary.Answers>
-            <FormSummary.Answer>
-                <FormSummary.Label>Hoveddiagnose</FormSummary.Label>
-                <FormSummary.Value>
-                    <BodyShort>
-                        {diagnose.hoved.text} ({diagnose.hoved.code})
-                    </BodyShort>
-                    <Detail>{diagnose.hoved.system}</Detail>
-                </FormSummary.Value>
-            </FormSummary.Answer>
-        </FormSummary.Answers>
+        <FormSummary.Answer>
+            <FormSummary.Label>Hoveddiagnose</FormSummary.Label>
+            <FormSummary.Value>
+                <BodyShort>
+                    {diagnose.hoved.text} ({diagnose.hoved.code})
+                </BodyShort>
+                <Detail>{diagnose.hoved.system}</Detail>
+            </FormSummary.Value>
+        </FormSummary.Answer>
     )
 }
 
@@ -186,18 +180,16 @@ function PatientSummaryAnswers({ pasient }: { pasient: PasientStep | null }): Re
 
     if (pasient == null) {
         return (
-            <FormSummary.Answers>
-                <FormSummary.Answer>
-                    <Alert variant="warning">
-                        Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
-                    </Alert>
-                </FormSummary.Answer>
-            </FormSummary.Answers>
+            <FormSummary.Answer>
+                <Alert variant="warning">
+                    Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
+                </Alert>
+            </FormSummary.Answer>
         )
     }
 
     return (
-        <FormSummary.Answers>
+        <>
             <FormSummary.Answer>
                 <FormSummary.Label>Navn</FormSummary.Label>
                 <FormSummary.Value>{pasient.navn}</FormSummary.Value>
@@ -212,7 +204,7 @@ function PatientSummaryAnswers({ pasient }: { pasient: PasientStep | null }): Re
                     <FormSummary.Value>({personQuery.data.person.ident} i folkeregisteret)</FormSummary.Value>
                 )}
             </FormSummary.Answer>
-        </FormSummary.Answers>
+        </>
     )
 }
 

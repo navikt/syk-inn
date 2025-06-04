@@ -6,6 +6,7 @@ import { toReadableDate } from '@utils/date'
 
 import { clickAndWait, waitForGraphQL } from '../utils/request-utils'
 import { inputDate } from '../utils/date-utils'
+import { expectTermToHaveDefinitions } from '../utils/assertions'
 
 export function initPreloadedPatient({ name, fnr }: { name: string; fnr: string }) {
     return async (page: Page) => {
@@ -131,6 +132,9 @@ export function verifySummaryPage(sections: { tilbakedatering?: { contact: strin
     return async (page: Page) => {
         await expect(page.getByRole('heading', { name: 'Oppsummering sykmelding' })).toBeVisible()
         await expect(page.getByRole('button', { name: 'Endre svar' })).toBeVisible()
+
+        await expectTermToHaveDefinitions(page, 'Navn', ['Espen Eksempel', '(Ola Nordmann Hansen i folkeregisteret)'])
+        await expectTermToHaveDefinitions(page, 'Fødselsnummer', ['21037712323', '(12345678901 i folkeregisteret)'])
 
         if (sections.tilbakedatering) {
             // Not be most semantically correct, but this is the only way to get the text because of dd/dt (for now)
