@@ -30,6 +30,5 @@ _Relevante referanser:_
 ```
 
 ## Begrunnelse
-
-Identifier - Vi bruker HPR-nummer som identifikator for helsepersonellet. HER-ID brukes
-til å sende dokumenter asynkront (som Dialogmelding) EPJ hvis synkron tilbakeskriving feiler.
+- Identifier/hpr-nummer benyttes som identifikator for sykmelder/helsepersonell. 
+- Identifier/her-id brukes til å sende dokumenter asynkront (som Dialogmelding) til EPJ hvis synkron tilbakeskriving feiler.
