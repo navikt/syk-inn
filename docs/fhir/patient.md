@@ -37,6 +37,5 @@ _Relevante referanser:_
 ```
 
 ## Begrunnelse
-
-Vi trenger fødselsnummer eller d-nummer for å kunne identifisere pasienten. Navnet er mest for brukervennlighet og
-for behandler å bekrefte at det er riktig pasient.
+- Identifier/fødslesnummer eller d-nummer er nødvendig for å identifisere pasienten
+- name vises i appen slik at behandler kan bekrefte at det skrives sykmelding for korrekt pasient.
