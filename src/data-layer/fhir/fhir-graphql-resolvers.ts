@@ -1,13 +1,11 @@
 import { GraphQLError } from 'graphql/error'
-import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { QueriedPerson, Resolvers, Sykmelding } from '@resolvers'
-import { DiagnoseFragment } from '@queries'
 import { createSchema } from '@graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@fhir/mappers/patient'
-import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/mappers/diagnosis'
+import { diagnosisUrnToOidType, fhirDiagnosisToRelevantDiagnosis } from '@fhir/mappers/diagnosis'
 import { getServerEnv, isE2E, isLocalOrDemo } from '@utils/env'
 import { raise } from '@utils/ts'
 import { diagnoseSystemToOid } from '@utils/oid'
@@ -27,6 +25,8 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
     Query: {
         behandler: async () => {
             const [, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
+
+            await wait(700)
 
             return practitionerToBehandler(practitioner)
         },
@@ -54,31 +54,8 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             }
 
             const conditionList = conditionsByEncounter.entry.map((it) => it.resource)
-            const [relevanteDignoser, irrelevanteDiagnoser] = conditionList
-                ? R.partition(conditionList, (diagnosis) =>
-                      diagnosis.code.coding.some((coding) => diagnosisUrnToOidType(coding.system) != null),
-                  )
-                : [[], []]
 
-            logger.info(
-                `Fant ${relevanteDignoser.length} med gyldig ICPC-2 eller ICD-10 kode, ${irrelevanteDiagnoser.length} uten gyldig kode`,
-            )
-
-            return {
-                diagnoser: R.pipe(
-                    relevanteDignoser,
-                    R.map((diagnosis) => getDiagnosis(diagnosis.code.coding)),
-                    R.filter(R.isTruthy),
-                    R.map(
-                        (it) =>
-                            ({
-                                system: it.system,
-                                code: it.code,
-                                text: it.display,
-                            }) satisfies DiagnoseFragment,
-                    ),
-                ),
-            }
+            return { diagnoser: fhirDiagnosisToRelevantDiagnosis(conditionList) }
         },
         sykmelding: async (_, { id: sykmeldingId }) => {
             const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })

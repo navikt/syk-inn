@@ -1,4 +1,8 @@
-import { CodeableConcept } from '@navikt/fhir-zod'
+import * as R from 'remeda'
+import { logger } from '@navikt/next-logger'
+
+import { CodeableConcept, FhirCondition } from '@navikt/fhir-zod'
+import { Diagnose } from '@resolvers'
 import { raise } from '@utils/ts'
 
 const ICDC2_OID = '2.16.578.1.12.4.1.1.7170'
@@ -22,7 +26,7 @@ type Diagnosis = {
     rank?: number
 }
 
-export function getDiagnosis(diagnosis: CodeableConcept[]): Diagnosis | null {
+function getDiagnosis(diagnosis: CodeableConcept[]): Diagnosis | null {
     const relevantDiagnosis = diagnosis.find(
         (it) => it.system.startsWith('urn:oid') && diagnosisUrnToOidType(it.system) != null,
     )
@@ -35,4 +39,30 @@ export function getDiagnosis(diagnosis: CodeableConcept[]): Diagnosis | null {
         ...relevantDiagnosis,
         system: diagnosisUrnToOidType(relevantDiagnosis.system) ?? raise('Unknown diagnosis system'),
     }
+}
+
+export function fhirDiagnosisToRelevantDiagnosis(conditions: FhirCondition[] | null): Diagnose[] {
+    const [relevanteDignoser, irrelevanteDiagnoser] = conditions
+        ? R.partition(conditions, (diagnosis) =>
+              diagnosis.code.coding.some((coding) => diagnosisUrnToOidType(coding.system) != null),
+          )
+        : [[], []]
+
+    logger.info(
+        `Fant ${relevanteDignoser.length} med gyldig ICPC-2 eller ICD-10 kode, ${irrelevanteDiagnoser.length} uten gyldig kode`,
+    )
+
+    return R.pipe(
+        relevanteDignoser,
+        R.map((diagnosis) => getDiagnosis(diagnosis.code.coding)),
+        R.filter(R.isTruthy),
+        R.map(
+            (it) =>
+                ({
+                    system: it.system,
+                    code: it.code,
+                    text: it.display,
+                }) satisfies Diagnose,
+        ),
+    )
 }
