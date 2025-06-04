@@ -6,6 +6,7 @@ import type { Metadata } from 'next'
 import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
 import { getToggles } from '@toggles/unleash'
+import LoggedOutWarning from '@components/logged-out-warning/LoggedOutWarning'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../../providers/Providers'
@@ -32,6 +33,7 @@ export default async function FhirLayout({ children }: PropsWithChildren): Promi
             <body>
                 <Providers toggles={toggles} mode="FHIR">
                     {isLocalOrDemo && <DemoWarning />}
+                    <LoggedOutWarning />
                     {children}
                     {isLocalOrDemo && <LazyDevTools />}
                 </Providers>

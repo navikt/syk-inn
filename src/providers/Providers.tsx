@@ -3,24 +3,27 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { ApolloNextAppProvider } from '@apollo/client-integration-nextjs'
+import { Provider as ReduxProvider } from 'react-redux'
 
 import { Toggles } from '@toggles/toggles'
 import { ToggleProvider } from '@toggles/context'
 import { makeApolloClient } from '@graphql/apollo/apollo-client'
 
-import StoreProvider from './redux/StoreProvider'
 import { ModeProvider, Modes } from './ModeProvider'
+import useStoreRef from './redux/useStoreRef'
 
 function Providers({ children, toggles, mode }: PropsWithChildren<{ toggles: Toggles; mode: Modes }>): ReactElement {
+    const store = useStoreRef()
+
     return (
-        <ApolloNextAppProvider makeClient={makeApolloClient}>
-            <StoreProvider>
+        <ApolloNextAppProvider makeClient={makeApolloClient(store)}>
+            <ReduxProvider store={store}>
                 <ToggleProvider toggles={toggles}>
                     <ModeProvider mode={mode}>
                         <NuqsAdapter>{children}</NuqsAdapter>
                     </ModeProvider>
                 </ToggleProvider>
-            </StoreProvider>
+            </ReduxProvider>
         </ApolloNextAppProvider>
     )
 }

@@ -3,11 +3,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import nySykmeldingMultistepReducer from './reducers/ny-sykmelding-multistep'
+import metadataReducer from './reducers/metadata'
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             nySykmeldingMultistep: nySykmeldingMultistepReducer,
+            metadata: metadataReducer,
         },
     })
 }

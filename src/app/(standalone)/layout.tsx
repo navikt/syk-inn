@@ -9,6 +9,7 @@ import DemoWarning from '@components/demo-warning'
 import { getToggles } from '@toggles/unleash'
 import { getHelseIdUserInfo } from '@helseid/helseid-userinfo'
 import HelseIdHeader from '@helseid/components/HelseIdHeader'
+import LoggedOutWarning from '@components/logged-out-warning/LoggedOutWarning'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../../providers/Providers'
@@ -44,6 +45,7 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                 <Page footerPosition="belowFold">
                     {isLocalOrDemo && <DemoWarning />}
                     <Providers toggles={toggles} mode="HelseID">
+                        <LoggedOutWarning />
                         {children}
                         {isLocalOrDemo && <LazyDevTools />}
                     </Providers>
