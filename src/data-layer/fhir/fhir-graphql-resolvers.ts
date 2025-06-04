@@ -6,14 +6,13 @@ import { QueriedPerson, Resolvers, Sykmelding } from '@resolvers'
 import { createSchema } from '@graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@fhir/mappers/patient'
 import { diagnosisUrnToOidType, fhirDiagnosisToRelevantDiagnosis } from '@fhir/mappers/diagnosis'
-import { getServerEnv, isE2E, isLocalOrDemo } from '@utils/env'
 import { raise } from '@utils/ts'
 import { diagnoseSystemToOid } from '@utils/oid'
 import { wait } from '@utils/wait'
-import { pdlApiService } from '@services/pdl/PdlApiService'
-import { getFnrIdent, getNameFromPdl } from '@services/pdl/PdlApiUtils'
+import { pdlApiService } from '@services/pdl/pdl-api-service'
+import { getFnrIdent, getNameFromPdl } from '@services/pdl/pdl-api-utils'
 import { getHpr, practitionerToBehandler } from '@fhir/mappers/practitioner'
-import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
+import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { createDocumentReference } from '@fhir/fhir-service'
 import { spanAsync } from '@otel/otel'
 
@@ -66,31 +65,6 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
-            if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
-                logger.info('Running in local or demo environment, returning mocked sykmelding data')
-                return {
-                    sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
-                    pasient: {
-                        navn: 'Ola Nordmann',
-                        ident: '12345678910',
-                    },
-                    aktivitet: {
-                        type: 'AKTIVITET_IKKE_MULIG',
-                        fom: '2024-02-15',
-                        tom: '2024-02-18',
-                    },
-                    diagnose: {
-                        hoved: {
-                            system: 'ICD10',
-                            code: 'L73',
-                            text: 'Brudd legg/ankel',
-                        },
-                        bi: [],
-                    },
-                    documentStatus: 'COMPLETE',
-                } satisfies Sykmelding
-            }
-
             const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
             if ('errorType' in sykmelding) {
                 throw new GraphQLError('API_ERROR')
@@ -128,17 +102,6 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             if (!ident) throw new GraphQLError('MISSING_IDENT')
 
-            if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
-                logger.info('Running in local or demo environment, returning mocked person data')
-                // Fake dev loading
-                await wait(2500, 500)
-
-                return {
-                    navn: 'Ola Nordmann',
-                    ident: '12345678910',
-                } satisfies QueriedPerson
-            }
-
             const person = await pdlApiService.getPdlPerson(ident)
             if ('errorType' in person) {
                 throw new GraphQLError('API_ERROR')
@@ -159,16 +122,6 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             if (hpr == null) {
                 logger.error('Missing HPR identifier in practitioner resource')
                 throw new GraphQLError('PARSING_ERROR')
-            }
-
-            if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
-                logger.warn(
-                    `Is in demo, local or e2e, submitting send sykmelding values ${JSON.stringify(nySykmelding, null, 2)}`,
-                )
-
-                await wait(500)
-
-                return { sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d' }
             }
 
             const result = await sykInnApiService.createNewSykmelding({
