@@ -2,47 +2,36 @@ import { GraphQLError } from 'graphql/error'
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
+import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { QueriedPerson, Resolvers, Sykmelding } from '@resolvers'
 import { DiagnoseFragment } from '@queries'
 import { createSchema } from '@graphql/create-schema'
-import { raise } from '@utils/ts'
 import { getNameFromFhir, getValidPatientIdent } from '@fhir/mappers/patient'
 import { diagnosisUrnToOidType, getDiagnosis } from '@fhir/mappers/diagnosis'
 import { getServerEnv, isE2E, isLocalOrDemo } from '@utils/env'
+import { raise } from '@utils/ts'
+import { diagnoseSystemToOid } from '@utils/oid'
+import { wait } from '@utils/wait'
 import { pdlApiService } from '@services/pdl/PdlApiService'
 import { getFnrIdent, getNameFromPdl } from '@services/pdl/PdlApiUtils'
-import { wait } from '@utils/wait'
 import { getHpr, practitionerToBehandler } from '@fhir/mappers/practitioner'
 import { sykInnApiService } from '@services/syk-inn-api/SykInnApiService'
-import { createDocumentReference, getPractitioner } from '@fhir/fhir-service'
-import { diagnoseSystemToOid } from '@utils/oid'
-import { ReadyClient } from '@navikt/smart-on-fhir/client'
+import { createDocumentReference } from '@fhir/fhir-service'
 import { spanAsync } from '@otel/otel'
 
 import { getDiagnoseText, searchDiagnose } from '../common/diagnose-search'
 
-import { getReadyClient } from './smart/smart-client'
+import { getReadyClientForResolvers } from './smart/smart-client'
 
 export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
     Query: {
-        behandler: async (_, __, context) => {
-            const client = context.readyClient ?? (await getReadyClient({ validate: true }))
-            if ('error' in client) {
-                throw new GraphQLError('AUTH_ERROR')
-            }
-
-            const practitioner = await client.request(`/${client.fhirUser}`)
-            if ('error' in practitioner) {
-                throw new GraphQLError('PARSING_ERROR')
-            }
+        behandler: async () => {
+            const [, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
 
             return practitionerToBehandler(practitioner)
         },
-        pasient: async (_, __, context) => {
-            const client = context.readyClient ?? (await getReadyClient({ validate: true }))
-            if ('error' in client) {
-                throw new GraphQLError('AUTH_ERROR')
-            }
+        pasient: async () => {
+            const [client] = await getReadyClientForResolvers()
 
             const patientInContext = await client.request(`/Patient/${client.patient}`)
             if ('error' in patientInContext) {
@@ -56,11 +45,8 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 ident: getValidPatientIdent(patientInContext) ?? raise('Patient without valid FNR/DNR'),
             }
         },
-        konsultasjon: async (_, __, context) => {
-            const client = context.readyClient ?? (await getReadyClient({ validate: true }))
-            if ('error' in client) {
-                throw new GraphQLError('AUTH_ERROR')
-            }
+        konsultasjon: async () => {
+            const [client] = await getReadyClientForResolvers()
 
             const conditionsByEncounter = await client.request(`/Condition?encounter=${client.encounter}`)
             if ('error' in conditionsByEncounter) {
@@ -94,16 +80,8 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 ),
             }
         },
-        sykmelding: async (_, { id: sykmeldingId }, context) => {
-            const client = context.readyClient ?? (await getReadyClient({ validate: true }))
-            if ('error' in client) {
-                throw new GraphQLError('AUTH_ERROR')
-            }
-
-            const practitioner = await client.request(`/${client.fhirUser}`)
-            if ('error' in practitioner) {
-                throw new GraphQLError('PARSING_ERROR')
-            }
+        sykmelding: async (_, { id: sykmeldingId }) => {
+            const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
 
             const hpr = getHpr(practitioner.identifier)
             if (hpr == null) {
@@ -167,15 +145,11 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 documentStatus: 'resourceType' in existingDocumentReference ? 'COMPLETE' : 'PENDING',
             } satisfies Sykmelding
         },
-        person: async (_, { ident }, context) => {
-            const client = context.readyClient ?? (await getReadyClient({ validate: true }))
-            if ('error' in client) {
-                throw new GraphQLError('AUTH_ERROR')
-            }
+        person: async (_, { ident }) => {
+            // Only validate session
+            await getReadyClientForResolvers()
 
-            if (!ident) {
-                throw new GraphQLError('MISSING_IDENT')
-            }
+            if (!ident) throw new GraphQLError('MISSING_IDENT')
 
             if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
                 logger.info('Running in local or demo environment, returning mocked person data')
@@ -201,16 +175,8 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
         diagnose: (_, { query }) => searchDiagnose(query),
     },
     Mutation: {
-        opprettSykmelding: async (_, { nySykmelding }, context) => {
-            const client = context.readyClient ?? (await getReadyClient({ validate: true }))
-            if ('error' in client) {
-                throw new GraphQLError('AUTH_ERROR')
-            }
-
-            const practitioner = await getPractitioner(client)
-            if ('error' in practitioner) {
-                throw new GraphQLError('PARSING_ERROR')
-            }
+        opprettSykmelding: async (_, { nySykmelding }) => {
+            const [, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
 
             const hpr = getHpr(practitioner.identifier)
             if (hpr == null) {
@@ -269,11 +235,8 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             return { sykmeldingId: result.sykmeldingId }
         },
-        synchronizeSykmelding: async (_, { id: sykmeldingId }, context) => {
-            const client = context.readyClient ?? (await getReadyClient({ validate: true }))
-            if ('error' in client) {
-                throw new GraphQLError('AUTH_ERROR')
-            }
+        synchronizeSykmelding: async (_, { id: sykmeldingId }) => {
+            const [client] = await getReadyClientForResolvers()
 
             const existingDocument = await spanAsync('get document reference', () =>
                 client.request(`/DocumentReference/${sykmeldingId}`),

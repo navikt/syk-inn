@@ -7,6 +7,7 @@ import { createNewDocumentReferencePayload } from '@fhir/mappers/document-refere
 import { FhirDocumentReferenceBase, FhirPractitioner } from '@navikt/fhir-zod'
 import { toReadableDatePeriod } from '@utils/date'
 import { ExistingSykmelding } from '@services/syk-inn-api/SykInnApiSchema'
+import { spanAsync } from '@otel/otel'
 
 /**
  * Uses the FHIR client to fetch the Practitioner resource for the current user.
@@ -14,19 +15,21 @@ import { ExistingSykmelding } from '@services/syk-inn-api/SykInnApiSchema'
  * With required hacks.
  */
 export async function getPractitioner(client: ReadyClient): Promise<FhirPractitioner> {
-    if (!client.fhirUser.startsWith('Practitioner/')) {
-        logger.error(`fhirUser is not a Practitioner, was: ${client.fhirUser}`)
-        throw new Error('fhirUser is not a Practitioner')
-    }
+    return spanAsync('get practitioner', async () => {
+        if (!client.fhirUser.startsWith('Practitioner/')) {
+            logger.error(`fhirUser is not a Practitioner, was: ${client.fhirUser}`)
+            throw new Error('fhirUser is not a Practitioner')
+        }
 
-    logger.info(`Trying to fetch fhirUser from /Practitioner/${client.fhirUser}`)
-    const practitioner = await client.request(`/${client.fhirUser}` as `/Practitioner/${string}`)
+        logger.info(`Trying to fetch fhirUser from /Practitioner/${client.fhirUser}`)
+        const practitioner = await client.request(`/${client.fhirUser}` as `/Practitioner/${string}`)
 
-    if ('error' in practitioner) {
-        throw new Error(`Unable to fetch 'behandler', reason: ${practitioner.error}`)
-    }
+        if ('error' in practitioner) {
+            throw new Error(`Unable to fetch 'behandler', reason: ${practitioner.error}`)
+        }
 
-    return practitioner
+        return practitioner
+    })
 }
 
 /**

@@ -1,3 +1,5 @@
+import { GraphQLError } from 'graphql/error'
+
 import {
     SmartClientConfiguration,
     SmartClientReadyErrors,
@@ -9,6 +11,9 @@ import { getValkeyClient } from '@services/valkey/client'
 import { getAbsoluteURL } from '@utils/url'
 import { getSessionId } from '@fhir/smart/session'
 import { spanAsync } from '@otel/otel'
+import { getPractitioner } from '@fhir/fhir-service'
+import { FhirPractitioner } from '@navikt/fhir-zod'
+import { NoSmartSession } from '@graphql/error/Errors'
 
 const smartClientConfig: SmartClientConfiguration = {
     client_id: 'syk-inn',
@@ -35,6 +40,30 @@ export async function getReadyClient({ validate }: { validate: true }): Promise<
 
         return readyClient
     })
+}
+
+export async function getReadyClientForResolvers(): Promise<[ReadyClient]>
+export async function getReadyClientForResolvers(params: {
+    withPractitioner: true
+}): Promise<[ReadyClient, FhirPractitioner]>
+export async function getReadyClientForResolvers(params?: {
+    withPractitioner: true
+}): Promise<[ReadyClient] | [ReadyClient, FhirPractitioner]> {
+    const client = await getReadyClient({ validate: true })
+    if ('error' in client) {
+        throw NoSmartSession()
+    }
+
+    if (params == null) {
+        return [client]
+    }
+
+    const practitioner = await getPractitioner(client)
+    if ('error' in practitioner) {
+        throw new GraphQLError('PARSING_ERROR')
+    }
+
+    return [client, practitioner]
 }
 
 async function getSmartStorage(): Promise<SmartStorage> {
