@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react'
 import { Page, PageBlock } from '@navikt/ds-react/Page'
 
-import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
+import NySykmeldingWithContextPasient from '@components/ny-sykmelding-form/NySykmeldingWithContextPasient'
 
 async function NySykmeldingPage(): Promise<ReactElement> {
     return (
         <Page className="bg-transparent">
             <PageBlock as="main" gutters className="pt-4">
-                <NySykmeldingForm />
+                <NySykmeldingWithContextPasient />
             </PageBlock>
         </Page>
     )

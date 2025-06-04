@@ -5,9 +5,9 @@ import { AnimatePresence, motion } from 'motion/react'
 
 import { StepSection, useFormStep } from './steps/useFormStep'
 import SummarySection from './summary/SummarySection'
-import MainSectionWithData from './MainSectionWithData'
+import NySykmeldingFormWithData from './NySykmeldingFormWithData'
 
-function NySykmeldingFormSections(): ReactElement {
+function NySykmeldingFormSteps(): ReactElement {
     const [step] = useFormStep()
     const [prevStep, setPrevStep] = useState(step)
     const [direction, setDirection] = useState<-1 | 1>(1)
@@ -41,10 +41,10 @@ function NySykmeldingFormSections(): ReactElement {
 function Sections({ section }: { section: StepSection }): ReactElement {
     switch (section) {
         case 'main':
-            return <MainSectionWithData />
+            return <NySykmeldingFormWithData />
         case 'summary':
             return <SummarySection />
     }
 }
 
-export default NySykmeldingFormSections
+export default NySykmeldingFormSteps

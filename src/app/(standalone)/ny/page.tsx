@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 import { PageBlock } from '@navikt/ds-react/Page'
 
-import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
+import NySykmeldingWithContextPasient from '@components/ny-sykmelding-form/NySykmeldingWithContextPasient'
 
 async function Page(): Promise<ReactElement> {
     return (
@@ -11,7 +11,7 @@ async function Page(): Promise<ReactElement> {
                 Opprett ny sykmelding
             </Heading>
 
-            <NySykmeldingForm />
+            <NySykmeldingWithContextPasient />
         </PageBlock>
     )
 }

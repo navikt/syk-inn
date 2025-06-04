@@ -1,51 +1,114 @@
-'use client'
+import React, { ReactElement } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { Button } from '@navikt/ds-react'
+import { ArrowRightIcon } from '@navikt/aksel-icons'
+import dynamic from 'next/dynamic'
 
-import React, { ReactElement, useEffect } from 'react'
-import { Heading, Skeleton } from '@navikt/ds-react'
-import { useQuery } from '@apollo/client'
+import { raise } from '@utils/ts'
+import AndreSporsmalSection from '@components/ny-sykmelding-form/andre-sporsmal/AndreSporsmalSection'
+import { createDefaultValues } from '@components/ny-sykmelding-form/form-default-values'
+import FormSection from '@components/form/form-section/FormSection'
 
-import { PasientDocument } from '@queries'
-
-import { useAppDispatch } from '../../providers/redux/hooks'
+import { useAppDispatch, useAppSelector } from '../../providers/redux/hooks'
 import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
-import NySykmeldingFormSections from './NySykmeldingFormSections'
+import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
+import AktivitetSection from './aktivitet/AktivitetSection'
+import DiagnoseSection from './diagnose/DiagnoseSection'
+import { useFormStep } from './steps/useFormStep'
+import MeldingerSection from './meldinger/MeldingerSection'
+import DynamicTilbakedateringSection from './tilbakedatering/DynamicTilbakedateringSection'
 
-function NySykmeldingForm(): ReactElement {
-    const { loading, data, error } = useQuery(PasientDocument)
-    const dispatch = useAppDispatch()
+const FormDevTools = dynamic(() => import('../../devtools/NySykmeldingFormDevTools'), { ssr: false })
 
-    useEffect(() => {
-        if (data?.pasient != null) {
-            dispatch(
-                nySykmeldingMultistepActions.autoPatient({
-                    type: 'auto',
-                    ident: data.pasient.ident,
-                    navn: data.pasient.navn,
-                }),
-            )
-        }
-    }, [dispatch, loading, data])
+type Props = {
+    initialServerValues: NySykmeldingSuggestions
+}
 
-    if (error) {
-        // Defer to global error handling
-        throw error
-    }
+function NySykmeldingForm({ initialServerValues }: Props): ReactElement {
+    const initialValues = useAppSelector((state) => state.nySykmeldingMultistep)
+    const onSubmit = useHandleFormSubmit()
+    const form = useForm<NySykmeldingMainFormValues>({
+        defaultValues: createDefaultValues({
+            initialValues,
+            initialSuggestions: initialServerValues,
+        }),
+    })
 
     return (
-        <>
-            <div>
-                <Heading level="2" size="medium" spacing>
-                    <span>Sykmelding for</span>
-                    {loading && <Skeleton width={140} className="inline-block mx-2" />}
-                    {data?.pasient && ` ${data.pasient.navn} `}
-                </Heading>
-            </div>
-            <div className="w-full">
-                <NySykmeldingFormSections />
-            </div>
-        </>
+        <div className="bg-bg-default p-4 rounded">
+            <FormProvider {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <FormSection title="Periode">
+                        <AktivitetSection />
+                    </FormSection>
+                    <DynamicTilbakedateringSection />
+                    <FormSection title="Diagnose" className="mt-8">
+                        <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
+                    </FormSection>
+                    <FormSection title="Andre spørsmål" className="my-8" hideTitle>
+                        <AndreSporsmalSection />
+                    </FormSection>
+                    <FormSection title="Meldinger" className="mt-8">
+                        <MeldingerSection />
+                    </FormSection>
+                    <div className="w-full flex justify-end gap-3 mt-16 lg:col-span-2">
+                        <Button
+                            id="step-navigation-next"
+                            type="submit"
+                            variant="primary"
+                            icon={<ArrowRightIcon aria-hidden />}
+                            iconPosition="right"
+                        >
+                            Neste steg
+                        </Button>
+                    </div>
+                </form>
+                <FormDevTools />
+            </FormProvider>
+        </div>
     )
+}
+
+function useHandleFormSubmit() {
+    const [, setStep] = useFormStep()
+    const dispatch = useAppDispatch()
+
+    return async (values: NySykmeldingMainFormValues): Promise<void> => {
+        dispatch(
+            nySykmeldingMultistepActions.completeMainStep({
+                diagnose: {
+                    hoved: values.diagnoser.hoved ?? raise("Can't submit step without hoveddiagnose"),
+                    bi: [],
+                },
+                aktiviteter: values.perioder.map((periode) => ({
+                    fom: periode.periode.fom ?? raise("Can't submit step without periode fom"),
+                    tom: periode.periode.tom ?? raise("Can't submit step without periode tom"),
+                    grad: periode.aktivitet.grad,
+                    type: periode.aktivitet.type,
+                })),
+                tilbakedatering:
+                    values.tilbakedatering?.fom && values.tilbakedatering?.grunn
+                        ? {
+                              fom: values.tilbakedatering.fom,
+                              grunn: values.tilbakedatering.grunn,
+                          }
+                        : null,
+                meldinger: {
+                    showTilNav: values.meldinger.showTilNav,
+                    showTilArbeidsgiver: values.meldinger.showTilArbeidsgiver,
+                    tilNav: values.meldinger.tilNav,
+                    tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
+                },
+                andreSporsmal: {
+                    svangerskapsrelatert: values.andreSporsmal.includes('svangerskapsrelatert'),
+                    yrkesskade: values.andreSporsmal.includes('yrkesskade'),
+                },
+            }),
+        )
+
+        await setStep('summary')
+    }
 }
 
 export default NySykmeldingForm

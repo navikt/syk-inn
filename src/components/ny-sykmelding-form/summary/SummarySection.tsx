@@ -8,7 +8,7 @@ import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 
 import { useFormStep } from '../steps/useFormStep'
 import { useAppSelector } from '../../../providers/redux/hooks'
-import { useNySykmeldingMutation } from '../useNySykmeldingMutation'
+import { useOpprettSykmeldingMutation } from '../useOpprettSykmeldingMutation'
 import {
     AktivitetStep,
     DiagnoseStep,
@@ -21,7 +21,7 @@ import { aktivitetDescription } from './summary-text-utils'
 function SummarySection(): ReactElement {
     const [, setStep] = useFormStep()
     const formState = useAppSelector((state) => state.nySykmeldingMultistep)
-    const nySykmelding = useNySykmeldingMutation()
+    const nySykmelding = useOpprettSykmeldingMutation()
 
     return (
         <div className="flex flex-col gap-6 mt-8">

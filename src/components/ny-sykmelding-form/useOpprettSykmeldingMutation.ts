@@ -11,7 +11,7 @@ import { withSpanAsync } from '@otel/otel'
 import { useAppSelector } from '../../providers/redux/hooks'
 import { useMode } from '../../providers/ModeProvider'
 
-export function useNySykmeldingMutation(): {
+export function useOpprettSykmeldingMutation(): {
     opprettSykmelding: () => Promise<unknown>
     result: MutationResult<unknown>
 } {

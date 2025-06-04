@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react'
 import { Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
-import MainSection from '@components/ny-sykmelding-form/MainSection'
+import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 import { KonsultasjonDocument } from '@queries'
 
-function MainSectionWithData(): ReactElement {
+function NySykmeldingFormWithData(): ReactElement {
     const { loading, data, error } = useQuery(KonsultasjonDocument)
 
     if (loading) {
@@ -22,7 +22,7 @@ function MainSectionWithData(): ReactElement {
     }
 
     return (
-        <MainSection
+        <NySykmeldingForm
             initialServerValues={{
                 diagnose: {
                     value: pickMostRelevantDiagnose(data?.konsultasjon?.diagnoser ?? null),
@@ -43,4 +43,4 @@ function pickMostRelevantDiagnose(
     return diagnoser[0]
 }
 
-export default MainSectionWithData
+export default NySykmeldingFormWithData
