@@ -2,21 +2,77 @@ type OpprettetSykmelding {
     sykmeldingId: String!
 }
 
-input OpprettSykmelding {
-    pasientIdent: String!
+input OpprettSykmeldingInput {
+    pasientenSkalSkjermes: Boolean!
     hoveddiagnose: InputDiagnose!
-    perioder: [InputPeriode!]!
-}
-
-input InputPeriode {
-    type: String!
-    fom: String!
-    tom: String!
-    # Should perhaps be number?
-    grad: String
+    bidiagnoser: [InputDiagnose!]!
+    aktivitet: [InputAktivitet!]!
+    meldinger: InputMeldinger!
+    svangerskapsrelatert: Boolean!
+    yrkesskade: InputYrkesskade
+    arbeidsgiver: InputArbeidsgiver
+    tilbakedatering: InputTilbakedatering
 }
 
 input InputDiagnose {
     code: String!
     system: DiagnoseSystem!
+}
+
+input InputYrkesskade {
+    yrkesskade: Boolean!
+    skadedato: DateOnly
+}
+
+input InputMeldinger {
+    tilNav: String
+    tilArbeidsgiver: String
+}
+
+input InputArbeidsgiver {
+    harFlere: Boolean!
+    arbeidsgivernavn: String!
+}
+
+input InputTilbakedatering {
+    startdato: String!
+    begrunnelse: String!
+}
+
+"""
+An ugly approach because the limitations of GraphQL
+input types where union types are not supported.
+
+See: https://github.com/graphql/graphql-wg/blob/main/rfcs/InputUnion.md
+"""
+input InputAktivitet {
+    type: AktivitetType!
+    fom: String!
+    tom: String!
+    gradert: GradertInput
+    aktivitetIkkeMulig: AktivitetIkkeMuligInput
+    avventende: AvventendeInput
+    behandlingsdager: BehandlingsdagerInput
+    reisetilskudd: ReisetilskuddInput
+}
+
+input GradertInput {
+    grad: Int!
+    reisetilskudd: Boolean!
+}
+
+input AktivitetIkkeMuligInput {
+    dummy: Boolean!
+}
+
+input ReisetilskuddInput {
+    dummy: Boolean!
+}
+
+input AvventendeInput {
+    innspillTilArbeidsgiver: String!
+}
+
+input BehandlingsdagerInput {
+    antallBehandlingsdager: Int!
 }
