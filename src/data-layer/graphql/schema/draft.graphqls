@@ -1,0 +1,5 @@
+type OpprettSykmeldingDraft {
+    draftId: String!
+    values: JSON!
+}
+

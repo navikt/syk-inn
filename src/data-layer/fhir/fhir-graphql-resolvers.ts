@@ -17,6 +17,7 @@ import { createDocumentReference } from '@fhir/fhir-service'
 import { spanAsync } from '@otel/otel'
 
 import { getDiagnoseText, searchDiagnose } from '../common/diagnose-search'
+import { getDraftClient } from '../draft/draft-client'
 
 import { getReadyClientForResolvers } from './smart/smart-client'
 
@@ -117,8 +118,106 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             } satisfies QueriedPerson
         },
         diagnose: (_, { query }) => searchDiagnose(query),
+        draft: async (_, { draftId }) => {
+            const draftClient = await getDraftClient()
+
+            // TODO verify access to draft
+            const draft = await draftClient.getDraft(draftId)
+
+            if (draft == null) return null
+
+            return {
+                draftId,
+                values: draft,
+            }
+        },
+        drafts: async () => {
+            const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
+
+            const hpr = getHpr(practitioner.identifier)
+            if (hpr == null) {
+                logger.error('Missing HPR identifier in practitioner resource')
+                throw new GraphQLError('PARSING_ERROR')
+            }
+
+            const pasient = await client.request(`/Patient/${client.patient}`)
+            if ('error' in pasient) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const ident = getValidPatientIdent(pasient)
+            if (ident == null) {
+                logger.error('Missing valid FNR/DNR in patient resource')
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const draftClient = await getDraftClient()
+
+            const allDrafts = await draftClient.getDrafts({ hpr, ident })
+
+            return allDrafts
+        },
     },
     Mutation: {
+        saveDraft: async (_, { draftId, values }) => {
+            const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
+
+            const hpr = getHpr(practitioner.identifier)
+            if (hpr == null) {
+                logger.error('Missing HPR identifier in practitioner resource')
+                throw new GraphQLError('PARSING_ERROR')
+            }
+
+            const pasient = await client.request(`/Patient/${client.patient}`)
+            if ('error' in pasient) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const ident = getValidPatientIdent(pasient)
+            if (ident == null) {
+                logger.error('Missing valid FNR/DNR in patient resource')
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const draftClient = await getDraftClient()
+            await draftClient.saveDraft(draftId, { hpr, ident }, values)
+
+            logger.info(`Saved draft ${draftId} to draft client`)
+
+            return {
+                draftId,
+                values,
+            }
+        },
+        deleteDraft: async (_, { draftId }) => {
+            const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
+
+            const hpr = getHpr(practitioner.identifier)
+            if (hpr == null) {
+                logger.error('Missing HPR identifier in practitioner resource')
+                throw new GraphQLError('PARSING_ERROR')
+            }
+
+            const pasient = await client.request(`/Patient/${client.patient}`)
+            if ('error' in pasient) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const ident = getValidPatientIdent(pasient)
+            if (ident == null) {
+                logger.error('Missing valid FNR/DNR in patient resource')
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const draftClient = await getDraftClient()
+
+            // TODO verify access to draft
+            await draftClient.deleteDraft(draftId, { hpr, ident })
+
+            logger.info(`Deleted draft ${draftId} from draft client`)
+
+            return true
+        },
         opprettSykmelding: async (_, { nySykmelding }) => {
             const [, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
 

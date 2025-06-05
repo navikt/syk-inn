@@ -37,6 +37,16 @@ export function ToggleAPIFailures(): ReactElement {
                 Pasient by OID (fnr/dnr)
             </Checkbox>
         ),
+        GetDraft: (
+            <Checkbox key="getDraft" value="GetDraft">
+                Hent utkast
+            </Checkbox>
+        ),
+        GetAllDrafts: (
+            <Checkbox key="getAllDrafts" value="GetAllDrafts">
+                Hent alle utkast
+            </Checkbox>
+        ),
         OpprettSykmelding: (
             <Checkbox key="opprettSykmelding" value="OpprettSykmelding">
                 Opprett sykmelding (Mutation)
@@ -45,6 +55,16 @@ export function ToggleAPIFailures(): ReactElement {
         SynchronizeSykmelding: (
             <Checkbox key="synchronizeSykmelding" value="SynchronizeSykmelding">
                 Sykmelding-synkronisering (Mutation)
+            </Checkbox>
+        ),
+        SaveDraft: (
+            <Checkbox key="saveDraft" value="SaveDraft">
+                Lagre utkast (Mutation)
+            </Checkbox>
+        ),
+        DeleteDraft: (
+            <Checkbox key="deleteDraft" value="DeleteDraft">
+                Slett utkast (Mutation)
             </Checkbox>
         ),
     }

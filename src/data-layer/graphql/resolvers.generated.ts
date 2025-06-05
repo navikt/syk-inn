@@ -96,12 +96,23 @@ export type Konsultasjon = {
 
 export type Mutation = {
     __typename?: 'Mutation'
+    deleteDraft: Scalars['Boolean']['output']
     opprettSykmelding: OpprettetSykmelding
+    saveDraft: OpprettSykmeldingDraft
     synchronizeSykmelding: SynchronizationStatus
+}
+
+export type MutationDeleteDraftArgs = {
+    draftId: Scalars['String']['input']
 }
 
 export type MutationOpprettSykmeldingArgs = {
     nySykmelding: OpprettSykmelding
+}
+
+export type MutationSaveDraftArgs = {
+    draftId: Scalars['String']['input']
+    values: Scalars['JSON']['input']
 }
 
 export type MutationSynchronizeSykmeldingArgs = {
@@ -112,6 +123,12 @@ export type OpprettSykmelding = {
     hoveddiagnose: InputDiagnose
     pasientIdent: Scalars['String']['input']
     perioder: Array<InputPeriode>
+}
+
+export type OpprettSykmeldingDraft = {
+    __typename?: 'OpprettSykmeldingDraft'
+    draftId: Scalars['String']['output']
+    values: Scalars['JSON']['output']
 }
 
 export type OpprettetSykmelding = {
@@ -140,6 +157,8 @@ export type Query = {
     __typename?: 'Query'
     behandler?: Maybe<Behandler>
     diagnose?: Maybe<Array<Diagnose>>
+    draft?: Maybe<OpprettSykmeldingDraft>
+    drafts?: Maybe<Array<OpprettSykmeldingDraft>>
     konsultasjon?: Maybe<Konsultasjon>
     pasient?: Maybe<Pasient>
     person?: Maybe<QueriedPerson>
@@ -148,6 +167,10 @@ export type Query = {
 
 export type QueryDiagnoseArgs = {
     query: Scalars['String']['input']
+}
+
+export type QueryDraftArgs = {
+    draftId: Scalars['String']['input']
 }
 
 export type QueryPersonArgs = {
@@ -289,6 +312,7 @@ export type ResolversTypes = {
     Konsultasjon: ResolverTypeWrapper<Konsultasjon>
     Mutation: ResolverTypeWrapper<{}>
     OpprettSykmelding: OpprettSykmelding
+    OpprettSykmeldingDraft: ResolverTypeWrapper<OpprettSykmeldingDraft>
     OpprettetSykmelding: ResolverTypeWrapper<OpprettetSykmelding>
     Pasient: ResolverTypeWrapper<Pasient>
     Person: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Person']>
@@ -320,6 +344,7 @@ export type ResolversParentTypes = {
     Konsultasjon: Konsultasjon
     Mutation: {}
     OpprettSykmelding: OpprettSykmelding
+    OpprettSykmeldingDraft: OpprettSykmeldingDraft
     OpprettetSykmelding: OpprettetSykmelding
     Pasient: Pasient
     Person: ResolversInterfaceTypes<ResolversParentTypes>['Person']
@@ -438,11 +463,23 @@ export type MutationResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
 > = {
+    deleteDraft?: Resolver<
+        ResolversTypes['Boolean'],
+        ParentType,
+        ContextType,
+        RequireFields<MutationDeleteDraftArgs, 'draftId'>
+    >
     opprettSykmelding?: Resolver<
         ResolversTypes['OpprettetSykmelding'],
         ParentType,
         ContextType,
         RequireFields<MutationOpprettSykmeldingArgs, 'nySykmelding'>
+    >
+    saveDraft?: Resolver<
+        ResolversTypes['OpprettSykmeldingDraft'],
+        ParentType,
+        ContextType,
+        RequireFields<MutationSaveDraftArgs, 'draftId' | 'values'>
     >
     synchronizeSykmelding?: Resolver<
         ResolversTypes['SynchronizationStatus'],
@@ -450,6 +487,15 @@ export type MutationResolvers<
         ContextType,
         RequireFields<MutationSynchronizeSykmeldingArgs, 'id'>
     >
+}
+
+export type OpprettSykmeldingDraftResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['OpprettSykmeldingDraft'] = ResolversParentTypes['OpprettSykmeldingDraft'],
+> = {
+    draftId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    values?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type OpprettetSykmeldingResolvers<
@@ -498,6 +544,13 @@ export type QueryResolvers<
         ContextType,
         RequireFields<QueryDiagnoseArgs, 'query'>
     >
+    draft?: Resolver<
+        Maybe<ResolversTypes['OpprettSykmeldingDraft']>,
+        ParentType,
+        ContextType,
+        RequireFields<QueryDraftArgs, 'draftId'>
+    >
+    drafts?: Resolver<Maybe<Array<ResolversTypes['OpprettSykmeldingDraft']>>, ParentType, ContextType>
     konsultasjon?: Resolver<Maybe<ResolversTypes['Konsultasjon']>, ParentType, ContextType>
     pasient?: Resolver<Maybe<ResolversTypes['Pasient']>, ParentType, ContextType>
     person?: Resolver<Maybe<ResolversTypes['QueriedPerson']>, ParentType, ContextType, Partial<QueryPersonArgs>>
@@ -562,6 +615,7 @@ export type Resolvers<ContextType = any> = {
     JSON?: GraphQLScalarType
     Konsultasjon?: KonsultasjonResolvers<ContextType>
     Mutation?: MutationResolvers<ContextType>
+    OpprettSykmeldingDraft?: OpprettSykmeldingDraftResolvers<ContextType>
     OpprettetSykmelding?: OpprettetSykmeldingResolvers<ContextType>
     Pasient?: PasientResolvers<ContextType>
     Person?: PersonResolvers<ContextType>

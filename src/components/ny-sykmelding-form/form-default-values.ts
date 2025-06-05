@@ -14,15 +14,29 @@ import { DiagnoseFragment } from '@queries'
 import { NySykmeldingMultiStepState } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
 type CreateDefaultValuesData = {
+    // TODO: better typing for drafts
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    draftValues: any
     initialValues: NySykmeldingMultiStepState
     initialSuggestions: NySykmeldingSuggestions
 }
 
+/**
+ * Overall the default values have the following precedence:
+ * 1. Draft values (if available)
+ * 2. Initial values from the multistep state (user may return from a previous step)
+ * 3. Initial suggestions from the server
+ * 4. Inherent defaults
+ */
 export function createDefaultValues({
+    draftValues,
     initialValues,
     initialSuggestions,
 }: CreateDefaultValuesData): DefaultValues<NySykmeldingMainFormValues> {
-    // TODO: Needs to sigourney weave in server data as well
+    if (draftValues != null) {
+        return draftValues
+    }
+
     return {
         perioder: initialValues.aktiviteter?.map((it) => ({
             periode: {

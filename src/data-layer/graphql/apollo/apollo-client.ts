@@ -38,7 +38,14 @@ export function makeApolloClient(store: AppStore) {
             : from([errorLink, retryLink, httpLink])
 
         return new ApolloClient({
-            cache: new InMemoryCache({ possibleTypes: possibleTypesGenerated.possibleTypes }),
+            cache: new InMemoryCache({
+                typePolicies: {
+                    OpprettSykmeldingDraft: {
+                        keyFields: ['draftId'],
+                    },
+                },
+                possibleTypes: possibleTypesGenerated.possibleTypes,
+            }),
             link: links,
         })
     }

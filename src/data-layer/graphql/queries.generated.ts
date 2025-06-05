@@ -94,12 +94,23 @@ export type Konsultasjon = {
 
 export type Mutation = {
     __typename?: 'Mutation'
+    deleteDraft: Scalars['Boolean']['output']
     opprettSykmelding: OpprettetSykmelding
+    saveDraft: OpprettSykmeldingDraft
     synchronizeSykmelding: SynchronizationStatus
+}
+
+export type MutationDeleteDraftArgs = {
+    draftId: Scalars['String']['input']
 }
 
 export type MutationOpprettSykmeldingArgs = {
     nySykmelding: OpprettSykmelding
+}
+
+export type MutationSaveDraftArgs = {
+    draftId: Scalars['String']['input']
+    values: Scalars['JSON']['input']
 }
 
 export type MutationSynchronizeSykmeldingArgs = {
@@ -110,6 +121,12 @@ export type OpprettSykmelding = {
     hoveddiagnose: InputDiagnose
     pasientIdent: Scalars['String']['input']
     perioder: Array<InputPeriode>
+}
+
+export type OpprettSykmeldingDraft = {
+    __typename?: 'OpprettSykmeldingDraft'
+    draftId: Scalars['String']['output']
+    values: Scalars['JSON']['output']
 }
 
 export type OpprettetSykmelding = {
@@ -138,6 +155,8 @@ export type Query = {
     __typename?: 'Query'
     behandler?: Maybe<Behandler>
     diagnose?: Maybe<Array<Diagnose>>
+    draft?: Maybe<OpprettSykmeldingDraft>
+    drafts?: Maybe<Array<OpprettSykmeldingDraft>>
     konsultasjon?: Maybe<Konsultasjon>
     pasient?: Maybe<Pasient>
     person?: Maybe<QueriedPerson>
@@ -146,6 +165,10 @@ export type Query = {
 
 export type QueryDiagnoseArgs = {
     query: Scalars['String']['input']
+}
+
+export type QueryDraftArgs = {
+    draftId: Scalars['String']['input']
 }
 
 export type QueryPersonArgs = {
@@ -200,6 +223,38 @@ export type DiagnoseSearchQuery = {
 }
 
 export type DiagnoseFragment = { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }
+
+export type SaveDraftMutationVariables = Exact<{
+    draftId: Scalars['String']['input']
+    values: Scalars['JSON']['input']
+}>
+
+export type SaveDraftMutation = {
+    __typename?: 'Mutation'
+    saveDraft: { __typename?: 'OpprettSykmeldingDraft'; draftId: string; values: unknown }
+}
+
+export type DeleteDraftMutationVariables = Exact<{
+    draftId: Scalars['String']['input']
+}>
+
+export type DeleteDraftMutation = { __typename?: 'Mutation'; deleteDraft: boolean }
+
+export type GetDraftQueryVariables = Exact<{
+    draftId: Scalars['String']['input']
+}>
+
+export type GetDraftQuery = {
+    __typename?: 'Query'
+    draft?: { __typename?: 'OpprettSykmeldingDraft'; draftId: string; values: unknown } | null
+}
+
+export type GetAllDraftsQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetAllDraftsQuery = {
+    __typename?: 'Query'
+    drafts?: Array<{ __typename?: 'OpprettSykmeldingDraft'; draftId: string; values: unknown }> | null
+}
 
 export type KonsultasjonQueryVariables = Exact<{ [key: string]: never }>
 
@@ -617,6 +672,155 @@ export const DiagnoseSearchDocument = {
         },
     ],
 } as unknown as DocumentNode<DiagnoseSearchQuery, DiagnoseSearchQueryVariables>
+export const SaveDraftDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'mutation',
+            name: { kind: 'Name', value: 'SaveDraft' },
+            variableDefinitions: [
+                {
+                    kind: 'VariableDefinition',
+                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'draftId' } },
+                    type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+                },
+                {
+                    kind: 'VariableDefinition',
+                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'values' } },
+                    type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'JSON' } } },
+                },
+            ],
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'saveDraft' },
+                        arguments: [
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'draftId' },
+                                value: { kind: 'Variable', name: { kind: 'Name', value: 'draftId' } },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'values' },
+                                value: { kind: 'Variable', name: { kind: 'Name', value: 'values' } },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'values' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<SaveDraftMutation, SaveDraftMutationVariables>
+export const DeleteDraftDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'mutation',
+            name: { kind: 'Name', value: 'DeleteDraft' },
+            variableDefinitions: [
+                {
+                    kind: 'VariableDefinition',
+                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'draftId' } },
+                    type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+                },
+            ],
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'deleteDraft' },
+                        arguments: [
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'draftId' },
+                                value: { kind: 'Variable', name: { kind: 'Name', value: 'draftId' } },
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<DeleteDraftMutation, DeleteDraftMutationVariables>
+export const GetDraftDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'GetDraft' },
+            variableDefinitions: [
+                {
+                    kind: 'VariableDefinition',
+                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'draftId' } },
+                    type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+                },
+            ],
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'draft' },
+                        arguments: [
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'draftId' },
+                                value: { kind: 'Variable', name: { kind: 'Name', value: 'draftId' } },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'values' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<GetDraftQuery, GetDraftQueryVariables>
+export const GetAllDraftsDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'GetAllDrafts' },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'drafts' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'values' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<GetAllDraftsQuery, GetAllDraftsQueryVariables>
 export const KonsultasjonDocument = {
     kind: 'Document',
     definitions: [
