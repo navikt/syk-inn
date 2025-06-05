@@ -144,7 +144,7 @@ export function toInitialPerioder(
             },
             aktivitet: {
                 type: it.type,
-                grad: it.grad ? it.grad.toFixed(0) : null,
+                grad: it.type === 'GRADERT' ? it.grad.toFixed(0) : null,
             },
         }))
     }

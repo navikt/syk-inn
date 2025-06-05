@@ -28,6 +28,10 @@ export type AktivitetIkkeMulig = FomTom & {
     type: AktivitetType
 }
 
+export type AktivitetIkkeMuligInput = {
+    dummy: Scalars['Boolean']['input']
+}
+
 export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'GRADERT' | 'REISETILSKUDD'
 
 export type Avventende = FomTom & {
@@ -36,6 +40,10 @@ export type Avventende = FomTom & {
     innspillTilArbeidsgiver: Scalars['String']['output']
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
+}
+
+export type AvventendeInput = {
+    innspillTilArbeidsgiver: Scalars['String']['input']
 }
 
 export type Behandler = {
@@ -50,6 +58,10 @@ export type Behandlingsdager = FomTom & {
     fom: Scalars['DateOnly']['output']
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
+}
+
+export type BehandlingsdagerInput = {
+    antallBehandlingsdager: Scalars['Int']['input']
 }
 
 export type Diagnose = {
@@ -76,16 +88,51 @@ export type Gradert = FomTom & {
     type: AktivitetType
 }
 
+export type GradertInput = {
+    grad: Scalars['Int']['input']
+    reisetilskudd: Scalars['Boolean']['input']
+}
+
+/**
+ * An ugly approach because the limitations of GraphQL
+ * input types where union types are not supported.
+ *
+ * See: https://github.com/graphql/graphql-wg/blob/main/rfcs/InputUnion.md
+ */
+export type InputAktivitet = {
+    aktivitetIkkeMulig?: InputMaybe<AktivitetIkkeMuligInput>
+    avventende?: InputMaybe<AvventendeInput>
+    behandlingsdager?: InputMaybe<BehandlingsdagerInput>
+    fom: Scalars['String']['input']
+    gradert?: InputMaybe<GradertInput>
+    reisetilskudd?: InputMaybe<ReisetilskuddInput>
+    tom: Scalars['String']['input']
+    type: AktivitetType
+}
+
+export type InputArbeidsgiver = {
+    arbeidsgivernavn: Scalars['String']['input']
+    harFlere: Scalars['Boolean']['input']
+}
+
 export type InputDiagnose = {
     code: Scalars['String']['input']
     system: DiagnoseSystem
 }
 
-export type InputPeriode = {
-    fom: Scalars['String']['input']
-    grad?: InputMaybe<Scalars['String']['input']>
-    tom: Scalars['String']['input']
-    type: Scalars['String']['input']
+export type InputMeldinger = {
+    tilArbeidsgiver?: InputMaybe<Scalars['String']['input']>
+    tilNav?: InputMaybe<Scalars['String']['input']>
+}
+
+export type InputTilbakedatering = {
+    begrunnelse: Scalars['String']['input']
+    startdato: Scalars['String']['input']
+}
+
+export type InputYrkesskade = {
+    skadedato?: InputMaybe<Scalars['DateOnly']['input']>
+    yrkesskade: Scalars['Boolean']['input']
 }
 
 export type Konsultasjon = {
@@ -106,7 +153,8 @@ export type MutationDeleteDraftArgs = {
 }
 
 export type MutationOpprettSykmeldingArgs = {
-    nySykmelding: OpprettSykmelding
+    draftId: Scalars['String']['input']
+    values: OpprettSykmeldingInput
 }
 
 export type MutationSaveDraftArgs = {
@@ -118,18 +166,23 @@ export type MutationSynchronizeSykmeldingArgs = {
     id: Scalars['String']['input']
 }
 
-export type OpprettSykmelding = {
-    draftId: Scalars['String']['input']
-    hoveddiagnose: InputDiagnose
-    pasientIdent: Scalars['String']['input']
-    perioder: Array<InputPeriode>
-}
-
 export type OpprettSykmeldingDraft = {
     __typename?: 'OpprettSykmeldingDraft'
     draftId: Scalars['String']['output']
     lastUpdated: Scalars['DateTime']['output']
     values: Scalars['JSON']['output']
+}
+
+export type OpprettSykmeldingInput = {
+    aktivitet: Array<InputAktivitet>
+    arbeidsgiver?: InputMaybe<InputArbeidsgiver>
+    bidiagnoser: Array<InputDiagnose>
+    hoveddiagnose: InputDiagnose
+    meldinger: InputMeldinger
+    pasientenSkalSkjermes: Scalars['Boolean']['input']
+    svangerskapsrelatert: Scalars['Boolean']['input']
+    tilbakedatering?: InputMaybe<InputTilbakedatering>
+    yrkesskade?: InputMaybe<InputYrkesskade>
 }
 
 export type OpprettetSykmelding = {
@@ -189,9 +242,13 @@ export type Reisetilskudd = FomTom & {
     type: AktivitetType
 }
 
+export type ReisetilskuddInput = {
+    dummy: Scalars['Boolean']['input']
+}
+
 export type Sykmelding = {
     __typename?: 'Sykmelding'
-    aktivitet: Aktivitet
+    aktivitet: Array<Aktivitet>
     diagnose: SykmeldingDiagnoser
     documentStatus: DocumentStatus
     pasient: Pasient
@@ -200,8 +257,8 @@ export type Sykmelding = {
 
 export type SykmeldingDiagnoser = {
     __typename?: 'SykmeldingDiagnoser'
-    bi: Array<Diagnose>
-    hoved: Diagnose
+    bi?: Maybe<Array<Diagnose>>
+    hoved?: Maybe<Diagnose>
 }
 
 export type SynchronizationStatus = {
@@ -303,9 +360,9 @@ export type SykmeldingByIdQuery = {
         pasient: { __typename?: 'Pasient'; navn: string; ident: string }
         diagnose: {
             __typename?: 'SykmeldingDiagnoser'
-            hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string }
+            hoved?: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string } | null
         }
-        aktivitet:
+        aktivitet: Array<
             | { __typename?: 'AktivitetIkkeMulig'; fom: string; tom: string; type: AktivitetType }
             | {
                   __typename?: 'Avventende'
@@ -323,11 +380,13 @@ export type SykmeldingByIdQuery = {
               }
             | { __typename?: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
             | { __typename?: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+        >
     } | null
 }
 
 export type OpprettSykmeldingMutationVariables = Exact<{
-    values: OpprettSykmelding
+    draftId: Scalars['String']['input']
+    values: OpprettSykmeldingInput
 }>
 
 export type OpprettSykmeldingMutation = {
@@ -342,9 +401,9 @@ export type SykmeldingFragment = {
     pasient: { __typename?: 'Pasient'; navn: string; ident: string }
     diagnose: {
         __typename?: 'SykmeldingDiagnoser'
-        hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string }
+        hoved?: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string } | null
     }
-    aktivitet:
+    aktivitet: Array<
         | { __typename?: 'AktivitetIkkeMulig'; fom: string; tom: string; type: AktivitetType }
         | { __typename?: 'Avventende'; fom: string; tom: string; type: AktivitetType; innspillTilArbeidsgiver: string }
         | {
@@ -356,6 +415,7 @@ export type SykmeldingFragment = {
           }
         | { __typename?: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
         | { __typename?: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+    >
 }
 
 type Aktivitet_AktivitetIkkeMulig_Fragment = {
@@ -1150,10 +1210,15 @@ export const OpprettSykmeldingDocument = {
             variableDefinitions: [
                 {
                     kind: 'VariableDefinition',
+                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'draftId' } },
+                    type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+                },
+                {
+                    kind: 'VariableDefinition',
                     variable: { kind: 'Variable', name: { kind: 'Name', value: 'values' } },
                     type: {
                         kind: 'NonNullType',
-                        type: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmelding' } },
+                        type: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingInput' } },
                     },
                 },
             ],
@@ -1166,7 +1231,12 @@ export const OpprettSykmeldingDocument = {
                         arguments: [
                             {
                                 kind: 'Argument',
-                                name: { kind: 'Name', value: 'nySykmelding' },
+                                name: { kind: 'Name', value: 'draftId' },
+                                value: { kind: 'Variable', name: { kind: 'Name', value: 'draftId' } },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'values' },
                                 value: { kind: 'Variable', name: { kind: 'Name', value: 'values' } },
                             },
                         ],

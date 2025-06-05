@@ -5,14 +5,13 @@ import { CodeableConcept, FhirCondition } from '@navikt/fhir-zod'
 import { Diagnose } from '@resolvers'
 import { raise } from '@utils/ts'
 
-const ICDC2_OID = '2.16.578.1.12.4.1.1.7170'
-const ICD10_OID = '2.16.578.1.12.4.1.1.7110'
+import { DiagnoseSystem, ICD10_OID_VALUE, ICPC2_OID_VALUE } from '../../common/diagnose'
 
-export function diagnosisUrnToOidType(urn: string): 'ICD10' | 'ICPC2' | null {
+export function diagnosisUrnToOidType(urn: string): DiagnoseSystem | null {
     switch (urn.replace('urn:oid:', '')) {
-        case ICDC2_OID:
+        case ICPC2_OID_VALUE:
             return 'ICPC2'
-        case ICD10_OID:
+        case ICD10_OID_VALUE:
             return 'ICD10'
         default:
             return null

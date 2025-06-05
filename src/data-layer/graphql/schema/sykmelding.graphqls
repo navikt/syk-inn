@@ -1,14 +1,14 @@
 type Sykmelding {
     sykmeldingId: String!
-    aktivitet: Aktivitet!
+    aktivitet: [Aktivitet!]!
     pasient: Pasient!
     diagnose: SykmeldingDiagnoser!
     documentStatus: DocumentStatus!
 }
 
 type SykmeldingDiagnoser {
-    hoved: Diagnose!
-    bi: [Diagnose!]!
+    hoved: Diagnose
+    bi: [Diagnose!]
 }
 
 enum DocumentStatus {

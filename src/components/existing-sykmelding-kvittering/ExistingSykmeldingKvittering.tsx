@@ -83,14 +83,22 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }
                 </FormSection>
                 <FormSection title="Diagnose" icon={<HandBandageIcon />}>
                     <Label>Hoveddiagnose</Label>
-                    <BodyShort>
-                        {sykmelding.diagnose.hoved.code} - {sykmelding.diagnose.hoved.text}
-                    </BodyShort>
-                    <Detail>{sykmelding.diagnose.hoved.system}</Detail>
+                    {sykmelding.diagnose.hoved != null ? (
+                        <>
+                            <BodyShort>
+                                {sykmelding.diagnose.hoved.code} - {sykmelding.diagnose.hoved.text}
+                            </BodyShort>
+                            <Detail>{sykmelding.diagnose.hoved.system}</Detail>
+                        </>
+                    ) : (
+                        <BodyShort>Ingen hoveddiagnose er satt</BodyShort>
+                    )}
                 </FormSection>
                 <FormSection title="Aktivitet" icon={<VitalsIcon />}>
                     <Detail>Sykmeldingsperiode</Detail>
-                    <BodyShort>{toReadableDatePeriod(sykmelding.aktivitet.fom, sykmelding.aktivitet.tom)}</BodyShort>
+                    <BodyShort>
+                        {toReadableDatePeriod(sykmelding.aktivitet[0].fom, sykmelding.aktivitet[0].tom)}
+                    </BodyShort>
                 </FormSection>
             </div>
             <div className="mt-8">

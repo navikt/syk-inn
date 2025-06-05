@@ -1,21 +1,39 @@
-import { ExistingSykmelding } from '@services/syk-inn-api/syk-inn-api-schema'
+import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
 
-export function createMockSykmelding(): ExistingSykmelding {
+export function createMockSykmelding(): SykInnApiSykmelding {
     return {
         sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
-        pasientFnr: '12345678910',
-        sykmelderHpr: '123456789',
-        legekontorOrgnr: '999944614',
-        sykmelding: {
-            aktivitet: {
-                type: 'AKTIVITET_IKKE_MULIG',
-                fom: '2024-02-15',
-                tom: '2024-02-18',
-            },
+        meta: {
+            pasientIdent: '12345678910',
+            sykmelderHpr: '123456789',
+            legekontorOrgnr: '999944614',
+        },
+        values: {
+            aktivitet: [
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: '2024-02-15',
+                    tom: '2024-02-18',
+                },
+            ],
             hoveddiagnose: {
-                system: '2.16.578.1.12.4.1.1.7170',
+                system: 'ICD10',
                 code: 'L73',
-                // text: 'Brudd legg/ankel',
+                text: 'Brudd legg/ankel',
+            },
+            bidiagnoser: [],
+            svangerskapsrelatert: false,
+            pasientenSkalSkjermes: false,
+            meldinger: {
+                tilNav: null,
+                tilArbeidsgiver: null,
+            },
+            yrkesskade: null,
+            arbeidsgiver: null,
+            tilbakedatering: null,
+            regelResultat: {
+                result: 'OK',
+                melding: null,
             },
         },
     }
