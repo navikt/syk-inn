@@ -17,12 +17,18 @@ type AutoPatientStep = {
 
 export type PasientStep = ManualPatientStep | AutoPatientStep
 
-export type AktivitetStep = {
-    fom: string
-    tom: string
-    type: 'AKTIVITET_IKKE_MULIG' | 'GRADERT'
-    grad: number | null
-}
+export type AktivitetStep =
+    | {
+          type: 'AKTIVITET_IKKE_MULIG'
+          fom: string
+          tom: string
+      }
+    | {
+          type: 'GRADERT'
+          fom: string
+          tom: string
+          grad: number
+      }
 
 export type TilbakedateringStep = {
     fom: string
