@@ -6,11 +6,12 @@ import {
     useFormContext as useRhfFormContext,
 } from 'react-hook-form'
 
+import { DiagnoseFragment } from '@queries'
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
 export type NySykmeldingSuggestions = {
     diagnose: {
-        value: DiagnoseSuggestion | null
+        value: DiagnoseFragment | null
         error?: { error: 'FHIR_FAILED' }
     }
 }

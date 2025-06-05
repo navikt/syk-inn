@@ -9,6 +9,7 @@ import {
     NySykmeldingSuggestions,
 } from '@components/ny-sykmelding-form/form'
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
+import { DiagnoseFragment } from '@queries'
 
 import { NySykmeldingMultiStepState } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
@@ -70,14 +71,14 @@ export function createDefaultValues({
  */
 export function toInitialDiagnose(
     initialFormDiagnose: DiagnoseSuggestion | null,
-    serverSuggestion: DiagnoseSuggestion | null,
+    serverSuggestion: DiagnoseFragment | null,
 ): DiagnoseSuggestion | null {
     if (initialFormDiagnose != null) {
         return initialFormDiagnose
     }
 
     if (serverSuggestion != null) {
-        return serverSuggestion
+        return R.omit(serverSuggestion, ['__typename'])
     }
 
     return null

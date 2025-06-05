@@ -3,8 +3,7 @@ import { Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
-import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
-import { KonsultasjonDocument } from '@queries'
+import { DiagnoseFragment, KonsultasjonDocument } from '@queries'
 
 function NySykmeldingFormWithData(): ReactElement {
     const { loading, data, error } = useQuery(KonsultasjonDocument)
@@ -33,9 +32,7 @@ function NySykmeldingFormWithData(): ReactElement {
     )
 }
 
-function pickMostRelevantDiagnose(
-    diagnoser: { system: 'ICD10' | 'ICPC2'; code: string; text: string }[] | null,
-): DiagnoseSuggestion | null {
+function pickMostRelevantDiagnose(diagnoser: DiagnoseFragment[] | null): DiagnoseFragment | null {
     if (!diagnoser || diagnoser.length === 0) {
         return null
     }
