@@ -8,6 +8,7 @@ import { raise } from '@utils/ts'
 import AndreSporsmalSection from '@components/ny-sykmelding-form/andre-sporsmal/AndreSporsmalSection'
 import { createDefaultValues } from '@components/ny-sykmelding-form/form-default-values'
 import FormSection from '@components/form/form-section/FormSection'
+import ForkastDraftButton, { LagreDraftButton } from '@components/ny-sykmelding-form/draft/DraftActions'
 
 import { useAppDispatch, useAppSelector } from '../../providers/redux/hooks'
 import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
@@ -18,18 +19,21 @@ import DiagnoseSection from './diagnose/DiagnoseSection'
 import { useFormStep } from './steps/useFormStep'
 import MeldingerSection from './meldinger/MeldingerSection'
 import DynamicTilbakedateringSection from './tilbakedatering/DynamicTilbakedateringSection'
+import FormDraftSync from './draft/FormDraftSync'
 
 const FormDevTools = dynamic(() => import('../../devtools/NySykmeldingFormDevTools'), { ssr: false })
 
 type Props = {
+    draftValues: unknown
     initialServerValues: NySykmeldingSuggestions
 }
 
-function NySykmeldingForm({ initialServerValues }: Props): ReactElement {
+function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactElement {
     const initialValues = useAppSelector((state) => state.nySykmeldingMultistep)
     const onSubmit = useHandleFormSubmit()
     const form = useForm<NySykmeldingMainFormValues>({
         defaultValues: createDefaultValues({
+            draftValues: draftValues,
             initialValues,
             initialSuggestions: initialServerValues,
         }),
@@ -38,6 +42,7 @@ function NySykmeldingForm({ initialServerValues }: Props): ReactElement {
     return (
         <div className="bg-bg-default p-4 rounded">
             <FormProvider {...form}>
+                <FormDraftSync />
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <FormSection title="Periode">
                         <AktivitetSection />
@@ -53,6 +58,8 @@ function NySykmeldingForm({ initialServerValues }: Props): ReactElement {
                         <MeldingerSection />
                     </FormSection>
                     <div className="w-full flex justify-end gap-3 mt-16 lg:col-span-2">
+                        <ForkastDraftButton />
+                        <LagreDraftButton />
                         <Button
                             id="step-navigation-next"
                             type="submit"

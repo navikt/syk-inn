@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactElement, useState } from 'react'
+import React, { CSSProperties, ReactElement, useRef, useState } from 'react'
 import { Alert, BodyShort, Button, ConfirmationPanel, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
@@ -6,6 +6,7 @@ import AssableNextLink from '@components/misc/AssableNextLink'
 import { PasientDocument } from '@queries'
 
 function OpprettNySykmeldingCard(): ReactElement {
+    const nextDraftId = useRef(crypto.randomUUID())
     const { data, loading, error, refetch } = useQuery(PasientDocument)
     const [hasLegged, setHasLegged] = useState(true)
 
@@ -77,7 +78,7 @@ function OpprettNySykmeldingCard(): ReactElement {
                         <Button
                             as={AssableNextLink}
                             variant="primary"
-                            href="/fhir/ny"
+                            href={`/fhir/ny/${nextDraftId.current}`}
                             disabled={loading || !hasLegged}
                             loading={loading}
                             size="small"

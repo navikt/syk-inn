@@ -1,14 +1,19 @@
 import React, { ReactElement } from 'react'
 import { Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
+import { useParams } from 'next/navigation'
 
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
-import { DiagnoseFragment, KonsultasjonDocument } from '@queries'
+import { DiagnoseFragment, GetDraftDocument, KonsultasjonDocument } from '@queries'
 
 function NySykmeldingFormWithData(): ReactElement {
-    const { loading, data, error } = useQuery(KonsultasjonDocument)
+    const params = useParams<{ draftId: string }>()
+    const konsultasjonsQuery = useQuery(KonsultasjonDocument)
+    const draftQuery = useQuery(GetDraftDocument, {
+        variables: { draftId: params.draftId },
+    })
 
-    if (loading) {
+    if (konsultasjonsQuery.loading || draftQuery.loading) {
         return (
             // Needs a much better skeleton
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -22,10 +27,11 @@ function NySykmeldingFormWithData(): ReactElement {
 
     return (
         <NySykmeldingForm
+            draftValues={draftQuery.data?.draft?.values}
             initialServerValues={{
                 diagnose: {
-                    value: pickMostRelevantDiagnose(data?.konsultasjon?.diagnoser ?? null),
-                    error: error ? { error: 'FHIR_FAILED' } : undefined,
+                    value: pickMostRelevantDiagnose(konsultasjonsQuery.data?.konsultasjon?.diagnoser ?? null),
+                    error: konsultasjonsQuery.error ? { error: 'FHIR_FAILED' } : undefined,
                 },
             }}
         />

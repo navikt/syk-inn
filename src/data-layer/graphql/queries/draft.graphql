@@ -1,0 +1,24 @@
+mutation SaveDraft($draftId: String!, $values: JSON!) {
+    saveDraft(draftId: $draftId, values: $values) {
+        draftId
+        values
+    }
+}
+
+mutation DeleteDraft($draftId: String!) {
+    deleteDraft(draftId: $draftId)
+}
+
+query GetDraft($draftId: String!) {
+    draft(draftId: $draftId) {
+        draftId
+        values
+    }
+}
+
+query GetAllDrafts {
+    drafts {
+        draftId
+        values
+    }
+}

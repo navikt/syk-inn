@@ -6,9 +6,15 @@ type Query {
 
     diagnose(query: String!): [Diagnose!]
     person(ident: String): QueriedPerson
+
+    draft(draftId: String!): OpprettSykmeldingDraft
+    drafts: [OpprettSykmeldingDraft!]
 }
 
 type Mutation {
     opprettSykmelding(nySykmelding: OpprettSykmelding!): OpprettetSykmelding!
     synchronizeSykmelding(id: String!): SynchronizationStatus!
+
+    saveDraft(draftId: String!, values: JSON!): OpprettSykmeldingDraft!
+    deleteDraft(draftId: String!): Boolean!
 }
