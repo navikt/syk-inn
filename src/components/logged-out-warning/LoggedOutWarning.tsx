@@ -3,6 +3,9 @@
 import React, { ReactElement } from 'react'
 import { BodyLong, Button, Modal } from '@navikt/ds-react'
 
+import { isLocalOrDemo } from '@utils/env'
+import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
+
 import { useAppSelector } from '../../providers/redux/hooks'
 import { useMode } from '../../providers/ModeProvider'
 
@@ -40,6 +43,18 @@ function LoggedOutWarning(): ReactElement | null {
                 <Button type="button" variant="secondary-neutral" onClick={() => window.location.reload()}>
                     {mode === 'FHIR' ? 'Last siden på nytt' : 'Logg inn igjen'}
                 </Button>
+                {isLocalOrDemo && mode === 'FHIR' && (
+                    <Button
+                        type="button"
+                        as="a"
+                        variant="secondary-neutral"
+                        href={pathWithBasePath(
+                            `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}`,
+                        )}
+                    >
+                        Relaunch dev FHIR
+                    </Button>
+                )}
             </Modal.Footer>
         </Modal>
     )
