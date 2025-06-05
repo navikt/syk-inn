@@ -10,14 +10,14 @@ const config: CodegenConfig = {
             plugins: ['typescript', 'typescript-operations', 'typed-document-node', eslintDisabler],
             config: {
                 enumsAsTypes: true,
-                scalars: { DateTime: 'string' },
+                scalars: { DateTime: 'string', JSON: 'unknown' },
             },
         },
         './src/data-layer/graphql/resolvers.generated.ts': {
             plugins: ['typescript', 'typescript-resolvers', eslintDisabler],
             config: {
                 enumsAsTypes: true,
-                scalars: { DateTime: 'string' },
+                scalars: { DateTime: 'string', JSON: 'unknown' },
             },
         },
         './src/data-layer/graphql/possible-types.generated.ts': {

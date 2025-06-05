@@ -17,6 +17,7 @@ export type Scalars = {
     Int: { input: number; output: number }
     Float: { input: number; output: number }
     DateOnly: { input: any; output: any }
+    JSON: { input: unknown; output: unknown }
 }
 
 export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
@@ -284,6 +285,7 @@ export type ResolversTypes = {
     InputDiagnose: InputDiagnose
     InputPeriode: InputPeriode
     Int: ResolverTypeWrapper<Scalars['Int']['output']>
+    JSON: ResolverTypeWrapper<Scalars['JSON']['output']>
     Konsultasjon: ResolverTypeWrapper<Konsultasjon>
     Mutation: ResolverTypeWrapper<{}>
     OpprettSykmelding: OpprettSykmelding
@@ -314,6 +316,7 @@ export type ResolversParentTypes = {
     InputDiagnose: InputDiagnose
     InputPeriode: InputPeriode
     Int: Scalars['Int']['output']
+    JSON: Scalars['JSON']['output']
     Konsultasjon: Konsultasjon
     Mutation: {}
     OpprettSykmelding: OpprettSykmelding
@@ -417,6 +420,10 @@ export type GradertResolvers<
     tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
+    name: 'JSON'
 }
 
 export type KonsultasjonResolvers<
@@ -552,6 +559,7 @@ export type Resolvers<ContextType = any> = {
     Diagnose?: DiagnoseResolvers<ContextType>
     FomTom?: FomTomResolvers<ContextType>
     Gradert?: GradertResolvers<ContextType>
+    JSON?: GraphQLScalarType
     Konsultasjon?: KonsultasjonResolvers<ContextType>
     Mutation?: MutationResolvers<ContextType>
     OpprettetSykmelding?: OpprettetSykmeldingResolvers<ContextType>

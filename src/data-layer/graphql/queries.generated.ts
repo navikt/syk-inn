@@ -15,6 +15,7 @@ export type Scalars = {
     Int: { input: number; output: number }
     Float: { input: number; output: number }
     DateOnly: { input: any; output: any }
+    JSON: { input: unknown; output: unknown }
 }
 
 export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
