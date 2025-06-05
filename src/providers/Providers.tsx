@@ -4,6 +4,7 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { ApolloNextAppProvider } from '@apollo/client-integration-nextjs'
 import { Provider as ReduxProvider } from 'react-redux'
+import { Toaster } from 'sonner'
 
 import { Toggles } from '@toggles/toggles'
 import { ToggleProvider } from '@toggles/context'
@@ -20,7 +21,10 @@ function Providers({ children, toggles, mode }: PropsWithChildren<{ toggles: Tog
             <ReduxProvider store={store}>
                 <ToggleProvider toggles={toggles}>
                     <ModeProvider mode={mode}>
-                        <NuqsAdapter>{children}</NuqsAdapter>
+                        <NuqsAdapter>
+                            {children}
+                            <Toaster />
+                        </NuqsAdapter>
                     </ModeProvider>
                 </ToggleProvider>
             </ReduxProvider>
