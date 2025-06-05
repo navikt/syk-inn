@@ -5,12 +5,13 @@ import { MutationResult, useMutation } from '@apollo/client'
 
 import { raise } from '@utils/ts'
 import { pathWithBasePath } from '@utils/url'
-import { OpprettSykmeldingDocument } from '@queries'
+import { InputAktivitet, OpprettSykmeldingDocument, OpprettSykmeldingInput } from '@queries'
 import { withSpanAsync } from '@otel/otel'
 import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
 
 import { useAppSelector } from '../../providers/redux/hooks'
 import { useMode } from '../../providers/ModeProvider'
+import { AktivitetStep, NySykmeldingMultiStepState } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
 export function useOpprettSykmeldingMutation(): {
     opprettSykmelding: () => Promise<unknown>
@@ -29,37 +30,13 @@ export function useOpprettSykmeldingMutation(): {
     const opprettSykmelding = withSpanAsync('submitSykmelding', async () => {
         logger.info('(Client) Submitting values,', formState)
 
-        if (formState.pasient == null) {
-            raise('Ingen pasient')
-        }
-
-        if (formState.aktiviteter == null) {
-            raise('Ingen aktivitet')
-        }
-
-        if (formState.diagnose == null) {
-            raise('Ingen diagnose')
-        }
-
         try {
+            const values = formStateToOpprettSykmeldingInput(formState)
+
+            logger.info(`(Client), mapped values: ${JSON.stringify(values)}`)
+
             const createResult = await mutate({
-                variables: {
-                    values: {
-                        draftId,
-                        pasientIdent: formState.pasient.ident,
-                        hoveddiagnose: {
-                            system: formState.diagnose.hoved.system,
-                            code: formState.diagnose.hoved.code,
-                        },
-                        perioder: formState.aktiviteter.map((aktivitet) => ({
-                            type: aktivitet.type,
-                            fom: aktivitet.fom,
-                            tom: aktivitet.tom,
-                            grad: aktivitet.grad ? `${aktivitet.grad}` : null,
-                        })),
-                        // TODO: Meldinger
-                    },
-                },
+                variables: { draftId: draftId, values: values },
             })
 
             startTransition(() => {
@@ -81,4 +58,82 @@ export function useOpprettSykmeldingMutation(): {
     })
 
     return { opprettSykmelding, result }
+}
+
+function formStateToOpprettSykmeldingInput(formState: NySykmeldingMultiStepState): OpprettSykmeldingInput {
+    if (formState.pasient == null) {
+        raise('Ingen pasient')
+    }
+
+    if (formState.aktiviteter == null) {
+        raise('Ingen aktivitet')
+    }
+
+    if (formState.diagnose == null) {
+        raise('Ingen diagnose')
+    }
+
+    return {
+        hoveddiagnose: {
+            system: formState.diagnose.hoved.system,
+            code: formState.diagnose.hoved.code,
+        },
+        // TODO: Implement in form
+        bidiagnoser: [],
+        aktivitet: formState.aktiviteter.map(aktivitetStepToInputAktivitet),
+        meldinger: {
+            tilNav: formState.meldinger?.showTilNav && formState.meldinger.tilNav ? formState.meldinger.tilNav : null,
+            tilArbeidsgiver:
+                formState.meldinger?.showTilArbeidsgiver && formState.meldinger.tilArbeidsgiver
+                    ? formState.meldinger.tilArbeidsgiver
+                    : null,
+        },
+        svangerskapsrelatert: formState.andreSporsmal?.svangerskapsrelatert ?? false,
+        yrkesskade: {
+            yrkesskade: formState.andreSporsmal?.yrkesskade ?? false,
+            // TODO: Implement in form
+            skadedato: null,
+        },
+        // TODO: Implement in form
+        arbeidsgiver: null,
+        tilbakedatering: formState.tilbakedatering?.fom
+            ? {
+                  startdato: formState.tilbakedatering.fom,
+                  begrunnelse: formState.tilbakedatering.grunn,
+              }
+            : null,
+        // TODO: Implement in summary step (not form, see design)
+        pasientenSkalSkjermes: false,
+    }
+}
+
+function aktivitetStepToInputAktivitet(value: AktivitetStep): InputAktivitet {
+    switch (value.type) {
+        case 'AKTIVITET_IKKE_MULIG':
+            return {
+                type: 'AKTIVITET_IKKE_MULIG',
+                fom: value.fom,
+                tom: value.tom,
+                aktivitetIkkeMulig: { dummy: true },
+                avventende: null,
+                gradert: null,
+                behandlingsdager: null,
+                reisetilskudd: null,
+            }
+        case 'GRADERT':
+            return {
+                type: 'GRADERT',
+                fom: value.fom,
+                tom: value.tom,
+                gradert: {
+                    grad: +value.grad,
+                    // TODO: Implement in form
+                    reisetilskudd: false,
+                },
+                aktivitetIkkeMulig: null,
+                avventende: null,
+                behandlingsdager: null,
+                reisetilskudd: null,
+            }
+    }
 }

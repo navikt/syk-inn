@@ -4,8 +4,8 @@ query SykmeldingById($id: String!) {
     }
 }
 
-mutation OpprettSykmelding($values: OpprettSykmelding!) {
-    opprettSykmelding(nySykmelding: $values) {
+mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!) {
+    opprettSykmelding(draftId: $draftId, values: $values) {
         sykmeldingId
     }
 }

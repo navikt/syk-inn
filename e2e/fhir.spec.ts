@@ -33,18 +33,28 @@ test('can submit 100% sykmelding', async ({ page }) => {
 
     const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+        draftId: getDraftId(page) ?? 'missing',
         values: {
-            draftId: getDraftId(page) ?? 'missing',
-            pasientIdent: '21037712323',
-            hoveddiagnose: { code: 'P74', system: 'ICPC2' },
-            perioder: [
+            hoveddiagnose: { system: 'ICPC2', code: 'P74' },
+            bidiagnoser: [],
+            aktivitet: [
                 {
                     type: 'AKTIVITET_IKKE_MULIG',
                     fom: today(),
                     tom: inDays(3),
-                    grad: null,
+                    aktivitetIkkeMulig: { dummy: true },
+                    avventende: null,
+                    gradert: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
                 },
             ],
+            meldinger: { tilNav: null, tilArbeidsgiver: null },
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            arbeidsgiver: null,
+            tilbakedatering: null,
+            pasientenSkalSkjermes: false,
         },
     })
 
@@ -67,18 +77,28 @@ test('shall be able to edit diagnose', async ({ page }) => {
 
     const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+        draftId: getDraftId(page) ?? 'missing',
         values: {
-            draftId: getDraftId(page) ?? 'missing',
-            pasientIdent: '21037712323',
             hoveddiagnose: { code: 'D290', system: 'ICD10' },
-            perioder: [
+            bidiagnoser: [],
+            aktivitet: [
                 {
                     type: 'AKTIVITET_IKKE_MULIG',
                     fom: today(),
                     tom: inDays(3),
-                    grad: null,
+                    aktivitetIkkeMulig: { dummy: true },
+                    avventende: null,
+                    gradert: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
                 },
             ],
+            meldinger: { tilNav: null, tilArbeidsgiver: null },
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            arbeidsgiver: null,
+            tilbakedatering: null,
+            pasientenSkalSkjermes: false,
         },
     })
 
@@ -100,18 +120,31 @@ test('can submit gradert sykmelding', async ({ page }) => {
 
     const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+        draftId: getDraftId(page) ?? 'missing',
         values: {
-            draftId: getDraftId(page) ?? 'missing',
-            pasientIdent: '21037712323',
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
-            perioder: [
+            bidiagnoser: [],
+            aktivitet: [
                 {
                     type: 'GRADERT',
                     fom: today(),
                     tom: inDays(3),
-                    grad: '50',
+                    gradert: {
+                        grad: 50,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: null,
+                    avventende: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
                 },
             ],
+            meldinger: { tilNav: null, tilArbeidsgiver: null },
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            arbeidsgiver: null,
+            tilbakedatering: null,
+            pasientenSkalSkjermes: false,
         },
     })
 
@@ -180,19 +213,33 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
     ])(page)
 
     const request = await submitSykmelding()(page)
+
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+        draftId: getDraftId(page) ?? 'missing',
         values: {
-            draftId: getDraftId(page) ?? 'missing',
-            pasientIdent: '21037712323',
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
-            perioder: [
+            bidiagnoser: [],
+            aktivitet: [
                 {
                     type: 'AKTIVITET_IKKE_MULIG',
                     fom: daysAgo(9),
                     tom: inDays(1),
-                    grad: null,
+                    aktivitetIkkeMulig: { dummy: true },
+                    avventende: null,
+                    gradert: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
                 },
             ],
+            tilbakedatering: {
+                startdato: daysAgo(2),
+                begrunnelse: 'Ferie eller noe',
+            },
+            meldinger: { tilNav: null, tilArbeidsgiver: null },
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            arbeidsgiver: null,
+            pasientenSkalSkjermes: false,
         },
     })
 })

@@ -1,52 +1,31 @@
 import { logger } from '@navikt/next-logger'
 
-import {
-    ExistingSykmelding,
-    ExistingSykmeldingSchema,
-    NySykmelding,
-    NySykmeldingSchema,
-} from '@services/syk-inn-api/syk-inn-api-schema'
+import { SykInnApiSykmelding, SykInnApiSykmeldingSchema } from '@services/syk-inn-api/schema/sykmelding'
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
 import { getServerEnv, isE2E, isLocalOrDemo } from '@utils/env'
 import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
-import { ICD10_OID, ICPC2_OID } from '@utils/oid'
 import { createMockSykmelding } from '@services/syk-inn-api/syk-inn-api-mock-data'
 import { wait } from '@utils/wait'
-
-type NySykmeldingPayload = {
-    pasientFnr: string
-    sykmelderHpr: string
-    sykmelding: {
-        hoveddiagnose: {
-            system: ICD10_OID | ICPC2_OID
-            code: string
-        }
-        aktivitet:
-            | {
-                  type: 'AKTIVITET_IKKE_MULIG'
-                  fom: string
-                  tom: string
-              }
-            | {
-                  type: 'GRADERT'
-                  grad: number
-                  fom: string
-                  tom: string
-              }
-    }
-    legekontorOrgnr: string
-}
+import { OpprettSykmeldingPayload, OpprettSykmeldingPayloadSchema } from '@services/syk-inn-api/schema/opprett'
 
 export const sykInnApiService = {
-    createNewSykmelding: async (payload: NySykmeldingPayload): Promise<NySykmelding | ApiFetchErrors> => {
+    opprettSykmelding: async (payload: OpprettSykmeldingPayload): Promise<SykInnApiSykmelding | ApiFetchErrors> => {
         if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
             logger.warn(
                 `Is in demo, local or e2e, submitting send sykmelding values ${JSON.stringify(payload, null, 2)}`,
             )
 
+            try {
+                // Dry run parse in local dev as well, will throw if it fails
+                OpprettSykmeldingPayloadSchema.parse(payload)
+            } catch (e) {
+                logger.error(`Sykmelding parse dryrun failed: ${e}`)
+                throw e
+            }
+
             await wait(500)
 
-            return { sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d' }
+            return createMockSykmelding()
         }
 
         return fetchInternalAPI({
@@ -56,11 +35,11 @@ export const sykInnApiService = {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(payload),
-            responseSchema: NySykmeldingSchema,
+            body: JSON.stringify(OpprettSykmeldingPayloadSchema.parse(payload)),
+            responseSchema: SykInnApiSykmeldingSchema,
         })
     },
-    getSykmelding: async (sykmeldingId: string, hpr: string): Promise<ExistingSykmelding | ApiFetchErrors> => {
+    getSykmelding: async (sykmeldingId: string, hpr: string): Promise<SykInnApiSykmelding | ApiFetchErrors> => {
         if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
             logger.info('Running in local or demo environment, returning mocked sykmelding data')
             return createMockSykmelding()
@@ -74,7 +53,7 @@ export const sykInnApiService = {
                 'Content-Type': 'application/json',
                 HPR: hpr,
             },
-            responseSchema: ExistingSykmeldingSchema,
+            responseSchema: SykInnApiSykmeldingSchema,
         })
     },
     getSykmeldingPdf: async (sykmeldingId: string, hpr: string): Promise<ArrayBuffer | ApiFetchErrors> => {

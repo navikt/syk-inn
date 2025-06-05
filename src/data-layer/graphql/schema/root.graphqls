@@ -12,7 +12,7 @@ type Query {
 }
 
 type Mutation {
-    opprettSykmelding(nySykmelding: OpprettSykmelding!): OpprettetSykmelding!
+    opprettSykmelding(draftId: String!, values: OpprettSykmeldingInput!): OpprettetSykmelding!
     synchronizeSykmelding(id: String!): SynchronizationStatus!
 
     saveDraft(draftId: String!, values: JSON!): OpprettSykmeldingDraft!

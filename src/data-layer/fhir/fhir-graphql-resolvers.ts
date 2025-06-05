@@ -6,9 +6,8 @@ import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { QueriedPerson, Resolvers, Sykmelding } from '@resolvers'
 import { createSchema } from '@graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@fhir/mappers/patient'
-import { diagnosisUrnToOidType, fhirDiagnosisToRelevantDiagnosis } from '@fhir/mappers/diagnosis'
+import { fhirDiagnosisToRelevantDiagnosis } from '@fhir/mappers/diagnosis'
 import { raise } from '@utils/ts'
-import { diagnoseSystemToOid } from '@utils/oid'
 import { wait } from '@utils/wait'
 import { pdlApiService } from '@services/pdl/pdl-api-service'
 import { getFnrIdent, getNameFromPdl } from '@services/pdl/pdl-api-utils'
@@ -16,7 +15,9 @@ import { getHpr, practitionerToBehandler } from '@fhir/mappers/practitioner'
 import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { createDocumentReference } from '@fhir/fhir-service'
 import { spanAsync } from '@otel/otel'
+import { resolverInputToSykInnApiPayload } from '@services/syk-inn-api/syk-inn-api-utils'
 import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from '@fhir/mappers/organization'
+import { OpprettSykmeldingMeta } from '@services/syk-inn-api/schema/opprett'
 
 import { getDiagnoseText, searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
@@ -82,24 +83,23 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             return {
                 sykmeldingId: sykmelding.sykmeldingId,
-                aktivitet: sykmelding.sykmelding.aktivitet,
+                aktivitet: sykmelding.values.aktivitet,
                 diagnose: {
-                    hoved: {
-                        system:
-                            diagnosisUrnToOidType(sykmelding.sykmelding.hoveddiagnose.system) ??
-                            raise(`Unknown diagnosis system ${sykmelding.sykmelding.hoveddiagnose.system}`),
-                        code: sykmelding.sykmelding.hoveddiagnose.code,
-                        text: getDiagnoseText(
-                            diagnosisUrnToOidType(sykmelding.sykmelding.hoveddiagnose.system) ??
-                                raise('Unknown diagnosis system'),
-                            sykmelding.sykmelding.hoveddiagnose.code,
-                        ),
-                    },
+                    hoved: sykmelding.values.hoveddiagnose
+                        ? {
+                              system: sykmelding.values.hoveddiagnose.system,
+                              code: sykmelding.values.hoveddiagnose.code,
+                              text: getDiagnoseText(
+                                  sykmelding.values.hoveddiagnose.system,
+                                  sykmelding.values.hoveddiagnose.code,
+                              ),
+                          }
+                        : null,
                     bi: [],
                 },
                 pasient: {
                     navn: 'TODO',
-                    ident: sykmelding.pasientFnr,
+                    ident: sykmelding.meta.pasientIdent,
                 },
                 documentStatus: 'resourceType' in existingDocumentReference ? 'COMPLETE' : 'PENDING',
             } satisfies Sykmelding
@@ -233,7 +233,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             return true
         },
-        opprettSykmelding: async (_, { nySykmelding }) => {
+        opprettSykmelding: async (_, { draftId, values }) => {
             const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
 
             const hpr = getHpr(practitioner.identifier)
@@ -278,40 +278,15 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const result = await sykInnApiService.createNewSykmelding({
-                pasientFnr: pasientIdent,
+            const meta: OpprettSykmeldingMeta = {
                 sykmelderHpr: hpr,
-                sykmelding: {
-                    hoveddiagnose: {
-                        system: diagnoseSystemToOid(nySykmelding.hoveddiagnose.system),
-                        code: nySykmelding.hoveddiagnose.code,
-                    },
-                    aktivitet: nySykmelding.perioder.map((periode) => {
-                        // Use zod for this mapping
-                        switch (periode.type) {
-                            case 'AKTIVITET_IKKE_MULIG': {
-                                return {
-                                    type: 'AKTIVITET_IKKE_MULIG' as const,
-                                    fom: periode.fom,
-                                    tom: periode.tom,
-                                }
-                            }
-                            case 'GRADERT': {
-                                return {
-                                    type: 'GRADERT' as const,
-                                    grad: +(periode.grad ?? raise('Grad is required for GRADERT activity')),
-                                    fom: periode.fom,
-                                    tom: periode.tom,
-                                }
-                            }
-                            default:
-                                raise(`Unknown activity type ${periode.type}`)
-                        }
-                        // TODO Should be list
-                    })[0],
-                },
+                pasientIdent: pasientIdent,
                 legekontorOrgnr: orgnummer,
-            })
+                legekontorTlf: legekontorTlf,
+            }
+            const payload = resolverInputToSykInnApiPayload(values, meta)
+
+            const result = await sykInnApiService.opprettSykmelding(payload)
 
             if ('errorType' in result) {
                 throw new GraphQLError('API_ERROR')
@@ -319,7 +294,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             // Delete the draft after successful creation
             const draftClient = await getDraftClient()
-            await draftClient.deleteDraft(nySykmelding.draftId, { hpr, ident: pasientIdent })
+            await draftClient.deleteDraft(draftId, { hpr, ident: pasientIdent })
 
             return { sykmeldingId: result.sykmeldingId }
         },

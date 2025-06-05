@@ -6,7 +6,7 @@ import { getHpr } from '@fhir/mappers/practitioner'
 import { createNewDocumentReferencePayload } from '@fhir/mappers/document-reference'
 import { FhirDocumentReferenceBase, FhirPractitioner } from '@navikt/fhir-zod'
 import { toReadableDatePeriod } from '@utils/date'
-import { ExistingSykmelding } from '@services/syk-inn-api/syk-inn-api-schema'
+import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
 import { spanAsync } from '@otel/otel'
 
 /**
@@ -66,7 +66,7 @@ export async function createDocumentReference(
                 encounterId: client.encounter,
                 // TODO: hmmmm
                 practitionerId: client.fhirUser.split('/')[1],
-                description: getSykmeldingDescription(sykmelding.sykmelding),
+                description: getSykmeldingDescription(sykmelding.values),
             },
             Buffer.from(pdfBuffer).toString('base64'),
         ),
@@ -79,9 +79,11 @@ export async function createDocumentReference(
     return createdDocumentReference
 }
 
-function getSykmeldingDescription(sykmelding: ExistingSykmelding['sykmelding']): string {
+function getSykmeldingDescription(sykmelding: SykInnApiSykmelding['values']): string {
+    const [firstAktivitet] = sykmelding.aktivitet
+
     let type
-    switch (sykmelding.aktivitet.type) {
+    switch (firstAktivitet.type) {
         case 'AKTIVITET_IKKE_MULIG':
             type = '100%'
             break
@@ -89,15 +91,15 @@ function getSykmeldingDescription(sykmelding: ExistingSykmelding['sykmelding']):
             type = 'Avventende'
             break
         case 'BEHANDLINGSDAGER':
-            type = `${sykmelding.aktivitet.antallBehandlingsdager} behandlingsdager`
+            type = `${firstAktivitet.antallBehandlingsdager} behandlingsdager`
             break
         case 'GRADERT':
-            type = `${sykmelding.aktivitet.grad}%`
+            type = `${firstAktivitet.grad}%`
             break
         case 'REISETILSKUDD':
             type = 'Reisetilskudd'
             break
     }
 
-    return `${type} sykmelding, ${toReadableDatePeriod(sykmelding.aktivitet.fom, sykmelding.aktivitet.tom)}`
+    return `${type} sykmelding, ${toReadableDatePeriod(firstAktivitet.fom, firstAktivitet.tom)}`
 }
