@@ -122,7 +122,7 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[]
                         <FormSummary.Value>{toReadableDatePeriod(aktivitet.fom, aktivitet.tom)}</FormSummary.Value>
                     </FormSummary.Answer>
                     <FormSummary.Answer>
-                        <FormSummary.Label>Mulighet for arbied</FormSummary.Label>
+                        <FormSummary.Label>Mulighet for arbeid</FormSummary.Label>
                         <FormSummary.Value>{aktivitetDescription(aktivitet)}</FormSummary.Value>
                     </FormSummary.Answer>
                 </React.Fragment>

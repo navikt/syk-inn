@@ -2,8 +2,6 @@ import { expect, Locator, Page } from '@playwright/test'
 import { add } from 'date-fns'
 import { GraphQLRequest } from '@apollo/client'
 
-import { toReadableDate } from '@utils/date'
-
 import { clickAndWait, waitForGraphQL } from '../utils/request-utils'
 import { inputDate } from '../utils/date-utils'
 import { expectTermToHaveDefinitions } from '../utils/assertions'
@@ -128,21 +126,33 @@ export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | nu
     }
 }
 
-export function verifySummaryPage(sections: { tilbakedatering?: { contact: string; reason: string } }) {
+type SectionTitle =
+    | 'Navn'
+    | 'Fødselsnummer'
+    | 'Periode'
+    | 'Mulighet for arbeid'
+    | 'Dato for tilbakedatering'
+    | 'Grunn for tilbakedatering'
+    | 'Hoveddiagnose'
+    | 'Til NAV'
+    | 'Til arbeidsgiver'
+    | 'Svangerskapsrelatert'
+    | 'Yrkesskade'
+interface SummarySection {
+    name: SectionTitle
+    values: string[]
+}
+
+export function verifySummaryPage(sections: SummarySection[]) {
     return async (page: Page) => {
         await expect(page.getByRole('heading', { name: 'Oppsummering sykmelding' })).toBeVisible()
         await expect(page.getByRole('button', { name: 'Endre svar' })).toBeVisible()
 
-        await expectTermToHaveDefinitions(page, 'Navn', ['Espen Eksempel', '(Ola Nordmann Hansen i folkeregisteret)'])
-        await expectTermToHaveDefinitions(page, 'Fødselsnummer', ['21037712323', '(12345678901 i folkeregisteret)'])
-
-        if (sections.tilbakedatering) {
-            // Not be most semantically correct, but this is the only way to get the text because of dd/dt (for now)
-            await expect(
-                page.getByText('Dato for tilbakedatering' + toReadableDate(sections.tilbakedatering.contact)),
-            ).toBeVisible()
-            await expect(page.getByText('Grunn for tilbakedatering' + sections.tilbakedatering.reason)).toBeVisible()
-        }
+        await Promise.all(
+            sections.map(async (section) => {
+                await expectTermToHaveDefinitions(page, section.name, section.values)
+            }),
+        )
     }
 }
 

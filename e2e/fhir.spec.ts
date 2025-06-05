@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 import { OpprettSykmeldingDocument } from '@queries'
+import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { daysAgo, inDays, today } from './utils/date-utils'
@@ -134,12 +135,49 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
 
     await nextStep()(page)
 
-    await verifySummaryPage({
-        tilbakedatering: {
-            contact: daysAgo(2),
-            reason: 'Ferie eller noe',
+    await verifySummaryPage([
+        {
+            name: 'Navn',
+            values: ['Espen Eksempel'],
         },
-    })(page)
+        { name: 'Fødselsnummer', values: ['21037712323'] },
+        {
+            name: 'Periode',
+            values: [`${toReadableDatePeriod(daysAgo(9), inDays(1))}`],
+        },
+        {
+            name: 'Mulighet for arbeid',
+            values: ['Aktivitet ikke mulig (100% sykmeldt)'],
+        },
+        {
+            name: 'Hoveddiagnose',
+            values: ['Angstlidelse (P74)ICPC2'], // TODO: Hvorfor kommer denne som en linje?
+        },
+        {
+            name: 'Dato for tilbakedatering',
+            values: [toReadableDate(daysAgo(2))],
+        },
+        {
+            name: 'Grunn for tilbakedatering',
+            values: ['Ferie eller noe'],
+        },
+        {
+            name: 'Til NAV',
+            values: ['Ingen melding'],
+        },
+        {
+            name: 'Til arbeidsgiver',
+            values: ['Ingen melding'],
+        },
+        {
+            name: 'Svangerskapsrelatert',
+            values: ['Nei'],
+        },
+        {
+            name: 'Yrkesskade',
+            values: ['Nei'],
+        },
+    ])(page)
 
     const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
