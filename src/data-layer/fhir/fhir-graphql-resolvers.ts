@@ -54,6 +54,10 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
+            if (conditionsByEncounter.entry == null) {
+                return { diagnoser: [] }
+            }
+
             const conditionList = conditionsByEncounter.entry.map((it) => it.resource)
 
             return { diagnoser: fhirDiagnosisToRelevantDiagnosis(conditionList) }
