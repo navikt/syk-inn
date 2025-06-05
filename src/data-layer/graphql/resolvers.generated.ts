@@ -29,10 +29,6 @@ export type AktivitetIkkeMulig = FomTom & {
     type: AktivitetType
 }
 
-export type AktivitetIkkeMuligInput = {
-    dummy: Scalars['Boolean']['input']
-}
-
 export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'GRADERT' | 'REISETILSKUDD'
 
 export type Avventende = FomTom & {
@@ -41,10 +37,6 @@ export type Avventende = FomTom & {
     innspillTilArbeidsgiver: Scalars['String']['output']
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
-}
-
-export type AvventendeInput = {
-    innspillTilArbeidsgiver: Scalars['String']['input']
 }
 
 export type Behandler = {
@@ -59,10 +51,6 @@ export type Behandlingsdager = FomTom & {
     fom: Scalars['DateOnly']['output']
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
-}
-
-export type BehandlingsdagerInput = {
-    antallBehandlingsdager: Scalars['Int']['input']
 }
 
 export type Diagnose = {
@@ -89,51 +77,16 @@ export type Gradert = FomTom & {
     type: AktivitetType
 }
 
-export type GradertInput = {
-    grad: Scalars['Int']['input']
-    reisetilskudd: Scalars['Boolean']['input']
-}
-
-/**
- * An ugly approach because the limitations of GraphQL
- * input types where union types are not supported.
- *
- * See: https://github.com/graphql/graphql-wg/blob/main/rfcs/InputUnion.md
- */
-export type InputAktivitet = {
-    aktivitetIkkeMulig?: InputMaybe<AktivitetIkkeMuligInput>
-    avventende?: InputMaybe<AvventendeInput>
-    behandlingsdager?: InputMaybe<BehandlingsdagerInput>
-    fom: Scalars['String']['input']
-    gradert?: InputMaybe<GradertInput>
-    reisetilskudd?: InputMaybe<ReisetilskuddInput>
-    tom: Scalars['String']['input']
-    type: AktivitetType
-}
-
-export type InputArbeidsgiver = {
-    arbeidsgivernavn: Scalars['String']['input']
-    harFlere: Scalars['Boolean']['input']
-}
-
 export type InputDiagnose = {
     code: Scalars['String']['input']
     system: DiagnoseSystem
 }
 
-export type InputMeldinger = {
-    tilArbeidsgiver?: InputMaybe<Scalars['String']['input']>
-    tilNav?: InputMaybe<Scalars['String']['input']>
-}
-
-export type InputTilbakedatering = {
-    begrunnelse: Scalars['String']['input']
-    startdato: Scalars['String']['input']
-}
-
-export type InputYrkesskade = {
-    skadedato?: InputMaybe<Scalars['DateOnly']['input']>
-    yrkesskade: Scalars['Boolean']['input']
+export type InputPeriode = {
+    fom: Scalars['String']['input']
+    grad?: InputMaybe<Scalars['String']['input']>
+    tom: Scalars['String']['input']
+    type: Scalars['String']['input']
 }
 
 export type Konsultasjon = {
@@ -148,23 +101,17 @@ export type Mutation = {
 }
 
 export type MutationOpprettSykmeldingArgs = {
-    values: OpprettSykmeldingInput
+    nySykmelding: OpprettSykmelding
 }
 
 export type MutationSynchronizeSykmeldingArgs = {
     id: Scalars['String']['input']
 }
 
-export type OpprettSykmeldingInput = {
-    aktivitet: Array<InputAktivitet>
-    arbeidsgiver?: InputMaybe<InputArbeidsgiver>
-    bidiagnoser: Array<InputDiagnose>
+export type OpprettSykmelding = {
     hoveddiagnose: InputDiagnose
-    meldinger: InputMeldinger
-    pasientenSkalSkjermes: Scalars['Boolean']['input']
-    svangerskapsrelatert: Scalars['Boolean']['input']
-    tilbakedatering?: InputMaybe<InputTilbakedatering>
-    yrkesskade?: InputMaybe<InputYrkesskade>
+    pasientIdent: Scalars['String']['input']
+    perioder: Array<InputPeriode>
 }
 
 export type OpprettetSykmelding = {
@@ -216,10 +163,6 @@ export type Reisetilskudd = FomTom & {
     fom: Scalars['DateOnly']['output']
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
-}
-
-export type ReisetilskuddInput = {
-    dummy: Scalars['Boolean']['input']
 }
 
 export type Sykmelding = {
@@ -328,13 +271,10 @@ export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = 
 export type ResolversTypes = {
     Aktivitet: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Aktivitet']>
     AktivitetIkkeMulig: ResolverTypeWrapper<AktivitetIkkeMulig>
-    AktivitetIkkeMuligInput: AktivitetIkkeMuligInput
     AktivitetType: AktivitetType
     Avventende: ResolverTypeWrapper<Avventende>
-    AvventendeInput: AvventendeInput
     Behandler: ResolverTypeWrapper<Behandler>
     Behandlingsdager: ResolverTypeWrapper<Behandlingsdager>
-    BehandlingsdagerInput: BehandlingsdagerInput
     Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>
     DateOnly: ResolverTypeWrapper<Scalars['DateOnly']['output']>
     Diagnose: ResolverTypeWrapper<Diagnose>
@@ -342,25 +282,19 @@ export type ResolversTypes = {
     DocumentStatus: DocumentStatus
     FomTom: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['FomTom']>
     Gradert: ResolverTypeWrapper<Gradert>
-    GradertInput: GradertInput
-    InputAktivitet: InputAktivitet
-    InputArbeidsgiver: InputArbeidsgiver
     InputDiagnose: InputDiagnose
-    InputMeldinger: InputMeldinger
-    InputTilbakedatering: InputTilbakedatering
-    InputYrkesskade: InputYrkesskade
+    InputPeriode: InputPeriode
     Int: ResolverTypeWrapper<Scalars['Int']['output']>
     JSON: ResolverTypeWrapper<Scalars['JSON']['output']>
     Konsultasjon: ResolverTypeWrapper<Konsultasjon>
     Mutation: ResolverTypeWrapper<{}>
-    OpprettSykmeldingInput: OpprettSykmeldingInput
+    OpprettSykmelding: OpprettSykmelding
     OpprettetSykmelding: ResolverTypeWrapper<OpprettetSykmelding>
     Pasient: ResolverTypeWrapper<Pasient>
     Person: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Person']>
     QueriedPerson: ResolverTypeWrapper<QueriedPerson>
     Query: ResolverTypeWrapper<{}>
     Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>
-    ReisetilskuddInput: ReisetilskuddInput
     String: ResolverTypeWrapper<Scalars['String']['output']>
     Sykmelding: ResolverTypeWrapper<Omit<Sykmelding, 'aktivitet'> & { aktivitet: ResolversTypes['Aktivitet'] }>
     SykmeldingDiagnoser: ResolverTypeWrapper<SykmeldingDiagnoser>
@@ -371,36 +305,27 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
     Aktivitet: ResolversUnionTypes<ResolversParentTypes>['Aktivitet']
     AktivitetIkkeMulig: AktivitetIkkeMulig
-    AktivitetIkkeMuligInput: AktivitetIkkeMuligInput
     Avventende: Avventende
-    AvventendeInput: AvventendeInput
     Behandler: Behandler
     Behandlingsdager: Behandlingsdager
-    BehandlingsdagerInput: BehandlingsdagerInput
     Boolean: Scalars['Boolean']['output']
     DateOnly: Scalars['DateOnly']['output']
     Diagnose: Diagnose
     FomTom: ResolversInterfaceTypes<ResolversParentTypes>['FomTom']
     Gradert: Gradert
-    GradertInput: GradertInput
-    InputAktivitet: InputAktivitet
-    InputArbeidsgiver: InputArbeidsgiver
     InputDiagnose: InputDiagnose
-    InputMeldinger: InputMeldinger
-    InputTilbakedatering: InputTilbakedatering
-    InputYrkesskade: InputYrkesskade
+    InputPeriode: InputPeriode
     Int: Scalars['Int']['output']
     JSON: Scalars['JSON']['output']
     Konsultasjon: Konsultasjon
     Mutation: {}
-    OpprettSykmeldingInput: OpprettSykmeldingInput
+    OpprettSykmelding: OpprettSykmelding
     OpprettetSykmelding: OpprettetSykmelding
     Pasient: Pasient
     Person: ResolversInterfaceTypes<ResolversParentTypes>['Person']
     QueriedPerson: QueriedPerson
     Query: {}
     Reisetilskudd: Reisetilskudd
-    ReisetilskuddInput: ReisetilskuddInput
     String: Scalars['String']['output']
     Sykmelding: Omit<Sykmelding, 'aktivitet'> & { aktivitet: ResolversParentTypes['Aktivitet'] }
     SykmeldingDiagnoser: SykmeldingDiagnoser
@@ -517,7 +442,7 @@ export type MutationResolvers<
         ResolversTypes['OpprettetSykmelding'],
         ParentType,
         ContextType,
-        RequireFields<MutationOpprettSykmeldingArgs, 'values'>
+        RequireFields<MutationOpprettSykmeldingArgs, 'nySykmelding'>
     >
     synchronizeSykmelding?: Resolver<
         ResolversTypes['SynchronizationStatus'],

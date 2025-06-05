@@ -31,7 +31,7 @@ export function createDefaultValues({
             },
             aktivitet: {
                 type: it.type,
-                grad: it.type === 'GRADERT' ? it.grad : null,
+                grad: it.grad,
             },
         })) ?? [getDefaultPeriode()],
         diagnoser: {

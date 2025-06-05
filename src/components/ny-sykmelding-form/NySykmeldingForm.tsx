@@ -10,9 +10,9 @@ import { createDefaultValues } from '@components/ny-sykmelding-form/form-default
 import FormSection from '@components/form/form-section/FormSection'
 
 import { useAppDispatch, useAppSelector } from '../../providers/redux/hooks'
-import { AktivitetStep, nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
+import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
-import { AktivitetsPeriode, NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
+import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
 import AktivitetSection from './aktivitet/AktivitetSection'
 import DiagnoseSection from './diagnose/DiagnoseSection'
 import { useFormStep } from './steps/useFormStep'
@@ -81,7 +81,12 @@ function useHandleFormSubmit() {
                     hoved: values.diagnoser.hoved ?? raise("Can't submit step without hoveddiagnose"),
                     bi: [],
                 },
-                aktiviteter: values.perioder.map(formAktivitetToStepAktivitet),
+                aktiviteter: values.perioder.map((periode) => ({
+                    fom: periode.periode.fom ?? raise("Can't submit step without periode fom"),
+                    tom: periode.periode.tom ?? raise("Can't submit step without periode tom"),
+                    grad: periode.aktivitet.grad,
+                    type: periode.aktivitet.type,
+                })),
                 tilbakedatering:
                     values.tilbakedatering?.fom && values.tilbakedatering?.grunn
                         ? {
@@ -103,24 +108,6 @@ function useHandleFormSubmit() {
         )
 
         await setStep('summary')
-    }
-}
-
-function formAktivitetToStepAktivitet(value: AktivitetsPeriode): AktivitetStep {
-    switch (value.aktivitet.type) {
-        case 'AKTIVITET_IKKE_MULIG':
-            return {
-                type: 'AKTIVITET_IKKE_MULIG',
-                fom: value.periode.fom ?? raise('FOM is required for AKTIVITET_IKKE_MULIG'),
-                tom: value.periode.tom ?? raise('TOM is required for AKTIVITET_IKKE_MULIG'),
-            }
-        case 'GRADERT':
-            return {
-                type: 'GRADERT',
-                fom: value.periode.fom ?? raise('FOM is required for GRADERT'),
-                tom: value.periode.tom ?? raise('TOM is required for GRADERT'),
-                grad: value.aktivitet.grad ?? raise('Grad is required for GRADERT'),
-            }
     }
 }
 

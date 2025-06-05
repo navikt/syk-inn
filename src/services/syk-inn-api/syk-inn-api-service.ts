@@ -5,29 +5,44 @@ import {
     ExistingSykmeldingSchema,
     NySykmelding,
     NySykmeldingSchema,
-    OpprettSykmeldingPayload,
-    OpprettSykmeldingPayloadSchema,
 } from '@services/syk-inn-api/syk-inn-api-schema'
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
 import { getServerEnv, isE2E, isLocalOrDemo } from '@utils/env'
 import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
+import { ICD10_OID, ICPC2_OID } from '@utils/oid'
 import { createMockSykmelding } from '@services/syk-inn-api/syk-inn-api-mock-data'
 import { wait } from '@utils/wait'
 
+type NySykmeldingPayload = {
+    pasientFnr: string
+    sykmelderHpr: string
+    sykmelding: {
+        hoveddiagnose: {
+            system: ICD10_OID | ICPC2_OID
+            code: string
+        }
+        aktivitet:
+            | {
+                  type: 'AKTIVITET_IKKE_MULIG'
+                  fom: string
+                  tom: string
+              }
+            | {
+                  type: 'GRADERT'
+                  grad: number
+                  fom: string
+                  tom: string
+              }
+    }
+    legekontorOrgnr: string
+}
+
 export const sykInnApiService = {
-    opprettSykmelding: async (payload: OpprettSykmeldingPayload): Promise<NySykmelding | ApiFetchErrors> => {
+    createNewSykmelding: async (payload: NySykmeldingPayload): Promise<NySykmelding | ApiFetchErrors> => {
         if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
             logger.warn(
                 `Is in demo, local or e2e, submitting send sykmelding values ${JSON.stringify(payload, null, 2)}`,
             )
-
-            try {
-                // Dry run parse in local dev as well, will throw if it fails
-                OpprettSykmeldingPayloadSchema.parse(payload)
-            } catch (e) {
-                logger.error(`Sykmelding parse dryrun failed: ${e}`)
-                throw e
-            }
 
             await wait(500)
 
@@ -41,7 +56,7 @@ export const sykInnApiService = {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(OpprettSykmeldingPayloadSchema.parse(payload)),
+            body: JSON.stringify(payload),
             responseSchema: NySykmeldingSchema,
         })
     },

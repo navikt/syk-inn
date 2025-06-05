@@ -9,6 +9,6 @@ type Query {
 }
 
 type Mutation {
-    opprettSykmelding(values: OpprettSykmeldingInput!): OpprettetSykmelding!
+    opprettSykmelding(nySykmelding: OpprettSykmelding!): OpprettetSykmelding!
     synchronizeSykmelding(id: String!): SynchronizationStatus!
 }

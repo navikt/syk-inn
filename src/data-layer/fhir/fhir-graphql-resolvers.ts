@@ -7,6 +7,7 @@ import { createSchema } from '@graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@fhir/mappers/patient'
 import { diagnosisUrnToOidType, fhirDiagnosisToRelevantDiagnosis } from '@fhir/mappers/diagnosis'
 import { raise } from '@utils/ts'
+import { diagnoseSystemToOid } from '@utils/oid'
 import { wait } from '@utils/wait'
 import { pdlApiService } from '@services/pdl/pdl-api-service'
 import { getFnrIdent, getNameFromPdl } from '@services/pdl/pdl-api-utils'
@@ -14,9 +15,6 @@ import { getHpr, practitionerToBehandler } from '@fhir/mappers/practitioner'
 import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { createDocumentReference } from '@fhir/fhir-service'
 import { spanAsync } from '@otel/otel'
-import { resolverInputToSykInnApiPayload } from '@services/syk-inn-api/syk-inn-api-utils'
-import { OpprettSykmeldingMeta } from '@services/syk-inn-api/syk-inn-api-schema'
-import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from '@fhir/mappers/organization'
 
 import { getDiagnoseText, searchDiagnose } from '../common/diagnose-search'
 
@@ -121,8 +119,8 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
         diagnose: (_, { query }) => searchDiagnose(query),
     },
     Mutation: {
-        opprettSykmelding: async (_, { values }) => {
-            const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
+        opprettSykmelding: async (_, { nySykmelding }) => {
+            const [, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
 
             const hpr = getHpr(practitioner.identifier)
             if (hpr == null) {
@@ -130,51 +128,40 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
-            // TODO: Fetching these patient, encounter and organization can probably be done a bit more effective
-            const pasient = await client.request(`/Patient/${client.patient}`)
-            if ('error' in pasient) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const encounter = await client.request(`/Encounter/${client.encounter}`)
-            if ('error' in encounter) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const organization = await client.request(
-                `/${encounter.serviceProvider.reference}` as `/Organization/${string}`,
-            )
-            if ('error' in organization) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const orgnummer = getOrganisasjonsnummerFromFhir(organization)
-            if (orgnummer == null) {
-                logger.error('Organization without valid orgnummer')
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const legekontorTlf = getOrganisasjonstelefonnummerFromFhir(organization)
-            if (legekontorTlf == null) {
-                logger.error('Organization without valid phone number')
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const pasientIdent = getValidPatientIdent(pasient)
-            if (pasientIdent == null) {
-                logger.error('Patient without valid FNR/DNR')
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const meta: OpprettSykmeldingMeta = {
+            const result = await sykInnApiService.createNewSykmelding({
+                pasientFnr: nySykmelding.pasientIdent,
                 sykmelderHpr: hpr,
-                pasientIdent: pasientIdent,
-                legekontorOrgnr: orgnummer,
-                legekontorTlf: legekontorTlf,
-            }
-            const payload = resolverInputToSykInnApiPayload(values, meta)
-
-            const result = await sykInnApiService.opprettSykmelding(payload)
+                sykmelding: {
+                    hoveddiagnose: {
+                        system: diagnoseSystemToOid(nySykmelding.hoveddiagnose.system),
+                        code: nySykmelding.hoveddiagnose.code,
+                    },
+                    aktivitet: nySykmelding.perioder.map((periode) => {
+                        // Use zod for this mapping
+                        switch (periode.type) {
+                            case 'AKTIVITET_IKKE_MULIG': {
+                                return {
+                                    type: 'AKTIVITET_IKKE_MULIG' as const,
+                                    fom: periode.fom,
+                                    tom: periode.tom,
+                                }
+                            }
+                            case 'GRADERT': {
+                                return {
+                                    type: 'GRADERT' as const,
+                                    grad: +(periode.grad ?? raise('Grad is required for GRADERT activity')),
+                                    fom: periode.fom,
+                                    tom: periode.tom,
+                                }
+                            }
+                            default:
+                                raise(`Unknown activity type ${periode.type}`)
+                        }
+                        // TODO Should be list
+                    })[0],
+                },
+                legekontorOrgnr: '999944614', // TODO: Should be retrieved from context/session
+            })
 
             if ('errorType' in result) {
                 throw new GraphQLError('API_ERROR')

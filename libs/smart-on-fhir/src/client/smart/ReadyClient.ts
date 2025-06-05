@@ -9,8 +9,6 @@ import {
     FhirDocumentReferenceBaseSchema,
     FhirEncounter,
     FhirEncounterSchema,
-    FhirOrganization,
-    FhirOrganizationSchema,
     FhirPatient,
     FhirPatientSchema,
     FhirPractitioner,
@@ -127,7 +125,6 @@ export class ReadyClient {
     public async request(resource: `/Condition?${string}`): Promise<FhirBundle<FhirCondition> | ResourceRequestErrors>
     public async request(resource: `/Encounter/${string}`): Promise<FhirEncounter | ResourceRequestErrors>
     public async request(resource: `/Patient/${string}`): Promise<FhirPatient | ResourceRequestErrors>
-    public async request(resource: `/Organization/${string}`): Promise<FhirOrganization | ResourceRequestErrors>
     public async request(
         resource: `/DocumentReference/${string}`,
     ): Promise<FhirDocumentReferenceBase | ResourceRequestErrors>
@@ -135,7 +132,6 @@ export class ReadyClient {
     public async request(
         resource: `/${string}`,
     ): Promise<
-        | FhirOrganization
         | FhirPractitioner
         | FhirDocumentReferenceBase
         | FhirPatient
@@ -190,8 +186,6 @@ function resourceToSchema(resource: `/${string}`): ZodSchema {
         return FhirEncounterSchema
     } else if (resource.startsWith('/Condition?')) {
         return createFhirBundleSchema(FhirConditionSchema)
-    } else if (resource.startsWith('/Organization')) {
-        return FhirOrganizationSchema
     } else {
         throw new Error(`Unknown resource type (or not implemented): ${resource}`)
     }

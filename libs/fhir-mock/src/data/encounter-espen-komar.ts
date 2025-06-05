@@ -59,6 +59,6 @@ export const encounterEspenKomar = {
         },
     ],
     serviceProvider: {
-        reference: 'Organization/458ae08a-e249-4e16-a9a0-1ba45d358f6c',
+        reference: 'Organization/TODO',
     },
 }
