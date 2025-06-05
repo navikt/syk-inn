@@ -15,6 +15,7 @@ import { getHpr, practitionerToBehandler } from '@fhir/mappers/practitioner'
 import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { createDocumentReference } from '@fhir/fhir-service'
 import { spanAsync } from '@otel/otel'
+import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from '@fhir/mappers/organization'
 
 import { getDiagnoseText, searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
@@ -219,7 +220,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             return true
         },
         opprettSykmelding: async (_, { nySykmelding }) => {
-            const [, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
+            const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
 
             const hpr = getHpr(practitioner.identifier)
             if (hpr == null) {
@@ -227,8 +228,44 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
+            // TODO: Fetching these patient, encounter and organization can probably be done a bit more effective
+            const pasient = await client.request(`/Patient/${client.patient}`)
+            if ('error' in pasient) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const encounter = await client.request(`/Encounter/${client.encounter}`)
+            if ('error' in encounter) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const organization = await client.request(
+                `/${encounter.serviceProvider.reference}` as `/Organization/${string}`,
+            )
+            if ('error' in organization) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const orgnummer = getOrganisasjonsnummerFromFhir(organization)
+            if (orgnummer == null) {
+                logger.error('Organization without valid orgnummer')
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const legekontorTlf = getOrganisasjonstelefonnummerFromFhir(organization)
+            if (legekontorTlf == null) {
+                logger.error('Organization without valid phone number')
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const pasientIdent = getValidPatientIdent(pasient)
+            if (pasientIdent == null) {
+                logger.error('Patient without valid FNR/DNR')
+                throw new GraphQLError('API_ERROR')
+            }
+
             const result = await sykInnApiService.createNewSykmelding({
-                pasientFnr: nySykmelding.pasientIdent,
+                pasientFnr: pasientIdent,
                 sykmelderHpr: hpr,
                 sykmelding: {
                     hoveddiagnose: {
@@ -259,7 +296,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                         // TODO Should be list
                     })[0],
                 },
-                legekontorOrgnr: '999944614', // TODO: Should be retrieved from context/session
+                legekontorOrgnr: orgnummer,
             })
 
             if ('errorType' in result) {

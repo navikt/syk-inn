@@ -21,4 +21,5 @@ export const FhirEncounterSchema = z.object({
             }),
         )
         .optional(),
+    serviceProvider: ReferenceSchema,
 })
