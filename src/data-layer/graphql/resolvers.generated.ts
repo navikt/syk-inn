@@ -120,6 +120,7 @@ export type MutationSynchronizeSykmeldingArgs = {
 }
 
 export type OpprettSykmelding = {
+    draftId: Scalars['String']['input']
     hoveddiagnose: InputDiagnose
     pasientIdent: Scalars['String']['input']
     perioder: Array<InputPeriode>

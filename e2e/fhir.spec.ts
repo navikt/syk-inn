@@ -15,6 +15,7 @@ import {
     verifySummaryPage,
 } from './actions/user-actions'
 import { expectGraphQLRequest } from './utils/assertions'
+import { getDraftId } from './utils/request-utils'
 
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
@@ -32,6 +33,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
     const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         values: {
+            draftId: getDraftId(page) ?? 'missing',
             pasientIdent: '21037712323',
             hoveddiagnose: { code: 'P74', system: 'ICPC2' },
             perioder: [
@@ -65,6 +67,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
     const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         values: {
+            draftId: getDraftId(page) ?? 'missing',
             pasientIdent: '21037712323',
             hoveddiagnose: { code: 'D290', system: 'ICD10' },
             perioder: [
@@ -97,6 +100,7 @@ test('can submit gradert sykmelding', async ({ page }) => {
     const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         values: {
+            draftId: getDraftId(page) ?? 'missing',
             pasientIdent: '21037712323',
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
             perioder: [
@@ -140,6 +144,7 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
     const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         values: {
+            draftId: getDraftId(page) ?? 'missing',
             pasientIdent: '21037712323',
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
             perioder: [

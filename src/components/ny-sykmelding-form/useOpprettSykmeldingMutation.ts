@@ -7,6 +7,7 @@ import { raise } from '@utils/ts'
 import { pathWithBasePath } from '@utils/url'
 import { OpprettSykmeldingDocument } from '@queries'
 import { withSpanAsync } from '@otel/otel'
+import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
 
 import { useAppSelector } from '../../providers/redux/hooks'
 import { useMode } from '../../providers/ModeProvider'
@@ -16,6 +17,7 @@ export function useOpprettSykmeldingMutation(): {
     result: MutationResult<unknown>
 } {
     const mode = useMode()
+    const draftId = useDraftId()
     const router = useRouter()
     const formState = useAppSelector((state) => state.nySykmeldingMultistep)
     const [mutate, result] = useMutation(OpprettSykmeldingDocument, {
@@ -43,6 +45,7 @@ export function useOpprettSykmeldingMutation(): {
             const createResult = await mutate({
                 variables: {
                     values: {
+                        draftId,
                         pasientIdent: formState.pasient.ident,
                         hoveddiagnose: {
                             system: formState.diagnose.hoved.system,

@@ -1,5 +1,11 @@
 import { Page, Request } from '@playwright/test'
 
+export function getDraftId(page: Page): string | null {
+    const url = new URL(page.url())
+
+    return url.pathname.split('/').pop() ?? null
+}
+
 export function waitForHttp(url: string, method: string) {
     return async (page: Page): Promise<Request> => {
         return await page.waitForRequest((req) => {

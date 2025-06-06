@@ -303,6 +303,10 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
+            // Delete the draft after successful creation
+            const draftClient = await getDraftClient()
+            await draftClient.deleteDraft(nySykmelding.draftId, { hpr, ident: pasientIdent })
+
             return { sykmeldingId: result.sykmeldingId }
         },
         synchronizeSykmelding: async (_, { id: sykmeldingId }) => {

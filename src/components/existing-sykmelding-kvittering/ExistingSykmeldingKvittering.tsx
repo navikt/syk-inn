@@ -53,7 +53,7 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitte
      */
 
     return (
-        <div className="max-w-prose bg-white p-4 rounded-sm">
+        <div className="max-w-prose bg-white p-4 rounded-sm w-1/2">
             {loading && <SykmeldingKvitteringSkeleton />}
             {error && <SykmeldingKvitteringError error={error} refetch={refetch} />}
             {data?.sykmelding && (

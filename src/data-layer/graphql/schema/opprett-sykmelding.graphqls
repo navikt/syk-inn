@@ -3,6 +3,7 @@ type OpprettetSykmelding {
 }
 
 input OpprettSykmelding {
+    draftId: String!
     pasientIdent: String!
     hoveddiagnose: InputDiagnose!
     perioder: [InputPeriode!]!
