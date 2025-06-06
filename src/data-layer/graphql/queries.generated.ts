@@ -14,7 +14,7 @@ export type Scalars = {
     Boolean: { input: boolean; output: boolean }
     Int: { input: number; output: number }
     Float: { input: number; output: number }
-    DateOnly: { input: any; output: any }
+    DateOnly: { input: string; output: string }
     JSON: { input: unknown; output: unknown }
 }
 
@@ -299,17 +299,23 @@ export type SykmeldingByIdQuery = {
             hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string }
         }
         aktivitet:
-            | { __typename?: 'AktivitetIkkeMulig'; fom: any; tom: any; type: AktivitetType }
-            | { __typename?: 'Avventende'; fom: any; tom: any; type: AktivitetType; innspillTilArbeidsgiver: string }
+            | { __typename?: 'AktivitetIkkeMulig'; fom: string; tom: string; type: AktivitetType }
+            | {
+                  __typename?: 'Avventende'
+                  fom: string
+                  tom: string
+                  type: AktivitetType
+                  innspillTilArbeidsgiver: string
+              }
             | {
                   __typename?: 'Behandlingsdager'
-                  fom: any
-                  tom: any
+                  fom: string
+                  tom: string
                   type: AktivitetType
                   antallBehandlingsdager: number
               }
-            | { __typename?: 'Gradert'; fom: any; tom: any; type: AktivitetType; grad: number }
-            | { __typename?: 'Reisetilskudd'; fom: any; tom: any; type: AktivitetType }
+            | { __typename?: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+            | { __typename?: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
     } | null
 }
 
@@ -332,39 +338,51 @@ export type SykmeldingFragment = {
         hoved: { __typename?: 'Diagnose'; code: string; system: DiagnoseSystem; text: string }
     }
     aktivitet:
-        | { __typename?: 'AktivitetIkkeMulig'; fom: any; tom: any; type: AktivitetType }
-        | { __typename?: 'Avventende'; fom: any; tom: any; type: AktivitetType; innspillTilArbeidsgiver: string }
-        | { __typename?: 'Behandlingsdager'; fom: any; tom: any; type: AktivitetType; antallBehandlingsdager: number }
-        | { __typename?: 'Gradert'; fom: any; tom: any; type: AktivitetType; grad: number }
-        | { __typename?: 'Reisetilskudd'; fom: any; tom: any; type: AktivitetType }
+        | { __typename?: 'AktivitetIkkeMulig'; fom: string; tom: string; type: AktivitetType }
+        | { __typename?: 'Avventende'; fom: string; tom: string; type: AktivitetType; innspillTilArbeidsgiver: string }
+        | {
+              __typename?: 'Behandlingsdager'
+              fom: string
+              tom: string
+              type: AktivitetType
+              antallBehandlingsdager: number
+          }
+        | { __typename?: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+        | { __typename?: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
 }
 
 type Aktivitet_AktivitetIkkeMulig_Fragment = {
     __typename?: 'AktivitetIkkeMulig'
-    fom: any
-    tom: any
+    fom: string
+    tom: string
     type: AktivitetType
 }
 
 type Aktivitet_Avventende_Fragment = {
     __typename?: 'Avventende'
-    fom: any
-    tom: any
+    fom: string
+    tom: string
     type: AktivitetType
     innspillTilArbeidsgiver: string
 }
 
 type Aktivitet_Behandlingsdager_Fragment = {
     __typename?: 'Behandlingsdager'
-    fom: any
-    tom: any
+    fom: string
+    tom: string
     type: AktivitetType
     antallBehandlingsdager: number
 }
 
-type Aktivitet_Gradert_Fragment = { __typename?: 'Gradert'; fom: any; tom: any; type: AktivitetType; grad: number }
+type Aktivitet_Gradert_Fragment = {
+    __typename?: 'Gradert'
+    fom: string
+    tom: string
+    type: AktivitetType
+    grad: number
+}
 
-type Aktivitet_Reisetilskudd_Fragment = { __typename?: 'Reisetilskudd'; fom: any; tom: any; type: AktivitetType }
+type Aktivitet_Reisetilskudd_Fragment = { __typename?: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
 
 export type AktivitetFragment =
     | Aktivitet_AktivitetIkkeMulig_Fragment
