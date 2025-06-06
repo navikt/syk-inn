@@ -24,6 +24,7 @@ function initializeValkey(): Valkey {
 
 function createInMemoryValkey(): Valkey {
     const store = new Map<string, Record<string, unknown>>()
+    const indexes = new Map<string, Set<string>>()
 
     return new Proxy<Valkey>({} as Valkey, {
         get(target, prop: string) {
@@ -38,8 +39,35 @@ function createInMemoryValkey(): Valkey {
                             ...values,
                         })
                     }
+                case 'set':
+                    return async (key: string, value: Record<string, unknown>) => {
+                        store.set(key, value)
+                    }
+                case 'sadd':
+                    return async (key: string, value: string) => {
+                        if (!indexes.has(key)) {
+                            indexes.set(key, new Set())
+                        }
+                        const index = indexes.get(key)!
+                        index.add(value)
+                        store.set(key, { values: Array.from(index) })
+                    }
+                case 'sismember':
+                    return async (key: string, value: string) => {
+                        const index = indexes.get(key)
+                        return index ? index.has(value) : false
+                    }
+                case 'smembers':
+                    return async (key: string) => {
+                        const index = indexes.get(key)
+                        return index ? Array.from(index) : []
+                    }
                 case 'hgetall':
                     return async (key: string) => store.get(key) ?? null
+                case 'exists':
+                    return async (key: string) => {
+                        return store.has(key) ? 1 : 0
+                    }
                 case 'del':
                     return async (key: string) => store.delete(key)
                 case 'expire':
