@@ -35,15 +35,17 @@ export async function getDraftClient(): Promise<DraftClient> {
     return {
         saveDraft: async (draftId, owner, values) => {
             const key = draftKey(draftId)
+            const ownershipKey = ownershipIndexKey(owner)
 
             await valkey.hset(key, {
                 draftId,
                 values: JSON.stringify(values),
                 lastUpdated: new Date().toISOString(),
             } satisfies ValkeyDraftEntry)
-            await valkey.sadd(ownershipIndexKey(owner), key)
+            await valkey.sadd(ownershipKey, key)
 
             await valkey.expire(key, getSecondsUntilMidnight())
+            await valkey.expire(ownershipKey, getSecondsUntilMidnight())
         },
         deleteDraft: async (draftId, owner) => {
             const key = draftKey(draftId)
