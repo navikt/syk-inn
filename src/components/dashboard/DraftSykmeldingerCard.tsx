@@ -26,7 +26,9 @@ function DraftSykmeldingerCard({ className }: Props): ReactElement {
 }
 
 function DraftList(): ReactElement {
-    const { data, loading, error, refetch } = useQuery(GetAllDraftsDocument)
+    const { data, loading, error, refetch } = useQuery(GetAllDraftsDocument, {
+        fetchPolicy: 'cache-and-network',
+    })
 
     if (loading) {
         return (
