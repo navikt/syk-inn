@@ -2,6 +2,7 @@ mutation SaveDraft($draftId: String!, $values: JSON!) {
     saveDraft(draftId: $draftId, values: $values) {
         draftId
         values
+        lastUpdated
     }
 }
 
@@ -13,6 +14,7 @@ query GetDraft($draftId: String!) {
     draft(draftId: $draftId) {
         draftId
         values
+        lastUpdated
     }
 }
 
@@ -20,5 +22,6 @@ query GetAllDrafts {
     drafts {
         draftId
         values
+        lastUpdated
     }
 }

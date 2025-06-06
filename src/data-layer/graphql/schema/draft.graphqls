@@ -1,5 +1,5 @@
 type OpprettSykmeldingDraft {
     draftId: String!
+    lastUpdated: DateTime!
     values: JSON!
 }
-

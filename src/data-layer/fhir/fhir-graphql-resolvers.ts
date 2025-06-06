@@ -129,7 +129,8 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             return {
                 draftId,
-                values: draft,
+                values: draft.values,
+                lastUpdated: draft.lastUpdated,
             }
         },
         drafts: async () => {
@@ -188,6 +189,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             return {
                 draftId,
                 values,
+                lastUpdated: new Date().toISOString(),
             }
         },
         deleteDraft: async (_, { draftId }) => {

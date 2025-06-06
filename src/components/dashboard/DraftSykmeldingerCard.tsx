@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react'
 import { Alert, BodyShort, Button, Heading, Skeleton, Table } from '@navikt/ds-react'
 import { useMutation, useQuery } from '@apollo/client'
 import { TrashIcon } from '@navikt/aksel-icons'
+import { formatDistanceToNow } from 'date-fns'
+import { nb } from 'date-fns/locale/nb'
 
 import { cn } from '@utils/tw'
 import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
@@ -78,6 +80,7 @@ function DraftList(): ReactElement {
                     <Table.Row>
                         <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
                         <Table.HeaderCell scope="col">Diagnose</Table.HeaderCell>
+                        <Table.HeaderCell scope="col">Sist endret</Table.HeaderCell>
                         <Table.HeaderCell scope="col" className="max-w-8" />
                         <Table.HeaderCell scope="col" className="max-w-4" />
                     </Table.Row>
@@ -88,6 +91,9 @@ function DraftList(): ReactElement {
                             <Table.Row key={draft.draftId}>
                                 <Table.DataCell>TODO: Vis dato fra draft</Table.DataCell>
                                 <Table.DataCell>TODO: Vis diagnose fra draft</Table.DataCell>
+                                <Table.DataCell>
+                                    {formatDistanceToNow(draft.lastUpdated, { locale: nb, addSuffix: true })}
+                                </Table.DataCell>
                                 <Table.DataCell className="max-w-8" align="center">
                                     <Button
                                         variant="tertiary"

@@ -17,6 +17,7 @@ export type Scalars = {
     Int: { input: number; output: number }
     Float: { input: number; output: number }
     DateOnly: { input: string; output: string }
+    DateTime: { input: string; output: string }
     JSON: { input: unknown; output: unknown }
 }
 
@@ -129,6 +130,7 @@ export type OpprettSykmelding = {
 export type OpprettSykmeldingDraft = {
     __typename?: 'OpprettSykmeldingDraft'
     draftId: Scalars['String']['output']
+    lastUpdated: Scalars['DateTime']['output']
     values: Scalars['JSON']['output']
 }
 
@@ -301,6 +303,7 @@ export type ResolversTypes = {
     Behandlingsdager: ResolverTypeWrapper<Behandlingsdager>
     Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>
     DateOnly: ResolverTypeWrapper<Scalars['DateOnly']['output']>
+    DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>
     Diagnose: ResolverTypeWrapper<Diagnose>
     DiagnoseSystem: DiagnoseSystem
     DocumentStatus: DocumentStatus
@@ -335,6 +338,7 @@ export type ResolversParentTypes = {
     Behandlingsdager: Behandlingsdager
     Boolean: Scalars['Boolean']['output']
     DateOnly: Scalars['DateOnly']['output']
+    DateTime: Scalars['DateTime']['output']
     Diagnose: Diagnose
     FomTom: ResolversInterfaceTypes<ResolversParentTypes>['FomTom']
     Gradert: Gradert
@@ -412,6 +416,10 @@ export type BehandlingsdagerResolvers<
 
 export interface DateOnlyScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateOnly'], any> {
     name: 'DateOnly'
+}
+
+export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+    name: 'DateTime'
 }
 
 export type DiagnoseResolvers<
@@ -495,6 +503,7 @@ export type OpprettSykmeldingDraftResolvers<
     ParentType extends ResolversParentTypes['OpprettSykmeldingDraft'] = ResolversParentTypes['OpprettSykmeldingDraft'],
 > = {
     draftId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    lastUpdated?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>
     values?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
@@ -610,6 +619,7 @@ export type Resolvers<ContextType = any> = {
     Behandler?: BehandlerResolvers<ContextType>
     Behandlingsdager?: BehandlingsdagerResolvers<ContextType>
     DateOnly?: GraphQLScalarType
+    DateTime?: GraphQLScalarType
     Diagnose?: DiagnoseResolvers<ContextType>
     FomTom?: FomTomResolvers<ContextType>
     Gradert?: GradertResolvers<ContextType>

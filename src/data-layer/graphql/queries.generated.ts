@@ -15,6 +15,7 @@ export type Scalars = {
     Int: { input: number; output: number }
     Float: { input: number; output: number }
     DateOnly: { input: string; output: string }
+    DateTime: { input: string; output: string }
     JSON: { input: unknown; output: unknown }
 }
 
@@ -127,6 +128,7 @@ export type OpprettSykmelding = {
 export type OpprettSykmeldingDraft = {
     __typename?: 'OpprettSykmeldingDraft'
     draftId: Scalars['String']['output']
+    lastUpdated: Scalars['DateTime']['output']
     values: Scalars['JSON']['output']
 }
 
@@ -232,7 +234,7 @@ export type SaveDraftMutationVariables = Exact<{
 
 export type SaveDraftMutation = {
     __typename?: 'Mutation'
-    saveDraft: { __typename?: 'OpprettSykmeldingDraft'; draftId: string; values: unknown }
+    saveDraft: { __typename?: 'OpprettSykmeldingDraft'; draftId: string; values: unknown; lastUpdated: string }
 }
 
 export type DeleteDraftMutationVariables = Exact<{
@@ -247,14 +249,19 @@ export type GetDraftQueryVariables = Exact<{
 
 export type GetDraftQuery = {
     __typename?: 'Query'
-    draft?: { __typename?: 'OpprettSykmeldingDraft'; draftId: string; values: unknown } | null
+    draft?: { __typename?: 'OpprettSykmeldingDraft'; draftId: string; values: unknown; lastUpdated: string } | null
 }
 
 export type GetAllDraftsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetAllDraftsQuery = {
     __typename?: 'Query'
-    drafts?: Array<{ __typename?: 'OpprettSykmeldingDraft'; draftId: string; values: unknown }> | null
+    drafts?: Array<{
+        __typename?: 'OpprettSykmeldingDraft'
+        draftId: string
+        values: unknown
+        lastUpdated: string
+    }> | null
 }
 
 export type KonsultasjonQueryVariables = Exact<{ [key: string]: never }>
@@ -733,6 +740,7 @@ export const SaveDraftDocument = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'values' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'lastUpdated' } },
                             ],
                         },
                     },
@@ -806,6 +814,7 @@ export const GetDraftDocument = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'values' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'lastUpdated' } },
                             ],
                         },
                     },
@@ -832,6 +841,7 @@ export const GetAllDraftsDocument = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'values' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'lastUpdated' } },
                             ],
                         },
                     },
