@@ -187,7 +187,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             if (!parsedValues.success) {
                 logger.error(
                     new Error('Parsed values are not valid according to DraftValuesSchema', {
-                        cause: parsedValues,
+                        cause: parsedValues.error,
                     }),
                 )
                 throw new GraphQLError('API_ERROR')
