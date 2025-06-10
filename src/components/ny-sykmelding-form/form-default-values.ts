@@ -11,7 +11,13 @@ import {
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 import { DiagnoseFragment } from '@queries'
 
-import { AktivitetStep, NySykmeldingMultiStepState } from '../../providers/redux/reducers/ny-sykmelding-multistep'
+import {
+    AktivitetStep,
+    AndreSporsmalStep,
+    MeldingerStep,
+    NySykmeldingMultiStepState,
+    TilbakedateringStep,
+} from '../../providers/redux/reducers/ny-sykmelding-multistep'
 import { DraftValues } from '../../data-layer/draft/draft-schema'
 
 type CreateDefaultValuesData = {
@@ -28,37 +34,64 @@ type CreateDefaultValuesData = {
  * 4. Inherent defaults
  */
 export function createDefaultValues({
-    draftValues,
     valuesInState,
+    draftValues,
     serverSuggestions,
 }: CreateDefaultValuesData): DefaultValues<NySykmeldingMainFormValues> {
     return {
         perioder: toInitialPerioder(draftValues?.perioder ?? null, valuesInState.aktiviteter),
         diagnoser: {
-            hoved: toInitialDiagnose(valuesInState.diagnose?.hoved ?? null, serverSuggestions.diagnose.value),
+            hoved: toInitialDiagnose(
+                valuesInState.diagnose?.hoved ?? null,
+                draftValues?.hoveddiagnose ?? null,
+                serverSuggestions.diagnose.value,
+            ),
         },
-        tilbakedatering: valuesInState.tilbakedatering
-            ? {
-                  fom:
-                      valuesInState.tilbakedatering.fom && isValid(toDate(valuesInState.tilbakedatering.fom))
-                          ? valuesInState.tilbakedatering.fom
-                          : null,
-                  grunn: valuesInState.tilbakedatering?.grunn ?? null,
-              }
-            : null,
-        meldinger: {
-            showTilNav: valuesInState.meldinger?.showTilNav ?? false,
-            showTilArbeidsgiver: valuesInState.meldinger?.showTilArbeidsgiver ?? false,
-            tilNav: valuesInState.meldinger?.tilNav ?? null,
-            tilArbeidsgiver: valuesInState.meldinger?.tilArbeidsgiver ?? null,
-        },
-        andreSporsmal: (
-            [
-                valuesInState.andreSporsmal?.svangerskapsrelatert ? 'svangerskapsrelatert' : null,
-                valuesInState.andreSporsmal?.yrkesskade ? 'yrkesskade' : null,
-            ] satisfies (AndreSporsmalValues | null)[]
-        ).filter(R.isTruthy),
+        tilbakedatering: toInitialTilbakedatering(valuesInState.tilbakedatering, draftValues?.tilbakedatering ?? null),
+        meldinger: toInitialMeldinger(valuesInState.meldinger, draftValues?.meldinger ?? null),
+        andreSporsmal: toAndreSporsmal(valuesInState.andreSporsmal, draftValues),
     }
+}
+
+function toAndreSporsmal(
+    valuesInState: AndreSporsmalStep | null,
+    draftValues: DraftValues | null,
+): NySykmeldingMainFormValues['andreSporsmal'] {
+    if (valuesInState != null) {
+        return (
+            [
+                valuesInState?.svangerskapsrelatert ? 'svangerskapsrelatert' : null,
+                valuesInState?.yrkesskade ? 'yrkesskade' : null,
+            ] satisfies (AndreSporsmalValues | null)[]
+        ).filter(R.isTruthy)
+    }
+
+    if (draftValues && draftValues.svangerskapsrelatert != null && draftValues.svangerskapsrelatert) {
+        return ['svangerskapsrelatert']
+    }
+
+    return []
+}
+
+function toInitialTilbakedatering(
+    valuesInState: TilbakedateringStep | null,
+    draftValues: DraftValues['tilbakedatering'] | null,
+): NySykmeldingMainFormValues['tilbakedatering'] | null {
+    if (valuesInState) {
+        return {
+            fom: valuesInState.fom && isValid(toDate(valuesInState.fom)) ? valuesInState.fom : null,
+            grunn: valuesInState?.grunn ?? null,
+        }
+    }
+
+    if (draftValues) {
+        return {
+            fom: draftValues.fom && isValid(toDate(draftValues.fom)) ? draftValues.fom : null,
+            grunn: draftValues.grunn ?? null,
+        }
+    }
+
+    return null
 }
 
 /**
@@ -70,11 +103,20 @@ export function createDefaultValues({
  * Diagnose component has the responsibility of displaying eventual server errors
  */
 export function toInitialDiagnose(
-    initialFormDiagnose: DiagnoseSuggestion | null,
+    valuesInState: DiagnoseSuggestion | null,
+    draftValues: DraftValues['hoveddiagnose'] | null,
     serverSuggestion: DiagnoseFragment | null,
 ): DiagnoseSuggestion | null {
-    if (initialFormDiagnose != null) {
-        return initialFormDiagnose
+    if (valuesInState != null) {
+        return valuesInState
+    }
+
+    if (draftValues != null) {
+        return {
+            system: draftValues.system,
+            code: draftValues.code,
+            text: draftValues.text,
+        }
     }
 
     if (serverSuggestion != null) {
@@ -102,7 +144,7 @@ export function toInitialPerioder(
             },
             aktivitet: {
                 type: it.type,
-                grad: it.grad,
+                grad: it.grad ? it.grad.toFixed(0) : null,
             },
         }))
     }
@@ -121,6 +163,36 @@ export function toInitialPerioder(
     }
 
     return [getDefaultPeriode()]
+}
+
+function toInitialMeldinger(
+    meldingerInState: MeldingerStep | null,
+    draftMeldinger: DraftValues['meldinger'] | null,
+): NySykmeldingMainFormValues['meldinger'] {
+    if (meldingerInState != null) {
+        return {
+            showTilNav: meldingerInState.showTilNav ?? false,
+            showTilArbeidsgiver: meldingerInState.showTilArbeidsgiver ?? false,
+            tilNav: meldingerInState.tilNav ?? null,
+            tilArbeidsgiver: meldingerInState.tilArbeidsgiver ?? null,
+        }
+    }
+
+    if (draftMeldinger != null) {
+        return {
+            showTilNav: draftMeldinger.showTilNav ?? false,
+            showTilArbeidsgiver: draftMeldinger.showTilArbeidsgiver ?? false,
+            tilNav: draftMeldinger.tilNav ?? null,
+            tilArbeidsgiver: draftMeldinger.tilArbeidsgiver ?? null,
+        }
+    }
+
+    return {
+        showTilNav: false,
+        tilNav: null,
+        showTilArbeidsgiver: false,
+        tilArbeidsgiver: null,
+    }
 }
 
 export function getDefaultPeriode(): AktivitetsPeriode {

@@ -42,7 +42,7 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
 function GradertGradPicker({ index }: { index: number }): ReactElement {
     const gradertField = useController({
         name: `perioder.${index}.aktivitet.grad` as const,
-        defaultValue: 50,
+        defaultValue: '50',
         rules: {
             required: 'Du må fylle inn sykmeldingsgrad',
             pattern: {
@@ -60,10 +60,7 @@ function GradertGradPicker({ index }: { index: number }): ReactElement {
         },
     })
 
-    const coercedValue =
-        gradertField.field.value != null && gradertField.field.value > 0 && gradertField.field.value <= 99
-            ? gradertField.field.value
-            : null
+    const coercedValue = safeGetPercentValue(gradertField.field.value)
 
     return (
         <div className="flex flex-col gap-1">
@@ -84,6 +81,13 @@ function GradertGradPicker({ index }: { index: number }): ReactElement {
             </AnimatePresence>
         </div>
     )
+}
+
+function safeGetPercentValue(value: string | null): number | null {
+    if (!value) return null
+    if (isNaN(Number(value))) return null
+
+    return Number(value)
 }
 
 export default AktivitetPicker

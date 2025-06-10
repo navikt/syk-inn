@@ -3,6 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Button } from '@navikt/ds-react'
 import { ArrowRightIcon } from '@navikt/aksel-icons'
 import dynamic from 'next/dynamic'
+import * as R from 'remeda'
 
 import { raise } from '@utils/ts'
 import AndreSporsmalSection from '@components/ny-sykmelding-form/andre-sporsmal/AndreSporsmalSection'
@@ -92,7 +93,10 @@ function useHandleFormSubmit() {
                 aktiviteter: values.perioder.map((periode) => ({
                     fom: periode.periode.fom ?? raise("Can't submit step without periode fom"),
                     tom: periode.periode.tom ?? raise("Can't submit step without periode tom"),
-                    grad: periode.aktivitet.grad,
+                    grad:
+                        periode.aktivitet.grad != null && R.isNumber(Number(periode.aktivitet.grad))
+                            ? Number(periode.aktivitet.grad)
+                            : null,
                     type: periode.aktivitet.type,
                 })),
                 tilbakedatering:

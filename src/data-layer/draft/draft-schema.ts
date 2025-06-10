@@ -9,10 +9,32 @@ export const DraftValuesSchema = z.object({
                 type: z.enum(['GRADERT', 'AKTIVITET_IKKE_MULIG']),
                 fom: z.string().nullable(),
                 tom: z.string().nullable(),
-                grad: z.number().nullable().optional(),
+                grad: z.string().nullable().optional(),
             }),
         )
-        .optional(),
+        .nullable(),
+    hoveddiagnose: z
+        .object({
+            system: z.enum(['ICD10', 'ICPC2']),
+            code: z.string(),
+            text: z.string(),
+        })
+        .nullable(),
+    tilbakedatering: z
+        .object({
+            fom: z.string().nullable(),
+            grunn: z.string().nullable(),
+        })
+        .nullable(),
+    meldinger: z
+        .object({
+            showTilNav: z.boolean(),
+            tilNav: z.string().nullable(),
+            showTilArbeidsgiver: z.boolean(),
+            tilArbeidsgiver: z.string().nullable(),
+        })
+        .nullable(),
+    svangerskapsrelatert: z.boolean().nullable(),
 })
 
 /**

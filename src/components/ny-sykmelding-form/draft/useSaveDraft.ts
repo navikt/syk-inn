@@ -52,5 +52,20 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
             tom: periode.periode.tom,
             grad: periode.aktivitet.grad ?? null,
         })),
+        hoveddiagnose: values.diagnoser.hoved ?? null,
+        tilbakedatering:
+            values.tilbakedatering != null
+                ? {
+                      fom: values.tilbakedatering.fom,
+                      grunn: values.tilbakedatering.grunn,
+                  }
+                : null,
+        meldinger: {
+            showTilNav: values.meldinger.showTilNav,
+            showTilArbeidsgiver: values.meldinger.showTilArbeidsgiver,
+            tilNav: values.meldinger.tilNav,
+            tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
+        },
+        svangerskapsrelatert: values.andreSporsmal.includes('svangerskapsrelatert'),
     }
 }
