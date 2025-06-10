@@ -1,6 +1,6 @@
 import { requestAzureClientCredentialsToken } from '@navikt/oasis'
 import { logger as pinoLogger } from '@navikt/next-logger'
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 import { raise } from '@utils/ts'
 import { getServerEnv } from '@utils/env'
@@ -103,11 +103,16 @@ export async function fetchInternalAPI<
     const parsed = responseSchema.safeParse(result)
 
     if (!parsed.success) {
-        logger.error(`Invalid response from ${path}, details: ${JSON.stringify(parsed.error.errors, null, 2)}`)
+        logger.error(`Invalid response from ${path}, details: ${JSON.stringify(parsed.error, null, 2)}`)
         return { errorType: 'API_BODY_INVALID' }
     }
 
-    return parsed.data
+    /**
+     * TODO: Can this as be avoided?
+     *
+     * See: https://zod.dev/v4/changelog?id=updates-generics
+     */
+    return parsed.data as InferredReturnValue
 }
 
 export async function getApi(

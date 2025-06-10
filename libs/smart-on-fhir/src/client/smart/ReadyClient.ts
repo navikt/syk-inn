@@ -16,7 +16,6 @@ import {
     FhirPractitioner,
     FhirPractitionerSchema,
 } from '@navikt/fhir-zod'
-import { ZodSchema } from 'zod'
 
 import { CompleteSession } from '../storage/schema'
 import { logger } from '../logger'
@@ -179,7 +178,9 @@ export class ReadyClient {
     }
 }
 
-function resourceToSchema(resource: `/${string}`): ZodSchema {
+// Allow type inferrence for schemas
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function resourceToSchema(resource: `/${string}`) {
     if (resource.startsWith('/Practitioner/')) {
         return FhirPractitionerSchema
     } else if (resource.startsWith('/DocumentReference/')) {

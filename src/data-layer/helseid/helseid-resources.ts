@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { z } from 'zod'
+import { z } from 'zod/v4'
 import { headers } from 'next/headers'
 import { logger } from '@navikt/next-logger'
 

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 export type Name = z.infer<typeof NameSchema>
 export const NameSchema = z.array(z.object({ family: z.string(), given: z.array(z.string()) }))

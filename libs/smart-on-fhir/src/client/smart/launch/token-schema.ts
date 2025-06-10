@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 export type TokenResponse = z.infer<typeof TokenResponseSchema>
 export const TokenResponseSchema = z.object({

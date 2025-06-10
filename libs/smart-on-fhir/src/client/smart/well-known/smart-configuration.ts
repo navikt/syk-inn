@@ -31,6 +31,8 @@ export async function fetchSmartConfiguration(
                 cause: validatedWellKnown.error,
             })
 
+            validatedWellKnown.error
+
             return { error: 'WELL_KNOWN_INVALID_BODY' }
         }
 
