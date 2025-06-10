@@ -4,6 +4,8 @@ import { logger } from '@navikt/next-logger'
 
 import { getValkeyClient } from '@services/valkey/client'
 
+import { DraftValues } from './draft-schema'
+
 type DraftOwnership = { hpr: string; ident: string }
 
 type DraftEntryCore = {
@@ -18,12 +20,12 @@ type ValkeyDraftEntry = DraftEntryCore & {
 }
 
 export type DraftEntry = DraftEntryCore & {
-    // Parsed JSON object
-    values: Record<string, unknown>
+    // Parsed and validated JSON object
+    values: DraftValues
 }
 
 type DraftClient = {
-    saveDraft: (draftId: string, owner: DraftOwnership, values: Record<string, unknown>) => Promise<void>
+    saveDraft: (draftId: string, owner: DraftOwnership, values: DraftValues) => Promise<DraftValues>
     deleteDraft: (draftId: string, owner: DraftOwnership) => Promise<void>
     getDraft: (draftId: string) => Promise<DraftEntry | null>
     getDrafts: (owner: DraftOwnership) => Promise<DraftEntry[]>
@@ -46,6 +48,8 @@ export async function getDraftClient(): Promise<DraftClient> {
 
             await valkey.expire(key, getSecondsUntilMidnight())
             await valkey.expire(ownershipKey, getSecondsUntilMidnight())
+
+            return values
         },
         deleteDraft: async (draftId, owner) => {
             const key = draftKey(draftId)

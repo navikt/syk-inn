@@ -5,27 +5,19 @@ import { useRouter } from 'next/navigation'
 import { FloppydiskIcon } from '@navikt/aksel-icons'
 import { toast } from 'sonner'
 
-import { DeleteDraftDocument, GetAllDraftsDocument, SaveDraftDocument } from '@queries'
+import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
 import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
 import { useFormContext } from '@components/ny-sykmelding-form/form'
+import { useSaveDraft } from '@components/ny-sykmelding-form/draft/useSaveDraft'
 
 import { useMode } from '../../../providers/ModeProvider'
 
 export function LagreDraftButton(): ReactElement {
-    const mode = useMode()
     const draftId = useDraftId()
     const { getValues } = useFormContext()
-    const router = useRouter()
-
-    const [mutation, draftResult] = useMutation(SaveDraftDocument, {
-        onCompleted: () => {
-            toast('Lagret utkast')
-
-            const redirectPath = mode === 'FHIR' ? '/fhir' : '/ny'
-            router.replace(redirectPath)
-        },
-        refetchQueries: [GetAllDraftsDocument],
-        awaitRefetchQueries: true,
+    const [mutation, draftResult] = useSaveDraft({
+        returnToDash: true,
+        onCompleted: () => toast('Lagret utkast'),
     })
 
     return (
@@ -37,9 +29,7 @@ export function LagreDraftButton(): ReactElement {
             onClick={() => {
                 const values = getValues()
 
-                mutation({
-                    variables: { draftId, values: values },
-                })
+                mutation(draftId, values)
             }}
             loading={draftResult.loading}
         >

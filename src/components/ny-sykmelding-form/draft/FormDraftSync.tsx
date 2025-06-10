@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useRef } from 'react'
 import * as R from 'remeda'
-import { FetchResult, useMutation } from '@apollo/client'
+import { FetchResult } from '@apollo/client'
 import { toast } from 'sonner'
 import { useParams } from 'next/navigation'
 
-import { GetAllDraftsDocument, SaveDraftDocument, SaveDraftMutation } from '@queries'
+import { SaveDraftMutation } from '@queries'
+import { mapFormValuesToDraftValues, useSaveDraft } from '@components/ny-sykmelding-form/draft/useSaveDraft'
 
 import { NySykmeldingMainFormValues, useFormContext } from '../form'
+import { safeParseDraft } from '../../../data-layer/draft/draft-schema'
 
 type Changes = {
     currentValues: NySykmeldingMainFormValues
@@ -26,19 +28,25 @@ function FormDraftSync(): null {
     const { formValues, isFormDirty } = useFormValues()
 
     const currentMutationPromise = useRef<Promise<FetchResult<SaveDraftMutation>> | null>(null)
-    const [mutation, draftResult] = useMutation(SaveDraftDocument, {
+    const [mutation, draftResult] = useSaveDraft({
+        returnToDash: false,
         onCompleted: () => {
             currentMutationPromise.current = null
 
             toast('Lagret utkast')
         },
-        refetchQueries: [GetAllDraftsDocument],
     })
 
     const debouncedSaveDraft = useMemo(
         () =>
             R.funnel(
                 async (args) => {
+                    const doMutation = async (): Promise<void> => {
+                        const mutationPromise = mutation(draftId, args.currentValues)
+                        currentMutationPromise.current = mutationPromise
+                        await mutationPromise
+                    }
+
                     /**
                      * There is currently a (slow) mutation still running. This will only happen if the requset
                      * somehow is slower than the debounce time. But in this case we'll wait for the in-flight mutation
@@ -48,9 +56,7 @@ function FormDraftSync(): null {
                         const result = await currentMutationPromise.current
 
                         if (shouldUpdate(args.currentValues, result.data?.saveDraft.values)) {
-                            const mutationPromise = mutation({ variables: { draftId, values: args.currentValues } })
-                            currentMutationPromise.current = mutationPromise
-                            return mutationPromise
+                            await doMutation()
                         }
 
                         /**
@@ -65,9 +71,7 @@ function FormDraftSync(): null {
                      * the previous mutation.
                      */
                     if (shouldUpdate(args.currentValues, args.currentServerValues)) {
-                        const mutationPromise = mutation({ variables: { draftId, values: args.currentValues } })
-                        currentMutationPromise.current = mutationPromise
-                        return mutationPromise
+                        await doMutation()
                     }
 
                     /**
@@ -117,7 +121,10 @@ function useFormValues(): { formValues: NySykmeldingMainFormValues; isFormDirty:
 function shouldUpdate(values: NySykmeldingMainFormValues, savedDraft: unknown): boolean {
     if (!savedDraft) return true
 
-    return !R.isDeepEqual(values, savedDraft)
+    const parsedSaved = safeParseDraft(null, savedDraft)
+    const mappedFormValues = mapFormValuesToDraftValues(values)
+
+    return !R.isDeepEqual(parsedSaved, mappedFormValues)
 }
 
 export default FormDraftSync

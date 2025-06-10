@@ -6,6 +6,8 @@ import { useParams } from 'next/navigation'
 import NySykmeldingForm from '@components/ny-sykmelding-form/NySykmeldingForm'
 import { DiagnoseFragment, GetDraftDocument, KonsultasjonDocument } from '@queries'
 
+import { safeParseDraft } from '../../data-layer/draft/draft-schema'
+
 function NySykmeldingFormWithData(): ReactElement {
     const params = useParams<{ draftId: string }>()
     const konsultasjonsQuery = useQuery(KonsultasjonDocument)
@@ -27,7 +29,7 @@ function NySykmeldingFormWithData(): ReactElement {
 
     return (
         <NySykmeldingForm
-            draftValues={draftQuery.data?.draft?.values}
+            draftValues={safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values)}
             initialServerValues={{
                 diagnose: {
                     value: pickMostRelevantDiagnose(konsultasjonsQuery.data?.konsultasjon?.diagnoser ?? null),
