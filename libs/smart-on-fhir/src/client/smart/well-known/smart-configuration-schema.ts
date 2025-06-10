@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 export type SmartConfiguration = z.infer<typeof SmartConfigurationSchema>
 export const SmartConfigurationSchema = z.object({
