@@ -171,6 +171,14 @@ export function nextStep() {
     }
 }
 
+export function saveDraft() {
+    return async (page: Page) => {
+        const nextButton = page.getByRole('button', { name: 'Lagre (utkast)' })
+        await expect(nextButton).toBeVisible()
+        await nextButton.click()
+    }
+}
+
 export function previousStep() {
     return async (page: Page) => {
         const previousButton = page.getByRole('button', { name: 'Forrige steg' })
