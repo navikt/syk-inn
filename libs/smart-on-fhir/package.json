@@ -13,8 +13,8 @@
         "@navikt/fhir-zod": "workspace:^",
         "@navikt/pino-logger": "^3.0.3",
         "jose": "^6.0.11",
-        "openid-client": "^6.5.0",
+        "openid-client": "^6.5.1",
         "pino": "^9.7.0",
-        "zod": "^3.25.48"
+        "zod": "^3.25.57"
     }
 }
