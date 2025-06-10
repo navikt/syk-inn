@@ -20,6 +20,7 @@ import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir }
 
 import { getDiagnoseText, searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
+import { DraftValuesSchema } from '../draft/draft-schema'
 
 import { getReadyClientForResolvers } from './smart/smart-client'
 
@@ -182,8 +183,18 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
+            const parsedValues = DraftValuesSchema.safeParse(values)
+            if (!parsedValues.success) {
+                logger.error(
+                    new Error('Parsed values are not valid according to DraftValuesSchema', {
+                        cause: parsedValues,
+                    }),
+                )
+                throw new GraphQLError('API_ERROR')
+            }
+
             const draftClient = await getDraftClient()
-            await draftClient.saveDraft(draftId, { hpr, ident }, values)
+            await draftClient.saveDraft(draftId, { hpr, ident }, parsedValues.data)
 
             logger.info(`Saved draft ${draftId} to draft client`)
 

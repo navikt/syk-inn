@@ -12,6 +12,7 @@ import ForkastDraftButton, { LagreDraftButton } from '@components/ny-sykmelding-
 
 import { useAppDispatch, useAppSelector } from '../../providers/redux/hooks'
 import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
+import { DraftValues } from '../../data-layer/draft/draft-schema'
 
 import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
 import AktivitetSection from './aktivitet/AktivitetSection'
@@ -24,7 +25,7 @@ import FormDraftSync from './draft/FormDraftSync'
 const FormDevTools = dynamic(() => import('../../devtools/NySykmeldingFormDevTools'), { ssr: false })
 
 type Props = {
-    draftValues: unknown
+    draftValues: DraftValues | null
     initialServerValues: NySykmeldingSuggestions
 }
 
@@ -34,8 +35,8 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
     const form = useForm<NySykmeldingMainFormValues>({
         defaultValues: createDefaultValues({
             draftValues: draftValues,
-            initialValues,
-            initialSuggestions: initialServerValues,
+            valuesInState: initialValues,
+            serverSuggestions: initialServerValues,
         }),
     })
 

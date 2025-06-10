@@ -11,65 +11,51 @@ import {
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 import { DiagnoseFragment } from '@queries'
 
-import { NySykmeldingMultiStepState } from '../../providers/redux/reducers/ny-sykmelding-multistep'
+import { AktivitetStep, NySykmeldingMultiStepState } from '../../providers/redux/reducers/ny-sykmelding-multistep'
+import { DraftValues } from '../../data-layer/draft/draft-schema'
 
 type CreateDefaultValuesData = {
-    // TODO: better typing for drafts
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    draftValues: any
-    initialValues: NySykmeldingMultiStepState
-    initialSuggestions: NySykmeldingSuggestions
+    draftValues: DraftValues | null
+    valuesInState: NySykmeldingMultiStepState
+    serverSuggestions: NySykmeldingSuggestions
 }
 
 /**
  * Overall the default values have the following precedence:
- * 1. Draft values (if available)
- * 2. Initial values from the multistep state (user may return from a previous step)
+ * 1. Initial values from the multistep state (user may return from a previous step)
+ * 2. Draft values (if available)
  * 3. Initial suggestions from the server
  * 4. Inherent defaults
  */
 export function createDefaultValues({
     draftValues,
-    initialValues,
-    initialSuggestions,
+    valuesInState,
+    serverSuggestions,
 }: CreateDefaultValuesData): DefaultValues<NySykmeldingMainFormValues> {
-    if (draftValues != null) {
-        return draftValues
-    }
-
     return {
-        perioder: initialValues.aktiviteter?.map((it) => ({
-            periode: {
-                fom: it.fom,
-                tom: it.tom,
-            },
-            aktivitet: {
-                type: it.type,
-                grad: it.grad,
-            },
-        })) ?? [getDefaultPeriode()],
+        perioder: toInitialPerioder(draftValues?.perioder ?? null, valuesInState.aktiviteter),
         diagnoser: {
-            hoved: toInitialDiagnose(initialValues.diagnose?.hoved ?? null, initialSuggestions.diagnose.value),
+            hoved: toInitialDiagnose(valuesInState.diagnose?.hoved ?? null, serverSuggestions.diagnose.value),
         },
-        tilbakedatering: initialValues.tilbakedatering
+        tilbakedatering: valuesInState.tilbakedatering
             ? {
                   fom:
-                      initialValues.tilbakedatering.fom && isValid(toDate(initialValues.tilbakedatering.fom))
-                          ? initialValues.tilbakedatering.fom
+                      valuesInState.tilbakedatering.fom && isValid(toDate(valuesInState.tilbakedatering.fom))
+                          ? valuesInState.tilbakedatering.fom
                           : null,
-                  grunn: initialValues.tilbakedatering?.grunn ?? null,
+                  grunn: valuesInState.tilbakedatering?.grunn ?? null,
               }
             : null,
         meldinger: {
-            showTilNav: initialValues.meldinger?.showTilNav ?? false,
-            showTilArbeidsgiver: initialValues.meldinger?.showTilArbeidsgiver ?? false,
-            tilNav: initialValues.meldinger?.tilNav ?? null,
-            tilArbeidsgiver: initialValues.meldinger?.tilArbeidsgiver ?? null,
+            showTilNav: valuesInState.meldinger?.showTilNav ?? false,
+            showTilArbeidsgiver: valuesInState.meldinger?.showTilArbeidsgiver ?? false,
+            tilNav: valuesInState.meldinger?.tilNav ?? null,
+            tilArbeidsgiver: valuesInState.meldinger?.tilArbeidsgiver ?? null,
         },
         andreSporsmal: (
             [
-                initialValues.andreSporsmal?.svangerskapsrelatert ? 'svangerskapsrelatert' : null,
-                initialValues.andreSporsmal?.yrkesskade ? 'yrkesskade' : null,
+                valuesInState.andreSporsmal?.svangerskapsrelatert ? 'svangerskapsrelatert' : null,
+                valuesInState.andreSporsmal?.yrkesskade ? 'yrkesskade' : null,
             ] satisfies (AndreSporsmalValues | null)[]
         ).filter(R.isTruthy),
     }
@@ -77,7 +63,7 @@ export function createDefaultValues({
 
 /**
  * Presedence for hoveddiagnose:
- * 1. Existing diagnose in form
+ * 1. Existing diagnose in form (redux)
  * 2. Initial suggestions from server
  * 3. Null
  *
@@ -96,6 +82,45 @@ export function toInitialDiagnose(
     }
 
     return null
+}
+
+/**
+ * Presedence for initial periode:
+ * 1. Existing perioder in form (redux)
+ * 2. Draft values (if available)
+ * 3. Form default
+ */
+export function toInitialPerioder(
+    draftPerioder: DraftValues['perioder'] | null,
+    initialState: AktivitetStep[] | null,
+): NySykmeldingMainFormValues['perioder'] {
+    if (initialState != null) {
+        return initialState.map((it) => ({
+            periode: {
+                fom: it.fom,
+                tom: it.tom,
+            },
+            aktivitet: {
+                type: it.type,
+                grad: it.grad,
+            },
+        }))
+    }
+
+    if (draftPerioder != null) {
+        return draftPerioder.map((it) => ({
+            periode: {
+                fom: it.fom ?? '',
+                tom: it.tom ?? '',
+            },
+            aktivitet: {
+                type: it.type,
+                grad: it.grad ?? null,
+            },
+        }))
+    }
+
+    return [getDefaultPeriode()]
 }
 
 export function getDefaultPeriode(): AktivitetsPeriode {
