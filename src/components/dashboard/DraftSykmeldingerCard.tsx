@@ -10,6 +10,8 @@ import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
 import AssableNextLink from '@components/misc/AssableNextLink'
 import useInterval from '@utils/hooks/useInterval'
 
+import { safeParseDraft } from '../../data-layer/draft/draft-schema'
+
 type Props = {
     className?: string
 }
@@ -88,10 +90,16 @@ function DraftList(): ReactElement {
                 </Table.Header>
                 <Table.Body>
                     {data.drafts.map((draft) => {
+                        const values = safeParseDraft(draft.draftId, draft.values)
+
                         return (
                             <Table.Row key={draft.draftId}>
                                 <Table.DataCell>TODO: Vis dato fra draft</Table.DataCell>
-                                <Table.DataCell>TODO: Vis diagnose fra draft</Table.DataCell>
+                                <Table.DataCell>
+                                    {values?.hoveddiagnose != null
+                                        ? `${values.hoveddiagnose.code} - ${values.hoveddiagnose.text}`
+                                        : 'Ingen diagnose'}
+                                </Table.DataCell>
                                 <Table.DataCell>
                                     <AutoUpdatingDistance time={draft.lastUpdated} />
                                 </Table.DataCell>
