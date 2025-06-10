@@ -1,13 +1,14 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Alert, BodyShort, Button, Heading, Skeleton, Table } from '@navikt/ds-react'
 import { useMutation, useQuery } from '@apollo/client'
 import { TrashIcon } from '@navikt/aksel-icons'
-import { formatDistanceToNow } from 'date-fns'
+import { differenceInSeconds, formatDistanceToNow } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
 import { cn } from '@utils/tw'
 import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
 import AssableNextLink from '@components/misc/AssableNextLink'
+import useInterval from '@utils/hooks/useInterval'
 
 type Props = {
     className?: string
@@ -78,7 +79,7 @@ function DraftList(): ReactElement {
             <Table>
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
+                        <Table.HeaderCell scope="co()l">Periode</Table.HeaderCell>
                         <Table.HeaderCell scope="col">Diagnose</Table.HeaderCell>
                         <Table.HeaderCell scope="col">Sist endret</Table.HeaderCell>
                         <Table.HeaderCell scope="col" className="max-w-8" />
@@ -86,13 +87,13 @@ function DraftList(): ReactElement {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {data?.drafts?.map((draft) => {
+                    {data.drafts.map((draft) => {
                         return (
                             <Table.Row key={draft.draftId}>
                                 <Table.DataCell>TODO: Vis dato fra draft</Table.DataCell>
                                 <Table.DataCell>TODO: Vis diagnose fra draft</Table.DataCell>
                                 <Table.DataCell>
-                                    {formatDistanceToNow(draft.lastUpdated, { locale: nb, addSuffix: true })}
+                                    <AutoUpdatingDistance time={draft.lastUpdated} />
                                 </Table.DataCell>
                                 <Table.DataCell className="max-w-8" align="center">
                                     <Button
@@ -134,6 +135,26 @@ function DeleteDraftRowButton({ draftId }: { draftId: string }): ReactElement {
                 })
             }
         />
+    )
+}
+
+function AutoUpdatingDistance({ time }: { time: string }): ReactElement {
+    const [rerernderino, triggerino] = useState(0)
+    const diffInSeconds = differenceInSeconds(new Date(), time)
+
+    /**
+     * More than 5 minutes: 1 minute rerender
+     * More than 1 minute: 10 seconds rerender
+     * Less than 1 minute: 5 second rerender
+     */
+    const rerenderIntervalMs = diffInSeconds > 300 ? 1000 * 60 : diffInSeconds > 60 ? 1000 * 10 : 5000
+
+    useInterval(() => {
+        triggerino((prev) => prev + 1)
+    }, rerenderIntervalMs)
+
+    return (
+        <React.Fragment key={rerernderino}>{formatDistanceToNow(time, { locale: nb, addSuffix: true })}</React.Fragment>
     )
 }
 

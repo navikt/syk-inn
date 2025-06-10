@@ -1,5 +1,6 @@
 import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
+import * as R from 'remeda'
 
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { QueriedPerson, Resolvers, Sykmelding } from '@resolvers'
@@ -157,7 +158,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             const allDrafts = await draftClient.getDrafts({ hpr, ident })
 
-            return allDrafts
+            return R.sortBy(allDrafts, [(it) => it.lastUpdated, 'desc'])
         },
     },
     Mutation: {
