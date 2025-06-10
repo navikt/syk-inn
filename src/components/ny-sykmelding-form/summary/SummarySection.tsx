@@ -1,9 +1,7 @@
 import { Alert, BodyShort, Button, Detail, FormSummary } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
-import { useQuery } from '@apollo/client'
 
-import { PersonByIdentDocument } from '@queries'
 import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 
 import { useFormStep } from '../steps/useFormStep'
@@ -173,11 +171,6 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: DiagnoseStep | null })
 }
 
 function PatientSummaryAnswers({ pasient }: { pasient: PasientStep | null }): ReactElement {
-    // TODO: This is only example usage of usage of person query, not part of current design
-    const personQuery = useQuery(PersonByIdentDocument, {
-        variables: { ident: pasient?.ident ?? null },
-    })
-
     if (pasient == null) {
         return (
             <FormSummary.Answer>
@@ -193,16 +186,10 @@ function PatientSummaryAnswers({ pasient }: { pasient: PasientStep | null }): Re
             <FormSummary.Answer>
                 <FormSummary.Label>Navn</FormSummary.Label>
                 <FormSummary.Value>{pasient.navn}</FormSummary.Value>
-                {personQuery.data?.person?.navn && (
-                    <FormSummary.Value>({personQuery.data.person.navn} i folkeregisteret)</FormSummary.Value>
-                )}
             </FormSummary.Answer>
             <FormSummary.Answer>
                 <FormSummary.Label>Fødselsnummer</FormSummary.Label>
                 <FormSummary.Value>{pasient.ident}</FormSummary.Value>
-                {personQuery.data?.person?.ident && (
-                    <FormSummary.Value>({personQuery.data.person.ident} i folkeregisteret)</FormSummary.Value>
-                )}
             </FormSummary.Answer>
         </>
     )
