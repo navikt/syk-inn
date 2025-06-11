@@ -46,10 +46,23 @@ export async function GET(
         return new Response('Internal server error', { status: 500 })
     }
 
-    return proxyRouteHandler(request, {
-        hostname: api.host,
+    const proxyOptions = api.host.includes('localhost')
+        ? {
+              hostname: api.host.split(':')[0],
+              port: api.host.split(':')[1],
+          }
+        : {
+              hostname: api.host,
+          }
+
+    const response = await proxyRouteHandler(request, {
+        ...proxyOptions,
         path: `/api/sykmelding/${(await params).sykmeldingId}/pdf`,
         bearerToken: api.authHeader,
         https: false,
     })
+
+    response.headers.set('X-Frame-Options', 'SAMEORIGIN')
+
+    return response
 }

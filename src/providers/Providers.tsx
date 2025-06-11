@@ -23,7 +23,7 @@ function Providers({ children, toggles, mode }: PropsWithChildren<{ toggles: Tog
                     <ModeProvider mode={mode}>
                         <NuqsAdapter>
                             {children}
-                            <Toaster />
+                            <Toaster position="bottom-center" />
                         </NuqsAdapter>
                     </ModeProvider>
                 </ToggleProvider>

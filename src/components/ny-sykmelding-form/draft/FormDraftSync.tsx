@@ -33,7 +33,7 @@ function FormDraftSync(): null {
         onCompleted: () => {
             currentMutationPromise.current = null
 
-            toast('Lagret utkast')
+            toast('Automatisk lagret utkast')
         },
     })
 
