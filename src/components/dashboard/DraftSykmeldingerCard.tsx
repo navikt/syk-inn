@@ -2,13 +2,14 @@ import React, { ReactElement, useState } from 'react'
 import { Alert, BodyShort, Button, Heading, Skeleton, Table } from '@navikt/ds-react'
 import { useMutation, useQuery } from '@apollo/client'
 import { TrashIcon } from '@navikt/aksel-icons'
-import { differenceInSeconds, formatDistanceToNow } from 'date-fns'
+import { differenceInSeconds, formatDistanceToNow, isValid, parseISO } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
 import { cn } from '@utils/tw'
 import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
 import AssableNextLink from '@components/misc/AssableNextLink'
 import useInterval from '@utils/hooks/useInterval'
+import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 
 import { safeParseDraft } from '../../data-layer/draft/draft-schema'
 
@@ -94,7 +95,9 @@ function DraftList(): ReactElement {
 
                         return (
                             <Table.Row key={draft.draftId}>
-                                <Table.DataCell>TODO: Vis dato fra draft</Table.DataCell>
+                                <Table.DataCell>
+                                    <PeriodText perioder={values?.perioder} />
+                                </Table.DataCell>
                                 <Table.DataCell>
                                     {values?.hoveddiagnose != null
                                         ? `${values.hoveddiagnose.code} - ${values.hoveddiagnose.text}`
@@ -164,6 +167,44 @@ function AutoUpdatingDistance({ time }: { time: string }): ReactElement {
     return (
         <React.Fragment key={rerernderino}>{formatDistanceToNow(time, { locale: nb, addSuffix: true })}</React.Fragment>
     )
+}
+
+function PeriodText({
+    perioder,
+}: {
+    perioder: { fom: string | null; tom: string | null }[] | null | undefined
+}): ReactElement {
+    if (!perioder || perioder.length === 0) {
+        return <span>Ingen periode</span>
+    }
+
+    const firstPeriodFom = perioder[0].fom
+    const lastPeriodTom = perioder[perioder.length - 1].tom
+    const fomDate = firstPeriodFom ? parseISO(firstPeriodFom) : null
+    const tomDate = lastPeriodTom ? parseISO(lastPeriodTom) : null
+
+    // We have no periods, or both are invalid dates
+    if ((!fomDate && !tomDate) || (!isValid(fomDate) && !isValid(tomDate))) {
+        return <span>Ingen periode</span>
+    }
+
+    // We have both periods
+    if (fomDate && tomDate && isValid(fomDate) && isValid(tomDate)) {
+        return <span>{toReadableDatePeriod(fomDate, tomDate)}</span>
+    }
+
+    // Only fom
+    if (fomDate && isValid(fomDate)) {
+        return <span>Fra {toReadableDate(fomDate)}</span>
+    }
+
+    // Only tom
+    if (tomDate && isValid(tomDate)) {
+        return <span>Til {toReadableDate(tomDate)}</span>
+    }
+
+    // Can't happen (probably)
+    return <span>Ingen periode</span>
 }
 
 export default DraftSykmeldingerCard
