@@ -10,9 +10,11 @@ type Props = {
 function PdfDebugView({ sykmeldingId }: Props): ReactElement {
     return (
         <div className="w-1/2 pb-16">
-            <Heading size="small">PDF visning for sykmelding</Heading>
-            <Detail>Denne visningen er kun for demo, og skal fjernes.</Detail>
-            <BodyShort>Dette er dokumentet som vil bli lastet opp til WebMed</BodyShort>
+            <Heading size="small">Forhåndsvisning av generert PDF</Heading>
+            <Detail>Dette er en midlertidig utviklingsfeature som skal fjernes.</Detail>
+            <BodyShort>
+                For å se hvordan dokumentet ser ut i WebMed, gå på Pasientoversikten, og se på det øverste dokumentet.
+            </BodyShort>
             <object
                 data={pathWithBasePath(`/fhir/pdf/${sykmeldingId}`)}
                 type="application/pdf"
