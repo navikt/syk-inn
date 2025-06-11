@@ -87,6 +87,9 @@ const nySykmeldingMultistep = createSlice({
             state.meldinger = action.payload.meldinger
             state.andreSporsmal = action.payload.andreSporsmal
         },
+        reset() {
+            return initialState
+        },
     },
 })
 

@@ -11,14 +11,21 @@ import { useFormContext } from '@components/ny-sykmelding-form/form'
 import { useSaveDraft } from '@components/ny-sykmelding-form/draft/useSaveDraft'
 
 import { useMode } from '../../../providers/ModeProvider'
+import { useAppDispatch } from '../../../providers/redux/hooks'
+import { nySykmeldingMultistepActions } from '../../../providers/redux/reducers/ny-sykmelding-multistep'
 
 export function LagreDraftButton(): ReactElement {
     const draftId = useDraftId()
     const { getValues } = useFormContext()
     const [mutation, draftResult] = useSaveDraft({
         returnToDash: true,
-        onCompleted: () => toast('Lagret utkast'),
+        onCompleted: () => {
+            toast('Lagret utkast')
+
+            dispatch(nySykmeldingMultistepActions.reset())
+        },
     })
+    const dispatch = useAppDispatch()
 
     return (
         <Button
@@ -26,10 +33,10 @@ export function LagreDraftButton(): ReactElement {
             variant="secondary"
             icon={<FloppydiskIcon aria-hidden />}
             iconPosition="right"
-            onClick={() => {
+            onClick={async () => {
                 const values = getValues()
 
-                mutation(draftId, values)
+                await mutation(draftId, values)
             }}
             loading={draftResult.loading}
         >
@@ -42,11 +49,14 @@ function ForkastDraftButton(): ReactElement {
     const mode = useMode()
     const draftId = useDraftId()
     const router = useRouter()
+    const dispatch = useAppDispatch()
 
     const [mutation, deleteResult] = useMutation(DeleteDraftDocument, {
         variables: { draftId },
         onCompleted: () => {
             toast('Slettet utkast')
+
+            dispatch(nySykmeldingMultistepActions.reset())
 
             const redirectPath = mode === 'FHIR' ? '/fhir' : '/ny'
             router.replace(redirectPath)
