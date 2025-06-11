@@ -67,7 +67,7 @@ export async function fetchInternalAPI<
     const response = await fetch(`http://${apiConfig.host}${path}`, {
         method,
         headers: {
-            Authorization: apiConfig.authHeader,
+            Authorization: `Bearer ${apiConfig.token}`,
             ...headers,
         },
         body,
@@ -117,9 +117,9 @@ export async function fetchInternalAPI<
 
 export async function getApi(
     api: ValidAPI,
-): Promise<{ host: string; authHeader: string } | { errorType: 'TOKEN_EXCHANGE_FAILED' }> {
+): Promise<{ host: string; token: string } | { errorType: 'TOKEN_EXCHANGE_FAILED' }> {
     if (getServerEnv().useLocalSykInnApi) {
-        return { host: 'localhost:8080', authHeader: 'foo-bar-baz' }
+        return { host: 'localhost:8080', token: 'foo-bar-baz' }
     }
 
     const apiConfig = internalApis[api]
@@ -136,7 +136,7 @@ export async function getApi(
 
     return {
         host: api,
-        authHeader: `Bearer ${tokenResult.token}`,
+        token: tokenResult.token,
     }
 }
 

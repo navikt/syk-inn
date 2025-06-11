@@ -58,7 +58,7 @@ export async function GET(
     const response = await proxyRouteHandler(request, {
         ...proxyOptions,
         path: `/api/sykmelding/${(await params).sykmeldingId}/pdf`,
-        bearerToken: api.authHeader,
+        bearerToken: api.token,
         https: false,
     })
 
