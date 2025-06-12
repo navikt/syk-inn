@@ -9,7 +9,7 @@ import DemoWarning from '@components/demo-warning'
 import { getToggles } from '@toggles/unleash'
 import { getHelseIdUserInfo } from '@helseid/helseid-userinfo'
 import HelseIdHeader from '@helseid/components/HelseIdHeader'
-import LoggedOutWarning from '@components/logged-out-warning/LoggedOutWarning'
+import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../../providers/Providers'
@@ -22,7 +22,8 @@ export const metadata: Metadata = {
 }
 
 export default async function StandaloneLayout({ children }: PropsWithChildren): Promise<ReactElement> {
-    const [behandler, toggles] = await Promise.all([getHelseIdUserInfo(), getToggles()])
+    const behandler = await getHelseIdUserInfo()
+    const toggles = await getToggles(behandler?.hpr_number ?? 'unknown-hpr-number')
 
     return (
         <html lang="nb" className="bg-bg-subtle">

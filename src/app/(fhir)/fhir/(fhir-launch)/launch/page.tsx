@@ -5,7 +5,6 @@ import { redirect, RedirectType, unauthorized } from 'next/navigation'
 
 import { getSmartClient } from '@fhir/smart/smart-client'
 import { isKnownFhirServer } from '@fhir/issuers/issuers'
-import { getFlag, getToggles } from '@toggles/unleash'
 
 import { InvalidIssuer, MissingLaunchParams } from '../launch-errors'
 
@@ -21,12 +20,6 @@ const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR] ' })
  * We initialize a session and generate a authorization_url that we redirect the user to.
  */
 async function LaunchPage({ searchParams }: Props): Promise<ReactElement> {
-    const debugWait = getFlag('SYK_INN_DEBUG_WAIT_BEFORE_LAUNCH', await getToggles())
-    if (debugWait.enabled) {
-        logger.warn('Debug wait enabled, waiting 10 seconds before launching')
-        await new Promise((resolve) => setTimeout(resolve, 10000))
-    }
-
     const cookieStore = await cookies()
     const sessionId = cookieStore.get('syk-inn-session-id')?.value
 

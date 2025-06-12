@@ -8,6 +8,7 @@ import { FhirDocumentReferenceBase, FhirPractitioner } from '@navikt/fhir-zod'
 import { toReadableDatePeriod } from '@utils/date'
 import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
 import { spanAsync } from '@otel/otel'
+import { getReadyClient } from '@fhir/smart/smart-client'
 
 /**
  * Uses the FHIR client to fetch the Practitioner resource for the current user.
@@ -30,6 +31,24 @@ export async function getPractitioner(client: ReadyClient): Promise<FhirPractiti
 
         return practitioner
     })
+}
+
+/**
+ * A throwy, quick way to get the HPR number from the Practitioner resource. Assumes user is logged in.
+ */
+export async function getHprFromPractitioner(client?: ReadyClient): Promise<string> {
+    const readyClient = client ?? (await getReadyClient())
+    if ('error' in readyClient) {
+        throw new Error(`Unable to get ready client, reason: ${readyClient.error}`)
+    }
+
+    const practitioner = await getPractitioner(readyClient)
+    const hpr = getHpr(practitioner.identifier)
+    if (hpr == null) {
+        throw new Error('Unable to parse HPR from practitioner identifier')
+    }
+
+    return hpr
 }
 
 /**

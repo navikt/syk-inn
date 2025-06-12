@@ -17,9 +17,9 @@ const off: Omit<IToggle, 'name'> = {
 }
 
 const devToggles: Record<ExpectedToggles, IToggle> = {
-    SYK_INN_DEBUG_WAIT_BEFORE_LAUNCH: {
-        name: 'SYK_INN_DEBUG_WAIT_BEFORE_LAUNCH',
-        ...off,
+    PILOT_USER: {
+        name: 'PILOT_USER',
+        ...on,
     },
 }
 

@@ -17,7 +17,7 @@ function DevTools(): ReactElement {
     return (
         <>
             <div
-                className={cn('fixed bottom-2 right-2 flex flex-col gap-2 items-end', {
+                className={cn('fixed bottom-2 right-2 flex flex-col gap-2 items-end z-[100000]', {
                     'right-[calc(500px+0.5rem)]': internalOpen,
                 })}
             >

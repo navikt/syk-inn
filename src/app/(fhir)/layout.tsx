@@ -2,11 +2,14 @@ import '../globals.css'
 
 import React, { PropsWithChildren, ReactElement } from 'react'
 import type { Metadata } from 'next'
+import { logger } from '@navikt/next-logger'
 
 import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
-import { getToggles } from '@toggles/unleash'
-import LoggedOutWarning from '@components/logged-out-warning/LoggedOutWarning'
+import { getFlag, getToggles } from '@toggles/unleash'
+import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
+import { getHprFromPractitioner } from '@fhir/fhir-service'
+import { spanAsync } from '@otel/otel'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../../providers/Providers'
@@ -17,7 +20,14 @@ export const metadata: Metadata = {
 }
 
 export default async function FhirLayout({ children }: PropsWithChildren): Promise<ReactElement> {
-    const toggles = await getToggles()
+    const [toggles, hpr] = await spanAsync('FhirLayout toggles', async () => {
+        const hpr = await getHprFromPractitioner()
+        return [await getToggles(hpr), hpr]
+    })
+
+    if (!getFlag('PILOT_USER', toggles).enabled) {
+        logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
+    }
 
     return (
         <html lang="nb" className="bg-bg-subtle">

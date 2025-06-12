@@ -7,8 +7,9 @@ import { connection } from 'next/server'
 
 import { bundledEnv, isE2E, isLocalOrDemo } from '@utils/env'
 import { raise } from '@utils/ts'
+import { spanAsync } from '@otel/otel'
 
-import { localDevelopmentToggles } from './env'
+import { localDevelopmentToggles } from './dev'
 import { EXPECTED_TOGGLES, ExpectedToggles, Toggle, Toggles } from './toggles'
 import { UNLEASH_COOKIE_NAME } from './cookie'
 
@@ -16,7 +17,7 @@ const logger = pinoLogger.child({}, { msgPrefix: '[UNLEASH-TOGGLES] ' })
 
 const unleashEnvironment = bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'prod-gcp' ? 'production' : 'development'
 
-export async function getToggles(): Promise<Toggles> {
+export async function getToggles(userId: string): Promise<Toggles> {
     await connection()
 
     if ((EXPECTED_TOGGLES as readonly string[]).length === 0) {
@@ -42,6 +43,7 @@ export async function getToggles(): Promise<Toggles> {
         const evaluatedFlags = evaluateFlags(definitions, {
             sessionId,
             environment: unleashEnvironment,
+            userId,
         })
         return evaluatedFlags.toggles
     } catch (e) {
@@ -82,10 +84,12 @@ async function getAndValidateDefinitions(): Promise<Awaited<ReturnType<typeof ge
         }
     }
 
-    const definitions = await getDefinitions({
-        appName: 'syk-inn',
-        url: `${process.env.UNLEASH_SERVER_API_URL ?? raise('Missing UNLEASH_SERVER_API_URL')}/api/client/features`,
-    })
+    const definitions = await spanAsync('unleash: fetch toggles', () =>
+        getDefinitions({
+            appName: 'syk-inn',
+            url: `${process.env.UNLEASH_SERVER_API_URL ?? raise('Missing UNLEASH_SERVER_API_URL')}/api/client/features`,
+        }),
+    )
     if ('message' in definitions) {
         throw new Error(`Toggle was 200 OK, but server said: ${definitions.message}`)
     }

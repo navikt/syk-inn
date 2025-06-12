@@ -18,6 +18,7 @@ import { spanAsync } from '@otel/otel'
 import { resolverInputToSykInnApiPayload } from '@services/syk-inn-api/syk-inn-api-utils'
 import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from '@fhir/mappers/organization'
 import { OpprettSykmeldingMeta } from '@services/syk-inn-api/schema/opprett'
+import { getFlag, getToggles } from '@toggles/unleash'
 
 import { getDiagnoseText, searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
@@ -278,6 +279,13 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
+            const toggles = await getToggles(hpr)
+            const isPilotUser = getFlag('PILOT_USER', toggles)
+            if (!isPilotUser.enabled) {
+                logger.error(`Non-pilot user tried to create a sykmelding, is modal not modalling? HPR: ${hpr}`)
+                throw new GraphQLError('API_ERROR')
+            }
+
             const meta: OpprettSykmeldingMeta = {
                 sykmelderHpr: hpr,
                 pasientIdent: pasientIdent,
@@ -285,7 +293,6 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 legekontorTlf: legekontorTlf,
             }
             const payload = resolverInputToSykInnApiPayload(values, meta)
-
             const result = await sykInnApiService.opprettSykmelding(payload)
 
             if ('errorType' in result) {

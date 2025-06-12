@@ -26,12 +26,12 @@ export function getSmartClient(): SmartClient {
     return new SmartClient(getSmartStorage(), smartClientConfig)
 }
 
-export async function getReadyClient({ validate }: { validate: true }): Promise<ReadyClient | SmartClientReadyErrors> {
+export async function getReadyClient(opts?: { validate: true }): Promise<ReadyClient | SmartClientReadyErrors> {
     return spanAsync('smart client init', async () => {
         const actualSessionId = await getSessionId()
         const readyClient = await getSmartClient().ready(actualSessionId)
 
-        if (validate) {
+        if (opts?.validate) {
             const validToken = await readyClient.validate()
             if (!validToken) {
                 return { error: 'INVALID_TOKEN' }
