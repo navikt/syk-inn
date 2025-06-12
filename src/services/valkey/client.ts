@@ -13,6 +13,7 @@ function initializeValkey(): Valkey {
         ...R.omit(valkeyConfig, ['runtimeEnv']),
         connectTimeout: 5000,
         keepAlive: 5000,
+        enableReadyCheck: false,
     })
 
     client.on('error', (err: Error) => logger.error(err))
