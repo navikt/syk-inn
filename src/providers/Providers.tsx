@@ -6,27 +6,23 @@ import { ApolloNextAppProvider } from '@apollo/client-integration-nextjs'
 import { Provider as ReduxProvider } from 'react-redux'
 import { Toaster } from 'sonner'
 
-import { Toggles } from '@toggles/toggles'
-import { ToggleProvider } from '@toggles/context'
 import { makeApolloClient } from '@graphql/apollo/apollo-client'
 
 import { ModeProvider, Modes } from './ModeProvider'
 import useStoreRef from './redux/useStoreRef'
 
-function Providers({ children, toggles, mode }: PropsWithChildren<{ toggles: Toggles; mode: Modes }>): ReactElement {
+function Providers({ children, mode }: PropsWithChildren<{ mode: Modes }>): ReactElement {
     const store = useStoreRef()
 
     return (
         <ApolloNextAppProvider makeClient={makeApolloClient(store)}>
             <ReduxProvider store={store}>
-                <ToggleProvider toggles={toggles}>
-                    <ModeProvider mode={mode}>
-                        <NuqsAdapter>
-                            {children}
-                            <Toaster position="bottom-center" />
-                        </NuqsAdapter>
-                    </ModeProvider>
-                </ToggleProvider>
+                <ModeProvider mode={mode}>
+                    <NuqsAdapter>
+                        {children}
+                        <Toaster position="bottom-center" />
+                    </NuqsAdapter>
+                </ModeProvider>
             </ReduxProvider>
         </ApolloNextAppProvider>
     )

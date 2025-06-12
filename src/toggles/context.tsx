@@ -1,3 +1,5 @@
+'use client'
+
 import { ReactElement, createContext, PropsWithChildren, useContext } from 'react'
 
 import { raise } from '@utils/ts'
