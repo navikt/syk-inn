@@ -29,7 +29,7 @@ function PagaendeSykmeldingerCard({ className }: { className?: string }): ReactE
                 )}
                 )
             </Heading>
-            {!loading && (
+            {!loading && !error && (
                 <>
                     {currentSykmeldinger.length > 0 ? (
                         <TidligereSykmeldingerTable sykmeldinger={currentSykmeldinger} />

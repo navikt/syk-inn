@@ -28,7 +28,7 @@ function PagaendeSykmeldingerCard(): ReactElement {
                 )}
                 )
             </Heading>
-            {!loading && (
+            {!loading && !error && (
                 <>
                     {currentSykmeldinger.length > 0 ? (
                         <CurrentSykmeldingerTable sykmeldinger={currentSykmeldinger} />
