@@ -79,16 +79,16 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }
             <div className="flex flex-col gap-3">
                 <FormSection title="Den sykmeldte" icon={<PersonIcon />}>
                     <Detail>Fødselsnummer</Detail>
-                    <BodyShort>{sykmelding.pasient.ident}</BodyShort>
+                    <BodyShort>{sykmelding.meta.pasientIdent}</BodyShort>
                 </FormSection>
                 <FormSection title="Diagnose" icon={<HandBandageIcon />}>
                     <Label>Hoveddiagnose</Label>
-                    {sykmelding.diagnose.hoved != null ? (
+                    {sykmelding.values.hoveddiagnose != null ? (
                         <>
                             <BodyShort>
-                                {sykmelding.diagnose.hoved.code} - {sykmelding.diagnose.hoved.text}
+                                {sykmelding.values.hoveddiagnose.code} - {sykmelding.values.hoveddiagnose.text}
                             </BodyShort>
-                            <Detail>{sykmelding.diagnose.hoved.system}</Detail>
+                            <Detail>{sykmelding.values.hoveddiagnose.system}</Detail>
                         </>
                     ) : (
                         <BodyShort>Ingen hoveddiagnose er satt</BodyShort>
@@ -97,7 +97,7 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }
                 <FormSection title="Aktivitet" icon={<VitalsIcon />}>
                     <Detail>Sykmeldingsperiode</Detail>
                     <BodyShort>
-                        {toReadableDatePeriod(sykmelding.aktivitet[0].fom, sykmelding.aktivitet[0].tom)}
+                        {toReadableDatePeriod(sykmelding.values.aktivitet[0].fom, sykmelding.values.aktivitet[0].tom)}
                     </BodyShort>
                 </FormSection>
             </div>

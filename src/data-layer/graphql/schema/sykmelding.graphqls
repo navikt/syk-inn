@@ -1,14 +1,24 @@
 type Sykmelding {
     sykmeldingId: String!
-    aktivitet: [Aktivitet!]!
-    pasient: Pasient!
-    diagnose: SykmeldingDiagnoser!
+    meta: SykmeldingMeta!
+    values: SykmeldingValues!
+    """
+    Status on the document in the EHR system.
+    """
     documentStatus: DocumentStatus!
 }
 
-type SykmeldingDiagnoser {
-    hoved: Diagnose
-    bi: [Diagnose!]
+type SykmeldingMeta {
+    mottatt: DateTime!
+    pasientIdent: String!
+    sykmelderHpr: String!
+    legekontorOrgnr: String!
+}
+
+type SykmeldingValues {
+    hoveddiagnose: Diagnose
+    bidiagnoser: [Diagnose!]
+    aktivitet: [Aktivitet!]!
 }
 
 enum DocumentStatus {

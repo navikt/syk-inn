@@ -20,7 +20,7 @@ import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir }
 import { OpprettSykmeldingMeta } from '@services/syk-inn-api/schema/opprett'
 import { getFlag, getToggles } from '@toggles/unleash'
 
-import { getDiagnoseText, searchDiagnose } from '../common/diagnose-search'
+import { searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
 
@@ -84,23 +84,11 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             return {
                 sykmeldingId: sykmelding.sykmeldingId,
-                aktivitet: sykmelding.values.aktivitet,
-                diagnose: {
-                    hoved: sykmelding.values.hoveddiagnose
-                        ? {
-                              system: sykmelding.values.hoveddiagnose.system,
-                              code: sykmelding.values.hoveddiagnose.code,
-                              text: getDiagnoseText(
-                                  sykmelding.values.hoveddiagnose.system,
-                                  sykmelding.values.hoveddiagnose.code,
-                              ),
-                          }
-                        : null,
-                    bi: [],
-                },
-                pasient: {
-                    navn: 'TODO',
-                    ident: sykmelding.meta.pasientIdent,
+                meta: sykmelding.meta,
+                values: {
+                    aktivitet: sykmelding.values.aktivitet,
+                    hoveddiagnose: sykmelding.values.hoveddiagnose,
+                    bidiagnoser: sykmelding.values.bidiagnoser,
                 },
                 documentStatus: 'resourceType' in existingDocumentReference ? 'COMPLETE' : 'PENDING',
             } satisfies Sykmelding

@@ -12,19 +12,21 @@ mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!) 
 
 fragment Sykmelding on Sykmelding {
     sykmeldingId
-    pasient {
-        navn
-        ident
+    meta {
+        pasientIdent
+        sykmelderHpr
+        legekontorOrgnr
     }
-    diagnose {
-        hoved {
-            code
-            system
-            text
+    values {
+        hoveddiagnose {
+            ...Diagnose
         }
-    }
-    aktivitet {
-        ...Aktivitet
+        bidiagnoser {
+            ...Diagnose
+        }
+        aktivitet {
+            ...Aktivitet
+        }
     }
     documentStatus
 }

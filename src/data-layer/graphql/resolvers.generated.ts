@@ -250,17 +250,26 @@ export type ReisetilskuddInput = {
 
 export type Sykmelding = {
     __typename?: 'Sykmelding'
-    aktivitet: Array<Aktivitet>
-    diagnose: SykmeldingDiagnoser
+    /** Status on the document in the EHR system. */
     documentStatus: DocumentStatus
-    pasient: Pasient
+    meta: SykmeldingMeta
     sykmeldingId: Scalars['String']['output']
+    values: SykmeldingValues
 }
 
-export type SykmeldingDiagnoser = {
-    __typename?: 'SykmeldingDiagnoser'
-    bi?: Maybe<Array<Diagnose>>
-    hoved?: Maybe<Diagnose>
+export type SykmeldingMeta = {
+    __typename?: 'SykmeldingMeta'
+    legekontorOrgnr: Scalars['String']['output']
+    mottatt: Scalars['DateTime']['output']
+    pasientIdent: Scalars['String']['output']
+    sykmelderHpr: Scalars['String']['output']
+}
+
+export type SykmeldingValues = {
+    __typename?: 'SykmeldingValues'
+    aktivitet: Array<Aktivitet>
+    bidiagnoser?: Maybe<Array<Diagnose>>
+    hoveddiagnose?: Maybe<Diagnose>
 }
 
 export type SynchronizationStatus = {
@@ -390,8 +399,11 @@ export type ResolversTypes = {
     Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>
     ReisetilskuddInput: ReisetilskuddInput
     String: ResolverTypeWrapper<Scalars['String']['output']>
-    Sykmelding: ResolverTypeWrapper<Omit<Sykmelding, 'aktivitet'> & { aktivitet: Array<ResolversTypes['Aktivitet']> }>
-    SykmeldingDiagnoser: ResolverTypeWrapper<SykmeldingDiagnoser>
+    Sykmelding: ResolverTypeWrapper<Omit<Sykmelding, 'values'> & { values: ResolversTypes['SykmeldingValues'] }>
+    SykmeldingMeta: ResolverTypeWrapper<SykmeldingMeta>
+    SykmeldingValues: ResolverTypeWrapper<
+        Omit<SykmeldingValues, 'aktivitet'> & { aktivitet: Array<ResolversTypes['Aktivitet']> }
+    >
     SynchronizationStatus: ResolverTypeWrapper<SynchronizationStatus>
 }
 
@@ -432,8 +444,9 @@ export type ResolversParentTypes = {
     Reisetilskudd: Reisetilskudd
     ReisetilskuddInput: ReisetilskuddInput
     String: Scalars['String']['output']
-    Sykmelding: Omit<Sykmelding, 'aktivitet'> & { aktivitet: Array<ResolversParentTypes['Aktivitet']> }
-    SykmeldingDiagnoser: SykmeldingDiagnoser
+    Sykmelding: Omit<Sykmelding, 'values'> & { values: ResolversParentTypes['SykmeldingValues'] }
+    SykmeldingMeta: SykmeldingMeta
+    SykmeldingValues: Omit<SykmeldingValues, 'aktivitet'> & { aktivitet: Array<ResolversParentTypes['Aktivitet']> }
     SynchronizationStatus: SynchronizationStatus
 }
 
@@ -661,20 +674,31 @@ export type SykmeldingResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Sykmelding'] = ResolversParentTypes['Sykmelding'],
 > = {
-    aktivitet?: Resolver<Array<ResolversTypes['Aktivitet']>, ParentType, ContextType>
-    diagnose?: Resolver<ResolversTypes['SykmeldingDiagnoser'], ParentType, ContextType>
     documentStatus?: Resolver<ResolversTypes['DocumentStatus'], ParentType, ContextType>
-    pasient?: Resolver<ResolversTypes['Pasient'], ParentType, ContextType>
+    meta?: Resolver<ResolversTypes['SykmeldingMeta'], ParentType, ContextType>
     sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    values?: Resolver<ResolversTypes['SykmeldingValues'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
-export type SykmeldingDiagnoserResolvers<
+export type SykmeldingMetaResolvers<
     ContextType = any,
-    ParentType extends ResolversParentTypes['SykmeldingDiagnoser'] = ResolversParentTypes['SykmeldingDiagnoser'],
+    ParentType extends ResolversParentTypes['SykmeldingMeta'] = ResolversParentTypes['SykmeldingMeta'],
 > = {
-    bi?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
-    hoved?: Resolver<Maybe<ResolversTypes['Diagnose']>, ParentType, ContextType>
+    legekontorOrgnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    mottatt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>
+    pasientIdent?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    sykmelderHpr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type SykmeldingValuesResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['SykmeldingValues'] = ResolversParentTypes['SykmeldingValues'],
+> = {
+    aktivitet?: Resolver<Array<ResolversTypes['Aktivitet']>, ParentType, ContextType>
+    bidiagnoser?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
+    hoveddiagnose?: Resolver<Maybe<ResolversTypes['Diagnose']>, ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -709,6 +733,7 @@ export type Resolvers<ContextType = any> = {
     Query?: QueryResolvers<ContextType>
     Reisetilskudd?: ReisetilskuddResolvers<ContextType>
     Sykmelding?: SykmeldingResolvers<ContextType>
-    SykmeldingDiagnoser?: SykmeldingDiagnoserResolvers<ContextType>
+    SykmeldingMeta?: SykmeldingMetaResolvers<ContextType>
+    SykmeldingValues?: SykmeldingValuesResolvers<ContextType>
     SynchronizationStatus?: SynchronizationStatusResolvers<ContextType>
 }
