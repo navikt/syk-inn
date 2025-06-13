@@ -105,7 +105,11 @@ test('filling out the form, saving a draft, and returning to the form, should ke
     // Make sure the cache/store is clean
     await page.reload()
 
-    await page.getByRole('button', { name: 'Åpne' }).first().click()
+    await page
+        .getByRole('region', { name: 'Utkast sykmeldinger (ikke sendt til Nav)' })
+        .getByRole('button', { name: 'Åpne' })
+        .first()
+        .click()
 
     // Warning: Highly coupled form assertions ahead
 
