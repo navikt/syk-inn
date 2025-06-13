@@ -23,15 +23,22 @@ function PagaendeSykmeldingerCard(): ReactElement {
         <DashboardCard
             id="pagaende-sykmeldinger-card"
             title={
-                <span>
-                    Pågående sykmeldinger (
-                    {loading ? (
-                        <Skeleton className="inline-block" width="16px" />
-                    ) : (
-                        <span>{currentSykmeldinger.length}</span>
-                    )}
-                    )
-                </span>
+                loading ? (
+                    <span>
+                        Pågående sykmeldinger (
+                        <Skeleton className="inline-block" width="16px" />)
+                    </span>
+                ) : (
+                    <span className="inline-flex gap-3 items-center">
+                        <span>Pågående sykmeldinger ({currentSykmeldinger.length})</span>
+                        {currentSykmeldinger.length > 0 && (
+                            <span className="relative flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            </span>
+                        )}
+                    </span>
+                )
             }
         >
             {!loading && !error && (
