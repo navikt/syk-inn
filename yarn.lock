@@ -6455,11 +6455,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^12.17.0":
-  version: 12.17.0
-  resolution: "framer-motion@npm:12.17.0"
+"framer-motion@npm:^12.17.3":
+  version: 12.17.3
+  resolution: "framer-motion@npm:12.17.3"
   dependencies:
-    motion-dom: "npm:^12.17.0"
+    motion-dom: "npm:^12.17.3"
     motion-utils: "npm:^12.12.1"
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -6473,7 +6473,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/3262ab125650d71cd13eb9f4838da70550ea383d68a2fbd2664b05bac88b7420fe7db25911fbd30cbc237327d98a4567df34e675c8261dde559a9375e580103c
+  checksum: 10c0/2d8ae235f5b61005d47a7f004f7c04d7484686c07023c06ed546789fdaab5c2e24caac5f23a967263b6a51cbd72dcf41c84ad8b0671472c12f5373055cd6eb46
   languageName: node
   linkType: hard
 
@@ -7132,9 +7132,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iovalkey@npm:^0.3.2":
-  version: 0.3.2
-  resolution: "iovalkey@npm:0.3.2"
+"iovalkey@npm:^0.3.3":
+  version: 0.3.3
+  resolution: "iovalkey@npm:0.3.3"
   dependencies:
     "@iovalkey/commands": "npm:^0.1.0"
     cluster-key-slot: "npm:^1.1.0"
@@ -7145,7 +7145,7 @@ __metadata:
     redis-errors: "npm:^1.2.0"
     redis-parser: "npm:^3.0.0"
     standard-as-callback: "npm:^2.1.0"
-  checksum: 10c0/28de64a08bba7cf5af5b15bb0840f3a880b3675f8385adc96a3836e25fd0adb25e4bc1883d422f1fce62245d4d429b88850b9f73fbb35b0e5749ca039d369916
+  checksum: 10c0/0884103c9f569b598a3024edc8cae6fea3ece85559a3b1eeb84d8fdb52c4b2ed097eb4e082b8a66b3fae65b38f0e305026979c95e6990ae9a2e07c9b3df5da8b
   languageName: node
   linkType: hard
 
@@ -8453,12 +8453,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion-dom@npm:^12.17.0":
-  version: 12.17.0
-  resolution: "motion-dom@npm:12.17.0"
+"motion-dom@npm:^12.17.3":
+  version: 12.17.3
+  resolution: "motion-dom@npm:12.17.3"
   dependencies:
     motion-utils: "npm:^12.12.1"
-  checksum: 10c0/1ec428e113f334193dcd52293c94bca21fcca97f3825521d1dafe41f6b999e8dda5013b48de2c09e2f32204f80d1d7281079ba3a142c71b8d6923a0ddb056513
+  checksum: 10c0/6892f070e07fdd4f6d97c347e479a1f706a6ad678f86818ce36d35a89dc79a0cc45804bd5758b95612893f48c8b6353f0cee2a25340b2cde789b8ad323aa592e
   languageName: node
   linkType: hard
 
@@ -8469,11 +8469,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion@npm:^12.17.0":
-  version: 12.17.0
-  resolution: "motion@npm:12.17.0"
+"motion@npm:^12.17.3":
+  version: 12.17.3
+  resolution: "motion@npm:12.17.3"
   dependencies:
-    framer-motion: "npm:^12.17.0"
+    framer-motion: "npm:^12.17.3"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
@@ -8486,7 +8486,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/ed897054fd0226f3c6494f6f0ae3d4f11c7cff9a05c36bab557cfe338886fa8854468eb35c5789ba414b7960e2820f982327936df4656b760b443b7a91b31edc
+  checksum: 10c0/6bc5e3b47ca12849989179ddb56524eec2bee281ba379e3f758c07dd59f83b60707541ae6a1e146dbef77f1179e23a7a568150cd685be40bd19fe4093018e747
   languageName: node
   linkType: hard
 
@@ -10946,10 +10946,10 @@ __metadata:
     fuse.js: "npm:^7.1.0"
     graphql: "npm:^16.11.0"
     husky: "npm:^9.1.7"
-    iovalkey: "npm:^0.3.2"
+    iovalkey: "npm:^0.3.3"
     jose: "npm:^6.0.11"
     lint-staged: "npm:^16.1.0"
-    motion: "npm:^12.17.0"
+    motion: "npm:^12.17.3"
     next: "npm:15.3.3"
     next-logger: "npm:^5.0.1"
     nextleton: "npm:^0.6.1"
