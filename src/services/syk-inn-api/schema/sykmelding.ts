@@ -76,6 +76,7 @@ export const SykInnApiSykmeldingSchema = z.object({
         pasientIdent: z.string(),
         sykmelderHpr: z.string(),
         legekontorOrgnr: z.string(),
+        mottatt: z.string(),
     }),
     values: z.object({
         hoveddiagnose: DiagnoseSchema.nullable(),
@@ -87,6 +88,6 @@ export const SykInnApiSykmeldingSchema = z.object({
         yrkesskade: YrkesskadeSchema.nullable(),
         arbeidsgiver: ArbeidsgiverSchema.nullable(),
         tilbakedatering: TilbakedateringSchema.nullable(),
-        regelResultat: RuleResultSchema,
     }),
+    utfall: RuleResultSchema,
 })

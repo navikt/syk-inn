@@ -7,6 +7,7 @@ export function createMockSykmelding(): SykInnApiSykmelding {
             pasientIdent: '12345678910',
             sykmelderHpr: '123456789',
             legekontorOrgnr: '999944614',
+            mottatt: '2024-02-15T12:00:00Z',
         },
         values: {
             aktivitet: [
@@ -31,10 +32,10 @@ export function createMockSykmelding(): SykInnApiSykmelding {
             yrkesskade: null,
             arbeidsgiver: null,
             tilbakedatering: null,
-            regelResultat: {
-                result: 'OK',
-                melding: null,
-            },
+        },
+        utfall: {
+            result: 'OK',
+            melding: null,
         },
     }
 }
