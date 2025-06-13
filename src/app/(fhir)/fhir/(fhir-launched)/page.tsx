@@ -9,6 +9,7 @@ import OpprettNySykmeldingCard from '@components/dashboard/OpprettNySykmeldingCa
 import PagaendeSykmeldingerCard from '@components/dashboard/PagaendeSykmeldingerCard'
 import { KonsultasjonDocument, PasientDocument } from '@queries'
 import DraftSykmeldingerCard from '@components/dashboard/DraftSykmeldingerCard'
+import TidligereSykmeldingerCard from '@components/dashboard/TidligereSykmeldingerCard'
 
 function DashboardPage(): ReactElement {
     const pasientQuery = useQuery(PasientDocument)
@@ -29,6 +30,7 @@ function DashboardPage(): ReactElement {
                 <div className="grid grid-cols-2 -mx-4 gap-3">
                     <OpprettNySykmeldingCard />
                     <PagaendeSykmeldingerCard />
+                    <TidligereSykmeldingerCard className="col-span-2" />
                     <DraftSykmeldingerCard className="col-span-2" />
                 </div>
             </PageBlock>
