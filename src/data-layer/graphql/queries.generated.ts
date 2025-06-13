@@ -217,6 +217,7 @@ export type Query = {
     pasient?: Maybe<Pasient>
     person?: Maybe<QueriedPerson>
     sykmelding?: Maybe<Sykmelding>
+    sykmeldinger?: Maybe<Array<Sykmelding>>
 }
 
 export type QueryDiagnoseArgs = {
@@ -249,7 +250,7 @@ export type ReisetilskuddInput = {
 export type Sykmelding = {
     __typename?: 'Sykmelding'
     /** Status on the document in the EHR system. */
-    documentStatus: DocumentStatus
+    documentStatus?: Maybe<DocumentStatus>
     meta: SykmeldingMeta
     sykmeldingId: Scalars['String']['output']
     values: SykmeldingValues
@@ -365,8 +366,14 @@ export type SykmeldingByIdQuery = {
     sykmelding?: {
         __typename?: 'Sykmelding'
         sykmeldingId: string
-        documentStatus: DocumentStatus
-        meta: { __typename?: 'SykmeldingMeta'; pasientIdent: string; sykmelderHpr: string; legekontorOrgnr: string }
+        documentStatus?: DocumentStatus | null
+        meta: {
+            __typename?: 'SykmeldingMeta'
+            pasientIdent: string
+            sykmelderHpr: string
+            legekontorOrgnr: string
+            mottatt: string
+        }
         values: {
             __typename?: 'SykmeldingValues'
             hoveddiagnose?: { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
@@ -394,6 +401,48 @@ export type SykmeldingByIdQuery = {
     } | null
 }
 
+export type AllSykmeldingerQueryVariables = Exact<{ [key: string]: never }>
+
+export type AllSykmeldingerQuery = {
+    __typename?: 'Query'
+    sykmeldinger?: Array<{
+        __typename?: 'Sykmelding'
+        sykmeldingId: string
+        documentStatus?: DocumentStatus | null
+        meta: {
+            __typename?: 'SykmeldingMeta'
+            pasientIdent: string
+            sykmelderHpr: string
+            legekontorOrgnr: string
+            mottatt: string
+        }
+        values: {
+            __typename?: 'SykmeldingValues'
+            hoveddiagnose?: { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
+            bidiagnoser?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+            aktivitet: Array<
+                | { __typename?: 'AktivitetIkkeMulig'; fom: string; tom: string; type: AktivitetType }
+                | {
+                      __typename?: 'Avventende'
+                      fom: string
+                      tom: string
+                      type: AktivitetType
+                      innspillTilArbeidsgiver: string
+                  }
+                | {
+                      __typename?: 'Behandlingsdager'
+                      fom: string
+                      tom: string
+                      type: AktivitetType
+                      antallBehandlingsdager: number
+                  }
+                | { __typename?: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                | { __typename?: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+            >
+        }
+    }> | null
+}
+
 export type OpprettSykmeldingMutationVariables = Exact<{
     draftId: Scalars['String']['input']
     values: OpprettSykmeldingInput
@@ -407,8 +456,14 @@ export type OpprettSykmeldingMutation = {
 export type SykmeldingFragment = {
     __typename?: 'Sykmelding'
     sykmeldingId: string
-    documentStatus: DocumentStatus
-    meta: { __typename?: 'SykmeldingMeta'; pasientIdent: string; sykmelderHpr: string; legekontorOrgnr: string }
+    documentStatus?: DocumentStatus | null
+    meta: {
+        __typename?: 'SykmeldingMeta'
+        pasientIdent: string
+        sykmelderHpr: string
+        legekontorOrgnr: string
+        mottatt: string
+    }
     values: {
         __typename?: 'SykmeldingValues'
         hoveddiagnose?: { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
@@ -618,6 +673,7 @@ export const SykmeldingFragmentDoc = {
                                 { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
                             ],
                         },
                     },
@@ -1217,6 +1273,7 @@ export const SykmeldingByIdDocument = {
                                 { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
                             ],
                         },
                     },
@@ -1265,6 +1322,176 @@ export const SykmeldingByIdDocument = {
         },
     ],
 } as unknown as DocumentNode<SykmeldingByIdQuery, SykmeldingByIdQueryVariables>
+export const AllSykmeldingerDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'AllSykmeldinger' },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'sykmeldinger' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Sykmelding' } }],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Diagnose' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Diagnose' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'system' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Aktivitet' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Aktivitet' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FomTom' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Avventende' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'innspillTilArbeidsgiver' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Behandlingsdager' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'antallBehandlingsdager' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Gradert' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Reisetilskudd' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Sykmelding' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Sykmelding' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'meta' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'values' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'hoveddiagnose' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'bidiagnoser' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'aktivitet' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Aktivitet' } },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<AllSykmeldingerQuery, AllSykmeldingerQueryVariables>
 export const OpprettSykmeldingDocument = {
     kind: 'Document',
     definitions: [

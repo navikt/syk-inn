@@ -4,6 +4,12 @@ query SykmeldingById($id: String!) {
     }
 }
 
+query AllSykmeldinger {
+    sykmeldinger {
+        ...Sykmelding
+    }
+}
+
 mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!) {
     opprettSykmelding(draftId: $draftId, values: $values) {
         sykmeldingId
@@ -16,6 +22,7 @@ fragment Sykmelding on Sykmelding {
         pasientIdent
         sykmelderHpr
         legekontorOrgnr
+        mottatt
     }
     values {
         hoveddiagnose {

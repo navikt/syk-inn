@@ -219,6 +219,7 @@ export type Query = {
     pasient?: Maybe<Pasient>
     person?: Maybe<QueriedPerson>
     sykmelding?: Maybe<Sykmelding>
+    sykmeldinger?: Maybe<Array<Sykmelding>>
 }
 
 export type QueryDiagnoseArgs = {
@@ -251,7 +252,7 @@ export type ReisetilskuddInput = {
 export type Sykmelding = {
     __typename?: 'Sykmelding'
     /** Status on the document in the EHR system. */
-    documentStatus: DocumentStatus
+    documentStatus?: Maybe<DocumentStatus>
     meta: SykmeldingMeta
     sykmeldingId: Scalars['String']['output']
     values: SykmeldingValues
@@ -658,6 +659,7 @@ export type QueryResolvers<
         ContextType,
         RequireFields<QuerySykmeldingArgs, 'id'>
     >
+    sykmeldinger?: Resolver<Maybe<Array<ResolversTypes['Sykmelding']>>, ParentType, ContextType>
 }
 
 export type ReisetilskuddResolvers<
@@ -674,7 +676,7 @@ export type SykmeldingResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Sykmelding'] = ResolversParentTypes['Sykmelding'],
 > = {
-    documentStatus?: Resolver<ResolversTypes['DocumentStatus'], ParentType, ContextType>
+    documentStatus?: Resolver<Maybe<ResolversTypes['DocumentStatus']>, ParentType, ContextType>
     meta?: Resolver<ResolversTypes['SykmeldingMeta'], ParentType, ContextType>
     sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     values?: Resolver<ResolversTypes['SykmeldingValues'], ParentType, ContextType>

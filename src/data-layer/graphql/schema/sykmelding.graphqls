@@ -5,7 +5,7 @@ type Sykmelding {
     """
     Status on the document in the EHR system.
     """
-    documentStatus: DocumentStatus!
+    documentStatus: DocumentStatus
 }
 
 type SykmeldingMeta {

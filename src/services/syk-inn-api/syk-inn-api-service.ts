@@ -1,4 +1,5 @@
 import { logger } from '@navikt/next-logger'
+import { z } from 'zod/v4'
 
 import { SykInnApiSykmelding, SykInnApiSykmeldingSchema } from '@services/syk-inn-api/schema/sykmelding'
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
@@ -54,6 +55,31 @@ export const sykInnApiService = {
                 HPR: hpr,
             },
             responseSchema: SykInnApiSykmeldingSchema,
+        })
+    },
+    getSykmeldinger: async (pasientIdent: string, hpr: string): Promise<SykInnApiSykmelding[] | ApiFetchErrors> => {
+        if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
+            logger.info('Running in local or demo environment, returning mocked sykmelding data')
+            return [
+                createMockSykmelding({
+                    sykmeldingId: 'e9369c48-3b8a-4c7f-9097-7c9394947a58',
+                }),
+                createMockSykmelding({
+                    sykmeldingId: 'df567aa4-f694-4857-8e1b-5d14406e9dd6',
+                }),
+            ]
+        }
+
+        return fetchInternalAPI({
+            api: 'syk-inn-api',
+            path: `/api/sykmelding`,
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Ident: pasientIdent,
+                HPR: hpr,
+            },
+            responseSchema: z.array(SykInnApiSykmeldingSchema),
         })
     },
     getSykmeldingPdf: async (sykmeldingId: string, hpr: string): Promise<ArrayBuffer | ApiFetchErrors> => {

@@ -80,7 +80,7 @@ export const SykInnApiSykmeldingSchema = z.object({
     }),
     values: z.object({
         hoveddiagnose: DiagnoseSchema.nullable(),
-        bidiagnoser: z.array(DiagnoseSchema),
+        bidiagnoser: z.array(DiagnoseSchema).nullable(),
         aktivitet: z.array(AktivitetSchema),
         svangerskapsrelatert: z.boolean(),
         pasientenSkalSkjermes: z.boolean(),

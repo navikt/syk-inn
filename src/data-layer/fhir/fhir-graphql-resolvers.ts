@@ -93,6 +93,40 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 documentStatus: 'resourceType' in existingDocumentReference ? 'COMPLETE' : 'PENDING',
             } satisfies Sykmelding
         },
+        sykmeldinger: async () => {
+            const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
+
+            const hpr = getHpr(practitioner.identifier)
+            if (hpr == null) {
+                logger.error('Missing HPR identifier in practitioner resource')
+                throw new GraphQLError('PARSING_ERROR')
+            }
+            const patientInContext = await client.request(`/Patient/${client.patient}`)
+            if ('error' in patientInContext) {
+                throw new GraphQLError('PARSING_ERROR')
+            }
+
+            const ident = getValidPatientIdent(patientInContext)
+            if (ident == null) {
+                logger.error('Missing valid FNR/DNR in patient resource')
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const sykmeldinger = await sykInnApiService.getSykmeldinger(ident, hpr)
+            if ('errorType' in sykmeldinger) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            return sykmeldinger.map((it) => ({
+                sykmeldingId: it.sykmeldingId,
+                meta: it.meta,
+                values: {
+                    aktivitet: it.values.aktivitet,
+                    hoveddiagnose: it.values.hoveddiagnose,
+                    bidiagnoser: it.values.bidiagnoser,
+                },
+            }))
+        },
         person: async (_, { ident }) => {
             // Only validate session
             await getReadyClientForResolvers()
