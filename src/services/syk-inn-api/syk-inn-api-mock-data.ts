@@ -2,7 +2,6 @@ import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
 
 export function createMockSykmelding(overrides: Partial<SykInnApiSykmelding> = {}): SykInnApiSykmelding {
     return {
-        ...overrides,
         sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
         meta: {
             pasientIdent: '12345678910',
@@ -38,5 +37,6 @@ export function createMockSykmelding(overrides: Partial<SykInnApiSykmelding> = {
             result: 'OK',
             melding: null,
         },
+        ...overrides,
     }
 }

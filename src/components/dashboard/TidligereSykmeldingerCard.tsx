@@ -10,6 +10,7 @@ import { raise } from '@utils/ts'
 import AssableNextLink from '@components/misc/AssableNextLink'
 import { toReadableDatePeriod } from '@utils/date'
 import { cn } from '@utils/tw'
+import DashboardTable from '@components/dashboard/table/DashboardTable'
 
 function PagaendeSykmeldingerCard({ className }: { className?: string }): ReactElement {
     const { loading, data, error, refetch } = useQuery(AllSykmeldingerDocument, {
@@ -52,7 +53,7 @@ function PagaendeSykmeldingerCard({ className }: { className?: string }): ReactE
 
 function TidligereSykmeldingerTable({ sykmeldinger }: { sykmeldinger: SykmeldingFragment[] }): ReactElement {
     return (
-        <Table>
+        <DashboardTable>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
@@ -88,7 +89,7 @@ function TidligereSykmeldingerTable({ sykmeldinger }: { sykmeldinger: Sykmelding
                     </Table.Row>
                 ))}
             </Table.Body>
-        </Table>
+        </DashboardTable>
     )
 }
 

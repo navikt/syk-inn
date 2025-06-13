@@ -1,6 +1,6 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort, Button, Heading, Skeleton, Table } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Skeleton, Table } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 import { formatDistanceToNow, isAfter } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
@@ -9,6 +9,8 @@ import { AllSykmeldingerDocument, SykmeldingFragment } from '@queries'
 import { raise } from '@utils/ts'
 import AssableNextLink from '@components/misc/AssableNextLink'
 import { toReadableDatePeriod } from '@utils/date'
+import DashboardTable from '@components/dashboard/table/DashboardTable'
+import DashboardCard from '@components/dashboard/card/DashboardCard'
 
 function PagaendeSykmeldingerCard(): ReactElement {
     const { loading, data, error, refetch } = useQuery(AllSykmeldingerDocument, {
@@ -18,16 +20,20 @@ function PagaendeSykmeldingerCard(): ReactElement {
     const currentSykmeldinger = data?.sykmeldinger?.filter(byCurrentSykmelding) ?? []
 
     return (
-        <div className="rounded-sm p-4 bg-bg-default">
-            <Heading size="medium" level="2" spacing>
-                Pågående sykmeldinger (
-                {loading ? (
-                    <Skeleton className="inline-block" width="16px" />
-                ) : (
-                    <span>{currentSykmeldinger.length}</span>
-                )}
-                )
-            </Heading>
+        <DashboardCard
+            id="pagaende-sykmeldinger-card"
+            title={
+                <span>
+                    Pågående sykmeldinger (
+                    {loading ? (
+                        <Skeleton className="inline-block" width="16px" />
+                    ) : (
+                        <span>{currentSykmeldinger.length}</span>
+                    )}
+                    )
+                </span>
+            }
+        >
             {!loading && !error && (
                 <>
                     {currentSykmeldinger.length > 0 ? (
@@ -45,13 +51,13 @@ function PagaendeSykmeldingerCard(): ReactElement {
                     </Button>
                 </Alert>
             )}
-        </div>
+        </DashboardCard>
     )
 }
 
 function CurrentSykmeldingerTable({ sykmeldinger }: { sykmeldinger: SykmeldingFragment[] }): ReactElement {
     return (
-        <Table>
+        <DashboardTable>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
@@ -87,7 +93,7 @@ function CurrentSykmeldingerTable({ sykmeldinger }: { sykmeldinger: SykmeldingFr
                     </Table.Row>
                 ))}
             </Table.Body>
-        </Table>
+        </DashboardTable>
     )
 }
 

@@ -5,11 +5,12 @@ import { TrashIcon } from '@navikt/aksel-icons'
 import { differenceInSeconds, formatDistanceToNow, isValid, parseISO } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
-import { cn } from '@utils/tw'
 import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
 import AssableNextLink from '@components/misc/AssableNextLink'
 import useInterval from '@utils/hooks/useInterval'
 import { toReadableDate, toReadableDatePeriod } from '@utils/date'
+import DashboardTable from '@components/dashboard/table/DashboardTable'
+import DashboardCard from '@components/dashboard/card/DashboardCard'
 
 import { safeParseDraft } from '../../data-layer/draft/draft-schema'
 
@@ -19,15 +20,9 @@ type Props = {
 
 function DraftSykmeldingerCard({ className }: Props): ReactElement {
     return (
-        <section
-            className={cn(className, 'bg-bg-default rounded-sm p-4')}
-            aria-labelledby="utkast-sykmeldinger-heading"
-        >
-            <Heading size="medium" level="2" spacing id="utkast-sykmeldinger-heading">
-                Utkast sykmeldinger (ikke sendt til Nav)
-            </Heading>
+        <DashboardCard title="Utkast sykmeldinger (ikke sendt til Nav)" className={className}>
             <DraftList />
-        </section>
+        </DashboardCard>
     )
 }
 
@@ -79,10 +74,10 @@ function DraftList(): ReactElement {
 
     return (
         <div>
-            <Table>
+            <DashboardTable>
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell scope="co()l">Periode</Table.HeaderCell>
+                        <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
                         <Table.HeaderCell scope="col">Diagnose</Table.HeaderCell>
                         <Table.HeaderCell scope="col">Sist endret</Table.HeaderCell>
                         <Table.HeaderCell scope="col" className="max-w-8" />
@@ -123,7 +118,7 @@ function DraftList(): ReactElement {
                         )
                     })}
                 </Table.Body>
-            </Table>
+            </DashboardTable>
         </div>
     )
 }
