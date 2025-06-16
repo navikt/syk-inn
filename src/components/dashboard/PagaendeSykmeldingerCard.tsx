@@ -2,7 +2,7 @@ import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { Alert, BodyShort, Button, Skeleton, Table } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
-import { formatDistanceToNow, isAfter } from 'date-fns'
+import { formatDistanceToNow } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
 import { AllSykmeldingerDocument, SykmeldingFragment } from '@queries'
@@ -12,12 +12,14 @@ import { toReadableDatePeriod } from '@utils/date'
 import DashboardTable from '@components/dashboard/table/DashboardTable'
 import DashboardCard from '@components/dashboard/card/DashboardCard'
 
+import { byActiveOrFutureSykmelding } from '../../data-layer/common/sykmelding-utils'
+
 function PagaendeSykmeldingerCard(): ReactElement {
     const { loading, data, error, refetch } = useQuery(AllSykmeldingerDocument, {
         nextFetchPolicy: 'cache-and-network',
     })
 
-    const currentSykmeldinger = data?.sykmeldinger?.filter(byCurrentSykmelding) ?? []
+    const currentSykmeldinger = data?.sykmeldinger?.filter(byActiveOrFutureSykmelding) ?? []
 
     return (
         <DashboardCard
@@ -69,7 +71,7 @@ function CurrentSykmeldingerTable({ sykmeldinger }: { sykmeldinger: SykmeldingFr
                 <Table.Row>
                     <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
                     <Table.HeaderCell scope="col">Diagnose</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Sist endret</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Mottatt</Table.HeaderCell>
                     <Table.HeaderCell scope="col" />
                 </Table.Row>
             </Table.Header>
@@ -113,16 +115,6 @@ function PeriodText({ perioder }: { perioder: { fom: string; tom: string }[] }):
     }
 
     return <span>{toReadableDatePeriod(earliestPeriode.fom, latestPeriode.tom)}</span>
-}
-
-function byCurrentSykmelding(sykmelding: SykmeldingFragment): boolean {
-    const latestPeriode = R.firstBy(sykmelding.values.aktivitet, [(it) => it.fom, 'desc'])
-
-    if (!latestPeriode) {
-        raise('Sykmelding without aktivitetsperioder, this should not happen')
-    }
-
-    return isAfter(new Date(), latestPeriode.tom)
 }
 
 export default PagaendeSykmeldingerCard

@@ -1,6 +1,9 @@
 import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
 
-export function createMockSykmelding(overrides: Partial<SykInnApiSykmelding> = {}): SykInnApiSykmelding {
+export function createMockSykmelding(
+    overrides: Partial<SykInnApiSykmelding> = {},
+    valuesOverride: Partial<SykInnApiSykmelding['values']> = {},
+): SykInnApiSykmelding {
     return {
         sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
         meta: {
@@ -32,6 +35,7 @@ export function createMockSykmelding(overrides: Partial<SykInnApiSykmelding> = {
             yrkesskade: null,
             arbeidsgiver: null,
             tilbakedatering: null,
+            ...valuesOverride,
         },
         utfall: {
             result: 'OK',
