@@ -1,5 +1,5 @@
 import { logger } from '@navikt/next-logger'
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 
 import { SykInnApiSykmelding, SykInnApiSykmeldingSchema } from '@services/syk-inn-api/schema/sykmelding'
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'

@@ -1,4 +1,7 @@
 import { NextConfig } from 'next'
+import Sonda from 'sonda/next'
+
+const withSondaAnalyzer = Sonda()
 
 const nextConfig: NextConfig = {
     output: 'standalone',
@@ -17,6 +20,7 @@ const nextConfig: NextConfig = {
             hmrRefreshes: true,
         },
     },
+    productionBrowserSourceMaps: true,
 }
 
-export default nextConfig
+export default withSondaAnalyzer(nextConfig)

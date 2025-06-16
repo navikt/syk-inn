@@ -1,4 +1,4 @@
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 import { logger } from '@navikt/next-logger'
 
 export type DraftValues = z.infer<typeof DraftValuesSchema>

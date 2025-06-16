@@ -1,6 +1,6 @@
 import { requestAzureClientCredentialsToken } from '@navikt/oasis'
 import { logger as pinoLogger } from '@navikt/next-logger'
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 
 import { raise } from '@utils/ts'
 import { getServerEnv } from '@utils/env'

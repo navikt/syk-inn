@@ -1,4 +1,4 @@
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 
 export type ICD10_OID = typeof ICD10_OID_VALUE
 export const ICD10_OID_VALUE = '2.16.578.1.12.4.1.1.7110'
