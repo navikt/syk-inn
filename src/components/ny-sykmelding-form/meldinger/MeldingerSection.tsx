@@ -5,7 +5,7 @@ import MeldingTilArbeidsgiverField from '@components/ny-sykmelding-form/meldinge
 
 function MeldingerSection(): ReactElement {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
             <MeldingTilNavField />
             <MeldingTilArbeidsgiverField />
         </div>

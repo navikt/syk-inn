@@ -46,19 +46,22 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
             <FormProvider {...form}>
                 <FormDraftSync />
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <FormSection title="Periode">
-                        <AktivitetSection />
-                    </FormSection>
-                    <DynamicTilbakedateringSection />
-                    <FormSection title="Diagnose" className="mt-8">
-                        <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
-                    </FormSection>
-                    <FormSection title="Andre spørsmål" className="my-8" hideTitle>
-                        <AndreSporsmalSection />
-                    </FormSection>
-                    <FormSection title="Meldinger" className="mt-8">
-                        <MeldingerSection />
-                    </FormSection>
+                    <div className="grid grid-cols-1">
+                        <FormSection title="Periode">
+                            <AktivitetSection />
+                        </FormSection>
+                        <DynamicTilbakedateringSection />
+                        <FormSection title="Diagnose">
+                            <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
+                        </FormSection>
+                        <FormSection title="Andre spørsmål" hideTitle>
+                            <AndreSporsmalSection />
+                        </FormSection>
+                        <FormSection title="Meldinger" hideBorder>
+                            <MeldingerSection />
+                        </FormSection>
+                    </div>
+
                     <div className="w-full flex justify-end gap-3 mt-16 lg:col-span-2">
                         <ForkastDraftButton />
                         <LagreDraftButton />

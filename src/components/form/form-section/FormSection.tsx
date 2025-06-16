@@ -8,13 +8,23 @@ type Props = {
     title: string
     className?: string
     hideTitle?: boolean
+    hideBorder?: boolean
 }
 
-function FormSection({ title, children, hideTitle, className }: PropsWithChildren<Props>): ReactElement {
+function FormSection({
+    title,
+    children,
+    hideTitle,
+    hideBorder = false,
+    className,
+}: PropsWithChildren<Props>): ReactElement {
     const cardTitleId = `expandable-form-section-${cleanId(title)}`
 
     return (
-        <section aria-labelledby={cardTitleId} className={className}>
+        <section
+            aria-labelledby={cardTitleId}
+            className={cn(className, 'pb-4 pt-4', { 'border-b border-b-border-subtle': !hideBorder })}
+        >
             <Heading size="medium" level="2" id={cardTitleId} className={cn({ 'sr-only': hideTitle })}>
                 {title}
             </Heading>
