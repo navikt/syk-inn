@@ -10,6 +10,7 @@ import {
 } from '@components/ny-sykmelding-form/form'
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 import { DiagnoseFragment } from '@queries'
+import { dateOnly } from '@utils/date'
 
 import {
     AktivitetStep,
@@ -198,7 +199,7 @@ function toInitialMeldinger(
 export function getDefaultPeriode(): AktivitetsPeriode {
     return {
         periode: {
-            fom: '',
+            fom: dateOnly(new Date()),
             tom: '',
         },
         aktivitet: {
