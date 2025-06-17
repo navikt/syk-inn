@@ -9,7 +9,7 @@ type Props = {
 
 function PdfDebugView({ sykmeldingId }: Props): ReactElement {
     return (
-        <div className="w-1/2 pb-16">
+        <div className="w-[65ch] max-w-prose pb-16">
             <Heading size="small">Forhåndsvisning av generert PDF</Heading>
             <Detail>Dette er en midlertidig utviklingsfeature som skal fjernes.</Detail>
             <BodyShort>

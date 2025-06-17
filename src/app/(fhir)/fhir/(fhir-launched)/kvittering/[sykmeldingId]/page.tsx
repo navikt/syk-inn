@@ -16,7 +16,7 @@ async function KvitteringPage({ params }: Props): Promise<ReactElement> {
 
     return (
         <Page className="bg-transparent">
-            <PageBlock as="main" width="xl" gutters className="pt-4">
+            <PageBlock as="main" gutters className="pt-4">
                 <Heading level="2" size="medium" spacing>
                     Kvittering på innsendt sykmelding
                 </Heading>

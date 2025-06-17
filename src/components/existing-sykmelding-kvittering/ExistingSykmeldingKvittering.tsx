@@ -32,28 +32,10 @@ type ExistingSykmeldingKvitteringProps = {
 function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitteringProps): ReactElement {
     const { loading, data, error, refetch } = useQuery(SykmeldingByIdDocument, {
         variables: { id: sykmeldingId },
-        // TODO: Temporarily disabled polling, because we are unable to fetch the DocumentReference back from WebMed
-        // pollInterval: 5000,
     })
 
-    /*
-    useEffect(() => {
-        if (data?.sykmelding?.documentStatus === 'COMPLETE') {
-            stopPolling()
-        }
-    }, [data?.sykmelding?.documentStatus, stopPolling])
-
-    useEffect(() => {
-        if (error) {
-            if (isSmartSessionInvalid(error) || isServerError(error)) {
-                stopPolling()
-            }
-        }
-    }, [error, stopPolling])
-     */
-
     return (
-        <div className="max-w-prose bg-white p-4 rounded-sm w-1/2">
+        <div className="w-[65ch] max-w-prose bg-white p-4 rounded-sm">
             {loading && <SykmeldingKvitteringSkeleton />}
             {error && <SykmeldingKvitteringError error={error} refetch={refetch} />}
             {data?.sykmelding && (
