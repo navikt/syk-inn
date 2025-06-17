@@ -474,6 +474,14 @@ export type OpprettSykmeldingMutation = {
         | { __typename?: 'OpprettetSykmeldingResult'; sykmeldingId: string }
 }
 
+export type OutcomeFragment = {
+    __typename?: 'OpprettSykmeldingRuleOutcome'
+    status: string
+    message: string
+    rule: string
+    tree: string
+}
+
 export type SykmeldingFragment = {
     __typename?: 'Sykmelding'
     sykmeldingId: string
@@ -581,6 +589,25 @@ export const PersonFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<PersonFragment, unknown>
+export const OutcomeFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Outcome' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingRuleOutcome' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'message' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'rule' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tree' } },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<OutcomeFragment, unknown>
 export const DiagnoseFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -1604,16 +1631,27 @@ export const OpprettSykmeldingDocument = {
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'status' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'message' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'rule' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'tree' } },
+                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Outcome' } },
                                         ],
                                     },
                                 },
                             ],
                         },
                     },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Outcome' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingRuleOutcome' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'message' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'rule' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tree' } },
                 ],
             },
         },

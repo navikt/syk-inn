@@ -1,26 +1,19 @@
-import { Alert, BodyShort, Button, Checkbox, Detail, FormSummary, Heading } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Checkbox, Heading } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
 import { AnimatePresence } from 'motion/react'
 import { useQuery } from '@apollo/client'
 
-import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 import { SimpleReveal } from '@components/animation/Reveal'
-import { BehandlerDocument } from '@graphql/queries.generated'
+import { BehandlerDocument, OutcomeFragment } from '@graphql/queries.generated'
 import BehandlerSummary from '@components/ny-sykmelding-form/summary/BehandlerSummary'
+import FormValuesSummary from '@components/ny-sykmelding-form/summary/FormValuesSummary'
 
 import { useFormStep } from '../steps/useFormStep'
 import { useAppDispatch, useAppSelector } from '../../../providers/redux/hooks'
 import { useOpprettSykmeldingMutation } from '../useOpprettSykmeldingMutation'
-import {
-    AktivitetStep,
-    DiagnoseStep,
-    nySykmeldingMultistepActions,
-    PasientStep,
-    TilbakedateringStep,
-} from '../../../providers/redux/reducers/ny-sykmelding-multistep'
+import { nySykmeldingMultistepActions } from '../../../providers/redux/reducers/ny-sykmelding-multistep'
 
-import { aktivitetDescription } from './summary-text-utils'
 import styles from './SummarySection.module.css'
 
 function SummarySection(): ReactElement {
@@ -32,79 +25,14 @@ function SummarySection(): ReactElement {
 
     return (
         <div className={styles.summaryGrid}>
-            <div className="w-[65ch] max-w-prose row-span-2">
-                <FormSummary>
-                    <FormSummary.Header>
-                        <FormSummary.Heading level="2">Oppsummering sykmelding</FormSummary.Heading>
-                        <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
-                    </FormSummary.Header>
-                    <FormSummary.Answers>
-                        <PatientSummaryAnswers pasient={formState.pasient} />
-                        <AktivitetSummaryAnswers aktiviteter={formState.aktiviteter} />
-                        {formState.tilbakedatering && (
-                            <TilbakedateringSummaryAnswers tilbakedatering={formState.tilbakedatering} />
-                        )}
-                        <DiagnoseSummaryAnswers diagnose={formState.diagnose} />
-
-                        <FormSummary.Answer>
-                            <FormSummary.Label>Til NAV</FormSummary.Label>
-                            {formState.meldinger?.tilNav ? (
-                                <FormSummary.Value>{formState.meldinger?.tilNav}</FormSummary.Value>
-                            ) : (
-                                <FormSummary.Value className="italic">Ingen melding</FormSummary.Value>
-                            )}
-                        </FormSummary.Answer>
-                        <FormSummary.Answer>
-                            <FormSummary.Label>Til arbeidsgiver</FormSummary.Label>
-                            {formState.meldinger?.tilArbeidsgiver ? (
-                                <FormSummary.Value>{formState.meldinger?.tilArbeidsgiver}</FormSummary.Value>
-                            ) : (
-                                <FormSummary.Value className="italic">Ingen melding</FormSummary.Value>
-                            )}
-                        </FormSummary.Answer>
-
-                        <FormSummary.Answer>
-                            <FormSummary.Label>Svangerskapsrelatert</FormSummary.Label>
-                            {formState.andreSporsmal?.svangerskapsrelatert ? (
-                                <FormSummary.Value>Ja</FormSummary.Value>
-                            ) : (
-                                <FormSummary.Value>Nei</FormSummary.Value>
-                            )}
-                        </FormSummary.Answer>
-                        <FormSummary.Answer>
-                            <FormSummary.Label>Yrkesskade</FormSummary.Label>
-                            {formState.andreSporsmal?.yrkesskade ? (
-                                <FormSummary.Value>Ja</FormSummary.Value>
-                            ) : (
-                                <FormSummary.Value>Nei</FormSummary.Value>
-                            )}
-                        </FormSummary.Answer>
-                    </FormSummary.Answers>
-                </FormSummary>
-            </div>
-
+            <FormValuesSummary className="w-[65ch] max-w-prose row-span-2" />
             <BehandlerSummary className="w-[65ch] max-w-prose" />
 
             <div className="flex flex-col gap-3 justify-end w-[65ch] max-w-prose">
                 <AnimatePresence>
                     {nySykmelding.result?.data?.opprettSykmelding.__typename === 'OpprettSykmeldingRuleOutcome' && (
                         <SimpleReveal>
-                            <Alert variant="warning">
-                                <Heading size="medium" level="3" spacing>
-                                    Sykmeldingen ble ikke sendt inn på grunn av regelsjekk
-                                </Heading>
-                                <BodyShort spacing>
-                                    Sykmeldingen ble fylt ut rett, men den traff på en regel som gjorde at sykmeldingen
-                                    ikke ville blitt godkjent hos Nav.
-                                </BodyShort>
-                                <BodyShort>
-                                    Teknisk regelnavn:{' '}
-                                    <pre>
-                                        {nySykmelding.result.data.opprettSykmelding.tree} -{' '}
-                                        {nySykmelding.result.data.opprettSykmelding.rule}
-                                    </pre>
-                                </BodyShort>
-                            </Alert>
+                            <RuleOutcomeWarning outcome={nySykmelding.result.data.opprettSykmelding} />
                         </SimpleReveal>
                     )}
                 </AnimatePresence>
@@ -112,21 +40,7 @@ function SummarySection(): ReactElement {
                 <AnimatePresence>
                     {nySykmelding.result.error && (
                         <SimpleReveal>
-                            <Alert variant="error">
-                                <Heading size="medium" level="3" spacing>
-                                    Ukjent feil
-                                </Heading>
-                                <BodyShort spacing>
-                                    Det skjedde en ukjent feil under innsending av sykmeldingen. Du kan lagre utkastet
-                                    og prøve å sende inn sykmeldingen senere.
-                                </BodyShort>
-                                <BodyShort spacing>
-                                    Dersom problemet vedvarer, må du kontakte lege- og behandlertelefon.
-                                </BodyShort>
-                                <BodyShort size="small">
-                                    Teknisk sporingsnavn: {nySykmelding.result.error.message}
-                                </BodyShort>
-                            </Alert>
+                            <UnknownErrorAlert error={nySykmelding.result.error} />
                         </SimpleReveal>
                     )}
                 </AnimatePresence>
@@ -165,105 +79,39 @@ function SummarySection(): ReactElement {
     )
 }
 
-function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[] | null }): ReactElement {
-    if (aktiviteter == null) {
-        return (
-            <FormSummary.Answer>
-                <FormSummary.Label>Periode</FormSummary.Label>
-                <FormSummary.Value>
-                    <Alert variant="warning">
-                        Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
-                    </Alert>
-                </FormSummary.Value>
-            </FormSummary.Answer>
-        )
-    }
-
+function RuleOutcomeWarning({ outcome }: { outcome: OutcomeFragment }): ReactElement {
     return (
-        <>
-            {aktiviteter.map((aktivitet, index) => (
-                <React.Fragment key={index}>
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Periode</FormSummary.Label>
-                        <FormSummary.Value>{toReadableDatePeriod(aktivitet.fom, aktivitet.tom)}</FormSummary.Value>
-                    </FormSummary.Answer>
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Mulighet for arbeid</FormSummary.Label>
-                        <FormSummary.Value>{aktivitetDescription(aktivitet)}</FormSummary.Value>
-                    </FormSummary.Answer>
-                </React.Fragment>
-            ))}
-        </>
+        <Alert variant="warning">
+            <Heading size="medium" level="3" spacing>
+                Sykmeldingen ble ikke sendt inn på grunn av regelsjekk
+            </Heading>
+            <BodyShort spacing>
+                Sykmeldingen ble fylt ut rett, men den traff på en regel som gjorde at sykmeldingen ikke ville blitt
+                godkjent hos Nav.
+            </BodyShort>
+            <BodyShort>
+                Teknisk regelnavn:{' '}
+                <pre>
+                    {outcome.tree} - {outcome.rule}
+                </pre>
+            </BodyShort>
+        </Alert>
     )
 }
 
-function TilbakedateringSummaryAnswers({ tilbakedatering }: { tilbakedatering: TilbakedateringStep }): ReactElement {
+function UnknownErrorAlert({ error }: { error: Error }): ReactElement {
     return (
-        <>
-            <FormSummary.Answer>
-                <FormSummary.Label>Dato for tilbakedatering</FormSummary.Label>
-                <FormSummary.Value>{toReadableDate(tilbakedatering.fom)}</FormSummary.Value>
-            </FormSummary.Answer>
-            <FormSummary.Answer>
-                <FormSummary.Label>Grunn for tilbakedatering</FormSummary.Label>
-                <FormSummary.Value>{tilbakedatering.grunn}</FormSummary.Value>
-            </FormSummary.Answer>
-        </>
-    )
-}
-
-function DiagnoseSummaryAnswers({ diagnose }: { diagnose: DiagnoseStep | null }): ReactElement {
-    if (diagnose == null) {
-        return (
-            <FormSummary.Answer>
-                <FormSummary.Label>Hoveddiagnose</FormSummary.Label>
-                <FormSummary.Value>
-                    <Alert variant="warning">
-                        Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
-                    </Alert>
-                </FormSummary.Value>
-            </FormSummary.Answer>
-        )
-    }
-
-    return (
-        <FormSummary.Answer>
-            <FormSummary.Label>Hoveddiagnose</FormSummary.Label>
-            <FormSummary.Value>
-                <BodyShort>
-                    {diagnose.hoved.text} ({diagnose.hoved.code})
-                </BodyShort>
-                <Detail>{diagnose.hoved.system}</Detail>
-            </FormSummary.Value>
-        </FormSummary.Answer>
-    )
-}
-
-function PatientSummaryAnswers({ pasient }: { pasient: PasientStep | null }): ReactElement {
-    if (pasient == null) {
-        return (
-            <FormSummary.Answer>
-                <FormSummary.Label>Navn</FormSummary.Label>
-                <FormSummary.Value>
-                    <Alert variant="warning">
-                        Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
-                    </Alert>
-                </FormSummary.Value>
-            </FormSummary.Answer>
-        )
-    }
-
-    return (
-        <>
-            <FormSummary.Answer>
-                <FormSummary.Label>Navn</FormSummary.Label>
-                <FormSummary.Value>{pasient.navn}</FormSummary.Value>
-            </FormSummary.Answer>
-            <FormSummary.Answer>
-                <FormSummary.Label>Fødselsnummer</FormSummary.Label>
-                <FormSummary.Value>{pasient.ident}</FormSummary.Value>
-            </FormSummary.Answer>
-        </>
+        <Alert variant="error">
+            <Heading size="medium" level="3" spacing>
+                Ukjent feil
+            </Heading>
+            <BodyShort spacing>
+                Det skjedde en ukjent feil under innsending av sykmeldingen. Du kan lagre utkastet og prøve å sende inn
+                sykmeldingen senere.
+            </BodyShort>
+            <BodyShort spacing>Dersom problemet vedvarer, må du kontakte lege- og behandlertelefon.</BodyShort>
+            <BodyShort size="small">Teknisk sporingstekst: {error.message}</BodyShort>
+        </Alert>
     )
 }
 

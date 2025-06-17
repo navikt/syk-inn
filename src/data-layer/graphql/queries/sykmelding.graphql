@@ -16,12 +16,16 @@ mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!) 
             sykmeldingId
         }
         ... on OpprettSykmeldingRuleOutcome {
-            status
-            message
-            rule
-            tree
+            ...Outcome
         }
     }
+}
+
+fragment Outcome on OpprettSykmeldingRuleOutcome {
+    status
+    message
+    rule
+    tree
 }
 
 fragment Sykmelding on Sykmelding {
