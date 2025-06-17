@@ -23,7 +23,7 @@ function FormSection({
     return (
         <section
             aria-labelledby={cardTitleId}
-            className={cn(className, 'pb-4 pt-4', { 'border-b border-b-border-subtle': !hideBorder })}
+            className={cn(className, 'pb-4', { 'border-b border-b-border-subtle': !hideBorder })}
         >
             <Heading size="medium" level="2" id={cardTitleId} className={cn({ 'sr-only': hideTitle })}>
                 {title}

@@ -54,7 +54,9 @@ export function useOpprettSykmeldingMutation(): {
 
                 const kvitteringUrl = `/${mode === 'FHIR' ? 'fhir' : 'ny'}/kvittering/${createResult.data.opprettSykmelding.sykmeldingId}`
 
-                router.push(kvitteringUrl)
+                router.push(kvitteringUrl, {
+                    scroll: true,
+                })
             })
 
             return createResult

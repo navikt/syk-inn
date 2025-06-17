@@ -10,6 +10,7 @@ import AndreSporsmalSection from '@components/ny-sykmelding-form/andre-sporsmal/
 import { createDefaultValues } from '@components/ny-sykmelding-form/form-default-values'
 import FormSection from '@components/form/form-section/FormSection'
 import ForkastDraftButton, { LagreDraftButton } from '@components/ny-sykmelding-form/draft/DraftActions'
+import FormSheet from '@components/form/form-section/FormSheet'
 
 import { useAppDispatch, useAppSelector } from '../../providers/redux/hooks'
 import { DraftValues } from '../../data-layer/draft/draft-schema'
@@ -22,6 +23,7 @@ import { useFormStep } from './steps/useFormStep'
 import MeldingerSection from './meldinger/MeldingerSection'
 import DynamicTilbakedateringSection from './tilbakedatering/DynamicTilbakedateringSection'
 import FormDraftSync from './draft/FormDraftSync'
+import styles from './NySykmeldingForm.module.css'
 
 const FormDevTools = dynamic(() => import('../../devtools/NySykmeldingFormDevTools'), { ssr: false })
 
@@ -45,34 +47,39 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
         <div className="bg-bg-default p-4 rounded">
             <FormProvider {...form}>
                 <FormDraftSync />
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <FormSection title="Periode">
-                        <AktivitetSection />
-                    </FormSection>
-                    <DynamicTilbakedateringSection />
-                    <FormSection title="Diagnose">
-                        <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
-                    </FormSection>
-                    <FormSection title="Andre spørsmål" hideTitle>
-                        <AndreSporsmalSection />
-                    </FormSection>
-                    <FormSection title="Meldinger" hideBorder>
-                        <MeldingerSection />
-                    </FormSection>
-
-                    <div className="w-full flex justify-end gap-3 mt-16 lg:col-span-2">
-                        <ForkastDraftButton />
-                        <LagreDraftButton />
-                        <Button
-                            id="step-navigation-next"
-                            type="submit"
-                            variant="primary"
-                            icon={<ArrowRightIcon aria-hidden />}
-                            iconPosition="right"
-                        >
-                            Neste steg
-                        </Button>
-                    </div>
+                <form onSubmit={form.handleSubmit(onSubmit)} className={styles.formGrid}>
+                    <FormSheet className="row-span-3">
+                        <FormSection title="Periode">
+                            <AktivitetSection />
+                        </FormSection>
+                        <DynamicTilbakedateringSection />
+                    </FormSheet>
+                    <FormSheet className="row-span-2">
+                        <FormSection title="Diagnose">
+                            <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
+                        </FormSection>
+                        <FormSection title="Andre spørsmål" hideTitle>
+                            <AndreSporsmalSection />
+                        </FormSection>
+                        <FormSection title="Meldinger" hideBorder>
+                            <MeldingerSection />
+                        </FormSection>
+                    </FormSheet>
+                    <FormSheet className="flex items-end justify-end">
+                        <div className="flex gap-3">
+                            <ForkastDraftButton />
+                            <LagreDraftButton />
+                            <Button
+                                id="step-navigation-next"
+                                type="submit"
+                                variant="primary"
+                                icon={<ArrowRightIcon aria-hidden />}
+                                iconPosition="right"
+                            >
+                                Neste steg
+                            </Button>
+                        </div>
+                    </FormSheet>
                 </form>
                 <FormDevTools />
             </FormProvider>
