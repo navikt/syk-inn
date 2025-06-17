@@ -2,9 +2,12 @@ import { Alert, BodyShort, Button, Checkbox, Detail, FormSummary, Heading } from
 import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
 import { AnimatePresence } from 'motion/react'
+import { useQuery } from '@apollo/client'
 
 import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 import { SimpleReveal } from '@components/animation/Reveal'
+import { BehandlerDocument } from '@graphql/queries.generated'
+import BehandlerSummary from '@components/ny-sykmelding-form/summary/BehandlerSummary'
 
 import { useFormStep } from '../steps/useFormStep'
 import { useAppDispatch, useAppSelector } from '../../../providers/redux/hooks'
@@ -18,118 +21,146 @@ import {
 } from '../../../providers/redux/reducers/ny-sykmelding-multistep'
 
 import { aktivitetDescription } from './summary-text-utils'
+import styles from './SummarySection.module.css'
 
 function SummarySection(): ReactElement {
     const [, setStep] = useFormStep()
     const formState = useAppSelector((state) => state.nySykmeldingMultistep)
     const nySykmelding = useOpprettSykmeldingMutation()
     const dispatch = useAppDispatch()
+    const behandlerQuery = useQuery(BehandlerDocument)
 
     return (
-        <div className="flex flex-col gap-6 mt-8">
-            <FormSummary>
-                <FormSummary.Header>
-                    <FormSummary.Heading level="2">Oppsummering sykmelding</FormSummary.Heading>
-                    <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
-                </FormSummary.Header>
-                <FormSummary.Answers>
-                    <PatientSummaryAnswers pasient={formState.pasient} />
-                    <AktivitetSummaryAnswers aktiviteter={formState.aktiviteter} />
-                    {formState.tilbakedatering && (
-                        <TilbakedateringSummaryAnswers tilbakedatering={formState.tilbakedatering} />
-                    )}
-                    <DiagnoseSummaryAnswers diagnose={formState.diagnose} />
-
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Til NAV</FormSummary.Label>
-                        {formState.meldinger?.tilNav ? (
-                            <FormSummary.Value>{formState.meldinger?.tilNav}</FormSummary.Value>
-                        ) : (
-                            <FormSummary.Value className="italic">Ingen melding</FormSummary.Value>
+        <div className={styles.summaryGrid}>
+            <div className="w-[65ch] max-w-prose row-span-2">
+                <FormSummary>
+                    <FormSummary.Header>
+                        <FormSummary.Heading level="2">Oppsummering sykmelding</FormSummary.Heading>
+                        <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
+                    </FormSummary.Header>
+                    <FormSummary.Answers>
+                        <PatientSummaryAnswers pasient={formState.pasient} />
+                        <AktivitetSummaryAnswers aktiviteter={formState.aktiviteter} />
+                        {formState.tilbakedatering && (
+                            <TilbakedateringSummaryAnswers tilbakedatering={formState.tilbakedatering} />
                         )}
-                    </FormSummary.Answer>
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Til arbeidsgiver</FormSummary.Label>
-                        {formState.meldinger?.tilArbeidsgiver ? (
-                            <FormSummary.Value>{formState.meldinger?.tilArbeidsgiver}</FormSummary.Value>
-                        ) : (
-                            <FormSummary.Value className="italic">Ingen melding</FormSummary.Value>
-                        )}
-                    </FormSummary.Answer>
+                        <DiagnoseSummaryAnswers diagnose={formState.diagnose} />
 
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Svangerskapsrelatert</FormSummary.Label>
-                        {formState.andreSporsmal?.svangerskapsrelatert ? (
-                            <FormSummary.Value>Ja</FormSummary.Value>
-                        ) : (
-                            <FormSummary.Value>Nei</FormSummary.Value>
-                        )}
-                    </FormSummary.Answer>
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Yrkesskade</FormSummary.Label>
-                        {formState.andreSporsmal?.yrkesskade ? (
-                            <FormSummary.Value>Ja</FormSummary.Value>
-                        ) : (
-                            <FormSummary.Value>Nei</FormSummary.Value>
-                        )}
-                    </FormSummary.Answer>
-                </FormSummary.Answers>
-            </FormSummary>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>Til NAV</FormSummary.Label>
+                            {formState.meldinger?.tilNav ? (
+                                <FormSummary.Value>{formState.meldinger?.tilNav}</FormSummary.Value>
+                            ) : (
+                                <FormSummary.Value className="italic">Ingen melding</FormSummary.Value>
+                            )}
+                        </FormSummary.Answer>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>Til arbeidsgiver</FormSummary.Label>
+                            {formState.meldinger?.tilArbeidsgiver ? (
+                                <FormSummary.Value>{formState.meldinger?.tilArbeidsgiver}</FormSummary.Value>
+                            ) : (
+                                <FormSummary.Value className="italic">Ingen melding</FormSummary.Value>
+                            )}
+                        </FormSummary.Answer>
 
-            <Checkbox
-                value={formState.skalSkjermes ?? false}
-                onChange={(e) => dispatch(nySykmeldingMultistepActions.setSkalSkjermes(e.target.checked))}
-            >
-                <option>Pasienten skal skjermes for medisinske opplysninger</option>
-            </Checkbox>
-
-            <AnimatePresence>
-                {nySykmelding.result?.data?.opprettSykmelding.__typename === 'OpprettSykmeldingRuleOutcome' && (
-                    <SimpleReveal>
-                        <Alert variant="warning">
-                            <Heading size="medium" level="3" spacing>
-                                Sykmeldingen ble ikke sendt inn på grunn av regelsjekk
-                            </Heading>
-                            <BodyShort spacing>
-                                Sykmeldingen ble fylt ut rett, men den traff på en regel som gjorde at sykmeldingen ikke
-                                ville blitt godkjent hos Nav.
-                            </BodyShort>
-                            <BodyShort>
-                                Teknisk regelnavn:{' '}
-                                <pre>
-                                    {nySykmelding.result.data.opprettSykmelding.tree} -{' '}
-                                    {nySykmelding.result.data.opprettSykmelding.rule}
-                                </pre>
-                            </BodyShort>
-                        </Alert>
-                    </SimpleReveal>
-                )}
-            </AnimatePresence>
-
-            <div className="w-full flex justify-end gap-3 mt-16">
-                <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setStep('main')}
-                    disabled={nySykmelding.result.loading}
-                >
-                    Forrige steg
-                </Button>
-                <Button
-                    type="button"
-                    variant="primary"
-                    icon={<PaperplaneIcon aria-hidden />}
-                    iconPosition="right"
-                    loading={nySykmelding.result.loading}
-                    onClick={() => nySykmelding.opprettSykmelding()}
-                >
-                    Send inn
-                </Button>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>Svangerskapsrelatert</FormSummary.Label>
+                            {formState.andreSporsmal?.svangerskapsrelatert ? (
+                                <FormSummary.Value>Ja</FormSummary.Value>
+                            ) : (
+                                <FormSummary.Value>Nei</FormSummary.Value>
+                            )}
+                        </FormSummary.Answer>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>Yrkesskade</FormSummary.Label>
+                            {formState.andreSporsmal?.yrkesskade ? (
+                                <FormSummary.Value>Ja</FormSummary.Value>
+                            ) : (
+                                <FormSummary.Value>Nei</FormSummary.Value>
+                            )}
+                        </FormSummary.Answer>
+                    </FormSummary.Answers>
+                </FormSummary>
             </div>
 
-            {nySykmelding.result.error && (
-                <Alert variant="error">Det skjedde en feil under innsending av sykmeldingen. Prøv igjen senere.</Alert>
-            )}
+            <BehandlerSummary className="w-[65ch] max-w-prose" />
+
+            <div className="flex flex-col gap-3 justify-end w-[65ch] max-w-prose">
+                <AnimatePresence>
+                    {nySykmelding.result?.data?.opprettSykmelding.__typename === 'OpprettSykmeldingRuleOutcome' && (
+                        <SimpleReveal>
+                            <Alert variant="warning">
+                                <Heading size="medium" level="3" spacing>
+                                    Sykmeldingen ble ikke sendt inn på grunn av regelsjekk
+                                </Heading>
+                                <BodyShort spacing>
+                                    Sykmeldingen ble fylt ut rett, men den traff på en regel som gjorde at sykmeldingen
+                                    ikke ville blitt godkjent hos Nav.
+                                </BodyShort>
+                                <BodyShort>
+                                    Teknisk regelnavn:{' '}
+                                    <pre>
+                                        {nySykmelding.result.data.opprettSykmelding.tree} -{' '}
+                                        {nySykmelding.result.data.opprettSykmelding.rule}
+                                    </pre>
+                                </BodyShort>
+                            </Alert>
+                        </SimpleReveal>
+                    )}
+                </AnimatePresence>
+
+                <AnimatePresence>
+                    {nySykmelding.result.error && (
+                        <SimpleReveal>
+                            <Alert variant="error">
+                                <Heading size="medium" level="3" spacing>
+                                    Ukjent feil
+                                </Heading>
+                                <BodyShort spacing>
+                                    Det skjedde en ukjent feil under innsending av sykmeldingen. Du kan lagre utkastet
+                                    og prøve å sende inn sykmeldingen senere.
+                                </BodyShort>
+                                <BodyShort spacing>
+                                    Dersom problemet vedvarer, må du kontakte lege- og behandlertelefon.
+                                </BodyShort>
+                                <BodyShort size="small">
+                                    Teknisk sporingsnavn: {nySykmelding.result.error.message}
+                                </BodyShort>
+                            </Alert>
+                        </SimpleReveal>
+                    )}
+                </AnimatePresence>
+
+                <div className="flex flex-col gap-3 justify-end items-end">
+                    <Checkbox
+                        value={formState.skalSkjermes ?? false}
+                        onChange={(e) => dispatch(nySykmeldingMultistepActions.setSkalSkjermes(e.target.checked))}
+                    >
+                        <option>Pasienten skal skjermes for medisinske opplysninger</option>
+                    </Checkbox>
+
+                    <div className="flex gap-3">
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={() => setStep('main')}
+                            disabled={nySykmelding.result.loading}
+                        >
+                            Forrige steg
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="primary"
+                            icon={<PaperplaneIcon aria-hidden />}
+                            iconPosition="right"
+                            loading={nySykmelding.result.loading || behandlerQuery.loading}
+                            onClick={() => nySykmelding.opprettSykmelding()}
+                        >
+                            Send inn
+                        </Button>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
@@ -138,9 +169,12 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[]
     if (aktiviteter == null) {
         return (
             <FormSummary.Answer>
-                <Alert variant="warning">
-                    Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
-                </Alert>
+                <FormSummary.Label>Periode</FormSummary.Label>
+                <FormSummary.Value>
+                    <Alert variant="warning">
+                        Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
+                    </Alert>
+                </FormSummary.Value>
             </FormSummary.Answer>
         )
     }
@@ -181,13 +215,14 @@ function TilbakedateringSummaryAnswers({ tilbakedatering }: { tilbakedatering: T
 function DiagnoseSummaryAnswers({ diagnose }: { diagnose: DiagnoseStep | null }): ReactElement {
     if (diagnose == null) {
         return (
-            <FormSummary.Answers>
-                <FormSummary.Answer>
+            <FormSummary.Answer>
+                <FormSummary.Label>Hoveddiagnose</FormSummary.Label>
+                <FormSummary.Value>
                     <Alert variant="warning">
                         Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
                     </Alert>
-                </FormSummary.Answer>
-            </FormSummary.Answers>
+                </FormSummary.Value>
+            </FormSummary.Answer>
         )
     }
 
@@ -208,9 +243,12 @@ function PatientSummaryAnswers({ pasient }: { pasient: PasientStep | null }): Re
     if (pasient == null) {
         return (
             <FormSummary.Answer>
-                <Alert variant="warning">
-                    Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
-                </Alert>
+                <FormSummary.Label>Navn</FormSummary.Label>
+                <FormSummary.Value>
+                    <Alert variant="warning">
+                        Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
+                    </Alert>
+                </FormSummary.Value>
             </FormSummary.Answer>
         )
     }

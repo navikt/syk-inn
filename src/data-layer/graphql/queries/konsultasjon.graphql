@@ -5,3 +5,12 @@ query Konsultasjon {
         }
     }
 }
+
+query Behandler {
+    behandler {
+        navn
+        hpr
+        orgnummer
+        legekontorTlf
+    }
+}

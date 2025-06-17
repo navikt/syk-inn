@@ -353,6 +353,13 @@ export type KonsultasjonQuery = {
     } | null
 }
 
+export type BehandlerQueryVariables = Exact<{ [key: string]: never }>
+
+export type BehandlerQuery = {
+    __typename?: 'Query'
+    behandler?: { __typename?: 'Behandler'; navn: string; hpr: string; orgnummer: string; legekontorTlf: string } | null
+}
+
 export type PasientQueryVariables = Exact<{ [key: string]: never }>
 
 export type PasientQuery = {
@@ -1068,6 +1075,34 @@ export const KonsultasjonDocument = {
         },
     ],
 } as unknown as DocumentNode<KonsultasjonQuery, KonsultasjonQueryVariables>
+export const BehandlerDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'Behandler' },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'behandler' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'hpr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'orgnummer' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorTlf' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<BehandlerQuery, BehandlerQueryVariables>
 export const PasientDocument = {
     kind: 'Document',
     definitions: [

@@ -12,6 +12,11 @@ export function ToggleAPIFailures(): ReactElement {
     const { queryOverrides, setQueryOverrides } = useAPIOverride()
 
     const queries: Record<ToggleableQueries, ReactElement> = {
+        Behandler: (
+            <Checkbox key="behandler" value="Behandler">
+                Behandler
+            </Checkbox>
+        ),
         Pasient: (
             <Checkbox key="pasient" value="Pasient">
                 Pasient

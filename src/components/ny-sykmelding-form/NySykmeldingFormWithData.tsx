@@ -19,7 +19,7 @@ function NySykmeldingFormWithData(): ReactElement {
     if (konsultasjonsQuery.loading || draftQuery.loading) {
         return (
             // Needs a much better skeleton
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-[56ch]">
                 <Skeleton width="100%" height={350} />
                 <Skeleton width="100%" height={350} />
                 <Skeleton width="100%" height={350} />

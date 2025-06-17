@@ -23,7 +23,7 @@ function NySykmeldingFormSteps(): ReactElement {
         <div className="relative">
             <AnimatePresence initial={false} custom={goingLeft}>
                 <motion.div
-                    className="absolute w-full pb-16"
+                    className="absolute pb-16"
                     key={step}
                     initial={{ opacity: 0, x: !goingLeft ? -100 : 100 }}
                     animate={{ opacity: 1, x: 0 }}
