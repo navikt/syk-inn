@@ -185,8 +185,17 @@ export type OpprettSykmeldingInput = {
     yrkesskade?: InputMaybe<InputYrkesskade>
 }
 
-export type OpprettetSykmelding = {
-    __typename?: 'OpprettetSykmelding'
+export type OpprettSykmeldingRuleOutcome = {
+    __typename?: 'OpprettSykmeldingRuleOutcome'
+    message: Scalars['String']['output']
+    rule: Scalars['String']['output']
+    status: Scalars['String']['output']
+}
+
+export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | OpprettetSykmeldingResult
+
+export type OpprettetSykmeldingResult = {
+    __typename?: 'OpprettetSykmeldingResult'
     sykmeldingId: Scalars['String']['output']
 }
 
@@ -450,7 +459,9 @@ export type OpprettSykmeldingMutationVariables = Exact<{
 
 export type OpprettSykmeldingMutation = {
     __typename?: 'Mutation'
-    opprettSykmelding: { __typename?: 'OpprettetSykmelding'; sykmeldingId: string }
+    opprettSykmelding:
+        | { __typename?: 'OpprettSykmeldingRuleOutcome'; status: string; message: string; rule: string }
+        | { __typename?: 'OpprettetSykmeldingResult'; sykmeldingId: string }
 }
 
 export type SykmeldingFragment = {
@@ -1534,7 +1545,34 @@ export const OpprettSykmeldingDocument = {
                         ],
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } }],
+                            selections: [
+                                {
+                                    kind: 'InlineFragment',
+                                    typeCondition: {
+                                        kind: 'NamedType',
+                                        name: { kind: 'Name', value: 'OpprettetSykmeldingResult' },
+                                    },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } }],
+                                    },
+                                },
+                                {
+                                    kind: 'InlineFragment',
+                                    typeCondition: {
+                                        kind: 'NamedType',
+                                        name: { kind: 'Name', value: 'OpprettSykmeldingRuleOutcome' },
+                                    },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'message' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'rule' } },
+                                        ],
+                                    },
+                                },
+                            ],
                         },
                     },
                 ],

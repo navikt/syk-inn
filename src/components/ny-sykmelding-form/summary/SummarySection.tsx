@@ -1,8 +1,10 @@
-import { Alert, BodyShort, Button, Checkbox, Detail, FormSummary } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Checkbox, Detail, FormSummary, Heading } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
+import { AnimatePresence } from 'motion/react'
 
 import { toReadableDate, toReadableDatePeriod } from '@utils/date'
+import { SimpleReveal } from '@components/animation/Reveal'
 
 import { useFormStep } from '../steps/useFormStep'
 import { useAppDispatch, useAppSelector } from '../../../providers/redux/hooks'
@@ -21,7 +23,6 @@ function SummarySection(): ReactElement {
     const [, setStep] = useFormStep()
     const formState = useAppSelector((state) => state.nySykmeldingMultistep)
     const nySykmelding = useOpprettSykmeldingMutation()
-
     const dispatch = useAppDispatch()
 
     return (
@@ -81,6 +82,25 @@ function SummarySection(): ReactElement {
             >
                 <option>Pasienten skal skjermes for medisinske opplysninger</option>
             </Checkbox>
+
+            <AnimatePresence>
+                {nySykmelding.result?.data?.opprettSykmelding.__typename === 'OpprettSykmeldingRuleOutcome' && (
+                    <SimpleReveal>
+                        <Alert variant="warning">
+                            <Heading size="medium" level="3" spacing>
+                                Sykmeldingen ble ikke sendt inn på grunn av regelsjekk
+                            </Heading>
+                            <BodyShort spacing>
+                                Sykmeldingen ble fylt ut rett, men den traff på en regel som gjorde at sykmeldingen ikke
+                                ville blitt godkjent hos Nav.
+                            </BodyShort>
+                            <BodyShort>
+                                Teknisk regelnavn: <pre>{nySykmelding.result.data.opprettSykmelding.rule}</pre>
+                            </BodyShort>
+                        </Alert>
+                    </SimpleReveal>
+                )}
+            </AnimatePresence>
 
             <div className="w-full flex justify-end gap-3 mt-16">
                 <Button

@@ -37,6 +37,7 @@ type FetchInternalAPIOptionsWithSchema<T extends z.ZodType | ValidNonZodResponse
     headers?: HeadersInit
     body?: BodyInit
     responseSchema: T
+    responseValidStatus?: number[]
     onApiError?: (response: Response) => AdditionalErrors | undefined
 }
 
@@ -55,6 +56,7 @@ export async function fetchInternalAPI<
     method,
     body,
     responseSchema,
+    responseValidStatus = [],
     onApiError,
 }: FetchInternalAPIOptionsWithSchema<Schema, AdditionalErrors>): Promise<
     InferredReturnValue | ApiFetchErrors<AdditionalErrors>
@@ -73,7 +75,7 @@ export async function fetchInternalAPI<
         body,
     })
 
-    if (!response.ok) {
+    if (!response.ok && !responseValidStatus?.includes(response.status)) {
         const additionalError: AdditionalErrors | undefined = onApiError?.(response)
         if (additionalError) {
             return { errorType: additionalError }

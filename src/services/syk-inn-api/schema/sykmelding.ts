@@ -91,3 +91,10 @@ export const SykInnApiSykmeldingSchema = z.object({
     }),
     utfall: RuleResultSchema,
 })
+
+export type SykInnApiRuleOutcome = z.infer<typeof SykInnApiRuleOutcomeSchema>
+export const SykInnApiRuleOutcomeSchema = z.object({
+    status: z.string(),
+    message: z.string(),
+    rule: z.string(),
+})

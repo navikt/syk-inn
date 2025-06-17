@@ -3,16 +3,16 @@ import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
-import { QueriedPerson, Resolvers, Sykmelding } from '@resolvers'
+import { OpprettSykmeldingRuleOutcome, QueriedPerson, Resolvers, Sykmelding } from '@resolvers'
 import { createSchema } from '@graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@fhir/mappers/diagnosis'
 import { raise } from '@utils/ts'
 import { wait } from '@utils/wait'
 import { pdlApiService } from '@services/pdl/pdl-api-service'
+import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { getFnrIdent, getNameFromPdl } from '@services/pdl/pdl-api-utils'
 import { getHpr, practitionerToBehandler } from '@fhir/mappers/practitioner'
-import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { createDocumentReference } from '@fhir/fhir-service'
 import { spanAsync } from '@otel/otel'
 import { resolverInputToSykInnApiPayload } from '@services/syk-inn-api/syk-inn-api-utils'
@@ -321,11 +321,24 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
+            if ('rule' in result) {
+                // We got a rule hit, don't delete the draft
+                return {
+                    __typename: 'OpprettSykmeldingRuleOutcome',
+                    rule: result.rule,
+                    status: result.status,
+                    message: result.message,
+                } satisfies OpprettSykmeldingRuleOutcome
+            }
+
             // Delete the draft after successful creation
             const draftClient = await getDraftClient()
             await draftClient.deleteDraft(draftId, { hpr, ident: pasientIdent })
 
-            return { sykmeldingId: result.sykmeldingId }
+            return {
+                __typename: 'OpprettetSykmeldingResult',
+                sykmeldingId: result.sykmeldingId,
+            }
         },
         synchronizeSykmelding: async (_, { id: sykmeldingId }) => {
             const [client] = await getReadyClientForResolvers()

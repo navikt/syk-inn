@@ -1,7 +1,12 @@
 import { logger } from '@navikt/next-logger'
 import * as z from 'zod/v4'
 
-import { SykInnApiSykmelding, SykInnApiSykmeldingSchema } from '@services/syk-inn-api/schema/sykmelding'
+import {
+    SykInnApiRuleOutcome,
+    SykInnApiRuleOutcomeSchema,
+    SykInnApiSykmelding,
+    SykInnApiSykmeldingSchema,
+} from '@services/syk-inn-api/schema/sykmelding'
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
 import { getServerEnv, isE2E, isLocalOrDemo } from '@utils/env'
 import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
@@ -10,7 +15,9 @@ import { wait } from '@utils/wait'
 import { OpprettSykmeldingPayload, OpprettSykmeldingPayloadSchema } from '@services/syk-inn-api/schema/opprett'
 
 export const sykInnApiService = {
-    opprettSykmelding: async (payload: OpprettSykmeldingPayload): Promise<SykInnApiSykmelding | ApiFetchErrors> => {
+    opprettSykmelding: async (
+        payload: OpprettSykmeldingPayload,
+    ): Promise<SykInnApiSykmelding | SykInnApiRuleOutcome | ApiFetchErrors> => {
         if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
             logger.warn(
                 `Is in demo, local or e2e, submitting send sykmelding values ${JSON.stringify(payload, null, 2)}`,
@@ -37,7 +44,8 @@ export const sykInnApiService = {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(OpprettSykmeldingPayloadSchema.parse(payload)),
-            responseSchema: SykInnApiSykmeldingSchema,
+            responseSchema: z.union([SykInnApiSykmeldingSchema, SykInnApiRuleOutcomeSchema]),
+            responseValidStatus: [422],
         })
     },
     getSykmelding: async (sykmeldingId: string, hpr: string): Promise<SykInnApiSykmelding | ApiFetchErrors> => {

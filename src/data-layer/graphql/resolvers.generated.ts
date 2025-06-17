@@ -187,8 +187,17 @@ export type OpprettSykmeldingInput = {
     yrkesskade?: InputMaybe<InputYrkesskade>
 }
 
-export type OpprettetSykmelding = {
-    __typename?: 'OpprettetSykmelding'
+export type OpprettSykmeldingRuleOutcome = {
+    __typename?: 'OpprettSykmeldingRuleOutcome'
+    message: Scalars['String']['output']
+    rule: Scalars['String']['output']
+    status: Scalars['String']['output']
+}
+
+export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | OpprettetSykmeldingResult
+
+export type OpprettetSykmeldingResult = {
+    __typename?: 'OpprettetSykmeldingResult'
     sykmeldingId: Scalars['String']['output']
 }
 
@@ -352,6 +361,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping of union types */
 export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
     Aktivitet: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
+    OpprettetSykmelding: OpprettSykmeldingRuleOutcome | OpprettetSykmeldingResult
 }
 
 /** Mapping of interface types */
@@ -392,7 +402,9 @@ export type ResolversTypes = {
     Mutation: ResolverTypeWrapper<{}>
     OpprettSykmeldingDraft: ResolverTypeWrapper<OpprettSykmeldingDraft>
     OpprettSykmeldingInput: OpprettSykmeldingInput
-    OpprettetSykmelding: ResolverTypeWrapper<OpprettetSykmelding>
+    OpprettSykmeldingRuleOutcome: ResolverTypeWrapper<OpprettSykmeldingRuleOutcome>
+    OpprettetSykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['OpprettetSykmelding']>
+    OpprettetSykmeldingResult: ResolverTypeWrapper<OpprettetSykmeldingResult>
     Pasient: ResolverTypeWrapper<Pasient>
     Person: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Person']>
     QueriedPerson: ResolverTypeWrapper<QueriedPerson>
@@ -437,7 +449,9 @@ export type ResolversParentTypes = {
     Mutation: {}
     OpprettSykmeldingDraft: OpprettSykmeldingDraft
     OpprettSykmeldingInput: OpprettSykmeldingInput
-    OpprettetSykmelding: OpprettetSykmelding
+    OpprettSykmeldingRuleOutcome: OpprettSykmeldingRuleOutcome
+    OpprettetSykmelding: ResolversUnionTypes<ResolversParentTypes>['OpprettetSykmelding']
+    OpprettetSykmeldingResult: OpprettetSykmeldingResult
     Pasient: Pasient
     Person: ResolversInterfaceTypes<ResolversParentTypes>['Person']
     QueriedPerson: QueriedPerson
@@ -597,9 +611,28 @@ export type OpprettSykmeldingDraftResolvers<
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
+export type OpprettSykmeldingRuleOutcomeResolvers<
+    ContextType = any,
+    ParentType extends
+        ResolversParentTypes['OpprettSykmeldingRuleOutcome'] = ResolversParentTypes['OpprettSykmeldingRuleOutcome'],
+> = {
+    message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    rule?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    status?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type OpprettetSykmeldingResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['OpprettetSykmelding'] = ResolversParentTypes['OpprettetSykmelding'],
+> = {
+    __resolveType: TypeResolveFn<'OpprettSykmeldingRuleOutcome' | 'OpprettetSykmeldingResult', ParentType, ContextType>
+}
+
+export type OpprettetSykmeldingResultResolvers<
+    ContextType = any,
+    ParentType extends
+        ResolversParentTypes['OpprettetSykmeldingResult'] = ResolversParentTypes['OpprettetSykmeldingResult'],
 > = {
     sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
@@ -728,7 +761,9 @@ export type Resolvers<ContextType = any> = {
     Konsultasjon?: KonsultasjonResolvers<ContextType>
     Mutation?: MutationResolvers<ContextType>
     OpprettSykmeldingDraft?: OpprettSykmeldingDraftResolvers<ContextType>
+    OpprettSykmeldingRuleOutcome?: OpprettSykmeldingRuleOutcomeResolvers<ContextType>
     OpprettetSykmelding?: OpprettetSykmeldingResolvers<ContextType>
+    OpprettetSykmeldingResult?: OpprettetSykmeldingResultResolvers<ContextType>
     Pasient?: PasientResolvers<ContextType>
     Person?: PersonResolvers<ContextType>
     QueriedPerson?: QueriedPersonResolvers<ContextType>

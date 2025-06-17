@@ -1,11 +1,11 @@
 import { logger } from '@navikt/next-logger'
 import { startTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { MutationResult, useMutation } from '@apollo/client'
+import { FetchResult, MutationResult, useMutation } from '@apollo/client'
 
 import { raise } from '@utils/ts'
 import { pathWithBasePath } from '@utils/url'
-import { InputAktivitet, OpprettSykmeldingDocument, OpprettSykmeldingInput } from '@queries'
+import { InputAktivitet, OpprettSykmeldingDocument, OpprettSykmeldingInput, OpprettSykmeldingMutation } from '@queries'
 import { withSpanAsync } from '@otel/otel'
 import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
 
@@ -14,8 +14,8 @@ import { useMode } from '../../providers/ModeProvider'
 import { AktivitetStep, NySykmeldingMultiStepState } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
 export function useOpprettSykmeldingMutation(): {
-    opprettSykmelding: () => Promise<unknown>
-    result: MutationResult<unknown>
+    opprettSykmelding: () => Promise<FetchResult<OpprettSykmeldingMutation>>
+    result: MutationResult<OpprettSykmeldingMutation>
 } {
     const mode = useMode()
     const draftId = useDraftId()
@@ -23,7 +23,11 @@ export function useOpprettSykmeldingMutation(): {
     const formState = useAppSelector((state) => state.nySykmeldingMultistep)
     const [mutate, result] = useMutation(OpprettSykmeldingDocument, {
         onCompleted: (data) => {
-            logger.info(`Sykmelding created successfully: ${data.opprettSykmelding.sykmeldingId}`)
+            if (data.opprettSykmelding.__typename === 'OpprettetSykmeldingResult') {
+                logger.info(`Sykmelding created successfully: ${data.opprettSykmelding.sykmeldingId}`)
+            } else if (data.opprettSykmelding.__typename === 'OpprettSykmeldingRuleOutcome') {
+                logger.info(`Sykmelding got rule hit: ${data.opprettSykmelding.rule}: ${data.opprettSykmelding.status}`)
+            }
         },
     })
 
@@ -40,7 +44,10 @@ export function useOpprettSykmeldingMutation(): {
             })
 
             startTransition(() => {
+                // Don't redirect on errors
                 if (createResult.errors != null || createResult.data == null) return
+                // Don't redirect on rule hits
+                if (createResult.data.opprettSykmelding.__typename !== 'OpprettetSykmeldingResult') return
 
                 // Nuke the history, so that browser back takes the user to a fresh form
                 window.history.replaceState(null, '', pathWithBasePath('/fhir'))
