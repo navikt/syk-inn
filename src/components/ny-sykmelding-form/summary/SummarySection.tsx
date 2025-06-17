@@ -8,6 +8,7 @@ import { SimpleReveal } from '@components/animation/Reveal'
 import { BehandlerDocument, OutcomeFragment } from '@graphql/queries.generated'
 import BehandlerSummary from '@components/ny-sykmelding-form/summary/BehandlerSummary'
 import FormValuesSummary from '@components/ny-sykmelding-form/summary/FormValuesSummary'
+import ForkastDraftButton from '@components/ny-sykmelding-form/draft/DraftActions'
 
 import { useFormStep } from '../steps/useFormStep'
 import { useAppDispatch, useAppSelector } from '../../../providers/redux/hooks'
@@ -54,13 +55,14 @@ function SummarySection(): ReactElement {
                     </Checkbox>
 
                     <div className="flex gap-3">
+                        <ForkastDraftButton />
                         <Button
                             type="button"
                             variant="secondary"
                             onClick={() => setStep('main')}
                             disabled={nySykmelding.result.loading}
                         >
-                            Forrige steg
+                            Endre
                         </Button>
                         <Button
                             type="button"

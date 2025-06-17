@@ -56,10 +56,12 @@ function ForkastDraftButton(): ReactElement {
         onCompleted: () => {
             toast('Slettet utkast')
 
-            dispatch(nySykmeldingMultistepActions.reset())
-
             const redirectPath = mode === 'FHIR' ? '/fhir' : '/ny'
-            router.replace(redirectPath)
+            router.replace(redirectPath, { scroll: true })
+
+            requestAnimationFrame(() => {
+                dispatch(nySykmeldingMultistepActions.reset())
+            })
         },
         // TODO: Update cache and remove the draftId from the normalized cache
         refetchQueries: [GetAllDraftsDocument],
