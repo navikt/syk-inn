@@ -59,7 +59,8 @@ function matchShorthand(value: string): ShorthandTuple | null {
 }
 
 function matchOffset(value: string): number | null {
-    const match = value.match(/^([+-]\d+)$/)
+    const reversed = value.endsWith('-') || value.endsWith('+') ? value.split('').reverse().join('') : value
+    const match = reversed.match(/^([+-]\d+)$/)
     if (!match) return null
 
     const offset = parseInt(match[1])

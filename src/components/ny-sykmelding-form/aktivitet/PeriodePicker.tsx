@@ -63,6 +63,26 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
         },
     })
 
+    const handleShorthandEvent = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+        if (event.key === 'Enter') {
+            const shorthand = parseShorthand(event.currentTarget.value)
+            if (shorthand) {
+                event.preventDefault()
+                event.stopPropagation()
+
+                setSelected({
+                    from: shorthand.from,
+                    to: shorthand.to,
+                })
+                /**
+                 * There might be a Aksel-bug where the datepicker does not update the error
+                 * state when a valid date is entered using setSelected
+                 */
+                setRangeError(null)
+            }
+        }
+    }
+
     const rangeDescription = getRangeDescription(periodeField?.field?.value ?? null)
 
     return (
@@ -76,23 +96,7 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
                         onBlur={periodeField.field.onBlur}
                         error={periodeField.fieldState.error?.message}
                         onKeyDown={(event) => {
-                            if (event.key === 'Enter') {
-                                const shorthand = parseShorthand(event.currentTarget.value)
-                                if (shorthand) {
-                                    event.preventDefault()
-                                    event.stopPropagation()
-
-                                    setSelected({
-                                        from: shorthand.from,
-                                        to: shorthand.to,
-                                    })
-                                    /**
-                                     * There might be a Aksel-bug where the datepicker does not update the error
-                                     * state when a valid date is entered using setSelected
-                                     */
-                                    setRangeError(null)
-                                }
-                            }
+                            handleShorthandEvent(event)
                         }}
                     />
                     <DatePicker.Input
@@ -100,6 +104,9 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
                         {...toInputProps}
                         label="Til og med"
                         onBlur={periodeField.field.onBlur}
+                        onKeyDown={(event) => {
+                            handleShorthandEvent(event)
+                        }}
                     />
                 </DatePicker>
             </div>

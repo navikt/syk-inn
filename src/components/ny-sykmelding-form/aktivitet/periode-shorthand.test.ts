@@ -50,6 +50,26 @@ describe('parseShorthand', () => {
             to: '2025-06-22',
         })
     })
+
+    it('should handle a case with offset inverse, 2- 7d', () => {
+        const value = '2- 7d'
+        const result = parseShorthand(value, staticNow)
+
+        expect(toAssertableRange(result)).toEqual({
+            from: '2025-06-05',
+            to: '2025-06-11',
+        })
+    })
+
+    it('should handle a case with offset inverse, 2+ 2u', () => {
+        const value = '2+ 2u'
+        const result = parseShorthand(value, staticNow)
+
+        expect(toAssertableRange(result)).toEqual({
+            from: '2025-06-09',
+            to: '2025-06-22',
+        })
+    })
 })
 
 function toAssertableRange(range: { from: Date; to: Date } | null): { from: string; to: string } {
