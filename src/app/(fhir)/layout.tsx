@@ -5,7 +5,6 @@ import type { Metadata } from 'next'
 
 import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
-import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
 import Providers from '../../providers/Providers'
@@ -30,7 +29,6 @@ export default function FhirLayout({ children }: PropsWithChildren): ReactElemen
             <body>
                 <Providers mode="FHIR">
                     {isLocalOrDemo && <DemoWarning />}
-                    <LoggedOutWarning />
                     {children}
                     {isLocalOrDemo && <LazyDevTools />}
                 </Providers>

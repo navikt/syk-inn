@@ -33,19 +33,20 @@ export async function getPractitioner(client: ReadyClient): Promise<FhirPractiti
     })
 }
 
-/**
- * A throwy, quick way to get the HPR number from the Practitioner resource. Assumes user is logged in.
- */
-export async function getHprFromPractitioner(client?: ReadyClient): Promise<string> {
+export async function getHprFromFhirSession(
+    client?: ReadyClient,
+): Promise<string | { error: 'NO_SESSION' | 'NO_HPR' }> {
     const readyClient = client ?? (await getReadyClient())
     if ('error' in readyClient) {
-        throw new Error(`Unable to get ready client, reason: ${readyClient.error}`)
+        logger.warn(`Unable to get ready client, reason: ${readyClient.error}`)
+        return { error: 'NO_SESSION' }
     }
 
     const practitioner = await getPractitioner(readyClient)
     const hpr = getHpr(practitioner.identifier)
     if (hpr == null) {
-        throw new Error('Unable to parse HPR from practitioner identifier')
+        logger.warn(`Practitioner does not have HPR, practitioner: ${JSON.stringify(practitioner)}`)
+        return { error: 'NO_HPR' }
     }
 
     return hpr

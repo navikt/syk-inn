@@ -17,7 +17,7 @@ const logger = pinoLogger.child({}, { msgPrefix: '[UNLEASH-TOGGLES] ' })
 
 const unleashEnvironment = bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'prod-gcp' ? 'production' : 'development'
 
-export async function getToggles(userId: string): Promise<Toggles> {
+export async function getToggles(userId: string | null): Promise<Toggles> {
     await connection()
 
     if ((EXPECTED_TOGGLES as readonly string[]).length === 0) {
@@ -43,7 +43,7 @@ export async function getToggles(userId: string): Promise<Toggles> {
         const evaluatedFlags = evaluateFlags(definitions, {
             sessionId,
             environment: unleashEnvironment,
-            userId,
+            userId: userId ?? '',
         })
         return evaluatedFlags.toggles
     } catch (e) {
