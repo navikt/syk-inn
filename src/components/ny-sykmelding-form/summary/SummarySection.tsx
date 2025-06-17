@@ -95,7 +95,11 @@ function SummarySection(): ReactElement {
                                 ville blitt godkjent hos Nav.
                             </BodyShort>
                             <BodyShort>
-                                Teknisk regelnavn: <pre>{nySykmelding.result.data.opprettSykmelding.rule}</pre>
+                                Teknisk regelnavn:{' '}
+                                <pre>
+                                    {nySykmelding.result.data.opprettSykmelding.tree} -{' '}
+                                    {nySykmelding.result.data.opprettSykmelding.rule}
+                                </pre>
                             </BodyShort>
                         </Alert>
                     </SimpleReveal>

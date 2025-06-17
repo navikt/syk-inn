@@ -19,6 +19,7 @@ mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!) 
             status
             message
             rule
+            tree
         }
     }
 }

@@ -192,6 +192,7 @@ export type OpprettSykmeldingRuleOutcome = {
     message: Scalars['String']['output']
     rule: Scalars['String']['output']
     status: Scalars['String']['output']
+    tree: Scalars['String']['output']
 }
 
 export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | OpprettetSykmeldingResult
@@ -619,6 +620,7 @@ export type OpprettSykmeldingRuleOutcomeResolvers<
     message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     rule?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     status?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    tree?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 

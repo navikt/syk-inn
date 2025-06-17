@@ -328,6 +328,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                     rule: result.rule,
                     status: result.status,
                     message: result.message,
+                    tree: result.tree,
                 } satisfies OpprettSykmeldingRuleOutcome
             }
 
