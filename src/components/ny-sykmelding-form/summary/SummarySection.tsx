@@ -1,15 +1,16 @@
-import { Alert, BodyShort, Button, Detail, FormSummary } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Checkbox, Detail, FormSummary } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
 
 import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 
 import { useFormStep } from '../steps/useFormStep'
-import { useAppSelector } from '../../../providers/redux/hooks'
+import { useAppDispatch, useAppSelector } from '../../../providers/redux/hooks'
 import { useOpprettSykmeldingMutation } from '../useOpprettSykmeldingMutation'
 import {
     AktivitetStep,
     DiagnoseStep,
+    nySykmeldingMultistepActions,
     PasientStep,
     TilbakedateringStep,
 } from '../../../providers/redux/reducers/ny-sykmelding-multistep'
@@ -20,6 +21,8 @@ function SummarySection(): ReactElement {
     const [, setStep] = useFormStep()
     const formState = useAppSelector((state) => state.nySykmeldingMultistep)
     const nySykmelding = useOpprettSykmeldingMutation()
+
+    const dispatch = useAppDispatch()
 
     return (
         <div className="flex flex-col gap-6 mt-8">
@@ -71,6 +74,13 @@ function SummarySection(): ReactElement {
                     </FormSummary.Answer>
                 </FormSummary.Answers>
             </FormSummary>
+
+            <Checkbox
+                value={formState.skalSkjermes ?? false}
+                onChange={(e) => dispatch(nySykmeldingMultistepActions.setSkalSkjermes(e.target.checked))}
+            >
+                <option>Pasienten skal skjermes for medisinske opplysninger</option>
+            </Checkbox>
 
             <div className="w-full flex justify-end gap-3 mt-16">
                 <Button
