@@ -18,6 +18,49 @@ import {
 import { expectGraphQLRequest } from './utils/assertions'
 import { getDraftId } from './utils/request-utils'
 
+test('"skal skjermes" should be part of payload if checked', async ({ page }) => {
+    await launchWithMock(page)
+    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await fillPeriodeRelative({
+        type: '100%',
+        days: 3,
+    })(page)
+
+    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+
+    await nextStep()(page)
+
+    await page.getByRole('checkbox', { name: 'Pasienten skal skjermes for medisinske opplysninger' }).check()
+    const request = await submitSykmelding()(page)
+
+    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+        draftId: getDraftId(page) ?? 'missing',
+        values: {
+            hoveddiagnose: { system: 'ICPC2', code: 'P74' },
+            bidiagnoser: [],
+            aktivitet: [
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: today(),
+                    tom: inDays(3),
+                    aktivitetIkkeMulig: { dummy: true },
+                    avventende: null,
+                    gradert: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
+                },
+            ],
+            meldinger: { tilNav: null, tilArbeidsgiver: null },
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            arbeidsgiver: null,
+            tilbakedatering: null,
+            pasientenSkalSkjermes: true,
+        },
+    })
+})
+
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
