@@ -36,7 +36,7 @@ export function getHpr(identifiers: GeneralIdentifier | GeneralIdentifier[]): st
     return hprIdentifier.value
 }
 
-export function practitionerToBehandler(practitioner: FhirPractitioner): Behandler {
+export function practitionerToBehandler(practitioner: FhirPractitioner): Pick<Behandler, 'hpr' | 'navn'> {
     const hpr = getHpr(practitioner.identifier)
     if (hpr == null) {
         // TODO: Don't log name? :shrug:

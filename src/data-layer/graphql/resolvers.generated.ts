@@ -51,7 +51,9 @@ export type AvventendeInput = {
 export type Behandler = {
     __typename?: 'Behandler'
     hpr: Scalars['String']['output']
+    legekontorTlf: Scalars['String']['output']
     navn: Scalars['String']['output']
+    orgnummer: Scalars['String']['output']
 }
 
 export type Behandlingsdager = FomTom & {
@@ -503,7 +505,9 @@ export type BehandlerResolvers<
     ParentType extends ResolversParentTypes['Behandler'] = ResolversParentTypes['Behandler'],
 > = {
     hpr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    legekontorTlf?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 

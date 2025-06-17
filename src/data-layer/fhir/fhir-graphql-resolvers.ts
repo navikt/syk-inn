@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
-import { OpprettSykmeldingRuleOutcome, QueriedPerson, Resolvers, Sykmelding } from '@resolvers'
+import { Behandler, OpprettSykmeldingRuleOutcome, QueriedPerson, Resolvers, Sykmelding } from '@resolvers'
 import { createSchema } from '@graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@fhir/mappers/diagnosis'
@@ -29,11 +29,39 @@ import { getReadyClientForResolvers } from './smart/smart-client'
 export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
     Query: {
         behandler: async () => {
-            const [, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
+            const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
+
+            const encounter = await client.request(`/Encounter/${client.encounter}`)
+            if ('error' in encounter) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const organization = await client.request(
+                `/${encounter.serviceProvider.reference}` as `/Organization/${string}`,
+            )
+            if ('error' in organization) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const orgnummer = getOrganisasjonsnummerFromFhir(organization)
+            if (orgnummer == null) {
+                logger.error('Organization without valid orgnummer')
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const legekontorTlf = getOrganisasjonstelefonnummerFromFhir(organization)
+            if (legekontorTlf == null) {
+                logger.error('Organization without valid phone number')
+                throw new GraphQLError('API_ERROR')
+            }
 
             await wait(700)
 
-            return practitionerToBehandler(practitioner)
+            return {
+                ...practitionerToBehandler(practitioner),
+                orgnummer,
+                legekontorTlf,
+            } satisfies Behandler
         },
         pasient: async () => {
             const [client] = await getReadyClientForResolvers()

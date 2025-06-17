@@ -49,7 +49,9 @@ export type AvventendeInput = {
 export type Behandler = {
     __typename?: 'Behandler'
     hpr: Scalars['String']['output']
+    legekontorTlf: Scalars['String']['output']
     navn: Scalars['String']['output']
+    orgnummer: Scalars['String']['output']
 }
 
 export type Behandlingsdager = FomTom & {
