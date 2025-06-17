@@ -59,6 +59,7 @@ export type NySykmeldingMultiStepState = {
     diagnose: DiagnoseStep | null
     meldinger: MeldingerStep | null
     andreSporsmal: AndreSporsmalStep | null
+    skalSkjermes: boolean | null
 }
 
 const initialState: NySykmeldingMultiStepState = {
@@ -68,6 +69,7 @@ const initialState: NySykmeldingMultiStepState = {
     diagnose: null,
     meldinger: null,
     andreSporsmal: null,
+    skalSkjermes: null,
 }
 
 const nySykmeldingMultistep = createSlice({
@@ -92,6 +94,9 @@ const nySykmeldingMultistep = createSlice({
             state.diagnose = action.payload.diagnose
             state.meldinger = action.payload.meldinger
             state.andreSporsmal = action.payload.andreSporsmal
+        },
+        setSkalSkjermes(state, action: PayloadAction<boolean | null>) {
+            state.skalSkjermes = action.payload
         },
         reset() {
             return initialState

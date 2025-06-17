@@ -102,8 +102,7 @@ function formStateToOpprettSykmeldingInput(formState: NySykmeldingMultiStepState
                   begrunnelse: formState.tilbakedatering.grunn,
               }
             : null,
-        // TODO: Implement in summary step (not form, see design)
-        pasientenSkalSkjermes: false,
+        pasientenSkalSkjermes: formState.skalSkjermes ?? false,
     }
 }
 
