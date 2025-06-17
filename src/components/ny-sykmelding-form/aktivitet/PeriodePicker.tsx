@@ -8,12 +8,13 @@ import { dateOnly } from '@utils/date'
 import { cn } from '@utils/tw'
 import { parseShorthand } from '@components/ny-sykmelding-form/aktivitet/periode-shorthand'
 
-import { PeriodeField, useController } from '../form'
+import { PeriodeField, useController, useFormContext } from '../form'
 
 import styles from './PeriodePicker.module.css'
 
 function PeriodePicker({ index }: { index: number }): ReactElement {
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
+    const { clearErrors } = useFormContext()
     const periodeField = useController({
         name: `perioder.${index}.periode` as const,
         rules: {
@@ -74,11 +75,18 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
                     from: shorthand.from,
                     to: shorthand.to,
                 })
+
                 /**
                  * There might be a Aksel-bug where the datepicker does not update the error
                  * state when a valid date is entered using setSelected
                  */
                 setRangeError(null)
+                requestAnimationFrame(() => {
+                    /**
+                     * For some reason we have to manually trigger the validation in RHF as well
+                     */
+                    clearErrors(`perioder.${index}.periode`)
+                })
             }
         }
     }
