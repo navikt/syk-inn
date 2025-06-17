@@ -97,4 +97,5 @@ export const SykInnApiRuleOutcomeSchema = z.object({
     status: z.string(),
     message: z.string(),
     rule: z.string(),
+    tree: z.string(),
 })

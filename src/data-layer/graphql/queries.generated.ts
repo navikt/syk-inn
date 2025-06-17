@@ -190,6 +190,7 @@ export type OpprettSykmeldingRuleOutcome = {
     message: Scalars['String']['output']
     rule: Scalars['String']['output']
     status: Scalars['String']['output']
+    tree: Scalars['String']['output']
 }
 
 export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | OpprettetSykmeldingResult
@@ -460,7 +461,7 @@ export type OpprettSykmeldingMutationVariables = Exact<{
 export type OpprettSykmeldingMutation = {
     __typename?: 'Mutation'
     opprettSykmelding:
-        | { __typename?: 'OpprettSykmeldingRuleOutcome'; status: string; message: string; rule: string }
+        | { __typename?: 'OpprettSykmeldingRuleOutcome'; status: string; message: string; rule: string; tree: string }
         | { __typename?: 'OpprettetSykmeldingResult'; sykmeldingId: string }
 }
 
@@ -1569,6 +1570,7 @@ export const OpprettSykmeldingDocument = {
                                             { kind: 'Field', name: { kind: 'Name', value: 'status' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'message' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'rule' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'tree' } },
                                         ],
                                     },
                                 },

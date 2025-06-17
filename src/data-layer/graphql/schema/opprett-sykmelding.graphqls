@@ -4,6 +4,7 @@ type OpprettSykmeldingRuleOutcome {
     status: String!
     message: String!
     rule: String!
+    tree: String!
 }
 
 type OpprettetSykmeldingResult {
