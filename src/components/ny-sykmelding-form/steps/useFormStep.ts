@@ -6,6 +6,7 @@ export type StepSection = (typeof formSteps)[number]
 
 const stepsParser = parseAsStringLiteral(formSteps).withDefault('main').withOptions({
     history: 'push',
+    scroll: true,
 })
 
 export function useFormStep(): UseQueryStateReturn<

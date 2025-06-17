@@ -12,7 +12,14 @@ query AllSykmeldinger {
 
 mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!) {
     opprettSykmelding(draftId: $draftId, values: $values) {
-        sykmeldingId
+        ... on OpprettetSykmeldingResult {
+            sykmeldingId
+        }
+        ... on OpprettSykmeldingRuleOutcome {
+            status
+            message
+            rule
+        }
     }
 }
 
