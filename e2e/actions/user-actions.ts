@@ -62,6 +62,10 @@ export function fillPeriodeRelative({
         await periodeRegion.getByRole('textbox', { name: 'Fra og med' }).fill(inputDate(fom))
         await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(tom))
 
+        if (typeof type === 'string' && type === '100%') {
+            await page.getByRole('combobox', { name: 'Mulighet for arbeid' }).selectOption('Aktivitet ikke mulig')
+        }
+
         if (typeof type !== 'string' && 'grad' in type) {
             await page.getByRole('combobox', { name: 'Mulighet for arbeid' }).selectOption('Gradert sykmelding')
 

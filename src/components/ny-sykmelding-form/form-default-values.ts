@@ -203,8 +203,8 @@ export function getDefaultPeriode(): AktivitetsPeriode {
             tom: '',
         },
         aktivitet: {
-            type: 'AKTIVITET_IKKE_MULIG',
-            grad: null,
+            type: 'GRADERT',
+            grad: '60',
         },
     }
 }
