@@ -102,6 +102,15 @@ function FormDraftSync(): null {
         debouncedSaveDraft.call(formValues, draftResult.data?.saveDraft.values as NySykmeldingMainFormValues | null)
     }, [isFormDirty, formValues, debouncedSaveDraft, draftResult.data])
 
+    useEffect(() => {
+        /**
+         * This effect exists solely to ensure that the debounced function is flushed when the component is unmounted.
+         */
+        return () => {
+            debouncedSaveDraft.flush()
+        }
+    }, [debouncedSaveDraft])
+
     return null
 }
 
