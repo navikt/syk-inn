@@ -53,6 +53,18 @@ export function createInMemoryValkey(): Valkey {
                         index.add(value)
                         store.set(key, { values: Array.from(index) })
                     }
+                case 'srem':
+                    return async (key: string, value: string) => {
+                        const index = indexes.get(key)
+                        if (!index) return 0
+
+                        if (index.has(value)) {
+                            index.delete(value)
+                            store.set(key, { values: Array.from(index) })
+                            return 1
+                        }
+                        return 0
+                    }
                 case 'sismember':
                     return async (key: string, value: string) => {
                         const index = indexes.get(key)

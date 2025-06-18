@@ -1,6 +1,7 @@
 import * as R from 'remeda'
 import { differenceInSeconds, endOfDay } from 'date-fns'
 import { logger } from '@navikt/next-logger'
+import Valkey from 'iovalkey'
 
 import { getValkeyClient } from '@services/valkey/client'
 
@@ -31,8 +32,8 @@ type DraftClient = {
     getDrafts: (owner: DraftOwnership) => Promise<DraftEntry[]>
 }
 
-export async function getDraftClient(): Promise<DraftClient> {
-    const valkey = await getValkeyClient()
+export async function getDraftClient(valkey?: Valkey): Promise<DraftClient> {
+    valkey = !valkey ? await getValkeyClient() : valkey
 
     return {
         saveDraft: async (draftId, owner, values) => {
