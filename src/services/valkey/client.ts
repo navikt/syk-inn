@@ -23,7 +23,7 @@ function initializeValkey(): Valkey {
     return client
 }
 
-function createInMemoryValkey(): Valkey {
+export function createInMemoryValkey(): Valkey {
     const store = new Map<string, Record<string, unknown>>()
     const indexes = new Map<string, Set<string>>()
 
@@ -56,7 +56,9 @@ function createInMemoryValkey(): Valkey {
                 case 'sismember':
                     return async (key: string, value: string) => {
                         const index = indexes.get(key)
-                        return index ? index.has(value) : false
+                        if (!index) return 0
+
+                        return index.has(value) ? 1 : 0
                     }
                 case 'smembers':
                     return async (key: string) => {
