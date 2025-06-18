@@ -17,6 +17,11 @@ type AutoPatientStep = {
 
 export type PasientStep = ManualPatientStep | AutoPatientStep
 
+export type ArbeidsforholdStep = {
+    harFlereArbeidsforhold: boolean | null
+    sykmeldtFraArbeidsforhold: string | null
+}
+
 export type AktivitetStep =
     | {
           type: 'AKTIVITET_IKKE_MULIG'
@@ -54,6 +59,7 @@ export type AndreSporsmalStep = {
 
 export type NySykmeldingMultiStepState = {
     pasient: PasientStep | null
+    arbeidsforhold: ArbeidsforholdStep | null
     aktiviteter: AktivitetStep[] | null
     tilbakedatering: TilbakedateringStep | null
     diagnose: DiagnoseStep | null
@@ -64,6 +70,7 @@ export type NySykmeldingMultiStepState = {
 
 const initialState: NySykmeldingMultiStepState = {
     pasient: null,
+    arbeidsforhold: null,
     aktiviteter: null,
     tilbakedatering: null,
     diagnose: null,
@@ -82,6 +89,7 @@ const nySykmeldingMultistep = createSlice({
         completeMainStep(
             state,
             action: PayloadAction<{
+                arbeidsforhold: ArbeidsforholdStep | null
                 diagnose: DiagnoseStep
                 aktiviteter: AktivitetStep[]
                 tilbakedatering: TilbakedateringStep | null
@@ -89,6 +97,7 @@ const nySykmeldingMultistep = createSlice({
                 andreSporsmal: AndreSporsmalStep
             }>,
         ) {
+            state.arbeidsforhold = action.payload.arbeidsforhold
             state.aktiviteter = action.payload.aktiviteter
             state.tilbakedatering = action.payload.tilbakedatering
             state.diagnose = action.payload.diagnose

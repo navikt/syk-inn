@@ -19,7 +19,7 @@ input OpprettSykmeldingInput {
     meldinger: InputMeldinger!
     svangerskapsrelatert: Boolean!
     yrkesskade: InputYrkesskade
-    arbeidsgiver: InputArbeidsgiver
+    arbeidsforhold: InputArbeidsforhold
     tilbakedatering: InputTilbakedatering
 }
 
@@ -38,7 +38,7 @@ input InputMeldinger {
     tilArbeidsgiver: String
 }
 
-input InputArbeidsgiver {
+input InputArbeidsforhold {
     harFlere: Boolean!
     arbeidsgivernavn: String!
 }

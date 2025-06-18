@@ -15,6 +15,7 @@ import { dateOnly } from '@utils/date'
 import {
     AktivitetStep,
     AndreSporsmalStep,
+    ArbeidsforholdStep,
     MeldingerStep,
     NySykmeldingMultiStepState,
     TilbakedateringStep,
@@ -40,6 +41,7 @@ export function createDefaultValues({
     serverSuggestions,
 }: CreateDefaultValuesData): DefaultValues<NySykmeldingMainFormValues> {
     return {
+        arbeidsforhold: toInitialArbeidsforhold(valuesInState.arbeidsforhold, draftValues?.arbeidsforhold ?? null),
         perioder: toInitialPerioder(draftValues?.perioder ?? null, valuesInState.aktiviteter),
         diagnoser: {
             hoved: toInitialDiagnose(
@@ -51,6 +53,30 @@ export function createDefaultValues({
         tilbakedatering: toInitialTilbakedatering(valuesInState.tilbakedatering, draftValues?.tilbakedatering ?? null),
         meldinger: toInitialMeldinger(valuesInState.meldinger, draftValues?.meldinger ?? null),
         andreSporsmal: toAndreSporsmal(valuesInState.andreSporsmal, draftValues),
+    }
+}
+
+function toInitialArbeidsforhold(
+    valuesInState: ArbeidsforholdStep | null,
+    draftValues: DraftValues['arbeidsforhold'] | null,
+): NySykmeldingMainFormValues['arbeidsforhold'] {
+    if (valuesInState != null) {
+        return {
+            harFlereArbeidsforhold: booleanOrNullToJaEllerNei(valuesInState.harFlereArbeidsforhold),
+            sykmeldtFraArbeidsforhold: valuesInState.sykmeldtFraArbeidsforhold ?? null,
+        }
+    }
+
+    if (draftValues != null) {
+        return {
+            harFlereArbeidsforhold: draftValues.harFlereArbeidsforhold ?? null,
+            sykmeldtFraArbeidsforhold: draftValues.sykmeldtFraArbeidsforhold ?? null,
+        }
+    }
+
+    return {
+        harFlereArbeidsforhold: null,
+        sykmeldtFraArbeidsforhold: null,
     }
 }
 
@@ -207,4 +233,9 @@ export function getDefaultPeriode(): AktivitetsPeriode {
             grad: null,
         },
     }
+}
+
+function booleanOrNullToJaEllerNei(value: boolean | null): 'JA' | 'NEI' | null {
+    if (value === null) return null
+    return value ? 'JA' : 'NEI'
 }

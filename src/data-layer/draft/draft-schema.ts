@@ -3,6 +3,10 @@ import { logger } from '@navikt/next-logger'
 
 export type DraftValues = z.infer<typeof DraftValuesSchema>
 export const DraftValuesSchema = z.object({
+    arbeidsforhold: z.object({
+        harFlereArbeidsforhold: z.enum(['JA', 'NEI']).nullable(),
+        sykmeldtFraArbeidsforhold: z.string().nullable(),
+    }),
     perioder: z
         .array(
             z.object({

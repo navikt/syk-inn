@@ -49,6 +49,10 @@ export function useSaveDraft(opts: {
 
 export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): DraftValues {
     return {
+        arbeidsforhold: {
+            harFlereArbeidsforhold: values.arbeidsforhold.harFlereArbeidsforhold,
+            sykmeldtFraArbeidsforhold: values.arbeidsforhold.sykmeldtFraArbeidsforhold ?? null,
+        },
         perioder: values.perioder.map((periode) => ({
             type: periode.aktivitet.type,
             fom: periode.periode.fom,

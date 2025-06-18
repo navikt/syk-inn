@@ -44,9 +44,15 @@ type MeldingerField = {
     tilArbeidsgiver: string | null
 }
 
+type ArbeidsforholdField = {
+    harFlereArbeidsforhold: 'JA' | 'NEI' | null
+    sykmeldtFraArbeidsforhold: string | null
+}
+
 export type AndreSporsmalValues = 'svangerskapsrelatert' | 'yrkesskade'
 
 export type NySykmeldingMainFormValues = {
+    arbeidsforhold: ArbeidsforholdField
     perioder: AktivitetsPeriode[]
     diagnoser: {
         hoved: DiagnoseSuggestion | null

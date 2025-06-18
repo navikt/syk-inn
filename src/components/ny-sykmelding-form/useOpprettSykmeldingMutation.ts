@@ -85,6 +85,10 @@ function formStateToOpprettSykmeldingInput(formState: NySykmeldingMultiStepState
     }
 
     return {
+        arbeidsforhold: {
+            harFlere: formState.arbeidsforhold?.harFlereArbeidsforhold ?? false,
+            arbeidsgivernavn: formState.arbeidsforhold?.sykmeldtFraArbeidsforhold ?? '',
+        },
         hoveddiagnose: {
             system: formState.diagnose.hoved.system,
             code: formState.diagnose.hoved.code,
@@ -105,8 +109,6 @@ function formStateToOpprettSykmeldingInput(formState: NySykmeldingMultiStepState
             // TODO: Implement in form
             skadedato: null,
         },
-        // TODO: Implement in form
-        arbeidsgiver: null,
         tilbakedatering: formState.tilbakedatering?.fom
             ? {
                   startdato: formState.tilbakedatering.fom,

@@ -11,6 +11,7 @@ import { createDefaultValues } from '@components/ny-sykmelding-form/form-default
 import FormSection from '@components/form/form-section/FormSection'
 import ForkastDraftButton, { LagreDraftButton } from '@components/ny-sykmelding-form/draft/DraftActions'
 import FormSheet from '@components/form/form-section/FormSheet'
+import ArbeidsforholdSection from '@components/ny-sykmelding-form/arbeidsgiver/ArbeidsforholdSection'
 
 import { useAppDispatch, useAppSelector } from '../../providers/redux/hooks'
 import { DraftValues } from '../../data-layer/draft/draft-schema'
@@ -49,6 +50,9 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                 <FormDraftSync />
                 <form onSubmit={form.handleSubmit(onSubmit)} className={styles.formGrid}>
                     <FormSheet className="row-span-3">
+                        <FormSection title="Arbeidsgiver">
+                            <ArbeidsforholdSection />
+                        </FormSection>
                         <FormSection title="Periode">
                             <AktivitetSection />
                         </FormSection>
@@ -94,6 +98,10 @@ function useHandleFormSubmit() {
     return async (values: NySykmeldingMainFormValues): Promise<void> => {
         dispatch(
             nySykmeldingMultistepActions.completeMainStep({
+                arbeidsforhold: {
+                    harFlereArbeidsforhold: jaEllerNeiToBoolean(values.arbeidsforhold.harFlereArbeidsforhold),
+                    sykmeldtFraArbeidsforhold: values.arbeidsforhold.sykmeldtFraArbeidsforhold,
+                },
                 diagnose: {
                     hoved: values.diagnoser.hoved ?? raise("Can't submit step without hoveddiagnose"),
                     bi: [],
@@ -121,6 +129,11 @@ function useHandleFormSubmit() {
 
         await setStep('summary')
     }
+}
+
+function jaEllerNeiToBoolean(value: 'JA' | 'NEI' | null): boolean {
+    if (value === null) raise('Value cannot be null')
+    return value === 'JA'
 }
 
 function formAktivitetToStepAktivitet(value: AktivitetsPeriode): AktivitetStep {

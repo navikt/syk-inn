@@ -13,12 +13,16 @@ import {
     previousStep,
     saveDraft,
     verifySignerendeBehandler,
+    fillArbeidsforhold,
 } from './actions/user-actions'
 import { userInteractionsGroup } from './utils/actions'
 
 const fillAllTheValues = userInteractionsGroup(
     launchWithMock,
     initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' }),
+    fillArbeidsforhold({
+        harFlereArbeidsforhold: false,
+    }),
     fillPeriodeRelative({
         type: { grad: 65 },
         fromRelative: -9,

@@ -31,6 +31,18 @@ function FormValuesSummary({ className }: Props): ReactElement {
                 </FormSummary.Header>
                 <FormSummary.Answers>
                     <PatientSummaryAnswers pasient={formState.pasient} />
+                    <FormSummary.Answer>
+                        <FormSummary.Label>Har pasienten flere arbeidsforhold?</FormSummary.Label>
+                        <FormSummary.Value>
+                            {formState.arbeidsforhold?.harFlereArbeidsforhold ? 'Ja' : 'Nei'}
+                        </FormSummary.Value>
+                    </FormSummary.Answer>
+                    {formState.arbeidsforhold?.harFlereArbeidsforhold && (
+                        <FormSummary.Answer>
+                            <FormSummary.Label>Hvilke arbeidsforhold skal pasienten sykmeldes fra?</FormSummary.Label>
+                            <FormSummary.Value>{formState.arbeidsforhold?.sykmeldtFraArbeidsforhold}</FormSummary.Value>
+                        </FormSummary.Answer>
+                    )}
                     <AktivitetSummaryAnswers aktiviteter={formState.aktiviteter} />
                     {formState.tilbakedatering && (
                         <TilbakedateringSummaryAnswers tilbakedatering={formState.tilbakedatering} />

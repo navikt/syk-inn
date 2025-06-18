@@ -27,10 +27,10 @@ export function resolverInputToSykInnApiPayload(
                       skadedato: values.yrkesskade.skadedato ?? null,
                   }
                 : null,
-            arbeidsgiver: values.arbeidsgiver?.harFlere
+            arbeidsgiver: values.arbeidsforhold?.harFlere
                 ? {
                       harFlere: true,
-                      arbeidsgivernavn: values.arbeidsgiver.arbeidsgivernavn,
+                      arbeidsgivernavn: values.arbeidsforhold.arbeidsgivernavn,
                   }
                 : null,
             tilbakedatering: values.tilbakedatering

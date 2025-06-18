@@ -114,7 +114,7 @@ export type InputAktivitet = {
     type: AktivitetType
 }
 
-export type InputArbeidsgiver = {
+export type InputArbeidsforhold = {
     arbeidsgivernavn: Scalars['String']['input']
     harFlere: Scalars['Boolean']['input']
 }
@@ -179,7 +179,7 @@ export type OpprettSykmeldingDraft = {
 
 export type OpprettSykmeldingInput = {
     aktivitet: Array<InputAktivitet>
-    arbeidsgiver?: InputMaybe<InputArbeidsgiver>
+    arbeidsforhold?: InputMaybe<InputArbeidsforhold>
     bidiagnoser: Array<InputDiagnose>
     hoveddiagnose: InputDiagnose
     meldinger: InputMeldinger
@@ -394,7 +394,7 @@ export type ResolversTypes = {
     Gradert: ResolverTypeWrapper<Gradert>
     GradertInput: GradertInput
     InputAktivitet: InputAktivitet
-    InputArbeidsgiver: InputArbeidsgiver
+    InputArbeidsforhold: InputArbeidsforhold
     InputDiagnose: InputDiagnose
     InputMeldinger: InputMeldinger
     InputTilbakedatering: InputTilbakedatering
@@ -441,7 +441,7 @@ export type ResolversParentTypes = {
     Gradert: Gradert
     GradertInput: GradertInput
     InputAktivitet: InputAktivitet
-    InputArbeidsgiver: InputArbeidsgiver
+    InputArbeidsforhold: InputArbeidsforhold
     InputDiagnose: InputDiagnose
     InputMeldinger: InputMeldinger
     InputTilbakedatering: InputTilbakedatering
