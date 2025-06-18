@@ -12,6 +12,7 @@ import {
     nextStep,
     previousStep,
     saveDraft,
+    verifySignerendeBehandler,
 } from './actions/user-actions'
 import { userInteractionsGroup } from './utils/actions'
 
@@ -47,6 +48,8 @@ test('filling out the form, and returning to main step, should keep all values',
     await nextStep()(page)
 
     await expect(page.getByRole('heading', { name: 'Oppsummering sykmelding' })).toBeVisible()
+
+    await verifySignerendeBehandler()(page)
 
     await previousStep()(page)
 

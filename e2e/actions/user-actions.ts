@@ -167,6 +167,13 @@ export function submitSykmelding() {
     }
 }
 
+export function verifySignerendeBehandler() {
+    return async (page: Page) => {
+        await expect(page.getByText(/HPR(.*)9144889/), 'Correct HPR').toBeVisible()
+        await expect(page.getByText(/Organisasjonsnummer(.*)123456789/), 'Correct Org').toBeVisible()
+    }
+}
+
 export function nextStep() {
     return async (page: Page) => {
         const nextButton = page.getByRole('button', { name: 'Neste steg' })

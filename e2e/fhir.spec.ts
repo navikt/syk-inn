@@ -14,6 +14,7 @@ import {
     nextStep,
     fillTilbakedatering,
     verifySummaryPage,
+    verifySignerendeBehandler,
 } from './actions/user-actions'
 import { expectGraphQLRequest } from './utils/assertions'
 import { getDraftId } from './utils/request-utils'
@@ -30,6 +31,7 @@ test('"skal skjermes" should be part of payload if checked', async ({ page }) =>
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
     await nextStep()(page)
+    await verifySignerendeBehandler()(page)
 
     await page.getByRole('checkbox', { name: 'Pasienten skal skjermes for medisinske opplysninger' }).check()
     const request = await submitSykmelding()(page)
@@ -73,6 +75,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
     await nextStep()(page)
+    await verifySignerendeBehandler()(page)
 
     const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
@@ -117,6 +120,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
     await editHoveddiagnose({ search: 'D290', select: /D290/ })(diagnoseRegion)
 
     await nextStep()(page)
+    await verifySignerendeBehandler()(page)
 
     const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
@@ -160,6 +164,7 @@ test('can submit gradert sykmelding', async ({ page }) => {
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
     await nextStep()(page)
+    await verifySignerendeBehandler()(page)
 
     const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
@@ -210,6 +215,7 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
     await nextStep()(page)
+    await verifySignerendeBehandler()(page)
 
     await verifySummaryPage([
         {

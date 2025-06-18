@@ -62,7 +62,7 @@ function SummarySection(): ReactElement {
                             onClick={() => setStep('main')}
                             disabled={nySykmelding.result.loading}
                         >
-                            Endre
+                            Forrige steg
                         </Button>
                         <Button
                             type="button"
