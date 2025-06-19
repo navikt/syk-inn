@@ -1,7 +1,7 @@
 import { trace, context, Span } from '@opentelemetry/api'
 
 export async function spanAsync<Result>(name: string, fn: (span: Span) => Promise<Result>): Promise<Result> {
-    const tracer = trace.getTracer('@navikt/smart-on-fhir')
+    const tracer = trace.getTracerProvider().getTracer('')
     const span = tracer.startSpan(`SmartClient.${name}`)
 
     return context.with(trace.setSpan(context.active(), span), async () => fn(span).finally(() => span.end()))
