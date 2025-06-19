@@ -15,8 +15,7 @@ export const getFaro = lazyNextleton('faro-a', (): Faro | null => {
         app: {
             name: APP_NAME,
             environment: bundledEnv.NEXT_PUBLIC_RUNTIME_ENV,
-            // TODO: få commit hash fra serveren eller noe
-            version: undefined,
+            version: bundledEnv.NEXT_PUBLIC_VERSION ?? 'unknown',
         },
         instrumentations: [
             ...getWebInstrumentations({

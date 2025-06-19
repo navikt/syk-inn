@@ -111,6 +111,8 @@ jobs:
         run: |
           cp .nais/envs/.env.demo .env.production
           yarn build:e2e
+        env:
+          NEXT_PUBLIC_VERSION: ${{ github.sha }}
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
