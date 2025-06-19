@@ -204,7 +204,7 @@ export function getDefaultPeriode(): AktivitetsPeriode {
         },
         aktivitet: {
             type: 'GRADERT',
-            grad: '60',
+            grad: null,
         },
     }
 }
