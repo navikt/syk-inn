@@ -19,6 +19,7 @@ import {
 
 import { CompleteSession } from '../storage/schema'
 import { logger } from '../logger'
+import { spanAsync } from '../otel'
 
 import { IdToken, IdTokenSchema } from './launch/token-schema'
 import { fetchSmartConfiguration, getJwkSet } from './well-known/smart-configuration'
@@ -63,26 +64,32 @@ export class ReadyClient {
             `Current users issuer: ${this._session.issuer}, looking for well known at /.well-known/smart-configuration`,
         )
 
-        const smartConfig = await fetchSmartConfiguration(this._session.server)
-        if ('error' in smartConfig) {
-            logger.error(`Failed to fetch smart configuration: ${smartConfig.error}`)
-            return false
-        }
+        return spanAsync('validate', async (span) => {
+            const smartConfig = await fetchSmartConfiguration(this._session.server)
+            if ('error' in smartConfig) {
+                logger.error(`Failed to fetch smart configuration: ${smartConfig.error}`)
+                return false
+            }
 
-        logger.info(`Fetched well known configuration from session.issuer, jwks_uri: ${smartConfig['jwks_uri']}`)
-        try {
-            await jwtVerify(this._session.accessToken, getJwkSet(smartConfig['jwks_uri']), {
-                issuer: this._session.issuer,
-                algorithms: ['RS256'],
-            })
+            logger.info(`Fetched well known configuration from session.issuer, jwks_uri: ${smartConfig['jwks_uri']}`)
+            try {
+                return await spanAsync('jwt-verify', async () => {
+                    await jwtVerify(this._session.accessToken, getJwkSet(smartConfig['jwks_uri']), {
+                        issuer: this._session.issuer,
+                        algorithms: ['RS256'],
+                    })
 
-            logger.info('Token verified!')
-            return true
-        } catch (e) {
-            logger.error(new Error(`Token validation failed, ${(e as { code: string })?.code ?? 'UNKNOWN'}`))
+                    logger.info('Token verified!')
+                    return true
+                })
+            } catch (e) {
+                logger.error(new Error(`Token validation failed, ${(e as { code: string })?.code ?? 'UNKNOWN'}`))
 
-            return false
-        }
+                if (e instanceof Error) span.recordException(e)
+
+                return false
+            }
+        })
     }
 
     public async create(
