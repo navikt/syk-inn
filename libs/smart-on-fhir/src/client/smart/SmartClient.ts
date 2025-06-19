@@ -4,6 +4,7 @@ import { safeSmartStorage, SafeSmartStorage, SmartStorage, SmartStorageErrors } 
 import { assertNotBrowser, removeTrailingSlash } from '../utils'
 import { logger } from '../logger'
 import { CompleteSession, InitialSession } from '../storage/schema'
+import { spanAsync } from '../otel'
 
 import { fetchSmartConfiguration, SmartConfigurationErrors } from './well-known/smart-configuration'
 import { fetchTokenExchange, TokenExchangeErrors } from './launch/token'
@@ -46,42 +47,44 @@ export class SmartClient {
         iss: string
         launch: string
     }): Promise<Launch | LaunchError | SmartConfigurationErrors> {
-        const smartConfig = await fetchSmartConfiguration(params.iss)
-        if ('error' in smartConfig) {
-            return { error: smartConfig.error }
-        }
+        return spanAsync('SmartClient.launch', async () => {
+            const smartConfig = await fetchSmartConfiguration(params.iss)
+            if ('error' in smartConfig) {
+                return { error: smartConfig.error }
+            }
 
-        /**
-         * PKCE STEP 1
-         * Create a cryptographically-random code_verifier
-         */
-        const codeVerifier = randomPKCECodeVerifier()
-        const state = randomState()
-        const initialSessionPayload: InitialSession = {
-            server: removeTrailingSlash(params.iss),
-            issuer: smartConfig.issuer,
-            authorizationEndpoint: smartConfig.authorization_endpoint,
-            tokenEndpoint: smartConfig.token_endpoint,
-            codeVerifier: codeVerifier,
-            state: state,
-        }
+            /**
+             * PKCE STEP 1
+             * Create a cryptographically-random code_verifier
+             */
+            const codeVerifier = randomPKCECodeVerifier()
+            const state = randomState()
+            const initialSessionPayload: InitialSession = {
+                server: removeTrailingSlash(params.iss),
+                issuer: smartConfig.issuer,
+                authorizationEndpoint: smartConfig.authorization_endpoint,
+                tokenEndpoint: smartConfig.token_endpoint,
+                codeVerifier: codeVerifier,
+                state: state,
+            }
 
-        await this._storage.set(params.sessionId, initialSessionPayload)
+            await this._storage.set(params.sessionId, initialSessionPayload)
 
-        const authUrl = await buildAuthUrl(
-            {
-                ...initialSessionPayload,
-                launch: params.launch,
-            },
-            this._config,
-        )
+            const authUrl = await buildAuthUrl(
+                {
+                    ...initialSessionPayload,
+                    launch: params.launch,
+                },
+                this._config,
+            )
 
-        /**
-         * PKCE STEP 3
-         * Redirect the user to the /authorize endpoint along with the code_challenge
-         *
-         */
-        return { redirect_url: authUrl }
+            /**
+             * PKCE STEP 3
+             * Redirect the user to the /authorize endpoint along with the code_challenge
+             *
+             */
+            return { redirect_url: authUrl }
+        })
     }
 
     async callback(params: {
@@ -89,78 +92,82 @@ export class SmartClient {
         code: string
         state: string
     }): Promise<Callback | CallbackError | TokenExchangeErrors | SmartStorageErrors> {
-        const existingSession = await this._storage.get(params.sessionId)
-        if ('error' in existingSession) {
-            logger.error(`Session not found for sessionId ${params.sessionId}`, { cause: existingSession })
-            return { error: existingSession.error }
-        }
+        return spanAsync('SmartClient.callback', async () => {
+            const existingSession = await this._storage.get(params.sessionId)
+            if ('error' in existingSession) {
+                logger.error(`Session not found for sessionId ${params.sessionId}`, { cause: existingSession })
+                return { error: existingSession.error }
+            }
 
-        if (existingSession.state !== params.state) {
-            logger.warn(
-                `State mismatch, expected len: ${existingSession.state.length} but got len: ${params.state.length}`,
-            )
+            if (existingSession.state !== params.state) {
+                logger.warn(
+                    `State mismatch, expected len: ${existingSession.state.length} but got len: ${params.state.length}`,
+                )
 
-            return { error: 'INVALID_STATE' }
-        }
+                return { error: 'INVALID_STATE' }
+            }
 
-        logger.info(`Exchanging code for token with issuer ${existingSession.tokenEndpoint}`)
+            logger.info(`Exchanging code for token with issuer ${existingSession.tokenEndpoint}`)
 
-        const tokenResponse = await fetchTokenExchange(params.code, this._config.callback_url, existingSession)
-        if ('error' in tokenResponse) {
-            return { error: tokenResponse.error }
-        }
+            const tokenResponse = await fetchTokenExchange(params.code, this._config.callback_url, existingSession)
+            if ('error' in tokenResponse) {
+                return { error: tokenResponse.error }
+            }
 
-        const completeSessionValues: CompleteSession = {
-            ...existingSession,
-            idToken: tokenResponse.id_token,
-            accessToken: tokenResponse.access_token,
-            patient: tokenResponse.patient,
-            encounter: tokenResponse.encounter,
-            webmedPractitioner: tokenResponse.practitioner,
-        }
+            const completeSessionValues: CompleteSession = {
+                ...existingSession,
+                idToken: tokenResponse.id_token,
+                accessToken: tokenResponse.access_token,
+                patient: tokenResponse.patient,
+                encounter: tokenResponse.encounter,
+                webmedPractitioner: tokenResponse.practitioner,
+            }
 
-        await this._storage.set(params.sessionId, completeSessionValues)
+            await this._storage.set(params.sessionId, completeSessionValues)
 
-        return {
-            redirect_url: this._config.redirect_url,
-        }
+            return {
+                redirect_url: this._config.redirect_url,
+            }
+        })
     }
 
     async ready(
         sessionId: string | null,
     ): Promise<ReadyClient | (SmartClientReadyErrors & { validate: ReadyClient['validate'] })> {
-        if (sessionId == null) {
-            logger.warn(`Tried to .ready SmartClient without active sessionId (was null)`)
-            return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
-        }
-
-        const session = await this._storage.get(sessionId)
-
-        if ('error' in session) {
-            switch (session.error) {
-                case 'NO_STATE':
-                    // User has been logged out, no need for spammy logging
-                    return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
-                case 'BROKEN_SESSION_STATE':
-                    // Session is broken, safeStorage already logged the error
-                    return { error: 'INCOMPLETE_SESSION', validate: async () => false }
+        return spanAsync('SmartClient.ready', async () => {
+            if (sessionId == null) {
+                logger.warn(`Tried to .ready SmartClient without active sessionId (was null)`)
+                return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
             }
-        }
 
-        if (!('idToken' in session)) {
-            logger.warn(`Tried to .ready SmartClient, but session was inpcomplete for id "${sessionId}"`)
-            return { error: 'INCOMPLETE_SESSION', validate: async () => false }
-        }
+            const session = await this._storage.get(sessionId)
 
-        try {
-            return new ReadyClient(this, session)
-        } catch (error) {
-            logger.error(
-                new Error(`Tried to .ready SmartClient, ReadyClient failed to instantiate for id "${sessionId}"`, {
-                    cause: error,
-                }),
-            )
-            return { error: 'INVALID_ID_TOKEN', validate: async () => false }
-        }
+            if ('error' in session) {
+                switch (session.error) {
+                    case 'NO_STATE':
+                        // User has been logged out, no need for spammy logging
+                        return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
+                    case 'BROKEN_SESSION_STATE':
+                        // Session is broken, safeStorage already logged the error
+                        return { error: 'INCOMPLETE_SESSION', validate: async () => false }
+                }
+            }
+
+            if (!('idToken' in session)) {
+                logger.warn(`Tried to .ready SmartClient, but session was inpcomplete for id "${sessionId}"`)
+                return { error: 'INCOMPLETE_SESSION', validate: async () => false }
+            }
+
+            try {
+                return new ReadyClient(this, session)
+            } catch (error) {
+                logger.error(
+                    new Error(`Tried to .ready SmartClient, ReadyClient failed to instantiate for id "${sessionId}"`, {
+                        cause: error,
+                    }),
+                )
+                return { error: 'INVALID_ID_TOKEN', validate: async () => false }
+            }
+        })
     }
 }
