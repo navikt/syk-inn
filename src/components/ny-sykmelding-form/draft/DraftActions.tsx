@@ -72,7 +72,7 @@ function ForkastDraftButton(): ReactElement {
         <Button
             type="button"
             variant="tertiary"
-            onClick={() => spanAsync('DeleteDraft(forkast).mutation', () => mutation())}
+            onClick={() => spanAsync('DeleteDraft(forkast).mutation', async () => mutation())}
             loading={deleteResult.loading}
         >
             Avbryt og forkast

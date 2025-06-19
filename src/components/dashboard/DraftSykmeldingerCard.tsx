@@ -137,7 +137,7 @@ function DeleteDraftRowButton({ draftId }: { draftId: string }): ReactElement {
             variant="tertiary-neutral"
             loading={deleteDraftResult.loading}
             onClick={() =>
-                spanAsync('DeleteDraft(Dashboard).mutation', () =>
+                spanAsync('DeleteDraft(Dashboard).mutation', async () =>
                     deleteDraft({
                         variables: { draftId },
                     }),

@@ -372,7 +372,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
         synchronizeSykmelding: async (_, { id: sykmeldingId }) => {
             const [client] = await getReadyClientForResolvers()
 
-            const existingDocument = await spanAsync('get document reference', () =>
+            const existingDocument = await spanAsync('get document reference', async () =>
                 client.request(`/DocumentReference/${sykmeldingId}`),
             )
             if ('resourceType' in existingDocument) {
@@ -383,7 +383,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             }
 
             if ('error' in existingDocument && existingDocument.error === 'REQUEST_FAILED_RESOURCE_NOT_FOUND') {
-                const createResult = await spanAsync('create document reference', () =>
+                const createResult = await spanAsync('create document reference', async () =>
                     createDocumentReference(client, sykmeldingId),
                 )
                 if ('error' in createResult) {

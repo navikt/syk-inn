@@ -84,7 +84,7 @@ async function getAndValidateDefinitions(): Promise<Awaited<ReturnType<typeof ge
         }
     }
 
-    const definitions = await spanAsync('unleash: fetch toggles', () =>
+    const definitions = await spanAsync('unleash: fetch toggles', async () =>
         getDefinitions({
             appName: 'syk-inn',
             url: `${process.env.UNLEASH_SERVER_API_URL ?? raise('Missing UNLEASH_SERVER_API_URL')}/api/client/features`,

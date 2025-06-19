@@ -35,7 +35,7 @@ export function useSaveDraft(opts: {
     const mutationWithMappedValues = useCallback(
         async (draftId: string, values: NySykmeldingMainFormValues) => {
             const mappedValues: DraftValues = mapFormValuesToDraftValues(values)
-            return spanAsync('SaveDraft.mutation', () =>
+            return spanAsync('SaveDraft.mutation', async () =>
                 mutation({
                     variables: { draftId, values: mappedValues satisfies DraftValues },
                 }),

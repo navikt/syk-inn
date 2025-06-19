@@ -39,7 +39,7 @@ export function useOpprettSykmeldingMutation(): {
 
             logger.info(`(Client), mapped values: ${JSON.stringify(values)}`)
 
-            const createResult = await spanAsync('OpprettSykmelding.mutation', () =>
+            const createResult = await spanAsync('OpprettSykmelding.mutation', async () =>
                 mutate({
                     variables: { draftId: draftId, values: values },
                 }),
