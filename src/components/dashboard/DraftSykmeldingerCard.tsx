@@ -11,6 +11,7 @@ import useInterval from '@utils/hooks/useInterval'
 import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 import DashboardTable from '@components/dashboard/table/DashboardTable'
 import DashboardCard from '@components/dashboard/card/DashboardCard'
+import { spanAsync } from '@otel/otel'
 
 import { safeParseDraft } from '../../data-layer/draft/draft-schema'
 
@@ -136,9 +137,11 @@ function DeleteDraftRowButton({ draftId }: { draftId: string }): ReactElement {
             variant="tertiary-neutral"
             loading={deleteDraftResult.loading}
             onClick={() =>
-                deleteDraft({
-                    variables: { draftId },
-                })
+                spanAsync('DeleteDraft(Dashboard).mutation', () =>
+                    deleteDraft({
+                        variables: { draftId },
+                    }),
+                )
             }
         />
     )

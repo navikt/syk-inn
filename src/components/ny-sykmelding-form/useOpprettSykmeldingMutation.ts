@@ -6,7 +6,7 @@ import { FetchResult, MutationResult, useMutation } from '@apollo/client'
 import { raise } from '@utils/ts'
 import { pathWithBasePath } from '@utils/url'
 import { InputAktivitet, OpprettSykmeldingDocument, OpprettSykmeldingInput, OpprettSykmeldingMutation } from '@queries'
-import { withSpanAsync } from '@otel/otel'
+import { spanAsync, withSpanAsync } from '@otel/otel'
 import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
 
 import { useAppSelector } from '../../providers/redux/hooks'
@@ -39,9 +39,11 @@ export function useOpprettSykmeldingMutation(): {
 
             logger.info(`(Client), mapped values: ${JSON.stringify(values)}`)
 
-            const createResult = await mutate({
-                variables: { draftId: draftId, values: values },
-            })
+            const createResult = await spanAsync('OpprettSykmelding.mutation', () =>
+                mutate({
+                    variables: { draftId: draftId, values: values },
+                }),
+            )
 
             startTransition(() => {
                 // Don't redirect on errors

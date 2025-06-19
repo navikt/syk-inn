@@ -9,6 +9,7 @@ import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
 import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
 import { useFormContext } from '@components/ny-sykmelding-form/form'
 import { useSaveDraft } from '@components/ny-sykmelding-form/draft/useSaveDraft'
+import { spanAsync } from '@otel/otel'
 
 import { useMode } from '../../../providers/ModeProvider'
 import { useAppDispatch } from '../../../providers/redux/hooks'
@@ -68,7 +69,12 @@ function ForkastDraftButton(): ReactElement {
     })
 
     return (
-        <Button type="button" variant="tertiary" onClick={() => mutation()} loading={deleteResult.loading}>
+        <Button
+            type="button"
+            variant="tertiary"
+            onClick={() => spanAsync('DeleteDraft(forkast).mutation', () => mutation())}
+            loading={deleteResult.loading}
+        >
             Avbryt og forkast
         </Button>
     )
