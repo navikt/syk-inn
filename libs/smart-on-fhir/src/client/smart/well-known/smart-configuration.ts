@@ -2,6 +2,7 @@ import { createRemoteJWKSet } from 'jose'
 
 import { logger } from '../../logger'
 import { removeTrailingSlash } from '../../utils'
+import { spanAsync } from '../../otel'
 
 import { SmartConfiguration, SmartConfigurationSchema } from './smart-configuration-schema'
 
@@ -14,34 +15,41 @@ export async function fetchSmartConfiguration(
 ): Promise<SmartConfiguration | SmartConfigurationErrors> {
     fhirServer = removeTrailingSlash(fhirServer)
 
-    const smartConfigurationUrl = `${fhirServer}/.well-known/smart-configuration`
-    logger.info(`Fetching smart-configuration from ${smartConfigurationUrl}`)
+    return spanAsync('smart-configuration', async (span) => {
+        const smartConfigurationUrl = `${fhirServer}/.well-known/smart-configuration`
+        logger.info(`Fetching smart-configuration from ${smartConfigurationUrl}`)
 
-    try {
-        const response = await fetch(smartConfigurationUrl)
-        if (!response.ok) {
-            logger.error(`FHIR Server responded with ${response.status} ${response.statusText}`)
-            return { error: 'WELL_KNOWN_INVALID_RESPONSE' }
+        span.setAttribute('issuer', fhirServer)
+
+        try {
+            const response = await fetch(smartConfigurationUrl)
+            if (!response.ok) {
+                logger.error(`FHIR Server responded with ${response.status} ${response.statusText}`)
+                return { error: 'WELL_KNOWN_INVALID_RESPONSE' }
+            }
+
+            const result: unknown = await response.json()
+            const validatedWellKnown = SmartConfigurationSchema.safeParse(result)
+            if (!validatedWellKnown.success) {
+                logger.error(`FHIR Server ${fhirServer} responded with weird smart-configuration`, {
+                    cause: validatedWellKnown.error,
+                })
+
+                span.recordException(validatedWellKnown.error)
+
+                return { error: 'WELL_KNOWN_INVALID_BODY' }
+            }
+
+            logger.info(`FHIR Server ${fhirServer} response validated`)
+            return validatedWellKnown.data
+        } catch (e) {
+            logger.error('Fatal error fetching smart configuration', { cause: e })
+
+            if (e instanceof Error) span.recordException(e)
+
+            return { error: 'UNKNOWN_ERROR' }
         }
-
-        const result: unknown = await response.json()
-        const validatedWellKnown = SmartConfigurationSchema.safeParse(result)
-        if (!validatedWellKnown.success) {
-            logger.error(`FHIR Server ${fhirServer} responded with weird smart-configuration`, {
-                cause: validatedWellKnown.error,
-            })
-
-            validatedWellKnown.error
-
-            return { error: 'WELL_KNOWN_INVALID_BODY' }
-        }
-
-        logger.info(`FHIR Server ${fhirServer} response validated`)
-        return validatedWellKnown.data
-    } catch (e) {
-        logger.error('Fatal error fetching smart configuration', { cause: e })
-        return { error: 'UNKNOWN_ERROR' }
-    }
+    })
 }
 
 const remoteJWKSetCache: Record<string, ReturnType<typeof createRemoteJWKSet>> = {}

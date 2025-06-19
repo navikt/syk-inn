@@ -47,7 +47,7 @@ export class SmartClient {
         iss: string
         launch: string
     }): Promise<Launch | LaunchError | SmartConfigurationErrors> {
-        return spanAsync('SmartClient.launch', async () => {
+        return spanAsync('launch', async () => {
             const smartConfig = await fetchSmartConfiguration(params.iss)
             if ('error' in smartConfig) {
                 return { error: smartConfig.error }
@@ -92,7 +92,7 @@ export class SmartClient {
         code: string
         state: string
     }): Promise<Callback | CallbackError | TokenExchangeErrors | SmartStorageErrors> {
-        return spanAsync('SmartClient.callback', async () => {
+        return spanAsync('callback', async () => {
             const existingSession = await this._storage.get(params.sessionId)
             if ('error' in existingSession) {
                 logger.error(`Session not found for sessionId ${params.sessionId}`, { cause: existingSession })
@@ -134,7 +134,7 @@ export class SmartClient {
     async ready(
         sessionId: string | null,
     ): Promise<ReadyClient | (SmartClientReadyErrors & { validate: ReadyClient['validate'] })> {
-        return spanAsync('SmartClient.ready', async () => {
+        return spanAsync('ready', async () => {
             if (sessionId == null) {
                 logger.warn(`Tried to .ready SmartClient without active sessionId (was null)`)
                 return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
