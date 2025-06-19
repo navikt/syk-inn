@@ -1,19 +1,17 @@
 import { APP_NAME, IsomorphicOTEL } from './common'
 
-function getOTEL(): IsomorphicOTEL | null {
+async function getOTEL(): Promise<IsomorphicOTEL | null> {
     if (typeof window === 'undefined') {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const { getNodeOTEL } = require('./node')
+        const { getNodeOTEL } = await import('./node')
         return getNodeOTEL()
     } else {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const { getBrowserOTEL } = require('./faro')
+        const { getBrowserOTEL } = await import('./faro')
         return getBrowserOTEL()
     }
 }
 
 export async function spanAsync<Result>(name: string, fn: () => Promise<Result>): Promise<Result> {
-    const otel = getOTEL()
+    const otel = await getOTEL()
     if (otel == null) {
         return fn()
     }

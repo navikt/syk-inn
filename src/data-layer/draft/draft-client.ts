@@ -4,6 +4,7 @@ import { logger } from '@navikt/next-logger'
 import Valkey from 'iovalkey'
 
 import { getValkeyClient } from '@services/valkey/client'
+import { withSpanAsync } from '@otel/otel'
 
 import { DraftValues } from './draft-schema'
 
@@ -36,7 +37,7 @@ export async function getDraftClient(valkey?: Valkey): Promise<DraftClient> {
     valkey = !valkey ? await getValkeyClient() : valkey
 
     return {
-        saveDraft: async (draftId, owner, values) => {
+        saveDraft: withSpanAsync('draft client - save draft', async (draftId, owner, values) => {
             const key = draftKey(draftId)
             const ownershipKey = ownershipIndexKey(owner)
 
@@ -51,8 +52,8 @@ export async function getDraftClient(valkey?: Valkey): Promise<DraftClient> {
             await valkey.expire(ownershipKey, getSecondsUntilMidnight())
 
             return values
-        },
-        deleteDraft: async (draftId, owner) => {
+        }),
+        deleteDraft: withSpanAsync('draft client - delete draft', async (draftId, owner) => {
             const key = draftKey(draftId)
             const ownershipKey = ownershipIndexKey(owner)
 
@@ -68,16 +69,16 @@ export async function getDraftClient(valkey?: Valkey): Promise<DraftClient> {
 
             await valkey.del(key)
             await valkey.srem(ownershipKey, key)
-        },
-        getDraft: async (draftId): Promise<DraftEntry | null> => {
+        }),
+        getDraft: withSpanAsync('draft client - get draft', async (draftId): Promise<DraftEntry | null> => {
             const value = await valkey.hgetall(draftKey(draftId))
             if (valkeyEmptyHashValueToNull(value) == null) {
                 return null
             }
 
             return internalEntryToDraftEntry(value)
-        },
-        getDrafts: async (ownership) => {
+        }),
+        getDrafts: withSpanAsync('draft client - get all drafts', async (ownership) => {
             const keys = await valkey.smembers(ownershipIndexKey(ownership))
             if (keys.length === 0) {
                 return []
@@ -94,7 +95,7 @@ export async function getDraftClient(valkey?: Valkey): Promise<DraftClient> {
                     // Removes potentials broken drafts
                     .filter(R.isNonNull)
             )
-        },
+        }),
     }
 }
 
