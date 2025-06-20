@@ -56,6 +56,7 @@ describe('in memory draft client', () => {
 })
 
 const emptyDraft: DraftValues = {
+    arbeidsforhold: null,
     perioder: null,
     hoveddiagnose: null,
     svangerskapsrelatert: null,

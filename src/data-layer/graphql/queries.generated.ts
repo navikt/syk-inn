@@ -112,9 +112,8 @@ export type InputAktivitet = {
     type: AktivitetType
 }
 
-export type InputArbeidsgiver = {
+export type InputArbeidsforhold = {
     arbeidsgivernavn: Scalars['String']['input']
-    harFlere: Scalars['Boolean']['input']
 }
 
 export type InputDiagnose = {
@@ -177,7 +176,7 @@ export type OpprettSykmeldingDraft = {
 
 export type OpprettSykmeldingInput = {
     aktivitet: Array<InputAktivitet>
-    arbeidsgiver?: InputMaybe<InputArbeidsgiver>
+    arbeidsforhold?: InputMaybe<InputArbeidsforhold>
     bidiagnoser: Array<InputDiagnose>
     hoveddiagnose: InputDiagnose
     meldinger: InputMeldinger

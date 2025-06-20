@@ -46,6 +46,25 @@ export function editHoveddiagnose({ search, select }: { search: string; select: 
     }
 }
 
+export function fillArbeidsforhold({
+    harFlereArbeidsforhold,
+    sykmeldtFraArbeidsforhold = null,
+}: {
+    harFlereArbeidsforhold: boolean
+    sykmeldtFraArbeidsforhold?: string | null
+}) {
+    return async (page: Page) => {
+        if (harFlereArbeidsforhold) {
+            await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Ja').click()
+            await page
+                .getByRole('textbox', { name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?' })
+                .fill(sykmeldtFraArbeidsforhold || '')
+        } else {
+            await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Nei').click()
+        }
+    }
+}
+
 export function fillPeriodeRelative({
     type,
     ...params
@@ -133,6 +152,7 @@ export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | nu
 type SectionTitle =
     | 'Navn'
     | 'Fødselsnummer'
+    | 'Har pasienten flere arbeidsforhold?'
     | 'Periode'
     | 'Mulighet for arbeid'
     | 'Dato for tilbakedatering'

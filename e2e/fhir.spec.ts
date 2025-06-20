@@ -15,13 +15,68 @@ import {
     fillTilbakedatering,
     verifySummaryPage,
     verifySignerendeBehandler,
+    fillArbeidsforhold,
 } from './actions/user-actions'
 import { expectGraphQLRequest } from './utils/assertions'
 import { getDraftId } from './utils/request-utils'
 
+test('"har flere arbeidsforhold" should be part of payload if checked', async ({ page }) => {
+    await launchWithMock(page)
+    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await fillArbeidsforhold({
+        harFlereArbeidsforhold: true,
+        sykmeldtFraArbeidsforhold: 'Test AS',
+    })(page)
+
+    await fillPeriodeRelative({
+        type: '100%',
+        days: 3,
+    })(page)
+
+    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+
+    await nextStep()(page)
+
+    await verifySignerendeBehandler()(page)
+
+    const request = await submitSykmelding()(page)
+    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+        draftId: getDraftId(page) ?? 'missing',
+        values: {
+            hoveddiagnose: { system: 'ICPC2', code: 'P74' },
+            bidiagnoser: [],
+            aktivitet: [
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: today(),
+                    tom: inDays(3),
+                    aktivitetIkkeMulig: { dummy: true },
+                    avventende: null,
+                    gradert: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
+                },
+            ],
+            meldinger: { tilNav: null, tilArbeidsgiver: null },
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            arbeidsforhold: {
+                arbeidsgivernavn: 'Test AS',
+            },
+            tilbakedatering: null,
+            pasientenSkalSkjermes: false,
+        },
+    })
+})
+
 test('"skal skjermes" should be part of payload if checked', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await fillArbeidsforhold({
+        harFlereArbeidsforhold: false,
+    })(page)
 
     await fillPeriodeRelative({
         type: '100%',
@@ -56,7 +111,7 @@ test('"skal skjermes" should be part of payload if checked', async ({ page }) =>
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,
             yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsgiver: null,
+            arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: true,
         },
@@ -66,6 +121,10 @@ test('"skal skjermes" should be part of payload if checked', async ({ page }) =>
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await fillArbeidsforhold({
+        harFlereArbeidsforhold: false,
+    })(page)
 
     await fillPeriodeRelative({
         type: '100%',
@@ -98,7 +157,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,
             yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsgiver: null,
+            arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
         },
@@ -110,6 +169,10 @@ test('can submit 100% sykmelding', async ({ page }) => {
 test('shall be able to edit diagnose', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await fillArbeidsforhold({
+        harFlereArbeidsforhold: false,
+    })(page)
 
     await fillPeriodeRelative({
         type: '100%',
@@ -143,7 +206,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,
             yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsgiver: null,
+            arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
         },
@@ -155,6 +218,10 @@ test('shall be able to edit diagnose', async ({ page }) => {
 test('can submit gradert sykmelding', async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await fillArbeidsforhold({
+        harFlereArbeidsforhold: false,
+    })(page)
 
     await fillPeriodeRelative({
         type: { grad: 50 },
@@ -190,7 +257,7 @@ test('can submit gradert sykmelding', async ({ page }) => {
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,
             yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsgiver: null,
+            arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
         },
@@ -202,6 +269,10 @@ test('can submit gradert sykmelding', async ({ page }) => {
 test("should be asked about 'tilbakedatering' when fom is 9 days in the past", async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await fillArbeidsforhold({
+        harFlereArbeidsforhold: false,
+    })(page)
 
     await fillPeriodeRelative({
         type: '100%',
@@ -223,6 +294,10 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
             values: ['Espen Eksempel'],
         },
         { name: 'Fødselsnummer', values: ['21037712323'] },
+        {
+            name: 'Har pasienten flere arbeidsforhold?',
+            values: ['Nei'],
+        },
         {
             name: 'Periode',
             values: [`${toReadableDatePeriod(daysAgo(9), inDays(1))}`],
@@ -287,7 +362,7 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,
             yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsgiver: null,
+            arbeidsforhold: null,
             pasientenSkalSkjermes: false,
         },
     })
