@@ -30,7 +30,7 @@ type ResourceMap = {
 export type KnownPaths = `${keyof ResourceMap}${string}`
 
 /**
- * Looks up the currect FHIR type for a given path.
+ * Looks up the correct FHIR type for a given path.
  */
 export type ResponseFor<T extends string> = {
     [K in keyof ResourceMap]: T extends `${K}${string}` ? ResourceMap[K] : never

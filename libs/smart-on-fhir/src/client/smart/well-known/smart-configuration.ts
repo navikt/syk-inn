@@ -31,9 +31,11 @@ export async function fetchSmartConfiguration(
             const result: unknown = await response.json()
             const validatedWellKnown = SmartConfigurationSchema.safeParse(result)
             if (!validatedWellKnown.success) {
-                logger.error(`FHIR Server ${fhirServer} responded with weird smart-configuration`, {
-                    cause: validatedWellKnown.error,
-                })
+                logger.error(
+                    new Error(`FHIR Server ${fhirServer} responded with weird smart-configuration`, {
+                        cause: validatedWellKnown.error,
+                    }),
+                )
 
                 span.recordException(validatedWellKnown.error)
 

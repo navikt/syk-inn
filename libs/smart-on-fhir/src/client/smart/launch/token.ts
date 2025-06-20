@@ -53,9 +53,11 @@ export async function fetchTokenExchange(
     const parsedTokenResponse = TokenResponseSchema.safeParse(result)
 
     if (!parsedTokenResponse.success) {
-        logger.error(`Issuer/token_endpoint ${session.tokenEndpoint} responded with weird token response`, {
-            cause: parsedTokenResponse.error,
-        })
+        logger.error(
+            new Error(`Issuer/token_endpoint ${session.tokenEndpoint} responded with weird token response`, {
+                cause: parsedTokenResponse.error,
+            }),
+        )
 
         return { error: 'TOKEN_EXCHANGE_INVALID_BODY' }
     }

@@ -17,7 +17,7 @@ const createTestStorage = (): SmartStorage & { getFn: Mock; setFn: Mock } => {
 }
 
 describe('SmartClient', () => {
-    it('should fetch well-known and create a launch URL', async () => {
+    it('.launch - should fetch well-known and create a launch URL', async () => {
         const storage = createTestStorage()
         const client = new SmartClient(storage, {
             client_id: 'test-client',
@@ -69,6 +69,43 @@ describe('SmartClient', () => {
             code_challenge: expect.any(String),
             state: expect.any(String),
         })
+    })
+
+    it('.callback should exchange code for token', async () => {
+        const storage = createTestStorage()
+
+        storage.getFn.mockImplementationOnce(() => ({
+            server: 'http://fhir-server',
+            issuer: 'http://fhir-auth-server',
+            authorizationEndpoint: 'http://fhir-auth-server/authorize',
+            tokenEndpoint: 'http://fhir-auth-server/token',
+            codeVerifier: 'test-code-verifier',
+            state: 'some-value',
+        }))
+
+        const client = new SmartClient(storage, {
+            client_id: 'test-client',
+            scope: 'openid fhirUser launch/patient',
+            callback_url: 'http://app/callback',
+            redirect_url: 'http://app/redirect',
+        })
+
+        const tokenResponseNock = nock('http://fhir-auth-server').post('/token').reply(200, {
+            access_token: 'test-access-token',
+            id_token: 'test-id-token',
+            patient: 'c4664cf0-9168-4b6f-8798-93799068552b',
+            encounter: '3cdff553-e0ce-4fe0-89ca-8a3b62ca853e',
+        })
+
+        const callback = await client.callback({
+            sessionId: 'test-session',
+            state: 'some-value',
+            code: 'køde',
+        })
+
+        expect(tokenResponseNock.isDone()).toBe(true)
+        expectHas(callback, 'redirect_url')
+        expect(callback.redirect_url).toBe('http://app/redirect')
     })
 })
 
