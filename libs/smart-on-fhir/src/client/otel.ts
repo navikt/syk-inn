@@ -8,8 +8,8 @@ export async function spanAsync<Result>(name: string, fn: (span: Span) => Promis
 }
 
 export function spanSync<Result>(name: string, fn: () => Result): Result {
-    const tracer = trace.getTracer('@navikt/smart-on-fhir')
-    const span = tracer.startSpan(name)
+    const tracer = trace.getTracerProvider().getTracer('')
+    const span = tracer.startSpan(`SmartClient.${name}`)
 
     return context.with(trace.setSpan(context.active(), span), () => {
         try {

@@ -11,7 +11,6 @@ import { getValkeyClient } from '@services/valkey/client'
 import { getAbsoluteURL } from '@utils/url'
 import { getSessionId } from '@fhir/smart/session'
 import { spanAsync } from '@otel/otel'
-import { getPractitioner } from '@fhir/fhir-service'
 import { FhirPractitioner } from '@navikt/fhir-zod'
 import { NoSmartSession } from '@graphql/error/Errors'
 
@@ -58,7 +57,7 @@ export async function getReadyClientForResolvers(params?: {
         return [client]
     }
 
-    const practitioner = await getPractitioner(client)
+    const practitioner = await client.request(`/${client.fhirUser}`)
     if ('error' in practitioner) {
         throw new GraphQLError('PARSING_ERROR')
     }
