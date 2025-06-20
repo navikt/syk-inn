@@ -4,25 +4,45 @@ import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { getHpr } from '@fhir/mappers/practitioner'
 import { createNewDocumentReferencePayload } from '@fhir/mappers/document-reference'
-import { FhirDocumentReferenceBase } from '@navikt/fhir-zod'
+import { FhirDocumentReferenceBase, FhirPractitioner } from '@navikt/fhir-zod'
 import { toReadableDatePeriod } from '@utils/date'
 import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
+import { spanAsync } from '@otel/otel'
 import { getReadyClient } from '@fhir/smart/smart-client'
+
+/**
+ * Uses the FHIR client to fetch the Practitioner resource for the current user.
+ *
+ * With required hacks.
+ */
+export async function getPractitioner(client: ReadyClient): Promise<FhirPractitioner> {
+    return spanAsync('get practitioner', async () => {
+        if (!client.fhirUser.startsWith('Practitioner/')) {
+            logger.error(`fhirUser is not a Practitioner, was: ${client.fhirUser}`)
+            throw new Error('fhirUser is not a Practitioner')
+        }
+
+        logger.info(`Trying to fetch fhirUser from /Practitioner/${client.fhirUser}`)
+        const practitioner = await client.request(`/${client.fhirUser}` as `/Practitioner/${string}`)
+
+        if ('error' in practitioner) {
+            throw new Error(`Unable to fetch 'behandler', reason: ${practitioner.error}`)
+        }
+
+        return practitioner
+    })
+}
 
 export async function getHprFromFhirSession(
     client?: ReadyClient,
-): Promise<string | { error: 'NO_SESSION' | 'NO_HPR' | 'API_ERROR' }> {
+): Promise<string | { error: 'NO_SESSION' | 'NO_HPR' }> {
     const readyClient = client ?? (await getReadyClient())
     if ('error' in readyClient) {
         logger.warn(`Unable to get ready client, reason: ${readyClient.error}`)
         return { error: 'NO_SESSION' }
     }
 
-    const practitioner = await readyClient.request(`/${readyClient.fhirUser}`)
-    if ('error' in practitioner) {
-        return { error: 'API_ERROR' }
-    }
-
+    const practitioner = await getPractitioner(readyClient)
     const hpr = getHpr(practitioner.identifier)
     if (hpr == null) {
         logger.warn(`Practitioner does not have HPR, practitioner: ${JSON.stringify(practitioner)}`)
