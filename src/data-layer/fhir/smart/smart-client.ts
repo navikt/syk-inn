@@ -10,7 +10,6 @@ import {
 import { getValkeyClient } from '@services/valkey/client'
 import { getAbsoluteURL } from '@utils/url'
 import { getSessionId } from '@fhir/smart/session'
-import { spanAsync } from '@otel/otel'
 import { FhirPractitioner } from '@navikt/fhir-zod'
 import { NoSmartSession } from '@graphql/error/Errors'
 
@@ -26,19 +25,17 @@ export function getSmartClient(): SmartClient {
 }
 
 export async function getReadyClient(opts?: { validate: true }): Promise<ReadyClient | SmartClientReadyErrors> {
-    return spanAsync('smart client init', async () => {
-        const actualSessionId = await getSessionId()
-        const readyClient = await getSmartClient().ready(actualSessionId)
+    const actualSessionId = await getSessionId()
+    const readyClient = await getSmartClient().ready(actualSessionId)
 
-        if (opts?.validate) {
-            const validToken = await readyClient.validate()
-            if (!validToken) {
-                return { error: 'INVALID_TOKEN' }
-            }
+    if (opts?.validate) {
+        const validToken = await readyClient.validate()
+        if (!validToken) {
+            return { error: 'INVALID_TOKEN' }
         }
+    }
 
-        return readyClient
-    })
+    return readyClient
 }
 
 export async function getReadyClientForResolvers(): Promise<[ReadyClient]>
