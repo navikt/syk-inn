@@ -43,7 +43,7 @@ export async function fetchSmartConfiguration(
             logger.info(`FHIR Server ${fhirServer} response validated`)
             return validatedWellKnown.data
         } catch (e) {
-            logger.error('Fatal error fetching smart configuration', { cause: e })
+            logger.error(new Error('Fatal error fetching smart configuration', { cause: e }))
 
             if (e instanceof Error) span.recordException(e)
 

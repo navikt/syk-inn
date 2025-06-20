@@ -2,6 +2,7 @@
     "name": "@navikt/smart-on-fhir",
     "packageManager": "yarn@4.7.0",
     "scripts": {
+        "test": "vitest",
         "tsc": "tsc"
     },
     "exports": {
@@ -17,5 +18,9 @@
         "openid-client": "^6.5.1",
         "pino": "^9.7.0",
         "zod": "^3.25.63"
+    },
+    "devDependencies": {
+        "nock": "^14.0.5",
+        "vitest": "^3.2.4"
     }
 }

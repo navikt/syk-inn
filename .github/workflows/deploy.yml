@@ -23,7 +23,10 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - run: yarn lint
       - run: yarn tsc
-      - run: yarn test
+      - name: Test app
+        run: yarn test
+      - name: Test @navikt/smart-on-fhir
+        run: yarn workspace @navikt/smart-on-fhir test
 
   build-dev:
     name: Build for dev
