@@ -39,7 +39,6 @@ input InputMeldinger {
 }
 
 input InputArbeidsforhold {
-    harFlere: Boolean!
     arbeidsgivernavn: String!
 }
 

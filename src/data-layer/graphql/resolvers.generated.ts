@@ -116,7 +116,6 @@ export type InputAktivitet = {
 
 export type InputArbeidsforhold = {
     arbeidsgivernavn: Scalars['String']['input']
-    harFlere: Scalars['Boolean']['input']
 }
 
 export type InputDiagnose = {

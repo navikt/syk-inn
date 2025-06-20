@@ -38,8 +38,9 @@ test('"har flere arbeidsforhold" should be part of payload if checked', async ({
 
     await nextStep()(page)
 
-    const request = await submitSykmelding()(page)
+    await verifySignerendeBehandler()(page)
 
+    const request = await submitSykmelding()(page)
     expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
         values: {
@@ -61,7 +62,6 @@ test('"har flere arbeidsforhold" should be part of payload if checked', async ({
             svangerskapsrelatert: false,
             yrkesskade: { yrkesskade: false, skadedato: null },
             arbeidsforhold: {
-                harFlere: true,
                 arbeidsgivernavn: 'Test AS',
             },
             tilbakedatering: null,
@@ -111,10 +111,7 @@ test('"skal skjermes" should be part of payload if checked', async ({ page }) =>
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,
             yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsforhold: {
-                harFlere: false,
-                arbeidsgivernavn: '',
-            },
+            arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: true,
         },
@@ -160,10 +157,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,
             yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsforhold: {
-                harFlere: false,
-                arbeidsgivernavn: '',
-            },
+            arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
         },
@@ -212,10 +206,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,
             yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsforhold: {
-                harFlere: false,
-                arbeidsgivernavn: '',
-            },
+            arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
         },
@@ -266,10 +257,7 @@ test('can submit gradert sykmelding', async ({ page }) => {
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,
             yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsforhold: {
-                harFlere: false,
-                arbeidsgivernavn: '',
-            },
+            arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
         },
@@ -374,10 +362,7 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,
             yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsforhold: {
-                harFlere: false,
-                arbeidsgivernavn: '',
-            },
+            arbeidsforhold: null,
             pasientenSkalSkjermes: false,
         },
     })

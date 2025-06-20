@@ -85,10 +85,12 @@ function formStateToOpprettSykmeldingInput(formState: NySykmeldingMultiStepState
     }
 
     return {
-        arbeidsforhold: {
-            harFlere: formState.arbeidsforhold?.harFlereArbeidsforhold ?? false,
-            arbeidsgivernavn: formState.arbeidsforhold?.sykmeldtFraArbeidsforhold ?? '',
-        },
+        arbeidsforhold: formState.arbeidsforhold?.harFlereArbeidsforhold
+            ? {
+                  arbeidsgivernavn:
+                      formState.arbeidsforhold?.sykmeldtFraArbeidsforhold ?? raise('Mangler arbeidsforhold'),
+              }
+            : null,
         hoveddiagnose: {
             system: formState.diagnose.hoved.system,
             code: formState.diagnose.hoved.code,
