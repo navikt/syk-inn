@@ -1,31 +1,28 @@
+import * as z from 'zod/v4'
 import { decodeJwt, jwtVerify } from 'jose'
 import {
     createFhirBundleSchema,
-    FhirBundle,
-    FhirCondition,
-    FhirConditionSchema,
     FhirDocumentReference,
     FhirDocumentReferenceBase,
+    FhirConditionSchema,
     FhirDocumentReferenceBaseSchema,
-    FhirEncounter,
     FhirEncounterSchema,
-    FhirOrganization,
     FhirOrganizationSchema,
-    FhirPatient,
     FhirPatientSchema,
-    FhirPractitioner,
     FhirPractitionerSchema,
 } from '@navikt/fhir-zod'
 
 import { CompleteSession } from '../storage/schema'
 import { logger } from '../logger'
 import { spanAsync } from '../otel'
+import { getResponseError } from '../utils'
 
 import { IdToken, IdTokenSchema } from './launch/token-schema'
 import { fetchSmartConfiguration, getJwkSet } from './well-known/smart-configuration'
 import { getFhir, postFhir } from './resources/fetcher'
 import { SmartClient } from './SmartClient'
 import { ResourceCreateErrors, ResourceRequestErrors } from './client-errors'
+import { KnownPaths, ResponseFor } from './resources/resource-map'
 
 export class ReadyClient {
     private readonly _client: SmartClient
@@ -130,64 +127,46 @@ export class ReadyClient {
         return parsed.data
     }
 
-    public async request(resource: `/Condition?${string}`): Promise<FhirBundle<FhirCondition> | ResourceRequestErrors>
-    public async request(resource: `/Encounter/${string}`): Promise<FhirEncounter | ResourceRequestErrors>
-    public async request(resource: `/Patient/${string}`): Promise<FhirPatient | ResourceRequestErrors>
-    public async request(resource: `/Organization/${string}`): Promise<FhirOrganization | ResourceRequestErrors>
-    public async request(
-        resource: `/DocumentReference/${string}`,
-    ): Promise<FhirDocumentReferenceBase | ResourceRequestErrors>
-    public async request(resource: `/Practitioner/${string}`): Promise<FhirPractitioner | ResourceRequestErrors>
-    public async request(
-        resource: `/${string}`,
-    ): Promise<
-        | FhirOrganization
-        | FhirPractitioner
-        | FhirDocumentReferenceBase
-        | FhirPatient
-        | FhirEncounter
-        | FhirBundle<FhirCondition>
-        | ResourceRequestErrors
-    > {
-        const response = await getFhir({ session: this._session, path: resource })
+    public async request<Path extends KnownPaths>(resource: Path): Promise<ResponseFor<Path> | ResourceRequestErrors> {
+        const resourceType = resource.match(/\/(\w+)\b/)?.[1] ?? 'Unknown'
 
-        if (!response.ok) {
-            if (response.headers.get('Content-Type')?.includes('text/plain')) {
-                const text = await response.text()
-                logger.error(`Request to get ${resource} failed with text: ${text}`)
-            } else if (response.headers.get('Content-Type')?.includes('application/json')) {
-                const json = await response.json()
-                logger.error(`Request to get ${resource} failed with json: ${JSON.stringify(json)}`)
-            }
-
-            logger.error(
-                new Error(
-                    `Request to get ${resource} failed, ${response.url} responded with ${response.status} ${response.statusText}`,
-                ),
-            )
+        return spanAsync(`request.${resourceType}`, async () => {
+            const response = await getFhir({ session: this._session, path: resource })
 
             if (response.status === 404) {
+                logger.warn(`Resource (${resource}) was not found on FHIR server`)
                 return { error: 'REQUEST_FAILED_RESOURCE_NOT_FOUND' }
             }
 
-            return { error: 'REQUEST_FAILED_NON_OK_RESPONSE' }
-        }
+            if (!response.ok) {
+                const responseError = await getResponseError(response)
+                logger.error(
+                    new Error(
+                        `Request to get ${resource} failed, ${response.url} responded with ${response.status} ${response.statusText}, server said: ${responseError}`,
+                    ),
+                )
 
-        const result = await response.json()
-        const resourceSchema = resourceToSchema(resource)
-        const parsed = resourceSchema.safeParse(result)
-        if (!parsed.success) {
-            logger.error(new Error(`Failed to parse ${resource}`, { cause: parsed.error }))
-            return { error: 'REQUEST_FAILED_INVALID_RESPONSE' }
-        }
+                return { error: 'REQUEST_FAILED_NON_OK_RESPONSE' }
+            }
 
-        return parsed.data
+            const result = await response.json()
+            const parsed = resourceToSchema(resource).safeParse(result)
+            if (!parsed.success) {
+                logger.error(new Error(`Failed to parse ${resource}`, { cause: parsed.error }))
+                return { error: 'REQUEST_FAILED_INVALID_RESPONSE' }
+            }
+
+            return parsed.data as ResponseFor<Path>
+        })
     }
 }
 
-// Allow type inferrence for schemas
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function resourceToSchema(resource: `/${string}`) {
+/**
+ * Converts from a KnownPath to the actual FHIR zod schema for this resource.
+ *
+ * This function is a type-hole, the callee will have to as the resulting parsed schema to the correct type.
+ */
+function resourceToSchema(resource: KnownPaths): z.ZodObject {
     if (resource.startsWith('/Practitioner/')) {
         return FhirPractitionerSchema
     } else if (resource.startsWith('/DocumentReference/')) {
