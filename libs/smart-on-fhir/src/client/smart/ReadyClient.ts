@@ -14,7 +14,7 @@ import {
 
 import { CompleteSession } from '../storage/schema'
 import { logger } from '../logger'
-import { spanAsync } from '../otel'
+import { OtelTaxonomy, spanAsync } from '../otel'
 import { getResponseError } from '../utils'
 
 import { IdToken, IdTokenSchema } from './launch/token-schema'
@@ -62,6 +62,8 @@ export class ReadyClient {
         )
 
         return spanAsync('validate', async (span) => {
+            span.setAttribute(OtelTaxonomy.FhirServer, this._session.server)
+
             const smartConfig = await fetchSmartConfiguration(this._session.server)
             if ('error' in smartConfig) {
                 logger.error(`Failed to fetch smart configuration: ${smartConfig.error}`)
@@ -70,7 +72,9 @@ export class ReadyClient {
 
             logger.info(`Fetched well known configuration from session.issuer, jwks_uri: ${smartConfig['jwks_uri']}`)
             try {
-                return await spanAsync('jwt-verify', async () => {
+                return await spanAsync('jwt-verify', async (span) => {
+                    span.setAttribute(OtelTaxonomy.FhirServer, this._session.server)
+
                     await jwtVerify(this._session.accessToken, getJwkSet(smartConfig['jwks_uri']), {
                         issuer: this._session.issuer,
                         algorithms: ['RS256'],
@@ -130,7 +134,12 @@ export class ReadyClient {
     public async request<Path extends KnownPaths>(resource: Path): Promise<ResponseFor<Path> | ResourceRequestErrors> {
         const resourceType = resource.match(/\/(\w+)\b/)?.[1] ?? 'Unknown'
 
-        return spanAsync(`request.${resourceType}`, async () => {
+        return spanAsync(`request.${resourceType}`, async (span) => {
+            span.setAttributes({
+                [OtelTaxonomy.FhirResource]: resourceType,
+                [OtelTaxonomy.FhirServer]: this._session.server,
+            })
+
             const response = await getFhir({ session: this._session, path: resource })
 
             if (response.status === 404) {

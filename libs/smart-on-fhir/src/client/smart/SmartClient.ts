@@ -4,7 +4,7 @@ import { safeSmartStorage, SafeSmartStorage, SmartStorage, SmartStorageErrors } 
 import { assertNotBrowser, removeTrailingSlash } from '../utils'
 import { logger } from '../logger'
 import { CompleteSession, InitialSession } from '../storage/schema'
-import { spanAsync } from '../otel'
+import { OtelTaxonomy, spanAsync } from '../otel'
 
 import { fetchSmartConfiguration, SmartConfigurationErrors } from './well-known/smart-configuration'
 import { fetchTokenExchange, TokenExchangeErrors } from './launch/token'
@@ -47,7 +47,9 @@ export class SmartClient {
         iss: string
         launch: string
     }): Promise<Launch | LaunchError | SmartConfigurationErrors> {
-        return spanAsync('launch', async () => {
+        return spanAsync('launch', async (span) => {
+            span.setAttribute(OtelTaxonomy.FhirServer, removeTrailingSlash(params.iss))
+
             const smartConfig = await fetchSmartConfiguration(params.iss)
             if ('error' in smartConfig) {
                 return { error: smartConfig.error }
@@ -92,12 +94,20 @@ export class SmartClient {
         code: string
         state: string
     }): Promise<Callback | CallbackError | TokenExchangeErrors | SmartStorageErrors> {
-        return spanAsync('callback', async () => {
+        return spanAsync('callback', async (span) => {
             const existingSession = await this._storage.get(params.sessionId)
             if ('error' in existingSession) {
-                logger.error(`Session not found for sessionId ${params.sessionId}`, { cause: existingSession })
+                const exception = new Error(`Session not found for sessionId ${params.sessionId}`, {
+                    cause: existingSession,
+                })
+
+                logger.error(exception)
+                span.recordException(exception)
+
                 return { error: existingSession.error }
             }
+
+            span.setAttribute(OtelTaxonomy.FhirServer, existingSession.server)
 
             if (existingSession.state !== params.state) {
                 logger.warn(
@@ -134,7 +144,7 @@ export class SmartClient {
     async ready(
         sessionId: string | null,
     ): Promise<ReadyClient | (SmartClientReadyErrors & { validate: ReadyClient['validate'] })> {
-        return spanAsync('ready', async () => {
+        return spanAsync('ready', async (span) => {
             if (sessionId == null) {
                 logger.warn(`Tried to .ready SmartClient without active sessionId (was null)`)
                 return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
@@ -152,6 +162,8 @@ export class SmartClient {
                         return { error: 'INCOMPLETE_SESSION', validate: async () => false }
                 }
             }
+
+            span.setAttribute(OtelTaxonomy.FhirServer, session.server)
 
             if (!('idToken' in session)) {
                 logger.warn(`Tried to .ready SmartClient, but session was inpcomplete for id "${sessionId}"`)

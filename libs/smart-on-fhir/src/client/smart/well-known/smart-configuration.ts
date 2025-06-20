@@ -2,7 +2,7 @@ import { createRemoteJWKSet } from 'jose'
 
 import { logger } from '../../logger'
 import { removeTrailingSlash } from '../../utils'
-import { spanAsync } from '../../otel'
+import { OtelTaxonomy, spanAsync } from '../../otel'
 
 import { SmartConfiguration, SmartConfigurationSchema } from './smart-configuration-schema'
 
@@ -16,10 +16,10 @@ export async function fetchSmartConfiguration(
     fhirServer = removeTrailingSlash(fhirServer)
 
     return spanAsync('smart-configuration', async (span) => {
+        span.setAttribute(OtelTaxonomy.FhirServer, fhirServer)
+
         const smartConfigurationUrl = `${fhirServer}/.well-known/smart-configuration`
         logger.info(`Fetching smart-configuration from ${smartConfigurationUrl}`)
-
-        span.setAttribute('issuer', fhirServer)
 
         try {
             const response = await fetch(smartConfigurationUrl)

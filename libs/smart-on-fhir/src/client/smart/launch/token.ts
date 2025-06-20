@@ -1,6 +1,6 @@
 import { InitialSession } from '../../storage/schema'
 import { logger } from '../../logger'
-import { spanAsync } from '../../otel'
+import { OtelTaxonomy, spanAsync } from '../../otel'
 import { getResponseError } from '../../utils'
 
 import { TokenResponseSchema, TokenResponse } from './token-schema'
@@ -15,7 +15,7 @@ export async function fetchTokenExchange(
     session: InitialSession,
 ): Promise<TokenResponse | TokenExchangeErrors> {
     return spanAsync('token-exchange', async (span) => {
-        span.setAttribute('fhir-server', session.server)
+        span.setAttribute(OtelTaxonomy.FhirServer, session.server)
 
         /**
          * PKCE STEP 5
