@@ -2,6 +2,7 @@ import { InitialSession } from '../../storage/schema'
 import { logger } from '../../logger'
 import { OtelTaxonomy, spanAsync } from '../../otel'
 import { getResponseError } from '../../utils'
+import { SmartClientConfiguration } from '../SmartClient'
 
 import { TokenResponseSchema, TokenResponse } from './token-schema'
 
@@ -11,7 +12,7 @@ export type TokenExchangeErrors = {
 
 export async function fetchTokenExchange(
     code: string,
-    redirect_uri: string,
+    config: SmartClientConfiguration,
     session: InitialSession,
 ): Promise<TokenResponse | TokenExchangeErrors> {
     return spanAsync('token-exchange', async (span) => {
@@ -28,11 +29,11 @@ export async function fetchTokenExchange(
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
-                client_id: 'syk-inn',
+                client_id: config.client_id,
                 grant_type: 'authorization_code',
                 code: code,
                 code_verifier: session.codeVerifier,
-                redirect_uri: redirect_uri,
+                redirect_uri: config.redirect_url,
             }),
         })
 

@@ -119,7 +119,7 @@ export class SmartClient {
 
             logger.info(`Exchanging code for token with issuer ${existingSession.tokenEndpoint}`)
 
-            const tokenResponse = await fetchTokenExchange(params.code, this._config.callback_url, existingSession)
+            const tokenResponse = await fetchTokenExchange(params.code, this._config, existingSession)
             if ('error' in tokenResponse) {
                 return { error: tokenResponse.error }
             }

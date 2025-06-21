@@ -1,24 +1,14 @@
-import { expect, test, Mock, vi } from 'vitest'
-import nock from 'nock'
+import { expect, test } from 'vitest'
 
-import { SmartClient, SmartStorage } from '../client'
+import { SmartClient } from '../client'
 
 import { mockSmartConfiguration } from './mocks/issuer'
 import { expectHas } from './utils/expect'
-
-const createTestStorage = (): SmartStorage & { getFn: Mock; setFn: Mock } => {
-    const getFn = vi.fn()
-    const setFn = vi.fn()
-    return {
-        get: getFn,
-        set: setFn,
-        getFn,
-        setFn,
-    }
-}
+import { createMockedStorage } from './utils/storage'
+import { mockTokenExchange } from './mocks/auth'
 
 test('.launch - should fetch well-known and create a launch URL', async () => {
-    const storage = createTestStorage()
+    const storage = createMockedStorage()
     const client = new SmartClient(storage, {
         client_id: 'test-client',
         scope: 'openid fhirUser launch/patient',
@@ -67,13 +57,12 @@ test('.launch - should fetch well-known and create a launch URL', async () => {
 })
 
 test('.callback should exchange code for token', async () => {
-    const storage = createTestStorage()
-
+    const storage = createMockedStorage()
     storage.getFn.mockImplementationOnce(() => ({
         server: 'http://fhir-server',
-        issuer: 'http://fhir-auth-server',
-        authorizationEndpoint: 'http://fhir-auth-server/authorize',
-        tokenEndpoint: 'http://fhir-auth-server/token',
+        issuer: 'http://auth-server',
+        authorizationEndpoint: 'http://auth-server/authorize',
+        tokenEndpoint: 'http://auth-server/token',
         codeVerifier: 'test-code-verifier',
         state: 'some-value',
     }))
@@ -85,11 +74,11 @@ test('.callback should exchange code for token', async () => {
         redirect_url: 'http://app/redirect',
     })
 
-    const tokenResponseNock = nock('http://fhir-auth-server').post('/token').reply(200, {
-        access_token: 'test-access-token',
-        id_token: 'test-id-token',
-        patient: 'c4664cf0-9168-4b6f-8798-93799068552b',
-        encounter: '3cdff553-e0ce-4fe0-89ca-8a3b62ca853e',
+    const tokenResponseNock = mockTokenExchange({
+        client_id: 'test-client',
+        code: 'køde',
+        code_verifier: 'test-code-verifier',
+        redirect_uri: 'http://app/redirect',
     })
 
     const callback = await client.callback({

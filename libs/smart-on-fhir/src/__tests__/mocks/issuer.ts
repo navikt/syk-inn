@@ -2,6 +2,10 @@ import nock, { Scope } from 'nock'
 
 import { FHIR_SERVER } from './common'
 
+export function fhirNock(): Scope {
+    return nock(FHIR_SERVER)
+}
+
 export function mockSmartConfiguration(): Scope {
     return nock(FHIR_SERVER)
         .get('/.well-known/smart-configuration')
