@@ -7,3 +7,8 @@ export function expectHas<T, K extends PropertyKey>(obj: T, key: K): asserts obj
 export function expectIs<T, A extends unknown[]>(obj: unknown, ctor: abstract new (...args: A) => T): asserts obj is T {
     expect(obj).toBeInstanceOf(ctor)
 }
+
+export function searchParamsToObject(url: string): Record<string, string> {
+    const searchParams = new URL(url).searchParams
+    return Object.fromEntries(new URLSearchParams(searchParams).entries())
+}

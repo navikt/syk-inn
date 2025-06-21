@@ -17,7 +17,6 @@ test('.launch - should fetch well-known and create a launch URL', async () => {
     })
 
     const smartConfigNock = mockSmartConfiguration()
-
     const result = await client.launch({
         launch: 'test-launch',
         iss: 'http://fhir-server',
@@ -30,10 +29,10 @@ test('.launch - should fetch well-known and create a launch URL', async () => {
      * Should store partial session in the storage
      */
     expect(storage.setFn).toHaveBeenCalledWith('test-session', {
-        authorizationEndpoint: 'http://fhir-server/authorize',
         issuer: 'http://fhir-server',
+        authorizationEndpoint: 'http://auth-server/authorize',
+        tokenEndpoint: 'http://auth-server/token',
         server: 'http://fhir-server',
-        tokenEndpoint: 'http://fhir-server/token',
         codeVerifier: expect.any(String),
         state: expect.any(String),
     })

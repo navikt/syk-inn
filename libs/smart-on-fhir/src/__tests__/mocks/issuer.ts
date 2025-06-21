@@ -1,6 +1,6 @@
 import nock, { Scope } from 'nock'
 
-import { FHIR_SERVER } from './common'
+import { AUTH_SERVER, FHIR_SERVER } from './common'
 
 export function fhirNock(): Scope {
     return nock(FHIR_SERVER)
@@ -11,8 +11,8 @@ export function mockSmartConfiguration(): Scope {
         .get('/.well-known/smart-configuration')
         .reply(200, {
             issuer: FHIR_SERVER,
-            jwks_uri: `${FHIR_SERVER}/jwks`,
-            authorization_endpoint: `${FHIR_SERVER}/authorize`,
-            token_endpoint: `${FHIR_SERVER}/token`,
+            jwks_uri: `${AUTH_SERVER}/jwks`,
+            authorization_endpoint: `${AUTH_SERVER}/authorize`,
+            token_endpoint: `${AUTH_SERVER}/token`,
         })
 }

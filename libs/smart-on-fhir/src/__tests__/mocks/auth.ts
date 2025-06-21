@@ -1,5 +1,7 @@
 import nock, { Scope } from 'nock'
 
+import { createTestIdToken } from '../utils/token'
+
 import { AUTH_SERVER } from './common'
 
 type TokenExchangeValues = {
@@ -17,7 +19,9 @@ export function mockTokenExchange(expectedBody: TokenExchangeValues): Scope {
         })
         .reply(200, {
             access_token: 'test-access-token',
-            id_token: 'test-id-token',
+            id_token: createTestIdToken({
+                fhirUser: 'Practitioner/71503542-c4f5-4f11-a5a5-6633c139d0d4',
+            }),
             patient: 'c4664cf0-9168-4b6f-8798-93799068552b',
             encounter: '3cdff553-e0ce-4fe0-89ca-8a3b62ca853e',
         })
