@@ -1,16 +1,4 @@
-import * as z from 'zod/v4'
 import { decodeJwt, jwtVerify } from 'jose'
-import {
-    createFhirBundleSchema,
-    FhirDocumentReference,
-    FhirDocumentReferenceBase,
-    FhirConditionSchema,
-    FhirDocumentReferenceBaseSchema,
-    FhirEncounterSchema,
-    FhirOrganizationSchema,
-    FhirPatientSchema,
-    FhirPractitionerSchema,
-} from '@navikt/fhir-zod'
 
 import { CompleteSession } from '../storage/schema'
 import { logger } from '../logger'
@@ -22,7 +10,13 @@ import { fetchSmartConfiguration, getJwkSet } from './well-known/smart-configura
 import { getFhir, postFhir } from './resources/fetcher'
 import { SmartClient } from './SmartClient'
 import { ResourceCreateErrors, ResourceRequestErrors } from './client-errors'
-import { KnownPaths, ResponseFor } from './resources/resource-map'
+import { KnownPaths, resourceToSchema, ResponseFor } from './resources/resource-map'
+import {
+    createResourceToSchema,
+    KnownCreatePaths,
+    PayloadForCreate,
+    ResponseForCreate,
+} from './resources/create-resource-map'
 
 export class ReadyClient {
     private readonly _client: SmartClient
@@ -93,42 +87,42 @@ export class ReadyClient {
         })
     }
 
-    public async create(
-        resource: '/DocumentReference',
-        params: { payload: Partial<FhirDocumentReference> },
-    ): Promise<FhirDocumentReferenceBase | ResourceCreateErrors> {
-        logger.info(`Creating DocumentReference with id ${params.payload.id}`)
+    public async create<Path extends KnownCreatePaths>(
+        resource: Path,
+        params: { payload: PayloadForCreate<Path> },
+    ): Promise<ResponseForCreate<Path> | ResourceCreateErrors> {
+        const resourceType = resource.match(/\/(\w+)\b/)?.[1] ?? 'Unknown'
 
-        const response = await postFhir({ session: this._session, path: resource }, { payload: params.payload })
+        return spanAsync(`create.${resourceType}`, async (span) => {
+            span.setAttributes({
+                [OtelTaxonomy.FhirResource]: resourceType,
+                [OtelTaxonomy.FhirServer]: this._session.server,
+            })
 
-        if (!response.ok) {
-            if (response.headers.get('Content-Type')?.includes('text/plain')) {
-                const text = await response.text()
-                logger.error(`Request to create DocumentReference failed with text: ${text}`)
-            } else if (response.headers.get('Content-Type')?.includes('application/json')) {
-                const json = await response.json()
-                logger.error(`Request to create DocumentReference failed with json: ${JSON.stringify(json)}`)
+            const response = await postFhir({ session: this._session, path: resource }, { payload: params.payload })
+
+            if (!response.ok) {
+                const responseError = await getResponseError(response)
+
+                logger.error(
+                    new Error(
+                        `Request to create ${resourceType} failed, ${response.url} responded with ${response.status} ${response.statusText}, server says: ${responseError}`,
+                    ),
+                )
+
+                return { error: 'CREATE_FAILED_NON_OK_RESPONSE' }
             }
 
-            logger.error(
-                new Error(
-                    `Request to create DocumentReference failed, ${response.url} responded with ${response.status} ${response.statusText}`,
-                ),
-            )
+            const result = await response.json()
 
-            return { error: 'CREATE_FAILED_NON_OK_RESPONSE' }
-        }
+            const parsed = createResourceToSchema(resource).safeParse(result)
+            if (!parsed.success) {
+                logger.error(new Error('Failed to parse DocumentReference', { cause: parsed.error }))
+                return { error: 'CREATE_FAILED_INVALID_RESPONSE' }
+            }
 
-        const result = await response.json()
-
-        // TODO: Don't hardcode the schema
-        const parsed = FhirDocumentReferenceBaseSchema.safeParse(result)
-        if (!parsed.success) {
-            logger.error(new Error('Failed to parse DocumentReference', { cause: parsed.error }))
-            return { error: 'CREATE_FAILED_INVALID_RESPONSE' }
-        }
-
-        return parsed.data
+            return parsed.data as ResponseForCreate<Path>
+        })
     }
 
     public async request<Path extends KnownPaths>(resource: Path): Promise<ResponseFor<Path> | ResourceRequestErrors> {
@@ -167,28 +161,5 @@ export class ReadyClient {
 
             return parsed.data as ResponseFor<Path>
         })
-    }
-}
-
-/**
- * Converts from a KnownPath to the actual FHIR zod schema for this resource.
- *
- * This function is a type-hole, the callee will have to as the resulting parsed schema to the correct type.
- */
-function resourceToSchema(resource: KnownPaths): z.ZodObject {
-    if (resource.startsWith('/Practitioner/')) {
-        return FhirPractitionerSchema
-    } else if (resource.startsWith('/DocumentReference/')) {
-        return FhirDocumentReferenceBaseSchema
-    } else if (resource.startsWith('/Patient/')) {
-        return FhirPatientSchema
-    } else if (resource.startsWith('/Encounter/')) {
-        return FhirEncounterSchema
-    } else if (resource.startsWith('/Condition?')) {
-        return createFhirBundleSchema(FhirConditionSchema)
-    } else if (resource.startsWith('/Organization')) {
-        return FhirOrganizationSchema
-    } else {
-        throw new Error(`Unknown resource type (or not implemented): ${resource}`)
     }
 }

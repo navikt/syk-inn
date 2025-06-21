@@ -1,10 +1,10 @@
 import { logger } from '@navikt/next-logger'
 
-import { ReadyClient } from '@navikt/smart-on-fhir/client'
+import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { getHpr } from '@fhir/mappers/practitioner'
 import { createNewDocumentReferencePayload } from '@fhir/mappers/document-reference'
-import { FhirDocumentReferenceBase, FhirPractitioner } from '@navikt/fhir-zod'
+import { FhirDocumentReference, FhirPractitioner } from '@navikt/fhir-zod'
 import { toReadableDatePeriod } from '@utils/date'
 import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
 import { spanAsync } from '@otel/otel'
@@ -58,7 +58,7 @@ export async function getHprFromFhirSession(
 export async function createDocumentReference(
     client: ReadyClient,
     sykmeldingId: string,
-): Promise<FhirDocumentReferenceBase | { error: 'API_ERROR' } | { error: 'PARSING_ERROR' }> {
+): Promise<FhirDocumentReference | { error: 'API_ERROR' } | { error: 'PARSING_ERROR' }> {
     const practitioner = await client.request(`/${client.fhirUser}`)
     if ('error' in practitioner) {
         return { error: 'API_ERROR' }
@@ -78,19 +78,22 @@ export async function createDocumentReference(
         return { error: 'API_ERROR' }
     }
 
-    const createdDocumentReference = await client.create('/DocumentReference', {
-        payload: createNewDocumentReferencePayload(
-            {
-                sykmeldingId,
-                patientId: client.patient,
-                encounterId: client.encounter,
-                // TODO: hmmmm
-                practitionerId: client.fhirUser.split('/')[1],
-                description: getSykmeldingDescription(sykmelding.values),
-            },
-            Buffer.from(pdfBuffer).toString('base64'),
-        ),
-    })
+    const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.create(
+        '/DocumentReference',
+        {
+            payload: createNewDocumentReferencePayload(
+                {
+                    sykmeldingId,
+                    patientId: client.patient,
+                    encounterId: client.encounter,
+                    // TODO: hmmmm
+                    practitionerId: client.fhirUser.split('/')[1],
+                    description: getSykmeldingDescription(sykmelding.values),
+                },
+                Buffer.from(pdfBuffer).toString('base64'),
+            ),
+        },
+    )
 
     if ('error' in createdDocumentReference) {
         return { error: 'API_ERROR' }
