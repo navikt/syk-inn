@@ -19,7 +19,7 @@ export async function GET(
     if ('error' in client) {
         return new Response('Internal server error', { status: 500 })
     }
-    const practitioner = await client.request(`/${client.fhirUser}`)
+    const practitioner = await client.user.request()
     if ('error' in practitioner) {
         return new Response('Internal server error', { status: 500 })
     }

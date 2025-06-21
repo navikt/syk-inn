@@ -17,13 +17,13 @@ import { getReadyClient } from '@fhir/smart/smart-client'
  */
 export async function getPractitioner(client: ReadyClient): Promise<FhirPractitioner> {
     return spanAsync('get practitioner', async () => {
-        if (!client.fhirUser.startsWith('Practitioner/')) {
-            logger.error(`fhirUser is not a Practitioner, was: ${client.fhirUser}`)
+        if (!client.user.fhirUser.startsWith('Practitioner/')) {
+            logger.error(`fhirUser is not a Practitioner, was: ${client.user.fhirUser}`)
             throw new Error('fhirUser is not a Practitioner')
         }
 
-        logger.info(`Trying to fetch fhirUser from /Practitioner/${client.fhirUser}`)
-        const practitioner = await client.request(`/${client.fhirUser}` as `/Practitioner/${string}`)
+        logger.info(`Trying to fetch fhirUser from /Practitioner/${client.user.fhirUser}`)
+        const practitioner = await client.user.request()
 
         if ('error' in practitioner) {
             throw new Error(`Unable to fetch 'behandler', reason: ${practitioner.error}`)
@@ -59,7 +59,7 @@ export async function createDocumentReference(
     client: ReadyClient,
     sykmeldingId: string,
 ): Promise<FhirDocumentReference | { error: 'API_ERROR' } | { error: 'PARSING_ERROR' }> {
-    const practitioner = await client.request(`/${client.fhirUser}`)
+    const practitioner = await client.user.request()
     if ('error' in practitioner) {
         return { error: 'API_ERROR' }
     }
@@ -87,7 +87,7 @@ export async function createDocumentReference(
                     patientId: client.patient,
                     encounterId: client.encounter,
                     // TODO: hmmmm
-                    practitionerId: client.fhirUser.split('/')[1],
+                    practitionerId: client.user.fhirUser.split('/')[1],
                     description: getSykmeldingDescription(sykmelding.values),
                 },
                 Buffer.from(pdfBuffer).toString('base64'),

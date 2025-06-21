@@ -47,9 +47,24 @@ test('.request - /Practitioner should fetch and parse Practitioner resource', as
 
     const mock = mockPractitioner('ac768edb-d56a-4304-8574-f866c6af4e7e')
 
-    const practitioner = await ready.request(`/${ready.fhirUser}`)
+    const practitioner = await ready.request(`/${ready.user.fhirUser}`)
 
     expect(mock.isDone()).toBe(true)
+    expectHas(practitioner, 'resourceType')
+    expect(practitioner.resourceType).toBe('Practitioner')
+})
+
+test('shorthand for .request Practitioner should fetch and parse Practitioner resource', async () => {
+    const [client, storage] = createTestClient()
+
+    await storage.set('test-session', validSession)
+    const ready = await client.ready('test-session')
+
+    expectIs(ready, ReadyClient)
+
+    mockPractitioner('ac768edb-d56a-4304-8574-f866c6af4e7e')
+    const practitioner = await ready.user.request()
+
     expectHas(practitioner, 'resourceType')
     expect(practitioner.resourceType).toBe('Practitioner')
 })

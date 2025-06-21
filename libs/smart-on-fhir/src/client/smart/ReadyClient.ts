@@ -1,4 +1,5 @@
 import { decodeJwt, jwtVerify } from 'jose'
+import { FhirPractitioner } from '@navikt/fhir-zod'
 
 import { CompleteSession } from '../storage/schema'
 import { logger } from '../logger'
@@ -37,17 +38,27 @@ export class ReadyClient {
         return this._session.encounter
     }
 
-    public get fhirUser(): `Practitioner/${string}` {
-        if (this._session.webmedPractitioner) {
-            return `Practitioner/${this._session.webmedPractitioner}`
-        }
+    public get user(): {
+        fhirUser: `Practitioner/${string}`
+        request: () => Promise<FhirPractitioner | ResourceRequestErrors>
+    } {
+        const session = this._session
+        const idToken = this._idToken
 
-        if (this._idToken.fhirUser == null) {
-            throw new Error('WebMed hack: No webmedPractitioner and no idToken.fhirUser, what up?')
-        }
+        return {
+            get fhirUser(): `Practitioner/${string}` {
+                if (session.webmedPractitioner) {
+                    return `Practitioner/${session.webmedPractitioner}`
+                }
 
-        // TODO: Probably shouldn't be as'd
-        return this._idToken.fhirUser as `Practitioner/${string}`
+                if (idToken.fhirUser == null) {
+                    throw new Error('WebMed hack: No webmedPractitioner and no idToken.fhirUser, what up?')
+                }
+
+                return idToken.fhirUser as `Practitioner/${string}`
+            },
+            request: () => this.request(`/${this.user.fhirUser}`),
+        }
     }
 
     public async validate(): Promise<boolean> {

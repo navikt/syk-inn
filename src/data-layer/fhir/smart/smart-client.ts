@@ -54,7 +54,7 @@ export async function getReadyClientForResolvers(params?: {
         return [client]
     }
 
-    const practitioner = await client.request(`/${client.fhirUser}`)
+    const practitioner = await client.user.request()
     if ('error' in practitioner) {
         throw new GraphQLError('PARSING_ERROR')
     }
