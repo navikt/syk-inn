@@ -1,13 +1,13 @@
 import { expect, test } from 'vitest'
 
-import { SmartClient, SmartStorage } from '../client'
-import { ReadyClient } from '../client/smart/ReadyClient'
+import { SmartClient, ReadyClient, SmartStorage } from '../client'
 import { CompleteSession } from '../client/storage/schema'
 
 import { createTestIdToken } from './utils/token'
 import { expectHas, expectIs } from './utils/expect'
 import { mockEncounter, mockPatient, mockPractitioner } from './mocks/resources'
 import { createTestStorage } from './utils/storage'
+import { mockCreateDocumentReference } from './mocks/create-resources'
 
 const createTestClient = (): [SmartClient, SmartStorage] => {
     const storage = createTestStorage()
@@ -51,16 +51,30 @@ test('SmartClient should be properly initiated with Patient, Encounter and User'
     expect(ready.user.fhirUser).toEqual('Practitioner/ac768edb-d56a-4304-8574-f866c6af4e7e')
 })
 
-test('.request - /Practitioner should fetch and parse Practitioner resource', async () => {
+test('SmartClient.request - /Practitioner should fetch and parse Practitioner resource', async () => {
     const [ready] = await createLaunchedReadyClient()
 
     const mock = mockPractitioner('ac768edb-d56a-4304-8574-f866c6af4e7e')
 
-    const practitioner = await ready.request(`/${ready.user.fhirUser}`)
+    const practitioner = await ready.request(ready.user.fhirUser)
 
     expect(mock.isDone()).toBe(true)
     expectHas(practitioner, 'resourceType')
     expect(practitioner.resourceType).toBe('Practitioner')
+})
+
+test('SmartClient.create - /DocumentReference should POST and parse DocumentReference resource', async () => {
+    const [ready] = await createLaunchedReadyClient()
+
+    const mock = mockCreateDocumentReference({ resourceType: 'DocumentReference' })
+    const practitioner = await ready.create('DocumentReference', {
+        // Payload is contrivedly small for test
+        payload: { resourceType: 'DocumentReference' },
+    })
+
+    expect(mock.isDone()).toBe(true)
+    expectHas(practitioner, 'resourceType')
+    expect(practitioner.resourceType).toBe('DocumentReference')
 })
 
 test('shorthand for .request Practitioner should fetch and parse Practitioner resource', async () => {

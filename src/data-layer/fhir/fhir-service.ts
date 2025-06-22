@@ -79,7 +79,7 @@ export async function createDocumentReference(
     }
 
     const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.create(
-        '/DocumentReference',
+        'DocumentReference',
         {
             payload: createNewDocumentReferencePayload(
                 {

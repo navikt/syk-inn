@@ -36,9 +36,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const organization = await client.request(
-                `/${encounter.serviceProvider.reference}` as `/Organization/${string}`,
-            )
+            const organization = await client.request(encounter.serviceProvider.reference as `Organization/${string}`)
             if ('error' in organization) {
                 throw new GraphQLError('API_ERROR')
             }
@@ -81,7 +79,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
         konsultasjon: async () => {
             const [client] = await getReadyClientForResolvers()
 
-            const conditionsByEncounter = await client.request(`/Condition?encounter=${client.encounter.id}`)
+            const conditionsByEncounter = await client.request(`Condition?encounter=${client.encounter.id}`)
             if ('error' in conditionsByEncounter) {
                 throw new GraphQLError('PARSING_ERROR')
             }
@@ -108,7 +106,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const existingDocumentReference = await client.request(`/DocumentReference/${sykmeldingId}` as const)
+            const existingDocumentReference = await client.request(`DocumentReference/${sykmeldingId}` as const)
 
             return {
                 sykmeldingId: sykmelding.sykmeldingId,
@@ -304,9 +302,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const organization = await client.request(
-                `/${encounter.serviceProvider.reference}` as `/Organization/${string}`,
-            )
+            const organization = await client.request(encounter.serviceProvider.reference as `Organization/${string}`)
             if ('error' in organization) {
                 throw new GraphQLError('API_ERROR')
             }
@@ -373,7 +369,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const [client] = await getReadyClientForResolvers()
 
             const existingDocument = await spanAsync('get document reference', async () =>
-                client.request(`/DocumentReference/${sykmeldingId}`),
+                client.request(`DocumentReference/${sykmeldingId}`),
             )
             if ('resourceType' in existingDocument) {
                 return {

@@ -20,12 +20,12 @@ import {
  * A map of FHIR paths in a FHIR server and their known corresponding resource types.
  */
 type ResourceMap = {
-    '/Condition?': FhirBundle<FhirCondition>
-    '/Encounter/': FhirEncounter
-    '/Patient/': FhirPatient
-    '/Organization/': FhirOrganization
-    '/DocumentReference/': FhirDocumentReferenceBase
-    '/Practitioner/': FhirPractitioner
+    'Condition?': FhirBundle<FhirCondition>
+    'Encounter/': FhirEncounter
+    'Patient/': FhirPatient
+    'Organization/': FhirOrganization
+    'DocumentReference/': FhirDocumentReferenceBase
+    'Practitioner/': FhirPractitioner
 }
 
 /**
@@ -50,17 +50,17 @@ export type ResponseFor<T extends string> = {
  * This function is a type-hole, the callee will have to as the resulting parsed schema to the correct type.
  */
 export function resourceToSchema(resource: KnownPaths): z.ZodObject {
-    if (resource.startsWith('/Practitioner/')) {
+    if (resource.startsWith('Practitioner/')) {
         return FhirPractitionerSchema
-    } else if (resource.startsWith('/DocumentReference/')) {
+    } else if (resource.startsWith('DocumentReference/')) {
         return FhirDocumentReferenceBaseSchema
-    } else if (resource.startsWith('/Patient/')) {
+    } else if (resource.startsWith('Patient/')) {
         return FhirPatientSchema
-    } else if (resource.startsWith('/Encounter/')) {
+    } else if (resource.startsWith('Encounter/')) {
         return FhirEncounterSchema
-    } else if (resource.startsWith('/Condition?')) {
+    } else if (resource.startsWith('Condition?')) {
         return createFhirBundleSchema(FhirConditionSchema)
-    } else if (resource.startsWith('/Organization')) {
+    } else if (resource.startsWith('Organization')) {
         return FhirOrganizationSchema
     }
 

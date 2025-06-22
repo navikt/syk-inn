@@ -1,16 +1,26 @@
 import { CompleteSession } from '../../storage/schema'
 
-type FhirPath = {
+import { KnownPaths } from './resource-map'
+import { KnownCreatePaths } from './create-resource-map'
+
+type FhirSession = {
     session: CompleteSession
-    path: `/${string}`
 }
 
 type PostFhir = {
     payload: unknown
 }
 
-export async function postFhir({ session, path }: FhirPath, { payload }: PostFhir): Promise<Response> {
-    const resourcePath = `${session.server}${path}`
+export async function postFhir(
+    {
+        session,
+        path,
+    }: FhirSession & {
+        path: KnownCreatePaths
+    },
+    { payload }: PostFhir,
+): Promise<Response> {
+    const resourcePath = `${session.server}/${path}`
 
     return await fetch(resourcePath, {
         method: 'POST',
@@ -23,8 +33,14 @@ export async function postFhir({ session, path }: FhirPath, { payload }: PostFhi
     })
 }
 
-export async function getFhir({ session, path }: FhirPath): Promise<Response> {
-    const resourcePath = `${session.server}${path}`
+export async function getFhir({
+    session,
+    path,
+}: FhirSession & {
+    path: KnownPaths
+}): Promise<Response> {
+    const resourcePath = `${session.server}/${path}`
+
     return await fetch(resourcePath, {
         method: 'GET',
         headers: {

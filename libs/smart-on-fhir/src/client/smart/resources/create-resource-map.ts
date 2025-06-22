@@ -5,11 +5,11 @@ import { FhirDocumentReference, FhirDocumentReferenceBaseSchema } from '@navikt/
  * A map of FHIR paths in a FHIR server and their known corresponding resource types.
  */
 type CreateMap = {
-    '/DocumentReference': FhirDocumentReference
+    DocumentReference: FhirDocumentReference
 }
 
 type PayloadMap = {
-    '/DocumentReference': Partial<FhirDocumentReference>
+    DocumentReference: Partial<FhirDocumentReference>
 }
 
 /**
@@ -37,7 +37,7 @@ export type PayloadForCreate<T extends string> = {
  * This function is a type-hole, the callee will have to as the resulting parsed schema to the correct type.
  */
 export function createResourceToSchema(resource: KnownCreatePaths): z.ZodObject {
-    if (resource == '/DocumentReference') {
+    if (resource == 'DocumentReference') {
         return FhirDocumentReferenceBaseSchema
     }
 

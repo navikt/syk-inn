@@ -42,7 +42,7 @@ export class ReadyClient {
             type: 'Patient',
             reference: `Patient/${this._session.patient}`,
             id: this._session.patient,
-            request: () => this.request(`/Patient/${this._session.patient}`),
+            request: () => this.request(`Patient/${this._session.patient}`),
         }
     }
 
@@ -51,7 +51,7 @@ export class ReadyClient {
             type: 'Encounter',
             reference: `Encounter/${this._session.encounter}`,
             id: this._session.encounter,
-            request: () => this.request(`/Encounter/${this._session.encounter}`),
+            request: () => this.request(`Encounter/${this._session.encounter}`),
         }
     }
 
@@ -74,7 +74,7 @@ export class ReadyClient {
 
                 return idToken.fhirUser as `Practitioner/${string}`
             },
-            request: () => this.request(`/${this.user.fhirUser}`),
+            request: () => this.request(this.user.fhirUser),
         }
     }
 
@@ -119,7 +119,7 @@ export class ReadyClient {
         resource: Path,
         params: { payload: PayloadForCreate<Path> },
     ): Promise<ResponseForCreate<Path> | ResourceCreateErrors> {
-        const resourceType = resource.match(/\/(\w+)\b/)?.[1] ?? 'Unknown'
+        const resourceType = resource.match(/(\w+)\b/)?.[1] ?? 'Unknown'
 
         return spanAsync(`create.${resourceType}`, async (span) => {
             span.setAttributes({
@@ -154,7 +154,7 @@ export class ReadyClient {
     }
 
     public async request<Path extends KnownPaths>(resource: Path): Promise<ResponseFor<Path> | ResourceRequestErrors> {
-        const resourceType = resource.match(/\/(\w+)\b/)?.[1] ?? 'Unknown'
+        const resourceType = resource.match(/(\w+)\b/)?.[1] ?? 'Unknown'
 
         return spanAsync(`request.${resourceType}`, async (span) => {
             span.setAttributes({
