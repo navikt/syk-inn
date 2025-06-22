@@ -31,7 +31,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
         behandler: async () => {
             const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
 
-            const encounter = await client.request(`/Encounter/${client.encounter}`)
+            const encounter = await client.encounter.request()
             if ('error' in encounter) {
                 throw new GraphQLError('API_ERROR')
             }
@@ -66,22 +66,22 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
         pasient: async () => {
             const [client] = await getReadyClientForResolvers()
 
-            const patientInContext = await client.request(`/Patient/${client.patient}`)
-            if ('error' in patientInContext) {
+            const patient = await client.patient.request()
+            if ('error' in patient) {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
             await wait(700)
 
             return {
-                navn: getNameFromFhir(patientInContext.name),
-                ident: getValidPatientIdent(patientInContext) ?? raise('Patient without valid FNR/DNR'),
+                navn: getNameFromFhir(patient.name),
+                ident: getValidPatientIdent(patient) ?? raise('Patient without valid FNR/DNR'),
             }
         },
         konsultasjon: async () => {
             const [client] = await getReadyClientForResolvers()
 
-            const conditionsByEncounter = await client.request(`/Condition?encounter=${client.encounter}`)
+            const conditionsByEncounter = await client.request(`/Condition?encounter=${client.encounter.id}`)
             if ('error' in conditionsByEncounter) {
                 throw new GraphQLError('PARSING_ERROR')
             }
@@ -129,7 +129,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 logger.error('Missing HPR identifier in practitioner resource')
                 throw new GraphQLError('PARSING_ERROR')
             }
-            const patientInContext = await client.request(`/Patient/${client.patient}`)
+            const patientInContext = await client.patient.request()
             if ('error' in patientInContext) {
                 throw new GraphQLError('PARSING_ERROR')
             }
@@ -195,7 +195,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
-            const pasient = await client.request(`/Patient/${client.patient}`)
+            const pasient = await client.patient.request()
             if ('error' in pasient) {
                 throw new GraphQLError('API_ERROR')
             }
@@ -223,7 +223,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
-            const pasient = await client.request(`/Patient/${client.patient}`)
+            const pasient = await client.patient.request()
             if ('error' in pasient) {
                 throw new GraphQLError('API_ERROR')
             }
@@ -264,7 +264,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
-            const pasient = await client.request(`/Patient/${client.patient}`)
+            const pasient = await client.patient.request()
             if ('error' in pasient) {
                 throw new GraphQLError('API_ERROR')
             }
@@ -294,12 +294,12 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             }
 
             // TODO: Fetching these patient, encounter and organization can probably be done a bit more effective
-            const pasient = await client.request(`/Patient/${client.patient}`)
+            const pasient = await client.patient.request()
             if ('error' in pasient) {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const encounter = await client.request(`/Encounter/${client.encounter}`)
+            const encounter = await client.encounter.request()
             if ('error' in encounter) {
                 throw new GraphQLError('API_ERROR')
             }

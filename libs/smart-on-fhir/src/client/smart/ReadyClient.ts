@@ -1,5 +1,5 @@
 import { decodeJwt, jwtVerify } from 'jose'
-import { FhirPractitioner } from '@navikt/fhir-zod'
+import { FhirEncounter, FhirPatient, FhirPractitioner } from '@navikt/fhir-zod'
 
 import { CompleteSession } from '../storage/schema'
 import { logger } from '../logger'
@@ -19,6 +19,13 @@ import {
     ResponseForCreate,
 } from './resources/create-resource-map'
 
+type ValueAccessor<Resource, Type extends string = never> = {
+    id: string
+    type: Type
+    request: () => Promise<Resource | ResourceRequestErrors>
+    reference: `${Type}/${string}`
+}
+
 export class ReadyClient {
     private readonly _client: SmartClient
     private readonly _session: CompleteSession
@@ -30,12 +37,22 @@ export class ReadyClient {
         this._idToken = IdTokenSchema.parse(decodeJwt(session.idToken))
     }
 
-    public get patient(): string {
-        return this._session.patient
+    public get patient(): ValueAccessor<FhirPatient, 'Patient'> {
+        return {
+            type: 'Patient',
+            reference: `Patient/${this._session.patient}`,
+            id: this._session.patient,
+            request: () => this.request(`/Patient/${this._session.patient}`),
+        }
     }
 
-    public get encounter(): string {
-        return this._session.encounter
+    public get encounter(): ValueAccessor<FhirEncounter, 'Encounter'> {
+        return {
+            type: 'Encounter',
+            reference: `Encounter/${this._session.encounter}`,
+            id: this._session.encounter,
+            request: () => this.request(`/Encounter/${this._session.encounter}`),
+        }
     }
 
     public get user(): {

@@ -84,8 +84,8 @@ export async function createDocumentReference(
             payload: createNewDocumentReferencePayload(
                 {
                     sykmeldingId,
-                    patientId: client.patient,
-                    encounterId: client.encounter,
+                    patientId: client.patient.id,
+                    encounterId: client.encounter.id,
                     // TODO: hmmmm
                     practitionerId: client.user.fhirUser.split('/')[1],
                     description: getSykmeldingDescription(sykmelding.values),

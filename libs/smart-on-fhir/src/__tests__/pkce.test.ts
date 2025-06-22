@@ -75,6 +75,6 @@ test('pkce verification should be correct', async () => {
     expectIs(ready, ReadyClient)
 
     expect(ready.user.fhirUser).toEqual('Practitioner/71503542-c4f5-4f11-a5a5-6633c139d0d4')
-    expect(ready.patient).toEqual('c4664cf0-9168-4b6f-8798-93799068552b')
-    expect(ready.encounter).toEqual('3cdff553-e0ce-4fe0-89ca-8a3b62ca853e')
+    expect(ready.patient.id).toEqual('c4664cf0-9168-4b6f-8798-93799068552b')
+    expect(ready.encounter.id).toEqual('3cdff553-e0ce-4fe0-89ca-8a3b62ca853e')
 })

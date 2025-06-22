@@ -6,7 +6,7 @@ import { CompleteSession } from '../client/storage/schema'
 
 import { createTestIdToken } from './utils/token'
 import { expectHas, expectIs } from './utils/expect'
-import { mockPractitioner } from './mocks/resources'
+import { mockEncounter, mockPatient, mockPractitioner } from './mocks/resources'
 import { createTestStorage } from './utils/storage'
 
 const createTestClient = (): [SmartClient, SmartStorage] => {
@@ -37,13 +37,22 @@ const validSession: CompleteSession = {
     encounter: 'valid-encounter-id',
 }
 
+test('SmartClient should be properly initiated with Patient, Encounter and User', async () => {
+    const [ready] = await createLaunchedReadyClient()
+
+    expect(ready.patient.type).toEqual('Patient')
+    expect(ready.patient.reference).toEqual('Patient/valid-patient-id')
+    expect(ready.patient.id).toEqual('valid-patient-id')
+
+    expect(ready.encounter.type).toEqual('Encounter')
+    expect(ready.encounter.reference).toEqual('Encounter/valid-encounter-id')
+    expect(ready.encounter.id).toEqual('valid-encounter-id')
+
+    expect(ready.user.fhirUser).toEqual('Practitioner/ac768edb-d56a-4304-8574-f866c6af4e7e')
+})
+
 test('.request - /Practitioner should fetch and parse Practitioner resource', async () => {
-    const [client, storage] = createTestClient()
-
-    await storage.set('test-session', validSession)
-    const ready = await client.ready('test-session')
-
-    expectIs(ready, ReadyClient)
+    const [ready] = await createLaunchedReadyClient()
 
     const mock = mockPractitioner('ac768edb-d56a-4304-8574-f866c6af4e7e')
 
@@ -55,12 +64,7 @@ test('.request - /Practitioner should fetch and parse Practitioner resource', as
 })
 
 test('shorthand for .request Practitioner should fetch and parse Practitioner resource', async () => {
-    const [client, storage] = createTestClient()
-
-    await storage.set('test-session', validSession)
-    const ready = await client.ready('test-session')
-
-    expectIs(ready, ReadyClient)
+    const [ready] = await createLaunchedReadyClient()
 
     mockPractitioner('ac768edb-d56a-4304-8574-f866c6af4e7e')
     const practitioner = await ready.user.request()
@@ -68,3 +72,34 @@ test('shorthand for .request Practitioner should fetch and parse Practitioner re
     expectHas(practitioner, 'resourceType')
     expect(practitioner.resourceType).toBe('Practitioner')
 })
+
+test('shorthand for .request Encounter should fetch and parse Encounter resource', async () => {
+    const [ready] = await createLaunchedReadyClient()
+
+    mockEncounter('valid-encounter-id')
+    const encounter = await ready.encounter.request()
+
+    expectHas(encounter, 'resourceType')
+    expect(encounter.resourceType).toBe('Encounter')
+})
+
+test('shorthand for .request Patient should fetch and parse Patient resource', async () => {
+    const [ready] = await createLaunchedReadyClient()
+
+    mockPatient('valid-patient-id')
+    const encounter = await ready.patient.request()
+
+    expectHas(encounter, 'resourceType')
+    expect(encounter.resourceType).toBe('Patient')
+})
+
+async function createLaunchedReadyClient(): Promise<[ReadyClient, SmartStorage]> {
+    const [client, storage] = createTestClient()
+
+    await storage.set('test-session', validSession)
+    const ready = await client.ready('test-session')
+
+    expectIs(ready, ReadyClient)
+
+    return [ready, storage]
+}
