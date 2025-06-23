@@ -5,7 +5,6 @@ import { logger } from '@navikt/next-logger'
 
 import { bundledEnv, getServerEnv } from '@utils/env'
 import { raise } from '@utils/ts'
-import { withSpanAsync } from '@otel/otel'
 
 function initializeValkey(): Valkey {
     const valkeyConfig = getServerEnv().valkeyConfig ?? raise('Valkey config is not set! :(')
@@ -100,17 +99,14 @@ export function createInMemoryValkey(): Valkey {
     })
 }
 
-export const getValkeyClient = lazyNextleton(
-    'valkey-client',
-    withSpanAsync('get valkey client', async () => {
-        switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
-            case 'e2e':
-            case 'demo':
-                return createInMemoryValkey()
-            case 'local':
-            case 'prod-gcp':
-            case 'dev-gcp':
-                return initializeValkey()
-        }
-    }),
-)
+export const getValkeyClient = lazyNextleton('valkey-client', () => {
+    switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
+        case 'e2e':
+        case 'demo':
+            return createInMemoryValkey()
+        case 'local':
+        case 'prod-gcp':
+        case 'dev-gcp':
+            return initializeValkey()
+    }
+})

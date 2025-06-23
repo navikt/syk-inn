@@ -62,8 +62,8 @@ export async function getReadyClientForResolvers(params?: {
     return [client, practitioner]
 }
 
-async function getSmartStorage(): Promise<SmartStorage> {
-    const valkey = await getValkeyClient()
+function getSmartStorage(): SmartStorage {
+    const valkey = getValkeyClient()
 
     return {
         set: async (sessionId, values) => {

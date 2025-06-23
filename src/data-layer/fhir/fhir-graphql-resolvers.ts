@@ -14,7 +14,6 @@ import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { getFnrIdent, getNameFromPdl } from '@services/pdl/pdl-api-utils'
 import { getHpr, practitionerToBehandler } from '@fhir/mappers/practitioner'
 import { createDocumentReference } from '@fhir/fhir-service'
-import { spanAsync } from '@otel/otel'
 import { resolverInputToSykInnApiPayload } from '@services/syk-inn-api/syk-inn-api-utils'
 import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from '@fhir/mappers/organization'
 import { OpprettSykmeldingMeta } from '@services/syk-inn-api/schema/opprett'
@@ -171,7 +170,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
         },
         diagnose: (_, { query }) => searchDiagnose(query),
         draft: async (_, { draftId }) => {
-            const draftClient = await getDraftClient()
+            const draftClient = getDraftClient()
 
             // TODO verify access to draft
             const draft = await draftClient.getDraft(draftId)
@@ -204,7 +203,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const draftClient = await getDraftClient()
+            const draftClient = getDraftClient()
 
             const allDrafts = await draftClient.getDrafts({ hpr, ident })
 
@@ -242,7 +241,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const draftClient = await getDraftClient()
+            const draftClient = getDraftClient()
             await draftClient.saveDraft(draftId, { hpr, ident }, parsedValues.data)
 
             logger.info(`Saved draft ${draftId} to draft client`)
@@ -273,7 +272,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const draftClient = await getDraftClient()
+            const draftClient = getDraftClient()
 
             // TODO verify access to draft
             await draftClient.deleteDraft(draftId, { hpr, ident })
@@ -357,7 +356,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             }
 
             // Delete the draft after successful creation
-            const draftClient = await getDraftClient()
+            const draftClient = getDraftClient()
             await draftClient.deleteDraft(draftId, { hpr, ident: pasientIdent })
 
             return {
@@ -368,9 +367,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
         synchronizeSykmelding: async (_, { id: sykmeldingId }) => {
             const [client] = await getReadyClientForResolvers()
 
-            const existingDocument = await spanAsync('get document reference', async () =>
-                client.request(`DocumentReference/${sykmeldingId}`),
-            )
+            const existingDocument = await client.request(`DocumentReference/${sykmeldingId}`)
             if ('resourceType' in existingDocument) {
                 return {
                     navStatus: 'COMPLETE',
@@ -379,9 +376,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             }
 
             if ('error' in existingDocument && existingDocument.error === 'REQUEST_FAILED_RESOURCE_NOT_FOUND') {
-                const createResult = await spanAsync('create document reference', async () =>
-                    createDocumentReference(client, sykmeldingId),
-                )
+                const createResult = await createDocumentReference(client, sykmeldingId)
                 if ('error' in createResult) {
                     throw new GraphQLError('API_ERROR')
                 }
