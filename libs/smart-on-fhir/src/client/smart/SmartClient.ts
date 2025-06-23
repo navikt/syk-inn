@@ -11,26 +11,16 @@ import { fetchTokenExchange, TokenExchangeErrors } from './launch/token'
 import { buildAuthUrl } from './launch/authorization'
 import { CallbackError, SmartClientReadyErrors } from './client-errors'
 import { ReadyClient } from './ReadyClient'
+import { SmartClientConfiguration } from './config'
 
-export type Launch = {
-    redirect_url: string
-}
-
-export type LaunchError = {
-    error: 'INVALID_ISSUER'
-}
-
-export type Callback = {
-    redirect_url: string
-}
-
-export type SmartClientConfiguration = {
-    client_id: string
-    scope: string
-    callback_url: string
-    redirect_url: string
-}
-
+/**
+ * The smart client is used to handle the launch of the Smart on FHIR application. It requires at the very least:
+ * - A asyncronous storage implementation that implements the `SmartStorage` interface, for example Valkey.
+ * - A FHIR server to launch towards, where the application is registered.
+ *
+ * Note: It's the responsibility of the application using this library to limit which issuers are allowed to be launched.
+ *       This may part of this applications configuration in the future.
+ */
 export class SmartClient {
     private readonly _storage: SafeSmartStorage
     private readonly _config: SmartClientConfiguration
@@ -42,11 +32,23 @@ export class SmartClient {
         this._config = config
     }
 
+    /**
+     * **Smart App Launch reference**
+     * - EHR Launch: https://build.fhir.org/ig/HL7/smart-app-launch/app-launch.html#launch-app-ehr-launch
+     * - Auth URL:   https://build.fhir.org/ig/HL7/smart-app-launch/app-launch.html#obtain-authorization-code
+     *
+     * The EHR-system provides the issuer URL and the launch context to the application. Initiates a partial session
+     * in the session storage.
+     *
+     * An authorization URL is created using the OAuth 2.0 state parameter and PKCE (Proof Key for Code Exchange).
+     *
+     * Callee is responsible for redirecting the user to the returned `redirect_url`.
+     */
     async launch(params: {
         sessionId: string
         iss: string
         launch: string
-    }): Promise<Launch | LaunchError | SmartConfigurationErrors> {
+    }): Promise<Launch | SmartConfigurationErrors> {
         return spanAsync('launch', async (span) => {
             span.setAttribute(OtelTaxonomy.FhirServer, removeTrailingSlash(params.iss))
 
@@ -89,6 +91,15 @@ export class SmartClient {
         })
     }
 
+    /**
+     * **Smart App Launch reference**
+     *  - Callback:       https://build.fhir.org/ig/HL7/smart-app-launch/app-launch.html#response-4
+     *  - Token exchange: https://build.fhir.org/ig/HL7/smart-app-launch/app-launch.html#obtain-access-token
+     *
+     *  The callback is called after the user has been redirected back to the application with code and state.
+     *
+     *  Completes the partial session created in the `launch` method by exchanging the code for tokens.
+     */
     async callback(params: {
         sessionId: string
         code: string
@@ -141,6 +152,13 @@ export class SmartClient {
         })
     }
 
+    /**
+     * **Smart App Launch reference**
+     * - Accessing the FHIR API: https://build.fhir.org/ig/HL7/smart-app-launch/app-launch.html#access-fhir-api
+     *
+     * Once the launch has been completed, a ReadyClient {@link ReadyClient} can be created using the
+     * sessionId that was used in the `launch` and `callback` methods.
+     */
     async ready(
         sessionId: string | null,
     ): Promise<ReadyClient | (SmartClientReadyErrors & { validate: ReadyClient['validate'] })> {
@@ -182,4 +200,21 @@ export class SmartClient {
             }
         })
     }
+}
+
+/**
+ * A successful launch will end up in a redirect_url for the user to be redirected to.
+ *
+ * The responsibilty to redirect the user lies with the application using the SmartClient.
+ */
+export type Launch = {
+    redirect_url: string
+}
+
+/**
+ * A successful callback will end up in a redirect_url for the user to be redirected to, this URL is configured
+ * by the application using the SmartClient and is typically part of the app itself.
+ */
+export type Callback = {
+    redirect_url: string
 }

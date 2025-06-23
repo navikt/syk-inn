@@ -2,7 +2,7 @@ import { InitialSession } from '../../storage/schema'
 import { logger } from '../../logger'
 import { OtelTaxonomy, spanAsync } from '../../otel'
 import { getResponseError } from '../../utils'
-import { SmartClientConfiguration } from '../SmartClient'
+import { SmartClientConfiguration } from '../config'
 
 import { TokenResponseSchema, TokenResponse } from './token-schema'
 

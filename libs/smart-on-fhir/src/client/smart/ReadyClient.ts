@@ -19,13 +19,14 @@ import {
     ResponseForCreate,
 } from './resources/create-resource-map'
 
-type ValueAccessor<Resource, Type extends string = never> = {
-    id: string
-    type: Type
-    request: () => Promise<Resource | ResourceRequestErrors>
-    reference: `${Type}/${string}`
-}
-
+/**
+ * **Smart App Launch reference**
+ * - Accessing the FHIR API: https://build.fhir.org/ig/HL7/smart-app-launch/app-launch.html#access-fhir-api
+ *
+ * A client that is ready to access the FHIR API after a successful Smart App Launch.
+ *
+ * Everything is strongly typed and zod'd!
+ */
 export class ReadyClient {
     private readonly _client: SmartClient
     private readonly _session: CompleteSession
@@ -190,4 +191,11 @@ export class ReadyClient {
             return parsed.data as ResponseFor<Path>
         })
     }
+}
+
+type ValueAccessor<Resource, Type extends string = never> = {
+    id: string
+    type: Type
+    request: () => Promise<Resource | ResourceRequestErrors>
+    reference: `${Type}/${string}`
 }
