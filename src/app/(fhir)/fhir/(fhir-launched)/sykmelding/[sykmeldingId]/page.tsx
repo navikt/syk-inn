@@ -80,7 +80,7 @@ function TidligereSykmelding({ sykmeldingId }: { sykmeldingId: string }): ReactE
     }
 
     return (
-        <div className="bg-bg-default p-4 rounded">
+        <div className="bg-bg-default p-4 rounded-sm">
             <Heading level="3" size="medium">
                 Sykmelding {toReadableDatePeriod(earliestPeriode.fom, latestPeriode.tom)}
             </Heading>

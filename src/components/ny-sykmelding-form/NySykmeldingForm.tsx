@@ -45,49 +45,47 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
     })
 
     return (
-        <div className="bg-bg-default p-4 rounded">
-            <FormProvider {...form}>
-                <FormDraftSync />
-                <form onSubmit={form.handleSubmit(onSubmit)} className={styles.formGrid}>
-                    <FormSheet className="row-span-3">
-                        <FormSection title="Arbeidsgiver">
-                            <ArbeidsforholdSection />
-                        </FormSection>
-                        <FormSection title="Periode">
-                            <AktivitetSection />
-                        </FormSection>
-                        <DynamicTilbakedateringSection />
-                    </FormSheet>
-                    <FormSheet className="row-span-2">
-                        <FormSection title="Diagnose">
-                            <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
-                        </FormSection>
-                        <FormSection title="Andre spørsmål" hideTitle>
-                            <AndreSporsmalSection />
-                        </FormSection>
-                        <FormSection title="Meldinger" hideBorder>
-                            <MeldingerSection />
-                        </FormSection>
-                    </FormSheet>
-                    <FormSheet className="flex items-end justify-end">
-                        <div className="flex gap-3">
-                            <ForkastDraftButton />
-                            <LagreDraftButton />
-                            <Button
-                                id="step-navigation-next"
-                                type="submit"
-                                variant="primary"
-                                icon={<ArrowRightIcon aria-hidden />}
-                                iconPosition="right"
-                            >
-                                Neste steg
-                            </Button>
-                        </div>
-                    </FormSheet>
-                </form>
-                <FormDevTools />
-            </FormProvider>
-        </div>
+        <FormProvider {...form}>
+            <FormDraftSync />
+            <form onSubmit={form.handleSubmit(onSubmit)} className={styles.formGrid}>
+                <FormSheet className="row-span-3">
+                    <FormSection title="Arbeidsgiver">
+                        <ArbeidsforholdSection />
+                    </FormSection>
+                    <FormSection title="Periode">
+                        <AktivitetSection />
+                    </FormSection>
+                    <DynamicTilbakedateringSection />
+                </FormSheet>
+                <FormSheet className="row-span-2">
+                    <FormSection title="Diagnose">
+                        <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
+                    </FormSection>
+                    <FormSection title="Andre spørsmål" hideTitle>
+                        <AndreSporsmalSection />
+                    </FormSection>
+                    <FormSection title="Meldinger" hideBorder>
+                        <MeldingerSection />
+                    </FormSection>
+                </FormSheet>
+                <FormSheet className="flex items-end justify-end">
+                    <div className="flex gap-3">
+                        <ForkastDraftButton />
+                        <LagreDraftButton />
+                        <Button
+                            id="step-navigation-next"
+                            type="submit"
+                            variant="primary"
+                            icon={<ArrowRightIcon aria-hidden />}
+                            iconPosition="right"
+                        >
+                            Neste steg
+                        </Button>
+                    </div>
+                </FormSheet>
+            </form>
+            <FormDevTools />
+        </FormProvider>
     )
 }
 
