@@ -4,34 +4,10 @@ import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { getHpr } from '@fhir/mappers/practitioner'
 import { createNewDocumentReferencePayload } from '@fhir/mappers/document-reference'
-import { FhirDocumentReference, FhirPractitioner } from '@navikt/fhir-zod'
+import { FhirDocumentReference } from '@navikt/fhir-zod'
 import { toReadableDatePeriod } from '@utils/date'
 import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
-import { spanAsync } from '@otel/otel'
 import { getReadyClient } from '@fhir/smart/smart-client'
-
-/**
- * Uses the FHIR client to fetch the Practitioner resource for the current user.
- *
- * With required hacks.
- */
-export async function getPractitioner(client: ReadyClient): Promise<FhirPractitioner> {
-    return spanAsync('get practitioner', async () => {
-        if (!client.user.fhirUser.startsWith('Practitioner/')) {
-            logger.error(`fhirUser is not a Practitioner, was: ${client.user.fhirUser}`)
-            throw new Error('fhirUser is not a Practitioner')
-        }
-
-        logger.info(`Trying to fetch fhirUser from /Practitioner/${client.user.fhirUser}`)
-        const practitioner = await client.user.request()
-
-        if ('error' in practitioner) {
-            throw new Error(`Unable to fetch 'behandler', reason: ${practitioner.error}`)
-        }
-
-        return practitioner
-    })
-}
 
 export async function getHprFromFhirSession(
     client?: ReadyClient,
@@ -42,7 +18,11 @@ export async function getHprFromFhirSession(
         return { error: 'NO_SESSION' }
     }
 
-    const practitioner = await getPractitioner(readyClient)
+    const practitioner = await readyClient.user.request()
+    if ('error' in practitioner) {
+        return { error: 'NO_SESSION' }
+    }
+
     const hpr = getHpr(practitioner.identifier)
     if (hpr == null) {
         logger.warn(`Practitioner does not have HPR, practitioner: ${JSON.stringify(practitioner)}`)
