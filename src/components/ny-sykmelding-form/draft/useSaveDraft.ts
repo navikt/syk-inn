@@ -2,7 +2,7 @@ import { FetchResult, MutationResult, useMutation } from '@apollo/client'
 import { useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { GetAllDraftsDocument, SaveDraftDocument, SaveDraftMutation } from '@queries'
+import { GetAllDraftsDocument, GetDraftDocument, SaveDraftDocument, SaveDraftMutation } from '@queries'
 import { NySykmeldingMainFormValues } from '@components/ny-sykmelding-form/form'
 import { spanAsync } from '@otel/otel'
 
@@ -30,6 +30,16 @@ export function useSaveDraft(opts: {
         },
         refetchQueries: [GetAllDraftsDocument],
         awaitRefetchQueries: true,
+        update(cache, { data }) {
+            if (data?.saveDraft == null) return
+
+            // Update the cache with the mutation data
+            cache.writeQuery({
+                query: GetDraftDocument,
+                variables: { draftId: data.saveDraft.draftId },
+                data: { draft: data.saveDraft },
+            })
+        },
     })
 
     const mutationWithMappedValues = useCallback(
