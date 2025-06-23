@@ -2,9 +2,9 @@ import React, { CSSProperties, ReactElement, useRef, useState } from 'react'
 import { Alert, BodyShort, Button, ConfirmationPanel, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
-import AssableNextLink from '@components/misc/AssableNextLink'
 import { PasientDocument } from '@queries'
 import DashboardCard from '@components/dashboard/card/DashboardCard'
+import { ShortcutButtonLink } from '@components/shortcut/ShortcutButton'
 
 function OpprettNySykmeldingCard(): ReactElement {
     const nextDraftId = useRef(crypto.randomUUID())
@@ -73,16 +73,19 @@ function OpprettNySykmeldingCard(): ReactElement {
                     </div>
 
                     <div className="flex items-center justify-end">
-                        <Button
-                            as={AssableNextLink}
-                            variant="primary"
+                        <ShortcutButtonLink
                             href={`/fhir/ny/${nextDraftId.current}`}
+                            variant="primary"
                             disabled={loading || !hasLegged}
                             loading={loading}
                             size="small"
+                            shortcut={{
+                                modifier: 'shift',
+                                key: 'n',
+                            }}
                         >
                             Opprett sykmelding
-                        </Button>
+                        </ShortcutButtonLink>
                     </div>
                 </div>
             </div>

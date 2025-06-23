@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Button } from '@navikt/ds-react'
 import { ArrowRightIcon } from '@navikt/aksel-icons'
 import dynamic from 'next/dynamic'
 import * as R from 'remeda'
@@ -12,6 +11,7 @@ import FormSection from '@components/form/form-section/FormSection'
 import ForkastDraftButton, { LagreDraftButton } from '@components/ny-sykmelding-form/draft/DraftActions'
 import FormSheet from '@components/form/form-section/FormSheet'
 import ArbeidsforholdSection from '@components/ny-sykmelding-form/arbeidsgiver/ArbeidsforholdSection'
+import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButton'
 
 import { useAppDispatch, useAppSelector } from '../../providers/redux/hooks'
 import { DraftValues } from '../../data-layer/draft/draft-schema'
@@ -69,18 +69,21 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                     </FormSection>
                 </FormSheet>
                 <FormSheet className="flex items-end justify-end">
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 p-2">
                         <ForkastDraftButton />
                         <LagreDraftButton />
-                        <Button
+                        <ShortcutSubmitButton
                             id="step-navigation-next"
-                            type="submit"
                             variant="primary"
                             icon={<ArrowRightIcon aria-hidden />}
                             iconPosition="right"
+                            shortcut={{
+                                modifier: 'shift',
+                                key: 'n',
+                            }}
                         >
                             Neste steg
-                        </Button>
+                        </ShortcutSubmitButton>
                     </div>
                 </FormSheet>
             </form>
