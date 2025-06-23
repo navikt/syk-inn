@@ -2,11 +2,12 @@ import React, { ReactElement, useState } from 'react'
 import { BodyShort, DatePicker, Detail, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
 import { differenceInDays, format, isSameDay, parseISO } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
 
 import { dateOnly } from '@utils/date'
 import { cn } from '@utils/tw'
 import { parseShorthand } from '@components/ny-sykmelding-form/aktivitet/periode-shorthand'
+import { SimpleReveal } from '@components/animation/Reveal'
 
 import { PeriodeField, useController, useFormContext } from '../form'
 
@@ -118,18 +119,12 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
                     />
                 </DatePicker>
             </div>
-            <AnimatePresence>
+            <AnimatePresence initial={false}>
                 {rangeDescription && (
-                    <motion.div
-                        className="overflow-hidden"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    >
+                    <SimpleReveal>
                         <BodyShort size="small">{rangeDescription.top}</BodyShort>
                         <Detail>{rangeDescription.bottom}</Detail>
-                    </motion.div>
+                    </SimpleReveal>
                 )}
             </AnimatePresence>
         </div>

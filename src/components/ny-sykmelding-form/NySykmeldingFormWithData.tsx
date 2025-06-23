@@ -13,7 +13,7 @@ function NySykmeldingFormWithData(): ReactElement {
     const konsultasjonsQuery = useQuery(KonsultasjonDocument)
     const draftQuery = useQuery(GetDraftDocument, {
         variables: { draftId: params.draftId },
-        fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'cache-first',
     })
 
     if (konsultasjonsQuery.loading || draftQuery.loading) {

@@ -20,7 +20,7 @@ function Providers({ children, mode }: PropsWithChildren<{ mode: Modes }>): Reac
                 <ModeProvider mode={mode}>
                     <NuqsAdapter>
                         {children}
-                        <Toaster position="bottom-center" />
+                        <Toaster position="bottom-right" />
                     </NuqsAdapter>
                 </ModeProvider>
             </ReduxProvider>
