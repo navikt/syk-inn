@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import { Button } from '@navikt/ds-react'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/navigation'
 import { FloppydiskIcon } from '@navikt/aksel-icons'
@@ -10,6 +9,7 @@ import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
 import { useFormContext } from '@components/ny-sykmelding-form/form'
 import { useSaveDraft } from '@components/ny-sykmelding-form/draft/useSaveDraft'
 import { spanAsync } from '@otel/otel'
+import { ShortcutButton } from '@components/shortcut/ShortcutButton'
 
 import { useMode } from '../../../providers/ModeProvider'
 import { useAppDispatch } from '../../../providers/redux/hooks'
@@ -29,8 +29,7 @@ export function LagreDraftButton(): ReactElement {
     const dispatch = useAppDispatch()
 
     return (
-        <Button
-            type="button"
+        <ShortcutButton
             variant="secondary"
             icon={<FloppydiskIcon aria-hidden />}
             iconPosition="right"
@@ -40,9 +39,13 @@ export function LagreDraftButton(): ReactElement {
                 await mutation(draftId, values)
             }}
             loading={draftResult.loading}
+            shortcut={{
+                modifier: 'shift',
+                key: 's',
+            }}
         >
             Lagre (utkast)
-        </Button>
+        </ShortcutButton>
     )
 }
 
@@ -73,14 +76,17 @@ function ForkastDraftButton(): ReactElement {
     })
 
     return (
-        <Button
-            type="button"
+        <ShortcutButton
             variant="tertiary"
             onClick={() => spanAsync('DeleteDraft(forkast).mutation', async () => mutation())}
             loading={deleteResult.loading}
+            shortcut={{
+                modifier: 'shift',
+                key: 'd',
+            }}
         >
             Avbryt og forkast
-        </Button>
+        </ShortcutButton>
     )
 }
 
