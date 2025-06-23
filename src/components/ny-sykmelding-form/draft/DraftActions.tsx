@@ -64,8 +64,12 @@ function ForkastDraftButton(): ReactElement {
                 dispatch(nySykmeldingMultistepActions.reset())
             })
         },
-        // TODO: Update cache and remove the draftId from the normalized cache
         refetchQueries: [GetAllDraftsDocument],
+        update: (cache, result) => {
+            if (result.data?.deleteDraft == true) {
+                cache.evict({ id: cache.identify({ __typename: 'OpprettSykmeldingDraft', draftId }) })
+            }
+        },
     })
 
     return (
