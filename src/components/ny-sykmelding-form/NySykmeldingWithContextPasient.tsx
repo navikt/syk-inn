@@ -5,9 +5,11 @@ import { Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
 import { PasientDocument } from '@queries'
+import { isSmartSessionInvalid } from '@graphql/error/Errors'
 
 import { useAppDispatch } from '../../providers/redux/hooks'
 import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
+import { NoPractitionerSession } from '../../app/(fhir)/fhir/(fhir-launched)/launched-errors'
 
 import NySykmeldingFormSteps from './NySykmeldingFormSteps'
 
@@ -28,6 +30,10 @@ function NySykmeldingWithContextPasient(): ReactElement {
     }, [dispatch, loading, data])
 
     if (error) {
+        if (isSmartSessionInvalid(error)) {
+            return <NoPractitionerSession />
+        }
+
         // Defer to global error handling
         throw error
     }
