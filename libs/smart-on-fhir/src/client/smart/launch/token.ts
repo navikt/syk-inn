@@ -33,7 +33,7 @@ export async function fetchTokenExchange(
                 grant_type: 'authorization_code',
                 code: code,
                 code_verifier: session.codeVerifier,
-                redirect_uri: config.redirect_url,
+                redirect_uri: config.callback_url,
             }),
         })
 

@@ -50,7 +50,7 @@ test('pkce verification should be correct', async () => {
         code_verifier: codeVerifier,
         client_id: 'test-client',
         code: 'test-code',
-        redirect_uri: 'http://app/redirect',
+        redirect_uri: 'http://app/callback',
     })
     const callback = await client.callback({
         sessionId,

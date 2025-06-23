@@ -77,7 +77,7 @@ test('.callback should exchange code for token', async () => {
         client_id: 'test-client',
         code: 'køde',
         code_verifier: 'test-code-verifier',
-        redirect_uri: 'http://app/redirect',
+        redirect_uri: 'http://app/callback',
     })
 
     const callback = await client.callback({
