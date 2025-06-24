@@ -100,9 +100,9 @@ function RuleOutcomeWarning({ outcome }: { outcome: OutcomeFragment }): ReactEle
             </BodyShort>
             <BodyShort>
                 Teknisk regelnavn:{' '}
-                <pre>
+                <code className="text-sm">
                     {outcome.tree} - {outcome.rule}
-                </pre>
+                </code>
             </BodyShort>
         </Alert>
     )

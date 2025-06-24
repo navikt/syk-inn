@@ -266,7 +266,7 @@ test('can submit gradert sykmelding', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
 
-test("should be asked about 'tilbakedatering' when fom is 9 days in the past", async ({ page }) => {
+test("should be asked about 'tilbakedatering' when fom is 5 days in the past", async ({ page }) => {
     await launchWithMock(page)
     await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
@@ -276,8 +276,8 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
 
     await fillPeriodeRelative({
         type: '100%',
-        fromRelative: -9,
-        days: 10,
+        fromRelative: -5,
+        days: 5,
     })(page)
     await fillTilbakedatering({
         contact: daysAgo(2),
@@ -300,7 +300,7 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
         },
         {
             name: 'Periode',
-            values: [`${toReadableDatePeriod(daysAgo(9), inDays(1))}`],
+            values: [`${toReadableDatePeriod(daysAgo(5), inDays(0))}`],
         },
         {
             name: 'Mulighet for arbeid',
@@ -346,8 +346,8 @@ test("should be asked about 'tilbakedatering' when fom is 9 days in the past", a
             aktivitet: [
                 {
                     type: 'AKTIVITET_IKKE_MULIG',
-                    fom: daysAgo(9),
-                    tom: inDays(1),
+                    fom: daysAgo(5),
+                    tom: inDays(0),
                     aktivitetIkkeMulig: { dummy: true },
                     avventende: null,
                     gradert: null,

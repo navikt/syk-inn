@@ -18,13 +18,13 @@ function DynamicTilbakedateringSection(): ReactElement | null {
         <AnimatePresence>
             {tilbakedatering && (
                 <motion.div
-                    className="overflow-hidden lg:col-span-2"
+                    className="overflow-hidden lg:col-span-2 p-1"
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 >
-                    <FormSection title="Tilbakedatering" className="mt-8">
+                    <FormSection title="Tilbakedatering">
                         <TilbakedateringSection />
                     </FormSection>
                 </motion.div>
@@ -41,8 +41,8 @@ export function isTilbakedatering(perioder: Pick<AktivitetsPeriode, 'periode'>[]
         R.firstBy(R.identity()),
     )
 
-    // 7 seems weird here, but inclusivity both in isBefore and "fom" means we need to subtract 7 days
-    return firstFom ? isBefore(new Date(firstFom), subDays(sykmeldingsDato, 7)) : false
+    // 4 days is OK, but 5 or more is tilbakedatering and needs begrunnelse, inclusive in both ends.
+    return firstFom ? isBefore(new Date(firstFom), subDays(sykmeldingsDato, 5)) : false
 }
 
 export default DynamicTilbakedateringSection
