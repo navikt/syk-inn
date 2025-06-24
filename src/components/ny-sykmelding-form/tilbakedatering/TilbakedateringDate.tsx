@@ -34,7 +34,7 @@ function TilbakedateringDate(): ReactElement {
                 onBlur={field.onBlur}
                 error={fieldState.error?.message}
             />
-            <AnimatePresence>
+            <AnimatePresence initial={false}>
                 {field.value && (
                     <motion.div
                         className="overflow-hidden"

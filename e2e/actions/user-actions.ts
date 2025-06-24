@@ -106,9 +106,11 @@ export function fillTilbakedatering({ contact, reason }: { contact: string; reas
 export function fillAndreSporsmal({
     svangerskapsrelatert,
     yrkesskade,
+    yrkesskadeDato,
 }: {
     svangerskapsrelatert: boolean
     yrkesskade: boolean
+    yrkesskadeDato: string | null
 }) {
     return async (page: Page) => {
         const region = page.getByRole('region', { name: 'Andre spørsmål' })
@@ -124,6 +126,10 @@ export function fillAndreSporsmal({
             await region.getByRole('checkbox', { name: 'Yrkesskade' }).check()
         } else {
             await region.getByRole('checkbox', { name: 'Yrkesskade' }).uncheck()
+        }
+
+        if (yrkesskadeDato) {
+            await region.getByRole('textbox', { name: 'Dato for yrkesskade' }).fill(inputDate(yrkesskadeDato))
         }
     }
 }

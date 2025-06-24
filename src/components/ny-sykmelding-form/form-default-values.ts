@@ -4,7 +4,6 @@ import * as R from 'remeda'
 
 import {
     AktivitetsPeriode,
-    AndreSporsmalValues,
     NySykmeldingMainFormValues,
     NySykmeldingSuggestions,
 } from '@components/ny-sykmelding-form/form'
@@ -35,7 +34,7 @@ type CreateDefaultValuesData = {
  * 3. Initial suggestions from the server
  * 4. Inherent defaults
  */
-export function createDefaultValues({
+export function createDefaultFormValues({
     valuesInState,
     draftValues,
     serverSuggestions,
@@ -85,19 +84,32 @@ function toAndreSporsmal(
     draftValues: DraftValues | null,
 ): NySykmeldingMainFormValues['andreSporsmal'] {
     if (valuesInState != null) {
-        return (
-            [
-                valuesInState?.svangerskapsrelatert ? 'svangerskapsrelatert' : null,
-                valuesInState?.yrkesskade ? 'yrkesskade' : null,
-            ] satisfies (AndreSporsmalValues | null)[]
-        ).filter(R.isTruthy)
+        return {
+            svangerskapsrelatert: valuesInState.svangerskapsrelatert,
+            yrkesskade: {
+                yrkesskade: valuesInState.yrkesskade,
+                skadedato: valuesInState.yrkesskadeDato,
+            },
+        }
     }
 
-    if (draftValues && draftValues.svangerskapsrelatert != null && draftValues.svangerskapsrelatert) {
-        return ['svangerskapsrelatert']
+    if (draftValues) {
+        return {
+            svangerskapsrelatert: draftValues.svangerskapsrelatert ?? false,
+            yrkesskade: {
+                yrkesskade: draftValues.yrkesskade?.yrkesskade ?? false,
+                skadedato: draftValues.yrkesskade?.skadedato ?? null,
+            },
+        }
     }
 
-    return []
+    return {
+        svangerskapsrelatert: false,
+        yrkesskade: {
+            yrkesskade: false,
+            skadedato: null,
+        },
+    }
 }
 
 function toInitialTilbakedatering(

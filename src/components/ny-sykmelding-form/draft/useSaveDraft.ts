@@ -83,6 +83,10 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
             tilNav: values.meldinger.tilNav,
             tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
         },
-        svangerskapsrelatert: values.andreSporsmal.includes('svangerskapsrelatert'),
+        svangerskapsrelatert: values.andreSporsmal.svangerskapsrelatert,
+        yrkesskade: {
+            yrkesskade: values.andreSporsmal.yrkesskade?.yrkesskade ?? false,
+            skadedato: values.andreSporsmal.yrkesskade?.skadedato ?? null,
+        },
     }
 }

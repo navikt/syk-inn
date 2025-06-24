@@ -55,6 +55,7 @@ export type DiagnoseStep = {
 export type AndreSporsmalStep = {
     svangerskapsrelatert: boolean
     yrkesskade: boolean
+    yrkesskadeDato: string | null
 }
 
 export type NySykmeldingMultiStepState = {

@@ -28,7 +28,7 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
                 <option value={'GRADERT' satisfies AktivitetIkkeMuligType}>Gradert sykmelding</option>
                 <option value={'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType}>Aktivitet ikke mulig</option>
             </Select>
-            <AnimatePresence>
+            <AnimatePresence initial={false}>
                 {aktivitetField.field.value === 'GRADERT' && (
                     <SimpleReveal>
                         <GradertGradPicker index={index} />
@@ -72,7 +72,7 @@ function GradertGradPicker({ index }: { index: number }): ReactElement {
                 value={gradertField.field.value ?? ''}
                 error={gradertField.fieldState.error?.message}
             />
-            <AnimatePresence>
+            <AnimatePresence initial={false}>
                 {coercedValue != null && (
                     <SimpleReveal>
                         <BodyShort size="small">{100 - coercedValue}% i arbeid</BodyShort>

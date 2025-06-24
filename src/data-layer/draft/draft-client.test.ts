@@ -62,4 +62,5 @@ const emptyDraft: DraftValues = {
     svangerskapsrelatert: null,
     tilbakedatering: null,
     meldinger: null,
+    yrkesskade: null,
 }

@@ -108,8 +108,7 @@ function formStateToOpprettSykmeldingInput(formState: NySykmeldingMultiStepState
         svangerskapsrelatert: formState.andreSporsmal?.svangerskapsrelatert ?? false,
         yrkesskade: {
             yrkesskade: formState.andreSporsmal?.yrkesskade ?? false,
-            // TODO: Implement in form
-            skadedato: null,
+            skadedato: formState.andreSporsmal?.yrkesskadeDato,
         },
         tilbakedatering: formState.tilbakedatering?.fom
             ? {

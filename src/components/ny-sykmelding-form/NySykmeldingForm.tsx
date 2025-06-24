@@ -6,7 +6,7 @@ import * as R from 'remeda'
 
 import { raise } from '@utils/ts'
 import AndreSporsmalSection from '@components/ny-sykmelding-form/andre-sporsmal/AndreSporsmalSection'
-import { createDefaultValues } from '@components/ny-sykmelding-form/form-default-values'
+import { createDefaultFormValues } from '@components/ny-sykmelding-form/form-default-values'
 import FormSection from '@components/form/form-section/FormSection'
 import ForkastDraftButton, { LagreDraftButton } from '@components/ny-sykmelding-form/draft/DraftActions'
 import FormSheet from '@components/form/form-section/FormSheet'
@@ -37,7 +37,7 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
     const initialValues = useAppSelector((state) => state.nySykmeldingMultistep)
     const onSubmit = useHandleFormSubmit()
     const form = useForm<NySykmeldingMainFormValues>({
-        defaultValues: createDefaultValues({
+        defaultValues: createDefaultFormValues({
             draftValues: draftValues,
             valuesInState: initialValues,
             serverSuggestions: initialServerValues,
@@ -122,8 +122,9 @@ function useHandleFormSubmit() {
                     tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
                 },
                 andreSporsmal: {
-                    svangerskapsrelatert: values.andreSporsmal.includes('svangerskapsrelatert'),
-                    yrkesskade: values.andreSporsmal.includes('yrkesskade'),
+                    svangerskapsrelatert: values.andreSporsmal.svangerskapsrelatert,
+                    yrkesskade: values.andreSporsmal.yrkesskade?.yrkesskade ?? false,
+                    yrkesskadeDato: values.andreSporsmal.yrkesskade?.skadedato ?? null,
                 },
             }),
         )

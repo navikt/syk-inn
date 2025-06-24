@@ -41,6 +41,12 @@ export const DraftValuesSchema = z.object({
         })
         .nullable(),
     svangerskapsrelatert: z.boolean().nullable(),
+    yrkesskade: z
+        .object({
+            yrkesskade: z.boolean(),
+            skadedato: z.string().nullable(),
+        })
+        .nullable(),
 })
 
 /**

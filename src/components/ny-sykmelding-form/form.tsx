@@ -49,7 +49,13 @@ type ArbeidsforholdField = {
     sykmeldtFraArbeidsforhold: string | null
 }
 
-export type AndreSporsmalValues = 'svangerskapsrelatert' | 'yrkesskade'
+type AndreSporsmalFields = {
+    svangerskapsrelatert: boolean
+    yrkesskade: {
+        yrkesskade: boolean
+        skadedato: string | null
+    } | null
+}
 
 export type NySykmeldingMainFormValues = {
     arbeidsforhold: ArbeidsforholdField
@@ -59,7 +65,7 @@ export type NySykmeldingMainFormValues = {
     }
     tilbakedatering: TilbakedateringField | null
     meldinger: MeldingerField
-    andreSporsmal: AndreSporsmalValues[]
+    andreSporsmal: AndreSporsmalFields
 }
 
 export const useFormContext = useRhfFormContext<NySykmeldingMainFormValues>

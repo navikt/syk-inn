@@ -15,7 +15,7 @@ function DynamicTilbakedateringSection(): ReactElement | null {
     const tilbakedatering = isTilbakedatering(perioder, new Date())
 
     return (
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
             {tilbakedatering && (
                 <motion.div
                     className="overflow-hidden lg:col-span-2 p-1"

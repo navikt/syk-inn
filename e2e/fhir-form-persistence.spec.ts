@@ -39,6 +39,7 @@ const fillAllTheValues = userInteractionsGroup(
     fillAndreSporsmal({
         svangerskapsrelatert: true,
         yrkesskade: true,
+        yrkesskadeDato: daysAgo(2),
     }),
     fillMeldinger({
         tilNav: 'Trenger mer penger',
@@ -87,6 +88,9 @@ test('filling out the form, and returning to main step, should keep all values',
     await expect(
         andreSporsmalRegion.getByRole('checkbox', { name: 'Sykmeldingen kan skyldes en yrkesskade/yrkessykdom' }),
     ).toBeChecked()
+    await expect(andreSporsmalRegion.getByRole('textbox', { name: 'Dato for yrkesskade' })).toHaveValue(
+        inputDate(daysAgo(2)),
+    )
 
     // Section 5 - Meldinger
     const meldingerRegion = page.getByRole('region', { name: 'Meldinger' })
@@ -145,10 +149,12 @@ test('filling out the form, saving a draft, and returning to the form, should ke
     // Section 4 - Andre spørsmål
     const andreSporsmalRegion = page.getByRole('region', { name: 'Andre spørsmål' })
     await expect(andreSporsmalRegion.getByRole('checkbox', { name: 'Sykdommen er svangerskapsrelatert' })).toBeChecked()
-    // TODO: Yrkesskade is not implemntede in the draft persistence yet
-    /*await expect(
+    await expect(
         andreSporsmalRegion.getByRole('checkbox', { name: 'Sykmeldingen kan skyldes en yrkesskade/yrkessykdom' }),
-    ).toBeChecked()*/
+    ).toBeChecked()
+    await expect(andreSporsmalRegion.getByRole('textbox', { name: 'Dato for yrkesskade' })).toHaveValue(
+        inputDate(daysAgo(2)),
+    )
 
     // Section 5 - Meldinger
     const meldingerRegion = page.getByRole('region', { name: 'Meldinger' })

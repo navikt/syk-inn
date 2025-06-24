@@ -10,7 +10,7 @@ function NySykmeldingFormDevTools(): ReactElement {
     const { control, setValue } = useFormContext()
 
     useSecretShortcut(['d', 'd', 'd'], () => {
-        setValue('andreSporsmal', ['svangerskapsrelatert'])
+        setValue('andreSporsmal', { svangerskapsrelatert: true, yrkesskade: null })
         setValue('arbeidsforhold.harFlereArbeidsforhold', 'NEI')
         setValue('perioder', [
             {
