@@ -2119,10 +2119,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/aksel-icons@npm:^7.23.1":
-  version: 7.23.1
-  resolution: "@navikt/aksel-icons@npm:7.23.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.23.1%2Fb0f01e357dcaf0ebc1723761fc9f65dde3ef3cf4"
-  checksum: 10c0/e1012e3bf46a965ac47766e6f0ec873bc29b1d3c3cbafc4a1b64c92a46ca5b8b92c0e647a9fffc8aaaf66bee01924fe2ea7393119b2f9b60679db233364ab018
+"@navikt/aksel-icons@npm:^7.23.2":
+  version: 7.23.2
+  resolution: "@navikt/aksel-icons@npm:7.23.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.23.2%2F6e6827d01e8243f0df3e509156737c867f99a5e6"
+  checksum: 10c0/b985042693e56e0b33fdebaca0290cb05dc812616ada080ca96bd35ca57fb11193f236234e6c4f36378a00361c47baf6df2e1dba983dfd96ddf21d24059db715
   languageName: node
   linkType: hard
 
@@ -2133,42 +2133,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^7.23.1":
-  version: 7.23.1
-  resolution: "@navikt/ds-css@npm:7.23.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.23.1%2F402d1d8d043e3ab8189fb18032af202d7a345135"
-  checksum: 10c0/d4903b5a50cefb9d2f5575bc2bf6a06edb745579ca0186f156f2c97d649601acf2f6aecb121c4fc283dc807b37416d13cc61abc4eecd0dc98e86accbe61793e1
+"@navikt/ds-css@npm:^7.23.2":
+  version: 7.23.2
+  resolution: "@navikt/ds-css@npm:7.23.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.23.2%2F70a2d8c52bbc50122f42fe65dd99d4932d9c29c5"
+  checksum: 10c0/e8cd809d37c8faaac31aaea09fc86044d699eb8ad1e18d39c5f10f369f5b11dcc407c8a8fcbf809006c4af2a9e1d2ad9d6f3cac5c8b098310e37086248fb772a
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^7.23.1":
-  version: 7.23.1
-  resolution: "@navikt/ds-react@npm:7.23.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.23.1%2Fe9f986fbaea15436a2b464385cbb8a53230934f3"
+"@navikt/ds-react@npm:^7.23.2":
+  version: 7.23.2
+  resolution: "@navikt/ds-react@npm:7.23.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.23.2%2F96459a01109acb20c93d4073013ee0bee91fe638"
   dependencies:
     "@floating-ui/react": "npm:0.27.8"
     "@floating-ui/react-dom": "npm:^2.0.9"
-    "@navikt/aksel-icons": "npm:^7.23.1"
-    "@navikt/ds-tokens": "npm:^7.23.1"
+    "@navikt/aksel-icons": "npm:^7.23.2"
+    "@navikt/ds-tokens": "npm:^7.23.2"
     clsx: "npm:^2.1.0"
     date-fns: "npm:^4.0.0"
     react-day-picker: "npm:9.7.0"
   peerDependencies:
     "@types/react": ">=17.0.30"
     react: ">=17.0.0 || >19.0.0-rc"
-  checksum: 10c0/f87d9841e791cb6753e2516978f1a42f633c275bfeaabe1201b3e6313efcc9ababb57a6903b65edd5de472ca6ca83d04caca94745df06ed6c1a3a9a49d922be5
+  checksum: 10c0/e782857f1281ffa23380710dbca7dd3796935c2a43b7044de00823c87276c8cf4998798d8a41339cb36afc064b1af7b6857139e6024722bb988ec274e7823578
   languageName: node
   linkType: hard
 
-"@navikt/ds-tailwind@npm:^7.23.1":
-  version: 7.23.1
-  resolution: "@navikt/ds-tailwind@npm:7.23.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.23.1%2Fa93920602f7a93ced02906c4580da331fbf24a1f"
-  checksum: 10c0/6deaaf547bfe3da5e8c37c1bd30de4714f0751e6c4acdb707ee9d728efb9087b1af3ba230812e40bb88ec806a028a38eb86004aab2a753cbfd1aeba8579d9adb
+"@navikt/ds-tailwind@npm:^7.23.2":
+  version: 7.23.2
+  resolution: "@navikt/ds-tailwind@npm:7.23.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.23.2%2F65e6131d3f44eecebe3836aa82bcf967771956ab"
+  checksum: 10c0/2e17f62afa04aa3dd8cc92c33c2a384a89589cc082bffd888640638572229fa01615b6c479a8f8dc64bda05b29d63f45762e0b987ed06038f9c3b17a22b4ed00
   languageName: node
   linkType: hard
 
-"@navikt/ds-tokens@npm:^7.23.1":
-  version: 7.23.1
-  resolution: "@navikt/ds-tokens@npm:7.23.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.23.1%2F1694d2b8e748ff685dc51b200e02a833bece3f5a"
-  checksum: 10c0/4bdcce8572a711f7c7759eec57de1a84080f42f2ed1d2d4a62e4b47691ce816b88854943bcb9fb6b85eaa570a2abd2e7da3eef0027d409aa8ba1a31982535ba5
+"@navikt/ds-tokens@npm:^7.23.2":
+  version: 7.23.2
+  resolution: "@navikt/ds-tokens@npm:7.23.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.23.2%2Fde0e0f75cb9d9632765424fc9c75a63760064235"
+  checksum: 10c0/5f05406e13ec30c1f8b51e51d38c5ff093ed37d97f2769f9571018080e733448b5eb9b8a3ff8cd19151e5d2db3d863b1d96f86812feafca719fe522ea91e6d46
   languageName: node
   linkType: hard
 
@@ -3836,137 +3836,137 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-android-arm-eabi@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-android-arm-eabi@npm:1.9.1"
+"@unrs/resolver-binding-android-arm-eabi@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-android-arm-eabi@npm:1.9.2"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-android-arm64@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-android-arm64@npm:1.9.1"
+"@unrs/resolver-binding-android-arm64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-android-arm64@npm:1.9.2"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-darwin-arm64@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-darwin-arm64@npm:1.9.1"
+"@unrs/resolver-binding-darwin-arm64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-darwin-arm64@npm:1.9.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-darwin-x64@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-darwin-x64@npm:1.9.1"
+"@unrs/resolver-binding-darwin-x64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-darwin-x64@npm:1.9.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-freebsd-x64@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-freebsd-x64@npm:1.9.1"
+"@unrs/resolver-binding-freebsd-x64@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-freebsd-x64@npm:1.9.2"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-linux-arm-gnueabihf@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-linux-arm-gnueabihf@npm:1.9.1"
+"@unrs/resolver-binding-linux-arm-gnueabihf@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-linux-arm-gnueabihf@npm:1.9.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-linux-arm-musleabihf@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-linux-arm-musleabihf@npm:1.9.1"
+"@unrs/resolver-binding-linux-arm-musleabihf@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-linux-arm-musleabihf@npm:1.9.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-linux-arm64-gnu@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-linux-arm64-gnu@npm:1.9.1"
+"@unrs/resolver-binding-linux-arm64-gnu@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-linux-arm64-gnu@npm:1.9.2"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-linux-arm64-musl@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-linux-arm64-musl@npm:1.9.1"
+"@unrs/resolver-binding-linux-arm64-musl@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-linux-arm64-musl@npm:1.9.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-linux-ppc64-gnu@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-linux-ppc64-gnu@npm:1.9.1"
+"@unrs/resolver-binding-linux-ppc64-gnu@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-linux-ppc64-gnu@npm:1.9.2"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-linux-riscv64-gnu@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-linux-riscv64-gnu@npm:1.9.1"
+"@unrs/resolver-binding-linux-riscv64-gnu@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-linux-riscv64-gnu@npm:1.9.2"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-linux-riscv64-musl@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-linux-riscv64-musl@npm:1.9.1"
+"@unrs/resolver-binding-linux-riscv64-musl@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-linux-riscv64-musl@npm:1.9.2"
   conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-linux-s390x-gnu@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-linux-s390x-gnu@npm:1.9.1"
+"@unrs/resolver-binding-linux-s390x-gnu@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-linux-s390x-gnu@npm:1.9.2"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-linux-x64-gnu@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-linux-x64-gnu@npm:1.9.1"
+"@unrs/resolver-binding-linux-x64-gnu@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-linux-x64-gnu@npm:1.9.2"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-linux-x64-musl@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-linux-x64-musl@npm:1.9.1"
+"@unrs/resolver-binding-linux-x64-musl@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-linux-x64-musl@npm:1.9.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-wasm32-wasi@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-wasm32-wasi@npm:1.9.1"
+"@unrs/resolver-binding-wasm32-wasi@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-wasm32-wasi@npm:1.9.2"
   dependencies:
     "@napi-rs/wasm-runtime": "npm:^0.2.11"
   conditions: cpu=wasm32
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-win32-arm64-msvc@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-win32-arm64-msvc@npm:1.9.1"
+"@unrs/resolver-binding-win32-arm64-msvc@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-win32-arm64-msvc@npm:1.9.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-win32-ia32-msvc@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-win32-ia32-msvc@npm:1.9.1"
+"@unrs/resolver-binding-win32-ia32-msvc@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-win32-ia32-msvc@npm:1.9.2"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@unrs/resolver-binding-win32-x64-msvc@npm:1.9.1":
-  version: 1.9.1
-  resolution: "@unrs/resolver-binding-win32-x64-msvc@npm:1.9.1"
+"@unrs/resolver-binding-win32-x64-msvc@npm:1.9.2":
+  version: 1.9.2
+  resolution: "@unrs/resolver-binding-win32-x64-msvc@npm:1.9.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -5543,9 +5543,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.160":
-  version: 1.5.171
-  resolution: "electron-to-chromium@npm:1.5.171"
-  checksum: 10c0/e9d7e70d5fe829951c955287877155889a752336e48c715e373c6919f8e438bb686b7278511013aa8456c329c55895059a1d9e4b799217483f28dbae60c198d8
+  version: 1.5.173
+  resolution: "electron-to-chromium@npm:1.5.173"
+  checksum: 10c0/3242129332438ddc34c30dc218241e837fd87e8db54ba5d22a2e3e789115ce15932b5989d91b14be304081446a4c169bc1e573db6edd6eb3e859a7dba44e6c0a
   languageName: node
   linkType: hard
 
@@ -5603,12 +5603,12 @@ __metadata:
   linkType: hard
 
 "enhanced-resolve@npm:^5.18.1":
-  version: 5.18.1
-  resolution: "enhanced-resolve@npm:5.18.1"
+  version: 5.18.2
+  resolution: "enhanced-resolve@npm:5.18.2"
   dependencies:
     graceful-fs: "npm:^4.2.4"
     tapable: "npm:^2.2.0"
-  checksum: 10c0/4cffd9b125225184e2abed9fdf0ed3dbd2224c873b165d0838fd066cde32e0918626cba2f1f4bf6860762f13a7e2364fd89a82b99566be2873d813573ac71846
+  checksum: 10c0/2a45105daded694304b0298d1c0351a981842249a9867513d55e41321a4ccf37dfd35b0c1e9ceae290eab73654b09aa7a910d618ea6f9441e97c52bc424a2372
   languageName: node
   linkType: hard
 
@@ -6582,12 +6582,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^12.18.1":
-  version: 12.18.1
-  resolution: "framer-motion@npm:12.18.1"
+"framer-motion@npm:^12.19.1":
+  version: 12.19.1
+  resolution: "framer-motion@npm:12.19.1"
   dependencies:
-    motion-dom: "npm:^12.18.1"
-    motion-utils: "npm:^12.18.1"
+    motion-dom: "npm:^12.19.0"
+    motion-utils: "npm:^12.19.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
@@ -6600,7 +6600,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/13aa6030fb619a482cb7d3fdb375a2ced54adcc11d23abf7e42b9dc8a40bc47d32fb3492dbb450e75c465c8469da72db21376719316d945829700f663af18c20
+  checksum: 10c0/e3abc8c04c4d69452b4dadf9eeffdc4a252330730c5ff530616d265925b9a34d636992b1ec26191d60ab76a704d437de4c73dcec217f1ae0326adc005edc659f
   languageName: node
   linkType: hard
 
@@ -8689,27 +8689,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion-dom@npm:^12.18.1":
-  version: 12.18.1
-  resolution: "motion-dom@npm:12.18.1"
+"motion-dom@npm:^12.19.0":
+  version: 12.19.0
+  resolution: "motion-dom@npm:12.19.0"
   dependencies:
-    motion-utils: "npm:^12.18.1"
-  checksum: 10c0/33914f174fc8ff27e65b579d70cb6ae2af320eb3f85d12a29c05fe046dd5966844844fbac59b9e7e98f8a325e7529666173fca7fe5e4a3aff59b9bd1eb1b3266
+    motion-utils: "npm:^12.19.0"
+  checksum: 10c0/16fef072441924800c488d2a7dd2443730a77c15957c2e02cefb9fb21d25cf1c4ad1f822e642e7d13e8f48812a0590ccb3b54a278478b9185e8f80ed18263ae2
   languageName: node
   linkType: hard
 
-"motion-utils@npm:^12.18.1":
-  version: 12.18.1
-  resolution: "motion-utils@npm:12.18.1"
-  checksum: 10c0/703702d9a82db223f4b0e0437e7c00b9e3f347bf7bffb20b0b7ad171d937db823b2420dbd8bf0764def885ba6c8aac659cc3595bcd8ecd56b5e63a990a1fae07
+"motion-utils@npm:^12.19.0":
+  version: 12.19.0
+  resolution: "motion-utils@npm:12.19.0"
+  checksum: 10c0/e9526e0135c5f596b2d9a242edbd5b5268922b6001d1b9fb63f2fb4b11f891ac63a186eef8dbd80a4011692d70897aa0c6d4d161fcaaaef3dd4ca7aea6263226
   languageName: node
   linkType: hard
 
-"motion@npm:^12.18.1":
-  version: 12.18.1
-  resolution: "motion@npm:12.18.1"
+"motion@npm:^12.19.1":
+  version: 12.19.1
+  resolution: "motion@npm:12.19.1"
   dependencies:
-    framer-motion: "npm:^12.18.1"
+    framer-motion: "npm:^12.19.1"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
@@ -8722,7 +8722,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/f90c533af3c7636ac28b819ea192b971650e672033808942eacc0bf2a7ba5e802d164763948f71faf374e07de6a069e902fe7f3cec1bc3f66064c516c3385e7b
+  checksum: 10c0/f74416f5bb03431bb00e2876d7d336d63bac68c9d95abbeca3147006e61cddf353192cd8df861ae350e0456c0261d8af6c4824ee0e52e5ecfadfaaad333870ad
   languageName: node
   linkType: hard
 
@@ -8770,7 +8770,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"napi-postinstall@npm:^0.2.2":
+"napi-postinstall@npm:^0.2.4":
   version: 0.2.4
   resolution: "napi-postinstall@npm:0.2.4"
   bin:
@@ -9638,7 +9638,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.41, postcss@npm:^8.5.5, postcss@npm:^8.5.6":
+"postcss@npm:^8.4.41, postcss@npm:^8.5.6":
   version: 8.5.6
   resolution: "postcss@npm:8.5.6"
   dependencies:
@@ -11215,11 +11215,11 @@ __metadata:
     "@graphql-tools/load": "npm:^8.1.0"
     "@graphql-tools/schema": "npm:^10.0.23"
     "@hookform/devtools": "npm:^4.4.0"
-    "@navikt/aksel-icons": "npm:^7.23.1"
+    "@navikt/aksel-icons": "npm:^7.23.2"
     "@navikt/diagnosekoder": "npm:^1.2025.0"
-    "@navikt/ds-css": "npm:^7.23.1"
-    "@navikt/ds-react": "npm:^7.23.1"
-    "@navikt/ds-tailwind": "npm:^7.23.1"
+    "@navikt/ds-css": "npm:^7.23.2"
+    "@navikt/ds-react": "npm:^7.23.2"
+    "@navikt/ds-tailwind": "npm:^7.23.2"
     "@navikt/eslint-config-teamsykmelding": "npm:^7.1.0"
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/fhir-zod": "workspace:*"
@@ -11248,7 +11248,7 @@ __metadata:
     iovalkey: "npm:^0.3.3"
     jose: "npm:^6.0.11"
     lint-staged: "npm:^16.1.2"
-    motion: "npm:^12.18.1"
+    motion: "npm:^12.19.1"
     next: "npm:15.3.4"
     next-logger: "npm:^5.0.1"
     nextleton: "npm:^0.6.1"
@@ -11823,29 +11823,29 @@ __metadata:
   linkType: hard
 
 "unrs-resolver@npm:^1.6.2":
-  version: 1.9.1
-  resolution: "unrs-resolver@npm:1.9.1"
+  version: 1.9.2
+  resolution: "unrs-resolver@npm:1.9.2"
   dependencies:
-    "@unrs/resolver-binding-android-arm-eabi": "npm:1.9.1"
-    "@unrs/resolver-binding-android-arm64": "npm:1.9.1"
-    "@unrs/resolver-binding-darwin-arm64": "npm:1.9.1"
-    "@unrs/resolver-binding-darwin-x64": "npm:1.9.1"
-    "@unrs/resolver-binding-freebsd-x64": "npm:1.9.1"
-    "@unrs/resolver-binding-linux-arm-gnueabihf": "npm:1.9.1"
-    "@unrs/resolver-binding-linux-arm-musleabihf": "npm:1.9.1"
-    "@unrs/resolver-binding-linux-arm64-gnu": "npm:1.9.1"
-    "@unrs/resolver-binding-linux-arm64-musl": "npm:1.9.1"
-    "@unrs/resolver-binding-linux-ppc64-gnu": "npm:1.9.1"
-    "@unrs/resolver-binding-linux-riscv64-gnu": "npm:1.9.1"
-    "@unrs/resolver-binding-linux-riscv64-musl": "npm:1.9.1"
-    "@unrs/resolver-binding-linux-s390x-gnu": "npm:1.9.1"
-    "@unrs/resolver-binding-linux-x64-gnu": "npm:1.9.1"
-    "@unrs/resolver-binding-linux-x64-musl": "npm:1.9.1"
-    "@unrs/resolver-binding-wasm32-wasi": "npm:1.9.1"
-    "@unrs/resolver-binding-win32-arm64-msvc": "npm:1.9.1"
-    "@unrs/resolver-binding-win32-ia32-msvc": "npm:1.9.1"
-    "@unrs/resolver-binding-win32-x64-msvc": "npm:1.9.1"
-    napi-postinstall: "npm:^0.2.2"
+    "@unrs/resolver-binding-android-arm-eabi": "npm:1.9.2"
+    "@unrs/resolver-binding-android-arm64": "npm:1.9.2"
+    "@unrs/resolver-binding-darwin-arm64": "npm:1.9.2"
+    "@unrs/resolver-binding-darwin-x64": "npm:1.9.2"
+    "@unrs/resolver-binding-freebsd-x64": "npm:1.9.2"
+    "@unrs/resolver-binding-linux-arm-gnueabihf": "npm:1.9.2"
+    "@unrs/resolver-binding-linux-arm-musleabihf": "npm:1.9.2"
+    "@unrs/resolver-binding-linux-arm64-gnu": "npm:1.9.2"
+    "@unrs/resolver-binding-linux-arm64-musl": "npm:1.9.2"
+    "@unrs/resolver-binding-linux-ppc64-gnu": "npm:1.9.2"
+    "@unrs/resolver-binding-linux-riscv64-gnu": "npm:1.9.2"
+    "@unrs/resolver-binding-linux-riscv64-musl": "npm:1.9.2"
+    "@unrs/resolver-binding-linux-s390x-gnu": "npm:1.9.2"
+    "@unrs/resolver-binding-linux-x64-gnu": "npm:1.9.2"
+    "@unrs/resolver-binding-linux-x64-musl": "npm:1.9.2"
+    "@unrs/resolver-binding-wasm32-wasi": "npm:1.9.2"
+    "@unrs/resolver-binding-win32-arm64-msvc": "npm:1.9.2"
+    "@unrs/resolver-binding-win32-ia32-msvc": "npm:1.9.2"
+    "@unrs/resolver-binding-win32-x64-msvc": "npm:1.9.2"
+    napi-postinstall: "npm:^0.2.4"
   dependenciesMeta:
     "@unrs/resolver-binding-android-arm-eabi":
       optional: true
@@ -11885,7 +11885,7 @@ __metadata:
       optional: true
     "@unrs/resolver-binding-win32-x64-msvc":
       optional: true
-  checksum: 10c0/fded9251b6c180c92c0510abe63e4fa9a5a4adcdcf3c9f7920507dc9f1ec756de5e71d1258f12bf4a32f7042e1fe142b6dc1003d8a6fb4d0bf1234226c879b01
+  checksum: 10c0/e3481cc19ea4b25f888e2412bbd80a729b13527a41b035e784b71d1a7d4e2109b58b174adce989085eb75c787435e80ffb385db2b1598288474f53beb01438c0
   languageName: node
   linkType: hard
 
@@ -12036,14 +12036,14 @@ __metadata:
   linkType: hard
 
 "vite@npm:^5.0.0 || ^6.0.0 || ^7.0.0-0":
-  version: 7.0.0-beta.2
-  resolution: "vite@npm:7.0.0-beta.2"
+  version: 7.0.0
+  resolution: "vite@npm:7.0.0"
   dependencies:
     esbuild: "npm:^0.25.0"
     fdir: "npm:^6.4.6"
     fsevents: "npm:~2.3.3"
     picomatch: "npm:^4.0.2"
-    postcss: "npm:^8.5.5"
+    postcss: "npm:^8.5.6"
     rollup: "npm:^4.40.0"
     tinyglobby: "npm:^0.2.14"
   peerDependencies:
@@ -12086,7 +12086,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/2cd51b6749171e255e478329c3f5c6fad9a3de0f36731396d1bebd77411bd93b5d835d0d8549fe707ddf5fb0e0c2f562e29b04d095d73408e4d340464182d140
+  checksum: 10c0/860838d223f877dd8e04bd2b8f33cf67a38706643bdf07e3153e2857d7c0d33c3ee94cea7e86e60937cc91b3793272912cc7af14565641476f814bd61b3a1374
   languageName: node
   linkType: hard
 
