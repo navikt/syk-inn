@@ -4,7 +4,7 @@ import { Button } from '@navikt/ds-react'
 import { addDays } from 'date-fns'
 import { TrashIcon } from '@navikt/aksel-icons'
 
-import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@components/ny-sykmelding-form/form'
+import { AktivitetsPeriode, NySykmeldingMainFormValues, useFormContext } from '@components/ny-sykmelding-form/form'
 import { getDefaultPeriode } from '@components/ny-sykmelding-form/form-default-values'
 import { dateOnly } from '@utils/date'
 
@@ -12,6 +12,7 @@ import AktivitetPicker from './AktivitetPicker'
 import PeriodePicker from './PeriodePicker'
 
 function AktivitetSection(): ReactElement {
+    const { getValues } = useFormContext()
     const { fields, append, remove } = useFieldArray<NySykmeldingMainFormValues>({
         name: 'perioder',
     })
@@ -42,7 +43,8 @@ function AktivitetSection(): ReactElement {
                     type="button"
                     size="small"
                     onClick={() => {
-                        const lastPeriode = fields[fields.length - 1]
+                        const periods = getValues('perioder')
+                        const lastPeriode = periods[periods.length - 1]
 
                         /**
                          * Fom should be N+1 previous period's tom.
