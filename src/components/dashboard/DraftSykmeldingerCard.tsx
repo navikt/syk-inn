@@ -5,7 +5,7 @@ import { TrashIcon } from '@navikt/aksel-icons'
 import { differenceInSeconds, formatDistanceToNow, isValid, parseISO } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
-import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
+import { DeleteDraftDocument, GetAllDraftsDocument, OpprettSykmeldingDraft } from '@queries'
 import AssableNextLink from '@components/misc/AssableNextLink'
 import useInterval from '@utils/hooks/useInterval'
 import { toReadableDate, toReadableDatePeriod } from '@utils/date'
@@ -130,7 +130,12 @@ function DeleteDraftRowButton({ draftId }: { draftId: string }): ReactElement {
         awaitRefetchQueries: true,
         update: (cache, result) => {
             if (result.data?.deleteDraft == true) {
-                cache.evict({ id: cache.identify({ __typename: 'OpprettSykmeldingDraft', draftId }) })
+                cache.evict({
+                    id: cache.identify({
+                        __typename: 'OpprettSykmeldingDraft',
+                        draftId,
+                    } satisfies Partial<OpprettSykmeldingDraft>),
+                })
             }
         },
     })

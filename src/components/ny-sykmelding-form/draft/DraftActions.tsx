@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { FloppydiskIcon } from '@navikt/aksel-icons'
 import { toast } from 'sonner'
 
-import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
+import { DeleteDraftDocument, GetAllDraftsDocument, OpprettSykmeldingDraft } from '@queries'
 import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
 import { useFormContext } from '@components/ny-sykmelding-form/form'
 import { useSaveDraft } from '@components/ny-sykmelding-form/draft/useSaveDraft'
@@ -70,7 +70,12 @@ function ForkastDraftButton(): ReactElement {
         refetchQueries: [GetAllDraftsDocument],
         update: (cache, result) => {
             if (result.data?.deleteDraft == true) {
-                cache.evict({ id: cache.identify({ __typename: 'OpprettSykmeldingDraft', draftId }) })
+                cache.evict({
+                    id: cache.identify({
+                        __typename: 'OpprettSykmeldingDraft',
+                        draftId,
+                    } satisfies Partial<OpprettSykmeldingDraft>),
+                })
             }
         },
     })
