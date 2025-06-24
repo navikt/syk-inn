@@ -61,7 +61,7 @@ function useKeyboardShortcuts(closeAllDevTools: () => void, toggleInternalDevToo
                 closeAllDevTools()
             }
 
-            if (e.altKey && e.key === 'd') {
+            if (e.altKey && e.key === 'l') {
                 toggleInternalDevTools()
                 e.preventDefault()
             }

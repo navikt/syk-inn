@@ -40,7 +40,7 @@ export function LagreDraftButton(): ReactElement {
             }}
             loading={draftResult.loading}
             shortcut={{
-                modifier: 'shift',
+                modifier: 'alt',
                 key: 's',
             }}
         >
@@ -81,7 +81,7 @@ function ForkastDraftButton(): ReactElement {
             onClick={() => spanAsync('DeleteDraft(forkast).mutation', async () => mutation())}
             loading={deleteResult.loading}
             shortcut={{
-                modifier: 'shift',
+                modifier: 'alt',
                 key: 'd',
             }}
         >

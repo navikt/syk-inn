@@ -78,7 +78,7 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                             icon={<ArrowRightIcon aria-hidden />}
                             iconPosition="right"
                             shortcut={{
-                                modifier: 'shift',
+                                modifier: 'alt',
                                 key: 'n',
                             }}
                         >

@@ -19,7 +19,10 @@ export function ShortcutButton({
     shortcut,
     ...buttonProps
 }: PropsWithChildren<BaseShortcutButtonProps & { onClick: () => void }>): ReactElement {
-    const registeredShortcut = useShortcut(shortcut, () => onClick())
+    const registeredShortcut = useShortcut(shortcut, () => {
+        if (buttonProps.disabled) return
+        onClick()
+    })
     const currentMod = useCurrentModifier()
 
     return (

@@ -20,10 +20,10 @@ export function useShortcut(key: Shortcut, onShortcut: () => void): RegisteredSh
             if (modifier && event.key.toLowerCase() === stableKey.key.toLowerCase()) {
                 event.preventDefault()
 
-                toast(`Snarvei ${getOsAgnosticModifierLabel(stableKey.modifier)}+${stableKey.key} aktivert`, {
-                    duration: 1000,
-                    position: 'top-right',
-                })
+                toast(
+                    `Snarvei ${getOsAgnosticModifierLabel(stableKey.modifier)} + ${getKeyLabel(stableKey.key)} aktivert`,
+                    { duration: 1000, position: 'top-right' },
+                )
                 onShortcut()
             }
         }
@@ -36,7 +36,7 @@ export function useShortcut(key: Shortcut, onShortcut: () => void): RegisteredSh
     }, [onShortcut, stableKey.key, stableKey.modifier])
 
     return {
-        label: `${getOsAgnosticModifierLabel(stableKey.modifier)} + ${stableKey.key}`,
+        label: `${getOsAgnosticModifierLabel(stableKey.modifier)} + ${getKeyLabel(stableKey.key)}`,
     }
 }
 
@@ -48,5 +48,18 @@ function getOsAgnosticModifierLabel(key: Shortcut['modifier']): string {
         case 'shift': {
             return '⇧'
         }
+    }
+}
+
+function getKeyLabel(key: string): string {
+    switch (key) {
+        case 'arrowleft': {
+            return '←'
+        }
+        case 'arrowright': {
+            return '→'
+        }
+        default:
+            return key.toUpperCase()
     }
 }

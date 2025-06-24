@@ -80,7 +80,7 @@ function OpprettNySykmeldingCard(): ReactElement {
                             loading={loading}
                             size="small"
                             shortcut={{
-                                modifier: 'shift',
+                                modifier: 'alt',
                                 key: 'n',
                             }}
                         >

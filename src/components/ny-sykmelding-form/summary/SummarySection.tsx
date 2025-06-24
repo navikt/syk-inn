@@ -1,4 +1,4 @@
-import { Alert, BodyShort, Button, Checkbox, Heading } from '@navikt/ds-react'
+import { Alert, BodyShort, Checkbox, Heading } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
 import { AnimatePresence } from 'motion/react'
@@ -9,6 +9,7 @@ import { BehandlerDocument, OutcomeFragment } from '@graphql/queries.generated'
 import BehandlerSummary from '@components/ny-sykmelding-form/summary/BehandlerSummary'
 import FormValuesSummary from '@components/ny-sykmelding-form/summary/FormValuesSummary'
 import ForkastDraftButton from '@components/ny-sykmelding-form/draft/DraftActions'
+import { ShortcutButton } from '@components/shortcut/ShortcutButton'
 
 import { useFormStep } from '../steps/useFormStep'
 import { useAppDispatch, useAppSelector } from '../../../providers/redux/hooks'
@@ -56,24 +57,30 @@ function SummarySection(): ReactElement {
 
                     <div className="flex gap-3">
                         <ForkastDraftButton />
-                        <Button
-                            type="button"
+                        <ShortcutButton
                             variant="secondary"
                             onClick={() => setStep('main')}
                             disabled={nySykmelding.result.loading}
+                            shortcut={{
+                                modifier: 'alt',
+                                key: 'arrowleft',
+                            }}
                         >
                             Forrige steg
-                        </Button>
-                        <Button
-                            type="button"
+                        </ShortcutButton>
+                        <ShortcutButton
                             variant="primary"
                             icon={<PaperplaneIcon aria-hidden />}
                             iconPosition="right"
                             loading={nySykmelding.result.loading || behandlerQuery.loading}
                             onClick={() => nySykmelding.opprettSykmelding()}
+                            shortcut={{
+                                modifier: 'alt',
+                                key: 'n',
+                            }}
                         >
                             Send inn
-                        </Button>
+                        </ShortcutButton>
                     </div>
                 </div>
             </div>
