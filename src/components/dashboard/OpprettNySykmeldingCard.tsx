@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactElement, useRef, useState } from 'react'
+import React, { CSSProperties, ReactElement, useEffect, useRef, useState } from 'react'
 import { Alert, BodyShort, Button, ConfirmationPanel, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
@@ -6,10 +6,23 @@ import { PasientDocument } from '@queries'
 import DashboardCard from '@components/dashboard/card/DashboardCard'
 import { ShortcutButtonLink } from '@components/shortcut/ShortcutButton'
 
+import { useAppDispatch } from '../../providers/redux/hooks'
+import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
+
 function OpprettNySykmeldingCard(): ReactElement {
     const nextDraftId = useRef(crypto.randomUUID())
     const { data, loading, error, refetch } = useQuery(PasientDocument)
     const [hasLegged, setHasLegged] = useState(true)
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        /**
+         * Make sure form is reset for next sykmelding.
+         *
+         * If user returns to a ID it should be loaded from the draft, and any new ID should start with a fresh form.
+         */
+        dispatch(nySykmeldingMultistepActions.reset())
+    }, [dispatch])
 
     return (
         <DashboardCard title="Opprett ny sykmelding">
