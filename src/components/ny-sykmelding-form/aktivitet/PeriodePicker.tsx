@@ -141,7 +141,7 @@ function getRangeDescription(field: PeriodeField | null): { top: string; bottom:
     const daysInclusive = differenceInDays(field.tom, field.fom) + 1
 
     return {
-        top: `${daysInclusive} dager`,
+        top: daysInclusive === 1 ? '1 dag' : `${daysInclusive} dager`,
         bottom: `Fra ${format(field.fom, 'EEEE d. MMMM', { locale: nb })}${isFomToday ? ' (i dag)' : ''} til ${format(field.tom, 'EEEE d. MMMM', { locale: nb })}${isTomToday ? ' (i dag)' : ''}`,
     }
 }
