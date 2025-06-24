@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { isBefore, subDays } from 'date-fns'
+import { isBefore, parseISO, subDays } from 'date-fns'
 import * as R from 'remeda'
 
 import FormSection from '@components/form/form-section/FormSection'
@@ -42,7 +42,7 @@ export function isTilbakedatering(perioder: Pick<AktivitetsPeriode, 'periode'>[]
     )
 
     // 4 days is OK, but 5 or more is tilbakedatering and needs begrunnelse, inclusive in both ends.
-    return firstFom ? isBefore(new Date(firstFom), subDays(sykmeldingsDato, 5)) : false
+    return firstFom ? isBefore(parseISO(firstFom), subDays(sykmeldingsDato, 5)) : false
 }
 
 export default DynamicTilbakedateringSection

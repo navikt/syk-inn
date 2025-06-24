@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest'
+import { parseISO } from 'date-fns'
 
 import { AktivitetsPeriode } from '@components/ny-sykmelding-form/form'
 import { isTilbakedatering } from '@components/ny-sykmelding-form/tilbakedatering/DynamicTilbakedateringSection'
 
 describe('isTilbakedatering', () => {
-    it('should return true if the only period is older than 5 days before sykmeldingsdato', () => {
+    it('should return true if the only period is older than 4 days before sykmeldingsdato', () => {
         const perioder: Pick<AktivitetsPeriode, 'periode'>[] = [
             {
                 periode: {
@@ -15,11 +16,11 @@ describe('isTilbakedatering', () => {
         ]
 
         // 5 days
-        const result = isTilbakedatering(perioder, new Date('2025-01-07'))
+        const result = isTilbakedatering(perioder, parseISO('2025-01-06T12:00:00Z'))
         expect(result).toBe(true)
     })
 
-    it('should return true if the only period is older than 5 days before sykmeldingsdato', () => {
+    it('should return false if the only period is exactly 4 days before sykmeldingsdato', () => {
         const perioder: Pick<AktivitetsPeriode, 'periode'>[] = [
             {
                 periode: {
@@ -29,12 +30,12 @@ describe('isTilbakedatering', () => {
             },
         ]
 
-        // 8 days exactly
-        const result = isTilbakedatering(perioder, new Date('2025-01-06'))
+        // 4 days exactly
+        const result = isTilbakedatering(perioder, parseISO('2025-01-05T12:00:00Z'))
         expect(result).toBe(false)
     })
 
-    it('should return true if the first period is older than 5 days before sykmeldingsdato', () => {
+    it('should return true if the first period is older than 4 days before sykmeldingsdato', () => {
         const perioder: Pick<AktivitetsPeriode, 'periode'>[] = [
             {
                 periode: {
@@ -50,22 +51,9 @@ describe('isTilbakedatering', () => {
             },
         ]
 
-        const result = isTilbakedatering(perioder, new Date('2025-01-07'))
+        // 5 days
+        const result = isTilbakedatering(perioder, parseISO('2025-01-06T12:00:00Z'))
         expect(result).toBe(true)
-    })
-
-    it('should return false if the first period is newer than 5 days before sykmeldingsdato', () => {
-        const perioder: Pick<AktivitetsPeriode, 'periode'>[] = [
-            {
-                periode: {
-                    fom: '2025-01-01',
-                    tom: '2025-02-01',
-                },
-            },
-        ]
-
-        const result = isTilbakedatering(perioder, new Date('2025-01-06'))
-        expect(result).toBe(false)
     })
 
     it('should not think its a tilbakedatering when theres a periode but everything is null', () => {
@@ -78,7 +66,7 @@ describe('isTilbakedatering', () => {
             },
         ]
 
-        const result = isTilbakedatering(perioder, new Date('2025-01-09'))
+        const result = isTilbakedatering(perioder, parseISO('2025-01-09T12:00:00Z'))
         expect(result).toBe(false)
     })
 })
