@@ -36,7 +36,7 @@ function DynamicTilbakedateringSection(): ReactElement | null {
 export function isTilbakedatering(perioder: Pick<AktivitetsPeriode, 'periode'>[], sykmeldingsDato: Date): boolean {
     const firstFom = R.pipe(
         perioder,
-        R.map((it) => it.periode.fom),
+        R.map((it) => it.periode?.fom),
         R.filter(R.isNonNull),
         R.firstBy(R.identity()),
     )

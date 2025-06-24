@@ -1,9 +1,12 @@
 import React, { Fragment, ReactElement } from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { Button } from '@navikt/ds-react'
+import { addDays } from 'date-fns'
+import { TrashIcon } from '@navikt/aksel-icons'
 
-import { NySykmeldingMainFormValues } from '@components/ny-sykmelding-form/form'
+import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@components/ny-sykmelding-form/form'
 import { getDefaultPeriode } from '@components/ny-sykmelding-form/form-default-values'
+import { dateOnly } from '@utils/date'
 
 import AktivitetPicker from './AktivitetPicker'
 import PeriodePicker from './PeriodePicker'
@@ -15,24 +18,44 @@ function AktivitetSection(): ReactElement {
 
     return (
         <>
-            {fields?.map((periode, index) => (
+            {fields.map((periode, index) => (
                 <Fragment key={periode.id}>
-                    <PeriodePicker index={index} />
-                    <AktivitetPicker index={index} />
-                    {index > 0 && (
-                        <Button variant="danger" type="button" size="small" onClick={() => remove(index)}>
-                            Slett periode
-                        </Button>
-                    )}
+                    <div className="relative mb-4">
+                        <PeriodePicker index={index} />
+                        <AktivitetPicker index={index} />
+                        {index > 0 && (
+                            <Button
+                                className="absolute top-8 right-4"
+                                variant="danger"
+                                type="button"
+                                size="small"
+                                icon={<TrashIcon title="Slett periode" />}
+                                onClick={() => remove(index)}
+                            />
+                        )}
+                    </div>
                 </Fragment>
             ))}
-            <div className="mt-0">
+            <div className="mt-4">
                 <Button
                     variant="secondary"
                     type="button"
                     size="small"
                     onClick={() => {
-                        append(getDefaultPeriode())
+                        const lastPeriode = fields[fields.length - 1]
+
+                        /**
+                         * Fom should be N+1 previous period's tom.
+                         */
+                        const nyPeriode: AktivitetsPeriode = {
+                            ...getDefaultPeriode(),
+                            periode: {
+                                fom: lastPeriode.periode.tom ? dateOnly(addDays(lastPeriode.periode.tom, 1)) : null,
+                                tom: null,
+                            },
+                        }
+
+                        append(nyPeriode, { shouldFocus: false })
                     }}
                 >
                     Legg til ny periode
