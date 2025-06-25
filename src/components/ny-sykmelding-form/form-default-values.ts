@@ -74,7 +74,7 @@ function toInitialArbeidsforhold(
     }
 
     return {
-        harFlereArbeidsforhold: null,
+        harFlereArbeidsforhold: 'NEI',
         sykmeldtFraArbeidsforhold: null,
     }
 }
