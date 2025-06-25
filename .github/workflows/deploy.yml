@@ -50,6 +50,23 @@ jobs:
 
   deploy-dev-main:
     name: Deploy main to dev
+    if: github.ref_name == 'main'
+    environment:
+      name: dev
+      url: https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding
+    runs-on: ubuntu-latest
+    needs: [build-dev, test-and-verify]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-dev.yaml
+          VAR: image=${{ needs.build-dev.outputs.image }}
+
+  deploy-dev-branch:
+    name: Deploy branch to dev
+    if: startsWith(github.ref_name, 'dev/')
     environment:
       name: dev
       url: https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding
