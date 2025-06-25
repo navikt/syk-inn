@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react'
 import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/navigation'
 import { FloppydiskIcon } from '@navikt/aksel-icons'
-import { toast } from 'sonner'
 
 import { DeleteDraftDocument, GetAllDraftsDocument, OpprettSykmeldingDraft } from '@queries'
 import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
@@ -21,8 +20,6 @@ export function LagreDraftButton(): ReactElement {
     const [mutation, draftResult] = useSaveDraft({
         returnToDash: true,
         onCompleted: () => {
-            toast('Lagret utkast')
-
             dispatch(nySykmeldingMultistepActions.reset())
         },
     })
@@ -58,8 +55,6 @@ function ForkastDraftButton(): ReactElement {
     const [mutation, deleteResult] = useMutation(DeleteDraftDocument, {
         variables: { draftId },
         onCompleted: () => {
-            toast('Slettet utkast')
-
             const redirectPath = mode === 'FHIR' ? '/fhir' : '/ny'
             router.replace(redirectPath, { scroll: true })
 

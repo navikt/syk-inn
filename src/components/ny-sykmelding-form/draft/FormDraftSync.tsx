@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 import * as R from 'remeda'
 import { FetchResult } from '@apollo/client'
-import { toast } from 'sonner'
 import { useParams } from 'next/navigation'
 
 import { SaveDraftMutation } from '@queries'
@@ -32,8 +31,6 @@ function FormDraftSync(): null {
         returnToDash: false,
         onCompleted: () => {
             currentMutationPromise.current = null
-
-            toast('Automatisk lagret utkast')
         },
     })
 
