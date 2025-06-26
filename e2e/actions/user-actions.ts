@@ -2,7 +2,9 @@ import { expect, Locator, Page } from '@playwright/test'
 import { add } from 'date-fns'
 import { GraphQLRequest } from '@apollo/client'
 
-import { clickAndWait, waitForGraphQL } from '../utils/request-utils'
+import { OpprettSykmeldingDocument } from '@queries'
+
+import { clickAndWait, waitForGqlRequest } from '../utils/request-utils'
 import { inputDate } from '../utils/date-utils'
 import { expectTermToHaveDefinitions } from '../utils/assertions'
 
@@ -188,7 +190,10 @@ export function verifySummaryPage(sections: SummarySection[]) {
 
 export function submitSykmelding() {
     return async (page: Page): Promise<GraphQLRequest> => {
-        const request = await clickAndWait(page.getByRole('button', { name: 'Send inn' }).click(), waitForGraphQL(page))
+        const request = await clickAndWait(
+            page.getByRole('button', { name: 'Send inn' }).click(),
+            waitForGqlRequest(OpprettSykmeldingDocument)(page),
+        )
         return request.postDataJSON()
     }
 }

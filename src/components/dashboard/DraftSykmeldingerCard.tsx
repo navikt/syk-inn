@@ -126,7 +126,7 @@ function DraftList(): ReactElement {
 
 function DeleteDraftRowButton({ draftId }: { draftId: string }): ReactElement {
     const [deleteDraft, deleteDraftResult] = useMutation(DeleteDraftDocument, {
-        refetchQueries: [GetAllDraftsDocument],
+        refetchQueries: [{ query: GetAllDraftsDocument }],
         awaitRefetchQueries: true,
         update: (cache, result) => {
             if (result.data?.deleteDraft == true) {
