@@ -9,33 +9,42 @@ import { cn } from '@utils/tw'
 import { parseShorthand } from '@components/ny-sykmelding-form/aktivitet/periode-shorthand'
 import { SimpleReveal } from '@components/animation/Reveal'
 
-import { PeriodeField, useController, useFormContext } from '../form'
+import { useController, useFormContext } from '../form'
 
 import styles from './PeriodePicker.module.css'
 
 function PeriodePicker({ index }: { index: number }): ReactElement {
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
     const { clearErrors } = useFormContext()
-    const periodeField = useController({
-        name: `perioder.${index}.periode` as const,
+
+    const fomField = useController({
+        name: `perioder.${index}.periode.fom` as const,
         rules: {
             validate: (value) => {
                 if (rangeError?.from.isInvalid) {
                     return 'Fra og med dato må være en gyldig dato'
                 }
 
+                if (!value) {
+                    return 'Du må fylle inn fra og med dato'
+                }
+
+                if (tomField.field.value && value > tomField.field.value) {
+                    return 'Fra og med dato kan ikke være etter til og med dato'
+                }
+            },
+        },
+    })
+    const tomField = useController({
+        name: `perioder.${index}.periode.tom` as const,
+        rules: {
+            validate: (value) => {
                 if (rangeError?.to.isInvalid) {
                     return 'Til og med dato må være en gyldig dato'
                 }
 
-                if (value == null || !value.fom) {
-                    return 'Du må fylle inn fra og med dato'
-                }
-                if (!value.tom) {
+                if (!value) {
                     return 'Du må fylle inn til og med dato'
-                }
-                if (value.fom > value.tom) {
-                    return 'Fra og med dato kan ikke være etter til og med dato'
                 }
             },
         },
@@ -43,22 +52,18 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
 
     const { datepickerProps, toInputProps, fromInputProps, setSelected } = useRangeDatepicker({
         defaultSelected: {
-            from: periodeField.field.value?.fom ? parseISO(periodeField.field.value.fom) : undefined,
-            to: periodeField.field.value?.tom ? parseISO(periodeField.field.value.tom) : undefined,
+            from: fomField.field.value ? parseISO(fomField.field.value) : undefined,
+            to: tomField.field.value ? parseISO(tomField.field.value) : undefined,
         },
         onRangeChange: (range) => {
             if (!range) {
-                periodeField.field.onChange({
-                    fom: null,
-                    tom: null,
-                })
+                fomField.field.onChange(null)
+                tomField.field.onChange(null)
                 return
             }
 
-            periodeField.field.onChange({
-                fom: range.from ? dateOnly(range.from) : null,
-                tom: range.to ? dateOnly(range.to) : null,
-            })
+            if (range.from) fomField.field.onChange(dateOnly(range.from))
+            if (range.to) tomField.field.onChange(dateOnly(range.to))
         },
         onValidate: (range) => {
             setRangeError(range)
@@ -92,7 +97,7 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
         }
     }
 
-    const rangeDescription = getRangeDescription(periodeField?.field?.value ?? null)
+    const rangeDescription = getRangeDescription(fomField.field.value, tomField.field.value)
 
     return (
         <div className="flex flex-col gap-1">
@@ -100,19 +105,24 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
                 <DatePicker {...datepickerProps} wrapperClassName={styles.dateRangePicker}>
                     <DatePicker.Input
                         className={styles.dateRangeInput}
+                        ref={fomField.field.ref}
+                        name={fomField.field.name}
                         {...fromInputProps}
                         label="Fra og med"
-                        onBlur={periodeField.field.onBlur}
-                        error={periodeField.fieldState.error?.message}
+                        onBlur={fomField.field.onBlur}
+                        error={fomField.fieldState.error?.message}
                         onKeyDown={(event) => {
                             handleShorthandEvent(event)
                         }}
                     />
                     <DatePicker.Input
                         className={styles.dateRangeInput}
+                        ref={tomField.field.ref}
+                        name={tomField.field.name}
                         {...toInputProps}
                         label="Til og med"
-                        onBlur={periodeField.field.onBlur}
+                        onBlur={fomField.field.onBlur}
+                        error={tomField.fieldState.error?.message}
                         onKeyDown={(event) => {
                             handleShorthandEvent(event)
                         }}
@@ -131,18 +141,18 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
     )
 }
 
-function getRangeDescription(field: PeriodeField | null): { top: string; bottom: string } | null {
-    if (field == null || field.fom == null || field.tom == null || field.fom === '' || field.tom === '') {
+function getRangeDescription(fom: string | null, tom: string | null): { top: string; bottom: string } | null {
+    if (fom == null || tom == null || fom === '' || tom === '') {
         return null
     }
 
-    const isFomToday = isSameDay(field.fom, new Date())
-    const isTomToday = isSameDay(field.tom, new Date())
-    const daysInclusive = differenceInDays(field.tom, field.fom) + 1
+    const isFomToday = isSameDay(fom, new Date())
+    const isTomToday = isSameDay(tom, new Date())
+    const daysInclusive = differenceInDays(tom, fom) + 1
 
     return {
         top: daysInclusive === 1 ? '1 dag' : `${daysInclusive} dager`,
-        bottom: `Fra ${format(field.fom, 'EEEE d. MMMM', { locale: nb })}${isFomToday ? ' (i dag)' : ''} til ${format(field.tom, 'EEEE d. MMMM', { locale: nb })}${isTomToday ? ' (i dag)' : ''}`,
+        bottom: `Fra ${format(fom, 'EEEE d. MMMM', { locale: nb })}${isFomToday ? ' (i dag)' : ''} til ${format(tom, 'EEEE d. MMMM', { locale: nb })}${isTomToday ? ' (i dag)' : ''}`,
     }
 }
 
