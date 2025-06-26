@@ -7,6 +7,7 @@ import { TrashIcon } from '@navikt/aksel-icons'
 import { AktivitetsPeriode, NySykmeldingMainFormValues, useFormContext } from '@components/ny-sykmelding-form/form'
 import { getDefaultPeriode } from '@components/ny-sykmelding-form/form-default-values'
 import { dateOnly } from '@utils/date'
+import ArsakerPicker from '@components/ny-sykmelding-form/aktivitet/ArsakerPicker'
 
 import AktivitetPicker from './AktivitetPicker'
 import PeriodePicker from './PeriodePicker'
@@ -24,6 +25,7 @@ function AktivitetSection(): ReactElement {
                     <div className="relative mb-4">
                         <PeriodePicker index={index} />
                         <AktivitetPicker index={index} />
+                        <ArsakerPicker index={index} />
                         {index > 0 && (
                             <Button
                                 className="absolute top-8 right-4"

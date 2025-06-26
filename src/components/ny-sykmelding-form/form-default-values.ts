@@ -185,6 +185,14 @@ export function toInitialPerioder(
                 type: it.type,
                 grad: it.type === 'GRADERT' ? it.grad.toFixed(0) : null,
             },
+            medisinskArsak: {
+                isMedisinskArsak: false,
+            },
+            arbeidsrelatertArsak: {
+                isArbeidsrelatertArsak: false,
+                arbeidsrelatertArsaker: null,
+                annenArbeidsrelatertArsak: null,
+            },
         }))
     }
 
@@ -197,6 +205,14 @@ export function toInitialPerioder(
             aktivitet: {
                 type: it.type,
                 grad: it.grad ?? null,
+            },
+            medisinskArsak: {
+                isMedisinskArsak: false,
+            },
+            arbeidsrelatertArsak: {
+                isArbeidsrelatertArsak: false,
+                arbeidsrelatertArsaker: null,
+                annenArbeidsrelatertArsak: null,
             },
         }))
     }
@@ -243,6 +259,14 @@ export function getDefaultPeriode(): AktivitetsPeriode {
         aktivitet: {
             type: 'GRADERT',
             grad: null,
+        },
+        medisinskArsak: {
+            isMedisinskArsak: false,
+        },
+        arbeidsrelatertArsak: {
+            isArbeidsrelatertArsak: false,
+            arbeidsrelatertArsaker: null,
+            annenArbeidsrelatertArsak: null,
         },
     }
 }
