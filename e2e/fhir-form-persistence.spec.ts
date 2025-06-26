@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 import { launchWithMock } from './actions/fhir-actions'
 import { daysAgo, inDays, inputDate } from './utils/date-utils'
 import {
-    initPreloadedPatient,
+    startNewSykmelding,
     pickHoveddiagnose,
     fillPeriodeRelative,
     fillTilbakedatering,
@@ -12,14 +12,14 @@ import {
     nextStep,
     previousStep,
     saveDraft,
-    verifySignerendeBehandler,
     fillArbeidsforhold,
 } from './actions/user-actions'
 import { userInteractionsGroup } from './utils/actions'
+import { verifySignerendeBehandler } from './actions/user-verifications'
 
 const fillAllTheValues = userInteractionsGroup(
     launchWithMock,
-    initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' }),
+    startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' }),
     fillArbeidsforhold({
         harFlereArbeidsforhold: false,
     }),

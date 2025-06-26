@@ -1,50 +1,48 @@
-import { expect, Locator, Page } from '@playwright/test'
+import { expect, Locator, Page, test } from '@playwright/test'
 import { add } from 'date-fns'
 import { GraphQLRequest } from '@apollo/client'
 
 import { OpprettSykmeldingDocument } from '@queries'
+import { toReadableDatePeriod } from '@utils/date'
 
 import { clickAndWait, waitForGqlRequest } from '../utils/request-utils'
 import { inputDate } from '../utils/date-utils'
-import { expectTermToHaveDefinitions } from '../utils/assertions'
 
-export function initPreloadedPatient({ name, fnr }: { name: string; fnr: string }) {
+export function startNewSykmelding({ name, fnr }: { name: string; fnr: string }) {
     return async (page: Page) => {
-        const pasientInfoRegion = page.getByRole('region', { name: 'Opprett ny sykmelding' })
-        await expect(pasientInfoRegion).toBeVisible()
-        await expect(pasientInfoRegion.getByText(name)).toBeVisible()
-        await expect(page.getByText(new RegExp(`ID-nummer(.*)${fnr}`))).toBeVisible()
+        await test.step('Verify the patient and start new sykmelding', async () => {
+            const pasientInfoRegion = page.getByRole('region', { name: 'Opprett ny sykmelding' })
+            await expect(pasientInfoRegion).toBeVisible()
+            await expect(pasientInfoRegion.getByText(name)).toBeVisible()
+            await expect(page.getByText(new RegExp(`ID-nummer(.*)${fnr}`))).toBeVisible()
 
-        await pasientInfoRegion.getByRole('button', { name: 'Opprett sykmelding' }).click()
-    }
-}
-
-export function fillManualPasient({ fnr }: { fnr: string }) {
-    return async (page: Page) => {
-        const pasientInfoRegion = page.getByRole('region', { name: 'Pasientopplysningen' })
-        await expect(pasientInfoRegion).toBeVisible()
-        await pasientInfoRegion.getByRole('textbox', { name: 'Fødselsnummer' }).fill(fnr)
+            await pasientInfoRegion.getByRole('button', { name: 'Opprett sykmelding' }).click()
+        })
     }
 }
 
 export function pickHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
     return async (page: Page) => {
-        const diagnoseRegion = page.getByRole('region', { name: 'Diagnose', exact: true })
-        await expect(diagnoseRegion).toBeVisible()
+        return await test.step('Input hoveddiagnose', async () => {
+            const diagnoseRegion = page.getByRole('region', { name: 'Diagnose', exact: true })
+            await expect(diagnoseRegion).toBeVisible()
 
-        await page.getByRole('button', { name: 'Endre hoveddiagnose' }).click() // Diagnose is pre-filled
-        await diagnoseRegion.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
-        await diagnoseRegion.getByRole('option', { name: select }).click()
+            await page.getByRole('button', { name: 'Endre hoveddiagnose' }).click() // Diagnose is pre-filled
+            await diagnoseRegion.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
+            await diagnoseRegion.getByRole('option', { name: select }).click()
 
-        return diagnoseRegion
+            return diagnoseRegion
+        })
     }
 }
 
 export function editHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
     return async (region: Locator) => {
-        await region.getByRole('button', { name: 'Endre hoveddiagnose' }).click()
-        await region.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
-        await region.getByRole('option', { name: select }).click()
+        await test.step(`Edit hoveddiagnose to ${search}`, async () => {
+            await region.getByRole('button', { name: 'Endre hoveddiagnose' }).click()
+            await region.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
+            await region.getByRole('option', { name: select }).click()
+        })
     }
 }
 
@@ -56,14 +54,16 @@ export function fillArbeidsforhold({
     sykmeldtFraArbeidsforhold?: string | null
 }) {
     return async (page: Page) => {
-        if (harFlereArbeidsforhold) {
-            await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Ja').click()
-            await page
-                .getByRole('textbox', { name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?' })
-                .fill(sykmeldtFraArbeidsforhold || '')
-        } else {
-            await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Nei').click()
-        }
+        await test.step(`Set flere arbeidsforhold to ${harFlereArbeidsforhold ? 'Ja' : 'Nei'}`, async () => {
+            if (harFlereArbeidsforhold) {
+                await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Ja').click()
+                await page
+                    .getByRole('textbox', { name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?' })
+                    .fill(sykmeldtFraArbeidsforhold || '')
+            } else {
+                await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Nei').click()
+            }
+        })
     }
 }
 
@@ -78,30 +78,34 @@ export function fillPeriodeRelative({
     const tom = add(new Date(), { days: tomRelativeToToday })
 
     return async (page: Page) => {
-        const periodeRegion = page.getByRole('region', { name: 'Periode' })
-        await expect(periodeRegion).toBeVisible()
-        await periodeRegion.getByRole('textbox', { name: 'Fra og med' }).fill(inputDate(fom))
-        await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(tom))
+        await test.step(`Input sykmeldingsperiode to ${toReadableDatePeriod(fom, tom)}`, async () => {
+            const periodeRegion = page.getByRole('region', { name: 'Periode' })
+            await expect(periodeRegion).toBeVisible()
+            await periodeRegion.getByRole('textbox', { name: 'Fra og med' }).fill(inputDate(fom))
+            await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(tom))
 
-        if (typeof type === 'string' && type === '100%') {
-            await page.getByRole('combobox', { name: 'Mulighet for arbeid' }).selectOption('Aktivitet ikke mulig')
-        }
+            if (typeof type === 'string' && type === '100%') {
+                await page.getByRole('combobox', { name: 'Mulighet for arbeid' }).selectOption('Aktivitet ikke mulig')
+            }
 
-        if (typeof type !== 'string' && 'grad' in type) {
-            await page.getByRole('combobox', { name: 'Mulighet for arbeid' }).selectOption('Gradert sykmelding')
+            if (typeof type !== 'string' && 'grad' in type) {
+                await page.getByRole('combobox', { name: 'Mulighet for arbeid' }).selectOption('Gradert sykmelding')
 
-            await page.getByRole('textbox', { name: 'Sykmeldingsgrad (%)' }).fill(`${type.grad}`)
-        }
+                await page.getByRole('textbox', { name: 'Sykmeldingsgrad (%)' }).fill(`${type.grad}`)
+            }
+        })
     }
 }
 
 export function fillTilbakedatering({ contact, reason }: { contact: string; reason: string }) {
     return async (page: Page) => {
-        const region = page.getByRole('region', { name: 'Tilbakedatering' })
-        await expect(region).toBeVisible()
+        await test.step(`Input tilbakedateringsdato to ${contact}`, async () => {
+            const region = page.getByRole('region', { name: 'Tilbakedatering' })
+            await expect(region).toBeVisible()
 
-        await region.getByRole('textbox', { name: 'Når tok pasienten først kontakt' }).fill(inputDate(contact))
-        await region.getByRole('textbox', { name: 'Oppgi årsak for tilbakedatering' }).fill(reason)
+            await region.getByRole('textbox', { name: 'Når tok pasienten først kontakt' }).fill(inputDate(contact))
+            await region.getByRole('textbox', { name: 'Oppgi årsak for tilbakedatering' }).fill(reason)
+        })
     }
 }
 
@@ -115,116 +119,90 @@ export function fillAndreSporsmal({
     yrkesskadeDato: string | null
 }) {
     return async (page: Page) => {
-        const region = page.getByRole('region', { name: 'Andre spørsmål' })
-        await expect(region).toBeVisible()
+        await test.step(`Toggle andre sporsmål${yrkesskadeDato != null ? ', and input skadedato' : ''}`, async () => {
+            const region = page.getByRole('region', { name: 'Andre spørsmål' })
+            await expect(region).toBeVisible()
 
-        if (svangerskapsrelatert) {
-            await region.getByRole('checkbox', { name: 'Svangerskapsrelatert' }).check()
-        } else {
-            await region.getByRole('checkbox', { name: 'Svangerskapsrelatert' }).uncheck()
-        }
+            if (svangerskapsrelatert) {
+                await region.getByRole('checkbox', { name: 'Svangerskapsrelatert' }).check()
+            } else {
+                await region.getByRole('checkbox', { name: 'Svangerskapsrelatert' }).uncheck()
+            }
 
-        if (yrkesskade) {
-            await region.getByRole('checkbox', { name: 'Yrkesskade' }).check()
-        } else {
-            await region.getByRole('checkbox', { name: 'Yrkesskade' }).uncheck()
-        }
+            if (yrkesskade) {
+                await region.getByRole('checkbox', { name: 'Yrkesskade' }).check()
+            } else {
+                await region.getByRole('checkbox', { name: 'Yrkesskade' }).uncheck()
+            }
 
-        if (yrkesskadeDato) {
-            await region.getByRole('textbox', { name: 'Dato for yrkesskade' }).fill(inputDate(yrkesskadeDato))
-        }
+            if (yrkesskadeDato) {
+                await region.getByRole('textbox', { name: 'Dato for yrkesskade' }).fill(inputDate(yrkesskadeDato))
+            }
+        })
     }
 }
 
 export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | null; tilArbeidsgiver: string | null }) {
     return async (page: Page) => {
-        const region = page.getByRole('region', { name: 'Meldinger' })
-        await expect(region).toBeVisible()
+        await test.step(`Input meldinger to Nav and arbeidsgiver`, async () => {
+            const region = page.getByRole('region', { name: 'Meldinger' })
+            await expect(region).toBeVisible()
 
-        if (await region.getByRole('button', { name: 'Vis mer' }).isVisible()) {
-            await region.getByRole('button', { name: 'Vis mer' }).click()
-        }
+            if (await region.getByRole('button', { name: 'Vis mer' }).isVisible()) {
+                await region.getByRole('button', { name: 'Vis mer' }).click()
+            }
 
-        if (tilNav) {
-            await region.getByRole('checkbox', { name: 'Melding til Nav' }).check()
-            await region.getByRole('textbox', { name: 'Har du noen tilbakemeldinger?' }).fill(tilNav)
-        }
+            if (tilNav) {
+                await region.getByRole('checkbox', { name: 'Melding til Nav' }).check()
+                await region.getByRole('textbox', { name: 'Har du noen tilbakemeldinger?' }).fill(tilNav)
+            }
 
-        if (tilArbeidsgiver) {
-            await region.getByRole('checkbox', { name: 'Melding til arbeidsgiver' }).check()
-            await region.getByRole('textbox', { name: 'Innspill til arbeidsgiver' }).fill(tilArbeidsgiver)
-        }
-    }
-}
-
-type SectionTitle =
-    | 'Navn'
-    | 'Fødselsnummer'
-    | 'Har pasienten flere arbeidsforhold?'
-    | 'Periode'
-    | 'Mulighet for arbeid'
-    | 'Dato for tilbakedatering'
-    | 'Grunn for tilbakedatering'
-    | 'Hoveddiagnose'
-    | 'Til NAV'
-    | 'Til arbeidsgiver'
-    | 'Svangerskapsrelatert'
-    | 'Yrkesskade'
-interface SummarySection {
-    name: SectionTitle
-    values: string[]
-}
-
-export function verifySummaryPage(sections: SummarySection[]) {
-    return async (page: Page) => {
-        await expect(page.getByRole('heading', { name: 'Oppsummering sykmelding' })).toBeVisible()
-        await expect(page.getByRole('button', { name: 'Endre svar' })).toBeVisible()
-
-        await Promise.all(
-            sections.map(async (section) => {
-                await expectTermToHaveDefinitions(page, section.name, section.values)
-            }),
-        )
+            if (tilArbeidsgiver) {
+                await region.getByRole('checkbox', { name: 'Melding til arbeidsgiver' }).check()
+                await region.getByRole('textbox', { name: 'Innspill til arbeidsgiver' }).fill(tilArbeidsgiver)
+            }
+        })
     }
 }
 
 export function submitSykmelding() {
     return async (page: Page): Promise<GraphQLRequest> => {
-        const request = await clickAndWait(
-            page.getByRole('button', { name: 'Send inn' }).click(),
-            waitForGqlRequest(OpprettSykmeldingDocument)(page),
-        )
-        return request.postDataJSON()
-    }
-}
-
-export function verifySignerendeBehandler() {
-    return async (page: Page) => {
-        await expect(page.getByText(/HPR(.*)9144889/), 'Correct HPR').toBeVisible()
-        await expect(page.getByText(/Organisasjonsnummer(.*)123456789/), 'Correct Org').toBeVisible()
+        return test.step('Submit the sykmelding', async () => {
+            const request = await clickAndWait(
+                page.getByRole('button', { name: 'Send inn' }).click(),
+                waitForGqlRequest(OpprettSykmeldingDocument)(page),
+            )
+            return request.postDataJSON()
+        })
     }
 }
 
 export function nextStep() {
     return async (page: Page) => {
-        const nextButton = page.getByRole('button', { name: 'Neste steg' })
-        await expect(nextButton).toBeVisible()
-        await nextButton.click()
+        await test.step('Click next step button', async () => {
+            const nextButton = page.getByRole('button', { name: 'Neste steg' })
+            await expect(nextButton).toBeVisible()
+            await nextButton.click()
+        })
     }
 }
 
 export function saveDraft() {
     return async (page: Page) => {
-        const nextButton = page.getByRole('button', { name: 'Lagre (utkast)' })
-        await expect(nextButton).toBeVisible()
-        await nextButton.click()
+        await test.step('Click save draft button', async () => {
+            const nextButton = page.getByRole('button', { name: 'Lagre (utkast)' })
+            await expect(nextButton).toBeVisible()
+            await nextButton.click()
+        })
     }
 }
 
 export function previousStep() {
     return async (page: Page) => {
-        const previousButton = page.getByRole('button', { name: 'Forrige steg' })
-        await expect(previousButton).toBeVisible()
-        await previousButton.click()
+        await test.step('Click previous step button', async () => {
+            const previousButton = page.getByRole('button', { name: 'Forrige steg' })
+            await expect(previousButton).toBeVisible()
+            await previousButton.click()
+        })
     }
 }

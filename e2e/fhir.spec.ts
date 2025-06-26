@@ -6,23 +6,22 @@ import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 import { launchWithMock } from './actions/fhir-actions'
 import { daysAgo, inDays, inputDate, today } from './utils/date-utils'
 import {
-    initPreloadedPatient,
+    startNewSykmelding,
     editHoveddiagnose,
     fillPeriodeRelative,
     pickHoveddiagnose,
     submitSykmelding,
     nextStep,
     fillTilbakedatering,
-    verifySummaryPage,
-    verifySignerendeBehandler,
     fillArbeidsforhold,
 } from './actions/user-actions'
 import { expectGraphQLRequest } from './utils/assertions'
 import { getDraftId } from './utils/request-utils'
+import { verifySignerendeBehandler, verifySummaryPage } from './actions/user-verifications'
 
 test('can submit 100% sykmelding', async ({ page }) => {
     await launchWithMock(page)
-    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
         harFlereArbeidsforhold: false,
@@ -39,7 +38,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
     await verifySignerendeBehandler()(page)
 
     const request = await submitSykmelding()(page)
-    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -70,7 +69,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
 
 test('shall be able to edit diagnose', async ({ page }) => {
     await launchWithMock(page)
-    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
         harFlereArbeidsforhold: false,
@@ -88,7 +87,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
     await verifySignerendeBehandler()(page)
 
     const request = await submitSykmelding()(page)
-    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
         values: {
             hoveddiagnose: { code: 'D290', system: 'ICD10' },
@@ -119,7 +118,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
 
 test('can submit gradert sykmelding', async ({ page }) => {
     await launchWithMock(page)
-    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
         harFlereArbeidsforhold: false,
@@ -136,7 +135,7 @@ test('can submit gradert sykmelding', async ({ page }) => {
     await verifySignerendeBehandler()(page)
 
     const request = await submitSykmelding()(page)
-    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -170,7 +169,7 @@ test('can submit gradert sykmelding', async ({ page }) => {
 
 test('submit with only default values', async ({ page }) => {
     await launchWithMock(page)
-    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     // Tom is not prefilled
     await page.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(inDays(3)))
@@ -182,7 +181,7 @@ test('submit with only default values', async ({ page }) => {
     await verifySignerendeBehandler()(page)
 
     const request = await submitSykmelding()(page)
-    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'L73' },
@@ -216,7 +215,7 @@ test('submit with only default values', async ({ page }) => {
 
 test("should be asked about 'tilbakedatering' when fom is 5 days in the past", async ({ page }) => {
     await launchWithMock(page)
-    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
         harFlereArbeidsforhold: false,
@@ -286,7 +285,7 @@ test("should be asked about 'tilbakedatering' when fom is 5 days in the past", a
 
     const request = await submitSykmelding()(page)
 
-    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -318,7 +317,7 @@ test("should be asked about 'tilbakedatering' when fom is 5 days in the past", a
 
 test('"skal skjermes" should be part of payload if checked', async ({ page }) => {
     await launchWithMock(page)
-    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
         harFlereArbeidsforhold: false,
@@ -337,7 +336,7 @@ test('"skal skjermes" should be part of payload if checked', async ({ page }) =>
     await page.getByRole('checkbox', { name: 'Pasienten skal skjermes for medisinske opplysninger' }).check()
     const request = await submitSykmelding()(page)
 
-    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -366,7 +365,7 @@ test('"skal skjermes" should be part of payload if checked', async ({ page }) =>
 
 test('"har flere arbeidsforhold" should be part of payload if checked', async ({ page }) => {
     await launchWithMock(page)
-    await initPreloadedPatient({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
         harFlereArbeidsforhold: true,
@@ -385,7 +384,7 @@ test('"har flere arbeidsforhold" should be part of payload if checked', async ({
     await verifySignerendeBehandler()(page)
 
     const request = await submitSykmelding()(page)
-    expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
