@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
-import { fail } from 'assert'
-
 import { GraphQLRequest, TypedDocumentNode } from '@apollo/client'
 import { expect, Page } from '@playwright/test'
 
@@ -46,4 +44,9 @@ export async function expectTermToHaveDefinitions(page: Page, term: string, defi
         const definitionText = await d.textContent()
         expect(definitions).toContain(definitionText)
     }
+}
+
+export function fail(message: string): never {
+    expect(true, message).toBe(false)
+    return void 0 as never
 }

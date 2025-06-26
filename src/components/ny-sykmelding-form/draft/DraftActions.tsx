@@ -62,7 +62,7 @@ function ForkastDraftButton(): ReactElement {
                 dispatch(nySykmeldingMultistepActions.reset())
             })
         },
-        refetchQueries: [GetAllDraftsDocument],
+        refetchQueries: [{ query: GetAllDraftsDocument }],
         update: (cache, result) => {
             if (result.data?.deleteDraft == true) {
                 cache.evict({

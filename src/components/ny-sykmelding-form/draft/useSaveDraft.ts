@@ -28,7 +28,7 @@ export function useSaveDraft(opts: {
                 router.replace(redirectPath)
             }
         },
-        refetchQueries: [GetAllDraftsDocument],
+        refetchQueries: [{ query: GetAllDraftsDocument }],
         awaitRefetchQueries: true,
         update(cache, { data }) {
             if (data?.saveDraft == null) return
