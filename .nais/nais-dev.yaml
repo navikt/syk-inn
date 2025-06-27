@@ -61,17 +61,24 @@ spec:
       rules:
         - application: syk-inn-api
         - application: tsm-pdl-cache
+        # Team Logs: https://docs.nais.io/observability/logging/how-to/team-logs/
+        - application: logging
+          namespace: nais-system
   resources:
     limits:
       memory: 512Mi
     requests:
       cpu: 50m
       memory: 256Mi
-  secureLogs:
-    enabled: true
   env:
+    # Stop double logging by auto instrumentation _and_ nais stdout logshipper
     - name: OTEL_LOGS_EXPORTER
       value: none
+    # Needed by team logs
+    - name: NAIS_POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
   envFrom:
     - secret: login-config-syk-inn
     - secret: tsm-unleash-api-token

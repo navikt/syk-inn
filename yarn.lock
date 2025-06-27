@@ -2197,7 +2197,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/fhir-zod": "workspace:^"
-    "@navikt/pino-logger": "npm:^4.0.0"
+    "@navikt/pino-logger": "npm:^4.1.3"
     "@types/node": "npm:^22.15.32"
     hono: "npm:^4.8.2"
     jose: "npm:^6.0.11"
@@ -2225,11 +2225,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@navikt/next-logger@npm:4.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.0.0%2F993247f36d3c21420d975580a853fbc4ddb3f03b"
+"@navikt/next-logger@npm:^4.1.3":
+  version: 4.1.3
+  resolution: "@navikt/next-logger@npm:4.1.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.1.3%2Fc765228321578b823c7e80051a7c6a9fd7ef4bca"
   dependencies:
-    "@navikt/pino-logger": "npm:^4.0.0"
+    "@navikt/pino-logger": "npm:^4.1.3"
     pino-roll: "npm:3"
   peerDependencies:
     next: 14 || 15
@@ -2237,7 +2237,7 @@ __metadata:
   dependenciesMeta:
     pino-roll:
       optional: true
-  checksum: 10c0/2d0dc8fc60a9766c7734c60779cb776f3404f2dffc3465eed7c8796b38e9d418f79ec115df85f56a8ff6f1dcc5a9f5502b03675e473136d1280bc6db9f896ab0
+  checksum: 10c0/803f1021a7aca18e84683fe19f010559bbfef49b33c471dd412c20b7fa0888c5b58d430bc41218884c1fd44bc4337cfda097c7e95c47686710f9743d4a85d243
   languageName: node
   linkType: hard
 
@@ -2252,17 +2252,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/pino-logger@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@navikt/pino-logger@npm:4.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.0.0%2F28916aae63db0cc403ae10cb177c07136ccd6599"
+"@navikt/pino-logger@npm:^4.1.3":
+  version: 4.1.3
+  resolution: "@navikt/pino-logger@npm:4.1.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.1.3%2Fb15624dea5c3e2ad7a10aec06923a517f7e10eee"
   dependencies:
     pino-roll: "npm:3"
+    pino-socket: "npm:7"
   peerDependencies:
     pino: 8 || 9
   dependenciesMeta:
     pino-roll:
       optional: true
-  checksum: 10c0/b11df8a6dbaf3b15674cf218cd27a010e78ea71ba59f16135a1657261edc4475fab6dfd098ea09d5d99c353d3467533b454089ea103775b5026164d1b06674fc
+    pino-socket:
+      optional: true
+  checksum: 10c0/060c3d28ffd2dba2b21b2dae42c0356003c5c75c57f792de79ffdaee324224be13af6c075258246d0f91b899a2c9b11009b888b3cee5e5602d9baa063ba50771
   languageName: node
   linkType: hard
 
@@ -2271,7 +2274,7 @@ __metadata:
   resolution: "@navikt/smart-on-fhir@workspace:libs/smart-on-fhir"
   dependencies:
     "@navikt/fhir-zod": "workspace:^"
-    "@navikt/pino-logger": "npm:^4.0.0"
+    "@navikt/pino-logger": "npm:^4.1.3"
     "@opentelemetry/api": "npm:^1.9.0"
     "@vitest/coverage-v8": "npm:3.2.4"
     jose: "npm:^6.0.11"
@@ -4158,6 +4161,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"abbrev@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "abbrev@npm:2.0.0"
+  checksum: 10c0/f742a5a107473946f426c691c08daba61a1d15942616f300b5d32fd735be88fef5cba24201757b6c407fd564555fb48c751cfa33519b2605c8a7aadd22baf372
+  languageName: node
+  linkType: hard
+
 "abbrev@npm:^3.0.0":
   version: 3.0.1
   resolution: "abbrev@npm:3.0.1"
@@ -4521,6 +4531,15 @@ __metadata:
     cosmiconfig: "npm:^7.0.0"
     resolve: "npm:^1.19.0"
   checksum: 10c0/c6dfb15de96f67871d95bd2e8c58b0c81edc08b9b087dc16755e7157f357dc1090a8dc60ebab955e92587a9101f02eba07e730adc253a1e4cf593ca3ebd3839c
+  languageName: node
+  linkType: hard
+
+"backoff@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "backoff@npm:2.5.0"
+  dependencies:
+    precond: "npm:0.2"
+  checksum: 10c0/57afcd07c08e9174d78f79643ebca1e8da752143ef6675e6b4a0b08ec6b497db3317089350c02fb747ae54c53f485c4d8b0742130b78028bb8a8cd96dd69ce0f
   languageName: node
   linkType: hard
 
@@ -9005,6 +9024,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nopt@npm:^7.0.0":
+  version: 7.2.1
+  resolution: "nopt@npm:7.2.1"
+  dependencies:
+    abbrev: "npm:^2.0.0"
+  bin:
+    nopt: bin/nopt.js
+  checksum: 10c0/a069c7c736767121242037a22a788863accfa932ab285a1eb569eb8cd534b09d17206f68c37f096ae785647435e0c5a5a0a67b42ec743e481a455e5ae6a6df81
+  languageName: node
+  linkType: hard
+
 "nopt@npm:^8.0.0":
   version: 8.1.0
   resolution: "nopt@npm:8.1.0"
@@ -9558,13 +9588,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino-roll@npm:3, pino-roll@npm:^3.1.0":
+"pino-roll@npm:3":
   version: 3.1.0
   resolution: "pino-roll@npm:3.1.0"
   dependencies:
     date-fns: "npm:^4.1.0"
     sonic-boom: "npm:^4.0.1"
   checksum: 10c0/0ae1b475889748d8f87f9a4bd622b841500b76ae279a2409e1453e74bed23d227b1a7a21069c8226e65311e37cc34217592199a09d4b01db5e5c236678b67040
+  languageName: node
+  linkType: hard
+
+"pino-socket@npm:7, pino-socket@npm:^7.4.0":
+  version: 7.4.0
+  resolution: "pino-socket@npm:7.4.0"
+  dependencies:
+    backoff: "npm:^2.5.0"
+    nopt: "npm:^7.0.0"
+    pump: "npm:^3.0.0"
+    split2: "npm:^4.0.0"
+    through2: "npm:^4.0.2"
+  bin:
+    pino-socket: psock.js
+  checksum: 10c0/1a3f38ae69c71efd225a5df8bfb6fc0cbe70c0e625221bbec7a7786a4804b9ab61a3e37dfa3a18abc4d03f28e70a32f12744c923e0426951e35dfec19dcdb872
   languageName: node
   linkType: hard
 
@@ -9646,6 +9691,13 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10c0/5127cc7c91ed7a133a1b7318012d8bfa112da9ef092dddf369ae699a1f10ebbd89b1b9f25f3228795b84585c72aabd5ced5fc11f2ba467eedf7b081a66fad024
+  languageName: node
+  linkType: hard
+
+"precond@npm:0.2":
+  version: 0.2.3
+  resolution: "precond@npm:0.2.3"
+  checksum: 10c0/289b71202c090286fab340acafc96bc1d719e6f2d2484a868ef5dff28efd5953bafda78aebe4416ebf907992aa88942e68cd53ed7e2ab9eaf0709a6b5ac72340
   languageName: node
   linkType: hard
 
@@ -9924,7 +9976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^3.4.0":
+"readable-stream@npm:3, readable-stream@npm:^3.4.0":
   version: 3.6.2
   resolution: "readable-stream@npm:3.6.2"
   dependencies:
@@ -11224,8 +11276,9 @@ __metadata:
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/fhir-zod": "workspace:*"
     "@navikt/next-api-proxy": "npm:^4.1.4"
-    "@navikt/next-logger": "npm:^4.0.0"
+    "@navikt/next-logger": "npm:^4.1.3"
     "@navikt/oasis": "npm:^3.8.0"
+    "@navikt/pino-logger": "npm:^4.1.3"
     "@navikt/smart-on-fhir": "workspace:*"
     "@opentelemetry/api": "npm:^1.9.0"
     "@parcel/watcher": "npm:^2.5.1"
@@ -11257,7 +11310,7 @@ __metadata:
     openid-client: "npm:^6.6.1"
     pino: "npm:^9.7.0"
     pino-pretty: "npm:^13.0.0"
-    pino-roll: "npm:^3.1.0"
+    pino-socket: "npm:^7.4.0"
     postcss: "npm:^8.5.6"
     prettier: "npm:^3.6.0"
     react: "npm:^19.1.0"
@@ -11394,6 +11447,15 @@ __metadata:
   dependencies:
     real-require: "npm:^0.2.0"
   checksum: 10c0/c36118379940b77a6ef3e6f4d5dd31e97b8210c3f7b9a54eb8fe6358ab173f6d0acfaf69b9c3db024b948c0c5fd2a7df93e2e49151af02076b35ada3205ec9a6
+  languageName: node
+  linkType: hard
+
+"through2@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "through2@npm:4.0.2"
+  dependencies:
+    readable-stream: "npm:3"
+  checksum: 10c0/3741564ae99990a4a79097fe7a4152c22348adc4faf2df9199a07a66c81ed2011da39f631e479fdc56483996a9d34a037ad64e76d79f18c782ab178ea9b6778c
   languageName: node
   linkType: hard
 

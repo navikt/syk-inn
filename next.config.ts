@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
     eslint: { ignoreDuringBuilds: true },
     transpilePackages: ['@navikt/fhir-mock-server', '@navikt/smart-on-fhir'],
-    serverExternalPackages: ['@navikt/next-logger', 'next-logger', 'pino', 'pino-roll'],
+    serverExternalPackages: ['@navikt/next-logger', 'next-logger', 'pino', 'pino-roll', 'pino-socket'],
     experimental: {
         optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
         authInterrupts: true,
