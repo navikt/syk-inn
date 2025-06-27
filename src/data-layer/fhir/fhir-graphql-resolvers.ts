@@ -1,5 +1,6 @@
 import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
+import { teamLogger } from '@navikt/pino-logger/team-log'
 import * as R from 'remeda'
 
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
@@ -62,6 +63,12 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
         },
         pasient: async () => {
             const [client] = await getReadyClientForResolvers()
+
+            try {
+                teamLogger.info(`Testing team logger! ${client.patient.reference}`)
+            } catch (e) {
+                logger.error(e)
+            }
 
             const patient = await client.patient.request()
             if ('error' in patient) {

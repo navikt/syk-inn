@@ -6,6 +6,7 @@ export async function register(): Promise<void> {
          */
         await require('pino')
         await require('pino-roll')
+        await require('pino-socket')
         await require('next-logger')
     }
 }
