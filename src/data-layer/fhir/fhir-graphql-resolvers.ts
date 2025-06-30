@@ -109,7 +109,12 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             return {
                 sykmeldingId: sykmelding.sykmeldingId,
-                meta: sykmelding.meta,
+                meta: {
+                    pasientIdent: sykmelding.meta.pasientIdent,
+                    legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
+                    mottatt: sykmelding.meta.mottatt,
+                    sykmelderHpr: sykmelding.meta.sykmelder.hprNummer,
+                },
                 values: {
                     aktivitet: sykmelding.values.aktivitet,
                     hoveddiagnose: sykmelding.values.hoveddiagnose,
@@ -144,7 +149,12 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             return sykmeldinger.map((it) => ({
                 sykmeldingId: it.sykmeldingId,
-                meta: it.meta,
+                meta: {
+                    pasientIdent: it.meta.pasientIdent,
+                    legekontorOrgnr: it.meta.legekontorOrgnr,
+                    mottatt: it.meta.mottatt,
+                    sykmelderHpr: it.meta.sykmelder.hprNummer,
+                },
                 values: {
                     aktivitet: it.values.aktivitet,
                     hoveddiagnose: it.values.hoveddiagnose,

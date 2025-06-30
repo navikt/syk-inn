@@ -5,8 +5,14 @@ export function createMockSykmelding(overrides: Partial<SykInnApiSykmelding> = {
         sykmeldingId: 'ba78036d-b63c-4c5a-b3d5-b1d1f812da8d',
         meta: {
             pasientIdent: '12345678910',
-            sykmelderHpr: '123456789',
+            sykmelder: {
+                hprNummer: '123456789',
+                fornavn: 'Ola',
+                mellomnavn: 'Norman',
+                etternavn: 'Hansen',
+            },
             legekontorOrgnr: '999944614',
+            legekontorTlf: '12345678',
             mottatt: '2024-02-15T12:00:00Z',
         },
         values: {
