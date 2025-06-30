@@ -1,6 +1,7 @@
 import { proxyRouteHandler } from '@navikt/next-api-proxy'
 import { NextRequest } from 'next/server'
 import { logger } from '@navikt/next-logger'
+import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { getApi } from '@services/api-fetcher'
 import { getHpr } from '@fhir/mappers/practitioner'
@@ -27,6 +28,7 @@ export async function GET(
     const hpr = getHpr(practitioner.identifier)
     if (hpr == null) {
         logger.error('Missing HPR identifier in practitioner resource')
+        teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
         return new Response('Internal server error', { status: 500 })
     }
 
