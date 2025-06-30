@@ -69,13 +69,21 @@ const MeldingerSchema = z.object({
     tilArbeidsgiver: z.string().nullable(),
 })
 
+const SykmelderSchema = z.object({
+    hprNummer: z.string(),
+    fornavn: z.string().nullable(),
+    mellomnavn: z.string().nullable(),
+    etternavn: z.string().nullable(),
+})
+
 export type SykInnApiSykmelding = z.infer<typeof SykInnApiSykmeldingSchema>
 export const SykInnApiSykmeldingSchema = z.object({
     sykmeldingId: z.string(),
     meta: z.object({
         pasientIdent: z.string(),
-        sykmelderHpr: z.string(),
+        sykmelder: SykmelderSchema,
         legekontorOrgnr: z.string(),
+        legekontorTlf: z.string(),
         mottatt: z.string(),
     }),
     values: z.object({

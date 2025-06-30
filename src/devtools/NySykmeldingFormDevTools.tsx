@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useRef } from 'react'
 import { DevTool } from '@hookform/devtools'
 import { logger } from '@navikt/next-logger'
-import { subDays } from 'date-fns'
+import { addDays, subDays } from 'date-fns'
 
 import { useFormContext } from '@components/ny-sykmelding-form/form'
 import { dateOnly } from '@utils/date'
@@ -14,7 +14,7 @@ function NySykmeldingFormDevTools(): ReactElement {
         setValue('arbeidsforhold.harFlereArbeidsforhold', 'NEI')
         setValue('perioder', [
             {
-                periode: { fom: dateOnly(new Date()), tom: dateOnly(new Date()) },
+                periode: { fom: dateOnly(new Date()), tom: dateOnly(addDays(new Date(), 7)) },
                 aktivitet: { type: 'AKTIVITET_IKKE_MULIG', grad: null },
             },
         ])
