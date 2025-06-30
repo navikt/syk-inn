@@ -1,4 +1,5 @@
 import { logger } from '@navikt/next-logger'
+import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { FhirPractitioner, GeneralIdentifier } from '@navikt/fhir-zod'
 import { getNameFromFhir } from '@fhir/mappers/patient'
@@ -20,7 +21,8 @@ export function userUrnToOidType(urn: string, value: string): 'fnr' | 'dnr' | 'h
         case HPR_OID:
             return 'hpr'
         default:
-            logger.error(`Unknown OID: ${urn}, value: ${value}`)
+            logger.error(`Unknown OID: ${urn}, see team logs for value.`)
+            teamLogger.error(`Unknown OID: ${urn}, value: ${value}`)
             return 'annet'
     }
 }
@@ -39,8 +41,8 @@ export function getHpr(identifiers: GeneralIdentifier | GeneralIdentifier[]): st
 export function practitionerToBehandler(practitioner: FhirPractitioner): Pick<Behandler, 'hpr' | 'navn'> {
     const hpr = getHpr(practitioner.identifier)
     if (hpr == null) {
-        // TODO: Don't log name? :shrug:
-        throw new Error(`Practitioner without HPR (${practitioner.name})`)
+        teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
+        throw new Error(`Practitioner without HPR (see team logs for name)`)
     }
 
     return {

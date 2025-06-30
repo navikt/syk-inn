@@ -2,6 +2,7 @@ import { logger } from '@navikt/next-logger'
 import { startTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { FetchResult, MutationResult, useMutation } from '@apollo/client'
+import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { raise } from '@utils/ts'
 import { pathWithBasePath } from '@utils/url'
@@ -32,12 +33,12 @@ export function useOpprettSykmeldingMutation(): {
     })
 
     const opprettSykmelding = withSpanAsync('submitSykmelding', async () => {
-        logger.info('(Client) Submitting values,', formState)
+        teamLogger.info('(Client) Submitting values,', formState)
 
         try {
             const values = formStateToOpprettSykmeldingInput(formState)
 
-            logger.info(`(Client), mapped values: ${JSON.stringify(values)}`)
+            teamLogger.info(`(Client), mapped values: ${JSON.stringify(values)}`)
 
             const createResult = await spanAsync('OpprettSykmelding.mutation', async () =>
                 mutate({

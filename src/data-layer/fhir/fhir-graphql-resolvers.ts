@@ -1,6 +1,7 @@
 import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
+import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { Behandler, OpprettSykmeldingRuleOutcome, QueriedPerson, Resolvers, Sykmelding } from '@resolvers'
@@ -97,6 +98,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const hpr = getHpr(practitioner.identifier)
             if (hpr == null) {
                 logger.error('Missing HPR identifier in practitioner resource')
+                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
                 throw new GraphQLError('PARSING_ERROR')
             }
 
@@ -129,6 +131,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const hpr = getHpr(practitioner.identifier)
             if (hpr == null) {
                 logger.error('Missing HPR identifier in practitioner resource')
+                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
                 throw new GraphQLError('PARSING_ERROR')
             }
             const patientInContext = await client.patient.request()
@@ -139,6 +142,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const ident = getValidPatientIdent(patientInContext)
             if (ident == null) {
                 logger.error('Missing valid FNR/DNR in patient resource')
+                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(patientInContext, null, 2)}`)
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -199,6 +203,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const hpr = getHpr(practitioner.identifier)
             if (hpr == null) {
                 logger.error('Missing HPR identifier in practitioner resource')
+                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
                 throw new GraphQLError('PARSING_ERROR')
             }
 
@@ -210,6 +215,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const ident = getValidPatientIdent(pasient)
             if (ident == null) {
                 logger.error('Missing valid FNR/DNR in patient resource')
+                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -227,6 +233,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const hpr = getHpr(practitioner.identifier)
             if (hpr == null) {
                 logger.error('Missing HPR identifier in practitioner resource')
+                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
                 throw new GraphQLError('PARSING_ERROR')
             }
 
@@ -238,6 +245,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const ident = getValidPatientIdent(pasient)
             if (ident == null) {
                 logger.error('Missing valid FNR/DNR in patient resource')
+                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -268,6 +276,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const hpr = getHpr(practitioner.identifier)
             if (hpr == null) {
                 logger.error('Missing HPR identifier in practitioner resource')
+                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
                 throw new GraphQLError('PARSING_ERROR')
             }
 
@@ -279,6 +288,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const ident = getValidPatientIdent(pasient)
             if (ident == null) {
                 logger.error('Missing valid FNR/DNR in patient resource')
+                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -297,6 +307,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const hpr = getHpr(practitioner.identifier)
             if (hpr == null) {
                 logger.error('Missing HPR identifier in practitioner resource')
+                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
                 throw new GraphQLError('PARSING_ERROR')
             }
 
@@ -319,25 +330,31 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const orgnummer = getOrganisasjonsnummerFromFhir(organization)
             if (orgnummer == null) {
                 logger.error('Organization without valid orgnummer')
+                teamLogger.error(`Organization without valid orgnummer: ${JSON.stringify(organization, null, 2)}`)
                 throw new GraphQLError('API_ERROR')
             }
 
             const legekontorTlf = getOrganisasjonstelefonnummerFromFhir(organization)
             if (legekontorTlf == null) {
                 logger.error('Organization without valid phone number')
+                teamLogger.error(`Organization without valid phone number: ${JSON.stringify(organization, null, 2)}`)
                 throw new GraphQLError('API_ERROR')
             }
 
             const pasientIdent = getValidPatientIdent(pasient)
             if (pasientIdent == null) {
                 logger.error('Patient without valid FNR/DNR')
+                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
                 throw new GraphQLError('API_ERROR')
             }
 
             const toggles = await getToggles(hpr)
             const isPilotUser = getFlag('PILOT_USER', toggles)
             if (!isPilotUser.enabled) {
-                logger.error(`Non-pilot user tried to create a sykmelding, is modal not modalling? HPR: ${hpr}`)
+                logger.error(
+                    `Non-pilot user tried to create a sykmelding, is modal not modalling? See team logs for HPR`,
+                )
+                teamLogger.error(`Non-pilot user tried to create a sykmelding, is modal not modalling? HPR: ${hpr}`)
                 throw new GraphQLError('API_ERROR')
             }
 
