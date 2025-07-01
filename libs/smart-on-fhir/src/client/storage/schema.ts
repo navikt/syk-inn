@@ -14,6 +14,7 @@ export type CompleteSession = z.infer<typeof CompleteSessionSchema>
 export const CompleteSessionSchema = InitialSessionSchema.extend({
     accessToken: z.string(),
     idToken: z.string(),
+    refreshToken: z.string(),
     patient: z.string(),
     encounter: z.string(),
     // TODO: Temporary hack

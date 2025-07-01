@@ -5,6 +5,7 @@ export const TokenResponseSchema = z.object({
     // OIDC:
     access_token: z.string(),
     id_token: z.string(),
+    refresh_token: z.string(),
     // SMART:
     patient: z.string(),
     encounter: z.string(),

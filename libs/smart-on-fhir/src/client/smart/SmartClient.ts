@@ -145,6 +145,7 @@ export class SmartClient {
                 ...existingSession,
                 idToken: tokenResponse.id_token,
                 accessToken: tokenResponse.access_token,
+                refreshToken: tokenResponse.refresh_token,
                 patient: tokenResponse.patient,
                 encounter: tokenResponse.encounter,
                 webmedPractitioner: tokenResponse.practitioner,

@@ -33,6 +33,7 @@ const validSession: CompleteSession = {
     // Completed
     accessToken: 'valid-access-token',
     idToken: createTestIdToken({ fhirUser: 'Practitioner/ac768edb-d56a-4304-8574-f866c6af4e7e' }),
+    refreshToken: 'valid-refresh-token',
     patient: 'valid-patient-id',
     encounter: 'valid-encounter-id',
 }
