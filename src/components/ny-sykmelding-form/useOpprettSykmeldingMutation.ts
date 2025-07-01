@@ -33,7 +33,7 @@ export function useOpprettSykmeldingMutation(): {
     })
 
     const opprettSykmelding = withSpanAsync('submitSykmelding', async () => {
-        teamLogger.info('(Client) Submitting values,', formState)
+        teamLogger.info(`(Client) Submitting values: ${JSON.stringify(formState)}`)
 
         try {
             const values = formStateToOpprettSykmeldingInput(formState)
