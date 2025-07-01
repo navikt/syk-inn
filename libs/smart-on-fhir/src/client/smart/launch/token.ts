@@ -1,3 +1,5 @@
+import { teamLogger } from '@navikt/pino-logger/team-log'
+
 import { InitialSession } from '../../storage/schema'
 import { logger } from '../../logger'
 import { OtelTaxonomy, spanAsync } from '../../otel'
@@ -18,6 +20,19 @@ export async function fetchTokenExchange(
     return spanAsync('token-exchange', async (span) => {
         span.setAttribute(OtelTaxonomy.FhirServer, session.server)
 
+        const tokenRequestBody = {
+            client_id: config.client_id,
+            grant_type: 'authorization_code',
+            code: code,
+            code_verifier: session.codeVerifier,
+            redirect_uri: config.callback_url,
+        }
+
+        // TODO: Debug logging
+        if (process.env.NEXT_PUBLIC_RUNTIME_ENV === 'dev-gcp') {
+            teamLogger.info(`Exchanging code for ${session.server}, body: ${JSON.stringify(tokenRequestBody)}`)
+        }
+
         /**
          * PKCE STEP 5
          * Send code and the code_verifier (created in step 1) to the authorization servers /oauth/token endpoint.
@@ -28,13 +43,7 @@ export async function fetchTokenExchange(
                 Accept: 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams({
-                client_id: config.client_id,
-                grant_type: 'authorization_code',
-                code: code,
-                code_verifier: session.codeVerifier,
-                redirect_uri: config.callback_url,
-            }),
+            body: new URLSearchParams(tokenRequestBody),
         })
 
         /**
@@ -72,6 +81,11 @@ export async function fetchTokenExchange(
             span.recordException(exception)
 
             return { error: 'TOKEN_EXCHANGE_INVALID_BODY' }
+        }
+
+        // TODO: Debug logging
+        if (process.env.NEXT_PUBLIC_RUNTIME_ENV === 'dev-gcp') {
+            teamLogger.info(`Token exchange successfully, entire token response: ${JSON.stringify(result)}`)
         }
 
         return parsedTokenResponse.data
