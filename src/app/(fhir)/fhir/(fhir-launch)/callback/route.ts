@@ -22,7 +22,7 @@ export async function GET(request: Request): Promise<Response> {
 
     if (code == null || state == null) {
         logger.warn(`Missing code or state parameter in callback request code: ${code == null} state: ${state == null}`)
-        redirect(pathWithBasePath('/fhir/invalid-code'))
+        redirect(pathWithBasePath('/fhir/error?reason=invalid-code'))
     }
 
     const cookieStore = await cookies()
@@ -30,14 +30,15 @@ export async function GET(request: Request): Promise<Response> {
 
     if (sessionId == null) {
         logger.error(`Missing sessionId cookie, session expired or middleware not middlewaring?`)
-        return new Response('No valid session', { status: 401 })
+
+        redirect(pathWithBasePath('/fhir/error?reason=unknown'))
     }
 
     const callback = await getSmartClient().callback({ sessionId, code, state })
     if ('error' in callback) {
         logger.error(`Callback failed with error ${callback.error}`)
 
-        return new Response(`Callback failed, ${callback.error}`, { status: 401 })
+        redirect(pathWithBasePath('/fhir/error?reason=callback-failed'))
     }
 
     redirect(callback.redirect_url)
