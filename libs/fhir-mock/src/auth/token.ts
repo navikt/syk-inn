@@ -19,6 +19,7 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
     return Response.json({
         access_token: await createAccessToken(fhirServerTestData.wellKnown().issuer),
         id_token: await createIdToken(),
+        refresh_token: crypto.randomUUID(),
         token_type: 'Bearer',
         expires_in: 3600,
         scope: 'openid profile launch fhirUser patient/*.* user/*.* offline_access',
