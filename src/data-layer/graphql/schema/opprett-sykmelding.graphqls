@@ -1,14 +1,10 @@
-union OpprettetSykmelding = OpprettSykmeldingRuleOutcome | OpprettetSykmeldingResult
+union OpprettetSykmelding = OpprettSykmeldingRuleOutcome | Sykmelding
 
 type OpprettSykmeldingRuleOutcome {
     status: String!
     message: String!
     rule: String!
     tree: String!
-}
-
-type OpprettetSykmeldingResult {
-    sykmeldingId: String!
 }
 
 input OpprettSykmeldingInput {

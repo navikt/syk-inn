@@ -4,7 +4,7 @@ import * as R from 'remeda'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
-import { Behandler, OpprettSykmeldingRuleOutcome, QueriedPerson, Resolvers, Sykmelding } from '@resolvers'
+import { Behandler, OpprettSykmeldingRuleOutcome, QueriedPerson, Resolvers } from '@resolvers'
 import { createSchema } from '@graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@fhir/mappers/diagnosis'
@@ -15,7 +15,10 @@ import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { getFnrIdent, getNameFromPdl } from '@services/pdl/pdl-api-utils'
 import { getHpr, practitionerToBehandler } from '@fhir/mappers/practitioner'
 import { createDocumentReference } from '@fhir/fhir-service'
-import { resolverInputToSykInnApiPayload } from '@services/syk-inn-api/syk-inn-api-utils'
+import {
+    resolverInputToSykInnApiPayload,
+    sykInnApiSykmeldingToResolverSykmelding,
+} from '@services/syk-inn-api/syk-inn-api-utils'
 import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from '@fhir/mappers/organization'
 import { OpprettSykmeldingMeta } from '@services/syk-inn-api/schema/opprett'
 import { getFlag, getToggles } from '@toggles/unleash'
@@ -109,21 +112,10 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
 
             const existingDocumentReference = await client.request(`DocumentReference/${sykmeldingId}` as const)
 
-            return {
-                sykmeldingId: sykmelding.sykmeldingId,
-                meta: {
-                    pasientIdent: sykmelding.meta.pasientIdent,
-                    legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
-                    mottatt: sykmelding.meta.mottatt,
-                    sykmelderHpr: sykmelding.meta.sykmelder.hprNummer,
-                },
-                values: {
-                    aktivitet: sykmelding.values.aktivitet,
-                    hoveddiagnose: sykmelding.values.hoveddiagnose,
-                    bidiagnoser: sykmelding.values.bidiagnoser,
-                },
-                documentStatus: 'resourceType' in existingDocumentReference ? 'COMPLETE' : 'PENDING',
-            } satisfies Sykmelding
+            return sykInnApiSykmeldingToResolverSykmelding(
+                sykmelding,
+                'resourceType' in existingDocumentReference ? 'COMPLETE' : 'PENDING',
+            )
         },
         sykmeldinger: async () => {
             const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
@@ -151,20 +143,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            return sykmeldinger.map((it) => ({
-                sykmeldingId: it.sykmeldingId,
-                meta: {
-                    pasientIdent: it.meta.pasientIdent,
-                    legekontorOrgnr: it.meta.legekontorOrgnr,
-                    mottatt: it.meta.mottatt,
-                    sykmelderHpr: it.meta.sykmelder.hprNummer,
-                },
-                values: {
-                    aktivitet: it.values.aktivitet,
-                    hoveddiagnose: it.values.hoveddiagnose,
-                    bidiagnoser: it.values.bidiagnoser,
-                },
-            }))
+            return sykmeldinger.map((it) => sykInnApiSykmeldingToResolverSykmelding(it))
         },
         person: async (_, { ident }) => {
             // Only validate session
@@ -386,10 +365,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             const draftClient = getDraftClient()
             await draftClient.deleteDraft(draftId, { hpr, ident: pasientIdent })
 
-            return {
-                __typename: 'OpprettetSykmeldingResult',
-                sykmeldingId: result.sykmeldingId,
-            }
+            return sykInnApiSykmeldingToResolverSykmelding(result, 'PENDING')
         },
         synchronizeSykmelding: async (_, { id: sykmeldingId }) => {
             const [client] = await getReadyClientForResolvers()

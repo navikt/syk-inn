@@ -19,6 +19,32 @@ type SykmeldingValues {
     hoveddiagnose: Diagnose
     bidiagnoser: [Diagnose!]
     aktivitet: [Aktivitet!]!
+    svangerskapsrelatert: Boolean!
+    pasientenSkalSkjermes: Boolean!
+    meldinger: SykmeldingMelding!
+    yrkesskade: Yrkesskade
+    arbeidsgiver: Arbeidsgiver
+    tilbakedatering: Tilbakedatering
+}
+
+type SykmeldingMelding {
+    tilNav: String
+    tilArbeidsgiver: String
+}
+
+type Yrkesskade {
+    yrkesskade: Boolean!
+    skadedato: DateOnly
+}
+
+type Arbeidsgiver {
+    harFlere: Boolean!
+    arbeidsgivernavn: String!
+}
+
+type Tilbakedatering {
+    startdato: DateOnly!
+    begrunnelse: String!
 }
 
 enum DocumentStatus {

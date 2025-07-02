@@ -1,9 +1,37 @@
-import { InputAktivitet, OpprettSykmeldingInput } from '@resolvers'
+import { DocumentStatus, InputAktivitet, OpprettSykmeldingInput, Sykmelding } from '@resolvers'
 import {
     OpprettSykmeldingAktivitet,
     OpprettSykmeldingMeta,
     OpprettSykmeldingPayload,
 } from '@services/syk-inn-api/schema/opprett'
+import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
+
+export function sykInnApiSykmeldingToResolverSykmelding(
+    sykmelding: SykInnApiSykmelding,
+    documentStatus?: DocumentStatus,
+): Sykmelding {
+    return {
+        sykmeldingId: sykmelding.sykmeldingId,
+        meta: {
+            pasientIdent: sykmelding.meta.pasientIdent,
+            legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
+            mottatt: sykmelding.meta.mottatt,
+            sykmelderHpr: sykmelding.meta.sykmelder.hprNummer,
+        },
+        values: {
+            aktivitet: sykmelding.values.aktivitet,
+            hoveddiagnose: sykmelding.values.hoveddiagnose,
+            bidiagnoser: sykmelding.values.bidiagnoser,
+            svangerskapsrelatert: sykmelding.values.svangerskapsrelatert,
+            pasientenSkalSkjermes: sykmelding.values.pasientenSkalSkjermes,
+            meldinger: sykmelding.values.meldinger,
+            yrkesskade: sykmelding.values.yrkesskade,
+            arbeidsgiver: sykmelding.values.arbeidsgiver,
+            tilbakedatering: sykmelding.values.tilbakedatering,
+        },
+        documentStatus,
+    }
+}
 
 export function resolverInputToSykInnApiPayload(
     values: OpprettSykmeldingInput,

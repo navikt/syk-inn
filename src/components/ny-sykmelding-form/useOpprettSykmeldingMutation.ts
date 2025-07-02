@@ -24,7 +24,7 @@ export function useOpprettSykmeldingMutation(): {
     const formState = useAppSelector((state) => state.nySykmeldingMultistep)
     const [mutate, result] = useMutation(OpprettSykmeldingDocument, {
         onCompleted: (data) => {
-            if (data.opprettSykmelding.__typename === 'OpprettetSykmeldingResult') {
+            if (data.opprettSykmelding.__typename === 'Sykmelding') {
                 logger.info(`Sykmelding created successfully: ${data.opprettSykmelding.sykmeldingId}`)
             } else if (data.opprettSykmelding.__typename === 'OpprettSykmeldingRuleOutcome') {
                 logger.info(`Sykmelding got rule hit: ${data.opprettSykmelding.rule}: ${data.opprettSykmelding.status}`)
@@ -50,7 +50,7 @@ export function useOpprettSykmeldingMutation(): {
                 // Don't redirect on errors
                 if (createResult.errors != null || createResult.data == null) return
                 // Don't redirect on rule hits
-                if (createResult.data.opprettSykmelding.__typename !== 'OpprettetSykmeldingResult') return
+                if (createResult.data.opprettSykmelding.__typename !== 'Sykmelding') return
 
                 // Nuke the history, so that browser back takes the user to a fresh form
                 window.history.replaceState(null, '', pathWithBasePath('/fhir'))

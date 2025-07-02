@@ -50,7 +50,7 @@ const RuleResultSchema = z.object({
 })
 
 const TilbakedateringSchema = z.object({
-    startdato: z.string(), // use z.coerce.date() if desired
+    startdato: z.string(),
     begrunnelse: z.string(),
 })
 

@@ -12,8 +12,8 @@ query AllSykmeldinger {
 
 mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!) {
     opprettSykmelding(draftId: $draftId, values: $values) {
-        ... on OpprettetSykmeldingResult {
-            sykmeldingId
+        ... on Sykmelding {
+            ...Sykmelding
         }
         ... on OpprettSykmeldingRuleOutcome {
             ...Outcome
@@ -45,6 +45,24 @@ fragment Sykmelding on Sykmelding {
         }
         aktivitet {
             ...Aktivitet
+        }
+        arbeidsgiver {
+            harFlere
+            arbeidsgivernavn
+        }
+        svangerskapsrelatert
+        pasientenSkalSkjermes
+        meldinger {
+            tilNav
+            tilArbeidsgiver
+        }
+        yrkesskade {
+            yrkesskade
+            skadedato
+        }
+        tilbakedatering {
+            startdato
+            begrunnelse
         }
     }
     documentStatus
