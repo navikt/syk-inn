@@ -7,7 +7,7 @@ import { DeleteDraftButton } from '@components/dashboard/combo-table/draft/Delet
 
 export function DraftActions({ draftId }: { draftId: string }): ReactElement {
     return (
-        <div className="grid grid-cols-3 gap-2 w-fit">
+        <div className="grid grid-cols-3 gap-2 w-fit ml-2">
             <Tooltip content="Åpne utkast">
                 <Button
                     as={AssableNextLink}

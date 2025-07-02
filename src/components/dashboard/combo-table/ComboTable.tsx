@@ -1,6 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react'
-import { Table, Tag, TagProps } from '@navikt/ds-react'
+import { BodyShort, Table, Tag, TagProps } from '@navikt/ds-react'
 import * as R from 'remeda'
+import { logger } from '@navikt/next-logger'
 
 import { DraftFragment, SykmeldingFragment } from '@queries'
 import {
@@ -82,8 +83,7 @@ export function ComboTable({
                             grad={sykmeldingGradText(sykmelding.values.aktivitet)}
                             // TODO: Expand Sykmelding GQL with values
                             arbeidsgiver={null}
-                            // TODO: Expand Sykmelding GQL with values
-                            utfall={null}
+                            utfall={<Utfall utfall={sykmelding.utfall} />}
                             // TODO: Expand Sykmelding GQL with values
                             utstedtAv={null}
                             status="current"
@@ -105,8 +105,7 @@ export function ComboTable({
                             grad={sykmeldingGradText(sykmelding.values.aktivitet)}
                             // TODO: Expand Sykmelding GQL with values
                             arbeidsgiver={null}
-                            // TODO: Expand Sykmelding GQL with values
-                            utfall={null}
+                            utfall={<Utfall utfall={sykmelding.utfall} />}
                             // TODO: Expand Sykmelding GQL with values
                             utstedtAv={null}
                             status="previous"
@@ -125,7 +124,7 @@ function TableRow(props: {
     grad: string | null
     arbeidsgiver: string | null
     utstedtAv: string | null
-    utfall: string | null
+    utfall: ReactNode | null
     status: 'draft' | 'previous' | 'current'
     actions: ReactElement | null
 }): ReactElement {
@@ -165,4 +164,18 @@ function StatusTag({ status }: { status: 'draft' | 'previous' | 'current' }): Re
     }
 
     return <Tag variant={variant}>{text}</Tag>
+}
+
+function Utfall({ utfall }: { utfall: SykmeldingFragment['utfall'] }): React.ReactElement | null {
+    if (utfall.result === 'OK') {
+        return <BodyShort size="small">Godkjent</BodyShort>
+    } else if (utfall.result === 'MANUAL_PROCESSING') {
+        return <BodyShort size="small">Til behandling</BodyShort>
+    } else if (utfall.result === 'INVALID') {
+        return <BodyShort size="small">Avvist</BodyShort>
+    }
+
+    logger.error(`Unknown utfall for sykmelding: ${utfall.result}`)
+
+    return null
 }

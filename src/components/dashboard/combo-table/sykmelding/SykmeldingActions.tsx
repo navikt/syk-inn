@@ -17,7 +17,7 @@ export function SykmeldingActions({
     forlengable?: true
 }): ReactElement {
     return (
-        <div className="grid grid-cols-3 gap-2 w-fit">
+        <div className="grid grid-cols-3 gap-2 w-fit ml-2">
             <Tooltip content="Se sykmelding">
                 <Button
                     as={AssableNextLink}

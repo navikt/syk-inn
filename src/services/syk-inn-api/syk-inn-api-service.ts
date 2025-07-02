@@ -73,7 +73,7 @@ export const sykInnApiService = {
             return [
                 // Current
                 createMockSykmelding(
-                    { sykmeldingId: 'e9369c48-3b8a-4c7f-9097-7c9394947a58' },
+                    { sykmeldingId: '9a63d830-6d1a-4ce1-952c-c7b34c6a75d4' },
                     {
                         aktivitet: [
                             {

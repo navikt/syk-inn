@@ -62,6 +62,9 @@ export function makeApolloClient(store: AppStore) {
                     OpprettSykmeldingDraft: {
                         keyFields: ['draftId'],
                     },
+                    Sykmelding: {
+                        keyFields: ['sykmeldingId'],
+                    },
                 },
                 possibleTypes: possibleTypesGenerated.possibleTypes,
             }),
