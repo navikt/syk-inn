@@ -6,7 +6,13 @@ import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { raise } from '@utils/ts'
 import { pathWithBasePath } from '@utils/url'
-import { InputAktivitet, OpprettSykmeldingDocument, OpprettSykmeldingInput, OpprettSykmeldingMutation } from '@queries'
+import {
+    InputAktivitet,
+    OpprettSykmeldingDocument,
+    OpprettSykmeldingInput,
+    OpprettSykmeldingMutation,
+    SykmeldingByIdDocument,
+} from '@queries'
 import { spanAsync, withSpanAsync } from '@otel/otel'
 import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
 
@@ -29,6 +35,18 @@ export function useOpprettSykmeldingMutation(): {
             } else if (data.opprettSykmelding.__typename === 'OpprettSykmeldingRuleOutcome') {
                 logger.info(`Sykmelding got rule hit: ${data.opprettSykmelding.rule}: ${data.opprettSykmelding.status}`)
             }
+        },
+        update: (cache, result) => {
+            if (result.data?.opprettSykmelding == null || result.data.opprettSykmelding.__typename !== 'Sykmelding') {
+                return
+            }
+
+            // Update the cache with the mutation data for instant kvittering load
+            cache.writeQuery({
+                query: SykmeldingByIdDocument,
+                variables: { id: result.data?.opprettSykmelding.sykmeldingId },
+                data: { sykmelding: result.data.opprettSykmelding },
+            })
         },
     })
 

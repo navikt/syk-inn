@@ -393,6 +393,9 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             throw new GraphQLError('API_ERROR')
         },
     },
+    OpprettetSykmelding: {
+        __resolveType: (parent) => ('sykmeldingId' in parent ? 'Sykmelding' : 'OpprettSykmeldingRuleOutcome'),
+    },
     Aktivitet: {
         __resolveType: (parent) => {
             switch (parent.type) {
