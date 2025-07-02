@@ -87,9 +87,12 @@ export const sykInnApiService = {
                     },
                 ),
                 // Previous
-                createMockSykmelding({
-                    sykmeldingId: 'e9369c48-3b8a-4c7f-9097-7c9394947a58',
-                }),
+                createMockSykmelding(
+                    {
+                        sykmeldingId: 'e9369c48-3b8a-4c7f-9097-7c9394947a58',
+                    },
+                    { arbeidsgiver: { harFlere: true, arbeidsgivernavn: 'Oslo Badstuforening AS' } },
+                ),
                 createMockSykmelding({
                     sykmeldingId: 'df567aa4-f694-4857-8e1b-5d14406e9dd6',
                 }),

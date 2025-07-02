@@ -12,6 +12,7 @@ import {
 import { DraftActions } from '@components/dashboard/combo-table/draft/DraftActions'
 import SykmeldingPeriodeLink from '@components/dashboard/combo-table/sykmelding/SykmeldingPeriodeLink'
 import {
+    sykmeldingArbeidsgiverText,
     sykmeldingDiagnoseText,
     sykmeldingGradText,
 } from '@components/dashboard/combo-table/sykmelding/sykmelding-utils'
@@ -38,7 +39,6 @@ export function ComboTable({
                     <Table.HeaderCell scope="col">Diagnose</Table.HeaderCell>
                     <Table.HeaderCell scope="col">Grad</Table.HeaderCell>
                     <Table.HeaderCell scope="col">Arbeidsgiver</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Utstedt av</Table.HeaderCell>
                     <Table.HeaderCell scope="col">Utfall</Table.HeaderCell>
                     <Table.HeaderCell scope="col">Status</Table.HeaderCell>
                     {/* Action buttons */}
@@ -63,7 +63,6 @@ export function ComboTable({
                             grad={draftAktivitetText(values?.perioder)}
                             arbeidsgiver={draftArbeidsforholdText(values?.arbeidsforhold)}
                             utfall={null}
-                            utstedtAv={null}
                             status="draft"
                             actions={<DraftActions draftId={draft.draftId} />}
                         ></TableRow>
@@ -81,11 +80,8 @@ export function ComboTable({
                             }
                             diagnose={sykmeldingDiagnoseText(sykmelding.values.hoveddiagnose)}
                             grad={sykmeldingGradText(sykmelding.values.aktivitet)}
-                            // TODO: Expand Sykmelding GQL with values
-                            arbeidsgiver={null}
+                            arbeidsgiver={sykmeldingArbeidsgiverText(sykmelding.values.arbeidsgiver)}
                             utfall={<Utfall utfall={sykmelding.utfall} />}
-                            // TODO: Expand Sykmelding GQL with values
-                            utstedtAv={null}
                             status="current"
                             actions={<SykmeldingActions sykmeldingId={sykmelding.sykmeldingId} forlengable />}
                         />
@@ -103,11 +99,8 @@ export function ComboTable({
                             }
                             diagnose={sykmeldingDiagnoseText(sykmelding.values.hoveddiagnose)}
                             grad={sykmeldingGradText(sykmelding.values.aktivitet)}
-                            // TODO: Expand Sykmelding GQL with values
-                            arbeidsgiver={null}
+                            arbeidsgiver={sykmeldingArbeidsgiverText(sykmelding.values.arbeidsgiver)}
                             utfall={<Utfall utfall={sykmelding.utfall} />}
-                            // TODO: Expand Sykmelding GQL with values
-                            utstedtAv={null}
                             status="previous"
                             actions={<SykmeldingActions sykmeldingId={sykmelding.sykmeldingId} />}
                         />
@@ -123,7 +116,6 @@ function TableRow(props: {
     diagnose: string
     grad: string | null
     arbeidsgiver: string | null
-    utstedtAv: string | null
     utfall: ReactNode | null
     status: 'draft' | 'previous' | 'current'
     actions: ReactElement | null
@@ -134,7 +126,6 @@ function TableRow(props: {
             <Table.DataCell>{props.diagnose}</Table.DataCell>
             <Table.DataCell>{props.grad}</Table.DataCell>
             <Table.DataCell>{props.arbeidsgiver}</Table.DataCell>
-            <Table.DataCell>{props.utstedtAv}</Table.DataCell>
             <Table.DataCell>{props.utfall}</Table.DataCell>
             <Table.DataCell className="max-w-12">
                 <StatusTag status={props.status} />
