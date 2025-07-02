@@ -36,6 +36,10 @@ fragment Sykmelding on Sykmelding {
         legekontorOrgnr
         mottatt
     }
+    utfall {
+        result
+        message
+    }
     values {
         hoveddiagnose {
             ...Diagnose

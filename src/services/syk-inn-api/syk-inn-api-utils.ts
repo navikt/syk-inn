@@ -29,6 +29,7 @@ export function sykInnApiSykmeldingToResolverSykmelding(
             arbeidsgiver: sykmelding.values.arbeidsgiver,
             tilbakedatering: sykmelding.values.tilbakedatering,
         },
+        utfall: sykmelding.utfall,
         documentStatus,
     }
 }

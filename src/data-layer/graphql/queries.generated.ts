@@ -202,6 +202,12 @@ export type OpprettSykmeldingRuleOutcome = {
 
 export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | Sykmelding
 
+export type Outcome = {
+    __typename?: 'Outcome'
+    message?: Maybe<Scalars['String']['output']>
+    result: Scalars['String']['output']
+}
+
 export type Pasient = Person & {
     __typename?: 'Pasient'
     ident: Scalars['String']['output']
@@ -265,6 +271,7 @@ export type Sykmelding = {
     documentStatus?: Maybe<DocumentStatus>
     meta: SykmeldingMeta
     sykmeldingId: Scalars['String']['output']
+    utfall: Outcome
     values: SykmeldingValues
 }
 
@@ -424,6 +431,7 @@ export type SykmeldingByIdQuery = {
             legekontorOrgnr: string
             mottatt: string
         }
+        utfall: { __typename?: 'Outcome'; result: string; message?: string | null }
         values: {
             __typename?: 'SykmeldingValues'
             svangerskapsrelatert: boolean
@@ -472,6 +480,7 @@ export type AllSykmeldingerQuery = {
             legekontorOrgnr: string
             mottatt: string
         }
+        utfall: { __typename?: 'Outcome'; result: string; message?: string | null }
         values: {
             __typename?: 'SykmeldingValues'
             svangerskapsrelatert: boolean
@@ -525,6 +534,7 @@ export type OpprettSykmeldingMutation = {
                   legekontorOrgnr: string
                   mottatt: string
               }
+              utfall: { __typename?: 'Outcome'; result: string; message?: string | null }
               values: {
                   __typename?: 'SykmeldingValues'
                   svangerskapsrelatert: boolean
@@ -586,6 +596,7 @@ export type SykmeldingFragment = {
         legekontorOrgnr: string
         mottatt: string
     }
+    utfall: { __typename?: 'Outcome'; result: string; message?: string | null }
     values: {
         __typename?: 'SykmeldingValues'
         svangerskapsrelatert: boolean
@@ -839,6 +850,17 @@ export const SykmeldingFragmentDoc = {
                                 { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'utfall' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'message' } },
                             ],
                         },
                     },
@@ -1545,6 +1567,17 @@ export const SykmeldingByIdDocument = {
                     },
                     {
                         kind: 'Field',
+                        name: { kind: 'Name', value: 'utfall' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'message' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
                         name: { kind: 'Name', value: 'values' },
                         selectionSet: {
                             kind: 'SelectionSet',
@@ -1756,6 +1789,17 @@ export const AllSykmeldingerDocument = {
                                 { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'utfall' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'message' } },
                             ],
                         },
                     },
@@ -2023,6 +2067,17 @@ export const OpprettSykmeldingDocument = {
                                 { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'utfall' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'message' } },
                             ],
                         },
                     },

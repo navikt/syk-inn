@@ -204,6 +204,12 @@ export type OpprettSykmeldingRuleOutcome = {
 
 export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | Sykmelding
 
+export type Outcome = {
+    __typename?: 'Outcome'
+    message?: Maybe<Scalars['String']['output']>
+    result: Scalars['String']['output']
+}
+
 export type Pasient = Person & {
     __typename?: 'Pasient'
     ident: Scalars['String']['output']
@@ -267,6 +273,7 @@ export type Sykmelding = {
     documentStatus?: Maybe<DocumentStatus>
     meta: SykmeldingMeta
     sykmeldingId: Scalars['String']['output']
+    utfall: Outcome
     values: SykmeldingValues
 }
 
@@ -434,6 +441,7 @@ export type ResolversTypes = {
     OpprettSykmeldingInput: OpprettSykmeldingInput
     OpprettSykmeldingRuleOutcome: ResolverTypeWrapper<OpprettSykmeldingRuleOutcome>
     OpprettetSykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['OpprettetSykmelding']>
+    Outcome: ResolverTypeWrapper<Outcome>
     Pasient: ResolverTypeWrapper<Pasient>
     Person: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Person']>
     QueriedPerson: ResolverTypeWrapper<QueriedPerson>
@@ -484,6 +492,7 @@ export type ResolversParentTypes = {
     OpprettSykmeldingInput: OpprettSykmeldingInput
     OpprettSykmeldingRuleOutcome: OpprettSykmeldingRuleOutcome
     OpprettetSykmelding: ResolversUnionTypes<ResolversParentTypes>['OpprettetSykmelding']
+    Outcome: Outcome
     Pasient: Pasient
     Person: ResolversInterfaceTypes<ResolversParentTypes>['Person']
     QueriedPerson: QueriedPerson
@@ -676,6 +685,15 @@ export type OpprettetSykmeldingResolvers<
     __resolveType: TypeResolveFn<'OpprettSykmeldingRuleOutcome' | 'Sykmelding', ParentType, ContextType>
 }
 
+export type OutcomeResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['Outcome'] = ResolversParentTypes['Outcome'],
+> = {
+    message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    result?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type PasientResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Pasient'] = ResolversParentTypes['Pasient'],
@@ -750,6 +768,7 @@ export type SykmeldingResolvers<
     documentStatus?: Resolver<Maybe<ResolversTypes['DocumentStatus']>, ParentType, ContextType>
     meta?: Resolver<ResolversTypes['SykmeldingMeta'], ParentType, ContextType>
     sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    utfall?: Resolver<ResolversTypes['Outcome'], ParentType, ContextType>
     values?: Resolver<ResolversTypes['SykmeldingValues'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
@@ -835,6 +854,7 @@ export type Resolvers<ContextType = any> = {
     OpprettSykmeldingDraft?: OpprettSykmeldingDraftResolvers<ContextType>
     OpprettSykmeldingRuleOutcome?: OpprettSykmeldingRuleOutcomeResolvers<ContextType>
     OpprettetSykmelding?: OpprettetSykmeldingResolvers<ContextType>
+    Outcome?: OutcomeResolvers<ContextType>
     Pasient?: PasientResolvers<ContextType>
     Person?: PersonResolvers<ContextType>
     QueriedPerson?: QueriedPersonResolvers<ContextType>
