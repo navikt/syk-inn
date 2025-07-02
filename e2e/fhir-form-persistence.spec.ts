@@ -111,14 +111,14 @@ test('filling out the form, saving a draft, and returning to the form, should ke
 
     await saveDraft()(page)
 
-    await expect(page.getByRole('region', { name: 'Utkast sykmeldinger (ikke sendt til Nav)' })).toBeVisible()
+    await expect(page.getByRole('region', { name: 'Tidligere sykmeldinger og utkast' })).toBeVisible()
 
     // Make sure the cache/store is clean
     await page.reload()
 
     await page
-        .getByRole('region', { name: 'Utkast sykmeldinger (ikke sendt til Nav)' })
-        .getByRole('button', { name: 'Åpne' })
+        .getByRole('region', { name: 'Tidligere sykmeldinger og utkast' })
+        .getByRole('button', { name: 'Åpne utkast' })
         .first()
         .click()
 

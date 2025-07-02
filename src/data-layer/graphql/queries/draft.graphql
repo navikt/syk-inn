@@ -1,8 +1,6 @@
 mutation SaveDraft($draftId: String!, $values: JSON!) {
     saveDraft(draftId: $draftId, values: $values) {
-        draftId
-        values
-        lastUpdated
+        ...Draft
     }
 }
 
@@ -12,16 +10,18 @@ mutation DeleteDraft($draftId: String!) {
 
 query GetDraft($draftId: String!) {
     draft(draftId: $draftId) {
-        draftId
-        values
-        lastUpdated
+        ...Draft
     }
 }
 
 query GetAllDrafts {
     drafts {
-        draftId
-        values
-        lastUpdated
+        ...Draft
     }
+}
+
+fragment Draft on OpprettSykmeldingDraft {
+    draftId
+    values
+    lastUpdated
 }

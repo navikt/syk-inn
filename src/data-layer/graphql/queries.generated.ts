@@ -342,6 +342,13 @@ export type GetAllDraftsQuery = {
     }> | null
 }
 
+export type DraftFragment = {
+    __typename?: 'OpprettSykmeldingDraft'
+    draftId: string
+    values: unknown
+    lastUpdated: string
+}
+
 export type KonsultasjonQueryVariables = Exact<{ [key: string]: never }>
 
 export type KonsultasjonQuery = {
@@ -588,6 +595,24 @@ export const PersonFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<PersonFragment, unknown>
+export const DraftFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Draft' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingDraft' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'values' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'lastUpdated' } },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<DraftFragment, unknown>
 export const OutcomeFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -941,13 +966,22 @@ export const SaveDraftDocument = {
                         ],
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'values' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'lastUpdated' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Draft' } }],
                         },
                     },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Draft' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingDraft' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'values' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'lastUpdated' } },
                 ],
             },
         },
@@ -1015,13 +1049,22 @@ export const GetDraftDocument = {
                         ],
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'values' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'lastUpdated' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Draft' } }],
                         },
                     },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Draft' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingDraft' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'values' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'lastUpdated' } },
                 ],
             },
         },
@@ -1042,13 +1085,22 @@ export const GetAllDraftsDocument = {
                         name: { kind: 'Name', value: 'drafts' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'values' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'lastUpdated' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Draft' } }],
                         },
                     },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Draft' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingDraft' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'draftId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'values' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'lastUpdated' } },
                 ],
             },
         },

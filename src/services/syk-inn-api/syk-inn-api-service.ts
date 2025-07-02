@@ -1,5 +1,6 @@
 import { logger } from '@navikt/next-logger'
 import * as z from 'zod/v4'
+import { addDays } from 'date-fns'
 
 import {
     SykInnApiRuleOutcome,
@@ -13,6 +14,7 @@ import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
 import { createMockSykmelding } from '@services/syk-inn-api/syk-inn-api-mock-data'
 import { wait } from '@utils/wait'
 import { OpprettSykmeldingPayload, OpprettSykmeldingPayloadSchema } from '@services/syk-inn-api/schema/opprett'
+import { dateOnly } from '@utils/date'
 
 export const sykInnApiService = {
     opprettSykmelding: async (
@@ -69,6 +71,22 @@ export const sykInnApiService = {
         if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
             logger.info('Running in local or demo environment, returning mocked sykmelding data')
             return [
+                // Current
+                createMockSykmelding(
+                    { sykmeldingId: 'e9369c48-3b8a-4c7f-9097-7c9394947a58' },
+                    {
+                        aktivitet: [
+                            {
+                                type: 'GRADERT',
+                                fom: dateOnly(new Date()),
+                                tom: dateOnly(addDays(new Date(), 7)),
+                                grad: 60,
+                                reisetilskudd: false,
+                            },
+                        ],
+                    },
+                ),
+                // Previous
                 createMockSykmelding({
                     sykmeldingId: 'e9369c48-3b8a-4c7f-9097-7c9394947a58',
                 }),

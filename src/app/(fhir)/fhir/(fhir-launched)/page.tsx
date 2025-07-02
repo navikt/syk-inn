@@ -6,10 +6,8 @@ import { Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
 import OpprettNySykmeldingCard from '@components/dashboard/OpprettNySykmeldingCard'
-import PagaendeSykmeldingerCard from '@components/dashboard/PagaendeSykmeldingerCard'
 import { KonsultasjonDocument, PasientDocument } from '@queries'
-import DraftSykmeldingerCard from '@components/dashboard/DraftSykmeldingerCard'
-import TidligereSykmeldingerCard from '@components/dashboard/TidligereSykmeldingerCard'
+import ComboTableCard from '@components/dashboard/ComboTableCard'
 
 function DashboardPage(): ReactElement {
     const pasientQuery = useQuery(PasientDocument)
@@ -29,9 +27,7 @@ function DashboardPage(): ReactElement {
 
                 <div className="grid grid-cols-2 -mx-4 gap-3">
                     <OpprettNySykmeldingCard />
-                    <PagaendeSykmeldingerCard />
-                    <TidligereSykmeldingerCard className="col-span-2" />
-                    <DraftSykmeldingerCard className="col-span-2" />
+                    <ComboTableCard className="col-span-2" />
                 </div>
             </PageBlock>
         </Page>
