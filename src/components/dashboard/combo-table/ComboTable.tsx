@@ -33,18 +33,7 @@ export function ComboTable({
 
     return (
         <Table>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Diagnose</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Grad</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Arbeidsgiver</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Utfall</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Status</Table.HeaderCell>
-                    {/* Action buttons */}
-                    <Table.HeaderCell scope="col" />
-                </Table.Row>
-            </Table.Header>
+            <ComboTableHeader />
             <Table.Body>
                 {drafts.map((draft) => {
                     const values = safeParseDraft(draft.draftId, draft.values)
@@ -108,6 +97,23 @@ export function ComboTable({
                 })}
             </Table.Body>
         </Table>
+    )
+}
+
+export function ComboTableHeader(): ReactElement {
+    return (
+        <Table.Header>
+            <Table.Row>
+                <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
+                <Table.HeaderCell scope="col">Diagnose</Table.HeaderCell>
+                <Table.HeaderCell scope="col">Grad</Table.HeaderCell>
+                <Table.HeaderCell scope="col">Arbeidsgiver</Table.HeaderCell>
+                <Table.HeaderCell scope="col">Utfall</Table.HeaderCell>
+                <Table.HeaderCell scope="col">Status</Table.HeaderCell>
+                {/* Action buttons */}
+                <Table.HeaderCell scope="col" />
+            </Table.Row>
+        </Table.Header>
     )
 }
 
