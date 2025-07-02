@@ -2197,7 +2197,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/fhir-zod": "workspace:^"
-    "@navikt/pino-logger": "npm:^4.1.4"
+    "@navikt/pino-logger": "npm:^4.1.5"
     "@types/node": "npm:^22.15.34"
     hono: "npm:^4.8.3"
     jose: "npm:^6.0.11"
@@ -2225,11 +2225,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^4.1.4":
-  version: 4.1.4
-  resolution: "@navikt/next-logger@npm:4.1.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.1.4%2Fca5d61c38b05758bd24ca6b98e5fd329226670df"
+"@navikt/next-logger@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "@navikt/next-logger@npm:4.1.5::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.1.5%2F40d028e0d8ec8a978b6e58f464f255ce7605836c"
   dependencies:
-    "@navikt/pino-logger": "npm:^4.1.4"
+    "@navikt/pino-logger": "npm:^4.1.5"
     pino-roll: "npm:3"
   peerDependencies:
     next: 14 || 15
@@ -2237,7 +2237,7 @@ __metadata:
   dependenciesMeta:
     pino-roll:
       optional: true
-  checksum: 10c0/2789374fab58fb3de9f85b01d94a0008c2188925da486dc219a80c6484763e2991da4aa72698067f1e85f9f05ee7a5adf4ebefe25d6527ef00c5e1282d2be452
+  checksum: 10c0/b445d65261ef28f1b1aea52d87fafd186a6e23e300d07d9ea268c36f0a0cf40d0207d11070e184da1cacf4543ae559c42092ff36cc3d955de9b30f5deb6a6f5c
   languageName: node
   linkType: hard
 
@@ -2252,9 +2252,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/pino-logger@npm:^4.1.4":
-  version: 4.1.4
-  resolution: "@navikt/pino-logger@npm:4.1.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.1.4%2Fcb70678833e4bf70631783f899c30210f34bbde7"
+"@navikt/pino-logger@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "@navikt/pino-logger@npm:4.1.5::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.1.5%2F5911c77581ba052ec69878f86e6de4634c980b57"
   dependencies:
     pino-roll: "npm:3"
     pino-socket: "npm:7"
@@ -2265,7 +2265,7 @@ __metadata:
       optional: true
     pino-socket:
       optional: true
-  checksum: 10c0/f9a9e4ec95585c89a5a7efc2abc3eeb22a13c1736771f84121a136ba83e52190ffd30056336d4ea3bacfca16a21871ffce093826da140cd858c4ab7ae2b07642
+  checksum: 10c0/a20f056ab31026a7077383c8f44a3dec1e1a380b779c3a958f6e5daaf476711e9e099e89904e9849210b5ce78ca734f2c12c2ecac6d66583667f91d8000b986f
   languageName: node
   linkType: hard
 
@@ -2274,12 +2274,12 @@ __metadata:
   resolution: "@navikt/smart-on-fhir@workspace:libs/smart-on-fhir"
   dependencies:
     "@navikt/fhir-zod": "workspace:^"
-    "@navikt/pino-logger": "npm:^4.1.4"
+    "@navikt/pino-logger": "npm:^4.1.5"
     "@opentelemetry/api": "npm:^1.9.0"
     "@vitest/coverage-v8": "npm:3.2.4"
     jose: "npm:^6.0.11"
     nock: "npm:^14.0.5"
-    openid-client: "npm:^6.6.1"
+    openid-client: "npm:^6.6.2"
     pino: "npm:^9.7.0"
     vitest: "npm:^3.2.4"
     zod: "npm:^3.25.67"
@@ -6601,11 +6601,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^12.20.2":
-  version: 12.20.2
-  resolution: "framer-motion@npm:12.20.2"
+"framer-motion@npm:^12.23.0":
+  version: 12.23.0
+  resolution: "framer-motion@npm:12.23.0"
   dependencies:
-    motion-dom: "npm:^12.20.2"
+    motion-dom: "npm:^12.22.0"
     motion-utils: "npm:^12.19.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -6619,7 +6619,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/41bffbc4ac4a6c9fca35eff778c45b83dfb79558642aa63859c9ebf9fd0260628081c1b244e1815f4381735a1a839aa8dec9c6a7361284b8c3c86be7c05b8efd
+  checksum: 10c0/9085c734767620442e03298f738be9c7fff60a8ca59dddf39cc037c45579d11d3ec3502a5c3eba32084c8c258f239048bbf68f5dac62e288d96b069ce54d12e1
   languageName: node
   linkType: hard
 
@@ -7235,7 +7235,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:^2.0.4":
+"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.3, inherits@npm:^2.0.4":
   version: 2.0.4
   resolution: "inherits@npm:2.0.4"
   checksum: 10c0/4e531f648b29039fb7426fb94075e6545faa1eb9fe83c29f0b6d9e7263aceb4289d2d4557db0d428188eeb449cc7c5e77b0a0b2c4e248ff2a65933a0dee49ef2
@@ -8708,12 +8708,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion-dom@npm:^12.20.2":
-  version: 12.20.2
-  resolution: "motion-dom@npm:12.20.2"
+"motion-dom@npm:^12.22.0":
+  version: 12.22.0
+  resolution: "motion-dom@npm:12.22.0"
   dependencies:
     motion-utils: "npm:^12.19.0"
-  checksum: 10c0/c67095b75d04e0bf8d2c65ef9f264a2251a052406c8c0fe560c678e900c7b6fa2cc51dae4b1e5372ac6c9bddc7d842deaa5fb03dcf5b0e294c1738e37230fac4
+  checksum: 10c0/f3ef3a2f9224e6aba81535833c8e396e632c80ca5c919890243113b91c1fd388073c04f3163be64bc72594cebb65a2161bca104c90846504ff771dee979ff9d7
   languageName: node
   linkType: hard
 
@@ -8724,11 +8724,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion@npm:^12.20.2":
-  version: 12.20.2
-  resolution: "motion@npm:12.20.2"
+"motion@npm:^12.23.0":
+  version: 12.23.0
+  resolution: "motion@npm:12.23.0"
   dependencies:
-    framer-motion: "npm:^12.20.2"
+    framer-motion: "npm:^12.23.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
@@ -8741,7 +8741,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/4727f3ff4f177b03dfe1e269a0aea8cead197e8123157a8cf3a6e038c08dc6f862678255006c0b64644aa5695f0430e4ad61b6f2314f33adcfdf4697e9bf78b8
+  checksum: 10c0/57f0c050d70c2a4aea6e800d05f6f03ca0106fb785807e073484a50e701cde34f17210643820fb6375f9be74939c62775009a795eb872ca105c0ba7ec915f8e0
   languageName: node
   linkType: hard
 
@@ -9086,10 +9086,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oauth4webapi@npm:^3.5.3":
-  version: 3.5.3
-  resolution: "oauth4webapi@npm:3.5.3"
-  checksum: 10c0/3c8b6854c68067481b4934386354e39824201dc4eade50b02448330a0eca3f4a68038548861e2a193eb12c55d934097c8c4b7e556036813da60646e556f61056
+"oauth4webapi@npm:^3.5.4":
+  version: 3.5.5
+  resolution: "oauth4webapi@npm:3.5.5"
+  checksum: 10c0/3ab9bcfa0d13818b350c1046012bf7fe43f50ea44c49ad107300f5c3b3e8b914f6f862d3d2419336f7362efc09fc7f73252b8214ce3710b2c4e9f96314d1aac3
   languageName: node
   linkType: hard
 
@@ -9256,13 +9256,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openid-client@npm:^6.6.1":
-  version: 6.6.1
-  resolution: "openid-client@npm:6.6.1"
+"openid-client@npm:^6.6.2":
+  version: 6.6.2
+  resolution: "openid-client@npm:6.6.2"
   dependencies:
     jose: "npm:^6.0.11"
-    oauth4webapi: "npm:^3.5.3"
-  checksum: 10c0/64cab53a604b90e08cbf5aa47e26a553073970e1a3a7e124e6bf87aa33f1f826bf3dc0fd860a6edd9fc2ccd920e790099a8d1cf4b894996c951feaab8c520b1e
+    oauth4webapi: "npm:^3.5.4"
+  checksum: 10c0/1b479494cedbd23d512805bc53248b65633637cbb071a322e93e48948d0979a0ccb93ec740fe5ae14b4fc2a3e954bbc2a119ed12faaf862e231fc9fadb8f26f7
   languageName: node
   linkType: hard
 
@@ -10389,7 +10389,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"safe-buffer@npm:5.2.1, safe-buffer@npm:^5.0.1, safe-buffer@npm:~5.2.0":
+"safe-buffer@npm:5.2.1, safe-buffer@npm:^5.2.1, safe-buffer@npm:~5.2.0":
   version: 5.2.1
   resolution: "safe-buffer@npm:5.2.1"
   checksum: 10c0/6501914237c0a86e9675d4e51d89ca3c21ffd6a31642efeba25ad65720bce6921c9e7e974e5be91a786b25aa058b5303285d3c15dbabf983a919f5f630d349f3
@@ -10582,14 +10582,15 @@ __metadata:
   linkType: hard
 
 "sha.js@npm:^2.4.11":
-  version: 2.4.11
-  resolution: "sha.js@npm:2.4.11"
+  version: 2.4.12
+  resolution: "sha.js@npm:2.4.12"
   dependencies:
-    inherits: "npm:^2.0.1"
-    safe-buffer: "npm:^5.0.1"
+    inherits: "npm:^2.0.4"
+    safe-buffer: "npm:^5.2.1"
+    to-buffer: "npm:^1.2.0"
   bin:
-    sha.js: ./bin.js
-  checksum: 10c0/b7a371bca8821c9cc98a0aeff67444a03d48d745cb103f17228b96793f455f0eb0a691941b89ea1e60f6359207e36081d9be193252b0f128e0daf9cfea2815a5
+    sha.js: bin.js
+  checksum: 10c0/9d36bdd76202c8116abbe152a00055ccd8a0099cb28fc17c01fa7bb2c8cffb9ca60e2ab0fe5f274ed6c45dc2633d8c39cf7ab050306c231904512ba9da4d8ab1
   languageName: node
   linkType: hard
 
@@ -11276,9 +11277,9 @@ __metadata:
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/fhir-zod": "workspace:*"
     "@navikt/next-api-proxy": "npm:^4.1.4"
-    "@navikt/next-logger": "npm:^4.1.4"
+    "@navikt/next-logger": "npm:^4.1.5"
     "@navikt/oasis": "npm:^3.8.0"
-    "@navikt/pino-logger": "npm:^4.1.4"
+    "@navikt/pino-logger": "npm:^4.1.5"
     "@navikt/smart-on-fhir": "workspace:*"
     "@opentelemetry/api": "npm:^1.9.0"
     "@parcel/watcher": "npm:^2.5.1"
@@ -11301,13 +11302,13 @@ __metadata:
     iovalkey: "npm:^0.3.3"
     jose: "npm:^6.0.11"
     lint-staged: "npm:^16.1.2"
-    motion: "npm:^12.20.2"
+    motion: "npm:^12.23.0"
     next: "npm:15.3.4"
     next-logger: "npm:^5.0.1"
     nextleton: "npm:^0.6.1"
     node-cache: "npm:^5.1.2"
     nuqs: "npm:^2.4.3"
-    openid-client: "npm:^6.6.1"
+    openid-client: "npm:^6.6.2"
     pino: "npm:^9.7.0"
     pino-pretty: "npm:^13.0.0"
     pino-socket: "npm:^7.4.0"
@@ -11540,6 +11541,17 @@ __metadata:
   dependencies:
     os-tmpdir: "npm:~1.0.2"
   checksum: 10c0/69863947b8c29cabad43fe0ce65cec5bb4b481d15d4b4b21e036b060b3edbf3bc7a5541de1bacb437bb3f7c4538f669752627fdf9b4aaf034cebd172ba373408
+  languageName: node
+  linkType: hard
+
+"to-buffer@npm:^1.2.0":
+  version: 1.2.1
+  resolution: "to-buffer@npm:1.2.1"
+  dependencies:
+    isarray: "npm:^2.0.5"
+    safe-buffer: "npm:^5.2.1"
+    typed-array-buffer: "npm:^1.0.3"
+  checksum: 10c0/bbf07a2a7d6ff9e3ffe503c689176c7149cf3ec25887ce7c4aa5c4841a8845cc71121cd7b4a4769957f823b3f31dbf6b1be6e0a5955798ad864bf2245ee8b5e4
   languageName: node
   linkType: hard
 

@@ -12,10 +12,10 @@
     },
     "dependencies": {
         "@navikt/fhir-zod": "workspace:^",
-        "@navikt/pino-logger": "^4.1.4",
+        "@navikt/pino-logger": "^4.1.5",
         "@opentelemetry/api": "^1.9.0",
         "jose": "^6.0.11",
-        "openid-client": "^6.6.1",
+        "openid-client": "^6.6.2",
         "pino": "^9.7.0",
         "zod": "^3.25.67"
     },
