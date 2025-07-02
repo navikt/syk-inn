@@ -12,7 +12,6 @@ function initializeValkey(): Valkey {
     const client = new Valkey({
         ...R.omit(valkeyConfig, ['runtimeEnv']),
         connectTimeout: 5000,
-        keepAlive: 5000,
         enableReadyCheck: false,
     })
 
