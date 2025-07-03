@@ -27,4 +27,6 @@ export function spanSync<Result>(name: string, fn: () => Result): Result {
 export const OtelTaxonomy = {
     FhirServer: 'fhir.server',
     FhirResource: 'fhir.resource',
+    SessionError: 'session.error',
+    SessionRefreshed: 'session.refreshed',
 }

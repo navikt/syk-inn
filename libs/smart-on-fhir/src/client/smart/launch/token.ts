@@ -1,6 +1,7 @@
 import { teamLogger } from '@navikt/pino-logger/team-log'
+import { decodeJwt } from 'jose'
 
-import { InitialSession } from '../../storage/schema'
+import { CompleteSession, InitialSession } from '../../storage/schema'
 import { logger } from '../../logger'
 import { OtelTaxonomy, spanAsync } from '../../otel'
 import { getResponseError } from '../../utils'
@@ -12,10 +13,10 @@ export type TokenExchangeErrors = {
     error: 'TOKEN_EXCHANGE_FAILED' | 'TOKEN_EXCHANGE_INVALID_BODY' | 'UNKNOWN_ERROR'
 }
 
-export async function fetchTokenExchange(
+export async function exchangeToken(
     code: string,
-    config: SmartClientConfiguration,
     session: InitialSession,
+    config: SmartClientConfiguration,
 ): Promise<TokenResponse | TokenExchangeErrors> {
     return spanAsync('token-exchange', async (span) => {
         span.setAttribute(OtelTaxonomy.FhirServer, session.server)
@@ -90,4 +91,77 @@ export async function fetchTokenExchange(
 
         return parsedTokenResponse.data
     })
+}
+
+export async function refreshToken(
+    session: CompleteSession,
+    config: SmartClientConfiguration,
+): Promise<TokenResponse | TokenExchangeErrors> {
+    return spanAsync('token-exchange', async (span) => {
+        span.setAttribute(OtelTaxonomy.FhirServer, session.server)
+
+        const tokenRequestBody = {
+            client_id: config.client_id,
+            grant_type: 'refresh_token',
+            refresh_token: session.refreshToken,
+        }
+
+        if (process.env.NEXT_PUBLIC_RUNTIME_ENV === 'dev-gcp') {
+            teamLogger.info(`Refreshing token for ${session.server}, body: ${JSON.stringify(tokenRequestBody)}`)
+        }
+
+        const response = await fetch(session.tokenEndpoint, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(tokenRequestBody),
+        })
+
+        if (!response.ok) {
+            const responseError = await getResponseError(response)
+            logger.error(
+                `Token refresh failed, token_endpoint responded with ${response.status} ${response.statusText}, server says: ${responseError}`,
+            )
+
+            span.recordException(
+                new Error(
+                    `Token refresh failed, token_endpoint responded with ${response.status} ${response.statusText}`,
+                ),
+            )
+
+            return { error: 'TOKEN_EXCHANGE_FAILED' }
+        }
+
+        const result: unknown = await response.json()
+        const parsedTokenResponse = TokenResponseSchema.safeParse(result)
+
+        if (!parsedTokenResponse.success) {
+            const exception = new Error(
+                `Issuer/token_endpoint ${session.tokenEndpoint} responded with weird token response`,
+                {
+                    cause: parsedTokenResponse.error,
+                },
+            )
+
+            logger.error(exception)
+            span.recordException(exception)
+
+            return { error: 'TOKEN_EXCHANGE_INVALID_BODY' }
+        }
+
+        if (process.env.NEXT_PUBLIC_RUNTIME_ENV === 'dev-gcp') {
+            teamLogger.info(`Token refresh successful, entire token response: ${JSON.stringify(result)}`)
+        }
+
+        return parsedTokenResponse.data
+    })
+}
+
+export function tokenExpiresIn(jwtToken: string): number {
+    const { exp } = decodeJwt(jwtToken)
+    const now = Math.floor(Date.now() / 1000)
+
+    return exp ? exp - now : 0
 }

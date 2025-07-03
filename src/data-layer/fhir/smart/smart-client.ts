@@ -13,6 +13,8 @@ import { getSessionId } from '@fhir/smart/session'
 import { FhirPractitioner } from '@navikt/fhir-zod'
 import { NoSmartSession } from '@graphql/error/Errors'
 
+import { TokenExchangeErrors } from '../../../../libs/smart-on-fhir/src/client/smart/launch/token'
+
 const smartClientConfig: SmartClientConfiguration = {
     client_id: 'syk-inn',
     scope: 'openid profile launch fhirUser patient/*.read user/*.read offline_access',
@@ -24,7 +26,9 @@ export function getSmartClient(): SmartClient {
     return new SmartClient(getSmartStorage(), smartClientConfig)
 }
 
-export async function getReadyClient(opts?: { validate: true }): Promise<ReadyClient | SmartClientReadyErrors> {
+export async function getReadyClient(opts?: {
+    validate: true
+}): Promise<ReadyClient | SmartClientReadyErrors | TokenExchangeErrors> {
     const actualSessionId = await getSessionId()
     const readyClient = await getSmartClient().ready(actualSessionId)
 
@@ -68,7 +72,8 @@ function getSmartStorage(): SmartStorage {
     return {
         set: async (sessionId, values) => {
             await valkey.hset(sessionIdKey(sessionId), values)
-            await valkey.expire(sessionIdKey(sessionId), 8 * 60 * 60)
+            // Refresh tokens expires in a month, should exp be less?
+            await valkey.expire(sessionIdKey(sessionId), 60 * 60 * 24 * 30)
         },
         get: async (sessionId) => {
             return valkey.hgetall(sessionIdKey(sessionId))

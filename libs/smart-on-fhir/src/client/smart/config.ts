@@ -4,3 +4,7 @@ export type SmartClientConfiguration = {
     callback_url: string
     redirect_url: string
 }
+
+export type SmartClientOptions = {
+    autoRefresh?: boolean
+}
