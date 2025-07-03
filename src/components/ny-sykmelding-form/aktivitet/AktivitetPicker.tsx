@@ -1,12 +1,15 @@
 import React, { ReactElement } from 'react'
-import { BodyShort, Select, TextField } from '@navikt/ds-react'
+import { Select } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
 
 import { SimpleReveal } from '@components/animation/Reveal'
+import ArsakerPicker from '@components/ny-sykmelding-form/aktivitet/ArsakerPicker'
+import GradertGradPicker from '@components/ny-sykmelding-form/aktivitet/GradertGradPicker'
 
-import { AktivitetIkkeMuligType, useController } from '../form'
+import { AktivitetIkkeMuligType, useController, useFormContext } from '../form'
 
 function AktivitetPicker({ index }: { index: number }): ReactElement {
+    const form = useFormContext()
     const aktivitetField = useController({
         name: `perioder.${index}.aktivitet.type`,
         defaultValue: 'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType,
@@ -16,13 +19,16 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
     })
 
     return (
-        <div className="flex gap-8 mt-2">
+        <div className="flex gap-1 mt-2 flex-wrap">
             <Select
                 label="Mulighet for arbeid"
-                className="w-60 flex flex-col mb-6"
+                className="w-60 flex flex-col"
                 value={aktivitetField.field.value}
                 onChange={(event) => {
                     aktivitetField.field.onChange(event.target.value)
+                    if (event.target.value === 'AKTIVITET_IKKE_MULIG') {
+                        form.setValue(`perioder.${index}.medisinskArsak.isMedisinskArsak`, true)
+                    }
                 }}
             >
                 <option value={'GRADERT' satisfies AktivitetIkkeMuligType}>Gradert sykmelding</option>
@@ -34,60 +40,14 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
                         <GradertGradPicker index={index} />
                     </SimpleReveal>
                 )}
-            </AnimatePresence>
-        </div>
-    )
-}
-
-function GradertGradPicker({ index }: { index: number }): ReactElement {
-    const gradertField = useController({
-        name: `perioder.${index}.aktivitet.grad` as const,
-        defaultValue: '50',
-        rules: {
-            required: 'Du må fylle inn sykmeldingsgrad',
-            pattern: {
-                value: /^[0-9]*$/,
-                message: 'Sykmeldingsgraden må være et tall',
-            },
-            min: {
-                value: 1,
-                message: 'Sykmeldingsgraden må være minst 1',
-            },
-            max: {
-                value: 99,
-                message: 'Sykmeldingsgraden kan ikke være mer enn 99',
-            },
-        },
-    })
-
-    const coercedValue = safeGetPercentValue(gradertField.field.value)
-
-    return (
-        <div className="flex flex-col gap-1">
-            <TextField
-                inputMode="numeric"
-                label="Sykmeldingsgrad (%)"
-                className="[&>input]:w-[7ch]"
-                {...gradertField.field}
-                value={gradertField.field.value ?? ''}
-                error={gradertField.fieldState.error?.message}
-            />
-            <AnimatePresence initial={false}>
-                {coercedValue != null && (
+                {aktivitetField.field.value === 'AKTIVITET_IKKE_MULIG' && (
                     <SimpleReveal>
-                        <BodyShort size="small">{100 - coercedValue}% i arbeid</BodyShort>
+                        <ArsakerPicker index={index} />
                     </SimpleReveal>
                 )}
             </AnimatePresence>
         </div>
     )
-}
-
-function safeGetPercentValue(value: string | null): number | null {
-    if (!value) return null
-    if (isNaN(Number(value))) return null
-
-    return Number(value)
 }
 
 export default AktivitetPicker

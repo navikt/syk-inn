@@ -176,48 +176,99 @@ export function toInitialPerioder(
     initialState: AktivitetStep[] | null,
 ): NySykmeldingMainFormValues['perioder'] {
     if (initialState != null) {
-        return initialState.map((it) => ({
-            periode: {
-                fom: it.fom,
-                tom: it.tom,
-            },
-            aktivitet: {
-                type: it.type,
-                grad: it.type === 'GRADERT' ? it.grad.toFixed(0) : null,
-            },
-            medisinskArsak: {
-                isMedisinskArsak: false,
-            },
-            arbeidsrelatertArsak: {
-                isArbeidsrelatertArsak: false,
-                arbeidsrelatertArsaker: null,
-                annenArbeidsrelatertArsak: null,
-            },
-        }))
+        return initialState.map((it) => toInitialPeriodeFromState(it))
     }
 
     if (draftPerioder != null) {
-        return draftPerioder.map((it) => ({
-            periode: {
-                fom: it.fom ?? '',
-                tom: it.tom ?? '',
-            },
-            aktivitet: {
-                type: it.type,
-                grad: it.grad ?? null,
-            },
-            medisinskArsak: {
-                isMedisinskArsak: false,
-            },
-            arbeidsrelatertArsak: {
-                isArbeidsrelatertArsak: false,
-                arbeidsrelatertArsaker: null,
-                annenArbeidsrelatertArsak: null,
-            },
-        }))
+        return draftPerioder.map((it) => toInitialPeriodeFromDraft(it))
     }
 
     return [getDefaultPeriode()]
+}
+
+function toInitialPeriodeFromState(aktivitet: AktivitetStep): NySykmeldingMainFormValues['perioder'][number] {
+    const periode = {
+        periode: {
+            fom: aktivitet.fom,
+            tom: aktivitet.tom,
+        },
+        aktivitet: {
+            type: aktivitet.type,
+        },
+    }
+    switch (aktivitet.type) {
+        case 'AKTIVITET_IKKE_MULIG':
+            return {
+                ...periode,
+                aktivitet: {
+                    ...periode.aktivitet,
+                    grad: null,
+                },
+                medisinskArsak: {
+                    isMedisinskArsak: aktivitet.medisinskArsak.isMedisinskArsak,
+                },
+                arbeidsrelatertArsak: {
+                    isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
+                    arbeidsrelatertArsaker: aktivitet.arbeidsrelatertArsak.arbeidsrelatertArsaker ?? null,
+                    annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak.annenArbeidsrelatertArsak ?? null,
+                },
+            }
+        case 'GRADERT':
+            return {
+                ...periode,
+                aktivitet: {
+                    ...periode.aktivitet,
+                    grad: aktivitet.grad.toFixed(0),
+                },
+                medisinskArsak: null,
+                arbeidsrelatertArsak: null,
+            }
+    }
+}
+
+function toInitialPeriodeFromDraft(
+    draft: Exclude<DraftValues['perioder'], null>[number],
+): NySykmeldingMainFormValues['perioder'][number] {
+    const periode = {
+        periode: {
+            fom: draft.fom ?? '',
+            tom: draft.tom ?? '',
+        },
+        aktivitet: {
+            type: draft.type,
+        },
+    }
+    switch (draft.type) {
+        case 'AKTIVITET_IKKE_MULIG':
+            return {
+                ...periode,
+                aktivitet: {
+                    ...periode.aktivitet,
+                    grad: null,
+                },
+                medisinskArsak: {
+                    isMedisinskArsak: draft.medisinskArsak?.isMedisinskArsak ?? false,
+                },
+                arbeidsrelatertArsak: {
+                    isArbeidsrelatertArsak: draft.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
+                    arbeidsrelatertArsaker: draft.arbeidsrelatertArsak?.arbeidsrelatertArsaker ?? null,
+                    annenArbeidsrelatertArsak: draft.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
+                },
+            }
+        case 'GRADERT':
+            return {
+                periode: {
+                    fom: draft.fom ?? '',
+                    tom: draft.tom ?? '',
+                },
+                aktivitet: {
+                    type: draft.type,
+                    grad: draft.grad ?? null,
+                },
+                medisinskArsak: null,
+                arbeidsrelatertArsak: null,
+            }
+    }
 }
 
 function toInitialMeldinger(

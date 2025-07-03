@@ -145,6 +145,14 @@ function formAktivitetToStepAktivitet(value: AktivitetsPeriode): AktivitetStep {
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: value.periode.fom ?? raise('FOM is required for AKTIVITET_IKKE_MULIG'),
                 tom: value.periode.tom ?? raise('TOM is required for AKTIVITET_IKKE_MULIG'),
+                medisinskArsak: {
+                    isMedisinskArsak: value.medisinskArsak?.isMedisinskArsak ?? null,
+                },
+                arbeidsrelatertArsak: {
+                    isArbeidsrelatertArsak: value.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
+                    arbeidsrelatertArsaker: value.arbeidsrelatertArsak?.arbeidsrelatertArsaker ?? null,
+                    annenArbeidsrelatertArsak: value.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
+                },
             }
         case 'GRADERT':
             return {

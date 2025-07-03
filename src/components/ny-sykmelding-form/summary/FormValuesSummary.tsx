@@ -3,6 +3,7 @@ import React, { ReactElement } from 'react'
 
 import { useFormStep } from '@components/ny-sykmelding-form/steps/useFormStep'
 import { toReadableDate, toReadableDatePeriod } from '@utils/date'
+import { ArbeidsrelaterteArsaker } from '@components/ny-sykmelding-form/aktivitet/ArsakerPicker'
 
 import { useAppSelector } from '../../../providers/redux/hooks'
 import {
@@ -114,6 +115,42 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[]
                         <FormSummary.Label>Mulighet for arbeid</FormSummary.Label>
                         <FormSummary.Value>{aktivitetDescription(aktivitet)}</FormSummary.Value>
                     </FormSummary.Answer>
+                    {aktivitet.type === 'AKTIVITET_IKKE_MULIG' && (
+                        <>
+                            <FormSummary.Answer>
+                                <FormSummary.Label>Medisinsk årsak</FormSummary.Label>
+                                <FormSummary.Value>
+                                    {aktivitet.medisinskArsak.isMedisinskArsak ? 'Ja' : 'Nei'}
+                                </FormSummary.Value>
+                            </FormSummary.Answer>
+                            <FormSummary.Answer>
+                                <FormSummary.Label>Arbeidsrelatert årsak</FormSummary.Label>
+                                <FormSummary.Value>
+                                    {aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak ? 'Ja' : 'Nei'}
+                                </FormSummary.Value>
+                            </FormSummary.Answer>
+                            {aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak && (
+                                <>
+                                    <FormSummary.Answer>
+                                        <FormSummary.Label>Arbeidsrelaterte årsaker</FormSummary.Label>
+                                        <FormSummary.Value>
+                                            {aktivitet.arbeidsrelatertArsak.arbeidsrelatertArsaker
+                                                ?.map((arsak) => ArbeidsrelaterteArsaker[arsak])
+                                                .join(', ')}
+                                        </FormSummary.Value>
+                                    </FormSummary.Answer>
+                                    {aktivitet.arbeidsrelatertArsak.annenArbeidsrelatertArsak && (
+                                        <FormSummary.Answer>
+                                            <FormSummary.Label>Andre arbeidsrelaterte årsaker</FormSummary.Label>
+                                            <FormSummary.Value>
+                                                {aktivitet.arbeidsrelatertArsak.annenArbeidsrelatertArsak}
+                                            </FormSummary.Value>
+                                        </FormSummary.Answer>
+                                    )}
+                                </>
+                            )}
+                        </>
+                    )}
                 </React.Fragment>
             ))}
         </>

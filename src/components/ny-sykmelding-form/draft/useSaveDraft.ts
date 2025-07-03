@@ -68,6 +68,8 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
             fom: periode.periode.fom,
             tom: periode.periode.tom,
             grad: periode.aktivitet.grad ?? null,
+            medisinskArsak: periode.medisinskArsak,
+            arbeidsrelatertArsak: periode.arbeidsrelatertArsak,
         })),
         hoveddiagnose: values.diagnoser.hoved ?? null,
         tilbakedatering:
