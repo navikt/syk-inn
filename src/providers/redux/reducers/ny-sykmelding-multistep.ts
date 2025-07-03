@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
+import { ArbeidsrelatertArsakType } from '@components/ny-sykmelding-form/form'
 
 type ManualPatientStep = {
     type: 'manual'
@@ -27,6 +28,8 @@ export type AktivitetStep =
           type: 'AKTIVITET_IKKE_MULIG'
           fom: string
           tom: string
+          medisinskArsak: MedisinskArsak
+          arbeidsrelatertArsak: ArbeidsrelatertArsak
       }
     | {
           type: 'GRADERT'
@@ -34,6 +37,16 @@ export type AktivitetStep =
           tom: string
           grad: number
       }
+
+export type MedisinskArsak = {
+    isMedisinskArsak: boolean | null
+}
+
+export type ArbeidsrelatertArsak = {
+    isArbeidsrelatertArsak: boolean | null
+    arbeidsrelatertArsaker: ArbeidsrelatertArsakType[] | null
+    annenArbeidsrelatertArsak: string | null
+}
 
 export type TilbakedateringStep = {
     fom: string

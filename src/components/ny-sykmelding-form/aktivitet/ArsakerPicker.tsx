@@ -1,17 +1,14 @@
 import { Checkbox, CheckboxGroup, Textarea } from '@navikt/ds-react'
-import { Fragment, ReactElement } from 'react'
+import { ReactElement } from 'react'
 
-import { useController, useFormContext } from '@components/ny-sykmelding-form/form'
+import { ArbeidsrelatertArsakType, useController } from '@components/ny-sykmelding-form/form'
 
 function ArsakerPicker({ index }: { index: number }): ReactElement {
-    const form = useFormContext()
-    const aktivitetIkkeMulig = form.watch(`perioder.${index}.aktivitet.type`) === 'AKTIVITET_IKKE_MULIG'
     const isMedisinskArsak = useController({
         name: `perioder.${index}.medisinskArsak.isMedisinskArsak`,
-        defaultValue: true,
         rules: {
             validate: (value) => {
-                if (aktivitetIkkeMulig && !isArbeidsrelatertArsak.field.value && !value) {
+                if (!isArbeidsrelatertArsak.field.value && !value) {
                     return 'Du må velge minst én årsak'
                 }
             },
@@ -19,10 +16,9 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
     })
     const isArbeidsrelatertArsak = useController({
         name: `perioder.${index}.arbeidsrelatertArsak.isArbeidsrelatertArsak`,
-        defaultValue: false,
         rules: {
             validate: (value) => {
-                if (aktivitetIkkeMulig && !isMedisinskArsak.field.value && !value) {
+                if (!isMedisinskArsak.field.value && !value) {
                     return 'Du må velge minst én årsak'
                 }
             },
@@ -57,12 +53,8 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
         },
     })
 
-    if (!aktivitetIkkeMulig) {
-        return <Fragment />
-    }
-
     return (
-        <div className="flex gap-1 mt-2 flex-col">
+        <div className="flex gap-1 flex-col">
             <CheckboxGroup
                 legend="Medisinsk årsak"
                 hideLegend
@@ -88,8 +80,11 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
                     onChange={(value) => arbeidsrelaterteArsaker.field.onChange(value)}
                     error={arbeidsrelaterteArsaker.fieldState.error?.message}
                 >
-                    <Checkbox value="TILRETTELEGGING_IKKE_MULIG">Tilrettelegging ikke mulig</Checkbox>
-                    <Checkbox value="ANNET">Annet</Checkbox>
+                    {Object.keys(ArbeidsrelaterteArsaker).map((key) => (
+                        <Checkbox key={key} value={key}>
+                            {ArbeidsrelaterteArsaker[key as ArbeidsrelatertArsakType]}
+                        </Checkbox>
+                    ))}
                 </CheckboxGroup>
             )}
             {arbeidsrelaterteArsaker.field.value?.includes('ANNET') && (
@@ -102,6 +97,11 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
             )}
         </div>
     )
+}
+
+export const ArbeidsrelaterteArsaker: Record<ArbeidsrelatertArsakType, string> = {
+    TILRETTELEGGING_IKKE_MULIG: 'Tilrettelegging ikke mulig',
+    ANNET: 'Annet',
 }
 
 export default ArsakerPicker
