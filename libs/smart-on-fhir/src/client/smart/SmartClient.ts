@@ -8,11 +8,11 @@ import { CompleteSession, InitialSession } from '../storage/schema'
 import { OtelTaxonomy, spanAsync } from '../otel'
 
 import { fetchSmartConfiguration, SmartConfigurationErrors } from './well-known/smart-configuration'
-import { fetchTokenExchange, TokenExchangeErrors } from './launch/token'
+import { tokenExpiresIn, exchangeToken, TokenExchangeErrors, refreshToken } from './launch/token'
 import { buildAuthUrl } from './launch/authorization'
-import { CallbackError, SmartClientReadyErrors } from './client-errors'
+import { CallbackError, SessionStorageErrors, SmartClientReadyErrors } from './client-errors'
+import { SmartClientConfiguration, SmartClientOptions } from './config'
 import { ReadyClient } from './ReadyClient'
-import { SmartClientConfiguration } from './config'
 
 /**
  * The smart client is used to handle the launch of the Smart on FHIR application. It requires at the very least:
@@ -25,12 +25,18 @@ import { SmartClientConfiguration } from './config'
 export class SmartClient {
     private readonly _storage: SafeSmartStorage
     private readonly _config: SmartClientConfiguration
+    private readonly _options: SmartClientOptions
 
-    constructor(storage: SmartStorage | Promise<SmartStorage>, config: SmartClientConfiguration) {
+    constructor(
+        storage: SmartStorage | Promise<SmartStorage>,
+        config: SmartClientConfiguration,
+        options?: SmartClientOptions,
+    ) {
         assertNotBrowser()
 
         this._storage = safeSmartStorage(storage)
         this._config = config
+        this._options = options ?? { autoRefresh: false }
     }
 
     /**
@@ -112,37 +118,30 @@ export class SmartClient {
         state: string
     }): Promise<Callback | CallbackError | TokenExchangeErrors | SmartStorageErrors> {
         return spanAsync('callback', async (span) => {
-            const existingSession = await this._storage.get(params.sessionId)
-            if ('error' in existingSession) {
-                const exception = new Error(`Session not found for sessionId ${params.sessionId}`, {
-                    cause: existingSession,
-                })
+            const initialSession = await this.getInitialSession(params.sessionId)
+            if ('error' in initialSession) return initialSession
 
-                logger.error(exception)
-                span.recordException(exception)
+            span.setAttribute(OtelTaxonomy.FhirServer, initialSession.server)
 
-                return { error: existingSession.error }
-            }
+            if (initialSession.state !== params.state) {
+                span.setAttribute(OtelTaxonomy.SessionError, 'STATE_MISMATCH')
 
-            span.setAttribute(OtelTaxonomy.FhirServer, existingSession.server)
-
-            if (existingSession.state !== params.state) {
                 logger.warn(
-                    `State mismatch, expected len: ${existingSession.state.length} but got len: ${params.state.length}`,
+                    `State mismatch, expected len: ${initialSession.state.length} but got len: ${params.state.length}`,
                 )
 
                 return { error: 'INVALID_STATE' }
             }
 
-            logger.info(`Exchanging code for token with issuer ${existingSession.tokenEndpoint}`)
+            logger.info(`Exchanging code for token with issuer ${initialSession.tokenEndpoint}`)
 
-            const tokenResponse = await fetchTokenExchange(params.code, this._config, existingSession)
+            const tokenResponse = await exchangeToken(params.code, initialSession, this._config)
             if ('error' in tokenResponse) {
                 return { error: tokenResponse.error }
             }
 
             const completeSessionValues: CompleteSession = {
-                ...existingSession,
+                ...initialSession,
                 idToken: tokenResponse.id_token,
                 accessToken: tokenResponse.access_token,
                 refreshToken: tokenResponse.refresh_token,
@@ -168,32 +167,20 @@ export class SmartClient {
      */
     async ready(
         sessionId: string | null,
-    ): Promise<ReadyClient | (SmartClientReadyErrors & { validate: ReadyClient['validate'] })> {
+    ): Promise<ReadyClient | ((SmartClientReadyErrors | TokenExchangeErrors) & { validate: ReadyClient['validate'] })> {
         return spanAsync('ready', async (span) => {
             if (sessionId == null) {
                 logger.warn(`Tried to .ready SmartClient without active sessionId (was null)`)
                 return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
             }
 
-            const session = await this._storage.get(sessionId)
+            const session = this._options.autoRefresh
+                ? await this.getOrRefresh(sessionId)
+                : await this.getCompleteSession(sessionId)
 
-            if ('error' in session) {
-                switch (session.error) {
-                    case 'NO_STATE':
-                        // User has been logged out, no need for spammy logging
-                        return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
-                    case 'BROKEN_SESSION_STATE':
-                        // Session is broken, safeStorage already logged the error
-                        return { error: 'INCOMPLETE_SESSION', validate: async () => false }
-                }
-            }
+            if ('error' in session) return { error: session.error, validate: async () => false }
 
             span.setAttribute(OtelTaxonomy.FhirServer, session.server)
-
-            if (!('idToken' in session)) {
-                logger.warn(`Tried to .ready SmartClient, but session was inpcomplete for id "${sessionId}"`)
-                return { error: 'INCOMPLETE_SESSION', validate: async () => false }
-            }
 
             try {
                 return new ReadyClient(this, session)
@@ -206,6 +193,99 @@ export class SmartClient {
                 return { error: 'INVALID_ID_TOKEN', validate: async () => false }
             }
         })
+    }
+
+    private async getCompleteSession(sessionId: string): Promise<CompleteSession | SessionStorageErrors> {
+        return spanAsync('get-complete', async (span) => {
+            const session = await this._storage.get(sessionId)
+
+            if ('error' in session) {
+                span.setAttribute('session.error', session.error)
+                logger.error('SmartClient.getSession failed to retrieve session')
+
+                return session
+            }
+
+            if (!('refreshToken' in session)) {
+                span.setAttribute('session.error', 'INCOMPLETE_SESSION')
+                logger.error('SmartClient.getSession failed to retrieve session, session is incomplete')
+
+                return { error: 'INCOMPLETE_SESSION' }
+            }
+
+            return session
+        })
+    }
+
+    private async getInitialSession(sessionId: string): Promise<InitialSession | SmartStorageErrors> {
+        return spanAsync('get-partial', async (span) => {
+            const existingSession = await this._storage.get(sessionId)
+            if ('error' in existingSession) {
+                span.setAttribute(OtelTaxonomy.SessionError, existingSession.error)
+
+                logger.error(new Error(`Session not found for sessionId ${sessionId}, was ${existingSession.error}`))
+
+                return { error: existingSession.error }
+            }
+            return existingSession
+        })
+    }
+
+    private async getOrRefresh(
+        sessionId: string,
+    ): Promise<CompleteSession | SessionStorageErrors | TokenExchangeErrors> {
+        return spanAsync(
+            'get-or-refresh',
+            async (span): Promise<CompleteSession | TokenExchangeErrors | SessionStorageErrors> => {
+                const session = await this.getCompleteSession(sessionId)
+                if ('error' in session) return session
+
+                // Pre-emptively refresh the token if it is about to expire within 5 minutes
+                if (tokenExpiresIn(session.accessToken) < 60 * 5) {
+                    const refreshResult = await this.refreshSession(sessionId, session)
+                    if ('error' in refreshResult) {
+                        span.setAttributes({
+                            [OtelTaxonomy.SessionError]: refreshResult.error,
+                            [OtelTaxonomy.SessionRefreshed]: false,
+                        })
+                        logger.error('SmartClient.getSession failed to refresh session')
+
+                        // Return potentially expired session, let the rest of the auth flow handle the expiredness.
+                        return session
+                    }
+
+                    await this._storage.set(sessionId, refreshResult)
+
+                    span.setAttribute(OtelTaxonomy.SessionRefreshed, true)
+                    return refreshResult
+                }
+
+                span.setAttribute(OtelTaxonomy.SessionRefreshed, false)
+                return session
+            },
+        )
+    }
+
+    private async refreshSession(
+        sessionId: string,
+        session: CompleteSession,
+    ): Promise<CompleteSession | TokenExchangeErrors> {
+        const refreshResponse = await refreshToken(session, this._config)
+        if ('error' in refreshResponse) return refreshResponse
+
+        const refreshedSessionValues: CompleteSession = {
+            ...session,
+            idToken: refreshResponse.id_token,
+            accessToken: refreshResponse.access_token,
+            refreshToken: refreshResponse.refresh_token,
+            patient: refreshResponse.patient,
+            encounter: refreshResponse.encounter,
+            webmedPractitioner: refreshResponse.practitioner,
+        }
+
+        await this._storage.set(sessionId, refreshedSessionValues)
+
+        return refreshedSessionValues
     }
 }
 

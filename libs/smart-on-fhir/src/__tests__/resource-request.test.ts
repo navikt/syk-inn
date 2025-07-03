@@ -1,26 +1,12 @@
 import { expect, test } from 'vitest'
 
-import { SmartClient, ReadyClient, SmartStorage } from '../client'
 import { CompleteSession } from '../client/storage/schema'
 
 import { createTestIdToken } from './utils/token'
-import { expectHas, expectIs } from './utils/expect'
+import { expectHas } from './utils/expect'
 import { mockEncounter, mockPatient, mockPractitioner } from './mocks/resources'
-import { createTestStorage } from './utils/storage'
 import { mockCreateDocumentReference } from './mocks/create-resources'
-
-const createTestClient = (): [SmartClient, SmartStorage] => {
-    const storage = createTestStorage()
-
-    const client = new SmartClient(storage, {
-        client_id: 'test-client',
-        scope: 'openid fhirUser launch/patient',
-        callback_url: 'http://app/callback',
-        redirect_url: 'http://app/redirect',
-    })
-
-    return [client, storage]
-}
+import { createLaunchedReadyClient } from './utils/client'
 
 const validSession: CompleteSession = {
     // Initial
@@ -39,7 +25,7 @@ const validSession: CompleteSession = {
 }
 
 test('SmartClient should be properly initiated with Patient, Encounter and User', async () => {
-    const [ready] = await createLaunchedReadyClient()
+    const [ready] = await createLaunchedReadyClient(validSession)
 
     expect(ready.patient.type).toEqual('Patient')
     expect(ready.patient.reference).toEqual('Patient/valid-patient-id')
@@ -53,7 +39,7 @@ test('SmartClient should be properly initiated with Patient, Encounter and User'
 })
 
 test('SmartClient.request - /Practitioner should fetch and parse Practitioner resource', async () => {
-    const [ready] = await createLaunchedReadyClient()
+    const [ready] = await createLaunchedReadyClient(validSession)
 
     const mock = mockPractitioner('ac768edb-d56a-4304-8574-f866c6af4e7e')
 
@@ -65,7 +51,7 @@ test('SmartClient.request - /Practitioner should fetch and parse Practitioner re
 })
 
 test('SmartClient.create - /DocumentReference should POST and parse DocumentReference resource', async () => {
-    const [ready] = await createLaunchedReadyClient()
+    const [ready] = await createLaunchedReadyClient(validSession)
 
     const mock = mockCreateDocumentReference({ resourceType: 'DocumentReference' })
     const practitioner = await ready.create('DocumentReference', {
@@ -79,7 +65,7 @@ test('SmartClient.create - /DocumentReference should POST and parse DocumentRefe
 })
 
 test('shorthand for .request Practitioner should fetch and parse Practitioner resource', async () => {
-    const [ready] = await createLaunchedReadyClient()
+    const [ready] = await createLaunchedReadyClient(validSession)
 
     mockPractitioner('ac768edb-d56a-4304-8574-f866c6af4e7e')
     const practitioner = await ready.user.request()
@@ -89,7 +75,7 @@ test('shorthand for .request Practitioner should fetch and parse Practitioner re
 })
 
 test('shorthand for .request Encounter should fetch and parse Encounter resource', async () => {
-    const [ready] = await createLaunchedReadyClient()
+    const [ready] = await createLaunchedReadyClient(validSession)
 
     mockEncounter('valid-encounter-id')
     const encounter = await ready.encounter.request()
@@ -99,7 +85,7 @@ test('shorthand for .request Encounter should fetch and parse Encounter resource
 })
 
 test('shorthand for .request Patient should fetch and parse Patient resource', async () => {
-    const [ready] = await createLaunchedReadyClient()
+    const [ready] = await createLaunchedReadyClient(validSession)
 
     mockPatient('valid-patient-id')
     const encounter = await ready.patient.request()
@@ -107,14 +93,3 @@ test('shorthand for .request Patient should fetch and parse Patient resource', a
     expectHas(encounter, 'resourceType')
     expect(encounter.resourceType).toBe('Patient')
 })
-
-async function createLaunchedReadyClient(): Promise<[ReadyClient, SmartStorage]> {
-    const [client, storage] = createTestClient()
-
-    await storage.set('test-session', validSession)
-    const ready = await client.ready('test-session')
-
-    expectIs(ready, ReadyClient)
-
-    return [ready, storage]
-}

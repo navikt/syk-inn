@@ -1,10 +1,14 @@
+import { SmartStorageErrors } from '../storage'
+
 export type CallbackError = {
     error: 'INVALID_STATE'
 }
 
-export type SmartClientReadyErrors = {
-    error: 'NO_ACTIVE_SESSION' | 'INCOMPLETE_SESSION' | 'INVALID_ID_TOKEN' | 'INVALID_TOKEN'
-}
+export type SessionStorageErrors = SmartStorageErrors | { error: 'INCOMPLETE_SESSION' }
+
+export type SmartClientReadyErrors =
+    | SessionStorageErrors
+    | { error: 'NO_ACTIVE_SESSION' | 'INVALID_ID_TOKEN' | 'INVALID_TOKEN' | 'REFRESH_FAILED' }
 
 export type ResourceCreateErrors = {
     error: 'CREATE_FAILED_NON_OK_RESPONSE' | 'CREATE_FAILED_INVALID_RESPONSE'
