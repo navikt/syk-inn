@@ -58,7 +58,6 @@ jobs:
         run: |
           ./scripts/libs/create-release.sh fhir-mock
           ./scripts/libs/set-version.sh fhir-mock
-          ./scripts/libs/set-version.sh fhir-zod # fhir-mock is depend on fhir-zod
           cd libs/fhir-mock && yarn npm publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

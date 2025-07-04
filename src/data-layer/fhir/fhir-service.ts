@@ -1,10 +1,10 @@
 import { logger } from '@navikt/next-logger'
-
 import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
+import { FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
+
 import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { getHpr } from '@fhir/mappers/practitioner'
 import { createNewDocumentReferencePayload } from '@fhir/mappers/document-reference'
-import { FhirDocumentReference } from '@navikt/fhir-zod'
 import { toReadableDatePeriod } from '@utils/date'
 import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
 import { getReadyClient } from '@fhir/smart/smart-client'

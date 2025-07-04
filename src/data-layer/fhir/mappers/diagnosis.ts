@@ -1,7 +1,7 @@
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
+import { CodeableConcept, FhirCondition } from '@navikt/smart-on-fhir/zod'
 
-import { CodeableConcept, FhirCondition } from '@navikt/fhir-zod'
 import { Diagnose } from '@resolvers'
 import { raise } from '@utils/ts'
 

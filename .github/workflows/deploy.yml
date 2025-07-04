@@ -25,8 +25,6 @@ jobs:
       - run: yarn tsc
       - name: Test app
         run: yarn test
-      - name: Test @navikt/smart-on-fhir
-        run: yarn workspace @navikt/smart-on-fhir test
 
   build-dev:
     name: Build for dev

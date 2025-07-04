@@ -1,4 +1,4 @@
-import { CodeableConcept, FhirDocumentReference } from '@navikt/fhir-zod'
+import { CodeableConcept, FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
 
 const SykmeldingDocumentTypeCodeableConcept: CodeableConcept = {
     system: 'urn:oid:2.16.578.1.12.4.1.1.9602',
