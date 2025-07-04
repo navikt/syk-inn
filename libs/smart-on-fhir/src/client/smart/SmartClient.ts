@@ -39,6 +39,13 @@ export class SmartClient {
         this._options = options ?? { autoRefresh: false }
     }
 
+    public get options(): { autoRefresh: boolean } {
+        return {
+            autoRefresh: false,
+            ...this._options,
+        }
+    }
+
     /**
      * **Smart App Launch reference**
      * - EHR Launch: https://build.fhir.org/ig/HL7/smart-app-launch/app-launch.html#launch-app-ehr-launch
@@ -195,6 +202,30 @@ export class SmartClient {
         })
     }
 
+    /**
+     * Explicitly refreshes the session by exchanging the refresh token for a new access token.
+     *
+     * This will happen automatically buring the `ready`-step if the `autoRefresh` option is set to `true`.
+     */
+    async refresh(sessionId: string, session: CompleteSession): Promise<CompleteSession | TokenExchangeErrors> {
+        const refreshResponse = await refreshToken(session, this._config)
+        if ('error' in refreshResponse) return refreshResponse
+
+        const refreshedSessionValues: CompleteSession = {
+            ...session,
+            idToken: refreshResponse.id_token,
+            accessToken: refreshResponse.access_token,
+            refreshToken: refreshResponse.refresh_token,
+            patient: refreshResponse.patient,
+            encounter: refreshResponse.encounter,
+            webmedPractitioner: refreshResponse.practitioner,
+        }
+
+        await this._storage.set(sessionId, refreshedSessionValues)
+
+        return refreshedSessionValues
+    }
+
     private async getCompleteSession(sessionId: string): Promise<CompleteSession | SessionStorageErrors> {
         return spanAsync('get-complete', async (span) => {
             const session = await this._storage.get(sessionId)
@@ -242,7 +273,7 @@ export class SmartClient {
 
                 // Pre-emptively refresh the token if it is about to expire within 5 minutes
                 if (tokenExpiresIn(session.accessToken) < 60 * 5) {
-                    const refreshResult = await this.refreshSession(sessionId, session)
+                    const refreshResult = await this.refresh(sessionId, session)
                     if ('error' in refreshResult) {
                         span.setAttributes({
                             [OtelTaxonomy.SessionError]: refreshResult.error,
@@ -264,28 +295,6 @@ export class SmartClient {
                 return session
             },
         )
-    }
-
-    private async refreshSession(
-        sessionId: string,
-        session: CompleteSession,
-    ): Promise<CompleteSession | TokenExchangeErrors> {
-        const refreshResponse = await refreshToken(session, this._config)
-        if ('error' in refreshResponse) return refreshResponse
-
-        const refreshedSessionValues: CompleteSession = {
-            ...session,
-            idToken: refreshResponse.id_token,
-            accessToken: refreshResponse.access_token,
-            refreshToken: refreshResponse.refresh_token,
-            patient: refreshResponse.patient,
-            encounter: refreshResponse.encounter,
-            webmedPractitioner: refreshResponse.practitioner,
-        }
-
-        await this._storage.set(sessionId, refreshedSessionValues)
-
-        return refreshedSessionValues
     }
 }
 
