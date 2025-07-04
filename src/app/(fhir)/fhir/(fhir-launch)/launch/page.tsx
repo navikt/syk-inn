@@ -43,8 +43,7 @@ async function LaunchPage({ searchParams }: Props): Promise<ReactElement> {
         return <InvalidIssuer />
     }
 
-    const launchResult = await getSmartClient().launch({
-        sessionId,
+    const launchResult = await getSmartClient(sessionId).launch({
         iss: issuerParam,
         launch,
     })

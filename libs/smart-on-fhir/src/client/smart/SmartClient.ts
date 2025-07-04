@@ -2,7 +2,7 @@ import { randomPKCECodeVerifier, randomState } from 'openid-client'
 import { teamLogger } from '@navikt/pino-logger/team-log'
 
 import { safeSmartStorage, SafeSmartStorage, SmartStorage, SmartStorageErrors } from '../storage'
-import { assertNotBrowser, removeTrailingSlash } from '../utils'
+import { assertGoodSessionId, assertNotBrowser, removeTrailingSlash } from '../utils'
 import { logger } from '../logger'
 import { CompleteSession, InitialSession } from '../storage/schema'
 import { OtelTaxonomy, spanAsync } from '../otel'
@@ -23,16 +23,27 @@ import { ReadyClient } from './ReadyClient'
  *       This may part of this applications configuration in the future.
  */
 export class SmartClient {
+    /**
+     * Every smart client _must_ be initialized with a unique sessionId. This is used to store the session
+     * information in the storage implementation. If this is not cryptographically random and unique, there
+     * will be issues with multiple users accessing the same storage and authentication flow.
+     */
+    readonly sessionId: string
+
     private readonly _storage: SafeSmartStorage
     private readonly _config: SmartClientConfiguration
     private readonly _options: SmartClientOptions
 
     constructor(
+        sessionId: string | null | undefined,
         storage: SmartStorage | Promise<SmartStorage>,
         config: SmartClientConfiguration,
         options?: SmartClientOptions,
     ) {
         assertNotBrowser()
+        assertGoodSessionId(sessionId)
+
+        this.sessionId = sessionId
 
         this._storage = safeSmartStorage(storage)
         this._config = config
@@ -58,11 +69,7 @@ export class SmartClient {
      *
      * Callee is responsible for redirecting the user to the returned `redirect_url`.
      */
-    async launch(params: {
-        sessionId: string
-        iss: string
-        launch: string
-    }): Promise<Launch | SmartConfigurationErrors> {
+    async launch(params: { iss: string; launch: string }): Promise<Launch | SmartConfigurationErrors> {
         return spanAsync('launch', async (span) => {
             span.setAttribute(OtelTaxonomy.FhirServer, removeTrailingSlash(params.iss))
 
@@ -86,7 +93,7 @@ export class SmartClient {
                 state: state,
             }
 
-            await this._storage.set(params.sessionId, initialSessionPayload)
+            await this._storage.set(this.sessionId, initialSessionPayload)
 
             const authUrl = await buildAuthUrl(
                 {
@@ -120,12 +127,11 @@ export class SmartClient {
      *  Completes the partial session created in the `launch` method by exchanging the code for tokens.
      */
     async callback(params: {
-        sessionId: string
         code: string
         state: string
     }): Promise<Callback | CallbackError | TokenExchangeErrors | SmartStorageErrors> {
         return spanAsync('callback', async (span) => {
-            const initialSession = await this.getInitialSession(params.sessionId)
+            const initialSession = await this.getInitialSession(this.sessionId)
             if ('error' in initialSession) return initialSession
 
             span.setAttribute(OtelTaxonomy.FhirServer, initialSession.server)
@@ -157,7 +163,7 @@ export class SmartClient {
                 webmedPractitioner: tokenResponse.practitioner,
             }
 
-            await this._storage.set(params.sessionId, completeSessionValues)
+            await this._storage.set(this.sessionId, completeSessionValues)
 
             return {
                 redirect_url: this._config.redirect_url,
@@ -172,18 +178,13 @@ export class SmartClient {
      * Once the launch has been completed, a ReadyClient {@link ReadyClient} can be created using the
      * sessionId that was used in the `launch` and `callback` methods.
      */
-    async ready(
-        sessionId: string | null,
-    ): Promise<ReadyClient | ((SmartClientReadyErrors | TokenExchangeErrors) & { validate: ReadyClient['validate'] })> {
+    async ready(): Promise<
+        ReadyClient | ((SmartClientReadyErrors | TokenExchangeErrors) & { validate: ReadyClient['validate'] })
+    > {
         return spanAsync('ready', async (span) => {
-            if (sessionId == null) {
-                logger.warn(`Tried to .ready SmartClient without active sessionId (was null)`)
-                return { error: 'NO_ACTIVE_SESSION', validate: async () => false }
-            }
-
             const session = this._options.autoRefresh
-                ? await this.getOrRefresh(sessionId)
-                : await this.getCompleteSession(sessionId)
+                ? await this.getOrRefresh(this.sessionId)
+                : await this.getCompleteSession(this.sessionId)
 
             if ('error' in session) return { error: session.error, validate: async () => false }
 
@@ -193,9 +194,10 @@ export class SmartClient {
                 return new ReadyClient(this, session)
             } catch (error) {
                 logger.error(
-                    new Error(`Tried to .ready SmartClient, ReadyClient failed to instantiate for id "${sessionId}"`, {
-                        cause: error,
-                    }),
+                    new Error(
+                        `Tried to .ready SmartClient, ReadyClient failed to instantiate for id "${this.sessionId}"`,
+                        { cause: error },
+                    ),
                 )
                 return { error: 'INVALID_ID_TOKEN', validate: async () => false }
             }

@@ -22,15 +22,15 @@ const smartClientConfig: SmartClientConfiguration = {
     callback_url: `${getAbsoluteURL()}/fhir/callback`,
 }
 
-export function getSmartClient(): SmartClient {
-    return new SmartClient(getSmartStorage(), smartClientConfig)
+export function getSmartClient(sessionId: string | null): SmartClient {
+    return new SmartClient(sessionId, getSmartStorage(), smartClientConfig)
 }
 
 export async function getReadyClient(opts?: {
     validate: true
 }): Promise<ReadyClient | SmartClientReadyErrors | TokenExchangeErrors> {
     const actualSessionId = await getSessionId()
-    const readyClient = await getSmartClient().ready(actualSessionId)
+    const readyClient = await getSmartClient(actualSessionId).ready()
 
     if (opts?.validate) {
         const validToken = await readyClient.validate()

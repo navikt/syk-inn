@@ -13,7 +13,7 @@ import { mockTokenExchange } from './mocks/auth'
 test('pkce verification should be correct', async () => {
     const sessionId = '689fe0f1-2304-45e9-bb45-bb1b8dac2379'
     const storage = createTestStorage()
-    const client = new SmartClient(storage, {
+    const client = new SmartClient(sessionId, storage, {
         client_id: 'test-client',
         scope: 'openid fhirUser launch/patient',
         callback_url: 'http://app/callback',
@@ -25,7 +25,6 @@ test('pkce verification should be correct', async () => {
      */
     mockSmartConfiguration()
     const result = await client.launch({
-        sessionId: sessionId,
         iss: FHIR_SERVER,
         launch: 'foo-bar-launch',
     })
@@ -53,7 +52,6 @@ test('pkce verification should be correct', async () => {
         redirect_uri: 'http://app/callback',
     })
     const callback = await client.callback({
-        sessionId,
         code: 'test-code',
         state: params.state,
     })
@@ -71,7 +69,7 @@ test('pkce verification should be correct', async () => {
     /**
      * We're able to ready-up a ReadyClient with the session
      */
-    const ready = await client.ready(sessionId)
+    const ready = await client.ready()
     expectIs(ready, ReadyClient)
 
     expect(ready.user.fhirUser).toEqual('Practitioner/71503542-c4f5-4f11-a5a5-6633c139d0d4')

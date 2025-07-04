@@ -6,6 +6,16 @@ export function assertNotBrowser(): void {
     }
 }
 
+export function assertGoodSessionId(sessionId: string | null | undefined): asserts sessionId is string {
+    if (sessionId == null || sessionId.length === 0) {
+        throw new Error('Session ID is missing or empty. Please provide a valid session ID.')
+    }
+
+    if (process.env.NODE_ENV === 'production' && sessionId.length < 10) {
+        throw new Error('Session ID is too short, are you sure you are creating cryptographically good IDs?')
+    }
+}
+
 export function removeTrailingSlash(url: string): string {
     return url.replace(/\/$/, '')
 }

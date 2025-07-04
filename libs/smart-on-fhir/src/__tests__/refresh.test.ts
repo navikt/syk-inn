@@ -37,7 +37,7 @@ test('.ready - should not refresh token when expiry is more than 5 minutes', asy
 
     const tokenMock = nock(AUTH_SERVER).post('/token').replyWithError('This endpoint should not be called')
 
-    const ready = await client.ready('test-session')
+    const ready = await client.ready()
 
     expectIs(ready, ReadyClient)
 
@@ -58,7 +58,7 @@ test('.ready - should refresh token when expiry is less than 5 minutes', async (
         refresh_token: 'valid-refresh-token',
     })
 
-    const ready = await client.ready('test-session')
+    const ready = await client.ready()
 
     expectIs(ready, ReadyClient)
 
@@ -79,7 +79,7 @@ test('.ready - should refresh token when expiry is long ago', async () => {
         refresh_token: 'valid-refresh-token',
     })
 
-    const ready = await client.ready('test-session')
+    const ready = await client.ready()
 
     expectIs(ready, ReadyClient)
 

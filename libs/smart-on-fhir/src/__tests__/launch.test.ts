@@ -9,7 +9,7 @@ import { mockTokenExchange } from './mocks/auth'
 
 test('.launch - should fetch well-known and create a launch URL', async () => {
     const storage = createMockedStorage()
-    const client = new SmartClient(storage, {
+    const client = new SmartClient('test-session', storage, {
         client_id: 'test-client',
         scope: 'openid fhirUser launch/patient',
         callback_url: 'http://app/callback',
@@ -20,7 +20,6 @@ test('.launch - should fetch well-known and create a launch URL', async () => {
     const result = await client.launch({
         launch: 'test-launch',
         iss: 'http://fhir-server',
-        sessionId: 'test-session',
     })
 
     expect(smartConfigNock.isDone()).toBe(true)
@@ -66,7 +65,7 @@ test('.callback should exchange code for token', async () => {
         state: 'some-value',
     }))
 
-    const client = new SmartClient(storage, {
+    const client = new SmartClient('test-session', storage, {
         client_id: 'test-client',
         scope: 'openid fhirUser launch/patient',
         callback_url: 'http://app/callback',
@@ -81,7 +80,6 @@ test('.callback should exchange code for token', async () => {
     })
 
     const callback = await client.callback({
-        sessionId: 'test-session',
         state: 'some-value',
         code: 'køde',
     })

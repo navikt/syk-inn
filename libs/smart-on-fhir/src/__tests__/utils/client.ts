@@ -4,10 +4,13 @@ import { CompleteSession } from '../../client/storage/schema'
 import { createTestStorage } from './storage'
 import { expectIs } from './expect'
 
+export const TEST_SESSION_ID = 'test-session'
+
 export const createTestClient = (options?: SmartClientOptions): [SmartClient, SmartStorage] => {
     const storage = createTestStorage()
 
     const client = new SmartClient(
+        TEST_SESSION_ID,
         storage,
         {
             client_id: 'test-client',
@@ -40,8 +43,8 @@ export async function createLaunchedReadyClient(
 ): Promise<[ReadyClient, SmartStorage]> {
     const [client, storage] = createTestClient(options)
 
-    await storage.set('test-session', session)
-    const ready = await client.ready('test-session')
+    await storage.set(TEST_SESSION_ID, session)
+    const ready = await client.ready()
 
     expectIs(ready, ReadyClient)
 
