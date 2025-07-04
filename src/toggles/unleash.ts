@@ -5,7 +5,7 @@ import { connection } from 'next/server'
 import { bundledEnv, isE2E, isLocalOrDemo } from '@utils/env'
 import { getAndValidateDefinitions } from '@toggles/definitions'
 
-import { developmentTogglesWithCookieOverrides } from './dev'
+import { developmentTogglesWithCookieOverrides } from './dev/cookie-override'
 import { EXPECTED_TOGGLES, ExpectedToggles, Toggle, Toggles } from './toggles'
 import { getUnleashSessionId } from './cookie'
 
