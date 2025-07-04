@@ -65,20 +65,13 @@ spec:
         - application: logging
           namespace: nais-system
   resources:
-    limits:
-      memory: 512Mi
     requests:
       cpu: 50m
-      memory: 256Mi
+      memory: 200Mi
   env:
     # Stop double logging by auto instrumentation _and_ nais stdout logshipper
     - name: OTEL_LOGS_EXPORTER
       value: none
-    # Needed by team logs
-    - name: NAIS_POD_NAME
-      valueFrom:
-        fieldRef:
-          fieldPath: metadata.name
   envFrom:
     - secret: login-config-syk-inn
     - secret: tsm-unleash-api-token
