@@ -5,7 +5,7 @@ import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
 import { spanAsync } from '@otel/otel'
 import { getHprFromFhirSession } from '@fhir/fhir-service'
-import { getFlag, getToggles } from '@toggles/unleash'
+import { getFlag, getUserlessToggles, getUserToggles } from '@toggles/unleash'
 import { ToggleProvider } from '@toggles/context'
 
 import { NoPractitionerSession, NoValidHPR } from './launched-errors'
@@ -14,9 +14,9 @@ async function LaunchedLayout({ children }: PropsWithChildren): Promise<ReactEle
     const [toggles, hpr] = await spanAsync('FhirLayout toggles', async () => {
         const hpr = await getHprFromFhirSession()
         if (typeof hpr !== 'string') {
-            return [await getToggles(null), hpr]
+            return [await getUserlessToggles(), hpr]
         }
-        return [await getToggles(hpr), hpr]
+        return [await getUserToggles(hpr), hpr]
     })
 
     if (typeof hpr !== 'string') {

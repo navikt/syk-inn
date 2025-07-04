@@ -13,6 +13,7 @@ import { getValkeyClient } from '@services/valkey/client'
 import { getAbsoluteURL } from '@utils/url'
 import { getSessionId } from '@fhir/smart/session'
 import { NoSmartSession } from '@graphql/error/Errors'
+import { getFlag, getUserlessToggles } from '@toggles/unleash'
 
 const smartClientConfig: SmartClientConfiguration = {
     client_id: 'syk-inn',
@@ -21,15 +22,18 @@ const smartClientConfig: SmartClientConfiguration = {
     callback_url: `${getAbsoluteURL()}/fhir/callback`,
 }
 
-export function getSmartClient(sessionId: string | null): SmartClient {
-    return new SmartClient(sessionId, getSmartStorage(), smartClientConfig)
+export function getSmartClient(sessionId: string | null, autoRefreshToggle: boolean): SmartClient {
+    return new SmartClient(sessionId, getSmartStorage(), smartClientConfig, {
+        autoRefresh: autoRefreshToggle,
+    })
 }
 
-export async function getReadyClient(opts?: {
+export async function getReadyClient(opts: {
     validate: true
+    autoRefresh: boolean
 }): Promise<ReadyClient | SmartClientReadyErrors | TokenExchangeErrors> {
     const actualSessionId = await getSessionId()
-    const readyClient = await getSmartClient(actualSessionId).ready()
+    const readyClient = await getSmartClient(actualSessionId, opts?.autoRefresh ?? false).ready()
 
     if (opts?.validate) {
         const validToken = await readyClient.validate()
@@ -48,7 +52,8 @@ export async function getReadyClientForResolvers(params: {
 export async function getReadyClientForResolvers(params?: {
     withPractitioner: true
 }): Promise<[ReadyClient] | [ReadyClient, FhirPractitioner]> {
-    const client = await getReadyClient({ validate: true })
+    const autoTokenRefresh = getFlag('SYK_INN_REFRESH_TOKEN', await getUserlessToggles()).enabled
+    const client = await getReadyClient({ validate: true, autoRefresh: autoTokenRefresh })
     if ('error' in client) {
         throw NoSmartSession()
     }

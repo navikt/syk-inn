@@ -8,11 +8,13 @@ import { createNewDocumentReferencePayload } from '@fhir/mappers/document-refere
 import { toReadableDatePeriod } from '@utils/date'
 import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
 import { getReadyClient } from '@fhir/smart/smart-client'
+import { getFlag, getUserlessToggles } from '@toggles/unleash'
 
 export async function getHprFromFhirSession(
     client?: ReadyClient,
 ): Promise<string | { error: 'NO_SESSION' | 'NO_HPR' }> {
-    const readyClient = client ?? (await getReadyClient())
+    const autoTokenRefresh = getFlag('SYK_INN_REFRESH_TOKEN', await getUserlessToggles()).enabled
+    const readyClient = client ?? (await getReadyClient({ validate: true, autoRefresh: autoTokenRefresh }))
     if ('error' in readyClient) {
         logger.warn(`Unable to get ready client, reason: ${readyClient.error}`)
         return { error: 'NO_SESSION' }

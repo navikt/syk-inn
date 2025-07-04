@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 
 import { isLocalOrDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
-import { getToggles } from '@toggles/unleash'
+import { getUserToggles } from '@toggles/unleash'
 import { getHelseIdUserInfo } from '@helseid/helseid-userinfo'
 import HelseIdHeader from '@helseid/components/HelseIdHeader'
 import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default async function StandaloneLayout({ children }: PropsWithChildren): Promise<ReactElement> {
     const behandler = await getHelseIdUserInfo()
-    const toggles = await getToggles(behandler?.hpr_number ?? 'unknown-hpr-number')
+    const toggles = await getUserToggles(behandler?.hpr_number ?? 'unknown-hpr-number')
 
     return (
         <html lang="nb" className="bg-bg-subtle">

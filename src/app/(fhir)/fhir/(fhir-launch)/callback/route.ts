@@ -34,7 +34,7 @@ export async function GET(request: Request): Promise<Response> {
         redirect(pathWithBasePath('/fhir/error?reason=unknown'))
     }
 
-    const callback = await getSmartClient(sessionId).callback({ code, state })
+    const callback = await getSmartClient(sessionId, false).callback({ code, state })
     if ('error' in callback) {
         logger.error(`Callback failed with error ${callback.error}`)
 

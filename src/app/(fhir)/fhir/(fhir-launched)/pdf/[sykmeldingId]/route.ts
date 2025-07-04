@@ -8,6 +8,7 @@ import { getHpr } from '@fhir/mappers/practitioner'
 import { getReadyClient } from '@fhir/smart/smart-client'
 import { getServerEnv, isLocalOrDemo } from '@utils/env'
 import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
+import { getFlag, getUserlessToggles } from '@toggles/unleash'
 
 /**
  * Proxies the PDF request to the syk-inn-api service, to the PDF is viewable from the users browser.
@@ -16,7 +17,8 @@ export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ sykmeldingId: string }> },
 ): Promise<Response> {
-    const client = await getReadyClient({ validate: true })
+    const autoTokenRefresh = getFlag('SYK_INN_REFRESH_TOKEN', await getUserlessToggles()).enabled
+    const client = await getReadyClient({ validate: true, autoRefresh: autoTokenRefresh })
     if ('error' in client) {
         return new Response('Internal server error', { status: 500 })
     }

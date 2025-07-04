@@ -2,8 +2,8 @@ import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 import { teamLogger } from '@navikt/next-logger/team-log'
-
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
+
 import { Behandler, OpprettSykmeldingRuleOutcome, QueriedPerson, Resolvers } from '@resolvers'
 import { createSchema } from '@graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@fhir/mappers/patient'
@@ -21,7 +21,7 @@ import {
 } from '@services/syk-inn-api/syk-inn-api-utils'
 import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from '@fhir/mappers/organization'
 import { OpprettSykmeldingMeta } from '@services/syk-inn-api/schema/opprett'
-import { getFlag, getToggles } from '@toggles/unleash'
+import { getFlag, getUserToggles } from '@toggles/unleash'
 
 import { searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
@@ -327,7 +327,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const toggles = await getToggles(hpr)
+            const toggles = await getUserToggles(hpr)
             const isPilotUser = getFlag('PILOT_USER', toggles)
             if (!isPilotUser.enabled) {
                 logger.error(
