@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { FhirBundle, FhirOrganization } from '@navikt/fhir-zod'
+import { FhirBundle, FhirOrganization } from '@navikt/smart-on-fhir/zod'
 
 import testData from '../../data'
 import { withAuthed } from '../../auth/verify-authed'

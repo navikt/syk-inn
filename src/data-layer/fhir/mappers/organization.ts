@@ -1,4 +1,4 @@
-import { FhirOrganization } from '@navikt/fhir-zod'
+import { FhirOrganization } from '@navikt/smart-on-fhir/zod'
 
 const ORG_NR_OID = '2.16.578.1.12.4.1.4.101'
 

@@ -1,4 +1,4 @@
-import { FhirDocumentReference } from '@navikt/fhir-zod'
+import { FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
 
 export function createDocumentReference(): FhirDocumentReference {
     return {

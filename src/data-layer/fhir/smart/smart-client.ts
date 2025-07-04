@@ -1,19 +1,18 @@
 import { GraphQLError } from 'graphql/error'
-
 import {
     SmartClientConfiguration,
     SmartClientReadyErrors,
+    TokenExchangeErrors,
     SmartStorage,
     SmartClient,
     ReadyClient,
 } from '@navikt/smart-on-fhir/client'
+import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
+
 import { getValkeyClient } from '@services/valkey/client'
 import { getAbsoluteURL } from '@utils/url'
 import { getSessionId } from '@fhir/smart/session'
-import { FhirPractitioner } from '@navikt/fhir-zod'
 import { NoSmartSession } from '@graphql/error/Errors'
-
-import { TokenExchangeErrors } from '../../../../libs/smart-on-fhir/src/client/smart/launch/token'
 
 const smartClientConfig: SmartClientConfiguration = {
     client_id: 'syk-inn',

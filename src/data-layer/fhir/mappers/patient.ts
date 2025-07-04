@@ -1,4 +1,4 @@
-import { FhirPatient, Name } from '@navikt/fhir-zod'
+import { FhirPatient, Name } from '@navikt/smart-on-fhir/zod'
 
 import { userUrnToOidType } from './practitioner'
 

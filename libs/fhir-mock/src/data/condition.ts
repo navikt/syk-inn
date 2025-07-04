@@ -1,4 +1,4 @@
-import { FhirBundle, FhirCondition } from '@navikt/fhir-zod'
+import { FhirBundle, FhirCondition } from '@navikt/smart-on-fhir/zod'
 import { logger } from '@navikt/pino-logger'
 
 const conditions: FhirCondition[] = [

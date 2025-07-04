@@ -1,4 +1,4 @@
-import { FhirOrganization } from '@navikt/fhir-zod'
+import { FhirOrganization } from '@navikt/smart-on-fhir/zod'
 import { logger } from '@navikt/pino-logger'
 
 export const organizations: FhirOrganization[] = [
