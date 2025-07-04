@@ -2,7 +2,6 @@ import { GraphQLError } from 'graphql/error'
 import {
     SmartClientConfiguration,
     SmartClientReadyErrors,
-    TokenExchangeErrors,
     SmartStorage,
     SmartClient,
     ReadyClient,
@@ -31,7 +30,7 @@ export function getSmartClient(sessionId: string | null, autoRefreshToggle: bool
 export async function getReadyClient(opts: {
     validate: true
     autoRefresh: boolean
-}): Promise<ReadyClient | SmartClientReadyErrors | TokenExchangeErrors> {
+}): Promise<ReadyClient | SmartClientReadyErrors> {
     const actualSessionId = await getSessionId()
     const readyClient = await getSmartClient(actualSessionId, opts?.autoRefresh ?? false).ready()
 
