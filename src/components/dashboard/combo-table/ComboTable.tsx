@@ -166,7 +166,7 @@ function StatusTag({ status }: { status: 'draft' | 'previous' | 'current' }): Re
 function Utfall({ utfall }: { utfall: SykmeldingFragment['utfall'] }): React.ReactElement | null {
     if (utfall.result === 'OK') {
         return <BodyShort size="small">Godkjent</BodyShort>
-    } else if (utfall.result === 'MANUAL_PROCESSING') {
+    } else if (utfall.result === 'PENDING') {
         return <BodyShort size="small">Til behandling</BodyShort>
     } else if (utfall.result === 'INVALID') {
         return <BodyShort size="small">Avvist</BodyShort>
