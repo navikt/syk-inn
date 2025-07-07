@@ -15,6 +15,18 @@ type AktivitetIkkeMulig implements FomTom {
     type: AktivitetType!
     fom: DateOnly!
     tom: DateOnly!
+    medisinskeArsaker: MedisinskeArsaker!
+    arbeidsrelaterteArsaker: ArbeidsrelaterteArsaker!
+}
+
+type MedisinskeArsaker {
+    isMedisinskArsak: Boolean!
+}
+
+type ArbeidsrelaterteArsaker {
+    isArbeidsrelatertArsak: Boolean!
+    arbeidsrelaterteArsaker: [String!]!
+    andreArbeidsrelaterteArsaker: String
 }
 
 type Avventende implements FomTom {

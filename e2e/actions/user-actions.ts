@@ -97,6 +97,28 @@ export function fillPeriodeRelative({
     }
 }
 
+export function fillArsakerTilAktivitetIkkeMulig({}) {
+    return async (page: Page) => {
+        await test.step('Input årsaker til aktivitet ikke mulig', async () => {
+            const periodeRegion = page.getByRole('region', { name: 'Periode' })
+            await expect(periodeRegion).toBeVisible()
+            expect(
+                await periodeRegion
+                    .getByRole('checkbox', { name: 'Medisinske årsaker forhindrer arbeidsaktivitet' })
+                    .isChecked(),
+            ).toBeTruthy()
+            await periodeRegion
+                .getByRole('checkbox', { name: 'Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet' })
+                .check()
+            await periodeRegion.getByRole('checkbox', { name: 'Tilrettelegging ikke mulig' }).check()
+            await periodeRegion.getByRole('checkbox', { name: 'Annet' }).check()
+            await periodeRegion
+                .getByRole('textbox', { name: 'Annen arbeidsrelatert årsak' })
+                .fill('Annen årsak til aktivitet ikke mulig')
+        })
+    }
+}
+
 export function fillTilbakedatering({ contact, reason }: { contact: string; reason: string }) {
     return async (page: Page) => {
         await test.step(`Input tilbakedateringsdato to ${contact}`, async () => {

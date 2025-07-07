@@ -23,7 +23,9 @@ export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gra
 
 export type AktivitetIkkeMulig = FomTom & {
     __typename?: 'AktivitetIkkeMulig'
+    arbeidsrelaterteArsaker: ArbeidsrelaterteArsaker
     fom: Scalars['DateOnly']['output']
+    medisinskeArsaker: MedisinskeArsaker
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
 }
@@ -38,6 +40,19 @@ export type Arbeidsgiver = {
     __typename?: 'Arbeidsgiver'
     arbeidsgivernavn: Scalars['String']['output']
     harFlere: Scalars['Boolean']['output']
+}
+
+export type ArbeidsrelaterteArsaker = {
+    __typename?: 'ArbeidsrelaterteArsaker'
+    andreArbeidsrelaterteArsaker?: Maybe<Scalars['String']['output']>
+    arbeidsrelaterteArsaker: Array<Scalars['String']['output']>
+    isArbeidsrelatertArsak: Scalars['Boolean']['output']
+}
+
+export type ArbeidsrelaterteArsakerInput = {
+    andreArbeidsrelaterteArsaker?: InputMaybe<Scalars['String']['input']>
+    arbeidsrelaterteArsaker: Array<Scalars['String']['input']>
+    isArbeidsrelatertArsak: Scalars['Boolean']['input']
 }
 
 export type Avventende = FomTom & {
@@ -109,10 +124,12 @@ export type GradertInput = {
  */
 export type InputAktivitet = {
     aktivitetIkkeMulig?: InputMaybe<AktivitetIkkeMuligInput>
+    arbeidsrelaterteArsaker?: InputMaybe<ArbeidsrelaterteArsakerInput>
     avventende?: InputMaybe<AvventendeInput>
     behandlingsdager?: InputMaybe<BehandlingsdagerInput>
     fom: Scalars['String']['input']
     gradert?: InputMaybe<GradertInput>
+    medisinskeArsaker?: InputMaybe<MedisinskeArsakerInput>
     reisetilskudd?: InputMaybe<ReisetilskuddInput>
     tom: Scalars['String']['input']
     type: AktivitetType
@@ -145,6 +162,15 @@ export type InputYrkesskade = {
 export type Konsultasjon = {
     __typename?: 'Konsultasjon'
     diagnoser?: Maybe<Array<Diagnose>>
+}
+
+export type MedisinskeArsaker = {
+    __typename?: 'MedisinskeArsaker'
+    isMedisinskArsak: Scalars['Boolean']['output']
+}
+
+export type MedisinskeArsakerInput = {
+    isMedisinskArsak: Scalars['Boolean']['input']
 }
 
 export type Mutation = {

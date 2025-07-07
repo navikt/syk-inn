@@ -58,6 +58,8 @@ input InputAktivitet {
     avventende: AvventendeInput
     behandlingsdager: BehandlingsdagerInput
     reisetilskudd: ReisetilskuddInput
+    medisinskeArsaker: MedisinskeArsakerInput
+    arbeidsrelaterteArsaker: ArbeidsrelaterteArsakerInput
 }
 
 input GradertInput {
@@ -79,4 +81,14 @@ input AvventendeInput {
 
 input BehandlingsdagerInput {
     antallBehandlingsdager: Int!
+}
+
+input MedisinskeArsakerInput {
+    isMedisinskArsak: Boolean!
+}
+
+input ArbeidsrelaterteArsakerInput {
+    isArbeidsrelatertArsak: Boolean!
+    arbeidsrelaterteArsaker: [String!]!
+    andreArbeidsrelaterteArsaker: String
 }

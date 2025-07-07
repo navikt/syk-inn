@@ -14,6 +14,7 @@ import {
     nextStep,
     fillTilbakedatering,
     fillArbeidsforhold,
+    fillArsakerTilAktivitetIkkeMulig,
 } from './actions/user-actions'
 import { expectGraphQLRequest } from './utils/assertions'
 import { getDraftId } from './utils/request-utils'
@@ -53,6 +54,14 @@ test('can submit 100% sykmelding', async ({ page }) => {
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
+                    medisinskeArsaker: {
+                        isMedisinskArsak: true,
+                    },
+                    arbeidsrelaterteArsaker: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: [],
+                        andreArbeidsrelaterteArsaker: null,
+                    },
                 },
             ],
             meldinger: { tilNav: null, tilArbeidsgiver: null },
@@ -102,6 +111,14 @@ test('shall be able to edit diagnose', async ({ page }) => {
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
+                    medisinskeArsaker: {
+                        isMedisinskArsak: true,
+                    },
+                    arbeidsrelaterteArsaker: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: [],
+                        andreArbeidsrelaterteArsaker: null,
+                    },
                 },
             ],
             meldinger: { tilNav: null, tilArbeidsgiver: null },
@@ -153,6 +170,8 @@ test('can submit gradert sykmelding', async ({ page }) => {
                     avventende: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
+                    medisinskeArsaker: null,
+                    arbeidsrelaterteArsaker: null,
                 },
             ],
             meldinger: { tilNav: null, tilArbeidsgiver: null },
@@ -199,6 +218,8 @@ test('submit with only default values', async ({ page }) => {
                     avventende: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
+                    medisinskeArsaker: null,
+                    arbeidsrelaterteArsaker: null,
                 },
             ],
             meldinger: { tilNav: null, tilArbeidsgiver: null },
@@ -300,6 +321,14 @@ test("should be asked about 'tilbakedatering' when fom is 5 days in the past", a
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
+                    medisinskeArsaker: {
+                        isMedisinskArsak: true,
+                    },
+                    arbeidsrelaterteArsaker: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: [],
+                        andreArbeidsrelaterteArsaker: null,
+                    },
                 },
             ],
             tilbakedatering: {
@@ -351,6 +380,14 @@ test('"skal skjermes" should be part of payload if checked', async ({ page }) =>
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
+                    medisinskeArsaker: {
+                        isMedisinskArsak: true,
+                    },
+                    arbeidsrelaterteArsaker: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: [],
+                        andreArbeidsrelaterteArsaker: null,
+                    },
                 },
             ],
             meldinger: { tilNav: null, tilArbeidsgiver: null },
@@ -399,6 +436,14 @@ test('"har flere arbeidsforhold" should be part of payload if checked', async ({
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
+                    medisinskeArsaker: {
+                        isMedisinskArsak: true,
+                    },
+                    arbeidsrelaterteArsaker: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: [],
+                        andreArbeidsrelaterteArsaker: null,
+                    },
                 },
             ],
             meldinger: { tilNav: null, tilArbeidsgiver: null },
@@ -407,6 +452,59 @@ test('"har flere arbeidsforhold" should be part of payload if checked', async ({
             arbeidsforhold: {
                 arbeidsgivernavn: 'Test AS',
             },
+            tilbakedatering: null,
+            pasientenSkalSkjermes: false,
+        },
+    })
+})
+
+test('"arbeidsrelaterte og medisinske årsaker" should be part of payload if checked', async ({ page }) => {
+    await launchWithMock(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await fillPeriodeRelative({
+        type: '100%',
+        days: 3,
+    })(page)
+
+    await fillArsakerTilAktivitetIkkeMulig({})(page)
+
+    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+
+    await nextStep()(page)
+
+    await verifySignerendeBehandler()(page)
+
+    const request = await submitSykmelding()(page)
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+        draftId: getDraftId(page) ?? 'missing',
+        values: {
+            hoveddiagnose: { system: 'ICPC2', code: 'P74' },
+            bidiagnoser: [],
+            aktivitet: [
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: today(),
+                    tom: inDays(3),
+                    aktivitetIkkeMulig: { dummy: true },
+                    avventende: null,
+                    gradert: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
+                    medisinskeArsaker: {
+                        isMedisinskArsak: true,
+                    },
+                    arbeidsrelaterteArsaker: {
+                        isArbeidsrelatertArsak: true,
+                        arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                        andreArbeidsrelaterteArsaker: 'Annen årsak til aktivitet ikke mulig',
+                    },
+                },
+            ],
+            arbeidsforhold: null,
+            meldinger: { tilNav: null, tilArbeidsgiver: null },
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
         },

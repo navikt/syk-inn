@@ -25,7 +25,9 @@ export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gra
 
 export type AktivitetIkkeMulig = FomTom & {
     __typename?: 'AktivitetIkkeMulig'
+    arbeidsrelaterteArsaker: ArbeidsrelaterteArsaker
     fom: Scalars['DateOnly']['output']
+    medisinskeArsaker: MedisinskeArsaker
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
 }
@@ -40,6 +42,19 @@ export type Arbeidsgiver = {
     __typename?: 'Arbeidsgiver'
     arbeidsgivernavn: Scalars['String']['output']
     harFlere: Scalars['Boolean']['output']
+}
+
+export type ArbeidsrelaterteArsaker = {
+    __typename?: 'ArbeidsrelaterteArsaker'
+    andreArbeidsrelaterteArsaker?: Maybe<Scalars['String']['output']>
+    arbeidsrelaterteArsaker: Array<Scalars['String']['output']>
+    isArbeidsrelatertArsak: Scalars['Boolean']['output']
+}
+
+export type ArbeidsrelaterteArsakerInput = {
+    andreArbeidsrelaterteArsaker?: InputMaybe<Scalars['String']['input']>
+    arbeidsrelaterteArsaker: Array<Scalars['String']['input']>
+    isArbeidsrelatertArsak: Scalars['Boolean']['input']
 }
 
 export type Avventende = FomTom & {
@@ -111,10 +126,12 @@ export type GradertInput = {
  */
 export type InputAktivitet = {
     aktivitetIkkeMulig?: InputMaybe<AktivitetIkkeMuligInput>
+    arbeidsrelaterteArsaker?: InputMaybe<ArbeidsrelaterteArsakerInput>
     avventende?: InputMaybe<AvventendeInput>
     behandlingsdager?: InputMaybe<BehandlingsdagerInput>
     fom: Scalars['String']['input']
     gradert?: InputMaybe<GradertInput>
+    medisinskeArsaker?: InputMaybe<MedisinskeArsakerInput>
     reisetilskudd?: InputMaybe<ReisetilskuddInput>
     tom: Scalars['String']['input']
     type: AktivitetType
@@ -147,6 +164,15 @@ export type InputYrkesskade = {
 export type Konsultasjon = {
     __typename?: 'Konsultasjon'
     diagnoser?: Maybe<Array<Diagnose>>
+}
+
+export type MedisinskeArsaker = {
+    __typename?: 'MedisinskeArsaker'
+    isMedisinskArsak: Scalars['Boolean']['output']
+}
+
+export type MedisinskeArsakerInput = {
+    isMedisinskArsak: Scalars['Boolean']['input']
 }
 
 export type Mutation = {
@@ -413,6 +439,8 @@ export type ResolversTypes = {
     AktivitetIkkeMuligInput: AktivitetIkkeMuligInput
     AktivitetType: AktivitetType
     Arbeidsgiver: ResolverTypeWrapper<Arbeidsgiver>
+    ArbeidsrelaterteArsaker: ResolverTypeWrapper<ArbeidsrelaterteArsaker>
+    ArbeidsrelaterteArsakerInput: ArbeidsrelaterteArsakerInput
     Avventende: ResolverTypeWrapper<Avventende>
     AvventendeInput: AvventendeInput
     Behandler: ResolverTypeWrapper<Behandler>
@@ -436,6 +464,8 @@ export type ResolversTypes = {
     Int: ResolverTypeWrapper<Scalars['Int']['output']>
     JSON: ResolverTypeWrapper<Scalars['JSON']['output']>
     Konsultasjon: ResolverTypeWrapper<Konsultasjon>
+    MedisinskeArsaker: ResolverTypeWrapper<MedisinskeArsaker>
+    MedisinskeArsakerInput: MedisinskeArsakerInput
     Mutation: ResolverTypeWrapper<{}>
     OpprettSykmeldingDraft: ResolverTypeWrapper<OpprettSykmeldingDraft>
     OpprettSykmeldingInput: OpprettSykmeldingInput
@@ -466,6 +496,8 @@ export type ResolversParentTypes = {
     AktivitetIkkeMulig: AktivitetIkkeMulig
     AktivitetIkkeMuligInput: AktivitetIkkeMuligInput
     Arbeidsgiver: Arbeidsgiver
+    ArbeidsrelaterteArsaker: ArbeidsrelaterteArsaker
+    ArbeidsrelaterteArsakerInput: ArbeidsrelaterteArsakerInput
     Avventende: Avventende
     AvventendeInput: AvventendeInput
     Behandler: Behandler
@@ -487,6 +519,8 @@ export type ResolversParentTypes = {
     Int: Scalars['Int']['output']
     JSON: Scalars['JSON']['output']
     Konsultasjon: Konsultasjon
+    MedisinskeArsaker: MedisinskeArsaker
+    MedisinskeArsakerInput: MedisinskeArsakerInput
     Mutation: {}
     OpprettSykmeldingDraft: OpprettSykmeldingDraft
     OpprettSykmeldingInput: OpprettSykmeldingInput
@@ -524,7 +558,9 @@ export type AktivitetIkkeMuligResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['AktivitetIkkeMulig'] = ResolversParentTypes['AktivitetIkkeMulig'],
 > = {
+    arbeidsrelaterteArsaker?: Resolver<ResolversTypes['ArbeidsrelaterteArsaker'], ParentType, ContextType>
     fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    medisinskeArsaker?: Resolver<ResolversTypes['MedisinskeArsaker'], ParentType, ContextType>
     tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
@@ -536,6 +572,17 @@ export type ArbeidsgiverResolvers<
 > = {
     arbeidsgivernavn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     harFlere?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type ArbeidsrelaterteArsakerResolvers<
+    ContextType = any,
+    ParentType extends
+        ResolversParentTypes['ArbeidsrelaterteArsaker'] = ResolversParentTypes['ArbeidsrelaterteArsaker'],
+> = {
+    andreArbeidsrelaterteArsaker?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    arbeidsrelaterteArsaker?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+    isArbeidsrelatertArsak?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -623,6 +670,14 @@ export type KonsultasjonResolvers<
     ParentType extends ResolversParentTypes['Konsultasjon'] = ResolversParentTypes['Konsultasjon'],
 > = {
     diagnoser?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type MedisinskeArsakerResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['MedisinskeArsaker'] = ResolversParentTypes['MedisinskeArsaker'],
+> = {
+    isMedisinskArsak?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -840,6 +895,7 @@ export type Resolvers<ContextType = any> = {
     Aktivitet?: AktivitetResolvers<ContextType>
     AktivitetIkkeMulig?: AktivitetIkkeMuligResolvers<ContextType>
     Arbeidsgiver?: ArbeidsgiverResolvers<ContextType>
+    ArbeidsrelaterteArsaker?: ArbeidsrelaterteArsakerResolvers<ContextType>
     Avventende?: AvventendeResolvers<ContextType>
     Behandler?: BehandlerResolvers<ContextType>
     Behandlingsdager?: BehandlingsdagerResolvers<ContextType>
@@ -850,6 +906,7 @@ export type Resolvers<ContextType = any> = {
     Gradert?: GradertResolvers<ContextType>
     JSON?: GraphQLScalarType
     Konsultasjon?: KonsultasjonResolvers<ContextType>
+    MedisinskeArsaker?: MedisinskeArsakerResolvers<ContextType>
     Mutation?: MutationResolvers<ContextType>
     OpprettSykmeldingDraft?: OpprettSykmeldingDraftResolvers<ContextType>
     OpprettSykmeldingRuleOutcome?: OpprettSykmeldingRuleOutcomeResolvers<ContextType>
