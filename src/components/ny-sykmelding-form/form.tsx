@@ -75,6 +75,7 @@ export type NySykmeldingMainFormValues = {
     perioder: AktivitetsPeriode[]
     diagnoser: {
         hoved: DiagnoseSuggestion | null
+        bidiagnoser: DiagnoseSuggestion[]
     }
     tilbakedatering: TilbakedateringField | null
     meldinger: MeldingerField
