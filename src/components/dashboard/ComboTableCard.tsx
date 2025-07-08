@@ -6,10 +6,16 @@ import { Skeleton, Table } from '@navikt/ds-react'
 import DashboardCard from '@components/dashboard/card/DashboardCard'
 import { AllSykmeldingerDocument, GetAllDraftsDocument } from '@queries'
 import { ComboTable, ComboTableHeader } from '@components/dashboard/combo-table/ComboTable'
+import DashboardTable from '@components/dashboard/table/DashboardTable'
+
+import useOnFocus from '../../hooks/useOnFocus'
 
 function ComboTableCard({ className }: { className?: string }): ReactElement {
     const allDrafts = useQuery(GetAllDraftsDocument)
     const sykmeldinger = useQuery(AllSykmeldingerDocument)
+
+    useOnFocus(allDrafts.refetch)
+    useOnFocus(sykmeldinger.refetch)
 
     return (
         <DashboardCard className={className} ariaLabel="Tidligere sykmeldinger og utkast">
@@ -27,7 +33,7 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
 
 function ComboTableSkeleton(): ReactElement {
     return (
-        <Table>
+        <DashboardTable>
             <ComboTableHeader />
             <Table.Body>
                 {R.range(0, 10).map((index) => (
@@ -56,7 +62,7 @@ function ComboTableSkeleton(): ReactElement {
                     </Table.Row>
                 ))}
             </Table.Body>
-        </Table>
+        </DashboardTable>
     )
 }
 

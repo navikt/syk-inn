@@ -21,6 +21,7 @@ import DraftPeriodeLink from '@components/dashboard/combo-table/draft/DraftPerio
 
 import { byActiveOrFutureSykmelding } from '../../../data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '../../../data-layer/draft/draft-schema'
+import DashboardTable from '../table/DashboardTable'
 
 export function ComboTable({
     sykmeldinger,
@@ -32,7 +33,7 @@ export function ComboTable({
     const [current, previous] = R.partition<SykmeldingFragment>(sykmeldinger, byActiveOrFutureSykmelding)
 
     return (
-        <Table>
+        <DashboardTable>
             <ComboTableHeader />
             <Table.Body>
                 {drafts.map((draft) => {
@@ -96,7 +97,7 @@ export function ComboTable({
                     )
                 })}
             </Table.Body>
-        </Table>
+        </DashboardTable>
     )
 }
 
