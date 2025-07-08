@@ -29,7 +29,7 @@ test('draft values shall be used as default if provided', () => {
                 medisinskArsak: { isMedisinskArsak: false },
                 arbeidsrelatertArsak: {
                     annenArbeidsrelatertArsak: 'Ingen tilretteleggingsmuligheter',
-                    arbeidsrelatertArsaker: ['TILRETTELEGGING_IKKE_MULIG'],
+                    arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG'],
                     isArbeidsrelatertArsak: true,
                 },
             },
@@ -69,7 +69,7 @@ test('form values shall have higher presedence than draft values', () => {
                 medisinskArsak: { isMedisinskArsak: true },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: true,
-                    arbeidsrelatertArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                    arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
                     annenArbeidsrelatertArsak: 'Ingen mulighet for hjemmekontor',
                 },
             },
@@ -112,7 +112,7 @@ test('server suggestions shall be used if no draft or form values are provided',
                 medisinskArsak: { isMedisinskArsak: false },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: false,
-                    arbeidsrelatertArsaker: null,
+                    arbeidsrelaterteArsaker: null,
                     annenArbeidsrelatertArsak: null,
                 },
             },
@@ -156,7 +156,7 @@ const fullDraft: DraftValues = {
             },
             arbeidsrelatertArsak: {
                 isArbeidsrelatertArsak: true,
-                arbeidsrelatertArsaker: ['TILRETTELEGGING_IKKE_MULIG'],
+                arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG'],
                 annenArbeidsrelatertArsak: 'Ingen tilretteleggingsmuligheter',
             },
         },
@@ -188,7 +188,7 @@ const fullExistingStateValues: MainSectionValues = {
             medisinskArsak: { isMedisinskArsak: true },
             arbeidsrelatertArsak: {
                 isArbeidsrelatertArsak: true,
-                arbeidsrelatertArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
                 annenArbeidsrelatertArsak: 'Ingen mulighet for hjemmekontor',
             },
         },

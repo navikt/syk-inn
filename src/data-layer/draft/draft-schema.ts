@@ -24,7 +24,7 @@ export const DraftValuesSchema = z.object({
                 arbeidsrelatertArsak: z
                     .object({
                         isArbeidsrelatertArsak: z.boolean().nullable(),
-                        arbeidsrelatertArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])).nullable(),
+                        arbeidsrelaterteArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])).nullable(),
                         annenArbeidsrelatertArsak: z.string().nullable(),
                     })
                     .nullable(),

@@ -41,7 +41,7 @@ export type MedisinskArsakField = {
 export type ArbeidsrelatertArsakType = 'TILRETTELEGGING_IKKE_MULIG' | 'ANNET'
 export type ArbeidsrelatertArsakField = {
     isArbeidsrelatertArsak: boolean
-    arbeidsrelatertArsaker: ArbeidsrelatertArsakType[] | null
+    arbeidsrelaterteArsaker: ArbeidsrelatertArsakType[] | null
     annenArbeidsrelatertArsak: string | null
 }
 

@@ -11,7 +11,7 @@ const AktivitetIkkeMuligSchema = z.object({
     }),
     arbeidsrelatertArsak: z.object({
         isArbeidsrelatertArsak: z.boolean(),
-        arbeidsrelatertArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])),
+        arbeidsrelaterteArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])),
         annenArbeidsrelatertArsak: z.string().nullable(),
     }),
 })

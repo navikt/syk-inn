@@ -215,7 +215,7 @@ function toInitialPeriodeFromState(aktivitet: AktivitetStep): NySykmeldingMainFo
                 },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
-                    arbeidsrelatertArsaker: aktivitet.arbeidsrelatertArsak.arbeidsrelatertArsaker ?? null,
+                    arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker ?? null,
                     annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak.annenArbeidsrelatertArsak ?? null,
                 },
             }
@@ -257,7 +257,7 @@ function toInitialPeriodeFromDraft(
                 },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: draft.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
-                    arbeidsrelatertArsaker: draft.arbeidsrelatertArsak?.arbeidsrelatertArsaker ?? null,
+                    arbeidsrelaterteArsaker: draft.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? null,
                     annenArbeidsrelatertArsak: draft.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
                 },
             }
@@ -322,7 +322,7 @@ export function getDefaultPeriode(): AktivitetsPeriode {
         },
         arbeidsrelatertArsak: {
             isArbeidsrelatertArsak: false,
-            arbeidsrelatertArsaker: null,
+            arbeidsrelaterteArsaker: null,
             annenArbeidsrelatertArsak: null,
         },
     }

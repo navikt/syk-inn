@@ -161,7 +161,7 @@ function aktivitetStepToInputAktivitet(value: AktivitetStep): InputAktivitet {
                 },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: value.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
-                    arbeidsrelaterteArsaker: value.arbeidsrelatertArsak.arbeidsrelatertArsaker ?? [],
+                    arbeidsrelaterteArsaker: value.arbeidsrelatertArsak.arbeidsrelaterteArsaker ?? [],
                     annenArbeidsrelatertArsak: value.arbeidsrelatertArsak.annenArbeidsrelatertArsak ?? null,
                 },
             }

@@ -19,7 +19,7 @@ function NySykmeldingFormDevTools(): ReactElement {
                 medisinskArsak: { isMedisinskArsak: true },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: false,
-                    arbeidsrelatertArsaker: null,
+                    arbeidsrelaterteArsaker: null,
                     annenArbeidsrelatertArsak: null,
                 },
             },
@@ -34,7 +34,7 @@ function NySykmeldingFormDevTools(): ReactElement {
                 medisinskArsak: { isMedisinskArsak: true },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: false,
-                    arbeidsrelatertArsaker: null,
+                    arbeidsrelaterteArsaker: null,
                     annenArbeidsrelatertArsak: null,
                 },
             },

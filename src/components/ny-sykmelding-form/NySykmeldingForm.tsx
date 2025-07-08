@@ -150,7 +150,7 @@ function formAktivitetToStepAktivitet(value: AktivitetsPeriode): AktivitetStep {
                 },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: value.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
-                    arbeidsrelatertArsaker: value.arbeidsrelatertArsak?.arbeidsrelatertArsaker ?? null,
+                    arbeidsrelaterteArsaker: value.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? null,
                     annenArbeidsrelatertArsak: value.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
                 },
             }

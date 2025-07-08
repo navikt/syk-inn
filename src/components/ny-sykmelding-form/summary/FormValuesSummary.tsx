@@ -134,7 +134,7 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[]
                                     <FormSummary.Answer>
                                         <FormSummary.Label>Arbeidsrelaterte årsaker</FormSummary.Label>
                                         <FormSummary.Value>
-                                            {aktivitet.arbeidsrelatertArsak.arbeidsrelatertArsaker
+                                            {aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker
                                                 ?.map((arsak) => ArbeidsrelaterteArsaker[arsak])
                                                 .join(', ')}
                                         </FormSummary.Value>

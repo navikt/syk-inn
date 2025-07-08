@@ -26,7 +26,7 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
     })
 
     const arbeidsrelaterteArsaker = useController({
-        name: `perioder.${index}.arbeidsrelatertArsak.arbeidsrelatertArsaker`,
+        name: `perioder.${index}.arbeidsrelatertArsak.arbeidsrelaterteArsaker`,
         defaultValue: [],
         rules: {
             validate: (value) => {

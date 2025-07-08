@@ -29,7 +29,7 @@ export function createMockSykmelding(
                     },
                     arbeidsrelatertArsak: {
                         isArbeidsrelatertArsak: false,
-                        arbeidsrelatertArsaker: [],
+                        arbeidsrelaterteArsaker: [],
                         annenArbeidsrelatertArsak: null,
                     },
                 },

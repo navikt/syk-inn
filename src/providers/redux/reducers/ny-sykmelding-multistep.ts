@@ -44,7 +44,7 @@ export type MedisinskArsak = {
 
 export type ArbeidsrelatertArsak = {
     isArbeidsrelatertArsak: boolean | null
-    arbeidsrelatertArsaker: ArbeidsrelatertArsakType[] | null
+    arbeidsrelaterteArsaker: ArbeidsrelatertArsakType[] | null
     annenArbeidsrelatertArsak: string | null
 }
 
