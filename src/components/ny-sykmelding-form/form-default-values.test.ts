@@ -1,78 +1,21 @@
 import { expect, test } from 'vitest'
 
 import { createDefaultFormValues } from '@components/ny-sykmelding-form/form-default-values'
+import { NySykmeldingSuggestions } from '@components/ny-sykmelding-form/form'
+import { dateOnly } from '@utils/date'
 
 import { DraftValues } from '../../data-layer/draft/draft-schema'
+import { MainSectionValues } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
 test('draft values shall be used as default if provided', () => {
-    const draftValues: DraftValues = {
-        arbeidsforhold: {
-            harFlereArbeidsforhold: 'JA',
-            sykmeldtFraArbeidsforhold: '123',
-        },
-        perioder: [
-            {
-                type: 'GRADERT',
-                fom: '2025-01-01',
-                tom: '2025-01-15',
-                grad: '50',
-                medisinskArsak: {
-                    isMedisinskArsak: true,
-                },
-                arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: true,
-                    arbeidsrelatertArsaker: ['TILRETTELEGGING_IKKE_MULIG'],
-                    annenArbeidsrelatertArsak: 'Ingen tilretteleggingsmuligheter',
-                },
-            },
-            {
-                type: 'AKTIVITET_IKKE_MULIG',
-                fom: '2025-01-16',
-                tom: '2025-01-31',
-                medisinskArsak: {
-                    isMedisinskArsak: false,
-                },
-                arbeidsrelatertArsak: null,
-            },
-        ],
-        hoveddiagnose: {
-            system: 'ICD10',
-            code: 'A00',
-            text: 'Kolera',
-        },
-        tilbakedatering: {
-            fom: '2024-12-15',
-            grunn: 'Pasienten kunne ikke oppsøke lege tidligere',
-        },
-        meldinger: {
-            showTilNav: true,
-            tilNav: 'Melding til NAV',
-            showTilArbeidsgiver: false,
-            tilArbeidsgiver: null,
-        },
-        svangerskapsrelatert: false,
-        yrkesskade: {
-            yrkesskade: true,
-            skadedato: '2024-11-20',
-        },
-    }
-
     const defaultValues = createDefaultFormValues({
         valuesInState: null,
-        draftValues: draftValues,
-        serverSuggestions: {
-            diagnose: {
-                value: {
-                    system: 'ICPC2',
-                    code: 'A01',
-                    text: 'Influensa',
-                },
-            },
-        },
+        draftValues: fullDraft,
+        serverSuggestions: fullServerSuggesetions,
     })
 
     expect(defaultValues).toEqual({
-        arbeidsforhold: { harFlereArbeidsforhold: 'JA', sykmeldtFraArbeidsforhold: '123' },
+        arbeidsforhold: { harFlereArbeidsforhold: 'JA', sykmeldtFraArbeidsforhold: 'Draft Arbeidsforhold' },
         perioder: [
             {
                 periode: { fom: '2025-01-01', tom: '2025-01-15' },
@@ -85,17 +28,189 @@ test('draft values shall be used as default if provided', () => {
                 aktivitet: { type: 'AKTIVITET_IKKE_MULIG', grad: null },
                 medisinskArsak: { isMedisinskArsak: false },
                 arbeidsrelatertArsak: {
-                    // TODO: This mapping seems broken :shock:
-                    isArbeidsrelatertArsak: false,
-                    arbeidsrelatertArsaker: null,
-                    annenArbeidsrelatertArsak: null,
+                    annenArbeidsrelatertArsak: 'Ingen tilretteleggingsmuligheter',
+                    arbeidsrelatertArsaker: ['TILRETTELEGGING_IKKE_MULIG'],
+                    isArbeidsrelatertArsak: true,
                 },
             },
         ],
         // Diagnose from draft, not server suggestion
         diagnoser: { hoved: { system: 'ICD10', code: 'A00', text: 'Kolera' } },
         tilbakedatering: { fom: '2024-12-15', grunn: 'Pasienten kunne ikke oppsøke lege tidligere' },
-        meldinger: { showTilNav: true, showTilArbeidsgiver: false, tilNav: 'Melding til NAV', tilArbeidsgiver: null },
+        meldinger: {
+            showTilNav: true,
+            showTilArbeidsgiver: true,
+            tilNav: 'Draft Melding til Nav',
+            tilArbeidsgiver: 'Draft Melding til Arbeidsgiver',
+        },
         andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: true, skadedato: '2024-11-20' } },
     })
 })
+
+test('form values shall have higher presedence than draft values', () => {
+    const defaultValues = createDefaultFormValues({
+        valuesInState: fullExistingStateValues,
+        draftValues: fullDraft,
+        serverSuggestions: fullServerSuggesetions,
+    })
+
+    expect(defaultValues).toEqual({
+        arbeidsforhold: { harFlereArbeidsforhold: 'JA', sykmeldtFraArbeidsforhold: 'Form values Arbeidsgiver' },
+        perioder: [
+            {
+                periode: { fom: '2025-02-01', tom: '2025-02-14' },
+                aktivitet: { type: 'GRADERT', grad: '40' },
+                medisinskArsak: null,
+                arbeidsrelatertArsak: null,
+            },
+            {
+                periode: { fom: '2025-02-15', tom: '2025-02-28' },
+                aktivitet: { type: 'AKTIVITET_IKKE_MULIG', grad: null },
+                medisinskArsak: { isMedisinskArsak: true },
+                arbeidsrelatertArsak: {
+                    isArbeidsrelatertArsak: true,
+                    arbeidsrelatertArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                    annenArbeidsrelatertArsak: 'Ingen mulighet for hjemmekontor',
+                },
+            },
+            {
+                periode: { fom: '2025-03-01', tom: '2025-03-10' },
+                aktivitet: { type: 'GRADERT', grad: '20' },
+                medisinskArsak: null,
+                arbeidsrelatertArsak: null,
+            },
+        ],
+        // TODO: Bidiagnoser
+        diagnoser: { hoved: { system: 'ICPC2', code: 'L02', text: 'Ryggsmerter' } },
+        tilbakedatering: { fom: '2025-01-20', grunn: 'Legen var bortreist' },
+        meldinger: {
+            showTilNav: true,
+            showTilArbeidsgiver: true,
+            tilNav: 'Vurdering gjort på bakgrunn av pasientens egenbeskrivelse.',
+            tilArbeidsgiver: 'Pasienten anbefales å jobbe redusert i en periode.',
+        },
+        andreSporsmal: { svangerskapsrelatert: true, yrkesskade: { yrkesskade: false, skadedato: null } },
+    })
+})
+
+test('server suggestions shall be used if no draft or form values are provided', () => {
+    const defaultValues = createDefaultFormValues({
+        valuesInState: null,
+        draftValues: null,
+        serverSuggestions: fullServerSuggesetions,
+    })
+
+    expect(defaultValues).toEqual({
+        arbeidsforhold: { harFlereArbeidsforhold: 'NEI', sykmeldtFraArbeidsforhold: null },
+        // Server suggested diagnose
+        diagnoser: { hoved: { system: 'ICPC2', code: 'A01', text: 'Influensa' } },
+        perioder: [
+            {
+                // Default periode is GRADERT from Today
+                periode: { fom: dateOnly(new Date()), tom: '' },
+                aktivitet: { type: 'GRADERT', grad: null },
+                medisinskArsak: { isMedisinskArsak: false },
+                arbeidsrelatertArsak: {
+                    isArbeidsrelatertArsak: false,
+                    arbeidsrelatertArsaker: null,
+                    annenArbeidsrelatertArsak: null,
+                },
+            },
+        ],
+        tilbakedatering: null,
+        meldinger: { showTilNav: false, tilNav: null, showTilArbeidsgiver: false, tilArbeidsgiver: null },
+        andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: false, skadedato: null } },
+    })
+})
+
+const fullServerSuggesetions: NySykmeldingSuggestions = {
+    diagnose: {
+        value: {
+            system: 'ICPC2',
+            code: 'A01',
+            text: 'Influensa',
+        },
+    },
+}
+
+const fullDraft: DraftValues = {
+    arbeidsforhold: {
+        harFlereArbeidsforhold: 'JA',
+        sykmeldtFraArbeidsforhold: 'Draft Arbeidsforhold',
+    },
+    perioder: [
+        {
+            type: 'GRADERT',
+            fom: '2025-01-01',
+            tom: '2025-01-15',
+            grad: '50',
+            medisinskArsak: null,
+            arbeidsrelatertArsak: null,
+        },
+        {
+            type: 'AKTIVITET_IKKE_MULIG',
+            fom: '2025-01-16',
+            tom: '2025-01-31',
+            medisinskArsak: {
+                isMedisinskArsak: false,
+            },
+            arbeidsrelatertArsak: {
+                isArbeidsrelatertArsak: true,
+                arbeidsrelatertArsaker: ['TILRETTELEGGING_IKKE_MULIG'],
+                annenArbeidsrelatertArsak: 'Ingen tilretteleggingsmuligheter',
+            },
+        },
+    ],
+    hoveddiagnose: { system: 'ICD10', code: 'A00', text: 'Kolera' },
+    // TODO: Bidiagnoser
+    tilbakedatering: {
+        fom: '2024-12-15',
+        grunn: 'Pasienten kunne ikke oppsøke lege tidligere',
+    },
+    meldinger: {
+        showTilNav: true,
+        tilNav: 'Draft Melding til Nav',
+        showTilArbeidsgiver: true,
+        tilArbeidsgiver: 'Draft Melding til Arbeidsgiver',
+    },
+    svangerskapsrelatert: false,
+    yrkesskade: { yrkesskade: true, skadedato: '2024-11-20' },
+}
+
+const fullExistingStateValues: MainSectionValues = {
+    arbeidsforhold: { harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Form values Arbeidsgiver' },
+    aktiviteter: [
+        { type: 'GRADERT', fom: '2025-02-01', tom: '2025-02-14', grad: 40 },
+        {
+            type: 'AKTIVITET_IKKE_MULIG',
+            fom: '2025-02-15',
+            tom: '2025-02-28',
+            medisinskArsak: { isMedisinskArsak: true },
+            arbeidsrelatertArsak: {
+                isArbeidsrelatertArsak: true,
+                arbeidsrelatertArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                annenArbeidsrelatertArsak: 'Ingen mulighet for hjemmekontor',
+            },
+        },
+        { type: 'GRADERT', fom: '2025-03-01', tom: '2025-03-10', grad: 20 },
+    ],
+    tilbakedatering: { fom: '2025-01-20', grunn: 'Legen var bortreist' },
+    diagnose: {
+        hoved: { system: 'ICPC2', code: 'L02', text: 'Ryggsmerter' },
+        bi: [
+            { system: 'ICD10', code: 'M54.5', text: 'Lumbago' },
+            { system: 'ICD10', code: 'R51', text: 'Hodepine' },
+        ],
+    },
+    meldinger: {
+        showTilNav: true,
+        showTilArbeidsgiver: true,
+        tilNav: 'Vurdering gjort på bakgrunn av pasientens egenbeskrivelse.',
+        tilArbeidsgiver: 'Pasienten anbefales å jobbe redusert i en periode.',
+    },
+    andreSporsmal: {
+        svangerskapsrelatert: true,
+        yrkesskade: false,
+        yrkesskadeDato: null,
+    },
+}
