@@ -19,9 +19,9 @@ export function withSpanServerAsync<Result, Args extends unknown[]>(
 /**
  * Marks the span as failed, as well as logs the exception.
  */
-export function failServerSpan(span: Span, error: Error): void {
+export function failServerSpan(span: Span, what: string, error: Error): void {
     logger.error(error)
 
     span.recordException(error)
-    span.setStatus({ code: SpanStatusCode.ERROR, message: error.message })
+    span.setStatus({ code: SpanStatusCode.ERROR, message: what })
 }

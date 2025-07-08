@@ -67,7 +67,12 @@ export async function fetchInternalAPI<
     }
 
     const pathWithoutIds = path.replace(/[a-f0-9\-]{36}/g, '<uuid>')
-    return spanServerAsync(`Fetch.${api}${pathWithoutIds}`, async (span) => {
+    return spanServerAsync(`InternalAPIs.${api}${pathWithoutIds}`, async (span) => {
+        span.setAttributes({
+            'InternalApi.server': apiConfig.host,
+            'InternalApi.path': pathWithoutIds,
+        })
+
         const response = await fetch(`http://${apiConfig.host}${path}`, {
             method,
             headers: {
@@ -86,6 +91,7 @@ export async function fetchInternalAPI<
             const responseBody = await getFailedResponseBody(response)
             failServerSpan(
                 span,
+                'API call failed',
                 new Error(
                     `Unable to fetch ${path} (${response.status} ${response.statusText}), details: ${responseBody}`,
                 ),
@@ -99,7 +105,7 @@ export async function fetchInternalAPI<
             return (await response.arrayBuffer()) as InferredReturnValue
         } else if (isPdfResponse && responseSchema !== 'ArrayBuffer') {
             const error = new Error(`Got PDF but expected response was not ArrayBuffer, for ${api}${path}, whats up?`)
-            failServerSpan(span, error)
+            failServerSpan(span, 'Invalid PDF', error)
             throw error
         }
 
@@ -108,7 +114,7 @@ export async function fetchInternalAPI<
             const error = new Error(
                 `Did not get JSON payload (got: ${response.headers.get('Content-Type') ?? 'nothing'}) was provided for ${api}${path}`,
             )
-            failServerSpan(span, error)
+            failServerSpan(span, 'Invalid Content-Type', error)
             throw error
         }
 
@@ -118,7 +124,8 @@ export async function fetchInternalAPI<
         if (!parsed.success) {
             failServerSpan(
                 span,
-                new Error(`Invalid response from ${path}, details: ${JSON.stringify(parsed.error, null, 2)}`),
+                'Invalid API response body',
+                new Error(`Invalid response from ${path}`, { cause: parsed.error }),
             )
 
             return { errorType: 'API_BODY_INVALID' }

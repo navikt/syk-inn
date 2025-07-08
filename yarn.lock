@@ -2176,7 +2176,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
-    "@navikt/smart-on-fhir": "npm:1.2.0"
+    "@navikt/smart-on-fhir": "npm:1.2.1"
     "@types/node": "npm:^22.16.0"
     hono: "npm:^4.8.4"
     jose: "npm:^6.0.11"
@@ -2240,17 +2240,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.2.0":
-  version: 1.2.0
-  resolution: "@navikt/smart-on-fhir@npm:1.2.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.2.0%2F8d0a4b8bdff33f777def34db925d9f82948d25ca"
+"@navikt/smart-on-fhir@npm:1.2.1":
+  version: 1.2.1
+  resolution: "@navikt/smart-on-fhir@npm:1.2.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.2.1%2F71d596b45af7196eda620eed5ff6a3861a3d3f52"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
     "@opentelemetry/api": "npm:^1.9.0"
     jose: "npm:^6.0.11"
     openid-client: "npm:^6.6.2"
     pino: "npm:^9.7.0"
-    zod: "npm:^3.25.73"
-  checksum: 10c0/d880b7079146104e8278f81db0b11b289c4093cfcb54f6840f55693f7e26646c8b1de73a742120d0b099f831498bdaf3a36a3a96c44fe6e548782c5e05d2e453
+    zod: "npm:^3.25.75"
+  checksum: 10c0/79c4d3a76a5ce32d0c7588ba9c1c97115a7f6f3b586abdbbbac8b210af98fd376184ceab055bfc12ae1f99a6f710f40e8e76d6c09e53f7d114e4b281c99bedb0
   languageName: node
   linkType: hard
 
@@ -11076,7 +11076,7 @@ __metadata:
     "@navikt/next-logger": "npm:^4.1.5"
     "@navikt/oasis": "npm:^3.8.0"
     "@navikt/pino-logger": "npm:^4.1.5"
-    "@navikt/smart-on-fhir": "npm:1.2.0"
+    "@navikt/smart-on-fhir": "npm:1.2.1"
     "@opentelemetry/api": "npm:^1.9.0"
     "@parcel/watcher": "npm:^2.5.1"
     "@playwright/test": "npm:1.53.2"
@@ -12323,7 +12323,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25.73, zod@npm:^3.25.76":
+"zod@npm:^3.25.75, zod@npm:^3.25.76":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
