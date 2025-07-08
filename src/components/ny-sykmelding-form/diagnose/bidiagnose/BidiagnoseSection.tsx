@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react'
 import { Button } from '@navikt/ds-react'
 import { useFieldArray } from 'react-hook-form'
 
+import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
+
 import BidiagnosePicker from './BidiagnosePicker'
 
 function BidiagnoseSection(): ReactElement {
@@ -24,7 +26,15 @@ function BidiagnoseSection(): ReactElement {
                 type="button"
                 variant="secondary"
                 size="small"
-                onClick={() => append(null)} // or append({ code: '', system: '', text: '' }) depending on your model
+                onClick={() => {
+                    const nyBidiagnose: DiagnoseSuggestion = {
+                        system: 'ICD10', // todo is this correct? what about icpc2
+                        code: '',
+                        text: '',
+                    }
+
+                    append(nyBidiagnose)
+                }}
             >
                 Legg til bidiagnose
             </Button>
