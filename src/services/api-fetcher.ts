@@ -1,11 +1,8 @@
 import { requestAzureClientCredentialsToken } from '@navikt/oasis'
-import { logger as pinoLogger } from '@navikt/next-logger'
 import * as z from 'zod/v4'
 
 import { getServerEnv } from '@utils/env'
 import { failServerSpan, spanServerAsync } from '@otel/server'
-
-const logger = pinoLogger.child({}, { msgPrefix: '[API FETCHER]: ' })
 
 type ValidAPI = 'syk-inn-api' | 'tsm-pdl-cache'
 
@@ -147,22 +144,32 @@ export async function getApi(
         return { host: 'localhost:8080', token: 'foo-bar-baz' }
     }
 
-    const apiConfig = internalApis[api]
-    const scope = `api://dev-gcp.${apiConfig.namespace}.${api}/.default`
+    return spanServerAsync('InternalAPIs.token-exchange', async (span) => {
+        const apiConfig = internalApis[api]
+        const scope = `api://dev-gcp.${apiConfig.namespace}.${api}/.default`
 
-    const tokenResult = await requestAzureClientCredentialsToken(scope)
-    if (!tokenResult.ok) {
-        logger.error(`Unable to exchange client credentials token for ${scope}`, {
-            cause: tokenResult.error,
+        span.setAttributes({
+            'InternalApi.server': api,
         })
 
-        return { errorType: 'TOKEN_EXCHANGE_FAILED' }
-    }
+        const tokenResult = await requestAzureClientCredentialsToken(scope)
+        if (!tokenResult.ok) {
+            failServerSpan(
+                span,
+                'Token exchange failed',
+                new Error(`Unable to exchange client credentials token for ${scope}`, {
+                    cause: tokenResult.error,
+                }),
+            )
 
-    return {
-        host: api,
-        token: tokenResult.token,
-    }
+            return { errorType: 'TOKEN_EXCHANGE_FAILED' }
+        }
+
+        return {
+            host: api,
+            token: tokenResult.token,
+        }
+    })
 }
 
 async function getFailedResponseBody(response: Response): Promise<string> {
