@@ -156,13 +156,13 @@ function aktivitetStepToInputAktivitet(value: AktivitetStep): InputAktivitet {
                 gradert: null,
                 behandlingsdager: null,
                 reisetilskudd: null,
-                medisinskeArsaker: {
+                medisinskArsak: {
                     isMedisinskArsak: value.medisinskArsak.isMedisinskArsak ?? false,
                 },
-                arbeidsrelaterteArsaker: {
+                arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: value.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
                     arbeidsrelaterteArsaker: value.arbeidsrelatertArsak.arbeidsrelatertArsaker ?? [],
-                    andreArbeidsrelaterteArsaker: value.arbeidsrelatertArsak.annenArbeidsrelatertArsak ?? null,
+                    annenArbeidsrelatertArsak: value.arbeidsrelatertArsak.annenArbeidsrelatertArsak ?? null,
                 },
             }
         case 'GRADERT':
@@ -179,8 +179,8 @@ function aktivitetStepToInputAktivitet(value: AktivitetStep): InputAktivitet {
                 avventende: null,
                 behandlingsdager: null,
                 reisetilskudd: null,
-                medisinskeArsaker: null,
-                arbeidsrelaterteArsaker: null,
+                medisinskArsak: null,
+                arbeidsrelatertArsak: null,
             }
     }
 }

@@ -23,9 +23,9 @@ export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gra
 
 export type AktivitetIkkeMulig = FomTom & {
     __typename?: 'AktivitetIkkeMulig'
-    arbeidsrelaterteArsaker: ArbeidsrelaterteArsaker
+    arbeidsrelatertArsak: ArbeidsrelatertArsak
     fom: Scalars['DateOnly']['output']
-    medisinskeArsaker: MedisinskeArsaker
+    medisinskArsak: MedisinskArsak
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
 }
@@ -42,15 +42,15 @@ export type Arbeidsgiver = {
     harFlere: Scalars['Boolean']['output']
 }
 
-export type ArbeidsrelaterteArsaker = {
-    __typename?: 'ArbeidsrelaterteArsaker'
-    andreArbeidsrelaterteArsaker?: Maybe<Scalars['String']['output']>
+export type ArbeidsrelatertArsak = {
+    __typename?: 'ArbeidsrelatertArsak'
+    annenArbeidsrelatertArsak?: Maybe<Scalars['String']['output']>
     arbeidsrelaterteArsaker: Array<Scalars['String']['output']>
     isArbeidsrelatertArsak: Scalars['Boolean']['output']
 }
 
-export type ArbeidsrelaterteArsakerInput = {
-    andreArbeidsrelaterteArsaker?: InputMaybe<Scalars['String']['input']>
+export type ArbeidsrelatertArsakInput = {
+    annenArbeidsrelatertArsak?: InputMaybe<Scalars['String']['input']>
     arbeidsrelaterteArsaker: Array<Scalars['String']['input']>
     isArbeidsrelatertArsak: Scalars['Boolean']['input']
 }
@@ -124,12 +124,12 @@ export type GradertInput = {
  */
 export type InputAktivitet = {
     aktivitetIkkeMulig?: InputMaybe<AktivitetIkkeMuligInput>
-    arbeidsrelaterteArsaker?: InputMaybe<ArbeidsrelaterteArsakerInput>
+    arbeidsrelatertArsak?: InputMaybe<ArbeidsrelatertArsakInput>
     avventende?: InputMaybe<AvventendeInput>
     behandlingsdager?: InputMaybe<BehandlingsdagerInput>
     fom: Scalars['String']['input']
     gradert?: InputMaybe<GradertInput>
-    medisinskeArsaker?: InputMaybe<MedisinskeArsakerInput>
+    medisinskArsak?: InputMaybe<MedisinskArsakInput>
     reisetilskudd?: InputMaybe<ReisetilskuddInput>
     tom: Scalars['String']['input']
     type: AktivitetType
@@ -164,12 +164,12 @@ export type Konsultasjon = {
     diagnoser?: Maybe<Array<Diagnose>>
 }
 
-export type MedisinskeArsaker = {
-    __typename?: 'MedisinskeArsaker'
+export type MedisinskArsak = {
+    __typename?: 'MedisinskArsak'
     isMedisinskArsak: Scalars['Boolean']['output']
 }
 
-export type MedisinskeArsakerInput = {
+export type MedisinskArsakInput = {
     isMedisinskArsak: Scalars['Boolean']['input']
 }
 

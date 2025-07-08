@@ -54,13 +54,13 @@ test('can submit 100% sykmelding', async ({ page }) => {
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
-                    medisinskeArsaker: {
+                    medisinskArsak: {
                         isMedisinskArsak: true,
                     },
-                    arbeidsrelaterteArsaker: {
+                    arbeidsrelatertArsak: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: [],
-                        andreArbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
                     },
                 },
             ],
@@ -111,13 +111,13 @@ test('shall be able to edit diagnose', async ({ page }) => {
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
-                    medisinskeArsaker: {
+                    medisinskArsak: {
                         isMedisinskArsak: true,
                     },
-                    arbeidsrelaterteArsaker: {
+                    arbeidsrelatertArsak: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: [],
-                        andreArbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
                     },
                 },
             ],
@@ -170,8 +170,8 @@ test('can submit gradert sykmelding', async ({ page }) => {
                     avventende: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
-                    medisinskeArsaker: null,
-                    arbeidsrelaterteArsaker: null,
+                    medisinskArsak: null,
+                    arbeidsrelatertArsak: null,
                 },
             ],
             meldinger: { tilNav: null, tilArbeidsgiver: null },
@@ -218,8 +218,8 @@ test('submit with only default values', async ({ page }) => {
                     avventende: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
-                    medisinskeArsaker: null,
-                    arbeidsrelaterteArsaker: null,
+                    medisinskArsak: null,
+                    arbeidsrelatertArsak: null,
                 },
             ],
             meldinger: { tilNav: null, tilArbeidsgiver: null },
@@ -321,13 +321,13 @@ test("should be asked about 'tilbakedatering' when fom is 5 days in the past", a
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
-                    medisinskeArsaker: {
+                    medisinskArsak: {
                         isMedisinskArsak: true,
                     },
-                    arbeidsrelaterteArsaker: {
+                    arbeidsrelatertArsak: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: [],
-                        andreArbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
                     },
                 },
             ],
@@ -380,13 +380,13 @@ test('"skal skjermes" should be part of payload if checked', async ({ page }) =>
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
-                    medisinskeArsaker: {
+                    medisinskArsak: {
                         isMedisinskArsak: true,
                     },
-                    arbeidsrelaterteArsaker: {
+                    arbeidsrelatertArsak: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: [],
-                        andreArbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
                     },
                 },
             ],
@@ -436,13 +436,13 @@ test('"har flere arbeidsforhold" should be part of payload if checked', async ({
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
-                    medisinskeArsaker: {
+                    medisinskArsak: {
                         isMedisinskArsak: true,
                     },
-                    arbeidsrelaterteArsaker: {
+                    arbeidsrelatertArsak: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: [],
-                        andreArbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
                     },
                 },
             ],
@@ -491,13 +491,13 @@ test('"arbeidsrelaterte og medisinske årsaker" should be part of payload if che
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
-                    medisinskeArsaker: {
+                    medisinskArsak: {
                         isMedisinskArsak: true,
                     },
-                    arbeidsrelaterteArsaker: {
+                    arbeidsrelatertArsak: {
                         isArbeidsrelatertArsak: true,
                         arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
-                        andreArbeidsrelaterteArsaker: 'Annen årsak til aktivitet ikke mulig',
+                        annenArbeidsrelatertArsak: 'Annen årsak til aktivitet ikke mulig',
                     },
                 },
             ],

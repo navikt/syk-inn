@@ -76,6 +76,14 @@ function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingA
             type: 'AKTIVITET_IKKE_MULIG',
             fom: aktivitet.fom,
             tom: aktivitet.tom,
+            medisinskArsak: {
+                isMedisinskArsak: aktivitet.medisinskArsak?.isMedisinskArsak ?? false,
+            },
+            arbeidsrelatertArsak: {
+                isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
+                arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? [],
+                annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
+            },
         }
     } else if (aktivitet.gradert != null) {
         return {

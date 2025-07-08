@@ -6,6 +6,14 @@ const AktivitetIkkeMuligSchema = z.object({
     type: z.literal('AKTIVITET_IKKE_MULIG'),
     fom: z.string(),
     tom: z.string(),
+    medisinskArsak: z.object({
+        isMedisinskArsak: z.boolean(),
+    }),
+    arbeidsrelatertArsak: z.object({
+        isArbeidsrelatertArsak: z.boolean(),
+        arbeidsrelatertArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])),
+        annenArbeidsrelatertArsak: z.string().nullable(),
+    }),
 })
 
 const AktivitetGradertSchema = z.object({

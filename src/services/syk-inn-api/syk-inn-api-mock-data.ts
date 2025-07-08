@@ -24,6 +24,14 @@ export function createMockSykmelding(
                     type: 'AKTIVITET_IKKE_MULIG',
                     fom: '2024-02-15',
                     tom: '2024-02-18',
+                    medisinskArsak: {
+                        isMedisinskArsak: true,
+                    },
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelatertArsaker: [],
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             ],
             hoveddiagnose: {
