@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Button, Tooltip } from '@navikt/ds-react'
 import { ChevronRightDoubleCircleIcon, ChevronRightIcon, TabsAddIcon } from '@navikt/aksel-icons'
 
-import AssableNextLink from '@components/misc/AssableNextLink'
+import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
 
 /**
  * Temporary flag to hide the unimplemented buttons while keeping TSC and lint happy.
@@ -19,8 +19,7 @@ export function SykmeldingActions({
     return (
         <div className="grid grid-cols-3 gap-2 w-fit ml-2">
             <Tooltip content="Se sykmelding">
-                <Button
-                    as={AssableNextLink}
+                <SlowNextLinkButton
                     href={`/fhir/sykmelding/${sykmeldingId}`}
                     icon={<ChevronRightIcon aria-hidden />}
                     variant="tertiary"

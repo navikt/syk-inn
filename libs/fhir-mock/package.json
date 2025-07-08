@@ -8,7 +8,7 @@
     },
     "scripts": {
         "tsc": "tsc",
-        "dev": "bun run --watch buntry-point.ts | pino-pretty"
+        "dev": "bun run --watch buntry-point.ts | pino-pretty --messageKey=message"
     },
     "exports": {
         "./router": {

@@ -1,16 +1,15 @@
 import React, { ReactElement } from 'react'
-import { Button, Tooltip } from '@navikt/ds-react'
+import { Tooltip } from '@navikt/ds-react'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 
-import AssableNextLink from '@components/misc/AssableNextLink'
 import { DeleteDraftButton } from '@components/dashboard/combo-table/draft/DeleteDraftButton'
+import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
 
 export function DraftActions({ draftId }: { draftId: string }): ReactElement {
     return (
         <div className="grid grid-cols-3 gap-2 w-fit ml-2">
             <Tooltip content="Åpne utkast">
-                <Button
-                    as={AssableNextLink}
+                <SlowNextLinkButton
                     href={`/fhir/ny/${draftId}`}
                     icon={<ChevronRightIcon aria-hidden />}
                     variant="tertiary"

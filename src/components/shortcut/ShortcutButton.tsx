@@ -3,8 +3,8 @@ import { Button, ButtonProps, Detail } from '@navikt/ds-react'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence } from 'motion/react'
 
-import AssableNextLink from '@components/misc/AssableNextLink'
 import { FastFadeReveal } from '@components/animation/Reveal'
+import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
 
 import { Shortcut, useShortcut } from '../../lib/shortcuts/useShortcut'
 import { useCurrentModifier } from '../../lib/shortcuts/useCurrentModifier'
@@ -64,9 +64,9 @@ export function ShortcutButtonLink({
 
     return (
         <div className="relative">
-            <Button as={AssableNextLink} type="button" href={href} {...buttonProps}>
+            <SlowNextLinkButton type="button" href={href} {...buttonProps}>
                 {children}
-            </Button>
+            </SlowNextLinkButton>
             <div className="absolute -bottom-5 right-2 text-text-action">
                 <AnimatePresence>
                     {currentMod === shortcut.modifier && (
