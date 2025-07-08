@@ -66,11 +66,11 @@ function toForlengelsesAktivitet(previousAktivitet: SykmeldingFragment['values']
                 fom: nextFom,
                 tom: null,
                 medisinskArsak: {
-                    isMedisinskArsak: latestPeriode.medisinskArsak.isMedisinskArsak,
+                    isMedisinskArsak: latestPeriode.medisinskArsak?.isMedisinskArsak ?? false,
                 },
                 arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: latestPeriode.arbeidsrelatertArsak?.isArbeidsrelatertArsak,
-                    arbeidsrelaterteArsaker: latestPeriode.arbeidsrelatertArsak?.arbeidsrelaterteArsaker,
+                    isArbeidsrelatertArsak: latestPeriode.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
+                    arbeidsrelaterteArsaker: latestPeriode.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? [],
                     annenArbeidsrelatertArsak: latestPeriode.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
                 },
             } satisfies AktivitetStep

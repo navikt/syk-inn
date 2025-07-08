@@ -25,9 +25,9 @@ export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gra
 
 export type AktivitetIkkeMulig = FomTom & {
     __typename?: 'AktivitetIkkeMulig'
-    arbeidsrelatertArsak: ArbeidsrelatertArsak
+    arbeidsrelatertArsak?: Maybe<ArbeidsrelatertArsak>
     fom: Scalars['DateOnly']['output']
-    medisinskArsak: MedisinskArsak
+    medisinskArsak?: Maybe<MedisinskArsak>
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
 }
@@ -561,9 +561,9 @@ export type AktivitetIkkeMuligResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['AktivitetIkkeMulig'] = ResolversParentTypes['AktivitetIkkeMulig'],
 > = {
-    arbeidsrelatertArsak?: Resolver<ResolversTypes['ArbeidsrelatertArsak'], ParentType, ContextType>
+    arbeidsrelatertArsak?: Resolver<Maybe<ResolversTypes['ArbeidsrelatertArsak']>, ParentType, ContextType>
     fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
-    medisinskArsak?: Resolver<ResolversTypes['MedisinskArsak'], ParentType, ContextType>
+    medisinskArsak?: Resolver<Maybe<ResolversTypes['MedisinskArsak']>, ParentType, ContextType>
     tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>

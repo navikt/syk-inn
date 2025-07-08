@@ -67,7 +67,7 @@ export async function fetchInternalAPI<
     }
 
     const pathWithoutIds = path.replace(/[a-f0-9\-]{36}/g, '<uuid>')
-    return spanServerAsync(`Fetch.${api}.${pathWithoutIds}`, async (span) => {
+    return spanServerAsync(`Fetch.${api}${pathWithoutIds}`, async (span) => {
         const response = await fetch(`http://${apiConfig.host}${path}`, {
             method,
             headers: {

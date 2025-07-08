@@ -23,9 +23,9 @@ export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gra
 
 export type AktivitetIkkeMulig = FomTom & {
     __typename: 'AktivitetIkkeMulig'
-    arbeidsrelatertArsak: ArbeidsrelatertArsak
+    arbeidsrelatertArsak?: Maybe<ArbeidsrelatertArsak>
     fom: Scalars['DateOnly']['output']
-    medisinskArsak: MedisinskArsak
+    medisinskArsak?: Maybe<MedisinskArsak>
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
 }
@@ -472,13 +472,13 @@ export type SykmeldingByIdQuery = {
                       fom: string
                       tom: string
                       type: AktivitetType
-                      arbeidsrelatertArsak: {
+                      arbeidsrelatertArsak?: {
                           __typename: 'ArbeidsrelatertArsak'
                           isArbeidsrelatertArsak: boolean
                           arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                           annenArbeidsrelatertArsak?: string | null
-                      }
-                      medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean }
+                      } | null
+                      medisinskArsak?: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
                   }
                 | {
                       __typename: 'Avventende'
@@ -533,13 +533,13 @@ export type AllSykmeldingerQuery = {
                       fom: string
                       tom: string
                       type: AktivitetType
-                      arbeidsrelatertArsak: {
+                      arbeidsrelatertArsak?: {
                           __typename: 'ArbeidsrelatertArsak'
                           isArbeidsrelatertArsak: boolean
                           arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                           annenArbeidsrelatertArsak?: string | null
-                      }
-                      medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean }
+                      } | null
+                      medisinskArsak?: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
                   }
                 | {
                       __typename: 'Avventende'
@@ -604,13 +604,13 @@ export type OpprettSykmeldingMutation = {
                             fom: string
                             tom: string
                             type: AktivitetType
-                            arbeidsrelatertArsak: {
+                            arbeidsrelatertArsak?: {
                                 __typename: 'ArbeidsrelatertArsak'
                                 isArbeidsrelatertArsak: boolean
                                 arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                 annenArbeidsrelatertArsak?: string | null
-                            }
-                            medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean }
+                            } | null
+                            medisinskArsak?: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
                         }
                       | {
                             __typename: 'Avventende'
@@ -673,13 +673,13 @@ export type SykmeldingFragment = {
                   fom: string
                   tom: string
                   type: AktivitetType
-                  arbeidsrelatertArsak: {
+                  arbeidsrelatertArsak?: {
                       __typename: 'ArbeidsrelatertArsak'
                       isArbeidsrelatertArsak: boolean
                       arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak?: string | null
-                  }
-                  medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean }
+                  } | null
+                  medisinskArsak?: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
               }
             | {
                   __typename: 'Avventende'
@@ -710,13 +710,13 @@ type Aktivitet_AktivitetIkkeMulig_Fragment = {
     fom: string
     tom: string
     type: AktivitetType
-    arbeidsrelatertArsak: {
+    arbeidsrelatertArsak?: {
         __typename: 'ArbeidsrelatertArsak'
         isArbeidsrelatertArsak: boolean
         arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
         annenArbeidsrelatertArsak?: string | null
-    }
-    medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean }
+    } | null
+    medisinskArsak?: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
 }
 
 type Aktivitet_Avventende_Fragment = {

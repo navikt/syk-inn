@@ -6,14 +6,20 @@ const AktivitetIkkeMuligSchema = z.object({
     type: z.literal('AKTIVITET_IKKE_MULIG'),
     fom: z.string(),
     tom: z.string(),
-    medisinskArsak: z.object({
-        isMedisinskArsak: z.boolean(),
-    }),
-    arbeidsrelatertArsak: z.object({
-        isArbeidsrelatertArsak: z.boolean(),
-        arbeidsrelaterteArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])),
-        annenArbeidsrelatertArsak: z.string().nullable(),
-    }),
+    // TODO: Mark as non-nullable once data is migrated in syk-inn-api
+    medisinskArsak: z
+        .object({
+            isMedisinskArsak: z.boolean(),
+        })
+        .optional(),
+    // TODO: Mark as non-nullable once data is migrated in syk-inn-api
+    arbeidsrelatertArsak: z
+        .object({
+            isArbeidsrelatertArsak: z.boolean(),
+            arbeidsrelaterteArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])),
+            annenArbeidsrelatertArsak: z.string().nullable(),
+        })
+        .optional(),
 })
 
 const AktivitetGradertSchema = z.object({
