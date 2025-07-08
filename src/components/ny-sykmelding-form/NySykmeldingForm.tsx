@@ -34,7 +34,7 @@ type Props = {
 }
 
 function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactElement {
-    const initialValues = useAppSelector((state) => state.nySykmeldingMultistep)
+    const initialValues = useAppSelector((state) => state.nySykmeldingMultistep.values)
     const onSubmit = useHandleFormSubmit()
     const form = useForm<NySykmeldingMainFormValues>({
         defaultValues: createDefaultFormValues({

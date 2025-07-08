@@ -94,16 +94,17 @@ export function useOpprettSykmeldingMutation(): {
     return { opprettSykmelding, result }
 }
 
-function formStateToOpprettSykmeldingInput(formState: NySykmeldingMultiStepState): OpprettSykmeldingInput {
-    if (formState.pasient == null) {
+function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingMultiStepState): OpprettSykmeldingInput {
+    if (multiStepState.pasient == null) {
         raise('Ingen pasient')
     }
 
-    if (formState.aktiviteter == null) {
+    const formState = multiStepState.values
+    if (formState?.aktiviteter == null) {
         raise('Ingen aktivitet')
     }
 
-    if (formState.diagnose == null) {
+    if (formState?.diagnose == null) {
         raise('Ingen diagnose')
     }
 
@@ -139,7 +140,7 @@ function formStateToOpprettSykmeldingInput(formState: NySykmeldingMultiStepState
                   begrunnelse: formState.tilbakedatering.grunn,
               }
             : null,
-        pasientenSkalSkjermes: formState.skalSkjermes ?? false,
+        pasientenSkalSkjermes: multiStepState.skalSkjermes ?? false,
     }
 }
 

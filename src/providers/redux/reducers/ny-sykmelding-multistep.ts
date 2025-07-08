@@ -71,25 +71,24 @@ export type AndreSporsmalStep = {
     yrkesskadeDato: string | null
 }
 
-export type NySykmeldingMultiStepState = {
-    pasient: PasientStep | null
+export type MainSectionValues = {
     arbeidsforhold: ArbeidsforholdStep | null
     aktiviteter: AktivitetStep[] | null
     tilbakedatering: TilbakedateringStep | null
     diagnose: DiagnoseStep | null
     meldinger: MeldingerStep | null
     andreSporsmal: AndreSporsmalStep | null
+}
+
+export type NySykmeldingMultiStepState = {
+    pasient: PasientStep | null
+    values: MainSectionValues | null
     skalSkjermes: boolean | null
 }
 
 const initialState: NySykmeldingMultiStepState = {
     pasient: null,
-    arbeidsforhold: null,
-    aktiviteter: null,
-    tilbakedatering: null,
-    diagnose: null,
-    meldinger: null,
-    andreSporsmal: null,
+    values: null,
     skalSkjermes: null,
 }
 
@@ -111,12 +110,7 @@ const nySykmeldingMultistep = createSlice({
                 andreSporsmal: AndreSporsmalStep
             }>,
         ) {
-            state.arbeidsforhold = action.payload.arbeidsforhold
-            state.aktiviteter = action.payload.aktiviteter
-            state.tilbakedatering = action.payload.tilbakedatering
-            state.diagnose = action.payload.diagnose
-            state.meldinger = action.payload.meldinger
-            state.andreSporsmal = action.payload.andreSporsmal
+            state.values = action.payload
         },
         setSkalSkjermes(state, action: PayloadAction<boolean | null>) {
             state.skalSkjermes = action.payload

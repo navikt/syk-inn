@@ -21,7 +21,7 @@ type Props = {
 
 function FormValuesSummary({ className }: Props): ReactElement {
     const [, setStep] = useFormStep()
-    const formState = useAppSelector((state) => state.nySykmeldingMultistep)
+    const { pasient, values } = useAppSelector((state) => state.nySykmeldingMultistep)
 
     return (
         <div className={className}>
@@ -31,37 +31,37 @@ function FormValuesSummary({ className }: Props): ReactElement {
                     <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
                 </FormSummary.Header>
                 <FormSummary.Answers>
-                    <PatientSummaryAnswers pasient={formState.pasient} />
+                    <PatientSummaryAnswers pasient={pasient} />
                     <FormSummary.Answer>
                         <FormSummary.Label>Har pasienten flere arbeidsforhold?</FormSummary.Label>
                         <FormSummary.Value>
-                            {formState.arbeidsforhold?.harFlereArbeidsforhold ? 'Ja' : 'Nei'}
+                            {values?.arbeidsforhold?.harFlereArbeidsforhold ? 'Ja' : 'Nei'}
                         </FormSummary.Value>
                     </FormSummary.Answer>
-                    {formState.arbeidsforhold?.harFlereArbeidsforhold && (
+                    {values?.arbeidsforhold?.harFlereArbeidsforhold && (
                         <FormSummary.Answer>
                             <FormSummary.Label>Hvilke arbeidsforhold skal pasienten sykmeldes fra?</FormSummary.Label>
-                            <FormSummary.Value>{formState.arbeidsforhold?.sykmeldtFraArbeidsforhold}</FormSummary.Value>
+                            <FormSummary.Value>{values?.arbeidsforhold?.sykmeldtFraArbeidsforhold}</FormSummary.Value>
                         </FormSummary.Answer>
                     )}
-                    <AktivitetSummaryAnswers aktiviteter={formState.aktiviteter} />
-                    {formState.tilbakedatering && (
-                        <TilbakedateringSummaryAnswers tilbakedatering={formState.tilbakedatering} />
+                    <AktivitetSummaryAnswers aktiviteter={values?.aktiviteter ?? null} />
+                    {values?.tilbakedatering && (
+                        <TilbakedateringSummaryAnswers tilbakedatering={values?.tilbakedatering} />
                     )}
-                    <DiagnoseSummaryAnswers diagnose={formState.diagnose} />
+                    <DiagnoseSummaryAnswers diagnose={values?.diagnose ?? null} />
 
                     <FormSummary.Answer>
                         <FormSummary.Label>Til NAV</FormSummary.Label>
-                        {formState.meldinger?.tilNav ? (
-                            <FormSummary.Value>{formState.meldinger?.tilNav}</FormSummary.Value>
+                        {values?.meldinger?.tilNav ? (
+                            <FormSummary.Value>{values?.meldinger?.tilNav}</FormSummary.Value>
                         ) : (
                             <FormSummary.Value className="italic">Ingen melding</FormSummary.Value>
                         )}
                     </FormSummary.Answer>
                     <FormSummary.Answer>
                         <FormSummary.Label>Til arbeidsgiver</FormSummary.Label>
-                        {formState.meldinger?.tilArbeidsgiver ? (
-                            <FormSummary.Value>{formState.meldinger?.tilArbeidsgiver}</FormSummary.Value>
+                        {values?.meldinger?.tilArbeidsgiver ? (
+                            <FormSummary.Value>{values?.meldinger?.tilArbeidsgiver}</FormSummary.Value>
                         ) : (
                             <FormSummary.Value className="italic">Ingen melding</FormSummary.Value>
                         )}
@@ -69,7 +69,7 @@ function FormValuesSummary({ className }: Props): ReactElement {
 
                     <FormSummary.Answer>
                         <FormSummary.Label>Svangerskapsrelatert</FormSummary.Label>
-                        {formState.andreSporsmal?.svangerskapsrelatert ? (
+                        {values?.andreSporsmal?.svangerskapsrelatert ? (
                             <FormSummary.Value>Ja</FormSummary.Value>
                         ) : (
                             <FormSummary.Value>Nei</FormSummary.Value>
@@ -77,7 +77,7 @@ function FormValuesSummary({ className }: Props): ReactElement {
                     </FormSummary.Answer>
                     <FormSummary.Answer>
                         <FormSummary.Label>Yrkesskade</FormSummary.Label>
-                        {formState.andreSporsmal?.yrkesskade ? (
+                        {values?.andreSporsmal?.yrkesskade ? (
                             <FormSummary.Value>Ja</FormSummary.Value>
                         ) : (
                             <FormSummary.Value>Nei</FormSummary.Value>

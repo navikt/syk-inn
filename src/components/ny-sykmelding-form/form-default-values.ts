@@ -15,15 +15,15 @@ import {
     AktivitetStep,
     AndreSporsmalStep,
     ArbeidsforholdStep,
+    MainSectionValues,
     MeldingerStep,
-    NySykmeldingMultiStepState,
     TilbakedateringStep,
 } from '../../providers/redux/reducers/ny-sykmelding-multistep'
 import { DraftValues } from '../../data-layer/draft/draft-schema'
 
 type CreateDefaultValuesData = {
     draftValues: DraftValues | null
-    valuesInState: NySykmeldingMultiStepState
+    valuesInState: MainSectionValues | null
     serverSuggestions: NySykmeldingSuggestions
 }
 
@@ -40,18 +40,24 @@ export function createDefaultFormValues({
     serverSuggestions,
 }: CreateDefaultValuesData): DefaultValues<NySykmeldingMainFormValues> {
     return {
-        arbeidsforhold: toInitialArbeidsforhold(valuesInState.arbeidsforhold, draftValues?.arbeidsforhold ?? null),
-        perioder: toInitialPerioder(draftValues?.perioder ?? null, valuesInState.aktiviteter),
+        arbeidsforhold: toInitialArbeidsforhold(
+            valuesInState?.arbeidsforhold ?? null,
+            draftValues?.arbeidsforhold ?? null,
+        ),
+        perioder: toInitialPerioder(draftValues?.perioder ?? null, valuesInState?.aktiviteter ?? null),
         diagnoser: {
             hoved: toInitialDiagnose(
-                valuesInState.diagnose?.hoved ?? null,
+                valuesInState?.diagnose?.hoved ?? null,
                 draftValues?.hoveddiagnose ?? null,
                 serverSuggestions.diagnose.value,
             ),
         },
-        tilbakedatering: toInitialTilbakedatering(valuesInState.tilbakedatering, draftValues?.tilbakedatering ?? null),
-        meldinger: toInitialMeldinger(valuesInState.meldinger, draftValues?.meldinger ?? null),
-        andreSporsmal: toAndreSporsmal(valuesInState.andreSporsmal, draftValues),
+        tilbakedatering: toInitialTilbakedatering(
+            valuesInState?.tilbakedatering ?? null,
+            draftValues?.tilbakedatering ?? null,
+        ),
+        meldinger: toInitialMeldinger(valuesInState?.meldinger ?? null, draftValues?.meldinger ?? null),
+        andreSporsmal: toAndreSporsmal(valuesInState?.andreSporsmal ?? null, draftValues),
     }
 }
 
