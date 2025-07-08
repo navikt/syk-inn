@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 
 import { GetAllDraftsDocument, GetDraftDocument, SaveDraftDocument, SaveDraftMutation } from '@queries'
 import { NySykmeldingMainFormValues } from '@components/ny-sykmelding-form/form'
-import { spanAsync } from '@otel/otel'
+import { spanBrowserAsync } from '@otel/browser'
 
 import { DraftValues } from '../../../data-layer/draft/draft-schema'
 import { useMode } from '../../../providers/ModeProvider'
@@ -45,7 +45,7 @@ export function useSaveDraft(opts: {
     const mutationWithMappedValues = useCallback(
         async (draftId: string, values: NySykmeldingMainFormValues) => {
             const mappedValues: DraftValues = mapFormValuesToDraftValues(values)
-            return spanAsync('SaveDraft.mutation', async () =>
+            return spanBrowserAsync('SaveDraft.mutation', async () =>
                 mutation({
                     variables: { draftId, values: mappedValues satisfies DraftValues },
                 }),

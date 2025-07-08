@@ -7,8 +7,8 @@ import { DeleteDraftDocument, GetAllDraftsDocument, OpprettSykmeldingDraft } fro
 import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
 import { useFormContext } from '@components/ny-sykmelding-form/form'
 import { useSaveDraft } from '@components/ny-sykmelding-form/draft/useSaveDraft'
-import { spanAsync } from '@otel/otel'
 import { ShortcutButton } from '@components/shortcut/ShortcutButton'
+import { spanBrowserAsync } from '@otel/browser'
 
 import { useMode } from '../../../providers/ModeProvider'
 import { useAppDispatch } from '../../../providers/redux/hooks'
@@ -78,7 +78,7 @@ function ForkastDraftButton(): ReactElement {
     return (
         <ShortcutButton
             variant="tertiary"
-            onClick={() => spanAsync('DeleteDraft(forkast).mutation', async () => mutation())}
+            onClick={() => spanBrowserAsync('DeleteDraft(forkast).mutation', async () => mutation())}
             loading={deleteResult.loading}
             shortcut={{
                 modifier: 'alt',

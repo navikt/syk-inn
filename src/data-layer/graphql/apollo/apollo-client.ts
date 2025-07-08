@@ -7,7 +7,7 @@ import { logger } from '@navikt/next-logger'
 import { pathWithBasePath } from '@utils/url'
 import { isLocalOrDemo } from '@utils/env'
 import possibleTypesGenerated from '@graphql/possible-types.generated'
-import { spanAsync } from '@otel/otel'
+import { spanBrowserAsync } from '@otel/browser'
 
 import { FailingLinkDev } from '../../../devtools/api-fail-toggle/apollo-dev-tools-link'
 import { AppStore } from '../../../providers/redux/store'
@@ -41,7 +41,7 @@ export function makeApolloClient(store: AppStore) {
             fetch: (input, options) => {
                 const operationName = inferOperationName(options?.body as string | undefined)
 
-                return spanAsync(`GQL Fetch: ${operationName}`, async () => fetch(input, options))
+                return spanBrowserAsync(`GQL Fetch: ${operationName}`, async () => fetch(input, options))
             },
         })
 

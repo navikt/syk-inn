@@ -3,15 +3,15 @@ import { logger } from '@navikt/next-logger'
 
 import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
-import { spanAsync } from '@otel/otel'
 import { getHprFromFhirSession } from '@fhir/fhir-service'
 import { getFlag, getUserlessToggles, getUserToggles } from '@toggles/unleash'
 import { ToggleProvider } from '@toggles/context'
+import { spanServerAsync } from '@otel/server'
 
 import { NoPractitionerSession, NoValidHPR } from './launched-errors'
 
 async function LaunchedLayout({ children }: PropsWithChildren): Promise<ReactElement> {
-    const [toggles, hpr] = await spanAsync('FhirLayout toggles', async () => {
+    const [toggles, hpr] = await spanServerAsync('FhirLayout toggles', async () => {
         const hpr = await getHprFromFhirSession()
         if (typeof hpr !== 'string') {
             return [await getUserlessToggles(), hpr]

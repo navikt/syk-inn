@@ -2,8 +2,8 @@ import { requestAzureClientCredentialsToken } from '@navikt/oasis'
 import { logger as pinoLogger } from '@navikt/next-logger'
 import * as z from 'zod/v4'
 
-import { raise } from '@utils/ts'
 import { getServerEnv } from '@utils/env'
+import { failServerSpan, spanServerAsync } from '@otel/server'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[API FETCHER]: ' })
 
@@ -66,55 +66,71 @@ export async function fetchInternalAPI<
         return apiConfig
     }
 
-    const response = await fetch(`http://${apiConfig.host}${path}`, {
-        method,
-        headers: {
-            Authorization: `Bearer ${apiConfig.token}`,
-            ...headers,
-        },
-        body,
-    })
+    const pathWithoutIds = path.replace(/[a-f0-9\-]{36}/g, '<uuid>')
+    return spanServerAsync(`Fetch.${api}.${pathWithoutIds}`, async (span) => {
+        const response = await fetch(`http://${apiConfig.host}${path}`, {
+            method,
+            headers: {
+                Authorization: `Bearer ${apiConfig.token}`,
+                ...headers,
+            },
+            body,
+        })
 
-    if (!response.ok && !responseValidStatus?.includes(response.status)) {
-        const additionalError: AdditionalErrors | undefined = onApiError?.(response)
-        if (additionalError) {
-            return { errorType: additionalError }
+        if (!response.ok && !responseValidStatus?.includes(response.status)) {
+            const additionalError: AdditionalErrors | undefined = onApiError?.(response)
+            if (additionalError) {
+                return { errorType: additionalError }
+            }
+
+            const responseBody = await getFailedResponseBody(response)
+            failServerSpan(
+                span,
+                new Error(
+                    `Unable to fetch ${path} (${response.status} ${response.statusText}), details: ${responseBody}`,
+                ),
+            )
+
+            return { errorType: 'API_CALL_FAILED' }
         }
 
-        const responseBody = await getFailedResponseBody(response)
-        logger.error(`Unable to fetch ${path} (${response.status} ${response.statusText}), details: ${responseBody}`)
+        const isPdfResponse: boolean = response.headers.get('Content-Type')?.includes('application/pdf') ?? false
+        if (typeof responseSchema === 'string' && responseSchema === 'ArrayBuffer') {
+            return (await response.arrayBuffer()) as InferredReturnValue
+        } else if (isPdfResponse && responseSchema !== 'ArrayBuffer') {
+            const error = new Error(`Got PDF but expected response was not ArrayBuffer, for ${api}${path}, whats up?`)
+            failServerSpan(span, error)
+            throw error
+        }
 
-        return { errorType: 'API_CALL_FAILED' }
-    }
+        const isJsonResponse: boolean = response.headers.get('Content-Type')?.includes('application/json') ?? false
+        if (!isJsonResponse) {
+            const error = new Error(
+                `Did not get JSON payload (got: ${response.headers.get('Content-Type') ?? 'nothing'}) was provided for ${api}${path}`,
+            )
+            failServerSpan(span, error)
+            throw error
+        }
 
-    const isPdfResponse: boolean = response.headers.get('Content-Type')?.includes('application/pdf') ?? false
-    if (typeof responseSchema === 'string' && responseSchema === 'ArrayBuffer') {
-        return (await response.arrayBuffer()) as InferredReturnValue
-    } else if (isPdfResponse && responseSchema !== 'ArrayBuffer') {
-        raise(`Got PDF but expected response was not ArrayBuffer, for ${api}${path}, whats up?`)
-    }
+        const result: unknown = await response.json()
+        const parsed = responseSchema.safeParse(result)
 
-    const isJsonResponse: boolean = response.headers.get('Content-Type')?.includes('application/json') ?? false
-    if (!isJsonResponse) {
-        raise(
-            `Did not get JSON payload (got: ${response.headers.get('Content-Type') ?? 'nothing'}) was provided for ${api}${path}`,
-        )
-    }
+        if (!parsed.success) {
+            failServerSpan(
+                span,
+                new Error(`Invalid response from ${path}, details: ${JSON.stringify(parsed.error, null, 2)}`),
+            )
 
-    const result: unknown = await response.json()
-    const parsed = responseSchema.safeParse(result)
+            return { errorType: 'API_BODY_INVALID' }
+        }
 
-    if (!parsed.success) {
-        logger.error(`Invalid response from ${path}, details: ${JSON.stringify(parsed.error, null, 2)}`)
-        return { errorType: 'API_BODY_INVALID' }
-    }
-
-    /**
-     * TODO: Can this as be avoided?
-     *
-     * See: https://zod.dev/v4/changelog?id=updates-generics
-     */
-    return parsed.data as InferredReturnValue
+        /**
+         * TODO: Can this as be avoided?
+         *
+         * See: https://zod.dev/v4/changelog?id=updates-generics
+         */
+        return parsed.data as InferredReturnValue
+    })
 }
 
 export async function getApi(

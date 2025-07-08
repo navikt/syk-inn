@@ -2,7 +2,7 @@ import { getDefinitions } from '@unleash/nextjs'
 import * as R from 'remeda'
 import NodeCache from 'node-cache'
 
-import { spanAsync } from '@otel/otel'
+import { spanServerAsync } from '@otel/server'
 import { raise } from '@utils/ts'
 import { EXPECTED_TOGGLES } from '@toggles/toggles'
 import { unleashLogger } from '@toggles/unleash'
@@ -23,7 +23,7 @@ export async function getAndValidateDefinitions(): Promise<Awaited<ReturnType<ty
         }
     }
 
-    const definitions = await spanAsync('unleash: fetch toggles', async () =>
+    const definitions = await spanServerAsync('unleash: fetch toggles', async () =>
         getDefinitions({
             appName: 'syk-inn',
             url: `${process.env.UNLEASH_SERVER_API_URL ?? raise('Missing UNLEASH_SERVER_API_URL')}/api/client/features`,

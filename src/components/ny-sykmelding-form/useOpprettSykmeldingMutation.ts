@@ -15,8 +15,8 @@ import {
     OpprettSykmeldingMutation,
     SykmeldingByIdDocument,
 } from '@queries'
-import { spanAsync, withSpanAsync } from '@otel/otel'
 import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
+import { spanBrowserAsync, withSpanBrowserAsync } from '@otel/browser'
 
 import { useAppSelector } from '../../providers/redux/hooks'
 import { useMode } from '../../providers/ModeProvider'
@@ -54,7 +54,7 @@ export function useOpprettSykmeldingMutation(): {
         },
     })
 
-    const opprettSykmelding = withSpanAsync('submitSykmelding', async () => {
+    const opprettSykmelding = withSpanBrowserAsync('submitSykmelding', async () => {
         teamLogger.info(`(Client) Submitting values: ${JSON.stringify(formState)}`)
 
         try {
@@ -62,7 +62,7 @@ export function useOpprettSykmeldingMutation(): {
 
             teamLogger.info(`(Client), mapped values: ${JSON.stringify(values)}`)
 
-            const createResult = await spanAsync('OpprettSykmelding.mutation', async () =>
+            const createResult = await spanBrowserAsync('OpprettSykmelding.mutation', async () =>
                 mutate({
                     variables: { draftId: draftId, values: values },
                 }),

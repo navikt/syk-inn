@@ -4,7 +4,7 @@ import { logger } from '@navikt/next-logger'
 import Valkey from 'iovalkey'
 
 import { getValkeyClient } from '@services/valkey/client'
-import { withSpanAsync } from '@otel/otel'
+import { withSpanServerAsync } from '@otel/server'
 
 import { DraftValues } from './draft-schema'
 
@@ -37,7 +37,7 @@ export function getDraftClient(valkey?: Valkey): DraftClient {
     valkey = !valkey ? getValkeyClient() : valkey
 
     return {
-        saveDraft: withSpanAsync('draft client - save draft', async (draftId, owner, values) => {
+        saveDraft: withSpanServerAsync('draft client - save draft', async (draftId, owner, values) => {
             const key = draftKey(draftId)
             const ownershipKey = ownershipIndexKey(owner)
 
@@ -53,7 +53,7 @@ export function getDraftClient(valkey?: Valkey): DraftClient {
 
             return values
         }),
-        deleteDraft: withSpanAsync('draft client - delete draft', async (draftId, owner) => {
+        deleteDraft: withSpanServerAsync('draft client - delete draft', async (draftId, owner) => {
             const key = draftKey(draftId)
             const ownershipKey = ownershipIndexKey(owner)
 
@@ -70,7 +70,7 @@ export function getDraftClient(valkey?: Valkey): DraftClient {
             await valkey.del(key)
             await valkey.srem(ownershipKey, key)
         }),
-        getDraft: withSpanAsync('draft client - get draft', async (draftId): Promise<DraftEntry | null> => {
+        getDraft: withSpanServerAsync('draft client - get draft', async (draftId): Promise<DraftEntry | null> => {
             const value = await valkey.hgetall(draftKey(draftId))
             if (valkeyEmptyHashValueToNull(value) == null) {
                 return null
@@ -78,7 +78,7 @@ export function getDraftClient(valkey?: Valkey): DraftClient {
 
             return internalEntryToDraftEntry(value)
         }),
-        getDrafts: withSpanAsync('draft client - get all drafts', async (ownership) => {
+        getDrafts: withSpanServerAsync('draft client - get all drafts', async (ownership) => {
             const keys = await valkey.smembers(ownershipIndexKey(ownership))
             if (keys.length === 0) {
                 return []

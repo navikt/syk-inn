@@ -4,7 +4,7 @@ import { Button } from '@navikt/ds-react'
 import { TrashIcon } from '@navikt/aksel-icons'
 
 import { DeleteDraftDocument, GetAllDraftsDocument, OpprettSykmeldingDraft } from '@queries'
-import { spanAsync } from '@otel/otel'
+import { spanBrowserAsync } from '@otel/browser'
 
 export function DeleteDraftButton({ draftId }: { draftId: string }): ReactElement {
     const [deleteDraft, deleteDraftResult] = useMutation(DeleteDraftDocument, {
@@ -29,7 +29,7 @@ export function DeleteDraftButton({ draftId }: { draftId: string }): ReactElemen
             variant="tertiary"
             loading={deleteDraftResult.loading}
             onClick={() =>
-                spanAsync('DeleteDraft(Dashboard).mutation', async () =>
+                spanBrowserAsync('DeleteDraft(Dashboard).mutation', async () =>
                     deleteDraft({
                         variables: { draftId },
                     }),
