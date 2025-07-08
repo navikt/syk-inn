@@ -4,6 +4,7 @@ import React, { ReactElement } from 'react'
 import { useFormStep } from '@components/ny-sykmelding-form/steps/useFormStep'
 import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 import { ArbeidsrelaterteArsaker } from '@components/ny-sykmelding-form/aktivitet/ArsakerPicker'
+import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
 import { useAppSelector } from '../../../providers/redux/hooks'
 import {
@@ -187,15 +188,32 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: DiagnoseStep | null })
     }
 
     return (
-        <FormSummary.Answer>
-            <FormSummary.Label>Hoveddiagnose</FormSummary.Label>
-            <FormSummary.Value>
-                <BodyShort>
-                    {diagnose.hoved.text} ({diagnose.hoved.code})
-                </BodyShort>
-                <Detail>{diagnose.hoved.system}</Detail>
-            </FormSummary.Value>
-        </FormSummary.Answer>
+        <>
+            <FormSummary.Answer>
+                <FormSummary.Label>Hoveddiagnose</FormSummary.Label>
+                <FormSummary.Value>
+                    <BodyShort>
+                        {diagnose.hoved.text} ({diagnose.hoved.code})
+                    </BodyShort>
+                    <Detail>{diagnose.hoved.system}</Detail>
+                </FormSummary.Value>
+            </FormSummary.Answer>
+            <FormSummary.Answer>
+                <FormSummary.Label>Bidiagnoser</FormSummary.Label>
+                <FormSummary.Value>
+                    {(diagnose.bi ?? [])
+                        .filter((bidiagnose): bidiagnose is DiagnoseSuggestion => bidiagnose != null)
+                        .map((bidiagnose, index) => (
+                            <div key={index}>
+                                <BodyShort>
+                                    {bidiagnose.text} ({bidiagnose.code})
+                                </BodyShort>
+                                <Detail>{bidiagnose.system}</Detail>
+                            </div>
+                        ))}
+                </FormSummary.Value>
+            </FormSummary.Answer>
+        </>
     )
 }
 
