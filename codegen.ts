@@ -11,6 +11,7 @@ const config: CodegenConfig = {
             config: {
                 enumsAsTypes: true,
                 scalars: { DateTime: 'string', DateOnly: 'string', JSON: 'unknown' },
+                nonOptionalTypename: true,
             },
         },
         './src/data-layer/graphql/resolvers.generated.ts': {

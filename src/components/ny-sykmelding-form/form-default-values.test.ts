@@ -109,12 +109,8 @@ test('server suggestions shall be used if no draft or form values are provided',
                 // Default periode is GRADERT from Today
                 periode: { fom: dateOnly(new Date()), tom: '' },
                 aktivitet: { type: 'GRADERT', grad: null },
-                medisinskArsak: { isMedisinskArsak: false },
-                arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: false,
-                    arbeidsrelaterteArsaker: null,
-                    annenArbeidsrelatertArsak: null,
-                },
+                medisinskArsak: null,
+                arbeidsrelatertArsak: null,
             },
         ],
         tilbakedatering: null,
@@ -126,6 +122,7 @@ test('server suggestions shall be used if no draft or form values are provided',
 const fullServerSuggesetions: NySykmeldingSuggestions = {
     diagnose: {
         value: {
+            __typename: 'Diagnose',
             system: 'ICPC2',
             code: 'A01',
             text: 'Influensa',

@@ -22,7 +22,7 @@ export type Scalars = {
 export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
 
 export type AktivitetIkkeMulig = FomTom & {
-    __typename?: 'AktivitetIkkeMulig'
+    __typename: 'AktivitetIkkeMulig'
     arbeidsrelatertArsak: ArbeidsrelatertArsak
     fom: Scalars['DateOnly']['output']
     medisinskArsak: MedisinskArsak
@@ -37,15 +37,15 @@ export type AktivitetIkkeMuligInput = {
 export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'GRADERT' | 'REISETILSKUDD'
 
 export type Arbeidsgiver = {
-    __typename?: 'Arbeidsgiver'
+    __typename: 'Arbeidsgiver'
     arbeidsgivernavn: Scalars['String']['output']
     harFlere: Scalars['Boolean']['output']
 }
 
 export type ArbeidsrelatertArsak = {
-    __typename?: 'ArbeidsrelatertArsak'
+    __typename: 'ArbeidsrelatertArsak'
     annenArbeidsrelatertArsak?: Maybe<Scalars['String']['output']>
-    arbeidsrelaterteArsaker: Array<Scalars['String']['output']>
+    arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
     isArbeidsrelatertArsak: Scalars['Boolean']['output']
 }
 
@@ -55,8 +55,10 @@ export type ArbeidsrelatertArsakInput = {
     isArbeidsrelatertArsak: Scalars['Boolean']['input']
 }
 
+export type ArbeidsrelatertArsakType = 'ANNET' | 'TILRETTELEGGING_IKKE_MULIG'
+
 export type Avventende = FomTom & {
-    __typename?: 'Avventende'
+    __typename: 'Avventende'
     fom: Scalars['DateOnly']['output']
     innspillTilArbeidsgiver: Scalars['String']['output']
     tom: Scalars['DateOnly']['output']
@@ -68,7 +70,7 @@ export type AvventendeInput = {
 }
 
 export type Behandler = {
-    __typename?: 'Behandler'
+    __typename: 'Behandler'
     hpr: Scalars['String']['output']
     legekontorTlf: Scalars['String']['output']
     navn: Scalars['String']['output']
@@ -76,7 +78,7 @@ export type Behandler = {
 }
 
 export type Behandlingsdager = FomTom & {
-    __typename?: 'Behandlingsdager'
+    __typename: 'Behandlingsdager'
     antallBehandlingsdager: Scalars['Int']['output']
     fom: Scalars['DateOnly']['output']
     tom: Scalars['DateOnly']['output']
@@ -88,7 +90,7 @@ export type BehandlingsdagerInput = {
 }
 
 export type Diagnose = {
-    __typename?: 'Diagnose'
+    __typename: 'Diagnose'
     code: Scalars['String']['output']
     system: DiagnoseSystem
     text: Scalars['String']['output']
@@ -104,7 +106,7 @@ export type FomTom = {
 }
 
 export type Gradert = FomTom & {
-    __typename?: 'Gradert'
+    __typename: 'Gradert'
     fom: Scalars['DateOnly']['output']
     grad: Scalars['Int']['output']
     tom: Scalars['DateOnly']['output']
@@ -160,12 +162,12 @@ export type InputYrkesskade = {
 }
 
 export type Konsultasjon = {
-    __typename?: 'Konsultasjon'
+    __typename: 'Konsultasjon'
     diagnoser?: Maybe<Array<Diagnose>>
 }
 
 export type MedisinskArsak = {
-    __typename?: 'MedisinskArsak'
+    __typename: 'MedisinskArsak'
     isMedisinskArsak: Scalars['Boolean']['output']
 }
 
@@ -174,7 +176,7 @@ export type MedisinskArsakInput = {
 }
 
 export type Mutation = {
-    __typename?: 'Mutation'
+    __typename: 'Mutation'
     deleteDraft: Scalars['Boolean']['output']
     opprettSykmelding: OpprettetSykmelding
     saveDraft: OpprettSykmeldingDraft
@@ -200,7 +202,7 @@ export type MutationSynchronizeSykmeldingArgs = {
 }
 
 export type OpprettSykmeldingDraft = {
-    __typename?: 'OpprettSykmeldingDraft'
+    __typename: 'OpprettSykmeldingDraft'
     draftId: Scalars['String']['output']
     lastUpdated: Scalars['DateTime']['output']
     values: Scalars['JSON']['output']
@@ -219,7 +221,7 @@ export type OpprettSykmeldingInput = {
 }
 
 export type OpprettSykmeldingRuleOutcome = {
-    __typename?: 'OpprettSykmeldingRuleOutcome'
+    __typename: 'OpprettSykmeldingRuleOutcome'
     message: Scalars['String']['output']
     rule: Scalars['String']['output']
     status: Scalars['String']['output']
@@ -229,13 +231,13 @@ export type OpprettSykmeldingRuleOutcome = {
 export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | Sykmelding
 
 export type Outcome = {
-    __typename?: 'Outcome'
+    __typename: 'Outcome'
     message?: Maybe<Scalars['String']['output']>
     result: Scalars['String']['output']
 }
 
 export type Pasient = Person & {
-    __typename?: 'Pasient'
+    __typename: 'Pasient'
     ident: Scalars['String']['output']
     navn: Scalars['String']['output']
 }
@@ -246,13 +248,13 @@ export type Person = {
 }
 
 export type QueriedPerson = Person & {
-    __typename?: 'QueriedPerson'
+    __typename: 'QueriedPerson'
     ident: Scalars['String']['output']
     navn: Scalars['String']['output']
 }
 
 export type Query = {
-    __typename?: 'Query'
+    __typename: 'Query'
     behandler?: Maybe<Behandler>
     diagnose?: Maybe<Array<Diagnose>>
     draft?: Maybe<OpprettSykmeldingDraft>
@@ -281,7 +283,7 @@ export type QuerySykmeldingArgs = {
 }
 
 export type Reisetilskudd = FomTom & {
-    __typename?: 'Reisetilskudd'
+    __typename: 'Reisetilskudd'
     fom: Scalars['DateOnly']['output']
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
@@ -292,7 +294,7 @@ export type ReisetilskuddInput = {
 }
 
 export type Sykmelding = {
-    __typename?: 'Sykmelding'
+    __typename: 'Sykmelding'
     /** Status on the document in the EHR system. */
     documentStatus?: Maybe<DocumentStatus>
     meta: SykmeldingMeta
@@ -302,13 +304,13 @@ export type Sykmelding = {
 }
 
 export type SykmeldingMelding = {
-    __typename?: 'SykmeldingMelding'
+    __typename: 'SykmeldingMelding'
     tilArbeidsgiver?: Maybe<Scalars['String']['output']>
     tilNav?: Maybe<Scalars['String']['output']>
 }
 
 export type SykmeldingMeta = {
-    __typename?: 'SykmeldingMeta'
+    __typename: 'SykmeldingMeta'
     legekontorOrgnr: Scalars['String']['output']
     mottatt: Scalars['DateTime']['output']
     pasientIdent: Scalars['String']['output']
@@ -316,7 +318,7 @@ export type SykmeldingMeta = {
 }
 
 export type SykmeldingValues = {
-    __typename?: 'SykmeldingValues'
+    __typename: 'SykmeldingValues'
     aktivitet: Array<Aktivitet>
     arbeidsgiver?: Maybe<Arbeidsgiver>
     bidiagnoser?: Maybe<Array<Diagnose>>
@@ -329,26 +331,26 @@ export type SykmeldingValues = {
 }
 
 export type SynchronizationStatus = {
-    __typename?: 'SynchronizationStatus'
+    __typename: 'SynchronizationStatus'
     documentStatus: DocumentStatus
     navStatus: DocumentStatus
 }
 
 export type Tilbakedatering = {
-    __typename?: 'Tilbakedatering'
+    __typename: 'Tilbakedatering'
     begrunnelse: Scalars['String']['output']
     startdato: Scalars['DateOnly']['output']
 }
 
 export type Yrkesskade = {
-    __typename?: 'Yrkesskade'
+    __typename: 'Yrkesskade'
     skadedato?: Maybe<Scalars['DateOnly']['output']>
     yrkesskade: Scalars['Boolean']['output']
 }
 
-type Person_Pasient_Fragment = { __typename?: 'Pasient'; ident: string; navn: string }
+type Person_Pasient_Fragment = { __typename: 'Pasient'; ident: string; navn: string }
 
-type Person_QueriedPerson_Fragment = { __typename?: 'QueriedPerson'; ident: string; navn: string }
+type Person_QueriedPerson_Fragment = { __typename: 'QueriedPerson'; ident: string; navn: string }
 
 export type PersonFragment = Person_Pasient_Fragment | Person_QueriedPerson_Fragment
 
@@ -357,11 +359,11 @@ export type DiagnoseSearchQueryVariables = Exact<{
 }>
 
 export type DiagnoseSearchQuery = {
-    __typename?: 'Query'
-    diagnose?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+    __typename: 'Query'
+    diagnose?: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
 }
 
-export type DiagnoseFragment = { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }
+export type DiagnoseFragment = { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }
 
 export type SaveDraftMutationVariables = Exact<{
     draftId: Scalars['String']['input']
@@ -369,31 +371,31 @@ export type SaveDraftMutationVariables = Exact<{
 }>
 
 export type SaveDraftMutation = {
-    __typename?: 'Mutation'
-    saveDraft: { __typename?: 'OpprettSykmeldingDraft'; draftId: string; values: unknown; lastUpdated: string }
+    __typename: 'Mutation'
+    saveDraft: { __typename: 'OpprettSykmeldingDraft'; draftId: string; values: unknown; lastUpdated: string }
 }
 
 export type DeleteDraftMutationVariables = Exact<{
     draftId: Scalars['String']['input']
 }>
 
-export type DeleteDraftMutation = { __typename?: 'Mutation'; deleteDraft: boolean }
+export type DeleteDraftMutation = { __typename: 'Mutation'; deleteDraft: boolean }
 
 export type GetDraftQueryVariables = Exact<{
     draftId: Scalars['String']['input']
 }>
 
 export type GetDraftQuery = {
-    __typename?: 'Query'
-    draft?: { __typename?: 'OpprettSykmeldingDraft'; draftId: string; values: unknown; lastUpdated: string } | null
+    __typename: 'Query'
+    draft?: { __typename: 'OpprettSykmeldingDraft'; draftId: string; values: unknown; lastUpdated: string } | null
 }
 
 export type GetAllDraftsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetAllDraftsQuery = {
-    __typename?: 'Query'
+    __typename: 'Query'
     drafts?: Array<{
-        __typename?: 'OpprettSykmeldingDraft'
+        __typename: 'OpprettSykmeldingDraft'
         draftId: string
         values: unknown
         lastUpdated: string
@@ -401,7 +403,7 @@ export type GetAllDraftsQuery = {
 }
 
 export type DraftFragment = {
-    __typename?: 'OpprettSykmeldingDraft'
+    __typename: 'OpprettSykmeldingDraft'
     draftId: string
     values: unknown
     lastUpdated: string
@@ -410,25 +412,25 @@ export type DraftFragment = {
 export type KonsultasjonQueryVariables = Exact<{ [key: string]: never }>
 
 export type KonsultasjonQuery = {
-    __typename?: 'Query'
+    __typename: 'Query'
     konsultasjon?: {
-        __typename?: 'Konsultasjon'
-        diagnoser?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+        __typename: 'Konsultasjon'
+        diagnoser?: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
     } | null
 }
 
 export type BehandlerQueryVariables = Exact<{ [key: string]: never }>
 
 export type BehandlerQuery = {
-    __typename?: 'Query'
-    behandler?: { __typename?: 'Behandler'; navn: string; hpr: string; orgnummer: string; legekontorTlf: string } | null
+    __typename: 'Query'
+    behandler?: { __typename: 'Behandler'; navn: string; hpr: string; orgnummer: string; legekontorTlf: string } | null
 }
 
 export type PasientQueryVariables = Exact<{ [key: string]: never }>
 
 export type PasientQuery = {
-    __typename?: 'Query'
-    pasient?: { __typename?: 'Pasient'; ident: string; navn: string } | null
+    __typename: 'Query'
+    pasient?: { __typename: 'Pasient'; ident: string; navn: string } | null
 }
 
 export type PersonByIdentQueryVariables = Exact<{
@@ -436,8 +438,8 @@ export type PersonByIdentQueryVariables = Exact<{
 }>
 
 export type PersonByIdentQuery = {
-    __typename?: 'Query'
-    person?: { __typename?: 'QueriedPerson'; ident: string; navn: string } | null
+    __typename: 'Query'
+    person?: { __typename: 'QueriedPerson'; ident: string; navn: string } | null
 }
 
 export type SykmeldingByIdQueryVariables = Exact<{
@@ -445,48 +447,60 @@ export type SykmeldingByIdQueryVariables = Exact<{
 }>
 
 export type SykmeldingByIdQuery = {
-    __typename?: 'Query'
+    __typename: 'Query'
     sykmelding?: {
-        __typename?: 'Sykmelding'
+        __typename: 'Sykmelding'
         sykmeldingId: string
         documentStatus?: DocumentStatus | null
         meta: {
-            __typename?: 'SykmeldingMeta'
+            __typename: 'SykmeldingMeta'
             pasientIdent: string
             sykmelderHpr: string
             legekontorOrgnr: string
             mottatt: string
         }
-        utfall: { __typename?: 'Outcome'; result: string; message?: string | null }
+        utfall: { __typename: 'Outcome'; result: string; message?: string | null }
         values: {
-            __typename?: 'SykmeldingValues'
+            __typename: 'SykmeldingValues'
             svangerskapsrelatert: boolean
             pasientenSkalSkjermes: boolean
-            hoveddiagnose?: { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
-            bidiagnoser?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+            hoveddiagnose?: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
+            bidiagnoser?: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
             aktivitet: Array<
-                | { __typename?: 'AktivitetIkkeMulig'; fom: string; tom: string; type: AktivitetType }
                 | {
-                      __typename?: 'Avventende'
+                      __typename: 'AktivitetIkkeMulig'
+                      fom: string
+                      tom: string
+                      type: AktivitetType
+                      arbeidsrelatertArsak: {
+                          __typename: 'ArbeidsrelatertArsak'
+                          isArbeidsrelatertArsak: boolean
+                          arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                          annenArbeidsrelatertArsak?: string | null
+                      }
+                      medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean }
+                  }
+                | {
+                      __typename: 'Avventende'
                       fom: string
                       tom: string
                       type: AktivitetType
                       innspillTilArbeidsgiver: string
                   }
                 | {
-                      __typename?: 'Behandlingsdager'
+                      __typename: 'Behandlingsdager'
                       fom: string
                       tom: string
                       type: AktivitetType
                       antallBehandlingsdager: number
                   }
-                | { __typename?: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
-                | { __typename?: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
             >
-            arbeidsgiver?: { __typename?: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
-            meldinger: { __typename?: 'SykmeldingMelding'; tilNav?: string | null; tilArbeidsgiver?: string | null }
-            yrkesskade?: { __typename?: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
-            tilbakedatering?: { __typename?: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+            arbeidsgiver?: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
+            meldinger: { __typename: 'SykmeldingMelding'; tilNav?: string | null; tilArbeidsgiver?: string | null }
+            yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
+            tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
         }
     } | null
 }
@@ -494,48 +508,60 @@ export type SykmeldingByIdQuery = {
 export type AllSykmeldingerQueryVariables = Exact<{ [key: string]: never }>
 
 export type AllSykmeldingerQuery = {
-    __typename?: 'Query'
+    __typename: 'Query'
     sykmeldinger?: Array<{
-        __typename?: 'Sykmelding'
+        __typename: 'Sykmelding'
         sykmeldingId: string
         documentStatus?: DocumentStatus | null
         meta: {
-            __typename?: 'SykmeldingMeta'
+            __typename: 'SykmeldingMeta'
             pasientIdent: string
             sykmelderHpr: string
             legekontorOrgnr: string
             mottatt: string
         }
-        utfall: { __typename?: 'Outcome'; result: string; message?: string | null }
+        utfall: { __typename: 'Outcome'; result: string; message?: string | null }
         values: {
-            __typename?: 'SykmeldingValues'
+            __typename: 'SykmeldingValues'
             svangerskapsrelatert: boolean
             pasientenSkalSkjermes: boolean
-            hoveddiagnose?: { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
-            bidiagnoser?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+            hoveddiagnose?: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
+            bidiagnoser?: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
             aktivitet: Array<
-                | { __typename?: 'AktivitetIkkeMulig'; fom: string; tom: string; type: AktivitetType }
                 | {
-                      __typename?: 'Avventende'
+                      __typename: 'AktivitetIkkeMulig'
+                      fom: string
+                      tom: string
+                      type: AktivitetType
+                      arbeidsrelatertArsak: {
+                          __typename: 'ArbeidsrelatertArsak'
+                          isArbeidsrelatertArsak: boolean
+                          arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                          annenArbeidsrelatertArsak?: string | null
+                      }
+                      medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean }
+                  }
+                | {
+                      __typename: 'Avventende'
                       fom: string
                       tom: string
                       type: AktivitetType
                       innspillTilArbeidsgiver: string
                   }
                 | {
-                      __typename?: 'Behandlingsdager'
+                      __typename: 'Behandlingsdager'
                       fom: string
                       tom: string
                       type: AktivitetType
                       antallBehandlingsdager: number
                   }
-                | { __typename?: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
-                | { __typename?: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
             >
-            arbeidsgiver?: { __typename?: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
-            meldinger: { __typename?: 'SykmeldingMelding'; tilNav?: string | null; tilArbeidsgiver?: string | null }
-            yrkesskade?: { __typename?: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
-            tilbakedatering?: { __typename?: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+            arbeidsgiver?: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
+            meldinger: { __typename: 'SykmeldingMelding'; tilNav?: string | null; tilArbeidsgiver?: string | null }
+            yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
+            tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
         }
     }> | null
 }
@@ -546,65 +572,77 @@ export type OpprettSykmeldingMutationVariables = Exact<{
 }>
 
 export type OpprettSykmeldingMutation = {
-    __typename?: 'Mutation'
+    __typename: 'Mutation'
     opprettSykmelding:
-        | { __typename?: 'OpprettSykmeldingRuleOutcome'; status: string; message: string; rule: string; tree: string }
+        | { __typename: 'OpprettSykmeldingRuleOutcome'; status: string; message: string; rule: string; tree: string }
         | {
-              __typename?: 'Sykmelding'
+              __typename: 'Sykmelding'
               sykmeldingId: string
               documentStatus?: DocumentStatus | null
               meta: {
-                  __typename?: 'SykmeldingMeta'
+                  __typename: 'SykmeldingMeta'
                   pasientIdent: string
                   sykmelderHpr: string
                   legekontorOrgnr: string
                   mottatt: string
               }
-              utfall: { __typename?: 'Outcome'; result: string; message?: string | null }
+              utfall: { __typename: 'Outcome'; result: string; message?: string | null }
               values: {
-                  __typename?: 'SykmeldingValues'
+                  __typename: 'SykmeldingValues'
                   svangerskapsrelatert: boolean
                   pasientenSkalSkjermes: boolean
-                  hoveddiagnose?: { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
+                  hoveddiagnose?: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
                   bidiagnoser?: Array<{
-                      __typename?: 'Diagnose'
+                      __typename: 'Diagnose'
                       system: DiagnoseSystem
                       code: string
                       text: string
                   }> | null
                   aktivitet: Array<
-                      | { __typename?: 'AktivitetIkkeMulig'; fom: string; tom: string; type: AktivitetType }
                       | {
-                            __typename?: 'Avventende'
+                            __typename: 'AktivitetIkkeMulig'
+                            fom: string
+                            tom: string
+                            type: AktivitetType
+                            arbeidsrelatertArsak: {
+                                __typename: 'ArbeidsrelatertArsak'
+                                isArbeidsrelatertArsak: boolean
+                                arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                                annenArbeidsrelatertArsak?: string | null
+                            }
+                            medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean }
+                        }
+                      | {
+                            __typename: 'Avventende'
                             fom: string
                             tom: string
                             type: AktivitetType
                             innspillTilArbeidsgiver: string
                         }
                       | {
-                            __typename?: 'Behandlingsdager'
+                            __typename: 'Behandlingsdager'
                             fom: string
                             tom: string
                             type: AktivitetType
                             antallBehandlingsdager: number
                         }
-                      | { __typename?: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
-                      | { __typename?: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                      | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                      | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
                   >
-                  arbeidsgiver?: { __typename?: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
+                  arbeidsgiver?: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
                   meldinger: {
-                      __typename?: 'SykmeldingMelding'
+                      __typename: 'SykmeldingMelding'
                       tilNav?: string | null
                       tilArbeidsgiver?: string | null
                   }
-                  yrkesskade?: { __typename?: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
-                  tilbakedatering?: { __typename?: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+                  yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
+                  tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
               }
           }
 }
 
 export type OutcomeFragment = {
-    __typename?: 'OpprettSykmeldingRuleOutcome'
+    __typename: 'OpprettSykmeldingRuleOutcome'
     status: string
     message: string
     rule: string
@@ -612,58 +650,77 @@ export type OutcomeFragment = {
 }
 
 export type SykmeldingFragment = {
-    __typename?: 'Sykmelding'
+    __typename: 'Sykmelding'
     sykmeldingId: string
     documentStatus?: DocumentStatus | null
     meta: {
-        __typename?: 'SykmeldingMeta'
+        __typename: 'SykmeldingMeta'
         pasientIdent: string
         sykmelderHpr: string
         legekontorOrgnr: string
         mottatt: string
     }
-    utfall: { __typename?: 'Outcome'; result: string; message?: string | null }
+    utfall: { __typename: 'Outcome'; result: string; message?: string | null }
     values: {
-        __typename?: 'SykmeldingValues'
+        __typename: 'SykmeldingValues'
         svangerskapsrelatert: boolean
         pasientenSkalSkjermes: boolean
-        hoveddiagnose?: { __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
-        bidiagnoser?: Array<{ __typename?: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+        hoveddiagnose?: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
+        bidiagnoser?: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
         aktivitet: Array<
-            | { __typename?: 'AktivitetIkkeMulig'; fom: string; tom: string; type: AktivitetType }
             | {
-                  __typename?: 'Avventende'
+                  __typename: 'AktivitetIkkeMulig'
+                  fom: string
+                  tom: string
+                  type: AktivitetType
+                  arbeidsrelatertArsak: {
+                      __typename: 'ArbeidsrelatertArsak'
+                      isArbeidsrelatertArsak: boolean
+                      arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                      annenArbeidsrelatertArsak?: string | null
+                  }
+                  medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean }
+              }
+            | {
+                  __typename: 'Avventende'
                   fom: string
                   tom: string
                   type: AktivitetType
                   innspillTilArbeidsgiver: string
               }
             | {
-                  __typename?: 'Behandlingsdager'
+                  __typename: 'Behandlingsdager'
                   fom: string
                   tom: string
                   type: AktivitetType
                   antallBehandlingsdager: number
               }
-            | { __typename?: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
-            | { __typename?: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+            | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+            | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
         >
-        arbeidsgiver?: { __typename?: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
-        meldinger: { __typename?: 'SykmeldingMelding'; tilNav?: string | null; tilArbeidsgiver?: string | null }
-        yrkesskade?: { __typename?: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
-        tilbakedatering?: { __typename?: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+        arbeidsgiver?: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
+        meldinger: { __typename: 'SykmeldingMelding'; tilNav?: string | null; tilArbeidsgiver?: string | null }
+        yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
+        tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
     }
 }
 
 type Aktivitet_AktivitetIkkeMulig_Fragment = {
-    __typename?: 'AktivitetIkkeMulig'
+    __typename: 'AktivitetIkkeMulig'
     fom: string
     tom: string
     type: AktivitetType
+    arbeidsrelatertArsak: {
+        __typename: 'ArbeidsrelatertArsak'
+        isArbeidsrelatertArsak: boolean
+        arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+        annenArbeidsrelatertArsak?: string | null
+    }
+    medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean }
 }
 
 type Aktivitet_Avventende_Fragment = {
-    __typename?: 'Avventende'
+    __typename: 'Avventende'
     fom: string
     tom: string
     type: AktivitetType
@@ -671,22 +728,16 @@ type Aktivitet_Avventende_Fragment = {
 }
 
 type Aktivitet_Behandlingsdager_Fragment = {
-    __typename?: 'Behandlingsdager'
+    __typename: 'Behandlingsdager'
     fom: string
     tom: string
     type: AktivitetType
     antallBehandlingsdager: number
 }
 
-type Aktivitet_Gradert_Fragment = {
-    __typename?: 'Gradert'
-    fom: string
-    tom: string
-    type: AktivitetType
-    grad: number
-}
+type Aktivitet_Gradert_Fragment = { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
 
-type Aktivitet_Reisetilskudd_Fragment = { __typename?: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+type Aktivitet_Reisetilskudd_Fragment = { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
 
 export type AktivitetFragment =
     | Aktivitet_AktivitetIkkeMulig_Fragment
@@ -700,9 +751,9 @@ export type SynchronizeSykmeldingMutationVariables = Exact<{
 }>
 
 export type SynchronizeSykmeldingMutation = {
-    __typename?: 'Mutation'
+    __typename: 'Mutation'
     synchronizeSykmelding: {
-        __typename?: 'SynchronizationStatus'
+        __typename: 'SynchronizationStatus'
         documentStatus: DocumentStatus
         navStatus: DocumentStatus
     }
@@ -806,7 +857,34 @@ export const AktivitetFragmentDoc = {
                         typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'arbeidsrelatertArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'isArbeidsrelatertArsak' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'arbeidsrelaterteArsaker' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'annenArbeidsrelatertArsak' },
+                                            },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'medisinskArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
+                                        ],
+                                    },
+                                },
+                            ],
                         },
                     },
                     {
@@ -1015,7 +1093,34 @@ export const SykmeldingFragmentDoc = {
                         typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'arbeidsrelatertArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'isArbeidsrelatertArsak' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'arbeidsrelaterteArsaker' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'annenArbeidsrelatertArsak' },
+                                            },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'medisinskArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
+                                        ],
+                                    },
+                                },
+                            ],
                         },
                     },
                     {
@@ -1523,7 +1628,34 @@ export const SykmeldingByIdDocument = {
                         typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'arbeidsrelatertArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'isArbeidsrelatertArsak' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'arbeidsrelaterteArsaker' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'annenArbeidsrelatertArsak' },
+                                            },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'medisinskArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
+                                        ],
+                                    },
+                                },
+                            ],
                         },
                     },
                     {
@@ -1750,7 +1882,34 @@ export const AllSykmeldingerDocument = {
                         typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'arbeidsrelatertArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'isArbeidsrelatertArsak' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'arbeidsrelaterteArsaker' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'annenArbeidsrelatertArsak' },
+                                            },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'medisinskArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
+                                        ],
+                                    },
+                                },
+                            ],
                         },
                     },
                     {
@@ -2028,7 +2187,34 @@ export const OpprettSykmeldingDocument = {
                         typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'type' } }],
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'arbeidsrelatertArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'isArbeidsrelatertArsak' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'arbeidsrelaterteArsaker' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'annenArbeidsrelatertArsak' },
+                                            },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'medisinskArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
+                                        ],
+                                    },
+                                },
+                            ],
                         },
                     },
                     {

@@ -6,7 +6,7 @@ import {
     useFormContext as useRhfFormContext,
 } from 'react-hook-form'
 
-import { DiagnoseFragment } from '@queries'
+import { ArbeidsrelatertArsakType, DiagnoseFragment } from '@queries'
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
 export type NySykmeldingSuggestions = {
@@ -38,7 +38,6 @@ export type MedisinskArsakField = {
     isMedisinskArsak: boolean | null
 }
 
-export type ArbeidsrelatertArsakType = 'TILRETTELEGGING_IKKE_MULIG' | 'ANNET'
 export type ArbeidsrelatertArsakField = {
     isArbeidsrelatertArsak: boolean
     arbeidsrelaterteArsaker: ArbeidsrelatertArsakType[] | null

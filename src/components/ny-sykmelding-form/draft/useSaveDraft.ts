@@ -37,7 +37,7 @@ export function useSaveDraft(opts: {
             cache.writeQuery({
                 query: GetDraftDocument,
                 variables: { draftId: data.saveDraft.draftId },
-                data: { draft: data.saveDraft },
+                data: { __typename: 'Query', draft: data.saveDraft },
             })
         },
     })

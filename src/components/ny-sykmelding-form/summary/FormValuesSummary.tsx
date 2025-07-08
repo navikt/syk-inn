@@ -109,7 +109,13 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[]
                 <React.Fragment key={index}>
                     <FormSummary.Answer>
                         <FormSummary.Label>Periode</FormSummary.Label>
-                        <FormSummary.Value>{toReadableDatePeriod(aktivitet.fom, aktivitet.tom)}</FormSummary.Value>
+                        {aktivitet.tom != null ? (
+                            <FormSummary.Value>{toReadableDatePeriod(aktivitet.fom, aktivitet.tom)}</FormSummary.Value>
+                        ) : (
+                            <FormSummary.Value>
+                                <Alert variant="warning">Periode mangler datoer.</Alert>
+                            </FormSummary.Value>
+                        )}
                     </FormSummary.Answer>
                     <FormSummary.Answer>
                         <FormSummary.Label>Mulighet for arbeid</FormSummary.Label>
