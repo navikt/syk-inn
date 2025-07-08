@@ -73,7 +73,13 @@ export function ComboTable({
                             arbeidsgiver={sykmeldingArbeidsgiverText(sykmelding.values.arbeidsgiver)}
                             utfall={<Utfall utfall={sykmelding.utfall} />}
                             status="current"
-                            actions={<SykmeldingActions sykmeldingId={sykmelding.sykmeldingId} forlengable />}
+                            actions={
+                                <SykmeldingActions
+                                    sykmeldingId={sykmelding.sykmeldingId}
+                                    sykmelding={sykmelding}
+                                    forlengable
+                                />
+                            }
                         />
                     )
                 })}
@@ -92,7 +98,9 @@ export function ComboTable({
                             arbeidsgiver={sykmeldingArbeidsgiverText(sykmelding.values.arbeidsgiver)}
                             utfall={<Utfall utfall={sykmelding.utfall} />}
                             status="previous"
-                            actions={<SykmeldingActions sykmeldingId={sykmelding.sykmeldingId} />}
+                            actions={
+                                <SykmeldingActions sykmeldingId={sykmelding.sykmeldingId} sykmelding={sykmelding} />
+                            }
                         />
                     )
                 })}

@@ -49,7 +49,7 @@ export function useOpprettSykmeldingMutation(): {
             cache.writeQuery({
                 query: SykmeldingByIdDocument,
                 variables: { id: result.data?.opprettSykmelding.sykmeldingId },
-                data: { sykmelding: result.data.opprettSykmelding },
+                data: { __typename: 'Query', sykmelding: result.data.opprettSykmelding },
             })
         },
     })
@@ -150,7 +150,7 @@ function aktivitetStepToInputAktivitet(value: AktivitetStep): InputAktivitet {
             return {
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: value.fom,
-                tom: value.tom,
+                tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
                 aktivitetIkkeMulig: { dummy: true },
                 avventende: null,
                 gradert: null,
@@ -169,9 +169,9 @@ function aktivitetStepToInputAktivitet(value: AktivitetStep): InputAktivitet {
             return {
                 type: 'GRADERT',
                 fom: value.fom,
-                tom: value.tom,
+                tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
                 gradert: {
-                    grad: +value.grad,
+                    grad: value.grad ? +value.grad : raise("Aktivitet of type GRADERT without 'grad'"),
                     // TODO: Implement in form
                     reisetilskudd: false,
                 },

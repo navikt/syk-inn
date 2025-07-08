@@ -33,8 +33,6 @@ export function sykmeldingGradText(aktivitet: AktivitetFragment[]): string {
             return 'Reisetilskudd'
         case 'Behandlingsdager':
             return 'Behandlingsdager'
-        default:
-            raise(`Unknown aktivitet type: ${first.type}`)
     }
 }
 

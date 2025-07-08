@@ -1,8 +1,7 @@
 import { cookies } from 'next/headers'
 
 import { unleashLogger } from '@toggles/unleash'
-
-export const UNLEASH_COOKIE_NAME = 'syk-inn-unleash-session-id'
+import { UNLEASH_COOKIE_NAME } from '@toggles/const'
 
 export async function getUnleashSessionId(): Promise<string> {
     const existingUnleashId = (await cookies()).get(UNLEASH_COOKIE_NAME)

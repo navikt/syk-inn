@@ -79,6 +79,14 @@ fragment Aktivitet on Aktivitet {
     }
     ... on AktivitetIkkeMulig {
         type
+        arbeidsrelatertArsak {
+            isArbeidsrelatertArsak
+            arbeidsrelaterteArsaker
+            annenArbeidsrelatertArsak
+        }
+        medisinskArsak {
+            isMedisinskArsak
+        }
     }
     ... on Avventende {
         type

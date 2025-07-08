@@ -47,7 +47,7 @@ export type Arbeidsgiver = {
 export type ArbeidsrelatertArsak = {
     __typename?: 'ArbeidsrelatertArsak'
     annenArbeidsrelatertArsak?: Maybe<Scalars['String']['output']>
-    arbeidsrelaterteArsaker: Array<Scalars['String']['output']>
+    arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
     isArbeidsrelatertArsak: Scalars['Boolean']['output']
 }
 
@@ -56,6 +56,8 @@ export type ArbeidsrelatertArsakInput = {
     arbeidsrelaterteArsaker: Array<Scalars['String']['input']>
     isArbeidsrelatertArsak: Scalars['Boolean']['input']
 }
+
+export type ArbeidsrelatertArsakType = 'ANNET' | 'TILRETTELEGGING_IKKE_MULIG'
 
 export type Avventende = FomTom & {
     __typename?: 'Avventende'
@@ -441,6 +443,7 @@ export type ResolversTypes = {
     Arbeidsgiver: ResolverTypeWrapper<Arbeidsgiver>
     ArbeidsrelatertArsak: ResolverTypeWrapper<ArbeidsrelatertArsak>
     ArbeidsrelatertArsakInput: ArbeidsrelatertArsakInput
+    ArbeidsrelatertArsakType: ArbeidsrelatertArsakType
     Avventende: ResolverTypeWrapper<Avventende>
     AvventendeInput: AvventendeInput
     Behandler: ResolverTypeWrapper<Behandler>
@@ -580,7 +583,7 @@ export type ArbeidsrelatertArsakResolvers<
     ParentType extends ResolversParentTypes['ArbeidsrelatertArsak'] = ResolversParentTypes['ArbeidsrelatertArsak'],
 > = {
     annenArbeidsrelatertArsak?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-    arbeidsrelaterteArsaker?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+    arbeidsrelaterteArsaker?: Resolver<Array<ResolversTypes['ArbeidsrelatertArsakType']>, ParentType, ContextType>
     isArbeidsrelatertArsak?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }

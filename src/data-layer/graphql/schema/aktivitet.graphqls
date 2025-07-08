@@ -23,9 +23,14 @@ type MedisinskArsak {
     isMedisinskArsak: Boolean!
 }
 
+enum ArbeidsrelatertArsakType {
+    TILRETTELEGGING_IKKE_MULIG
+    ANNET
+}
+
 type ArbeidsrelatertArsak {
     isArbeidsrelatertArsak: Boolean!
-    arbeidsrelaterteArsaker: [String!]!
+    arbeidsrelaterteArsaker: [ArbeidsrelatertArsakType!]!
     annenArbeidsrelatertArsak: String
 }
 

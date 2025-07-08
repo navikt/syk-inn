@@ -1,7 +1,9 @@
+import * as R from 'remeda'
 import { Checkbox, CheckboxGroup, Textarea } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 
-import { ArbeidsrelatertArsakType, useController } from '@components/ny-sykmelding-form/form'
+import { useController } from '@components/ny-sykmelding-form/form'
+import { ArbeidsrelatertArsakType } from '@graphql/queries.generated'
 
 function ArsakerPicker({ index }: { index: number }): ReactElement {
     const isMedisinskArsak = useController({
@@ -80,9 +82,9 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
                     onChange={(value) => arbeidsrelaterteArsaker.field.onChange(value)}
                     error={arbeidsrelaterteArsaker.fieldState.error?.message}
                 >
-                    {Object.keys(ArbeidsrelaterteArsaker).map((key) => (
+                    {R.keys(ArbeidsrelaterteArsaker).map((key) => (
                         <Checkbox key={key} value={key}>
-                            {ArbeidsrelaterteArsaker[key as ArbeidsrelatertArsakType]}
+                            {ArbeidsrelaterteArsaker[key]}
                         </Checkbox>
                     ))}
                 </CheckboxGroup>

@@ -224,7 +224,7 @@ function toInitialPeriodeFromState(aktivitet: AktivitetStep): NySykmeldingMainFo
                 ...periode,
                 aktivitet: {
                     ...periode.aktivitet,
-                    grad: aktivitet.grad.toFixed(0),
+                    grad: aktivitet.grad ? aktivitet.grad.toFixed(0) : null,
                 },
                 medisinskArsak: null,
                 arbeidsrelatertArsak: null,
@@ -317,14 +317,8 @@ export function getDefaultPeriode(): AktivitetsPeriode {
             type: 'GRADERT',
             grad: null,
         },
-        medisinskArsak: {
-            isMedisinskArsak: false,
-        },
-        arbeidsrelatertArsak: {
-            isArbeidsrelatertArsak: false,
-            arbeidsrelaterteArsaker: null,
-            annenArbeidsrelatertArsak: null,
-        },
+        medisinskArsak: null,
+        arbeidsrelatertArsak: null,
     }
 }
 
