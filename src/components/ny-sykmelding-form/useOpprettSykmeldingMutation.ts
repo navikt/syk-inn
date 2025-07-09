@@ -119,8 +119,10 @@ function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingMultiStep
             system: formState.diagnose.hoved.system,
             code: formState.diagnose.hoved.code,
         },
-        // TODO: Implement in form
-        bidiagnoser: [],
+        bidiagnoser: formState.diagnose.bi.map((it) => ({
+            system: it.system,
+            code: it.code,
+        })),
         aktivitet: formState.aktiviteter.map(aktivitetStepToInputAktivitet),
         meldinger: {
             tilNav: formState.meldinger?.showTilNav && formState.meldinger.tilNav ? formState.meldinger.tilNav : null,

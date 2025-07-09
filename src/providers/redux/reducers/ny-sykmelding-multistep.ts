@@ -62,7 +62,7 @@ export type MeldingerStep = {
 
 export type DiagnoseStep = {
     hoved: DiagnoseSuggestion
-    bi: (DiagnoseSuggestion | null)[]
+    bi: DiagnoseSuggestion[]
 }
 
 export type AndreSporsmalStep = {
