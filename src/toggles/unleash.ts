@@ -11,7 +11,7 @@ import { getUnleashSessionId } from './cookie'
 
 export const unleashLogger = pinoLogger.child({}, { msgPrefix: '[UNLEASH-TOGGLES] ' })
 
-const unleashEnvironment = bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'prod-gcp' ? 'production' : 'development'
+const unleashEnvironment = bundledEnv.runtimeEnv === 'prod-gcp' ? 'production' : 'development'
 
 export async function getUserlessToggles(): Promise<Toggles> {
     return getUserToggles(true)

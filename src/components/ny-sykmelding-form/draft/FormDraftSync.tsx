@@ -133,7 +133,7 @@ function shouldUpdate(values: NySykmeldingMainFormValues, savedDraft: unknown): 
     const parsedSaved = safeParseDraft(null, savedDraft)
     const mappedFormValues = mapFormValuesToDraftValues(values)
 
-    if (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'prod-gcp') {
+    if (bundledEnv.runtimeEnv !== 'prod-gcp') {
         detectBadState(mappedFormValues)
     }
 

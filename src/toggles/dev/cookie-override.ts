@@ -17,9 +17,7 @@ export async function developmentTogglesWithCookieOverrides(): Promise<Toggles> 
         .map((it) => `\t${it.name}: ${it.enabled}${it.overriden ? ' (overridden)' : ''}`)
         .join('\n')
 
-    unleashLogger.warn(
-        `Runtime env is ${bundledEnv.NEXT_PUBLIC_RUNTIME_ENV}, using dev toggles, current toggles: \n${toggleStatus}`,
-    )
+    unleashLogger.warn(`Runtime env is ${bundledEnv.runtimeEnv}, using dev toggles, current toggles: \n${toggleStatus}`)
 
     return localDevelopmentCookiesWithOverrides
 }

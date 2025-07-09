@@ -99,7 +99,7 @@ export function createInMemoryValkey(): Valkey {
 }
 
 export const getValkeyClient = lazyNextleton('valkey-client', () => {
-    switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
+    switch (bundledEnv.runtimeEnv) {
         case 'e2e':
         case 'demo':
             return createInMemoryValkey()

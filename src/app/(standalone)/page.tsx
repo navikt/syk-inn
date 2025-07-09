@@ -30,7 +30,7 @@ export default function Home(): ReactElement {
                         Metadata
                     </Heading>
                     <BodyShort size="small" className="mt-2">
-                        Runtime environment: <span className="font-bold">{bundledEnv.NEXT_PUBLIC_RUNTIME_ENV}</span>
+                        Runtime environment: <span className="font-bold">{bundledEnv.runtimeEnv}</span>
                     </BodyShort>
                     <BodyShort size="small" className="mt-2">
                         Basepath: <span className="font-bold">{bundledEnv.NEXT_PUBLIC_BASE_PATH || '/'}</span>

@@ -14,7 +14,7 @@ export const getFaro = lazyNextleton('faro-a', (): Faro | null => {
         url: bundledEnv.NEXT_PUBLIC_TELEMETRY_URL,
         app: {
             name: APP_NAME,
-            environment: bundledEnv.NEXT_PUBLIC_RUNTIME_ENV,
+            environment: bundledEnv.runtimeEnv,
             version: bundledEnv.NEXT_PUBLIC_VERSION ?? 'unknown',
         },
         instrumentations: [

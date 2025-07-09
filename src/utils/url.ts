@@ -2,7 +2,7 @@ import { BundledEnv, bundledEnv } from '@utils/env'
 import { raise } from '@utils/ts'
 
 export function getAbsoluteURL(): string {
-    switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
+    switch (bundledEnv.runtimeEnv) {
         case 'e2e':
         case 'local':
             return 'http://localhost:3000'
@@ -11,21 +11,21 @@ export function getAbsoluteURL(): string {
         case 'dev-gcp':
             return 'https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
         default:
-            throw new Error(`Unknown runtime environment ${bundledEnv.NEXT_PUBLIC_RUNTIME_ENV}`)
+            throw new Error(`Unknown runtime environment ${bundledEnv.runtimeEnv}`)
     }
 }
 
-const legalLoopbackEnvs = ['local', 'e2e', 'demo'] satisfies Array<BundledEnv['NEXT_PUBLIC_RUNTIME_ENV']> as string[]
+const legalLoopbackEnvs = ['local', 'e2e', 'demo'] satisfies Array<BundledEnv['runtimeEnv']> as string[]
 
 /**
  * Used to fetch 'self', should only be used in demo, e2e and local environments
  */
 export function getLoopbackURL(): string {
-    if (!legalLoopbackEnvs.includes(bundledEnv.NEXT_PUBLIC_RUNTIME_ENV)) {
-        raise(`Trying to use loopback URL in env ${bundledEnv.NEXT_PUBLIC_RUNTIME_ENV}, this is illegal!!`)
+    if (!legalLoopbackEnvs.includes(bundledEnv.runtimeEnv)) {
+        raise(`Trying to use loopback URL in env ${bundledEnv.runtimeEnv}, this is illegal!!`)
     }
 
-    switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
+    switch (bundledEnv.runtimeEnv) {
         case 'e2e':
             return `http://${process.env.HOSTNAME ?? '0.0.0.0'}:${process.env.PORT ?? '3000'}`
         case 'demo':

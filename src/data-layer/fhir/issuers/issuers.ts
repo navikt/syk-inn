@@ -12,7 +12,7 @@ export const knownIssuers: Record<string, { issuers: string[] }> = {
     },
 }
 
-switch (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV) {
+switch (bundledEnv.runtimeEnv) {
     case 'local':
     case 'e2e':
         knownIssuers['http://localhost:3000/api/mocks/fhir'] = { issuers: [] }

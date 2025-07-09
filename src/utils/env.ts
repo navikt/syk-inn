@@ -4,7 +4,7 @@ import { KeysOfUnion, raise } from '@utils/ts'
 
 export type BundledEnv = z.infer<typeof BundledEnvSchema>
 const BundledEnvSchema = z.object({
-    NEXT_PUBLIC_RUNTIME_ENV: z.union([
+    runtimeEnv: z.union([
         z.literal('local'),
         z.literal('e2e'),
         z.literal('demo'),
@@ -22,12 +22,12 @@ const BundledEnvSchema = z.object({
  * client bundle. These are available at any time, statically, in both server and browser.
  */
 export const bundledEnv = BundledEnvSchema.parse({
-    NEXT_PUBLIC_RUNTIME_ENV: process.env.NEXT_PUBLIC_RUNTIME_ENV,
+    runtimeEnv: process.env.NEXT_PUBLIC_RUNTIME_ENV,
     NEXT_PUBLIC_BASE_PATH: process.env.NEXT_PUBLIC_BASE_PATH,
     NEXT_PUBLIC_ASSET_PREFIX: process.env.NEXT_PUBLIC_ASSET_PREFIX,
     NEXT_PUBLIC_TELEMETRY_URL: process.env.NEXT_PUBLIC_TELEMETRY_URL,
     NEXT_PUBLIC_VERSION: process.env.NEXT_PUBLIC_VERSION,
-})
+} satisfies Record<keyof BundledEnv, unknown>)
 
 type ValkeyConfig = z.infer<typeof ValkeyConfigSchema>
 const ValkeyConfigSchema = z.union([
@@ -67,7 +67,7 @@ const ServerEnvSchema = z.object({
  */
 export function getServerEnv(): ServerEnv {
     const valkeyConfig =
-        bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'demo' && bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'e2e'
+        bundledEnv.runtimeEnv !== 'demo' && bundledEnv.runtimeEnv !== 'e2e'
             ? ({
                   runtimeEnv: process.env.NEXT_PUBLIC_RUNTIME_ENV,
                   username: process.env.VALKEY_USERNAME_SYK_INN,
@@ -88,13 +88,12 @@ export function getServerEnv(): ServerEnv {
         useLocalSykInnApi: process.env.USE_LOCAL_SYK_INN_API === 'true',
     } satisfies Record<keyof ServerEnv, unknown | undefined>)
 
-    if (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'local' && parsedEnv.useLocalSykInnApi) {
+    if (bundledEnv.runtimeEnv !== 'local' && parsedEnv.useLocalSykInnApi) {
         raise('USE_LOCAL_SYK_INN_API should only be set to true in local environment')
     }
 
     return parsedEnv
 }
 
-export const isE2E = bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'e2e'
-export const isLocalOrDemo =
-    (process.env.NODE_ENV === 'development' || bundledEnv.NEXT_PUBLIC_RUNTIME_ENV === 'demo') && !isE2E
+export const isE2E = bundledEnv.runtimeEnv === 'e2e'
+export const isLocalOrDemo = (process.env.NODE_ENV === 'development' || bundledEnv.runtimeEnv === 'demo') && !isE2E
