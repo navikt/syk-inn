@@ -23,5 +23,9 @@ export function failServerSpan(span: Span, what: string, error: Error): void {
     logger.error(error)
 
     span.recordException(error)
+    // OTEL does not support `cause`, but multiple recordException will create multiple events on the span
+    if (error.cause != null) {
+        span.recordException(error.cause instanceof Error ? error.cause : new Error(error.cause as string))
+    }
     span.setStatus({ code: SpanStatusCode.ERROR, message: what })
 }
