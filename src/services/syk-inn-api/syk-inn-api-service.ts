@@ -1,6 +1,5 @@
-import { logger } from '@navikt/next-logger'
+import { logger as pinoLogger } from '@navikt/next-logger'
 import * as z from 'zod/v4'
-import { addDays } from 'date-fns'
 
 import {
     SykInnApiRuleOutcome,
@@ -9,33 +8,29 @@ import {
     SykInnApiSykmeldingSchema,
 } from '@services/syk-inn-api/schema/sykmelding'
 import { ApiFetchErrors, fetchInternalAPI } from '@services/api-fetcher'
-import { getServerEnv, isE2E, isLocalOrDemo } from '@utils/env'
-import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
-import { createMockSykmelding } from '@services/syk-inn-api/syk-inn-api-mock-data'
-import { wait } from '@utils/wait'
+import { bundledEnv } from '@utils/env'
 import { OpprettSykmeldingPayload, OpprettSykmeldingPayloadSchema } from '@services/syk-inn-api/schema/opprett'
-import { dateOnly } from '@utils/date'
+
+import { mockEngineForSession, shouldUseMockEngine } from '../../data-layer/mock-engine'
+
+const logger = pinoLogger.child({}, { msgPrefix: '[API Service]: ' })
 
 export const sykInnApiService = {
     opprettSykmelding: async (
         payload: OpprettSykmeldingPayload,
     ): Promise<SykInnApiSykmelding | SykInnApiRuleOutcome | ApiFetchErrors> => {
-        if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
+        if (shouldUseMockEngine()) {
             logger.warn(
-                `Is in demo, local or e2e, submitting send sykmelding values ${JSON.stringify(payload, null, 2)}`,
+                `Running in ${bundledEnv.runtimeEnv}, submitting send sykmelding values: ${JSON.stringify(payload, null, 2)}`,
             )
 
             try {
-                // Dry run parse in local dev as well, will throw if it fails
-                OpprettSykmeldingPayloadSchema.parse(payload)
+                const mockEngine = await mockEngineForSession()
+                return mockEngine.opprettSykmelding(OpprettSykmeldingPayloadSchema.parse(payload))
             } catch (e) {
-                logger.error(`Sykmelding parse dryrun failed: ${e}`)
+                logger.error(new Error(`Sykmelding parse dryrun failed`, { cause: e }))
                 throw e
             }
-
-            await wait(500)
-
-            return createMockSykmelding()
         }
 
         return fetchInternalAPI({
@@ -51,9 +46,11 @@ export const sykInnApiService = {
         })
     },
     getSykmelding: async (sykmeldingId: string, hpr: string): Promise<SykInnApiSykmelding | ApiFetchErrors> => {
-        if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
-            logger.info('Running in local or demo environment, returning mocked sykmelding data')
-            return createMockSykmelding()
+        if (shouldUseMockEngine()) {
+            logger.info(`Running in ${bundledEnv.runtimeEnv} environment, returning mocked sykmelding by id data`)
+
+            const mockEngine = await mockEngineForSession()
+            return mockEngine.sykmeldingById(sykmeldingId)
         }
 
         return fetchInternalAPI({
@@ -68,35 +65,11 @@ export const sykInnApiService = {
         })
     },
     getSykmeldinger: async (pasientIdent: string, hpr: string): Promise<SykInnApiSykmelding[] | ApiFetchErrors> => {
-        if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
-            logger.info('Running in local or demo environment, returning mocked sykmelding data')
-            return [
-                // Current
-                createMockSykmelding(
-                    { sykmeldingId: '9a63d830-6d1a-4ce1-952c-c7b34c6a75d4' },
-                    {
-                        aktivitet: [
-                            {
-                                type: 'GRADERT',
-                                fom: dateOnly(new Date()),
-                                tom: dateOnly(addDays(new Date(), 7)),
-                                grad: 60,
-                                reisetilskudd: false,
-                            },
-                        ],
-                    },
-                ),
-                // Previous
-                createMockSykmelding(
-                    {
-                        sykmeldingId: 'e9369c48-3b8a-4c7f-9097-7c9394947a58',
-                    },
-                    { arbeidsgiver: { harFlere: true, arbeidsgivernavn: 'Oslo Badstuforening AS' } },
-                ),
-                createMockSykmelding({
-                    sykmeldingId: 'df567aa4-f694-4857-8e1b-5d14406e9dd6',
-                }),
-            ]
+        if (shouldUseMockEngine()) {
+            logger.info(`Running in ${bundledEnv.runtimeEnv} environment, returning mocked sykmelding data`)
+
+            const mockEngine = await mockEngineForSession()
+            return mockEngine.allSykmeldinger()
         }
 
         return fetchInternalAPI({
@@ -112,15 +85,11 @@ export const sykInnApiService = {
         })
     },
     getSykmeldingPdf: async (sykmeldingId: string, hpr: string): Promise<ArrayBuffer | ApiFetchErrors> => {
-        if ((isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi) {
-            logger.warn('Is in demo, local or e2e, returning mocked PDF')
+        if (shouldUseMockEngine()) {
+            logger.warn(`Running in ${bundledEnv.runtimeEnv}, returning mocked PDF`)
 
-            const response = new Response(Buffer.from(base64ExamplePdf), {
-                headers: { 'Content-Type': 'application/pdf' },
-                status: 200,
-            })
-
-            return await response.arrayBuffer()
+            const mockEngine = await mockEngineForSession()
+            return mockEngine.getPdf()
         }
 
         return await fetchInternalAPI({

@@ -1,6 +1,9 @@
+import * as R from 'remeda'
 import React, { ReactElement, startTransition } from 'react'
-import { BodyShort, Button, Checkbox, CheckboxGroup, Heading } from '@navikt/ds-react'
+import { BodyShort, Button, Checkbox, CheckboxGroup, Heading, Link, List } from '@navikt/ds-react'
 import { XMarkIcon } from '@navikt/aksel-icons'
+
+import { scenarios } from '../data-layer/mock-engine/scenarios/scenarios'
 
 import { DevToolItem } from './InternalDevToolItem'
 import { useFeatureToggleOverride } from './useFeatureToggleOverride'
@@ -25,10 +28,25 @@ export function InternalDevToolsPanel({ onClose }: Props): ReactElement {
                 Collection of actions and utilities used for local development only.
             </BodyShort>
             <div className="grid grid-cols-1 gap-6 mt-6">
+                <ScenarioPicker />
                 <FeatureToggles />
                 <ToggleAPIFailures />
             </div>
         </div>
+    )
+}
+
+function ScenarioPicker(): ReactElement {
+    return (
+        <DevToolItem title="Scenarios" description="Pre-load your session with different scenarios">
+            <List as="ul">
+                {R.entries(scenarios).map(([key, scenario]) => (
+                    <List.Item key={key}>
+                        <Link href={`/api/set-scenario/${key}?returnTo=/fhir`}>{scenario.description}</Link>
+                    </List.Item>
+                ))}
+            </List>
+        </DevToolItem>
     )
 }
 

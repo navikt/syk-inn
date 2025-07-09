@@ -28,7 +28,7 @@ const OpprettSykmeldingAktivitetSchema = z.discriminatedUnion('type', [
         }),
         arbeidsrelatertArsak: z.object({
             isArbeidsrelatertArsak: z.boolean(),
-            arbeidsrelaterteArsaker: z.array(z.string()),
+            arbeidsrelaterteArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])),
             annenArbeidsrelatertArsak: z.string().nullable(),
         }),
     }),
