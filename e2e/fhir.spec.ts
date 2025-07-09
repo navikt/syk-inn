@@ -21,7 +21,7 @@ import { getDraftId } from './utils/request-utils'
 import { verifySignerendeBehandler, verifySummaryPage } from './actions/user-verifications'
 
 test('can submit 100% sykmelding', async ({ page }) => {
-    await launchWithMock(page)
+    await launchWithMock()(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
@@ -77,7 +77,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
 })
 
 test('shall be able to edit diagnose', async ({ page }) => {
-    await launchWithMock(page)
+    await launchWithMock()(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
@@ -134,7 +134,7 @@ test('shall be able to edit diagnose', async ({ page }) => {
 })
 
 test('can submit gradert sykmelding', async ({ page }) => {
-    await launchWithMock(page)
+    await launchWithMock()(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
@@ -187,7 +187,7 @@ test('can submit gradert sykmelding', async ({ page }) => {
 })
 
 test('submit with only default values', async ({ page }) => {
-    await launchWithMock(page)
+    await launchWithMock()(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     // Tom is not prefilled
@@ -235,7 +235,7 @@ test('submit with only default values', async ({ page }) => {
 })
 
 test("should be asked about 'tilbakedatering' when fom is 5 days in the past", async ({ page }) => {
-    await launchWithMock(page)
+    await launchWithMock()(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
@@ -345,7 +345,7 @@ test("should be asked about 'tilbakedatering' when fom is 5 days in the past", a
 })
 
 test('"skal skjermes" should be part of payload if checked', async ({ page }) => {
-    await launchWithMock(page)
+    await launchWithMock()(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
@@ -401,7 +401,7 @@ test('"skal skjermes" should be part of payload if checked', async ({ page }) =>
 })
 
 test('"har flere arbeidsforhold" should be part of payload if checked', async ({ page }) => {
-    await launchWithMock(page)
+    await launchWithMock()(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillArbeidsforhold({
@@ -459,7 +459,7 @@ test('"har flere arbeidsforhold" should be part of payload if checked', async ({
 })
 
 test('"arbeidsrelaterte og medisinske årsaker" should be part of payload if checked', async ({ page }) => {
-    await launchWithMock(page)
+    await launchWithMock()(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillPeriodeRelative({

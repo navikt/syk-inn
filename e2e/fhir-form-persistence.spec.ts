@@ -25,7 +25,7 @@ import {
 } from './actions/user-form-verification'
 
 const fillAllTheValues = userInteractionsGroup(
-    launchWithMock,
+    launchWithMock('normal'),
     startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' }),
     fillArbeidsforhold({
         harFlereArbeidsforhold: false,

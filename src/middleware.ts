@@ -7,6 +7,7 @@ export function middleware(request: NextRequest): NextResponse {
 
     if (request.cookies.get('syk-inn-session-id')?.value == null) {
         const sessionId = crypto.randomUUID()
+
         response.cookies.set({
             name: 'syk-inn-session-id',
             value: sessionId,

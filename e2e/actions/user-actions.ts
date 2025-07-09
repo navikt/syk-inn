@@ -8,16 +8,22 @@ import { toReadableDatePeriod } from '@utils/date'
 import { clickAndWait, waitForGqlRequest } from '../utils/request-utils'
 import { inputDate } from '../utils/date-utils'
 
-export function startNewSykmelding({ name, fnr }: { name: string; fnr: string }) {
+export function startNewSykmelding(patient?: { name: string; fnr: string }) {
     return async (page: Page) => {
-        await test.step('Verify the patient and start new sykmelding', async () => {
-            const pasientInfoRegion = page.getByRole('region', { name: 'Opprett ny sykmelding' })
-            await expect(pasientInfoRegion).toBeVisible()
-            await expect(pasientInfoRegion.getByText(name)).toBeVisible()
-            await expect(page.getByText(new RegExp(`ID-nummer(.*)${fnr}`))).toBeVisible()
+        await test.step(
+            patient == null ? 'Start new sykmelding' : 'Verify the patient and start new sykmelding',
+            async () => {
+                const pasientInfoRegion = page.getByRole('region', { name: 'Opprett ny sykmelding' })
 
-            await pasientInfoRegion.getByRole('button', { name: 'Opprett sykmelding' }).click()
-        })
+                if (patient != null) {
+                    await expect(pasientInfoRegion).toBeVisible()
+                    await expect(pasientInfoRegion.getByText(patient.name)).toBeVisible()
+                    await expect(page.getByText(new RegExp(`ID-nummer(.*)${patient.fnr}`))).toBeVisible()
+                }
+
+                await pasientInfoRegion.getByRole('button', { name: 'Opprett sykmelding' }).click()
+            },
+        )
     }
 }
 

@@ -6,6 +6,7 @@ type SectionTitle =
     | 'Navn'
     | 'Fødselsnummer'
     | 'Har pasienten flere arbeidsforhold?'
+    | 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?'
     | 'Periode'
     | 'Mulighet for arbeid'
     | 'Dato for tilbakedatering'

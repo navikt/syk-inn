@@ -1,10 +1,11 @@
+import * as R from 'remeda'
 import React, { ReactElement, startTransition } from 'react'
 import { Alert, BodyShort, Button, Detail, ErrorMessage, Label } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
 import { cn } from '@utils/tw'
 import { raise } from '@utils/ts'
-import { DiagnoseSearchDocument } from '@queries'
+import { DiagnoseFragment, DiagnoseSearchDocument } from '@queries'
 
 import {
     AkselifiedCombobox,
@@ -61,7 +62,7 @@ function DiagnoseCombobox({
                 raise("Illegal state: Selected suggestion doesn't match with cache")
             }
 
-            onSelect(selectedSuggestion as DiagnoseSuggestion)
+            onSelect(R.omit(selectedSuggestion, ['__typename']))
 
             document.getElementById('step-navigation-next')?.focus()
         },
@@ -169,14 +170,14 @@ function DiagnoseCombobox({
 function useSuggestions(value: string): {
     isLoading: boolean
     hasError: boolean
-    suggestions: DiagnoseSuggestion[]
+    suggestions: DiagnoseFragment[]
 } {
     const { data, loading, error } = useQuery(DiagnoseSearchDocument, {
         variables: { query: value },
         skip: !value || value.trim() === '',
     })
 
-    const suggestions: DiagnoseSuggestion[] = data == null ? [] : 'reason' in data ? [] : (data.diagnose ?? [])
+    const suggestions: DiagnoseFragment[] = data == null ? [] : (data.diagnose ?? [])
 
     return { isLoading: loading, hasError: error != null, suggestions }
 }

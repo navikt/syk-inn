@@ -129,3 +129,34 @@ export function expectMeldinger({
         })
     }
 }
+
+export function expectArbeidsforhold({
+    harFlereArbeidsforhold,
+    sykmeldtFraArbeidsforhold = null,
+}: {
+    harFlereArbeidsforhold: boolean
+    sykmeldtFraArbeidsforhold?: string | null
+}) {
+    return (page: Page) => {
+        return test.step('Verify Arbeidsforhold section', async () => {
+            const arbeidsforholdRegion = page.getByRole('region', { name: 'Arbeidsgiver' })
+
+            const harFlereArbeidsforholdGroup = arbeidsforholdRegion.getByRole('group', {
+                name: 'Har pasienten flere arbeidsforhold?',
+            })
+            if (harFlereArbeidsforhold) {
+                await expect(harFlereArbeidsforholdGroup.getByRole('radio', { name: 'Ja' })).toBeChecked()
+            } else {
+                await expect(harFlereArbeidsforholdGroup.getByRole('radio', { name: 'Nei' })).not.toBeChecked()
+            }
+
+            if (sykmeldtFraArbeidsforhold) {
+                await expect(
+                    arbeidsforholdRegion.getByRole('textbox', {
+                        name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?',
+                    }),
+                ).toHaveValue(sykmeldtFraArbeidsforhold)
+            }
+        })
+    }
+}

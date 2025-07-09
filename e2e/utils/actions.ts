@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test'
 
-type CurriedAction = (page: Page) => Promise<void> | Promise<Locator>
+type CurriedAction = (page: Page) => Promise<void> | Promise<Locator> | Promise<unknown>
 
 export function userInteractionsGroup(...actions: CurriedAction[]) {
     return async (page: Page): Promise<void> => {
