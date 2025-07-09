@@ -2,10 +2,14 @@ import * as z from 'zod/v4'
 
 import { DiagnoseSchema } from '../../../data-layer/common/diagnose'
 
-const AktivitetIkkeMuligSchema = z.object({
-    type: z.literal('AKTIVITET_IKKE_MULIG'),
+const BaseAktivitetSchema = z.object({
     fom: z.string(),
     tom: z.string(),
+})
+
+export type SykInnApiAktivitetIkkeMulig = z.infer<typeof AktivitetIkkeMuligSchema>
+const AktivitetIkkeMuligSchema = BaseAktivitetSchema.extend({
+    type: z.literal('AKTIVITET_IKKE_MULIG'),
     // TODO: Mark as non-nullable once data is migrated in syk-inn-api
     medisinskArsak: z
         .object({
@@ -22,34 +26,27 @@ const AktivitetIkkeMuligSchema = z.object({
         .optional(),
 })
 
-const AktivitetGradertSchema = z.object({
+const AktivitetGradertSchema = BaseAktivitetSchema.extend({
     type: z.literal('GRADERT'),
     grad: z.number(),
-    fom: z.string(),
-    tom: z.string(),
     reisetilskudd: z.boolean(),
 })
 
-const AktivitetBehandlingsdagerSchema = z.object({
+const AktivitetBehandlingsdagerSchema = BaseAktivitetSchema.extend({
     type: z.literal('BEHANDLINGSDAGER'),
     antallBehandlingsdager: z.number(),
-    fom: z.string(),
-    tom: z.string(),
 })
 
-const AktivitetAvventendeSchema = z.object({
+const AktivitetAvventendeSchema = BaseAktivitetSchema.extend({
     type: z.literal('AVVENTENDE'),
     innspillTilArbeidsgiver: z.string(),
-    fom: z.string(),
-    tom: z.string(),
 })
 
-const AktivitetReisetilskuddSchema = z.object({
+const AktivitetReisetilskuddSchema = BaseAktivitetSchema.extend({
     type: z.literal('REISETILSKUDD'),
-    fom: z.string(),
-    tom: z.string(),
 })
 
+export type SykInnApiAktivitet = z.infer<typeof AktivitetSchema>
 const AktivitetSchema = z.discriminatedUnion('type', [
     AktivitetIkkeMuligSchema,
     AktivitetGradertSchema,

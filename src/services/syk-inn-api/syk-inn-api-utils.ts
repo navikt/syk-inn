@@ -81,7 +81,16 @@ function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingA
             },
             arbeidsrelatertArsak: {
                 isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
-                arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? [],
+                arbeidsrelaterteArsaker:
+                    aktivitet.arbeidsrelatertArsak?.arbeidsrelaterteArsaker.map((it) => {
+                        switch (it) {
+                            case 'TILRETTELEGGING_IKKE_MULIG':
+                            case 'ANNET':
+                                return it
+                            default:
+                                throw new Error(`Unknown arbeidsrelatertArsak: ${it}`)
+                        }
+                    }) ?? [],
                 annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
             },
         }

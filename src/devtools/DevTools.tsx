@@ -24,7 +24,7 @@ function DevTools(): ReactElement {
                 <div className="text-right text-text-subtle [text-shadow:1px_1px_0px_white]">
                     <div>
                         <Detail className="">Internal devtools</Detail>
-                        <Detail className="-mt-1 font-bold">{getAltKeyLabel()} + d</Detail>
+                        <Detail className="-mt-1 font-bold">{getAltKeyLabel()} + l</Detail>
                     </div>
                     <div>
                         <Detail className="">Reset query cache</Detail>
