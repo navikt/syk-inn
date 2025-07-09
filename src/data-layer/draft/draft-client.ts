@@ -3,12 +3,14 @@ import { differenceInSeconds, endOfDay } from 'date-fns'
 import { logger } from '@navikt/next-logger'
 import Valkey from 'iovalkey'
 
-import { getValkeyClient } from '@services/valkey/client'
+import { productionValkey } from '@services/valkey/client'
 import { withSpanServerAsync } from '@otel/server'
+
+import { mockEngineForSession, shouldUseMockEngine } from '../mock-engine'
 
 import { DraftValues } from './draft-schema'
 
-type DraftOwnership = { hpr: string; ident: string }
+export type DraftOwnership = { hpr: string; ident: string }
 
 type DraftEntryCore = {
     draftId: string
@@ -26,16 +28,26 @@ export type DraftEntry = DraftEntryCore & {
     values: DraftValues
 }
 
-type DraftClient = {
+export type DraftClient = {
     saveDraft: (draftId: string, owner: DraftOwnership, values: DraftValues) => Promise<DraftValues>
     deleteDraft: (draftId: string, owner: DraftOwnership) => Promise<void>
     getDraft: (draftId: string) => Promise<DraftEntry | null>
     getDrafts: (owner: DraftOwnership) => Promise<DraftEntry[]>
 }
 
-export async function getDraftClient(valkey?: Valkey): Promise<DraftClient> {
-    valkey = !valkey ? await getValkeyClient() : valkey
+/**
+ * In e2e/demo, each draft client is scoped to the users session, in production it is Valkey-backed.
+ */
+export async function getDraftClient(): Promise<DraftClient> {
+    if (shouldUseMockEngine()) {
+        const mockEngine = await mockEngineForSession()
+        return mockEngine.draftClient
+    }
 
+    return createDraftClient(productionValkey())
+}
+
+export function createDraftClient(valkey: Valkey): DraftClient {
     return {
         saveDraft: withSpanServerAsync('draft client - save draft', async (draftId, owner, values) => {
             const key = draftKey(draftId)

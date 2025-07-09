@@ -2,12 +2,12 @@ import { describe, it, expect } from 'vitest'
 
 import { createInMemoryValkey } from '../mock-engine/valkey/InMemValkey'
 
-import { getDraftClient } from './draft-client'
+import { createDraftClient } from './draft-client'
 import { DraftValues } from './draft-schema'
 
 describe('in memory draft client', () => {
     it('should save a draft', async () => {
-        const client = await getDraftClient(createInMemoryValkey())
+        const client = await createDraftClient(createInMemoryValkey())
 
         await client.saveDraft('test-1', { hpr: '999', ident: '111' }, emptyDraft)
 
@@ -24,7 +24,7 @@ describe('in memory draft client', () => {
 
     it('should delete a draft', async () => {
         const ownership = { hpr: '999', ident: '111' }
-        const client = await getDraftClient(createInMemoryValkey())
+        const client = await createDraftClient(createInMemoryValkey())
 
         await client.saveDraft('test-1', ownership, emptyDraft)
         const draft = await client.getDraft('test-1')
@@ -40,7 +40,7 @@ describe('in memory draft client', () => {
 
     it('should support multiple drafts', async () => {
         const ownership = { hpr: '999', ident: '111' }
-        const client = await getDraftClient(createInMemoryValkey())
+        const client = await createDraftClient(createInMemoryValkey())
 
         await client.saveDraft('test-1', ownership, emptyDraft)
         await client.saveDraft('test-2', ownership, emptyDraft)

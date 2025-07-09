@@ -7,12 +7,16 @@ import {
     ReadyClient,
 } from '@navikt/smart-on-fhir/client'
 import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
+import Valkey from 'iovalkey'
 
-import { getValkeyClient } from '@services/valkey/client'
+import { productionValkey } from '@services/valkey/client'
 import { getAbsoluteURL } from '@utils/url'
 import { getSessionId } from '@fhir/smart/session'
 import { NoSmartSession } from '@graphql/error/Errors'
 import { getFlag, getUserlessToggles } from '@toggles/unleash'
+import { isE2EOrDemo } from '@utils/env'
+
+import { globalInMemoryValkey } from '../../mock-engine/valkey/global-inmem-valkey'
 
 const smartClientConfig: SmartClientConfiguration = {
     client_id: 'syk-inn',
@@ -69,8 +73,8 @@ export async function getReadyClientForResolvers(params?: {
     return [client, practitioner]
 }
 
-async function getSmartStorage(): Promise<SmartStorage> {
-    const valkey = await getValkeyClient()
+function getSmartStorage(): SmartStorage {
+    const valkey = getBackingStore()
 
     return {
         set: async (sessionId, values) => {
@@ -86,4 +90,16 @@ async function getSmartStorage(): Promise<SmartStorage> {
 
 function sessionIdKey(sessionId: string): string {
     return sessionId.startsWith('smart-session:') ? sessionId : `smart-session:${sessionId}`
+}
+
+/**
+ * In e2e/demo, the in-memory store used for sessions is global, as opposed to the draft-client valkey which is
+ * scoped per user.
+ */
+function getBackingStore(): Valkey {
+    if (isE2EOrDemo) {
+        return globalInMemoryValkey()
+    } else {
+        return productionValkey()
+    }
 }

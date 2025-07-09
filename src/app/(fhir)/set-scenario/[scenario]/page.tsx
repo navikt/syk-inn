@@ -3,7 +3,7 @@ import { ReactElement } from 'react'
 
 import { getSessionId } from '@fhir/smart/session'
 
-import { mockSessionStore, shouldUseMockEngine } from '../../../../data-layer/mock-engine'
+import { overwriteScenarioForSession, shouldUseMockEngine } from '../../../../data-layer/mock-engine'
 import { Scenarios, scenarios } from '../../../../data-layer/mock-engine/scenarios/scenarios'
 
 type RouteParams = {
@@ -28,8 +28,7 @@ async function SetScenarioPage({ params, searchParams }: RouteParams): Promise<R
         )
     }
 
-    const sessionStore = mockSessionStore()
-    sessionStore.set(sessionId, scenario as Scenarios)
+    overwriteScenarioForSession(sessionId, scenario as Scenarios)
 
     redirect(returnTo, RedirectType.replace)
 }

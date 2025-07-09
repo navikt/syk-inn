@@ -26,7 +26,7 @@ export const sykInnApiService = {
 
             try {
                 const mockEngine = await mockEngineForSession()
-                return mockEngine.opprettSykmelding(OpprettSykmeldingPayloadSchema.parse(payload))
+                return mockEngine.sykInnApi.opprettSykmelding(OpprettSykmeldingPayloadSchema.parse(payload))
             } catch (e) {
                 logger.error(new Error(`Sykmelding parse dryrun failed`, { cause: e }))
                 throw e
@@ -50,7 +50,7 @@ export const sykInnApiService = {
             logger.info(`Running in ${bundledEnv.runtimeEnv} environment, returning mocked sykmelding by id data`)
 
             const mockEngine = await mockEngineForSession()
-            return mockEngine.sykmeldingById(sykmeldingId)
+            return mockEngine.sykInnApi.sykmeldingById(sykmeldingId)
         }
 
         return fetchInternalAPI({
@@ -69,7 +69,7 @@ export const sykInnApiService = {
             logger.info(`Running in ${bundledEnv.runtimeEnv} environment, returning mocked sykmelding data`)
 
             const mockEngine = await mockEngineForSession()
-            return mockEngine.allSykmeldinger()
+            return mockEngine.sykInnApi.allSykmeldinger()
         }
 
         return fetchInternalAPI({
@@ -89,7 +89,7 @@ export const sykInnApiService = {
             logger.warn(`Running in ${bundledEnv.runtimeEnv}, returning mocked PDF`)
 
             const mockEngine = await mockEngineForSession()
-            return mockEngine.getPdf()
+            return mockEngine.sykInnApi.getPdf()
         }
 
         return await fetchInternalAPI({

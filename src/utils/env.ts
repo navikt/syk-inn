@@ -96,4 +96,5 @@ export function getServerEnv(): ServerEnv {
 }
 
 export const isE2E = bundledEnv.runtimeEnv === 'e2e'
+export const isE2EOrDemo = isE2E || bundledEnv.runtimeEnv === 'demo'
 export const isLocalOrDemo = (process.env.NODE_ENV === 'development' || bundledEnv.runtimeEnv === 'demo') && !isE2E
