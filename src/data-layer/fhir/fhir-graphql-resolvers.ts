@@ -163,7 +163,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
         },
         diagnose: (_, { query }) => searchDiagnose(query),
         draft: async (_, { draftId }) => {
-            const draftClient = getDraftClient()
+            const draftClient = await getDraftClient()
 
             // TODO verify access to draft
             const draft = await draftClient.getDraft(draftId)
@@ -198,7 +198,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const draftClient = getDraftClient()
+            const draftClient = await getDraftClient()
 
             const allDrafts = await draftClient.getDrafts({ hpr, ident })
 
@@ -238,7 +238,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const draftClient = getDraftClient()
+            const draftClient = await getDraftClient()
             await draftClient.saveDraft(draftId, { hpr, ident }, parsedValues.data)
 
             logger.info(`Saved draft ${draftId} to draft client`)
@@ -271,7 +271,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const draftClient = getDraftClient()
+            const draftClient = await getDraftClient()
 
             // TODO verify access to draft
             await draftClient.deleteDraft(draftId, { hpr, ident })
@@ -362,7 +362,7 @@ export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             }
 
             // Delete the draft after successful creation
-            const draftClient = getDraftClient()
+            const draftClient = await getDraftClient()
             await draftClient.deleteDraft(draftId, { hpr, ident: pasientIdent })
 
             return sykInnApiSykmeldingToResolverSykmelding(result, 'PENDING')

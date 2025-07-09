@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import { createInMemoryValkey } from '@services/valkey/client'
+import { createInMemoryValkey } from '../../data-layer/mock-engine/valkey/InMemValkey'
 
 describe('in memory valkey proxy', () => {
     const hpr = '999'

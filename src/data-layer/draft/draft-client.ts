@@ -33,8 +33,8 @@ type DraftClient = {
     getDrafts: (owner: DraftOwnership) => Promise<DraftEntry[]>
 }
 
-export function getDraftClient(valkey?: Valkey): DraftClient {
-    valkey = !valkey ? getValkeyClient() : valkey
+export async function getDraftClient(valkey?: Valkey): Promise<DraftClient> {
+    valkey = !valkey ? await getValkeyClient() : valkey
 
     return {
         saveDraft: withSpanServerAsync('draft client - save draft', async (draftId, owner, values) => {
