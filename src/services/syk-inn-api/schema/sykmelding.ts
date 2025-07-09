@@ -97,7 +97,7 @@ export const SykInnApiSykmeldingSchema = z.object({
         pasientIdent: z.string(),
         sykmelder: SykmelderSchema,
         legekontorOrgnr: z.string(),
-        legekontorTlf: z.string(),
+        legekontorTlf: z.string().nullable(),
         mottatt: z.string(),
     }),
     values: z.object({
