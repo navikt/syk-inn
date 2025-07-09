@@ -2,12 +2,15 @@ import { useEffect, useMemo, useRef } from 'react'
 import * as R from 'remeda'
 import { FetchResult } from '@apollo/client'
 import { useParams } from 'next/navigation'
+import { logger } from '@navikt/next-logger'
+import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { SaveDraftMutation } from '@queries'
 import { mapFormValuesToDraftValues, useSaveDraft } from '@components/ny-sykmelding-form/draft/useSaveDraft'
+import { bundledEnv } from '@utils/env'
 
 import { NySykmeldingMainFormValues, useFormContext } from '../form'
-import { safeParseDraft } from '../../../data-layer/draft/draft-schema'
+import { DraftValues, safeParseDraft } from '../../../data-layer/draft/draft-schema'
 
 type Changes = {
     currentValues: NySykmeldingMainFormValues
@@ -130,7 +133,22 @@ function shouldUpdate(values: NySykmeldingMainFormValues, savedDraft: unknown): 
     const parsedSaved = safeParseDraft(null, savedDraft)
     const mappedFormValues = mapFormValuesToDraftValues(values)
 
+    if (bundledEnv.NEXT_PUBLIC_RUNTIME_ENV !== 'prod-gcp') {
+        detectBadState(mappedFormValues)
+    }
+
     return !R.isDeepEqual(parsedSaved, mappedFormValues)
+}
+
+function detectBadState(formValues: DraftValues): void {
+    const stringifedValues = JSON.stringify(formValues, null, 2)
+    const hasTypeName = stringifedValues.includes('__typename')
+    if (hasTypeName) {
+        logger.error(
+            'Draft values contain __typename, which is not expected. This might cause issues with the draft saving. See team logs for object.',
+        )
+        teamLogger.error(`Diff engine detected __typename in form values: ${stringifedValues}`)
+    }
 }
 
 export default FormDraftSync

@@ -71,7 +71,7 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
             medisinskArsak: periode.medisinskArsak,
             arbeidsrelatertArsak: periode.arbeidsrelatertArsak,
         })),
-        hoveddiagnose: values.diagnoser.hoved ?? null,
+        hoveddiagnose: values.diagnoser.hoved ? values.diagnoser.hoved : null,
         tilbakedatering:
             values.tilbakedatering != null
                 ? {

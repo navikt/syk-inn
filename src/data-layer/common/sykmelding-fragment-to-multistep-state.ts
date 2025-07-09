@@ -33,9 +33,13 @@ export function sykmeldingFragmentToMainStepStateNoAktivitet(
             svangerskapsrelatert: sykmelding.values.svangerskapsrelatert ?? false,
         },
         diagnose: {
-            hoved:
-                sykmelding.values.hoveddiagnose ??
-                raise('Form does not support sykmeldinger without hoveddiagnose yet'),
+            hoved: sykmelding.values.hoveddiagnose
+                ? {
+                      code: sykmelding.values.hoveddiagnose.code,
+                      system: sykmelding.values.hoveddiagnose.system,
+                      text: sykmelding.values.hoveddiagnose.text,
+                  }
+                : raise('Form does not support sykmeldinger without hoveddiagnose yet'),
             // TODO: Support bi
             bi: [],
         },
