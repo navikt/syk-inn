@@ -11,7 +11,7 @@ export function middleware(request: NextRequest): NextResponse {
             name: 'syk-inn-session-id',
             value: sessionId,
             httpOnly: true,
-            maxAge: 8 * 60 * 60,
+            maxAge: 60 * 60 * 24 * 30,
         })
     }
 
