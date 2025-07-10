@@ -121,6 +121,16 @@ jobs:
           RESOURCE: .nais/nais-demo.yaml
           VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }},appname=${{ env.APP }},replicas=1,branchState=alive
 
+  deploy-production:
+    if: github.ref_name == 'main'
+    name: Deploy main to production
+    runs-on: ubuntu-latest
+    needs: [deploy-dev-main, run-playwright]
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "![Image](https://cdn.nav.no/tsm/syk-inn/production.png)" >> "$GITHUB_STEP_SUMMARY"
+
   prebuild-app-for-playwright:
     name: Prebuild image for sharded playwright tests
     runs-on: ubuntu-latest
