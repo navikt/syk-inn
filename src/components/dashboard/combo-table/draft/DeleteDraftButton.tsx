@@ -1,33 +1,25 @@
 import React, { ReactElement } from 'react'
-import { Reference, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Button, Tooltip } from '@navikt/ds-react'
 import { TrashIcon } from '@navikt/aksel-icons'
+import { toast } from 'sonner'
+import { logger } from '@navikt/next-logger'
 
-import { DeleteDraftDocument, OpprettSykmeldingDraft } from '@queries'
+import { DeleteDraftDocument } from '@queries'
 import { spanBrowserAsync } from '@otel/browser'
+import { deleteDraftIdFromList } from '@graphql/apollo/apollo-client-utils'
 
 export function DeleteDraftButton({ draftId }: { draftId: string }): ReactElement {
     const [deleteDraft, deleteDraftResult] = useMutation(DeleteDraftDocument, {
         optimisticResponse: { __typename: 'Mutation', deleteDraft: true },
         update: (cache, result) => {
             if (result.data?.deleteDraft == true) {
-                if (draftId) {
-                    cache.modify({
-                        id: 'ROOT_QUERY',
-                        fields: {
-                            drafts: (existingDraftRefs: readonly Reference[], { readField }) =>
-                                existingDraftRefs.filter((ref) => readField('draftId', ref) !== draftId),
-                        },
-                    })
-                }
-
-                cache.evict({
-                    id: cache.identify({
-                        __typename: 'OpprettSykmeldingDraft',
-                        draftId,
-                    } satisfies Partial<OpprettSykmeldingDraft>),
-                })
+                deleteDraftIdFromList(cache, draftId)
             }
+        },
+        onError: (e) => {
+            toast.error('Klarte ikke å slette utkastet', { position: 'top-right', richColors: true })
+            logger.error(e)
         },
     })
 
