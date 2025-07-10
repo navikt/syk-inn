@@ -7,6 +7,7 @@ const config: KnipConfig = {
         'libs/fhir-mock/buntry-point.ts',
         'next-logger.config.js',
         'postcss.config.mjs',
+        'scripts/**',
     ],
     ignoreDependencies: ['@navikt/ds-css', 'pino-pretty'],
 }

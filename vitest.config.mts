@@ -9,6 +9,10 @@ export default defineConfig({
         alias: {
             '@utils/**': './src/utils',
         },
+        reporters: ['default', 'json'],
+        outputFile: {
+            json: 'test-results/vitest-report.json',
+        },
     },
     resolve: {
         alias: {
