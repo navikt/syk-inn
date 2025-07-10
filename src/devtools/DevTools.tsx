@@ -17,7 +17,7 @@ function DevTools(): ReactElement {
     return (
         <>
             <div
-                className={cn('fixed bottom-2 right-2 flex flex-col gap-2 items-end z-[100000]', {
+                className={cn('fixed bottom-2 right-2 flex flex-col gap-2 items-end z-[100000] pointer-events-none', {
                     'right-[calc(500px+0.5rem)]': internalOpen,
                 })}
             >
@@ -31,7 +31,7 @@ function DevTools(): ReactElement {
                         <Detail className="-mt-1 font-bold">{getAltKeyLabel()} + r</Detail>
                     </div>
                 </div>
-                <div className="flex items-end">
+                <div className="flex items-end pointer-events-auto">
                     <Button
                         variant="secondary-neutral"
                         size="small"

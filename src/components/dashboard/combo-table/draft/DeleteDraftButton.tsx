@@ -1,17 +1,26 @@
 import React, { ReactElement } from 'react'
-import { useMutation } from '@apollo/client'
+import { Reference, useMutation } from '@apollo/client'
 import { Button, Tooltip } from '@navikt/ds-react'
 import { TrashIcon } from '@navikt/aksel-icons'
 
-import { DeleteDraftDocument, GetAllDraftsDocument, OpprettSykmeldingDraft } from '@queries'
+import { DeleteDraftDocument, OpprettSykmeldingDraft } from '@queries'
 import { spanBrowserAsync } from '@otel/browser'
 
 export function DeleteDraftButton({ draftId }: { draftId: string }): ReactElement {
     const [deleteDraft, deleteDraftResult] = useMutation(DeleteDraftDocument, {
-        refetchQueries: [{ query: GetAllDraftsDocument }],
-        awaitRefetchQueries: true,
+        optimisticResponse: { __typename: 'Mutation', deleteDraft: true },
         update: (cache, result) => {
             if (result.data?.deleteDraft == true) {
+                if (draftId) {
+                    cache.modify({
+                        id: 'ROOT_QUERY',
+                        fields: {
+                            drafts: (existingDraftRefs: readonly Reference[], { readField }) =>
+                                existingDraftRefs.filter((ref) => readField('draftId', ref) !== draftId),
+                        },
+                    })
+                }
+
                 cache.evict({
                     id: cache.identify({
                         __typename: 'OpprettSykmeldingDraft',
