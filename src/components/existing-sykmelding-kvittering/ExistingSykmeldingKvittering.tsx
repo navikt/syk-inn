@@ -22,6 +22,7 @@ import { toReadableDatePeriod } from '@utils/date'
 import { SykmeldingSynchronization } from '@components/existing-sykmelding-kvittering/SykmeldingSynchronization'
 import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
 import { pathWithBasePath } from '@utils/url'
+import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 
@@ -75,7 +76,24 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }
                     ) : (
                         <BodyShort>Ingen hoveddiagnose er satt</BodyShort>
                     )}
+
+                    {(sykmelding.values.bidiagnoser ?? []).some((b) => b != null) && (
+                        <>
+                            <Label className="mt-4">Bidiagnoser</Label>
+                            {(sykmelding.values.bidiagnoser ?? [])
+                                .filter((b): b is DiagnoseSuggestion => b != null)
+                                .map((bidiagnose, index) => (
+                                    <div key={index}>
+                                        <BodyShort>
+                                            {bidiagnose.code} - {bidiagnose.text}
+                                        </BodyShort>
+                                        <Detail>{bidiagnose.system}</Detail>
+                                    </div>
+                                ))}
+                        </>
+                    )}
                 </FormSection>
+
                 <FormSection title="Aktivitet" icon={<VitalsIcon />}>
                     <Detail>Sykmeldingsperiode</Detail>
                     <BodyShort>

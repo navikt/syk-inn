@@ -12,6 +12,8 @@ import ForkastDraftButton, { LagreDraftButton } from '@components/ny-sykmelding-
 import FormSheet from '@components/form/form-section/FormSheet'
 import ArbeidsforholdSection from '@components/ny-sykmelding-form/arbeidsgiver/ArbeidsforholdSection'
 import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButton'
+import BidiagnoseSection from '@components/ny-sykmelding-form/diagnose/bidiagnose/BidiagnoseSection'
+import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
 import { useAppDispatch, useAppSelector } from '../../providers/redux/hooks'
 import { DraftValues } from '../../data-layer/draft/draft-schema'
@@ -61,6 +63,9 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                     <FormSection title="Diagnose">
                         <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
                     </FormSection>
+                    <FormSection title="Bidiagnoser">
+                        <BidiagnoseSection />
+                    </FormSection>
                     <FormSection title="Andre spørsmål" hideTitle>
                         <AndreSporsmalSection />
                     </FormSection>
@@ -105,7 +110,12 @@ function useHandleFormSubmit() {
                 },
                 diagnose: {
                     hoved: values.diagnoser.hoved ?? raise("Can't submit step without hoveddiagnose"),
-                    bi: [],
+                    bi: values.diagnoser.bidiagnoser.filter((it): it is DiagnoseSuggestion => {
+                        if (it == null) {
+                            raise("Can't submit step with null bidiagnose")
+                        }
+                        return true
+                    }),
                 },
                 aktiviteter: values.perioder.map(formAktivitetToStepAktivitet),
                 tilbakedatering:
