@@ -6,6 +6,7 @@ import { PageBlock } from '@navikt/ds-react/Page'
 import { useQuery } from '@apollo/client'
 import { useParams } from 'next/navigation'
 import * as R from 'remeda'
+import Link from 'next/link'
 
 import { PasientDocument, SykmeldingByIdDocument } from '@queries'
 import TidligereSykmeldingView from '@components/sykmelding/TidligereSykmeldingView'
@@ -90,7 +91,14 @@ function TidligereSykmelding({ sykmeldingId }: { sykmeldingId: string }): ReactE
         )
     }
 
-    return <TidligereSykmeldingView sykmelding={data.sykmelding} />
+    return (
+        <div>
+            <TidligereSykmeldingView sykmelding={data.sykmelding} />
+            <div className="flex justify-end p-4">
+                <Link href="/fhir">Lukk</Link>
+            </div>
+        </div>
+    )
 }
 
 export default SykmeldingPage
