@@ -1,17 +1,18 @@
 import { ApolloLink, from, HttpLink } from '@apollo/client'
-import { ApolloClient, InMemoryCache } from '@apollo/client-integration-nextjs'
+import { ApolloClient } from '@apollo/client-integration-nextjs'
 import { RetryLink } from '@apollo/client/link/retry'
 import { onError } from '@apollo/client/link/error'
 import { logger } from '@navikt/next-logger'
 
 import { pathWithBasePath } from '@utils/url'
-import { isLocal, isDemo } from '@utils/env'
-import possibleTypesGenerated from '@graphql/possible-types.generated'
+import { isDemo, isLocal } from '@utils/env'
 import { spanBrowserAsync } from '@otel/browser'
 
 import { FailingLinkDev } from '../../../devtools/api-fail-toggle/apollo-dev-tools-link'
 import { AppStore } from '../../../providers/redux/store'
 import { metadataActions } from '../../../providers/redux/reducers/metadata'
+
+import { createInMemoryCache } from './apollo-client-cache'
 
 const createErrorLink = (store: AppStore): ApolloLink =>
     onError(({ graphQLErrors }) => {
@@ -58,17 +59,7 @@ export function makeApolloClient(store: AppStore) {
                 : from([errorLink, retryLink, httpLink])
 
         return new ApolloClient({
-            cache: new InMemoryCache({
-                typePolicies: {
-                    OpprettSykmeldingDraft: {
-                        keyFields: ['draftId'],
-                    },
-                    Sykmelding: {
-                        keyFields: ['sykmeldingId'],
-                    },
-                },
-                possibleTypes: possibleTypesGenerated.possibleTypes,
-            }),
+            cache: createInMemoryCache(),
             link: links,
         })
     }
