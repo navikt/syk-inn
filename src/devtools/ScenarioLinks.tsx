@@ -37,10 +37,10 @@ function ScenarioLinks(): ReactElement {
     )
 }
 
-function createScenarioUrl(scenario: string): string {
-    const actualLaunchUrl = `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}`
+export const fhirLaunchUrl = `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}` as const
 
-    return pathWithBasePath(`/set-scenario/${scenario}?returnTo=${encodeURIComponent(actualLaunchUrl)}`)
+function createScenarioUrl(scenario: string): string {
+    return pathWithBasePath(`/set-scenario/${scenario}?returnTo=${encodeURIComponent(fhirLaunchUrl)}`)
 }
 
 export default ScenarioLinks
