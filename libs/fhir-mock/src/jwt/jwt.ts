@@ -5,7 +5,7 @@ import { fhirServerTestData } from '../meta/data/fhir-server'
 
 import { testOnlyPrivateKey, testOnlyPublicKey } from './test-only-keys'
 
-export const keyPair = lazyNextleton('key-pair', async () => {
+const keyPair = lazyNextleton('key-pair', async () => {
     const privateKey = await importPKCS8(testOnlyPrivateKey, 'RS256')
     const publicKey = await importSPKI(testOnlyPublicKey, 'RS256')
 

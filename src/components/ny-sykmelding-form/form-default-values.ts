@@ -147,7 +147,7 @@ function toInitialTilbakedatering(
  *
  * Diagnose component has the responsibility of displaying eventual server errors
  */
-export function toInitialDiagnose(
+function toInitialDiagnose(
     valuesInState: DiagnoseSuggestion | null,
     draftValues: DraftValues['hoveddiagnose'] | null,
     serverSuggestion: DiagnoseFragment | null,
@@ -177,7 +177,7 @@ export function toInitialDiagnose(
  * 2. Draft values (if available)
  * 3. Form default
  */
-export function toInitialPerioder(
+function toInitialPerioder(
     draftPerioder: DraftValues['perioder'] | null,
     initialState: AktivitetStep[] | null,
 ): NySykmeldingMainFormValues['perioder'] {
