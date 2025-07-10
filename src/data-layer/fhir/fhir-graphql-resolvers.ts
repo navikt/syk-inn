@@ -22,6 +22,7 @@ import {
 import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from '@fhir/mappers/organization'
 import { OpprettSykmeldingMeta } from '@services/syk-inn-api/schema/opprett'
 import { getFlag, getUserToggles } from '@toggles/unleash'
+import { typeResolvers } from '@graphql/common-resolvers'
 
 import { searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
@@ -393,25 +394,7 @@ const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             throw new GraphQLError('API_ERROR')
         },
     },
-    OpprettetSykmelding: {
-        __resolveType: (parent) => ('sykmeldingId' in parent ? 'Sykmelding' : 'OpprettSykmeldingRuleOutcome'),
-    },
-    Aktivitet: {
-        __resolveType: (parent) => {
-            switch (parent.type) {
-                case 'AKTIVITET_IKKE_MULIG':
-                    return 'AktivitetIkkeMulig'
-                case 'AVVENTENDE':
-                    return 'Avventende'
-                case 'BEHANDLINGSDAGER':
-                    return 'Behandlingsdager'
-                case 'GRADERT':
-                    return 'Gradert'
-                case 'REISETILSKUDD':
-                    return 'Reisetilskudd'
-            }
-        },
-    },
+    ...typeResolvers,
 }
 
 export const fhirSchema = createSchema(fhirResolvers)
