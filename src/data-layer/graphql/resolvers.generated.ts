@@ -154,7 +154,8 @@ export type InputMeldinger = {
 }
 
 export type InputTilbakedatering = {
-    begrunnelse: Scalars['String']['input']
+    annenBegrunnelse?: InputMaybe<Scalars['String']['input']>
+    begrunnelse: TilbakedateringBegrunnelseType
     startdato: Scalars['String']['input']
 }
 
@@ -340,9 +341,15 @@ export type SynchronizationStatus = {
 
 export type Tilbakedatering = {
     __typename?: 'Tilbakedatering'
-    begrunnelse: Scalars['String']['output']
+    annenBegrunnelse?: Maybe<Scalars['String']['output']>
+    begrunnelse: TilbakedateringBegrunnelseType
     startdato: Scalars['DateOnly']['output']
 }
+
+export type TilbakedateringBegrunnelseType =
+    | 'ANNET'
+    | 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM'
+    | 'VENTETID_LEGETIME'
 
 export type Yrkesskade = {
     __typename?: 'Yrkesskade'
@@ -490,6 +497,7 @@ export type ResolversTypes = {
     >
     SynchronizationStatus: ResolverTypeWrapper<SynchronizationStatus>
     Tilbakedatering: ResolverTypeWrapper<Tilbakedatering>
+    TilbakedateringBegrunnelseType: TilbakedateringBegrunnelseType
     Yrkesskade: ResolverTypeWrapper<Yrkesskade>
 }
 
@@ -879,7 +887,8 @@ export type TilbakedateringResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Tilbakedatering'] = ResolversParentTypes['Tilbakedatering'],
 > = {
-    begrunnelse?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    annenBegrunnelse?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    begrunnelse?: Resolver<ResolversTypes['TilbakedateringBegrunnelseType'], ParentType, ContextType>
     startdato?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }

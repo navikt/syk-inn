@@ -40,7 +40,8 @@ input InputArbeidsforhold {
 
 input InputTilbakedatering {
     startdato: String!
-    begrunnelse: String!
+    begrunnelse: TilbakedateringBegrunnelseType!
+    annenBegrunnelse: String
 }
 
 """

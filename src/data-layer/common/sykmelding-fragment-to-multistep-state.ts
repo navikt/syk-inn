@@ -19,6 +19,7 @@ export function sykmeldingFragmentToMainStepStateNoAktivitet(
             ? {
                   fom: sykmelding.values.tilbakedatering.startdato,
                   grunn: sykmelding.values.tilbakedatering.begrunnelse,
+                  annenBegrunnelse: sykmelding.values.tilbakedatering.annenBegrunnelse ?? null,
               }
             : null,
         arbeidsforhold: sykmelding.values.arbeidsgiver?.harFlere

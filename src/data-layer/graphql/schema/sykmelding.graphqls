@@ -45,7 +45,14 @@ type Arbeidsgiver {
 
 type Tilbakedatering {
     startdato: DateOnly!
-    begrunnelse: String!
+    begrunnelse: TilbakedateringBegrunnelseType!
+    annenBegrunnelse: String
+}
+
+enum TilbakedateringBegrunnelseType {
+    VENTETID_LEGETIME
+    MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM
+    ANNET
 }
 
 type Outcome {

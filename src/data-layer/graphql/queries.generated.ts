@@ -152,7 +152,8 @@ export type InputMeldinger = {
 }
 
 export type InputTilbakedatering = {
-    begrunnelse: Scalars['String']['input']
+    annenBegrunnelse?: InputMaybe<Scalars['String']['input']>
+    begrunnelse: TilbakedateringBegrunnelseType
     startdato: Scalars['String']['input']
 }
 
@@ -338,9 +339,15 @@ export type SynchronizationStatus = {
 
 export type Tilbakedatering = {
     __typename: 'Tilbakedatering'
-    begrunnelse: Scalars['String']['output']
+    annenBegrunnelse?: Maybe<Scalars['String']['output']>
+    begrunnelse: TilbakedateringBegrunnelseType
     startdato: Scalars['DateOnly']['output']
 }
+
+export type TilbakedateringBegrunnelseType =
+    | 'ANNET'
+    | 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM'
+    | 'VENTETID_LEGETIME'
 
 export type Yrkesskade = {
     __typename: 'Yrkesskade'
@@ -500,7 +507,12 @@ export type SykmeldingByIdQuery = {
             arbeidsgiver?: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
             meldinger: { __typename: 'SykmeldingMelding'; tilNav?: string | null; tilArbeidsgiver?: string | null }
             yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
-            tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+            tilbakedatering?: {
+                __typename: 'Tilbakedatering'
+                startdato: string
+                begrunnelse: TilbakedateringBegrunnelseType
+                annenBegrunnelse?: string | null
+            } | null
         }
     } | null
 }
@@ -561,7 +573,12 @@ export type AllSykmeldingerQuery = {
             arbeidsgiver?: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
             meldinger: { __typename: 'SykmeldingMelding'; tilNav?: string | null; tilArbeidsgiver?: string | null }
             yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
-            tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+            tilbakedatering?: {
+                __typename: 'Tilbakedatering'
+                startdato: string
+                begrunnelse: TilbakedateringBegrunnelseType
+                annenBegrunnelse?: string | null
+            } | null
         }
     }> | null
 }
@@ -636,7 +653,12 @@ export type OpprettSykmeldingMutation = {
                       tilArbeidsgiver?: string | null
                   }
                   yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
-                  tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+                  tilbakedatering?: {
+                      __typename: 'Tilbakedatering'
+                      startdato: string
+                      begrunnelse: TilbakedateringBegrunnelseType
+                      annenBegrunnelse?: string | null
+                  } | null
               }
           }
 }
@@ -701,7 +723,12 @@ export type SykmeldingFragment = {
         arbeidsgiver?: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
         meldinger: { __typename: 'SykmeldingMelding'; tilNav?: string | null; tilArbeidsgiver?: string | null }
         yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
-        tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+        tilbakedatering?: {
+            __typename: 'Tilbakedatering'
+            startdato: string
+            begrunnelse: TilbakedateringBegrunnelseType
+            annenBegrunnelse?: string | null
+        } | null
     }
 }
 
@@ -1047,6 +1074,7 @@ export const SykmeldingFragmentDoc = {
                                         selections: [
                                             { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'annenBegrunnelse' } },
                                         ],
                                     },
                                 },
@@ -1813,6 +1841,7 @@ export const SykmeldingByIdDocument = {
                                         selections: [
                                             { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'annenBegrunnelse' } },
                                         ],
                                     },
                                 },
@@ -2067,6 +2096,7 @@ export const AllSykmeldingerDocument = {
                                         selections: [
                                             { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'annenBegrunnelse' } },
                                         ],
                                     },
                                 },
@@ -2372,6 +2402,7 @@ export const OpprettSykmeldingDocument = {
                                         selections: [
                                             { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'annenBegrunnelse' } },
                                         ],
                                     },
                                 },

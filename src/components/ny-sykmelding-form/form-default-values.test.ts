@@ -162,7 +162,8 @@ const fullDraft: DraftValues = {
     // TODO: Bidiagnoser
     tilbakedatering: {
         fom: '2024-12-15',
-        grunn: 'Pasienten kunne ikke oppsøke lege tidligere',
+        grunn: 'VENTETID_LEGETIME',
+        annenBegrunnelse: null,
     },
     meldinger: {
         showTilNav: true,
@@ -191,7 +192,7 @@ const fullExistingStateValues: MainSectionValues = {
         },
         { type: 'GRADERT', fom: '2025-03-01', tom: '2025-03-10', grad: 20 },
     ],
-    tilbakedatering: { fom: '2025-01-20', grunn: 'Legen var bortreist' },
+    tilbakedatering: { fom: '2025-01-20', grunn: 'VENTETID_LEGETIME', annenBegrunnelse: null },
     diagnose: {
         hoved: { system: 'ICPC2', code: 'L02', text: 'Ryggsmerter' },
         bi: [

@@ -61,6 +61,7 @@ export function resolverInputToSykInnApiPayload(
                 ? {
                       begrunnelse: values.tilbakedatering.begrunnelse,
                       startdato: values.tilbakedatering.startdato,
+                      annenBegrunnelse: values.tilbakedatering.annenBegrunnelse ?? null,
                   }
                 : null,
         },

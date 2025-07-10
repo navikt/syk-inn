@@ -140,6 +140,7 @@ function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingMultiStep
             ? {
                   startdato: formState.tilbakedatering.fom,
                   begrunnelse: formState.tilbakedatering.grunn,
+                  annenBegrunnelse: formState.tilbakedatering.annenBegrunnelse ?? null,
               }
             : null,
         pasientenSkalSkjermes: multiStepState.skalSkjermes ?? false,

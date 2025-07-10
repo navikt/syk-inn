@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
-import { ArbeidsrelatertArsakType } from '@queries'
+import { ArbeidsrelatertArsakType, TilbakedateringBegrunnelseType } from '@queries'
 
 type ManualPatientStep = {
     type: 'manual'
@@ -50,7 +50,8 @@ export type ArbeidsrelatertArsak = {
 
 export type TilbakedateringStep = {
     fom: string
-    grunn: string
+    grunn: TilbakedateringBegrunnelseType
+    annenBegrunnelse: string | null
 }
 
 export type MeldingerStep = {

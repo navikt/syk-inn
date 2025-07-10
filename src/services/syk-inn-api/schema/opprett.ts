@@ -84,7 +84,12 @@ export const OpprettSykmeldingPayloadSchema = z.object({
         tilbakedatering: z
             .object({
                 startdato: DateOnly,
-                begrunnelse: z.string(),
+                begrunnelse: z.enum([
+                    'ANNET',
+                    'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM',
+                    'VENTETID_LEGETIME',
+                ]),
+                annenBegrunnelse: z.string().nullable(),
             })
             .nullable(),
     }),

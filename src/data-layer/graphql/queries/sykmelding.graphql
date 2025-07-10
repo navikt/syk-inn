@@ -67,6 +67,7 @@ fragment Sykmelding on Sykmelding {
         tilbakedatering {
             startdato
             begrunnelse
+            annenBegrunnelse
         }
     }
     documentStatus

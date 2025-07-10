@@ -62,7 +62,8 @@ const RuleResultSchema = z.object({
 
 const TilbakedateringSchema = z.object({
     startdato: z.string(),
-    begrunnelse: z.string(),
+    begrunnelse: z.enum(['VENTETID_LEGETIME', 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM', 'ANNET']),
+    annenBegrunnelse: z.string().nullable(),
 })
 
 const ArbeidsgiverSchema = z.object({

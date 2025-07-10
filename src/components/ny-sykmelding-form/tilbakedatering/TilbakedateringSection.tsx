@@ -8,6 +8,7 @@ function TilbakedateringSection(): ReactElement {
         <div className="flex flex-col gap-3">
             <TilbakedateringDate />
             <TilbakedateringGrunn />
+            {/*<TilbakedateringAnnenBegrunnelse />*/}
         </div>
     )
 }

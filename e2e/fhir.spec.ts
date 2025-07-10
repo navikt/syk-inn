@@ -333,7 +333,7 @@ test("should be asked about 'tilbakedatering' when fom is 5 days in the past", a
             ],
             tilbakedatering: {
                 startdato: daysAgo(2),
-                begrunnelse: 'Ferie eller noe',
+                begrunnelse: 'VENTETID_LEGETIME',
             },
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,

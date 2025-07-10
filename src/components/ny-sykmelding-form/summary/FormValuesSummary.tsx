@@ -175,6 +175,12 @@ function TilbakedateringSummaryAnswers({ tilbakedatering }: { tilbakedatering: T
                 <FormSummary.Label>Grunn for tilbakedatering</FormSummary.Label>
                 <FormSummary.Value>{tilbakedatering.grunn}</FormSummary.Value>
             </FormSummary.Answer>
+            {tilbakedatering.annenBegrunnelse && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>Beskriv nærmere</FormSummary.Label>
+                    <FormSummary.Value>{tilbakedatering.annenBegrunnelse}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
         </>
     )
 }

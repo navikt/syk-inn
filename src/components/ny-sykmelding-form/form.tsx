@@ -46,8 +46,11 @@ export type ArbeidsrelatertArsakField = {
 
 export type TilbakedateringField = {
     fom: string | null
-    grunn: string | null
+    grunn: TilbakeDateringGrunn | null
+    annenBegrunnelse: string | null
 }
+
+type TilbakeDateringGrunn = 'VENTETID_LEGETIME' | 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM' | 'ANNET'
 
 type MeldingerField = {
     showTilNav: boolean

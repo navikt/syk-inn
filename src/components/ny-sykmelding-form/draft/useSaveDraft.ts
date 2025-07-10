@@ -73,10 +73,11 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
         })),
         hoveddiagnose: values.diagnoser.hoved ? values.diagnoser.hoved : null,
         tilbakedatering:
-            values.tilbakedatering != null
+            values.tilbakedatering != null && values.tilbakedatering.grunn != null
                 ? {
                       fom: values.tilbakedatering.fom,
                       grunn: values.tilbakedatering.grunn,
+                      annenBegrunnelse: values.tilbakedatering.annenBegrunnelse ?? null,
                   }
                 : null,
         meldinger: {
