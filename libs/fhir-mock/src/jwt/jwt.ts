@@ -1,9 +1,16 @@
 import { lazyNextleton } from 'nextleton'
-import { exportJWK, generateKeyPair, JWK, SignJWT } from 'jose'
+import { exportJWK, importPKCS8, importSPKI, JWK, SignJWT } from 'jose'
 
 import { fhirServerTestData } from '../meta/data/fhir-server'
 
-export const keyPair = lazyNextleton('key-pair', async () => await generateKeyPair('RS256'))
+import { testOnlyPrivateKey, testOnlyPublicKey } from './test-only-keys'
+
+export const keyPair = lazyNextleton('key-pair', async () => {
+    const privateKey = await importPKCS8(testOnlyPrivateKey, 'RS256')
+    const publicKey = await importSPKI(testOnlyPublicKey, 'RS256')
+
+    return { publicKey, privateKey }
+})
 
 export async function publicJwk(): Promise<JWK> {
     const { publicKey } = await keyPair()
