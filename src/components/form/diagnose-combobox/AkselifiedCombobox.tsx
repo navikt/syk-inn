@@ -123,5 +123,5 @@ export function AkselifiedComboboxNonSelectables({ children }: PropsWithChildren
     )
 }
 
-export { useComboboxStore, ComboboxProvider, ComboboxPopover, ComboboxValue } from '@ariakit/react/combobox'
+export { useComboboxStore } from '@ariakit/react/combobox'
 export { useStoreState } from '@ariakit/react'
