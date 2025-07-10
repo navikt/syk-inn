@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react'
+import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { BodyShort, Table, Tag, TagProps } from '@navikt/ds-react'
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
@@ -26,16 +26,18 @@ import DashboardTable from '../table/DashboardTable'
 export function ComboTable({
     sykmeldinger,
     drafts,
-}: {
+    children,
+}: PropsWithChildren<{
     sykmeldinger: SykmeldingFragment[]
     drafts: DraftFragment[]
-}): ReactElement {
+}>): ReactElement {
     const [current, previous] = R.partition<SykmeldingFragment>(sykmeldinger, byActiveOrFutureSykmelding)
 
     return (
         <DashboardTable>
             <ComboTableHeader />
             <Table.Body>
+                {children}
                 {drafts.map((draft) => {
                     const values = safeParseDraft(draft.draftId, draft.values)
 
@@ -109,9 +111,9 @@ export function ComboTable({
     )
 }
 
-export function ComboTableHeader(): ReactElement {
+export function ComboTableHeader({ className }: { className?: string }): ReactElement {
     return (
-        <Table.Header>
+        <Table.Header className={className}>
             <Table.Row>
                 <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
                 <Table.HeaderCell scope="col">Diagnose</Table.HeaderCell>
