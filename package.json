@@ -19,7 +19,7 @@
         "start:e2e": "NEXT_PUBLIC_ASSET_PREFIX= node .next/standalone/server.js | pino-pretty",
         "test": "vitest",
         "lint": "next lint",
-        "e2e": "playwright test",
+        "e2e": "./scripts/pre-e2e.sh && playwright test",
         "e2e:dev": "yarn e2e --ui",
         "dev:e2e": "yarn e2e:dev",
         "e2e:fast": "echo 'Did you run yarn build:e2e? before this?' && FAST=true yarn e2e",

@@ -39,6 +39,8 @@ export class MockEngine {
      * initial values into the store outside of the constructor.
      */
     async init(): Promise<void> {
+        if (this.isInitialized) return
+
         for (const draft of this.scenario.drafts) {
             await this.draftClient.saveDraft(
                 draft.id,
@@ -48,6 +50,7 @@ export class MockEngine {
                 draft.lastUpdated,
             )
         }
+        this.initialized = true
     }
 }
 

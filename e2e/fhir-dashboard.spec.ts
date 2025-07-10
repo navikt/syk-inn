@@ -24,7 +24,7 @@ import {
     expectPeriode,
 } from './actions/user-form-verification'
 
-test('shoud be able to duplicate an existing sykmelding with correct values', async ({ page }) => {
+test('should be able to duplicate an existing sykmelding with correct values', async ({ page }) => {
     await launchWithMock('empty')(page)
     await startNewSykmelding()(page)
 
@@ -75,7 +75,7 @@ test('shoud be able to duplicate an existing sykmelding with correct values', as
     await submitSykmelding()(page)
 })
 
-test('shoud be able to forlenge an existing sykmelding with correct values', async ({ page }) => {
+test('should be able to forlenge an existing sykmelding with correct values', async ({ page }) => {
     await launchWithMock('empty')(page)
     await startNewSykmelding()(page)
 
@@ -126,4 +126,21 @@ test('shoud be able to forlenge an existing sykmelding with correct values', asy
     ])(page)
 
     await submitSykmelding()(page)
+})
+
+test('should be able to quickly delete a lot of drafts', async ({ page }) => {
+    await launchWithMock('plenty-of-drafts')(page)
+
+    // Verify that we have a lot of drafts
+    const drafts = page.getByRole('button', { name: 'Åpne utkast' })
+    await expect(drafts).toHaveCount(15)
+
+    const deleteButtons = page.getByRole('button', { name: 'Slett utkast' })
+    await test.step('delete 5 drafts', async () => {
+        for (let i = 0; i < 5; i++) {
+            await deleteButtons.nth(i).click()
+        }
+    })
+
+    await expect(page.getByRole('button', { name: 'Åpne utkast' })).toHaveCount(10, { timeout: 25000 })
 })
