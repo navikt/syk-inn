@@ -135,12 +135,13 @@ test('should be able to quickly delete a lot of drafts', async ({ page }) => {
     const drafts = page.getByRole('button', { name: 'Åpne utkast' })
     await expect(drafts).toHaveCount(15)
 
-    const deleteButtons = page.getByRole('button', { name: 'Slett utkast' })
-    await test.step('delete 5 drafts', async () => {
-        for (let i = 0; i < 5; i++) {
-            await deleteButtons.nth(i).click()
+    await test.step('delete 15 drafts', async () => {
+        for (let i = 0; i < 15; i++) {
+            await page.getByRole('button', { name: 'Slett utkast' }).nth(0).click()
         }
     })
 
-    await expect(page.getByRole('button', { name: 'Åpne utkast' })).toHaveCount(10, { timeout: 25000 })
+    await page.waitForLoadState('networkidle')
+
+    await expect(page.getByText('Her var det ingen tidligere sykmeldinger eller utkast')).toBeVisible()
 })
