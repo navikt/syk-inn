@@ -1,6 +1,6 @@
 import { useQueryState, UseQueryStateReturn, parseAsStringLiteral } from 'nuqs'
 
-export const formSteps = ['main', 'summary'] as const
+const formSteps = ['main', 'summary'] as const
 
 export type StepSection = (typeof formSteps)[number]
 

@@ -29,7 +29,7 @@ import { DraftValuesSchema } from '../draft/draft-schema'
 
 import { getReadyClientForResolvers } from './smart/smart-client'
 
-export const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
+const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
     Query: {
         behandler: async () => {
             const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })

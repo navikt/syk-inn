@@ -109,7 +109,7 @@ function BehandlerSummary({ className }: Props): ReactElement {
     )
 }
 
-export function FormValueSkeleton(): ReactElement {
+function FormValueSkeleton(): ReactElement {
     return (
         <FormSummary.Value>
             <Skeleton width={120} />

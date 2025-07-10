@@ -25,6 +25,8 @@ jobs:
       - run: yarn tsc
       - name: Test app
         run: yarn test
+      - name: Knip it
+        run: yarn knip --no-exit-code --reporter=markdown >> "$GITHUB_STEP_SUMMARY"
 
   build-dev:
     name: Build for dev
