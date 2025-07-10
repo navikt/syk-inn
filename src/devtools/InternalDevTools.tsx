@@ -3,6 +3,8 @@ import React, { ReactElement, startTransition } from 'react'
 import { BodyShort, Button, Checkbox, CheckboxGroup, Heading, Link, List } from '@navikt/ds-react'
 import { XMarkIcon } from '@navikt/aksel-icons'
 
+import { pathWithBasePath } from '@utils/url'
+
 import { scenarios } from '../data-layer/mock-engine/scenarios/scenarios'
 
 import { DevToolItem } from './InternalDevToolItem'
@@ -42,7 +44,9 @@ function ScenarioPicker(): ReactElement {
             <List as="ul">
                 {R.entries(scenarios).map(([key, scenario]) => (
                     <List.Item key={key}>
-                        <Link href={`/set-scenario/${key}?returnTo=/fhir`}>{scenario.description}</Link>
+                        <Link href={pathWithBasePath(`/set-scenario/${key}?returnTo=/fhir`)}>
+                            {scenario.description}
+                        </Link>
                     </List.Item>
                 ))}
             </List>
