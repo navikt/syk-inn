@@ -2,6 +2,11 @@
 
 set -e  # Exit immediately if any command fails
 
+if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/internal/is_alive | grep 200 > /dev/null; then
+  printf "\033[0;31m 🔥🔥🔥 Oh no, you have a dev server running on port 3000! This dev mode does not support other ports than 3000.\033[0m\n"
+  exit 1
+fi
+
 if grep -q "NEXT_PUBLIC_RUNTIME_ENV=local" .env.development; then
     if ! nc -z localhost 6379; then
         if [ "$(docker ps -aq -f name=syk-inn-dev-valkey)" ]; then

@@ -13,7 +13,6 @@ import {
     OpprettSykmeldingDocument,
     OpprettSykmeldingInput,
     OpprettSykmeldingMutation,
-    SykmeldingByIdDocument,
 } from '@queries'
 import { useDraftId } from '@components/ny-sykmelding-form/draft/useDraftId'
 import { spanBrowserAsync, withSpanBrowserAsync } from '@otel/browser'
@@ -39,18 +38,6 @@ export function useOpprettSykmeldingMutation(): {
             } else if (data.opprettSykmelding.__typename === 'OpprettSykmeldingRuleOutcome') {
                 logger.info(`Sykmelding got rule hit: ${data.opprettSykmelding.rule}: ${data.opprettSykmelding.status}`)
             }
-        },
-        update: (cache, result) => {
-            if (result.data?.opprettSykmelding == null || result.data.opprettSykmelding.__typename !== 'Sykmelding') {
-                return
-            }
-
-            // Update the cache with the mutation data for instant kvittering load
-            cache.writeQuery({
-                query: SykmeldingByIdDocument,
-                variables: { id: result.data?.opprettSykmelding.sykmeldingId },
-                data: { __typename: 'Query', sykmelding: result.data.opprettSykmelding },
-            })
         },
     })
 
