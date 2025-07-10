@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation'
 import * as R from 'remeda'
 
 import { PasientDocument, SykmeldingByIdDocument } from '@queries'
-import { toReadableDatePeriod } from '@utils/date'
+import TidligereSykmeldingView from '@components/sykmelding/TidligereSykmeldingView'
 
 function SykmeldingPage(): ReactElement {
     const param = useParams<{ sykmeldingId: string }>()
@@ -18,7 +18,7 @@ function SykmeldingPage(): ReactElement {
         <Page className="bg-transparent">
             <PageBlock as="main" gutters className="pt-4">
                 <Heading level="2" size="medium" spacing>
-                    <span>Tidligere sykmelding for</span>
+                    <span>Sykmelding for</span>
                     {pasientQuery.loading && <Skeleton width={140} className="inline-block mx-2" />}
                     {pasientQuery.data?.pasient && ` ${pasientQuery.data.pasient.navn} `}
                 </Heading>
@@ -79,14 +79,18 @@ function TidligereSykmelding({ sykmeldingId }: { sykmeldingId: string }): ReactE
         )
     }
 
-    return (
-        <div className="bg-bg-default p-4 rounded-sm">
-            <Heading level="3" size="medium">
-                Sykmelding {toReadableDatePeriod(earliestPeriode.fom, latestPeriode.tom)}
-            </Heading>
-            <div>TODO: Sykmelding visning</div>
-        </div>
-    )
+    if (error) {
+        return (
+            <Alert variant="error">
+                <BodyShort>Kunne ikke hente sykmelding</BodyShort>
+                <Button size="small" onClick={() => refetch()}>
+                    Prøv på nytt
+                </Button>
+            </Alert>
+        )
+    }
+
+    return <TidligereSykmeldingView sykmelding={data.sykmelding} />
 }
 
 export default SykmeldingPage
