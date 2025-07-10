@@ -2,7 +2,7 @@
 
 import React, { ReactElement } from 'react'
 import { Heading, LinkCard } from '@navikt/ds-react'
-import { FlowerPetalsIcon } from '@navikt/aksel-icons'
+import { FlowerPetalsIcon, PlayIcon } from '@navikt/aksel-icons'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 
@@ -20,6 +20,17 @@ function ScenarioLinks(): ReactElement {
                     🔥 FHIR scenarioer
                 </Heading>
                 <div className="grid md:grid-cols-2 gap-3">
+                    <LinkCard>
+                        <LinkCard.Icon>
+                            <PlayIcon fontSize="2rem" />
+                        </LinkCard.Icon>
+                        <LinkCard.Title>
+                            <LinkCard.Anchor href={pathWithBasePath(fhirLaunchUrl)}>Just launch</LinkCard.Anchor>
+                        </LinkCard.Title>
+                        <LinkCard.Description>
+                            Just re-launches FHIR, does not change your scenario
+                        </LinkCard.Description>
+                    </LinkCard>
                     {Object.entries(scenarios).map(([scenarioKey, scenario]) => (
                         <LinkCard key={scenarioKey}>
                             <LinkCard.Icon>
