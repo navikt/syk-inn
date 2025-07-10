@@ -4,7 +4,7 @@ import { PageBlock } from '@navikt/ds-react/Page'
 import React, { ReactElement } from 'react'
 import { BodyShort, Button, Heading } from '@navikt/ds-react'
 
-import { isLocalOrDemo } from '@utils/env'
+import { isLocal, isDemo } from '@utils/env'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 
 export function NoPractitionerSession(): ReactElement {
@@ -23,7 +23,7 @@ export function NoPractitionerSession(): ReactElement {
                     <Button type="button" variant="secondary-neutral" onClick={() => window.location.reload()}>
                         Last siden på nytt
                     </Button>
-                    {isLocalOrDemo && (
+                    {(isLocal || isDemo) && (
                         <Button
                             type="button"
                             as="a"
@@ -63,7 +63,7 @@ export function NoValidHPR(): ReactElement {
                     <Button type="button" variant="secondary-neutral" onClick={() => window.location.reload()}>
                         Last siden på nytt
                     </Button>
-                    {isLocalOrDemo && (
+                    {(isLocal || isDemo) && (
                         <Button
                             type="button"
                             as="a"

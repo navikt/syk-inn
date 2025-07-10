@@ -6,7 +6,7 @@ import { logger } from '@navikt/next-logger'
 
 import useInterval from '@utils/hooks/useInterval'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
-import { isLocalOrDemo } from '@utils/env'
+import { isLocal, isDemo } from '@utils/env'
 
 function DevRelauncher(): ReactElement | null {
     const [relaunchIn, setRelaunchIn] = React.useState(3)
@@ -21,7 +21,7 @@ function DevRelauncher(): ReactElement | null {
         }
     }, 1000)
 
-    if (!isLocalOrDemo) {
+    if (!(isLocal || isDemo)) {
         logger.error('DevTool in production, why?!')
         return null
     }

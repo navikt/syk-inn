@@ -14,7 +14,7 @@ import { getAbsoluteURL } from '@utils/url'
 import { getSessionId } from '@fhir/smart/session'
 import { NoSmartSession } from '@graphql/error/Errors'
 import { getFlag, getUserlessToggles } from '@toggles/unleash'
-import { isE2EOrDemo } from '@utils/env'
+import { isDemo, isE2E } from '@utils/env'
 
 import { globalInMemoryValkey } from '../../mock-engine/valkey/global-inmem-valkey'
 
@@ -97,7 +97,7 @@ function sessionIdKey(sessionId: string): string {
  * scoped per user.
  */
 function getBackingStore(): Valkey {
-    if (isE2EOrDemo) {
+    if (isE2E || isDemo) {
         return globalInMemoryValkey()
     } else {
         return productionValkey()

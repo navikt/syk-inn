@@ -2,7 +2,7 @@ import { Faro, getWebInstrumentations, initializeFaro, OTELApi } from '@grafana/
 import { TracingInstrumentation } from '@grafana/faro-web-tracing'
 import { lazyNextleton } from 'nextleton'
 
-import { bundledEnv, isLocalOrDemo } from '@utils/env'
+import { bundledEnv, isLocal, isDemo } from '@utils/env'
 
 import { APP_NAME } from './common'
 
@@ -10,7 +10,7 @@ export const getFaro = lazyNextleton('faro-a', (): Faro | null => {
     if (!bundledEnv.NEXT_PUBLIC_TELEMETRY_URL) return null
 
     return initializeFaro({
-        paused: isLocalOrDemo,
+        paused: isLocal || isDemo,
         url: bundledEnv.NEXT_PUBLIC_TELEMETRY_URL,
         app: {
             name: APP_NAME,

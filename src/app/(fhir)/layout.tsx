@@ -3,7 +3,7 @@ import '../globals.css'
 import React, { PropsWithChildren, ReactElement } from 'react'
 import type { Metadata } from 'next'
 
-import { isLocalOrDemo } from '@utils/env'
+import { isLocal, isDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
 
 import { LazyDevTools } from '../../devtools/LazyDevTools'
@@ -28,9 +28,9 @@ export default function FhirLayout({ children }: PropsWithChildren): ReactElemen
             <Preload />
             <body>
                 <Providers mode="FHIR">
-                    {isLocalOrDemo && <DemoWarning />}
+                    {(isLocal || isDemo) && <DemoWarning />}
                     {children}
-                    {isLocalOrDemo && <LazyDevTools />}
+                    {(isLocal || isDemo) && <LazyDevTools />}
                 </Providers>
             </body>
         </html>

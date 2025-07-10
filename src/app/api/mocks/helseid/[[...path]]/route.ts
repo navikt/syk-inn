@@ -1,14 +1,14 @@
 import { notFound } from 'next/navigation'
 import { logger as pinoLogger } from '@navikt/next-logger'
 
-import { isE2E, isLocalOrDemo } from '@utils/env'
+import { isE2E, isLocal, isDemo } from '@utils/env'
 
 import data from './data'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[HELSEID-MOCK] ' })
 
 async function handler(req: Request): Promise<Response> {
-    if (!isLocalOrDemo && !isE2E) {
+    if (!(isLocal || isDemo) && !isE2E) {
         notFound()
     }
 

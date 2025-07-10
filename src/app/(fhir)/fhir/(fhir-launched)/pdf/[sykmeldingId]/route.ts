@@ -6,9 +6,9 @@ import { teamLogger } from '@navikt/next-logger/team-log'
 import { getApi } from '@services/api-fetcher'
 import { getHpr } from '@fhir/mappers/practitioner'
 import { getReadyClient } from '@fhir/smart/smart-client'
-import { getServerEnv, isLocalOrDemo } from '@utils/env'
-import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
 import { getFlag, getUserlessToggles } from '@toggles/unleash'
+
+import { mockEngineForSession, shouldUseMockEngine } from '../../../../../../data-layer/mock-engine'
 
 /**
  * Proxies the PDF request to the syk-inn-api service, to the PDF is viewable from the users browser.
@@ -36,9 +36,10 @@ export async function GET(
 
     request.headers.set('HPR', hpr)
 
-    if (isLocalOrDemo && !getServerEnv().useLocalSykInnApi) {
-        const pdfBuffer = Uint8Array.from(atob(base64ExamplePdf), (c) => c.charCodeAt(0))
-        return new Response(pdfBuffer, {
+    if (shouldUseMockEngine()) {
+        const mockEngine = await mockEngineForSession()
+
+        return new Response(mockEngine.sykInnApi.getPdf(), {
             headers: { 'Content-Type': 'application/pdf' },
             status: 200,
         })

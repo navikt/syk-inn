@@ -3,7 +3,7 @@
 import React, { ReactElement } from 'react'
 import { BodyLong, Button, Modal } from '@navikt/ds-react'
 
-import { isLocalOrDemo } from '@utils/env'
+import { isLocal, isDemo } from '@utils/env'
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 
 import { useAppSelector } from '../../providers/redux/hooks'
@@ -43,7 +43,7 @@ function LoggedOutWarning(): ReactElement | null {
                 <Button type="button" variant="secondary-neutral" onClick={() => window.location.reload()}>
                     {mode === 'FHIR' ? 'Last siden på nytt' : 'Logg inn igjen'}
                 </Button>
-                {isLocalOrDemo && mode === 'FHIR' && (
+                {(isLocal || isDemo) && mode === 'FHIR' && (
                     <Button
                         type="button"
                         as="a"

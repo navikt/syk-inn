@@ -1,11 +1,11 @@
 import { ApolloLink, Observable } from '@apollo/client'
 import { logger } from '@navikt/next-logger'
 
-import { isLocalOrDemo } from '@utils/env'
+import { isLocal, isDemo } from '@utils/env'
 
 export const FailingLinkDev = (): ApolloLink =>
     new ApolloLink((operation, forward) => {
-        if (!isLocalOrDemo) {
+        if (!(isLocal || isDemo)) {
             logger.error('FailingLinkDev should only be used in local or demo environments')
         }
 

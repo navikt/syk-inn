@@ -1,7 +1,7 @@
 import { lazyNextleton } from 'nextleton'
 
 import { getSessionId } from '@fhir/smart/session'
-import { getServerEnv, isE2E, isLocalOrDemo } from '@utils/env'
+import { getServerEnv, isE2E, isLocal, isDemo } from '@utils/env'
 
 import MockSessionStore from './MockSessionStore'
 import { MockEngine } from './MockEngine'
@@ -27,5 +27,5 @@ export async function mockEngineForSession(): Promise<MockEngine> {
 }
 
 export function shouldUseMockEngine(): boolean {
-    return (isLocalOrDemo || isE2E) && !getServerEnv().useLocalSykInnApi
+    return (isLocal || isDemo || isE2E) && !getServerEnv().useLocalSykInnApi
 }

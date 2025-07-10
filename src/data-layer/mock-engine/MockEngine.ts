@@ -78,12 +78,9 @@ export class SykInnApiMock {
         return newSykmelding
     }
 
-    getPdf(): Promise<ArrayBuffer> {
-        const response = new Response(Buffer.from(base64ExamplePdf), {
-            headers: { 'Content-Type': 'application/pdf' },
-            status: 200,
-        })
+    getPdf(): ArrayBuffer {
+        const pdfBuffer = Uint8Array.from(atob(base64ExamplePdf), (c) => c.charCodeAt(0))
 
-        return response.arrayBuffer()
+        return pdfBuffer.buffer
     }
 }

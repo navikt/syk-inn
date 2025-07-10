@@ -8,7 +8,7 @@ import { ListItem } from '@navikt/ds-react/List'
 import { usePathname } from 'next/navigation'
 import dynamic from 'next/dynamic'
 
-import { isLocalOrDemo } from '@utils/env'
+import { isLocal, isDemo } from '@utils/env'
 
 const LazyDevRelauncher = dynamic(() => import('../../devtools/DevRelauncher'), { ssr: false })
 
@@ -33,7 +33,7 @@ function Error({ error }: Props): ReactElement {
                     <VStack gap="16">
                         <VStack gap="12" align="start">
                             <div>
-                                {isLocalOrDemo &&
+                                {(isLocal || isDemo) &&
                                     errorPath.startsWith('/fhir') &&
                                     error.message.includes('Unable to get fhirUser') && <LazyDevRelauncher />}
                                 <BodyShort textColor="subtle" size="small">

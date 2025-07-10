@@ -5,7 +5,7 @@ import { onError } from '@apollo/client/link/error'
 import { logger } from '@navikt/next-logger'
 
 import { pathWithBasePath } from '@utils/url'
-import { isLocalOrDemo } from '@utils/env'
+import { isLocal, isDemo } from '@utils/env'
 import possibleTypesGenerated from '@graphql/possible-types.generated'
 import { spanBrowserAsync } from '@otel/browser'
 
@@ -52,9 +52,10 @@ export function makeApolloClient(store: AppStore) {
 
         const errorLink = createErrorLink(store)
 
-        const links = isLocalOrDemo
-            ? from([errorLink, FailingLinkDev(), retryLink, httpLink])
-            : from([errorLink, retryLink, httpLink])
+        const links =
+            isLocal || isDemo
+                ? from([errorLink, FailingLinkDev(), retryLink, httpLink])
+                : from([errorLink, retryLink, httpLink])
 
         return new ApolloClient({
             cache: new InMemoryCache({

@@ -2,7 +2,7 @@ import { evaluateFlags } from '@unleash/nextjs'
 import { logger as pinoLogger } from '@navikt/next-logger'
 import { connection } from 'next/server'
 
-import { bundledEnv, isE2E, isLocalOrDemo } from '@utils/env'
+import { bundledEnv, isE2E, isLocal, isDemo } from '@utils/env'
 import { getAndValidateDefinitions } from '@toggles/definitions'
 
 import { developmentTogglesWithCookieOverrides } from './dev/cookie-override'
@@ -31,7 +31,7 @@ export async function getUserToggles(noUser: true): Promise<Toggles>
 export async function getUserToggles(userId: string | true): Promise<Toggles> {
     await connection()
 
-    if (isLocalOrDemo || isE2E) return developmentTogglesWithCookieOverrides()
+    if (isLocal || isDemo || isE2E) return developmentTogglesWithCookieOverrides()
 
     try {
         const sessionId = await getUnleashSessionId()

@@ -2,11 +2,11 @@ import React, { ReactElement } from 'react'
 import { Alert, BodyShort, Link as AskelLink } from '@navikt/ds-react'
 import Link from 'next/link'
 
-import { isLocalOrDemo } from '@utils/env'
+import { isLocal, isDemo } from '@utils/env'
 import { raise } from '@utils/ts'
 
 function DemoWarning(): ReactElement | null {
-    if (!isLocalOrDemo) {
+    if (!(isLocal || isDemo)) {
         raise(new Error('DemoWarning should only be rendered in local or demo environment'))
     }
 

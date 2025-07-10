@@ -4,7 +4,7 @@ import * as z from 'zod/v4'
 import { headers } from 'next/headers'
 import { logger } from '@navikt/next-logger'
 
-import { getServerEnv, isE2E, isLocalOrDemo } from '@utils/env'
+import { getServerEnv, isE2E, isLocal, isDemo } from '@utils/env'
 import { getLoopbackURL, pathWithBasePath } from '@utils/url'
 
 type HelseIdWellKnown = z.infer<typeof HelseIdWellKnownSchema>
@@ -14,7 +14,7 @@ const HelseIdWellKnownSchema = z.object({
 })
 
 export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
-    if (isLocalOrDemo || isE2E) {
+    if (isLocal || isDemo || isE2E) {
         const parsedSchema = HelseIdWellKnownSchema.parse({
             issuer: `${getLoopbackURL()}${pathWithBasePath('/api/mocks/helseid')}`,
             userinfo_endpoint: `${getLoopbackURL()}${pathWithBasePath('/api/mocks/helseid/connect/userinfo')}`,
@@ -44,7 +44,7 @@ export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
  * is not available in a other contexts other than a RSC or route handler.
  */
 export async function getHelseIdAccessToken(): Promise<string> {
-    if (isLocalOrDemo || isE2E) {
+    if (isLocal || isDemo || isE2E) {
         return 'foo-bar-token'
     }
 

@@ -4,7 +4,7 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 import { Page } from '@navikt/ds-react'
 import type { Metadata } from 'next'
 
-import { isLocalOrDemo } from '@utils/env'
+import { isLocal, isDemo } from '@utils/env'
 import DemoWarning from '@components/demo-warning'
 import { getUserToggles } from '@toggles/unleash'
 import { getHelseIdUserInfo } from '@helseid/helseid-userinfo'
@@ -45,12 +45,12 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
                     }}
                 />
                 <Page footerPosition="belowFold">
-                    {isLocalOrDemo && <DemoWarning />}
+                    {(isLocal || isDemo) && <DemoWarning />}
                     <ToggleProvider toggles={toggles}>
                         <Providers mode="HelseID">
                             <LoggedOutWarning />
                             {children}
-                            {isLocalOrDemo && <LazyDevTools />}
+                            {(isLocal || isDemo) && <LazyDevTools />}
                         </Providers>
                     </ToggleProvider>
                 </Page>
