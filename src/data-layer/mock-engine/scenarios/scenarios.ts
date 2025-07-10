@@ -1,13 +1,13 @@
+import * as R from 'remeda'
+
 import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
 
-import { DraftOwnership } from '../../draft/draft-client'
-import { DraftValues } from '../../draft/draft-schema'
-
 import { SykmeldingBuilder } from './SykInnApiSykmeldingBuilder'
+import { DraftBuilder, ScenarioDraft } from './DraftBuilder'
 
 export type Scenario = {
     sykmeldinger: SykInnApiSykmelding[]
-    drafts: { id: string; owner: DraftOwnership; values: DraftValues }[]
+    drafts: ScenarioDraft[]
 }
 
 type ScenarioCreator = () => Scenario
@@ -31,6 +31,13 @@ export const simpleScenarios = {
         scenario: () => ({
             sykmeldinger: [],
             drafts: [],
+        }),
+    },
+    'plenty-of-drafts': {
+        description: 'User with many drafts, no sykmeldinger',
+        scenario: () => ({
+            sykmeldinger: [],
+            drafts: R.range(0, 15).map((idx) => new DraftBuilder().lastUpdated(idx * 3).build()),
         }),
     },
 } satisfies Record<string, { description: string; scenario: ScenarioCreator }>

@@ -40,7 +40,13 @@ export class MockEngine {
      */
     async init(): Promise<void> {
         for (const draft of this.scenario.drafts) {
-            await this.draftClient.saveDraft(draft.id, draft.owner, draft.values)
+            await this.draftClient.saveDraft(
+                draft.id,
+                draft.owner,
+                draft.values,
+                // @ts-expect-error: saveDraft has a fourth un-typed parameter for providing a last updated date
+                draft.lastUpdated,
+            )
         }
     }
 }

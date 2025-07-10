@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { useMutation } from '@apollo/client'
-import { Button } from '@navikt/ds-react'
+import { Button, Tooltip } from '@navikt/ds-react'
 import { TrashIcon } from '@navikt/aksel-icons'
 
 import { DeleteDraftDocument, GetAllDraftsDocument, OpprettSykmeldingDraft } from '@queries'
@@ -23,18 +23,20 @@ export function DeleteDraftButton({ draftId }: { draftId: string }): ReactElemen
     })
 
     return (
-        <Button
-            icon={<TrashIcon aria-hidden />}
-            size="small"
-            variant="tertiary"
-            loading={deleteDraftResult.loading}
-            onClick={() =>
-                spanBrowserAsync('DeleteDraft(Dashboard).mutation', async () =>
-                    deleteDraft({
-                        variables: { draftId },
-                    }),
-                )
-            }
-        />
+        <Tooltip content="Slett utkast">
+            <Button
+                icon={<TrashIcon aria-hidden />}
+                size="small"
+                variant="tertiary"
+                loading={deleteDraftResult.loading}
+                onClick={() =>
+                    spanBrowserAsync('DeleteDraft(Dashboard).mutation', async () =>
+                        deleteDraft({
+                            variables: { draftId },
+                        }),
+                    )
+                }
+            />
+        </Tooltip>
     )
 }

@@ -31,7 +31,6 @@ export function SlowNextLinkButton({
         return (
             <Button
                 as={AssableNextLink}
-                type="button"
                 href={href}
                 loading={isLinkPending || loading}
                 {...buttonProps}

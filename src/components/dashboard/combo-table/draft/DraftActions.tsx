@@ -16,9 +16,8 @@ export function DraftActions({ draftId }: { draftId: string }): ReactElement {
                     size="small"
                 />
             </Tooltip>
-            <Tooltip content="Slett utkast">
-                <DeleteDraftButton draftId={draftId} />
-            </Tooltip>
+
+            <DeleteDraftButton draftId={draftId} />
         </div>
     )
 }

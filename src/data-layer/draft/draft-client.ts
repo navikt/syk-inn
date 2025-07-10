@@ -49,22 +49,25 @@ export async function getDraftClient(): Promise<DraftClient> {
 
 export function createDraftClient(valkey: Valkey): DraftClient {
     return {
-        saveDraft: withSpanServerAsync('draft client - save draft', async (draftId, owner, values) => {
-            const key = draftKey(draftId)
-            const ownershipKey = ownershipIndexKey(owner)
+        saveDraft: withSpanServerAsync(
+            'draft client - save draft',
+            async (draftId, owner, values, lastUpdated: Date = new Date()) => {
+                const key = draftKey(draftId)
+                const ownershipKey = ownershipIndexKey(owner)
 
-            await valkey.hset(key, {
-                draftId,
-                values: JSON.stringify(values),
-                lastUpdated: new Date().toISOString(),
-            } satisfies ValkeyDraftEntry)
-            await valkey.sadd(ownershipKey, key)
+                await valkey.hset(key, {
+                    draftId,
+                    values: JSON.stringify(values),
+                    lastUpdated: lastUpdated.toISOString(),
+                } satisfies ValkeyDraftEntry)
+                await valkey.sadd(ownershipKey, key)
 
-            await valkey.expire(key, getSecondsUntilMidnight())
-            await valkey.expire(ownershipKey, getSecondsUntilMidnight())
+                await valkey.expire(key, getSecondsUntilMidnight())
+                await valkey.expire(ownershipKey, getSecondsUntilMidnight())
 
-            return values
-        }),
+                return values
+            },
+        ),
         deleteDraft: withSpanServerAsync('draft client - delete draft', async (draftId, owner) => {
             const key = draftKey(draftId)
             const ownershipKey = ownershipIndexKey(owner)

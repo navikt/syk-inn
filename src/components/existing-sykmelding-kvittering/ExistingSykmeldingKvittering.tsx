@@ -20,9 +20,8 @@ import { useQuery } from '@apollo/client'
 import { FormSection } from '@components/ui/form'
 import { toReadableDatePeriod } from '@utils/date'
 import { SykmeldingSynchronization } from '@components/existing-sykmelding-kvittering/SykmeldingSynchronization'
-import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
+import { DiagnoseFragment, SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
 import { pathWithBasePath } from '@utils/url'
-import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 
@@ -81,7 +80,7 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }
                         <>
                             <Label className="mt-4">Bidiagnoser</Label>
                             {(sykmelding.values.bidiagnoser ?? [])
-                                .filter((b): b is DiagnoseSuggestion => b != null)
+                                .filter((b): b is DiagnoseFragment => b != null)
                                 .map((bidiagnose, index) => (
                                     <div key={index}>
                                         <BodyShort>
