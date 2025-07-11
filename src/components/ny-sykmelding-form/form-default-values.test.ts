@@ -11,7 +11,7 @@ test('draft values shall be used as default if provided', () => {
     const defaultValues = createDefaultFormValues({
         valuesInState: null,
         draftValues: fullDraft,
-        serverSuggestions: fullServerSuggesetions,
+        serverSuggestions: fullServerSuggestions,
     })
 
     expect(defaultValues).toEqual({
@@ -35,7 +35,10 @@ test('draft values shall be used as default if provided', () => {
             },
         ],
         // Diagnose from draft, not server suggestion
-        diagnoser: { hoved: { system: 'ICD10', code: 'A00', text: 'Kolera' } },
+        diagnoser: {
+            hoved: { system: 'ICD10', code: 'A00', text: 'Kolera' },
+            bidiagnoser: [{ system: 'ICPC2', code: 'L73', text: 'Brudd legg/ankel' }],
+        },
         tilbakedatering: { fom: '2024-12-15', grunn: 'Pasienten kunne ikke oppsøke lege tidligere' },
         meldinger: {
             showTilNav: true,
@@ -51,7 +54,7 @@ test('form values shall have higher presedence than draft values', () => {
     const defaultValues = createDefaultFormValues({
         valuesInState: fullExistingStateValues,
         draftValues: fullDraft,
-        serverSuggestions: fullServerSuggesetions,
+        serverSuggestions: fullServerSuggestions,
     })
 
     expect(defaultValues).toEqual({
@@ -80,8 +83,10 @@ test('form values shall have higher presedence than draft values', () => {
                 arbeidsrelatertArsak: null,
             },
         ],
-        // TODO: Bidiagnoser
-        diagnoser: { hoved: { system: 'ICPC2', code: 'L02', text: 'Ryggsmerter' } },
+        diagnoser: {
+            hoved: { system: 'ICPC2', code: 'L02', text: 'Ryggsmerter' },
+            bidiagnoser: [{ system: 'ICD10', code: 'M54.5', text: 'Lumbago' }],
+        },
         tilbakedatering: { fom: '2025-01-20', grunn: 'Legen var bortreist' },
         meldinger: {
             showTilNav: true,
@@ -97,13 +102,13 @@ test('server suggestions shall be used if no draft or form values are provided',
     const defaultValues = createDefaultFormValues({
         valuesInState: null,
         draftValues: null,
-        serverSuggestions: fullServerSuggesetions,
+        serverSuggestions: fullServerSuggestions,
     })
 
     expect(defaultValues).toEqual({
         arbeidsforhold: { harFlereArbeidsforhold: 'NEI', sykmeldtFraArbeidsforhold: null },
         // Server suggested diagnose
-        diagnoser: { hoved: { system: 'ICPC2', code: 'A01', text: 'Influensa' } },
+        diagnoser: { hoved: { system: 'ICPC2', code: 'A01', text: 'Influensa' }, bidiagnoser: [] },
         perioder: [
             {
                 // Default periode is GRADERT from Today
@@ -119,7 +124,7 @@ test('server suggestions shall be used if no draft or form values are provided',
     })
 })
 
-const fullServerSuggesetions: NySykmeldingSuggestions = {
+const fullServerSuggestions: NySykmeldingSuggestions = {
     diagnose: {
         value: {
             __typename: 'Diagnose',
@@ -159,7 +164,7 @@ const fullDraft: DraftValues = {
         },
     ],
     hoveddiagnose: { system: 'ICD10', code: 'A00', text: 'Kolera' },
-    // TODO: Bidiagnoser
+    bidiagnoser: [{ system: 'ICPC2', code: 'L73', text: 'Brudd legg/ankel' }],
     tilbakedatering: {
         fom: '2024-12-15',
         grunn: 'Pasienten kunne ikke oppsøke lege tidligere',

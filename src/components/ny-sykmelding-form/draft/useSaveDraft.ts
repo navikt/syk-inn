@@ -1,6 +1,7 @@
 import { FetchResult, MutationResult, useMutation } from '@apollo/client'
 import { useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import * as R from 'remeda'
 
 import { GetAllDraftsDocument, SaveDraftDocument, SaveDraftMutation } from '@queries'
 import { NySykmeldingMainFormValues } from '@components/ny-sykmelding-form/form'
@@ -62,6 +63,11 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
             arbeidsrelatertArsak: periode.arbeidsrelatertArsak,
         })),
         hoveddiagnose: values.diagnoser.hoved ? values.diagnoser.hoved : null,
+        bidiagnoser: (values.diagnoser.bidiagnoser ?? []).filter(R.isNonNull).map((it) => ({
+            system: it.system,
+            code: it.code,
+            text: it.text,
+        })),
         tilbakedatering:
             values.tilbakedatering != null
                 ? {

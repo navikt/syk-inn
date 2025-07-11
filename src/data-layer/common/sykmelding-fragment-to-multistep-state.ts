@@ -40,8 +40,13 @@ export function sykmeldingFragmentToMainStepStateNoAktivitet(
                       text: sykmelding.values.hoveddiagnose.text,
                   }
                 : raise('Form does not support sykmeldinger without hoveddiagnose yet'),
-            // TODO: Support bi
-            bi: [],
+            bi: sykmelding.values.bidiagnoser
+                ? sykmelding.values.bidiagnoser.map((it) => ({
+                      code: it.code,
+                      system: it.system,
+                      text: it.text,
+                  }))
+                : [],
         },
     }
 }
