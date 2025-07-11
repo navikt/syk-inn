@@ -38,6 +38,15 @@ export const DraftValuesSchema = z.object({
             text: z.string(),
         })
         .nullable(),
+    bidiagnoser: z
+        .array(
+            z.object({
+                system: z.enum(['ICD10', 'ICPC2']),
+                code: z.string(),
+                text: z.string(),
+            }),
+        )
+        .nullable(),
     tilbakedatering: z
         .object({
             fom: z.string().nullable(),
