@@ -1,8 +1,27 @@
 import { test } from '@playwright/test'
 
 import { launchWithMock } from './actions/fhir-actions'
-import { startNewSykmelding, addBidiagnose, deleteBidiagnose, editBidiagnose } from './actions/user-actions'
-import { expectBidagnoses } from './actions/user-form-verification'
+import {
+    startNewSykmelding,
+    addBidiagnose,
+    deleteBidiagnose,
+    editBidiagnose,
+    pickHoveddiagnose,
+    editHoveddiagnose,
+} from './actions/user-actions'
+import { expectBidagnoses, expectHoveddiagnose } from './actions/user-form-verification'
+
+test('hoveddiagnose - shall be able to edit diagnose', async ({ page }) => {
+    await launchWithMock('empty')(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    // Prefilled
+    await expectHoveddiagnose(/L73 - Brudd legg\/ankel/)(page)
+
+    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+    await editHoveddiagnose({ search: 'D290', select: /D290/ })(page)
+    await expectHoveddiagnose(/Godartet svulst i/)(page)
+})
 
 test('bidiagnoser - adding, editing, deleting adhd test', async ({ page }) => {
     await launchWithMock('empty')(page)
