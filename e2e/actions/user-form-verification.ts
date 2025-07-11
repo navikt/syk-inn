@@ -60,7 +60,7 @@ export function expectHoveddiagnose(expectedDiagnose: string) {
 
 export function expectBidagnoses(expectedBidiagnoses: string[]) {
     return async (page: Page) => {
-        await test.step('Verify bidiagnoses', async () => {
+        await test.step(`Verify ${expectedBidiagnoses.length} bidiagnoses`, async () => {
             const bidiagnoseRegion = page.getByRole('region', { name: 'Bidiagnoser', exact: true })
             await expect(bidiagnoseRegion).toBeVisible()
 
