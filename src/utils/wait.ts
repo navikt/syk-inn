@@ -1,13 +1,15 @@
 import { bundledEnv } from '@utils/env'
 
-export async function wait(ms = 500, jitter = 300): Promise<void> {
+export async function wait(ms = 500, jitter = 300): Promise<number> {
     if (
         bundledEnv.runtimeEnv === 'e2e' ||
         bundledEnv.runtimeEnv === 'dev-gcp' ||
         bundledEnv.runtimeEnv === 'prod-gcp'
     ) {
-        return
+        return 0
     }
 
-    await new Promise((resolve) => setTimeout(resolve, ms + Math.floor(Math.random() * jitter * 2 - jitter)))
+    const time = ms + Math.floor(Math.random() * jitter * 2 - jitter)
+    await new Promise((resolve) => setTimeout(resolve, time))
+    return time
 }
