@@ -1,5 +1,5 @@
 import { logger as pinoLogger } from '@navikt/next-logger'
-import * as z from 'zod/v4'
+import * as z from 'zod'
 
 import {
     SykInnApiRuleOutcome,
