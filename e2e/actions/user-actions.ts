@@ -76,6 +76,50 @@ export function addBidiagnose({ search, select }: { search: string; select: RegE
     }
 }
 
+export function deleteBidiagnose(
+    /**
+     * The visual number of the diagnose, so it starts at 1
+     */
+    index: number,
+) {
+    return async (page: Page) => {
+        await test.step(`Delete bidiagnose at index ${index}`, async () => {
+            const bidiagnoseRegion = page.getByRole('region', { name: 'Bidiagnoser', exact: true })
+            await expect(bidiagnoseRegion).toBeVisible()
+
+            const bidiagnoseGroup = bidiagnoseRegion.getByRole('group', {
+                name: `Bidiagnose ${index}`,
+            })
+            await bidiagnoseGroup.getByRole('button', { name: 'Slett' }).click()
+        })
+    }
+}
+
+export function editBidiagnose({
+    search,
+    select,
+    index,
+}: {
+    search: string
+    select: RegExp
+    /**
+     * The visual number of the diagnose, so it starts at 1
+     */
+    index: number
+}) {
+    return async (page: Page) => {
+        await test.step('Edit bidiagnose', async () => {
+            const bidiagnoseRegion = page.getByRole('region', { name: 'Bidiagnoser', exact: true })
+            await expect(bidiagnoseRegion).toBeVisible()
+
+            const bidiagnoseGroup = bidiagnoseRegion.getByRole('group', { name: `Bidiagnose ${index}` })
+            await bidiagnoseGroup.getByRole('button', { name: 'Endre' }).click()
+            await bidiagnoseGroup.getByRole('combobox', { name: 'Bidiagnose' }).fill(search)
+            await bidiagnoseGroup.getByRole('option', { name: select }).click()
+        })
+    }
+}
+
 export function fillArbeidsforhold({
     harFlereArbeidsforhold,
     sykmeldtFraArbeidsforhold = null,
