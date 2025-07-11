@@ -49,7 +49,7 @@ export function expectTilbakedatering({ daysAgo: daysAgoValue, reason }: { daysA
     }
 }
 
-export function expectHoveddiagnose(expectedDiagnose: string) {
+export function expectHoveddiagnose(expectedDiagnose: string | RegExp) {
     return async (page: Page) => {
         await test.step(`Verify hoveddiagnose: ${expectedDiagnose}`, async () => {
             const diagnoseRegion = page.getByRole('region', { name: 'Diagnose', exact: true })

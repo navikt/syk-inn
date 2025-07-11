@@ -1,4 +1,4 @@
-import { expect, Locator, Page, test } from '@playwright/test'
+import { expect, Page, test } from '@playwright/test'
 import { add } from 'date-fns'
 import { GraphQLRequest } from '@apollo/client'
 
@@ -43,11 +43,14 @@ export function pickHoveddiagnose({ search, select }: { search: string; select: 
 }
 
 export function editHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
-    return async (region: Locator) => {
+    return async (page: Page) => {
         await test.step(`Edit hoveddiagnose to ${search}`, async () => {
-            await region.getByRole('button', { name: 'Endre' }).click()
-            await region.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
-            await region.getByRole('option', { name: select }).click()
+            const diagnoseRegion = page.getByRole('region', { name: 'Diagnose', exact: true })
+            await expect(diagnoseRegion).toBeVisible()
+
+            await diagnoseRegion.getByRole('button', { name: 'Endre' }).click()
+            await diagnoseRegion.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
+            await diagnoseRegion.getByRole('option', { name: select }).click()
         })
     }
 }
@@ -171,24 +174,52 @@ export function fillPeriodeRelative({
     }
 }
 
-export function fillArsakerTilAktivitetIkkeMulig({}) {
+export function fillArsakerTilAktivitetIkkeMulig({
+    isMedisinsk = true,
+    isArbeidsrelatert = false,
+    arbeidsrelaterteArsaker = [],
+    arbeidsrelatertArsakBegrunnelse = null,
+}: {
+    isMedisinsk?: boolean
+    isArbeidsrelatert?: boolean
+    arbeidsrelaterteArsaker?: ('tilrettelegging ikke mulig' | 'annet')[]
+    arbeidsrelatertArsakBegrunnelse?: string | null
+}) {
     return async (page: Page) => {
         await test.step('Input årsaker til aktivitet ikke mulig', async () => {
             const periodeRegion = page.getByRole('region', { name: 'Periode' })
             await expect(periodeRegion).toBeVisible()
-            expect(
+
+            const medisinskCheckbox = periodeRegion.getByRole('checkbox', {
+                name: 'Medisinske årsaker forhindrer arbeidsaktivitet',
+            })
+            if (isMedisinsk) {
+                await expect(medisinskCheckbox).toBeChecked()
+            } else {
+                await medisinskCheckbox.uncheck()
+            }
+
+            const arbeidsrelatertArsakCheckbox = periodeRegion.getByRole('checkbox', {
+                name: 'Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet',
+            })
+            if (isArbeidsrelatert) {
+                await arbeidsrelatertArsakCheckbox.check()
+            } else {
+                await expect(arbeidsrelatertArsakCheckbox).not.toBeChecked()
+            }
+
+            if (arbeidsrelaterteArsaker.includes('tilrettelegging ikke mulig')) {
+                await periodeRegion.getByRole('checkbox', { name: 'Tilrettelegging ikke mulig' }).check()
+            }
+            if (arbeidsrelaterteArsaker.includes('annet')) {
+                await periodeRegion.getByRole('checkbox', { name: 'Annet' }).check()
+            }
+
+            if (arbeidsrelatertArsakBegrunnelse) {
                 await periodeRegion
-                    .getByRole('checkbox', { name: 'Medisinske årsaker forhindrer arbeidsaktivitet' })
-                    .isChecked(),
-            ).toBeTruthy()
-            await periodeRegion
-                .getByRole('checkbox', { name: 'Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet' })
-                .check()
-            await periodeRegion.getByRole('checkbox', { name: 'Tilrettelegging ikke mulig' }).check()
-            await periodeRegion.getByRole('checkbox', { name: 'Annet' }).check()
-            await periodeRegion
-                .getByRole('textbox', { name: 'Annen arbeidsrelatert årsak' })
-                .fill('Annen årsak til aktivitet ikke mulig')
+                    .getByRole('textbox', { name: 'Annen arbeidsrelatert årsak' })
+                    .fill(arbeidsrelatertArsakBegrunnelse)
+            }
         })
     }
 }
