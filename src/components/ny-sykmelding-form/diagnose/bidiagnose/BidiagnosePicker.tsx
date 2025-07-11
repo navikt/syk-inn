@@ -18,7 +18,7 @@ function BidiagnosePicker({
     return (
         <DiagnoseCombobox
             id={`diagnoser.bidiagnoser.${index}`}
-            label="Bidiagnose"
+            label={`Bidiagnose ${index + 1}`}
             description="Diagnosekoder fra både ICPC-2 og ICD-10."
             className="max-w-prose"
             value={field.value}

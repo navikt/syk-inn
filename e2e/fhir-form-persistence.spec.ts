@@ -13,6 +13,7 @@ import {
     previousStep,
     saveDraft,
     fillArbeidsforhold,
+    addBidiagnose,
 } from './actions/user-actions'
 import { userInteractionsGroup } from './utils/actions'
 import { verifySignerendeBehandler } from './actions/user-verifications'
@@ -43,6 +44,14 @@ const fillAllTheValues = userInteractionsGroup(
         search: 'Angst',
         select: /Angstlidelse/,
     }),
+    addBidiagnose({
+        search: 'B600',
+        select: /Babesiose/,
+    }),
+    addBidiagnose({
+        search: 'R772',
+        select: /Alfaføtoproteinabnormitet/,
+    }),
     fillAndreSporsmal({
         svangerskapsrelatert: true,
         yrkesskade: true,
@@ -58,6 +67,7 @@ const verifyAlltheValues = userInteractionsGroup(
     expectPeriode({ type: { grad: 65 }, fromRelative: -9, days: 14 }),
     expectTilbakedatering({ daysAgo: 4, reason: 'Han ringte men fikk ikke time' }),
     expectHoveddiagnose('P74 - Angstlidelse'),
+    // TODO: Add bigiagnoses verification
     expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(2) }),
     expectMeldinger({ tilNav: 'Trenger mer penger', tilArbeidsgiver: 'Trenger sev-henk pult' }),
 )
