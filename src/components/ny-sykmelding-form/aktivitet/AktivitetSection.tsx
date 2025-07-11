@@ -1,10 +1,9 @@
 import React, { Fragment, ReactElement } from 'react'
-import { useFieldArray } from 'react-hook-form'
 import { Button } from '@navikt/ds-react'
 import { addDays } from 'date-fns'
 import { TrashIcon } from '@navikt/aksel-icons'
 
-import { AktivitetsPeriode, NySykmeldingMainFormValues, useFormContext } from '@components/ny-sykmelding-form/form'
+import { AktivitetsPeriode, useFieldArray, useFormContext } from '@components/ny-sykmelding-form/form'
 import { getDefaultPeriode } from '@components/ny-sykmelding-form/form-default-values'
 import { dateOnly } from '@utils/date'
 
@@ -13,8 +12,8 @@ import PeriodePicker from './PeriodePicker'
 
 function AktivitetSection(): ReactElement {
     const { getValues } = useFormContext()
-    const { fields, append, remove } = useFieldArray<NySykmeldingMainFormValues>({
-        name: 'perioder',
+    const { fields, append, remove } = useFieldArray({
+        name: 'perioder' as const,
     })
 
     return (
