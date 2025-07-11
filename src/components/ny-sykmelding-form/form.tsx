@@ -4,6 +4,10 @@ import {
     UseControllerProps,
     UseControllerReturn,
     useFormContext as useRhfFormContext,
+    useFieldArray as useRhfFieldArray,
+    FieldArrayPath,
+    UseFieldArrayProps,
+    UseFieldArrayReturn,
 } from 'react-hook-form'
 
 import { ArbeidsrelatertArsakType, DiagnoseFragment } from '@queries'
@@ -90,4 +94,12 @@ export function useController<TFieldName extends FieldPath<NySykmeldingMainFormV
     props: Omit<UseControllerProps<NySykmeldingMainFormValues, TFieldName>, 'control'>,
 ): UseControllerReturn<NySykmeldingMainFormValues, TFieldName> {
     return useRhfController<NySykmeldingMainFormValues, TFieldName>(props)
+}
+
+export function useFieldArray<
+    TFieldArrayName extends FieldArrayPath<NySykmeldingMainFormValues> = FieldArrayPath<NySykmeldingMainFormValues>,
+>(
+    props: UseFieldArrayProps<NySykmeldingMainFormValues, TFieldArrayName>,
+): UseFieldArrayReturn<NySykmeldingMainFormValues, TFieldArrayName> {
+    return useRhfFieldArray<NySykmeldingMainFormValues, TFieldArrayName>(props)
 }

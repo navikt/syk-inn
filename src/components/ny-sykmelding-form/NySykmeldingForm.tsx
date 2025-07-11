@@ -62,8 +62,6 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                 <FormSheet className="row-span-2">
                     <FormSection title="Diagnose">
                         <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
-                    </FormSection>
-                    <FormSection title="Bidiagnoser">
                         <BidiagnoseSection />
                     </FormSection>
                     <FormSection title="Andre spørsmål" hideTitle>

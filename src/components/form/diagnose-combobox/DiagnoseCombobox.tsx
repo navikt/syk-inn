@@ -1,5 +1,5 @@
 import * as R from 'remeda'
-import React, { ReactElement, startTransition } from 'react'
+import React, { ReactElement, ReactNode, startTransition } from 'react'
 import { Alert, BodyShort, Button, Detail, ErrorMessage, Label } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
@@ -34,6 +34,7 @@ interface Props {
     onChange: () => void
     onBlur: () => void
     error: string | undefined
+    actions?: ReactNode | null
 }
 
 function DiagnoseCombobox({
@@ -46,6 +47,7 @@ function DiagnoseCombobox({
     onChange,
     onBlur,
     error,
+    actions,
 }: Props): ReactElement {
     const combobox = useComboboxStore({
         defaultValue: value ? createUniqueValue(value) : '',
@@ -134,6 +136,7 @@ function DiagnoseCombobox({
                             ))}
                     </AkselifiedComboboxPopover>
                     {error && <ErrorMessage>{error}</ErrorMessage>}
+                    <div className="absolute top-0 right-0">{actions}</div>
                 </AkselifiedComboboxWrapper>
             </div>
             {value != null && (
@@ -145,10 +148,10 @@ function DiagnoseCombobox({
                         </BodyShort>
                         <Detail spacing>{value.system}</Detail>
                     </div>
-                    <div>
+                    <div className="flex gap-1 items-start">
                         <Button
                             variant="secondary-neutral"
-                            size="xsmall"
+                            size="small"
                             type="button"
                             onClick={() => {
                                 const resetValue = state.selectedValue
@@ -158,8 +161,9 @@ function DiagnoseCombobox({
                                 onChange()
                             }}
                         >
-                            Endre hoveddiagnose
+                            Endre
                         </Button>
+                        {actions}
                     </div>
                 </div>
             )}
