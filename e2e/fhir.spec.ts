@@ -15,12 +15,13 @@ import {
     fillTilbakedatering,
     fillArbeidsforhold,
     fillArsakerTilAktivitetIkkeMulig,
+    addBidiagnose,
 } from './actions/user-actions'
 import { expectGraphQLRequest } from './utils/assertions'
 import { getDraftId } from './utils/request-utils'
 import { verifySignerendeBehandler, verifySummaryPage } from './actions/user-verifications'
 
-test('can submit 100% sykmelding', async ({ page }) => {
+test('100% sykmelding', async ({ page }) => {
     await launchWithMock()(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
@@ -34,6 +35,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
     })(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+    await addBidiagnose({ search: 'B600', select: /Babesiose/ })(page)
 
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
@@ -43,7 +45,7 @@ test('can submit 100% sykmelding', async ({ page }) => {
         draftId: getDraftId(page) ?? 'missing',
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
-            bidiagnoser: [],
+            bidiagnoser: [{ system: 'ICD10', code: 'B600' }],
             aktivitet: [
                 {
                     type: 'AKTIVITET_IKKE_MULIG',
@@ -62,6 +64,59 @@ test('can submit 100% sykmelding', async ({ page }) => {
                         arbeidsrelaterteArsaker: [],
                         annenArbeidsrelatertArsak: null,
                     },
+                },
+            ],
+            meldinger: { tilNav: null, tilArbeidsgiver: null },
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            arbeidsforhold: null,
+            tilbakedatering: null,
+            pasientenSkalSkjermes: false,
+        },
+    })
+
+    await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+})
+
+test('gradert sykmelding', async ({ page }) => {
+    await launchWithMock()(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await fillArbeidsforhold({
+        harFlereArbeidsforhold: false,
+    })(page)
+
+    await fillPeriodeRelative({
+        type: { grad: 50 },
+        days: 3,
+    })(page)
+
+    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+
+    await nextStep()(page)
+    await verifySignerendeBehandler()(page)
+
+    const request = await submitSykmelding()(page)
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+        draftId: getDraftId(page) ?? 'missing',
+        values: {
+            hoveddiagnose: { system: 'ICPC2', code: 'P74' },
+            bidiagnoser: [],
+            aktivitet: [
+                {
+                    type: 'GRADERT',
+                    fom: today(),
+                    tom: inDays(3),
+                    gradert: {
+                        grad: 50,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: null,
+                    avventende: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
+                    medisinskArsak: null,
+                    arbeidsrelatertArsak: null,
                 },
             ],
             meldinger: { tilNav: null, tilArbeidsgiver: null },
@@ -133,20 +188,18 @@ test('shall be able to edit diagnose', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
 
-test('can submit gradert sykmelding', async ({ page }) => {
+test('multiple bidiagnoser', async ({ page }) => {
     await launchWithMock()(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
-    await fillArbeidsforhold({
-        harFlereArbeidsforhold: false,
-    })(page)
-
     await fillPeriodeRelative({
-        type: { grad: 50 },
+        type: '100%',
         days: 3,
     })(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+    await addBidiagnose({ search: 'B600', select: /Babesiose/ })(page)
+    await addBidiagnose({ search: 'R772', select: /Alfaføtoproteinabnormitet/ })(page)
 
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
@@ -155,23 +208,29 @@ test('can submit gradert sykmelding', async ({ page }) => {
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
         values: {
-            hoveddiagnose: { system: 'ICPC2', code: 'P74' },
-            bidiagnoser: [],
+            hoveddiagnose: { code: 'P74', system: 'ICPC2' },
+            bidiagnoser: [
+                { system: 'ICD10', code: 'B600' },
+                { system: 'ICD10', code: 'R772' },
+            ],
             aktivitet: [
                 {
-                    type: 'GRADERT',
+                    type: 'AKTIVITET_IKKE_MULIG',
                     fom: today(),
                     tom: inDays(3),
-                    gradert: {
-                        grad: 50,
-                        reisetilskudd: false,
-                    },
-                    aktivitetIkkeMulig: null,
+                    aktivitetIkkeMulig: { dummy: true },
                     avventende: null,
+                    gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
-                    medisinskArsak: null,
-                    arbeidsrelatertArsak: null,
+                    medisinskArsak: {
+                        isMedisinskArsak: true,
+                    },
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: [],
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             ],
             meldinger: { tilNav: null, tilArbeidsgiver: null },
