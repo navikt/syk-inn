@@ -80,8 +80,10 @@ test('form values shall have higher presedence than draft values', () => {
                 arbeidsrelatertArsak: null,
             },
         ],
-        // TODO: Bidiagnoser
-        diagnoser: { hoved: { system: 'ICPC2', code: 'L02', text: 'Ryggsmerter' } },
+        diagnoser: {
+            hoved: { system: 'ICPC2', code: 'L02', text: 'Ryggsmerter' },
+            bi: [{ system: 'ICPC2', code: 'L73', text: 'Brudd legg/ankel' }],
+        },
         tilbakedatering: { fom: '2025-01-20', grunn: 'Legen var bortreist' },
         meldinger: {
             showTilNav: true,
@@ -159,7 +161,7 @@ const fullDraft: DraftValues = {
         },
     ],
     hoveddiagnose: { system: 'ICD10', code: 'A00', text: 'Kolera' },
-    // TODO: Bidiagnoser
+    bidiagnoser: [{ system: 'ICPC2', code: 'L73', text: 'Brudd legg/ankel' }],
     tilbakedatering: {
         fom: '2024-12-15',
         grunn: 'Pasienten kunne ikke oppsøke lege tidligere',

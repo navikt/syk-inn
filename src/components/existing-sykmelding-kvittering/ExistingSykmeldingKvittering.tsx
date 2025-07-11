@@ -16,11 +16,12 @@ import {
 import { HandBandageIcon, PersonIcon, VitalsIcon } from '@navikt/aksel-icons'
 import Link from 'next/link'
 import { useQuery } from '@apollo/client'
+import * as R from 'remeda'
 
 import { FormSection } from '@components/ui/form'
 import { toReadableDatePeriod } from '@utils/date'
 import { SykmeldingSynchronization } from '@components/existing-sykmelding-kvittering/SykmeldingSynchronization'
-import { DiagnoseFragment, SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
+import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
 import { pathWithBasePath } from '@utils/url'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
@@ -79,16 +80,14 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }
                     {(sykmelding.values.bidiagnoser ?? []).some((b) => b != null) && (
                         <>
                             <Label className="mt-4">Bidiagnoser</Label>
-                            {(sykmelding.values.bidiagnoser ?? [])
-                                .filter((b): b is DiagnoseFragment => b != null)
-                                .map((bidiagnose, index) => (
-                                    <div key={index}>
-                                        <BodyShort>
-                                            {bidiagnose.code} - {bidiagnose.text}
-                                        </BodyShort>
-                                        <Detail>{bidiagnose.system}</Detail>
-                                    </div>
-                                ))}
+                            {(sykmelding.values.bidiagnoser ?? []).filter(R.isNonNull).map((bidiagnose, index) => (
+                                <div key={index}>
+                                    <BodyShort>
+                                        {bidiagnose.code} - {bidiagnose.text}
+                                    </BodyShort>
+                                    <Detail>{bidiagnose.system}</Detail>
+                                </div>
+                            ))}
                         </>
                     )}
                 </FormSection>

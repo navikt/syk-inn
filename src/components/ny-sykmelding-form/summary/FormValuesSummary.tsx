@@ -1,10 +1,10 @@
 import { Alert, BodyShort, Detail, FormSummary } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
+import * as R from 'remeda'
 
 import { useFormStep } from '@components/ny-sykmelding-form/steps/useFormStep'
 import { toReadableDate, toReadableDatePeriod } from '@utils/date'
 import { ArbeidsrelaterteArsaker } from '@components/ny-sykmelding-form/aktivitet/ArsakerPicker'
-import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
 import { useAppSelector } from '../../../providers/redux/hooks'
 import {
@@ -207,16 +207,14 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: DiagnoseStep | null })
             <FormSummary.Answer>
                 <FormSummary.Label>Bidiagnoser</FormSummary.Label>
                 <FormSummary.Value>
-                    {(diagnose.bi ?? [])
-                        .filter((bidiagnose): bidiagnose is DiagnoseSuggestion => bidiagnose != null)
-                        .map((bidiagnose, index) => (
-                            <div key={index}>
-                                <BodyShort>
-                                    {bidiagnose.text} ({bidiagnose.code})
-                                </BodyShort>
-                                <Detail>{bidiagnose.system}</Detail>
-                            </div>
-                        ))}
+                    {(diagnose.bi ?? []).filter(R.isNonNull).map((bidiagnose, index) => (
+                        <div key={index}>
+                            <BodyShort>
+                                {bidiagnose.text} ({bidiagnose.code})
+                            </BodyShort>
+                            <Detail>{bidiagnose.system}</Detail>
+                        </div>
+                    ))}
                 </FormSummary.Value>
             </FormSummary.Answer>
         </>
