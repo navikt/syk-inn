@@ -16,7 +16,7 @@ const opts: OptionsType = process.env.CI
           baseURL: `http://localhost:3000`,
           timeout: 30 * 1000,
           // Uses service container app
-          workers: 1,
+          workers: 2,
           server: undefined,
       } satisfies OptionsType)
     : process.env.FAST
