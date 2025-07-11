@@ -51,13 +51,11 @@ export function createDefaultFormValues({
                 draftValues?.hoveddiagnose ?? null,
                 serverSuggestions.diagnose.value,
             ),
-            bidiagnoser: (draftValues?.bidiagnoser ?? []).filter(R.isNonNull).map((draftBi, index) =>
-                toInitialDiagnose(
-                    valuesInState?.diagnose?.bi?.[index] ?? null,
-                    draftBi,
-                    null, // TODO not sure how to get server suggestions for bidiagnoser
+            bidiagnoser: (draftValues?.bidiagnoser ?? [])
+                .filter(R.isNonNull)
+                .map((draftBi, index) =>
+                    toInitialDiagnose(valuesInState?.diagnose?.bi?.[index] ?? null, draftBi, null),
                 ),
-            ),
         },
         tilbakedatering: toInitialTilbakedatering(
             valuesInState?.tilbakedatering ?? null,
