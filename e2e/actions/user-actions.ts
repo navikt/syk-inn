@@ -33,7 +33,7 @@ export function pickHoveddiagnose({ search, select }: { search: string; select: 
             const diagnoseRegion = page.getByRole('region', { name: 'Diagnose', exact: true })
             await expect(diagnoseRegion).toBeVisible()
 
-            await page.getByRole('button', { name: 'Endre hoveddiagnose' }).click() // Diagnose is pre-filled
+            await page.getByRole('button', { name: 'Endre' }).click() // Diagnose is pre-filled
             await diagnoseRegion.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
             await diagnoseRegion.getByRole('option', { name: select }).click()
 
@@ -45,9 +45,33 @@ export function pickHoveddiagnose({ search, select }: { search: string; select: 
 export function editHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
     return async (region: Locator) => {
         await test.step(`Edit hoveddiagnose to ${search}`, async () => {
-            await region.getByRole('button', { name: 'Endre hoveddiagnose' }).click()
+            await region.getByRole('button', { name: 'Endre' }).click()
             await region.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
             await region.getByRole('option', { name: select }).click()
+        })
+    }
+}
+
+export function addBidiagnose({ search, select }: { search: string; select: RegExp }) {
+    return async (page: Page) => {
+        return await test.step('Add new bidiagnose', async () => {
+            const bidiagnoseRegion = page.getByRole('region', { name: 'Bidiagnoser', exact: true })
+            await expect(bidiagnoseRegion).toBeVisible()
+
+            const currentBiDiagnoseCount = await bidiagnoseRegion
+                .getByRole('group', { name: /Bidiagnose \d+/, exact: true })
+                .count()
+            const nextBiDiagnoseIndex = currentBiDiagnoseCount + 1
+
+            await bidiagnoseRegion.getByRole('button', { name: 'Legg til bidiagnose' }).click() // Diagnose is pre-filled
+
+            const relevantDiagnoseSection = bidiagnoseRegion.getByRole('group', {
+                name: `Bidiagnose ${nextBiDiagnoseIndex}`,
+            })
+            await relevantDiagnoseSection.getByRole('combobox', { name: 'Bidiagnose' }).fill(search)
+            await relevantDiagnoseSection.getByRole('option', { name: select }).click()
+
+            return bidiagnoseRegion
         })
     }
 }

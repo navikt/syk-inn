@@ -78,7 +78,8 @@ function DiagnoseCombobox({
     const { isLoading, hasError, suggestions } = useSuggestions(state.value)
 
     return (
-        <div className={className}>
+        <fieldset className={cn('p-0', className)}>
+            <legend className="sr-only">{label}</legend>
             <div
                 className={cn({
                     hidden: value != null,
@@ -167,7 +168,7 @@ function DiagnoseCombobox({
                     </div>
                 </div>
             )}
-        </div>
+        </fieldset>
     )
 }
 
