@@ -21,7 +21,6 @@ if [ ! -f ".env.production" ]; then
     exit 1
   fi
 else
-  runtimeEnv=$(grep "^NEXT_PUBLIC_RUNTIME_ENV=" .env.production | cut -d '=' -f2)
+  runtimeEnv=${NEXT_PUBLIC_RUNTIME_ENV:-$(grep "^NEXT_PUBLIC_RUNTIME_ENV=" .env.production | cut -d '=' -f2)}
   printf "\e[32m  👍 .env.production already exists. It's all good in the hood... Building application as \e[44;97m $runtimeEnv \e[32m\e[0m\n"
-
 fi

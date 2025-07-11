@@ -16,7 +16,7 @@
         "build": "./scripts/pre-build.sh && next build",
         "build:e2e": "./scripts/build-e2e.sh",
         "start": "next start",
-        "start:e2e": "NEXT_PUBLIC_ASSET_PREFIX= node .next/standalone/server.js | pino-pretty",
+        "start:e2e": "NEXT_PUBLIC_ASSET_PREFIX= node .next/standalone/server.js | pino-pretty --messageKey=message",
         "test": "vitest",
         "lint": "next lint",
         "e2e": "./scripts/pre-e2e.sh && playwright test",

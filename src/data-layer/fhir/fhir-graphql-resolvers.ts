@@ -9,7 +9,6 @@ import { createSchema } from '@graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@fhir/mappers/diagnosis'
 import { raise } from '@utils/ts'
-import { wait } from '@utils/wait'
 import { pdlApiService } from '@services/pdl/pdl-api-service'
 import { sykInnApiService } from '@services/syk-inn-api/syk-inn-api-service'
 import { getFnrIdent, getNameFromPdl } from '@services/pdl/pdl-api-utils'
@@ -57,8 +56,6 @@ const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            await wait(700)
-
             return {
                 ...practitionerToBehandler(practitioner),
                 orgnummer,
@@ -72,8 +69,6 @@ const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             if ('error' in patient) {
                 throw new GraphQLError('PARSING_ERROR')
             }
-
-            await wait(700)
 
             return {
                 navn: getNameFromFhir(patient.name),
