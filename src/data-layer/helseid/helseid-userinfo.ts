@@ -1,6 +1,6 @@
 import 'server-only'
 
-import * as z from 'zod/v4'
+import * as z from 'zod'
 import { logger } from '@navikt/next-logger'
 
 import { getHelseIdAccessToken, getHelseIdWellKnown } from './helseid-resources'

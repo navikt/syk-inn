@@ -1,4 +1,4 @@
-import * as z from 'zod/v4'
+import * as z from 'zod'
 
 import { DiagnoseSchema } from '../../../data-layer/common/diagnose'
 
