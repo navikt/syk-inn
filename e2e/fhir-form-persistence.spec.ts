@@ -19,6 +19,7 @@ import { userInteractionsGroup } from './utils/actions'
 import { verifySignerendeBehandler } from './actions/user-verifications'
 import {
     expectAndreSporsmal,
+    expectBidagnoses,
     expectHoveddiagnose,
     expectMeldinger,
     expectPeriode,
@@ -67,7 +68,7 @@ const verifyAlltheValues = userInteractionsGroup(
     expectPeriode({ type: { grad: 65 }, fromRelative: -9, days: 14 }),
     expectTilbakedatering({ daysAgo: 4, reason: 'Han ringte men fikk ikke time' }),
     expectHoveddiagnose('P74 - Angstlidelse'),
-    // TODO: Add bigiagnoses verification
+    expectBidagnoses(['Babesiose', 'Alfaføtoproteinabnormitet']),
     expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(2) }),
     expectMeldinger({ tilNav: 'Trenger mer penger', tilArbeidsgiver: 'Trenger sev-henk pult' }),
 )

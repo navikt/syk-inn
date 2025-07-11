@@ -58,6 +58,25 @@ export function expectHoveddiagnose(expectedDiagnose: string) {
     }
 }
 
+export function expectBidagnoses(expectedBidiagnoses: string[]) {
+    return async (page: Page) => {
+        await test.step('Verify bidiagnoses', async () => {
+            const bidiagnoseRegion = page.getByRole('region', { name: 'Bidiagnoser', exact: true })
+            await expect(bidiagnoseRegion).toBeVisible()
+
+            const bidiagnoses = bidiagnoseRegion.getByRole('group', { name: /Bidiagnose \d+/, exact: true })
+            await expect(
+                bidiagnoses,
+                `Expected ${expectedBidiagnoses.length} bidiagnoses, but got ${await bidiagnoses.count()}`,
+            ).toHaveCount(expectedBidiagnoses.length)
+
+            for (let index = 0; index < expectedBidiagnoses.length; index++) {
+                await expect(bidiagnoses.nth(index)).toHaveText(new RegExp(expectedBidiagnoses[index]))
+            }
+        })
+    }
+}
+
 export function expectAndreSporsmal({
     svangerskapsrelatert,
     yrkesskade,
