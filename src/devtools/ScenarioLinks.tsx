@@ -3,6 +3,7 @@
 import React, { ReactElement } from 'react'
 import { Heading, LinkCard } from '@navikt/ds-react'
 import { FlowerPetalsIcon, PlayIcon } from '@navikt/aksel-icons'
+import Image from 'next/image'
 
 import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
 
@@ -16,8 +17,9 @@ function ScenarioLinks(): ReactElement {
             </Heading>
 
             <div className="mt-2">
-                <Heading level="3" size="xsmall" spacing>
-                    🔥 FHIR scenarioer
+                <Heading level="3" size="xsmall" spacing className="flex gap-1 items-center">
+                    <Image src="https://cdn.nav.no/tsm/syk-inn/dass.gif" alt="" width="32" height="32" unoptimized />
+                    FHIR scenarioer
                 </Heading>
                 <div className="grid md:grid-cols-2 gap-3">
                     <LinkCard>
