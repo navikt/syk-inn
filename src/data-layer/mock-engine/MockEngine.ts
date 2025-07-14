@@ -3,6 +3,7 @@ import Valkey from 'iovalkey'
 import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
 import { OpprettSykmeldingPayload } from '@services/syk-inn-api/schema/opprett'
 import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
+import { AaregArbeidsforhold } from '@services/aareg/aareg-schema'
 
 import { createDraftClient, DraftClient } from '../draft/draft-client'
 
@@ -20,6 +21,7 @@ export class MockEngine {
     private readonly scenario: Scenario
 
     public readonly sykInnApi: SykInnApiMock
+    public readonly arbeidsforhold: AaregMock
     public readonly draftClient: DraftClient
 
     constructor(scenario: Scenario) {
@@ -27,6 +29,7 @@ export class MockEngine {
         this.scenario = scenario
 
         this.sykInnApi = new SykInnApiMock(scenario.sykmeldinger)
+        this.arbeidsforhold = new AaregMock(scenario.arbeidsforhold)
         this.draftClient = createDraftClient(this.valkey)
     }
 
@@ -51,6 +54,18 @@ export class MockEngine {
             )
         }
         this.initialized = true
+    }
+}
+
+export class AaregMock {
+    private readonly arbeidsforhold: AaregArbeidsforhold[]
+
+    constructor(arbeidsforhold: AaregArbeidsforhold[]) {
+        this.arbeidsforhold = arbeidsforhold
+    }
+
+    getArbeidsforhold(): AaregArbeidsforhold[] {
+        return this.arbeidsforhold
     }
 }
 
