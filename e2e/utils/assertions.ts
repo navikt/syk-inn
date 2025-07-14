@@ -48,6 +48,11 @@ export async function expectTermToHaveDefinitions(page: Page, term: string, defi
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function anything<T>(): any {
+    return expect.anything() as T
+}
+
 export function fail(message: string): never {
     expect(true, message).toBe(false)
     return void 0 as never

@@ -36,6 +36,12 @@ export type AktivitetIkkeMuligInput = {
 
 export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'GRADERT' | 'REISETILSKUDD'
 
+export type Arbeidsforhold = {
+    __typename: 'Arbeidsforhold'
+    navn: Scalars['String']['output']
+    orgnummer: Scalars['String']['output']
+}
+
 export type Arbeidsgiver = {
     __typename: 'Arbeidsgiver'
     arbeidsgivernavn: Scalars['String']['output']
@@ -238,6 +244,7 @@ export type Outcome = {
 
 export type Pasient = Person & {
     __typename: 'Pasient'
+    arbeidsforhold?: Maybe<Array<Arbeidsforhold>>
     ident: Scalars['String']['output']
     navn: Scalars['String']['output']
 }
@@ -431,6 +438,17 @@ export type PasientQueryVariables = Exact<{ [key: string]: never }>
 export type PasientQuery = {
     __typename: 'Query'
     pasient?: { __typename: 'Pasient'; ident: string; navn: string } | null
+}
+
+export type ArbeidsforholdQueryVariables = Exact<{ [key: string]: never }>
+
+export type ArbeidsforholdQuery = {
+    __typename: 'Query'
+    pasient?: {
+        __typename: 'Pasient'
+        ident: string
+        arbeidsforhold?: Array<{ __typename: 'Arbeidsforhold'; navn: string; orgnummer: string }> | null
+    } | null
 }
 
 export type PersonByIdentQueryVariables = Exact<{
@@ -1508,6 +1526,42 @@ export const PasientDocument = {
         },
     ],
 } as unknown as DocumentNode<PasientQuery, PasientQueryVariables>
+export const ArbeidsforholdDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'Arbeidsforhold' },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'pasient' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'ident' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'arbeidsforhold' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'orgnummer' } },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<ArbeidsforholdQuery, ArbeidsforholdQueryVariables>
 export const PersonByIdentDocument = {
     kind: 'Document',
     definitions: [

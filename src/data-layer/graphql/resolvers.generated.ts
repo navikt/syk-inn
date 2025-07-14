@@ -38,6 +38,12 @@ export type AktivitetIkkeMuligInput = {
 
 export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'GRADERT' | 'REISETILSKUDD'
 
+export type Arbeidsforhold = {
+    __typename?: 'Arbeidsforhold'
+    navn: Scalars['String']['output']
+    orgnummer: Scalars['String']['output']
+}
+
 export type Arbeidsgiver = {
     __typename?: 'Arbeidsgiver'
     arbeidsgivernavn: Scalars['String']['output']
@@ -240,6 +246,7 @@ export type Outcome = {
 
 export type Pasient = Person & {
     __typename?: 'Pasient'
+    arbeidsforhold?: Maybe<Array<Arbeidsforhold>>
     ident: Scalars['String']['output']
     navn: Scalars['String']['output']
 }
@@ -440,6 +447,7 @@ export type ResolversTypes = {
     AktivitetIkkeMulig: ResolverTypeWrapper<AktivitetIkkeMulig>
     AktivitetIkkeMuligInput: AktivitetIkkeMuligInput
     AktivitetType: AktivitetType
+    Arbeidsforhold: ResolverTypeWrapper<Arbeidsforhold>
     Arbeidsgiver: ResolverTypeWrapper<Arbeidsgiver>
     ArbeidsrelatertArsak: ResolverTypeWrapper<ArbeidsrelatertArsak>
     ArbeidsrelatertArsakInput: ArbeidsrelatertArsakInput
@@ -498,6 +506,7 @@ export type ResolversParentTypes = {
     Aktivitet: ResolversUnionTypes<ResolversParentTypes>['Aktivitet']
     AktivitetIkkeMulig: AktivitetIkkeMulig
     AktivitetIkkeMuligInput: AktivitetIkkeMuligInput
+    Arbeidsforhold: Arbeidsforhold
     Arbeidsgiver: Arbeidsgiver
     ArbeidsrelatertArsak: ArbeidsrelatertArsak
     ArbeidsrelatertArsakInput: ArbeidsrelatertArsakInput
@@ -566,6 +575,15 @@ export type AktivitetIkkeMuligResolvers<
     medisinskArsak?: Resolver<Maybe<ResolversTypes['MedisinskArsak']>, ParentType, ContextType>
     tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type ArbeidsforholdResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['Arbeidsforhold'] = ResolversParentTypes['Arbeidsforhold'],
+> = {
+    navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -755,6 +773,7 @@ export type PasientResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Pasient'] = ResolversParentTypes['Pasient'],
 > = {
+    arbeidsforhold?: Resolver<Maybe<Array<ResolversTypes['Arbeidsforhold']>>, ParentType, ContextType>
     ident?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
@@ -896,6 +915,7 @@ export type YrkesskadeResolvers<
 export type Resolvers<ContextType = any> = {
     Aktivitet?: AktivitetResolvers<ContextType>
     AktivitetIkkeMulig?: AktivitetIkkeMuligResolvers<ContextType>
+    Arbeidsforhold?: ArbeidsforholdResolvers<ContextType>
     Arbeidsgiver?: ArbeidsgiverResolvers<ContextType>
     ArbeidsrelatertArsak?: ArbeidsrelatertArsakResolvers<ContextType>
     Avventende?: AvventendeResolvers<ContextType>

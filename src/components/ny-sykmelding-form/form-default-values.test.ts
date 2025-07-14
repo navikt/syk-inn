@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest'
+import { DefaultValues } from 'react-hook-form'
 
 import { createDefaultFormValues } from '@components/ny-sykmelding-form/form-default-values'
-import { NySykmeldingSuggestions } from '@components/ny-sykmelding-form/form'
+import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from '@components/ny-sykmelding-form/form'
 import { dateOnly } from '@utils/date'
 
 import { DraftValues } from '../../data-layer/draft/draft-schema'
@@ -15,7 +16,11 @@ test('draft values shall be used as default if provided', () => {
     })
 
     expect(defaultValues).toEqual({
-        arbeidsforhold: { harFlereArbeidsforhold: 'JA', sykmeldtFraArbeidsforhold: 'Draft Arbeidsforhold' },
+        arbeidsforhold: {
+            harFlereArbeidsforhold: 'JA',
+            sykmeldtFraArbeidsforhold: 'Draft Arbeidsforhold',
+            aaregArbeidsforhold: 'Draft Arbeidsforhold',
+        },
         perioder: [
             {
                 periode: { fom: '2025-01-01', tom: '2025-01-15' },
@@ -47,7 +52,7 @@ test('draft values shall be used as default if provided', () => {
             tilArbeidsgiver: 'Draft Melding til Arbeidsgiver',
         },
         andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: true, skadedato: '2024-11-20' } },
-    })
+    } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
 
 test('form values shall have higher presedence than draft values', () => {
@@ -58,7 +63,11 @@ test('form values shall have higher presedence than draft values', () => {
     })
 
     expect(defaultValues).toEqual({
-        arbeidsforhold: { harFlereArbeidsforhold: 'JA', sykmeldtFraArbeidsforhold: 'Form values Arbeidsgiver' },
+        arbeidsforhold: {
+            harFlereArbeidsforhold: 'JA',
+            sykmeldtFraArbeidsforhold: 'Form values Arbeidsgiver',
+            aaregArbeidsforhold: 'Form values Arbeidsgiver',
+        },
         perioder: [
             {
                 periode: { fom: '2025-02-01', tom: '2025-02-14' },
@@ -95,7 +104,7 @@ test('form values shall have higher presedence than draft values', () => {
             tilArbeidsgiver: 'Pasienten anbefales å jobbe redusert i en periode.',
         },
         andreSporsmal: { svangerskapsrelatert: true, yrkesskade: { yrkesskade: false, skadedato: null } },
-    })
+    } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
 
 test('server suggestions shall be used if no draft or form values are provided', () => {
@@ -106,7 +115,7 @@ test('server suggestions shall be used if no draft or form values are provided',
     })
 
     expect(defaultValues).toEqual({
-        arbeidsforhold: { harFlereArbeidsforhold: 'NEI', sykmeldtFraArbeidsforhold: null },
+        arbeidsforhold: { harFlereArbeidsforhold: 'NEI', sykmeldtFraArbeidsforhold: null, aaregArbeidsforhold: null },
         // Server suggested diagnose
         diagnoser: { hoved: { system: 'ICPC2', code: 'A01', text: 'Influensa' }, bidiagnoser: [] },
         perioder: [
@@ -121,7 +130,7 @@ test('server suggestions shall be used if no draft or form values are provided',
         tilbakedatering: null,
         meldinger: { showTilNav: false, tilNav: null, showTilArbeidsgiver: false, tilArbeidsgiver: null },
         andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: false, skadedato: null } },
-    })
+    } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
 
 const fullServerSuggestions: NySykmeldingSuggestions = {

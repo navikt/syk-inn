@@ -77,6 +77,11 @@ export function ToggleAPIFailures(): ReactElement {
                 Slett utkast (Mutation)
             </Checkbox>
         ),
+        Arbeidsforhold: (
+            <Checkbox key="arbeidsforhold" value="Arbeidsforhold">
+                Arbeidsforhold (Aareg)
+            </Checkbox>
+        ),
     }
 
     return (

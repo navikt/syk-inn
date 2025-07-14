@@ -25,6 +25,10 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
         name: 'SYK_INN_REFRESH_TOKEN',
         ...off,
     },
+    SYK_INN_AAREG: {
+        name: 'SYK_INN_AAREG',
+        ...on,
+    },
 }
 
 export const localDevelopmentToggles: IToggle[] = Object.values(devToggles)

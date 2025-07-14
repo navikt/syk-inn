@@ -3,3 +3,13 @@ query Pasient {
         ...Person
     }
 }
+
+query Arbeidsforhold {
+    pasient {
+        ident
+        arbeidsforhold {
+            navn
+            orgnummer
+        }
+    }
+}

@@ -1,4 +1,10 @@
+type Arbeidsforhold {
+    navn: String!
+    orgnummer: String!
+}
+
 type Pasient implements Person {
     ident: String!
     navn: String!
+    arbeidsforhold: [Arbeidsforhold!]
 }

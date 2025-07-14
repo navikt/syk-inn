@@ -20,8 +20,9 @@ import {
 } from '@services/syk-inn-api/syk-inn-api-utils'
 import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from '@fhir/mappers/organization'
 import { OpprettSykmeldingMeta } from '@services/syk-inn-api/schema/opprett'
-import { getFlag, getUserToggles } from '@toggles/unleash'
+import { getFlag, getUserlessToggles, getUserToggles } from '@toggles/unleash'
 import { typeResolvers } from '@graphql/common-resolvers'
+import { aaregService } from '@services/aareg/aareg-service'
 
 import { searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
@@ -387,6 +388,19 @@ const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             }
 
             throw new GraphQLError('API_ERROR')
+        },
+    },
+    Pasient: {
+        arbeidsforhold: async (parent) => {
+            const flag = getFlag('SYK_INN_AAREG', await getUserlessToggles())
+            if (!flag.enabled) {
+                logger.error(
+                    'SYK_INN_AAREG flag is not enabled, why are you calling this? Remember to feature toggle your frontend as well.',
+                )
+                return []
+            }
+
+            return await aaregService.getArbeidsforhold(parent.ident)
         },
     },
     ...typeResolvers,

@@ -66,6 +66,8 @@ type MeldingerField = {
 type ArbeidsforholdField = {
     harFlereArbeidsforhold: 'JA' | 'NEI' | null
     sykmeldtFraArbeidsforhold: string | null
+    // Used only for feature-toggle: 'SYK_INN_AAREG'
+    aaregArbeidsforhold: string | null
 }
 
 type AndreSporsmalFields = {

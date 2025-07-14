@@ -2,8 +2,8 @@ import Valkey from 'iovalkey'
 
 import { SykInnApiSykmelding } from '@services/syk-inn-api/schema/sykmelding'
 import { OpprettSykmeldingPayload } from '@services/syk-inn-api/schema/opprett'
-import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
 import { AaregArbeidsforhold } from '@services/aareg/aareg-schema'
+import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
 
 import { createDraftClient, DraftClient } from '../draft/draft-client'
 

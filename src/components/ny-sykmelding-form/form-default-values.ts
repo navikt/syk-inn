@@ -74,6 +74,8 @@ function toInitialArbeidsforhold(
         return {
             harFlereArbeidsforhold: booleanOrNullToJaEllerNei(valuesInState.harFlereArbeidsforhold),
             sykmeldtFraArbeidsforhold: valuesInState.sykmeldtFraArbeidsforhold ?? null,
+            // Used only for feature-toggle: 'SYK_INN_AAREG'
+            aaregArbeidsforhold: valuesInState.sykmeldtFraArbeidsforhold ?? null,
         }
     }
 
@@ -81,12 +83,16 @@ function toInitialArbeidsforhold(
         return {
             harFlereArbeidsforhold: draftValues.harFlereArbeidsforhold ?? null,
             sykmeldtFraArbeidsforhold: draftValues.sykmeldtFraArbeidsforhold ?? null,
+            // Used only for feature-toggle: 'SYK_INN_AAREG'
+            aaregArbeidsforhold: draftValues.sykmeldtFraArbeidsforhold ?? null,
         }
     }
 
     return {
         harFlereArbeidsforhold: 'NEI',
         sykmeldtFraArbeidsforhold: null,
+        // Used only for feature-toggle: 'SYK_INN_AAREG'
+        aaregArbeidsforhold: null,
     }
 }
 

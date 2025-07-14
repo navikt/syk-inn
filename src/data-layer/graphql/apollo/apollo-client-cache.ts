@@ -18,6 +18,7 @@ export type RootQueryType = {
 export type CacheIds = {
     draft: Pick<NonNullable<Query['draft']>, '__typename' | 'draftId'>
     sykmelding: Pick<NonNullable<Query['sykmelding']>, '__typename' | 'sykmeldingId'>
+    pasient: Pick<NonNullable<Query['pasient']>, '__typename' | 'ident'>
 }
 
 export type QueryFieldPolicies = Record<keyof Query, FieldReadFunction<unknown> | undefined>
@@ -63,6 +64,9 @@ export function createInMemoryCache(): InMemoryCache {
             },
             Sykmelding: {
                 keyFields: ['sykmeldingId'] satisfies (keyof CacheIds['sykmelding'])[],
+            },
+            Pasient: {
+                keyFields: ['ident'] satisfies (keyof CacheIds['pasient'])[],
             },
         },
         possibleTypes: possibleTypesGenerated.possibleTypes,

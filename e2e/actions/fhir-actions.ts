@@ -8,18 +8,24 @@ const launchUrl = `/fhir/launch?iss=http://localhost:3000/api/mocks/fhir&launch=
 
 export function launchWithMock(
     scenario: Scenarios = 'normal',
-    toggleOverrides: Partial<Record<ExpectedToggles, boolean>> = {},
+    toggleOverrides: Partial<Record<ExpectedToggles, boolean>> = {
+        SYK_INN_AAREG: false,
+    },
 ) {
     return async (page: Page): Promise<void> => {
         if (Object.keys(toggleOverrides).length > 0) {
-            await page.context().addCookies(
-                Object.entries(toggleOverrides).map(([name, value]) => ({
-                    name,
-                    value: value ? 'true' : 'false',
-                    domain: 'localhost',
-                    path: '/',
-                })),
-            )
+            await test.step(`Override feature toggles:\n${Object.entries(toggleOverrides)
+                .map(([toggle, state]) => ` - ${toggle}: ${state}`)
+                .join('\n')}`, async () => {
+                await page.context().addCookies(
+                    Object.entries(toggleOverrides).map(([name, value]) => ({
+                        name,
+                        value: value ? 'true' : 'false',
+                        domain: 'localhost',
+                        path: '/',
+                    })),
+                )
+            })
         }
 
         if (scenario != 'normal') {
