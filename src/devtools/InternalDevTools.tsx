@@ -55,7 +55,7 @@ function ScenarioPicker(): ReactElement {
 }
 
 function FeatureToggles(): ReactElement {
-    const { toggles, toggledToggles, setToggledToggles, resetOverrides } = useFeatureToggleOverride()
+    const { toggles, toggledToggles, setToggledToggles, overriddenToggles, resetOverrides } = useFeatureToggleOverride()
 
     return (
         <DevToolItem title="Feature toggles" description="Overwrite feature toggles">
@@ -69,13 +69,21 @@ function FeatureToggles(): ReactElement {
             >
                 {toggles.map((toggle) => (
                     <Checkbox key={toggle.name} value={toggle.name}>
-                        {toggle.name}
+                        {toggle.name}{' '}
+                        {overriddenToggles.includes(toggle.name) && (
+                            <span className="text-text-subtle">(overridden)</span>
+                        )}
                     </Checkbox>
                 ))}
             </CheckboxGroup>
 
             <div className="mt-4 flex gap-3">
-                <Button variant="secondary-neutral" size="small" onClick={resetOverrides}>
+                <Button
+                    variant="secondary-neutral"
+                    size="small"
+                    onClick={resetOverrides}
+                    disabled={overriddenToggles.length === 0}
+                >
                     Clear all overrides
                 </Button>
                 <Button

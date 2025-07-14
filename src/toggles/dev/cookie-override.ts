@@ -7,11 +7,14 @@ import { localDevelopmentToggles } from '@toggles/dev/local'
 
 export async function developmentTogglesWithCookieOverrides(): Promise<Toggles> {
     const cookieStore = await cookies()
-    const localDevelopmentCookiesWithOverrides = localDevelopmentToggles.map((it) => ({
-        ...it,
-        enabled: cookieStore.get(it.name)?.value.includes('true') ?? it.enabled,
-        overriden: cookieStore.get(it.name)?.value.includes('true'),
-    }))
+    const localDevelopmentCookiesWithOverrides = localDevelopmentToggles.map((it) => {
+        const enabledByCookieOrNull = cookieStore.get(it.name)?.value.includes('true') ?? null
+        return {
+            ...it,
+            enabled: enabledByCookieOrNull ?? it.enabled,
+            overriden: (enabledByCookieOrNull ?? false) !== it.enabled,
+        }
+    })
 
     const toggleStatus = localDevelopmentCookiesWithOverrides
         .map((it) => `\t${it.name}: ${it.enabled}${it.overriden ? ' (overridden)' : ''}`)
