@@ -50,8 +50,14 @@ export type ArbeidsrelatertArsak = {
 
 export type TilbakedateringStep = {
     fom: string
-    grunn: string
+    grunn: TilbakedateringGrunn
+    annenGrunn: string | null
 }
+
+export type TilbakedateringGrunn =
+    | 'VENTETID_LEGETIME'
+    | 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM'
+    | 'ANNET'
 
 export type MeldingerStep = {
     showTilNav: boolean | null

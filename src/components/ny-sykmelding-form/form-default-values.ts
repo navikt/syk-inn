@@ -131,6 +131,7 @@ function toInitialTilbakedatering(
         return {
             fom: valuesInState.fom && isValid(toDate(valuesInState.fom)) ? valuesInState.fom : null,
             grunn: valuesInState?.grunn ?? null,
+            annenGrunn: valuesInState?.annenGrunn ?? null,
         }
     }
 
@@ -138,6 +139,7 @@ function toInitialTilbakedatering(
         return {
             fom: draftValues.fom && isValid(toDate(draftValues.fom)) ? draftValues.fom : null,
             grunn: draftValues.grunn ?? null,
+            annenGrunn: draftValues.annenGrunn ?? null,
         }
     }
 

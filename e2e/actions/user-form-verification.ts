@@ -43,7 +43,7 @@ export function expectTilbakedatering({ daysAgo: daysAgoValue, reason }: { daysA
                 tilbakedateringRegion.getByRole('textbox', { name: 'Når tok pasienten først kontakt' }),
             ).toHaveValue(inputDate(daysAgo(daysAgoValue)))
             await expect(
-                tilbakedateringRegion.getByRole('textbox', { name: 'Oppgi årsak for tilbakedatering' }),
+                tilbakedateringRegion.getByRole('combobox', { name: 'Velg årsak for tilbakedatering' }),
             ).toHaveValue(reason)
         })
     }

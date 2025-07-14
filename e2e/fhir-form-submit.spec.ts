@@ -241,7 +241,7 @@ test("optional - 'tilbakedatering' is asked and required when fom is 5 days in t
     })(page)
     await fillTilbakedatering({
         contact: daysAgo(2),
-        reason: 'Ferie eller noe',
+        reason: 'Ventetid på legetime',
     })(page)
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
@@ -276,7 +276,7 @@ test("optional - 'tilbakedatering' is asked and required when fom is 5 days in t
         },
         {
             name: 'Grunn for tilbakedatering',
-            values: ['Ferie eller noe'],
+            values: ['Ventetid på legetime'],
         },
         {
             name: 'Til NAV',
@@ -325,7 +325,7 @@ test("optional - 'tilbakedatering' is asked and required when fom is 5 days in t
             ],
             tilbakedatering: {
                 startdato: daysAgo(2),
-                begrunnelse: 'Ferie eller noe',
+                begrunnelse: 'Ventetid på legetime',
             },
             meldinger: { tilNav: null, tilArbeidsgiver: null },
             svangerskapsrelatert: false,

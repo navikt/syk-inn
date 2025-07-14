@@ -121,6 +121,7 @@ function useHandleFormSubmit() {
                         ? {
                               fom: values.tilbakedatering.fom,
                               grunn: values.tilbakedatering.grunn,
+                              annenGrunn: values.tilbakedatering.annenGrunn ?? null,
                           }
                         : null,
                 meldinger: {

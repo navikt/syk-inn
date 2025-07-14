@@ -10,6 +10,7 @@ import {
     AllSykmeldingerDocument,
     GetAllDraftsDocument,
     InputAktivitet,
+    InputTilbakedatering,
     OpprettSykmeldingDocument,
     OpprettSykmeldingInput,
     OpprettSykmeldingMutation,
@@ -19,7 +20,11 @@ import { spanBrowserAsync, withSpanBrowserAsync } from '@otel/browser'
 
 import { useAppSelector } from '../../providers/redux/hooks'
 import { useMode } from '../../providers/ModeProvider'
-import { AktivitetStep, NySykmeldingMultiStepState } from '../../providers/redux/reducers/ny-sykmelding-multistep'
+import {
+    AktivitetStep,
+    NySykmeldingMultiStepState,
+    TilbakedateringStep,
+} from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
 export function useOpprettSykmeldingMutation(): {
     opprettSykmelding: () => Promise<FetchResult<OpprettSykmeldingMutation>>
@@ -123,13 +128,40 @@ function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingMultiStep
             yrkesskade: formState.andreSporsmal?.yrkesskade ?? false,
             skadedato: formState.andreSporsmal?.yrkesskadeDato,
         },
-        tilbakedatering: formState.tilbakedatering?.fom
-            ? {
-                  startdato: formState.tilbakedatering.fom,
-                  begrunnelse: formState.tilbakedatering.grunn,
-              }
-            : null,
+        tilbakedatering: tilbakedateringStepToInputTilbakedatering(formState.tilbakedatering),
         pasientenSkalSkjermes: multiStepState.skalSkjermes ?? false,
+    }
+}
+
+function tilbakedateringStepToInputTilbakedatering(
+    tilbakedatering: TilbakedateringStep | null,
+): InputTilbakedatering | null {
+    if (!tilbakedatering?.fom) {
+        return null
+    }
+
+    return {
+        startdato: tilbakedatering.fom,
+        begrunnelse: grunnToInputTilbakedateringBegrunnelse(tilbakedatering.grunn, tilbakedatering.annenGrunn),
+    }
+}
+
+function grunnToInputTilbakedateringBegrunnelse(
+    grunn: TilbakedateringStep['grunn'],
+    annenGrunn: string | null,
+): string {
+    switch (grunn) {
+        case 'VENTETID_LEGETIME':
+            return 'Ventetid på legetime'
+        case 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM':
+            return 'Manglende sykdomsinnsikt grunnet alvorlig psykisk sykdom'
+        case 'ANNET':
+            if (annenGrunn == null || annenGrunn.trim() === '') {
+                raise('Mangler annen grunn for tilbakedatering')
+            }
+            return annenGrunn
+        default:
+            raise(`Ukjent grunn for tilbakedatering: ${grunn}`)
     }
 }
 

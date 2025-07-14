@@ -1,7 +1,10 @@
 import { SykmeldingFragment } from '@queries'
 import { raise } from '@utils/ts'
 
-import { nySykmeldingMultistepActions } from '../../providers/redux/reducers/ny-sykmelding-multistep'
+import {
+    nySykmeldingMultistepActions,
+    TilbakedateringGrunn,
+} from '../../providers/redux/reducers/ny-sykmelding-multistep'
 
 type Payload = Parameters<typeof nySykmeldingMultistepActions.completeMainStep>[0]
 
@@ -15,12 +18,7 @@ export function sykmeldingFragmentToMainStepStateNoAktivitet(
             showTilNav: sykmelding.values.meldinger.tilNav != null,
             tilNav: sykmelding.values.meldinger.tilNav ?? null,
         },
-        tilbakedatering: sykmelding.values.tilbakedatering
-            ? {
-                  fom: sykmelding.values.tilbakedatering.startdato,
-                  grunn: sykmelding.values.tilbakedatering.begrunnelse,
-              }
-            : null,
+        tilbakedatering: toTilbakedatering(sykmelding.values.tilbakedatering),
         arbeidsforhold: sykmelding.values.arbeidsgiver?.harFlere
             ? {
                   harFlereArbeidsforhold: true,
@@ -48,5 +46,32 @@ export function sykmeldingFragmentToMainStepStateNoAktivitet(
                   }))
                 : [],
         },
+    }
+}
+
+function toTilbakedatering(
+    tilbakedatering: SykmeldingFragment['values']['tilbakedatering'] | null,
+): Payload['tilbakedatering'] | null {
+    if (!tilbakedatering) {
+        return null
+    }
+
+    const grunn = toTilbakedateringGrunn(tilbakedatering.begrunnelse)
+
+    return {
+        fom: tilbakedatering.startdato,
+        grunn: grunn,
+        annenGrunn: grunn === 'ANNET' ? tilbakedatering.begrunnelse : null,
+    }
+}
+
+function toTilbakedateringGrunn(begrunnelse: string): TilbakedateringGrunn {
+    switch (begrunnelse) {
+        case 'Ventetid på legetime':
+            return 'VENTETID_LEGETIME'
+        case 'Manglende sykdomsinnsikt grunnet alvorlig psykisk sykdom':
+            return 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM'
+        default:
+            return 'ANNET'
     }
 }

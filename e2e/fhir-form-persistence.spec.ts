@@ -39,7 +39,7 @@ const fillAllTheValues = userInteractionsGroup(
     }),
     fillTilbakedatering({
         contact: daysAgo(4),
-        reason: 'Han ringte men fikk ikke time',
+        reason: 'Ventetid på legetime',
     }),
     pickHoveddiagnose({
         search: 'Angst',
@@ -66,7 +66,7 @@ const fillAllTheValues = userInteractionsGroup(
 
 const verifyAlltheValues = userInteractionsGroup(
     expectPeriode({ type: { grad: 65 }, fromRelative: -9, days: 14 }),
-    expectTilbakedatering({ daysAgo: 4, reason: 'Han ringte men fikk ikke time' }),
+    expectTilbakedatering({ daysAgo: 4, reason: 'VENTETID_LEGETIME' }),
     expectHoveddiagnose('P74 - Angstlidelse'),
     expectBidagnoses(['Babesiose', 'Alfaføtoproteinabnormitet']),
     expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(2) }),

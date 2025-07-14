@@ -11,6 +11,7 @@ import {
     AktivitetStep,
     DiagnoseStep,
     PasientStep,
+    TilbakedateringGrunn,
     TilbakedateringStep,
 } from '../../../providers/redux/reducers/ny-sykmelding-multistep'
 
@@ -173,10 +174,27 @@ function TilbakedateringSummaryAnswers({ tilbakedatering }: { tilbakedatering: T
             </FormSummary.Answer>
             <FormSummary.Answer>
                 <FormSummary.Label>Grunn for tilbakedatering</FormSummary.Label>
-                <FormSummary.Value>{tilbakedatering.grunn}</FormSummary.Value>
+                <FormSummary.Value>{tilbakedateringGrunnToReadable(tilbakedatering.grunn)}</FormSummary.Value>
             </FormSummary.Answer>
+            {tilbakedatering.annenGrunn && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>Annen for tilbakedatering</FormSummary.Label>
+                    <FormSummary.Value>{tilbakedatering.annenGrunn}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
         </>
     )
+}
+
+function tilbakedateringGrunnToReadable(grunn: TilbakedateringGrunn): string {
+    switch (grunn) {
+        case 'VENTETID_LEGETIME':
+            return 'Ventetid på legetime'
+        case 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM':
+            return 'Manglende sykdomsinnsikt grunnet alvorlig psykisk sykdom'
+        case 'ANNET':
+            return 'Annet'
+    }
 }
 
 function DiagnoseSummaryAnswers({ diagnose }: { diagnose: DiagnoseStep | null }): ReactElement {

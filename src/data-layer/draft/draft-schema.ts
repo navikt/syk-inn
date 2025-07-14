@@ -50,7 +50,10 @@ export const DraftValuesSchema = z.object({
     tilbakedatering: z
         .object({
             fom: z.string().nullable(),
-            grunn: z.string().nullable(),
+            grunn: z
+                .enum(['VENTETID_LEGETIME', 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM', 'ANNET'])
+                .nullable(),
+            annenGrunn: z.string().nullable(),
         })
         .nullable(),
     meldinger: z

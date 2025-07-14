@@ -39,7 +39,7 @@ test('draft values shall be used as default if provided', () => {
             hoved: { system: 'ICD10', code: 'A00', text: 'Kolera' },
             bidiagnoser: [{ system: 'ICPC2', code: 'L73', text: 'Brudd legg/ankel' }],
         },
-        tilbakedatering: { fom: '2024-12-15', grunn: 'Pasienten kunne ikke oppsøke lege tidligere' },
+        tilbakedatering: { fom: '2024-12-15', grunn: 'VENTETID_LEGETIME', annenGrunn: null },
         meldinger: {
             showTilNav: true,
             showTilArbeidsgiver: true,
@@ -87,7 +87,7 @@ test('form values shall have higher presedence than draft values', () => {
             hoved: { system: 'ICPC2', code: 'L02', text: 'Ryggsmerter' },
             bidiagnoser: [{ system: 'ICD10', code: 'M54.5', text: 'Lumbago' }],
         },
-        tilbakedatering: { fom: '2025-01-20', grunn: 'Legen var bortreist' },
+        tilbakedatering: { fom: '2025-01-20', grunn: 'VENTETID_LEGETIME', annenGrunn: null },
         meldinger: {
             showTilNav: true,
             showTilArbeidsgiver: true,
@@ -167,7 +167,8 @@ const fullDraft: DraftValues = {
     bidiagnoser: [{ system: 'ICPC2', code: 'L73', text: 'Brudd legg/ankel' }],
     tilbakedatering: {
         fom: '2024-12-15',
-        grunn: 'Pasienten kunne ikke oppsøke lege tidligere',
+        grunn: 'VENTETID_LEGETIME',
+        annenGrunn: null,
     },
     meldinger: {
         showTilNav: true,
@@ -196,7 +197,7 @@ const fullExistingStateValues: MainSectionValues = {
         },
         { type: 'GRADERT', fom: '2025-03-01', tom: '2025-03-10', grad: 20 },
     ],
-    tilbakedatering: { fom: '2025-01-20', grunn: 'Legen var bortreist' },
+    tilbakedatering: { fom: '2025-01-20', grunn: 'VENTETID_LEGETIME', annenGrunn: null },
     diagnose: {
         hoved: { system: 'ICPC2', code: 'L02', text: 'Ryggsmerter' },
         bi: [

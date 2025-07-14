@@ -231,7 +231,7 @@ export function fillTilbakedatering({ contact, reason }: { contact: string; reas
             await expect(region).toBeVisible()
 
             await region.getByRole('textbox', { name: 'Når tok pasienten først kontakt' }).fill(inputDate(contact))
-            await region.getByRole('textbox', { name: 'Oppgi årsak for tilbakedatering' }).fill(reason)
+            await region.getByRole('combobox', { name: 'Velg årsak for tilbakedatering' }).selectOption(reason)
         })
     }
 }
