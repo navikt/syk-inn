@@ -16,19 +16,18 @@ const raw = fs.readFileSync(inputPath, 'utf8')
 const results = JSON.parse(raw)
 const project = path.basename(path.dirname(inputPath))
 
-console.log(`## Test Summary: ${project}\n`)
+console.info(`## Test Summary: ${project}\n`)
 
-console.log(`- Test Suites: ${results.numPassedTestSuites}/${results.numTotalTestSuites} passed`)
-console.log(`- Tests: ${results.numPassedTests}/${results.numTotalTests} passed`)
-console.log(`- Failures: ${results.numFailedTests}\n`)
+console.info(`- Test Suites: ${results.numPassedTestSuites}/${results.numTotalTestSuites} passed`)
+console.info(`- Tests: ${results.numPassedTests}/${results.numTotalTests} passed`)
+console.info(`- Failures: ${results.numFailedTests}\n`)
 
 for (const suite of results.testResults) {
     const file = path.relative(process.cwd(), suite.name).replace('src/__tests__/', '')
-    console.log(`### ${file}`)
+    console.info(`### ${file}`)
     for (const t of suite.assertionResults) {
         const status = t.status === 'passed' ? '✅' : '❌'
         const duration = t.duration?.toFixed(1) ?? '?'
-        console.log(`- ${status} ${t.fullName} — ${duration} ms`)
+        console.info(`- ${status} ${t.fullName} — ${duration} ms`)
     }
-    console.log()
 }
