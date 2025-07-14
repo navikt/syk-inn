@@ -55,7 +55,7 @@ export function createInMemoryValkey(): Valkey {
                         return index ? Array.from(index) : []
                     }
                 case 'hgetall':
-                    return async (key: string) => store.get(key) ?? null
+                    return async (key: string) => store.get(key) ?? {}
                 case 'exists':
                     return async (key: string) => {
                         return store.has(key) ? 1 : 0
