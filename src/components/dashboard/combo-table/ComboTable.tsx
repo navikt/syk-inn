@@ -120,9 +120,11 @@ export function ComboTableHeader({ className }: { className?: string }): ReactEl
                 <Table.HeaderCell scope="col">Grad</Table.HeaderCell>
                 <Table.HeaderCell scope="col">Arbeidsgiver</Table.HeaderCell>
                 <Table.HeaderCell scope="col">Utfall</Table.HeaderCell>
-                <Table.HeaderCell scope="col">Status</Table.HeaderCell>
+                <Table.HeaderCell scope="col" className="w-32 max-w-32">
+                    Status
+                </Table.HeaderCell>
                 {/* Action buttons */}
-                <Table.HeaderCell scope="col" />
+                <Table.HeaderCell scope="col" className="w-32 max-w-32" />
             </Table.Row>
         </Table.Header>
     )
@@ -144,11 +146,11 @@ function TableRow(props: {
             <Table.DataCell>{props.grad}</Table.DataCell>
             <Table.DataCell>{props.arbeidsgiver}</Table.DataCell>
             <Table.DataCell>{props.utfall}</Table.DataCell>
-            <Table.DataCell className="max-w-12">
+            <Table.DataCell>
                 <StatusTag status={props.status} />
             </Table.DataCell>
-            <Table.DataCell align="left" className="max-w-22">
-                {props.actions}
+            <Table.DataCell>
+                <div className="w-full flex justify-end">{props.actions}</div>
             </Table.DataCell>
         </Table.Row>
     )
