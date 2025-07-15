@@ -26,7 +26,7 @@ function DashboardPage(): ReactElement {
                 </Heading>
 
                 <div className="grid grid-cols-2 -mx-4 gap-3">
-                    <OpprettNySykmeldingCard />
+                    <OpprettNySykmeldingCard className="col-span-2" />
                     <ComboTableCard className="col-span-2" />
                 </div>
             </PageBlock>

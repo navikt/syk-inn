@@ -5,11 +5,12 @@ import React, { ReactElement } from 'react'
 import { PageBlock } from '@navikt/ds-react/Page'
 import { useQuery } from '@apollo/client'
 import { useParams } from 'next/navigation'
-import * as R from 'remeda'
 import Link from 'next/link'
 
 import { PasientDocument, SykmeldingByIdDocument } from '@queries'
 import TidligereSykmeldingView from '@components/sykmelding/TidligereSykmeldingView'
+
+import { earliestFom, latestTom } from '../../../../../../data-layer/common/sykmelding-utils'
 
 function SykmeldingPage(): ReactElement {
     const param = useParams<{ sykmeldingId: string }>()
@@ -63,8 +64,8 @@ function TidligereSykmelding({ sykmeldingId }: { sykmeldingId: string }): ReactE
         )
     }
 
-    const earliestPeriode = R.firstBy(data.sykmelding.values.aktivitet, [(it) => it.fom, 'desc'])
-    const latestPeriode = R.firstBy(data.sykmelding.values.aktivitet, [(it) => it.fom, 'desc'])
+    const earliestPeriode = earliestFom(data.sykmelding)
+    const latestPeriode = latestTom(data.sykmelding)
 
     if (!earliestPeriode || !latestPeriode) {
         return (
