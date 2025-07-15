@@ -14,11 +14,13 @@ function DumbStats(): ReactElement {
     const sykmeldinger = useQuery(AllSykmeldingerDocument)
 
     if (allDrafts.loading || sykmeldinger.loading) {
-        // TODO
         return (
-            <div>
+            <div className="mb-2 flex gap-12 h-full">
                 <div>
-                    <Skeleton variant="circle" className="size-18" />
+                    <Skeleton variant="circle" className="size-48" />
+                </div>
+                <div className="flex flex-col justify-between -mt-2">
+                    <Skeleton variant="rounded" className="w-50 h-full" />
                 </div>
             </div>
         )
@@ -50,7 +52,7 @@ function DumbStats(): ReactElement {
                     <BodyShort>{(days / 7).toFixed(0)} av 52 uker</BodyShort>
                 </div>
             </div>
-            <div className="flex flex-col justify-between shadow-md p-4 h-full">
+            <div className="flex flex-col justify-between shadow-md p-4 h-full rounded-md">
                 <div className="flex gap-2 items-center">
                     <div className="text-4xl">{allDrafts.data?.drafts?.length ?? 0}</div>
                     <div className="text-center text-sm">utkast</div>
