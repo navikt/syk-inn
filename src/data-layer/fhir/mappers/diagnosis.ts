@@ -7,17 +7,6 @@ import { raise } from '@utils/ts'
 
 import { DiagnoseSystem, ICD10_OID_VALUE, ICPC2_OID_VALUE } from '../../common/diagnose'
 
-export function diagnosisUrnToOidType(urn: string): DiagnoseSystem | null {
-    switch (urn.replace('urn:oid:', '')) {
-        case ICPC2_OID_VALUE:
-            return 'ICPC2'
-        case ICD10_OID_VALUE:
-            return 'ICD10'
-        default:
-            return null
-    }
-}
-
 type Diagnosis = {
     system: 'ICD10' | 'ICPC2'
     code: string
@@ -64,4 +53,15 @@ export function fhirDiagnosisToRelevantDiagnosis(conditions: FhirCondition[] | n
                 }) satisfies Diagnose,
         ),
     )
+}
+
+function diagnosisUrnToOidType(urn: string): DiagnoseSystem | null {
+    switch (urn.replace('urn:oid:', '')) {
+        case ICPC2_OID_VALUE:
+            return 'ICPC2'
+        case ICD10_OID_VALUE:
+            return 'ICD10'
+        default:
+            return null
+    }
 }

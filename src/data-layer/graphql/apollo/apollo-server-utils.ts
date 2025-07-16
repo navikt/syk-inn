@@ -19,7 +19,7 @@ export const createApolloHandler = (schema: GraphQLSchema) => {
     return (req: NextRequest): Promise<Response> => apolloHandler(req)
 }
 
-export function SlowDownPlugin(): ApolloServerPlugin {
+function SlowDownPlugin(): ApolloServerPlugin {
     if (!(isLocal || isDemo)) {
         throw new Error(`Trying to use slowdown plugin in ${bundledEnv.runtimeEnv}, that's illegal!`)
     }

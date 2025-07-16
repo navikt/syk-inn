@@ -1,7 +1,7 @@
 import { Resolvers } from '@resolvers'
 import { createSchema } from '@graphql/create-schema'
 
-export const helseidResolvers: Resolvers = {
+const helseidResolvers: Resolvers = {
     Query: {
         pasient: () => ({
             ident: 'woo',

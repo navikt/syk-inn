@@ -9,7 +9,3 @@ export const NoSmartSession = (): GraphQLError =>
 export function isSmartSessionInvalid(error: ApolloError): boolean {
     return error.graphQLErrors.some((e) => e.extensions?.code === 'SMART_SESSION_INVALID')
 }
-
-export function isServerError(error: ApolloError): boolean {
-    return error.networkError != null
-}

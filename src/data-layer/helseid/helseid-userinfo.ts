@@ -5,7 +5,7 @@ import { logger } from '@navikt/next-logger'
 
 import { getHelseIdAccessToken, getHelseIdWellKnown } from './helseid-resources'
 
-export type HprDetails = z.infer<typeof HprDetailsSchema>
+type HprDetails = z.infer<typeof HprDetailsSchema>
 const HprDetailsSchema = z.object({
     approvals: z.array(
         z.object({
@@ -18,7 +18,7 @@ const HprDetailsSchema = z.object({
     hpr_number: z.number().transform((it) => `${it}`),
 })
 
-export const UserInfoSchema = z.object({
+const UserInfoSchema = z.object({
     'helseid://claims/hpr/hpr_details': HprDetailsSchema,
 })
 

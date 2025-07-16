@@ -9,7 +9,7 @@ const config: KnipConfig = {
         'postcss.config.mjs',
         'scripts/**',
     ],
-    ignoreDependencies: ['@navikt/ds-css', 'pino-pretty'],
+    ignoreDependencies: ['@navikt/ds-css', 'pino-pretty', 'eslint-config-next'],
 }
 
 export default config
