@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
+import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { Heading } from '@navikt/ds-react'
 
 import { cleanId } from '@utils/string'
@@ -9,7 +9,7 @@ type Props = {
     className?: string
     hideTitle?: boolean
     hideBorder?: boolean
-    helpText?: ReactElement
+    helpText?: ReactNode
 }
 
 function FormSection({
