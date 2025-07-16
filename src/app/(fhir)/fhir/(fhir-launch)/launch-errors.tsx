@@ -16,16 +16,23 @@ export function MissingLaunchParams(): ReactElement {
     )
 }
 
-export function InvalidIssuer(): ReactElement {
+export function InvalidIssuer({ issuer }: { issuer: string }): ReactElement {
     return (
         <LaunchError>
-            <Heading size="large" spacing>
+            <Heading size="large" level="2" spacing>
                 Ugyldig utsteder
             </Heading>
             <BodyShort spacing>
                 Det ser ut til at du har startet applikasjonen med en ugyldig utsteder. Vennligst prøv igjen.
             </BodyShort>
-            <BodyShort>Dersom problemet vedvarer, ta kontakt med support.</BodyShort>
+            <BodyShort spacing>Dersom problemet vedvarer, ta kontakt med support.</BodyShort>
+            <Heading level="3" size="xsmall" spacing className="mt-8">
+                Teknisk informasjon
+            </Heading>
+            <BodyShort size="small" spacing>
+                Utsteder som ble forsøkt brukt
+            </BodyShort>
+            <code className="text-sm p-1 px-2 break-all bg-bg-subtle">{issuer}</code>
         </LaunchError>
     )
 }
@@ -76,7 +83,7 @@ export function CallbackError(): ReactElement {
 
 function LaunchError({ children }: PropsWithChildren): ReactElement {
     return (
-        <PageBlock as="main" width="xl" gutters className="pt-4">
+        <PageBlock as="main" width="xl" gutters className="pt-4 bg-bg-default p-8 rounded-md max-w-prose">
             <div className="max-w-prose">{children}</div>
         </PageBlock>
     )

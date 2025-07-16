@@ -4,7 +4,6 @@ import { logger as pinoLogger } from '@navikt/next-logger'
 import { redirect, RedirectType, unauthorized } from 'next/navigation'
 
 import { getSmartClient } from '@fhir/smart/smart-client'
-import { isKnownFhirServer } from '@fhir/issuers/issuers'
 
 import { InvalidIssuer, MissingLaunchParams } from '../launch-errors'
 
@@ -38,11 +37,6 @@ async function LaunchPage({ searchParams }: Props): Promise<ReactElement> {
         return <MissingLaunchParams />
     }
 
-    if (!isKnownFhirServer(issuerParam)) {
-        logger.error(`Unknown issuer ${issuerParam}`)
-        return <InvalidIssuer />
-    }
-
     const launchResult = await getSmartClient(sessionId, false).launch({
         iss: issuerParam,
         launch,
@@ -51,7 +45,7 @@ async function LaunchPage({ searchParams }: Props): Promise<ReactElement> {
     if ('error' in launchResult) {
         logger.error(`Issuer ${issuerParam} launch failed, @navikt/smart-on-fhir says: ${launchResult.error}`)
 
-        return <InvalidIssuer />
+        return <InvalidIssuer issuer={issuerParam} />
     }
 
     redirect(launchResult.redirect_url, RedirectType.replace)

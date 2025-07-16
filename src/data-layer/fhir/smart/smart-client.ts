@@ -18,11 +18,14 @@ import { isDemo, isE2E } from '@utils/env'
 
 import { globalInMemoryValkey } from '../../mock-engine/valkey/global-inmem-valkey'
 
+import { knownFhirServers } from './issuers'
+
 const smartClientConfig: SmartClientConfiguration = {
     client_id: 'syk-inn',
     scope: 'openid profile launch fhirUser patient/*.read user/*.read offline_access',
     redirect_url: `${getAbsoluteURL()}/fhir`,
     callback_url: `${getAbsoluteURL()}/fhir/callback`,
+    knownFhirServers,
 }
 
 export function getSmartClient(sessionId: string | null, autoRefreshToggle: boolean): SmartClient {

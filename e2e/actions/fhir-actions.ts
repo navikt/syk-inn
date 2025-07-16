@@ -4,7 +4,9 @@ import { ExpectedToggles } from '@toggles/toggles'
 
 import { Scenarios } from '../../src/data-layer/mock-engine/scenarios/scenarios'
 
-const launchUrl = `/fhir/launch?iss=http://localhost:3000/api/mocks/fhir&launch=foo-bar-launch`
+export const launchPath = '/fhir/launch'
+
+const launchUrl = `${launchPath}?iss=http://localhost:3000/api/mocks/fhir&launch=foo-bar-launch`
 
 export function launchWithMock(
     scenario: Scenarios = 'normal',
