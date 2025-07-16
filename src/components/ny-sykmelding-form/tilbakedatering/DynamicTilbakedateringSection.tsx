@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { isBefore, parseISO, subDays } from 'date-fns'
 import * as R from 'remeda'
+import { HelpText, Link } from '@navikt/ds-react'
 
 import FormSection from '@components/form/form-section/FormSection'
 
@@ -24,7 +25,20 @@ function DynamicTilbakedateringSection(): ReactElement | null {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 >
-                    <FormSection title="Tilbakedatering">
+                    <FormSection
+                        title="Tilbakedatering"
+                        helpText={
+                            <HelpText>
+                                Hva menes med{' '}
+                                <Link
+                                    href="https://www.nav.no/samarbeidspartner/om-sykmeldingen#tilbakedatering"
+                                    target="_blank"
+                                >
+                                    tilbakedatering
+                                </Link>
+                            </HelpText>
+                        }
+                    >
                         <TilbakedateringSection />
                     </FormSection>
                 </motion.div>
