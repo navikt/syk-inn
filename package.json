@@ -77,11 +77,12 @@
         "zod": "^4.0.5"
     },
     "devDependencies": {
+        "@eslint/eslintrc": "^3.3.1",
         "@graphql-codegen/cli": "^5.0.7",
         "@graphql-codegen/fragment-matcher": "^5.1.0",
         "@graphql-codegen/typescript-resolvers": "^4.5.1",
         "@hookform/devtools": "^4.4.0",
-        "@navikt/eslint-config-teamsykmelding": "^7.1.0",
+        "@navikt/eslint-config-teamsykmelding": "^8.0.0",
         "@parcel/watcher": "^2.5.1",
         "@playwright/test": "1.54.1",
         "@tailwindcss/postcss": "^4.1.11",
@@ -89,7 +90,7 @@
         "@types/react": "^19.1.8",
         "@types/react-dom": "^19.1.6",
         "concurrently": "^9.2.0",
-        "eslint": "^8.57.1",
+        "eslint": "^9.31.0",
         "eslint-config-next": "15.4.1",
         "husky": "^9.1.7",
         "knip": "^5.61.3",
@@ -103,10 +104,7 @@
         "vitest": "^3.2.4"
     },
     "prettier": "@navikt/eslint-config-teamsykmelding/prettier",
-    "eslintConfig": {
-        "extends": [
-            "@navikt/eslint-config-teamsykmelding",
-            "next/core-web-vitals"
-        ]
+    "resolutions": {
+        "@typescript-eslint/typescript-estree": "8.37.0"
     }
 }

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { IToggle } from '@unleash/nextjs'
 
 import { ExpectedToggles } from '../toggles'

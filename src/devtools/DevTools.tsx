@@ -21,7 +21,7 @@ function DevTools(): ReactElement {
                     'right-[calc(500px+0.5rem)]': internalOpen,
                 })}
             >
-                <div className="text-right text-text-subtle [text-shadow:1px_1px_0px_white]">
+                <div className="text-right text-text-subtle [text-shadow:1px_1px_0px_white] rotate-y-180">
                     <div>
                         <Detail className="">Internal devtools</Detail>
                         <Detail className="-mt-1 font-bold">{getAltKeyLabel()} + l</Detail>
