@@ -83,7 +83,7 @@ export function CallbackError(): ReactElement {
 
 function LaunchError({ children }: PropsWithChildren): ReactElement {
     return (
-        <PageBlock as="main" width="xl" gutters className="pt-4 bg-bg-default p-8 rounded-md max-w-prose">
+        <PageBlock as="main" width="xl" gutters className="mt-4 pt-4 bg-bg-default p-8 rounded-md max-w-prose">
             <div className="max-w-prose">{children}</div>
         </PageBlock>
     )
