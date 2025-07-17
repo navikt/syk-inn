@@ -336,6 +336,66 @@ test("optional - 'tilbakedatering' is asked and required when fom is 5 days in t
     })
 })
 
+test('optional - "tilbakedatering" and "Annen årsak" input field is required and part of payload when checked', async ({
+    page,
+}) => {
+    await launchAndStart(page)
+
+    await fillPeriodeRelative({
+        type: '100%',
+        fromRelative: -5,
+        days: 5,
+    })(page)
+    await fillTilbakedatering({
+        contact: daysAgo(2),
+        reason: 'Annet',
+        otherReason: 'Annen årsak til tilbakedatering',
+    })(page)
+    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+
+    await nextStep()(page)
+    await verifySignerendeBehandler()(page)
+
+    const request = await submitSykmelding()(page)
+
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+        draftId: getDraftId(page) ?? 'missing',
+        values: {
+            hoveddiagnose: { system: 'ICPC2', code: 'P74' },
+            bidiagnoser: [],
+            aktivitet: [
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: daysAgo(5),
+                    tom: inDays(0),
+                    aktivitetIkkeMulig: { dummy: true },
+                    avventende: null,
+                    gradert: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
+                    medisinskArsak: {
+                        isMedisinskArsak: true,
+                    },
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: [],
+                        annenArbeidsrelatertArsak: null,
+                    },
+                },
+            ],
+            tilbakedatering: {
+                startdato: daysAgo(2),
+                begrunnelse: 'Annen årsak til tilbakedatering',
+            },
+            meldinger: { tilNav: null, tilArbeidsgiver: null },
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            arbeidsforhold: null,
+            pasientenSkalSkjermes: false,
+        },
+    })
+})
+
 test('optional - "har flere arbeidsforhold" should be part of payload if checked', async ({ page }) => {
     await launchAndStart(page)
 

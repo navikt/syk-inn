@@ -224,7 +224,15 @@ export function fillArsakerTilAktivitetIkkeMulig({
     }
 }
 
-export function fillTilbakedatering({ contact, reason }: { contact: string; reason: string }) {
+export function fillTilbakedatering({
+    contact,
+    reason,
+    otherReason,
+}: {
+    contact: string
+    reason: string
+    otherReason?: string
+}) {
     return async (page: Page) => {
         await test.step(`Input tilbakedateringsdato to ${contact}`, async () => {
             const region = page.getByRole('region', { name: 'Tilbakedatering' })
@@ -232,6 +240,9 @@ export function fillTilbakedatering({ contact, reason }: { contact: string; reas
 
             await region.getByRole('textbox', { name: 'Når tok pasienten først kontakt' }).fill(inputDate(contact))
             await region.getByRole('combobox', { name: 'Velg årsak for tilbakedatering' }).selectOption(reason)
+            if (reason === 'Annet' && otherReason) {
+                await region.getByRole('textbox', { name: 'Oppgi årsak for tilbakedatering' }).fill(otherReason)
+            }
         })
     }
 }
