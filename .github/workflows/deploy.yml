@@ -3,6 +3,7 @@ on:
   push:
     paths-ignore:
       - docs/**
+      - README.md
 
 env:
   APP: syk-inn

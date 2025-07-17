@@ -59,23 +59,17 @@ In standalone mode, there are no FHIR-resources, so the domain will be refered t
 
 ### Routes (uses Next "App Dir")
 
-- FHIR Launch route: [src/app/(fhir)/fhir/launch/page.tsx](<src/app/(fhir)/fhir/launch/page.tsx>)
-- FHIR Form route: [src/app/(fhir)/fhir/page.tsx](<src/app/(fhir)/fhir/page.tsx>)
-- Standalone Form route: [src/app/(standalone)/ny/page.tsx](<src/app/(standalone)/ny/page.tsx>)
+- FHIR Launch route: [src/app/(fhir)/fhir/(fhir-launch)/launch/page.tsx](<src/app/(fhir)/fhir/(fhir-launch)/launch/page.tsx>)
+- FHIR Callback route: [src/app/(fhir)/fhir/(fhir-launch)/callback/route.ts](<src/app/(fhir)/fhir/(fhir-launch)/callback/route.ts>)
+- FHIR Dashboard: [src/app/(fhir)/fhir/(fhir-launched)/page.tsx](<src/app/(fhir)/fhir/(fhir-launched)/page.tsx>)
+- FHIR Sykmelding Form [src/app/(fhir)/fhir/(fhir-launched)/ny/[draftId]/page.tsx](<src/app/(fhir)/fhir/(fhir-launched)/ny/[draftId]/page.tsx>)
 
 ### The actual form:
 
-The form is built specifically to handle multiple "contexts" without the form having context-specific implementations. This is achieved using a variant of Dependency Injection of the possible data the form can use, using React Context.
+The form is built specifically to handle multiple "contexts" without the form having context-specific implementations. This is achieved using GraphQL, where each each context the application can be "launched" in (FHIR/HelseID) will provide their own implementation of the GraphQL schema, with their corresponding auth.
 
-- Root form: [src/components/ny-sykmelding-form/NySykmeldingForm.tsx](src/components/ny-sykmelding-form/NySykmeldingWithContextPasient.tsx)
-- The data available to the form: [src/data-fetcher/data-service.ts](src/data-layer/data-fetcher/data-service.ts)
-    - Form data dependency injection: [src/data-fetcher/data-provider.tsx](src/data-layer/data-fetcher/data-provider.tsx)
-    - See specific form implementations (form routes above) for usage of this provider
-
-### FHIR mocking for local development (and demo application)
-
-- FHIR server authentication mocks: [src/app/api/mocks/fhir/auth/[[...path]]/route.ts](src/app/api/mocks/fhir/auth/%5B%5B...path%5D%5D/route.ts)
-- FHIR server mocks: [src/app/api/mocks/fhir/(resources)/[[...path]]/route.ts](<src/app/api/mocks/fhir/(resources)/%5B%5B...path%5D%5D/route.ts>)
+- Root form: [src/components/ny-sykmelding-form/NySykmeldingForm.tsx](src/components/ny-sykmelding-form/NySykmeldingForm.tsx)
+- The data available to the form: [src/data-layer/graphql/schema/root.graphqls](src/data-layer/graphql/schema/root.graphqls)
 
 ## Local Development
 
@@ -104,18 +98,23 @@ Start the development server (automatically starts Valkey, this is why Docker is
 yarn dev
 ```
 
+You can run the development server with the syk-inn-api server on port 8080 by enabling the environment
+variable USE_LOCAL_SYK_INN_API in .env.development.
+
+See the README for syk-inn-api on how to run it using bootRun or IntelliJ.
+
 ### Running e2e tests
 
 Headless:
 
 ```bash
-yarn test:e2e
+yarn e2e
 ```
 
 With interactive Playwright test runner:
 
 ```bash
-yarn test:e2e --ui
+yarn e2e:dev
 ```
 
 If you are developing only e2e tests, you can run it in a special "fast mode" that uses the nextjs production server.
