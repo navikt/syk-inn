@@ -24,7 +24,9 @@ switch (bundledEnv.runtimeEnv) {
     case 'demo':
         knownFhirServers.push({
             issuer: 'https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding/api/mocks/fhir',
-            type: 'public',
+            type: 'confidential-symmetric',
+            method: 'client_secret_basic',
+            clientSecret: 'dev-mode-client-secret',
         })
         break
     case 'dev-gcp':
