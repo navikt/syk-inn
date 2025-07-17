@@ -1,3 +1,9 @@
+export type FhirClient = {
+    clientId: string
+    method: 'client_secret_post' | 'client_secret_basic'
+    clientSecret: string
+}
+
 export type FhirMockConfig = {
     /**
      * Base URL the mock server is running on. This is used to generate the correct
@@ -11,11 +17,7 @@ export type FhirMockConfig = {
     /**
      * Configured clients
      */
-    clients: {
-        clientId: string
-        method: 'client_secret_post' | 'client_secret_basic'
-        clientSecret: string
-    }[]
+    clients: FhirClient[]
     /**
      * Optional base path, if the server is running on a base path in for example Next.JS
      *
