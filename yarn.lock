@@ -2245,7 +2245,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
-    "@navikt/smart-on-fhir": "npm:1.3.0"
+    "@navikt/smart-on-fhir": "npm:1.3.2"
     "@types/node": "npm:^22.16.4"
     hono: "npm:^4.8.5"
     jose: "npm:^6.0.11"
@@ -2308,9 +2308,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.3.0":
-  version: 1.3.0
-  resolution: "@navikt/smart-on-fhir@npm:1.3.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.3.0%2Fe45f3f9199b6f82d22470701e62a5233b70d7ce3"
+"@navikt/smart-on-fhir@npm:1.3.2":
+  version: 1.3.2
+  resolution: "@navikt/smart-on-fhir@npm:1.3.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.3.2%2F3c2916cb39581e223464534a76d96259fa191c5e"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
     "@opentelemetry/api": "npm:^1.9.0"
@@ -2318,7 +2318,7 @@ __metadata:
     openid-client: "npm:^6.6.2"
     pino: "npm:^9.7.0"
     zod: "npm:^4.0.5"
-  checksum: 10c0/a420f1229b12153e67b8dbf23a887ed8fdd71d60937e1f98701ae209b51617afb3c11261a76dea45a27edddb2282ac8824fdfa3a8da3e9485cc474884e210285
+  checksum: 10c0/49b024d02dcaf78694338088ea26c823192223dc99b3992d2009574965e285892a2eea3f773cd2ecd6e247a9c26ec878cae4dac45682edcaebd808171a73fb5f
   languageName: node
   linkType: hard
 
@@ -5456,9 +5456,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.173":
-  version: 1.5.185
-  resolution: "electron-to-chromium@npm:1.5.185"
-  checksum: 10c0/26820527fc85f64798ec21fcd32d3607efdf4567b701da749bbd1dd407a162373bf18733d7f0b12c56ae71ece721073b45beeba82b7d2692c494fb4b5636c4a8
+  version: 1.5.186
+  resolution: "electron-to-chromium@npm:1.5.186"
+  checksum: 10c0/08b59a337eced18b9553ccbafab90303ecf2f53d50a5c09bfcb8db56ed4d0819776f2fe90b5036cc5626ee1876d9c5985c98170489e4b3291dc20f8ae15d3315
   languageName: node
   linkType: hard
 
@@ -6471,15 +6471,15 @@ __metadata:
   linkType: hard
 
 "form-data@npm:^4.0.0":
-  version: 4.0.3
-  resolution: "form-data@npm:4.0.3"
+  version: 4.0.4
+  resolution: "form-data@npm:4.0.4"
   dependencies:
     asynckit: "npm:^0.4.0"
     combined-stream: "npm:^1.0.8"
     es-set-tostringtag: "npm:^2.1.0"
     hasown: "npm:^2.0.2"
     mime-types: "npm:^2.1.12"
-  checksum: 10c0/f0cf45873d600110b5fadf5804478377694f73a1ed97aaa370a74c90cebd7fe6e845a081171668a5476477d0d55a73a4e03d6682968fa8661eac2a81d651fcdb
+  checksum: 10c0/373525a9a034b9d57073e55eab79e501a714ffac02e7a9b01be1c820780652b16e4101819785e1e18f8d98f0aee866cc654d660a435c378e16a72f2e7cac9695
   languageName: node
   linkType: hard
 
@@ -8897,9 +8897,9 @@ __metadata:
   linkType: hard
 
 "oauth4webapi@npm:^3.5.4":
-  version: 3.5.5
-  resolution: "oauth4webapi@npm:3.5.5"
-  checksum: 10c0/3ab9bcfa0d13818b350c1046012bf7fe43f50ea44c49ad107300f5c3b3e8b914f6f862d3d2419336f7362efc09fc7f73252b8214ce3710b2c4e9f96314d1aac3
+  version: 3.6.0
+  resolution: "oauth4webapi@npm:3.6.0"
+  checksum: 10c0/5bfad39628db80faa563b3da4cae342a99827399e7b8730469ece452ecab84e32951b17c09f5904125f0ba6f2f869c01c354421d29470bc90940d8c6c226eef2
   languageName: node
   linkType: hard
 
@@ -11128,7 +11128,7 @@ __metadata:
     "@navikt/next-api-proxy": "npm:^4.1.4"
     "@navikt/next-logger": "npm:^4.1.5"
     "@navikt/oasis": "npm:^3.8.0"
-    "@navikt/smart-on-fhir": "npm:1.3.0"
+    "@navikt/smart-on-fhir": "npm:1.3.2"
     "@opentelemetry/api": "npm:^1.9.0"
     "@parcel/watcher": "npm:^2.5.1"
     "@playwright/test": "npm:1.54.1"
@@ -11913,8 +11913,8 @@ __metadata:
   linkType: hard
 
 "vite@npm:^5.0.0 || ^6.0.0 || ^7.0.0-0":
-  version: 7.0.4
-  resolution: "vite@npm:7.0.4"
+  version: 7.0.5
+  resolution: "vite@npm:7.0.5"
   dependencies:
     esbuild: "npm:^0.25.0"
     fdir: "npm:^6.4.6"
@@ -11963,7 +11963,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/2eb3572d60e8e6f0e291905e30989a52042350439c03002603d27a396652bf0484e13d5e8b15e0d7bd9988a8dc03ee712d45eb83e9dcf8aab4e8ecb28b0419b6
+  checksum: 10c0/95fb7f393adc2d2428e0e033ed4ea599323118f645415c35db3df40bd2c5a2962b0b4c967f35cfb80ca04efb1eb51bdb5f4b63529bb5f9aa3603d9fbeb50543f
   languageName: node
   linkType: hard
 
