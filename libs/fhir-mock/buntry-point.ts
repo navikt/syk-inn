@@ -8,6 +8,13 @@ const port = process.env.PORT ?? 5000
 const config: FhirMockConfig = {
     fhirPath: '',
     baseUrl: `http://localhost:${port}`,
+    clients: [
+        {
+            clientId: 'syk-inn',
+            method: 'client_secret_basic',
+            clientSecret: 'dev-mode-client-secret',
+        },
+    ],
 }
 
 setConfig(config)

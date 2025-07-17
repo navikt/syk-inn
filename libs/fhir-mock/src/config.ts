@@ -9,6 +9,14 @@ export type FhirMockConfig = {
      */
     fhirPath: string
     /**
+     * Configured clients
+     */
+    clients: {
+        clientId: string
+        method: 'client_secret_post' | 'client_secret_basic'
+        clientSecret: string
+    }[]
+    /**
      * Optional base path, if the server is running on a base path in for example Next.JS
      *
      * If fhirPath contains the entire basePath as well, this is not needed, but can be useful if
