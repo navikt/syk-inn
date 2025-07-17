@@ -29,7 +29,8 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
 
     try {
         await assertConfidentialClient(body, headers, client)
-    } catch {
+    } catch (error) {
+        logger.error(new Error('Confidential client assertion failed', { cause: error }))
         return new Response('Confidential client assertion failed', { status: 403 })
     }
 
@@ -67,14 +68,12 @@ export async function assertConfidentialClient(
             }
             const [type, value] = headers['authorization'].split(' ')
             if (type !== 'Basic') {
-                logger.error(`Authorization header is not Basic, was: ${headers['authorization']}`)
-                throw new Error('Authorization header is not Basic')
+                throw new Error(`Authorization header is not Basic, was: ${headers['authorization']}`)
             }
 
             const decodedValue = Buffer.from(value, 'base64').toString()
             if (decodedValue !== `${client.clientId}:${client.clientSecret}`) {
-                logger.error(`Authorization header does not match expected value, was: ${decodedValue}`)
-                throw new Error('Authorization header does not match expected value')
+                throw new Error(`Authorization header does not match expected value, was: ${decodedValue}`)
             }
 
             // client_secret_basic is OK
@@ -83,16 +82,15 @@ export async function assertConfidentialClient(
         case 'client_secret_post':
             const clientSecret = body.get('client_secret')?.toString()
             if (clientSecret == null) {
-                logger.error(
-                    `Client ${client.clientId} was client_secret_post, but no client_secret was provided in body.`,
+                throw new Error(
+                    `Client "${client.clientId}", secret is required for client_secret_post, but was not provided in the body.`,
                 )
-                throw new Error('Client secret is required for client_secret_post')
             }
 
             if (clientSecret !== client.clientSecret) {
-                logger.error(`Client secret does not match expected value, was: ${clientSecret}`)
-                throw new Error('Client secret does not match expected value')
+                throw new Error(`Client secret does not match expected value, was: ${clientSecret}`)
             }
+
             // client_secret_post is OK
             return
         default: {
