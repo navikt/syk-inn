@@ -14,7 +14,12 @@ export const knownFhirServers: KnownFhirServer[] = [
 switch (bundledEnv.runtimeEnv) {
     case 'local':
     case 'e2e':
-        knownFhirServers.push({ issuer: 'http://localhost:3000/api/mocks/fhir', type: 'public' })
+        knownFhirServers.push({
+            issuer: 'http://localhost:3000/api/mocks/fhir',
+            type: 'confidential-symmetric',
+            method: 'client_secret_basic',
+            clientSecret: 'dev-mode-client-secret',
+        })
         break
     case 'demo':
         knownFhirServers.push({
