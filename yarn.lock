@@ -1575,18 +1575,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-tools/graphql-file-loader@npm:^8.0.0, @graphql-tools/graphql-file-loader@npm:^8.0.21":
-  version: 8.0.21
-  resolution: "@graphql-tools/graphql-file-loader@npm:8.0.21"
+"@graphql-tools/graphql-file-loader@npm:^8.0.0, @graphql-tools/graphql-file-loader@npm:^8.0.22":
+  version: 8.0.22
+  resolution: "@graphql-tools/graphql-file-loader@npm:8.0.22"
   dependencies:
-    "@graphql-tools/import": "npm:7.0.20"
-    "@graphql-tools/utils": "npm:^10.9.0"
+    "@graphql-tools/import": "npm:7.0.21"
+    "@graphql-tools/utils": "npm:^10.9.1"
     globby: "npm:^11.0.3"
     tslib: "npm:^2.4.0"
     unixify: "npm:^1.0.0"
   peerDependencies:
     graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: 10c0/e7e9451f5c43979f9ae7445ada5957434436212ba0cab82e958b4e7f4038ee9117fe020f4b1377a18f5114a9f65c7cab7b97580413164a3880eafe6fa48e7379
+  checksum: 10c0/b1faf6c34089cc5e1e0da1b934ca05842ebcdba3157d3844170aa0cd42e35d7b442640464e31984bd0fcf4a9b8f6f3c5529c0a17a1eba76461a902f3f6d71931
   languageName: node
   linkType: hard
 
@@ -1607,17 +1607,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-tools/import@npm:7.0.20":
-  version: 7.0.20
-  resolution: "@graphql-tools/import@npm:7.0.20"
+"@graphql-tools/import@npm:7.0.21":
+  version: 7.0.21
+  resolution: "@graphql-tools/import@npm:7.0.21"
   dependencies:
-    "@graphql-tools/utils": "npm:^10.9.0"
+    "@graphql-tools/utils": "npm:^10.9.1"
     "@theguild/federation-composition": "npm:^0.19.0"
     resolve-from: "npm:5.0.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
     graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: 10c0/b02be2bfa094de67450a7f7c69152460b32e86d279542c28af9b88032766d8b6f98b4fc49a15b84bde73281b193b10ced2184643d4e8e14a037c0b879643b8b4
+  checksum: 10c0/9dda94189dea454cee9ca29eb66540079bd43902c9480271abe93fc2dcce0b50ac8c16fc119fa0c008bdfd6dc048cf47b32a69f93af64170e20be8292f1f513b
   languageName: node
   linkType: hard
 
@@ -1635,30 +1635,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-tools/load@npm:^8.1.0, @graphql-tools/load@npm:^8.1.1":
-  version: 8.1.1
-  resolution: "@graphql-tools/load@npm:8.1.1"
+"@graphql-tools/load@npm:^8.1.0, @graphql-tools/load@npm:^8.1.2":
+  version: 8.1.2
+  resolution: "@graphql-tools/load@npm:8.1.2"
   dependencies:
-    "@graphql-tools/schema": "npm:^10.0.24"
-    "@graphql-tools/utils": "npm:^10.9.0"
+    "@graphql-tools/schema": "npm:^10.0.25"
+    "@graphql-tools/utils": "npm:^10.9.1"
     p-limit: "npm:3.1.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
     graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: 10c0/571435e5c39740855efac46c2d56e4337fbc97227a25f2a42d9db92d4fb0775ddf02d046303116a8e322644fddedfc57a7a47d9f24bd5e53dde6d05a16e71d86
+  checksum: 10c0/748a5a2e77514dbd7f3353e97f6bf54916cc298601d4a92c662777f6920e7d1a52bc0134e9b4e6ae427fb1ca42d217f1e063b307cdcd6dcaf05e5c9ca465767e
   languageName: node
   linkType: hard
 
-"@graphql-tools/merge@npm:^9.0.0, @graphql-tools/merge@npm:^9.1.0":
-  version: 9.1.0
-  resolution: "@graphql-tools/merge@npm:9.1.0"
+"@graphql-tools/merge@npm:^9.0.0, @graphql-tools/merge@npm:^9.1.1":
+  version: 9.1.1
+  resolution: "@graphql-tools/merge@npm:9.1.1"
   dependencies:
-    "@graphql-tools/utils": "npm:^10.9.0"
-    "@theguild/federation-composition": "npm:^0.19.0"
+    "@graphql-tools/utils": "npm:^10.9.1"
     tslib: "npm:^2.4.0"
   peerDependencies:
     graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: 10c0/b168ed24e67d9f33eee0d29105249874107ef9dd61e0dafa9e63d528482df9568d6fef483b3c86a359b4be18ed08c8dd5755287f4899af5466c6129578eec4fd
+  checksum: 10c0/61464f3cd3989101400cc0258cef700ad9763f2fc6b42638e26aeca6f641441aa1690649ea6a7c4d7183762a93654d92c64abcd8e057815056e51767659ce0a4
   languageName: node
   linkType: hard
 
@@ -1712,16 +1711,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-tools/schema@npm:^10.0.0, @graphql-tools/schema@npm:^10.0.11, @graphql-tools/schema@npm:^10.0.24":
-  version: 10.0.24
-  resolution: "@graphql-tools/schema@npm:10.0.24"
+"@graphql-tools/schema@npm:^10.0.0, @graphql-tools/schema@npm:^10.0.11, @graphql-tools/schema@npm:^10.0.25":
+  version: 10.0.25
+  resolution: "@graphql-tools/schema@npm:10.0.25"
   dependencies:
-    "@graphql-tools/merge": "npm:^9.1.0"
-    "@graphql-tools/utils": "npm:^10.9.0"
+    "@graphql-tools/merge": "npm:^9.1.1"
+    "@graphql-tools/utils": "npm:^10.9.1"
     tslib: "npm:^2.4.0"
   peerDependencies:
     graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: 10c0/363c8e07113294f2057fb3b9849185ff75a130f197b72cb3cd0546b66ee70e65ca141727ee0d31e11c860506d732379767a854f351b1e8dafd43e5c60a72bdc2
+  checksum: 10c0/13c41119a2b01fecd9b863175b888987de045cf794561582bed921f167b6c4d0ac43d05115359a31dfce5222ddc659ea49179b62064da575e16028827e9b9db8
   languageName: node
   linkType: hard
 
@@ -1747,9 +1746,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-tools/utils@npm:^10.0.0, @graphql-tools/utils@npm:^10.5.6, @graphql-tools/utils@npm:^10.8.1, @graphql-tools/utils@npm:^10.8.6, @graphql-tools/utils@npm:^10.9.0":
-  version: 10.9.0
-  resolution: "@graphql-tools/utils@npm:10.9.0"
+"@graphql-tools/utils@npm:^10.0.0, @graphql-tools/utils@npm:^10.5.6, @graphql-tools/utils@npm:^10.8.1, @graphql-tools/utils@npm:^10.8.6, @graphql-tools/utils@npm:^10.9.1":
+  version: 10.9.1
+  resolution: "@graphql-tools/utils@npm:10.9.1"
   dependencies:
     "@graphql-typed-document-node/core": "npm:^3.1.1"
     "@whatwg-node/promise-helpers": "npm:^1.0.0"
@@ -1758,7 +1757,7 @@ __metadata:
     tslib: "npm:^2.4.0"
   peerDependencies:
     graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: 10c0/fd8e82ff87c3debd78f774327160da81381c9b6746022b7e1e20861690c11c71022a6924d61da38460414046416a48eb8355556fd36dfc726ed160501ba009f7
+  checksum: 10c0/97199f52d0235124d4371f7f54cc0df5ce9df6d8aae716ac05d8ebeda4b5ee3faf1fca94d5d1c521a565e152f8e02a1abfb9c2629ffe805c14468aec0c3d41cf
   languageName: node
   linkType: hard
 
@@ -2216,10 +2215,10 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
-    "@navikt/smart-on-fhir": "npm:1.3.3"
-    "@types/node": "npm:^22.16.4"
-    hono: "npm:^4.8.5"
-    jose: "npm:^6.0.11"
+    "@navikt/smart-on-fhir": "npm:1.3.7"
+    "@types/node": "npm:^22.16.5"
+    hono: "npm:^4.8.9"
+    jose: "npm:^6.0.12"
     nextleton: "npm:^0.6.1"
     pino: "npm:^9.7.0"
     pino-pretty: "npm:^13.0.0"
@@ -2279,17 +2278,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@navikt/smart-on-fhir@npm:1.3.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.3.3%2Fc415d1f8acdb0c840f24fb4c5a0a1ea9573fcc26"
+"@navikt/smart-on-fhir@npm:1.3.7":
+  version: 1.3.7
+  resolution: "@navikt/smart-on-fhir@npm:1.3.7::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.3.7%2F86fe204a91a17bcdbae4c16b4e99b440b84b3428"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
     "@opentelemetry/api": "npm:^1.9.0"
-    jose: "npm:^6.0.11"
+    jose: "npm:^6.0.12"
     openid-client: "npm:^6.6.2"
     pino: "npm:^9.7.0"
-    zod: "npm:^4.0.5"
-  checksum: 10c0/88ff3dccfb0e6b6f2986ea602bdfce994d2c7f336e50d0b721ac499b6efed17bf86a6cb776a2eb17cb5adb427a5fe5632373de1fd80653b3fe0fddb4167911ee
+    zod: "npm:^4.0.10"
+  checksum: 10c0/c0133044467d4c1b4904209451d8558071aba19cf76b2f97059e5b5954c2120079dd2ce134e05247009a638f100b8ea17dfdcc05838c040d655e0c11fd8ed1fe
   languageName: node
   linkType: hard
 
@@ -2300,74 +2299,74 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/env@npm:15.4.1":
-  version: 15.4.1
-  resolution: "@next/env@npm:15.4.1"
-  checksum: 10c0/389c4c5d126c252a742d78336d0b8d99678a83cb003a2f80f805adc89fcb9e9f617a279c0db07ca94d8c7c94458f34992dd49fcdd10c5d00940c45ad5cf79fbd
+"@next/env@npm:15.4.4":
+  version: 15.4.4
+  resolution: "@next/env@npm:15.4.4"
+  checksum: 10c0/7f94deb0bb3ef8e4bc2d08f95bbc2f1155931813f0277a13e1c62e34259619f14e972280f8b6f423dfcd3ede3d96c76cb82bae0e842ea16402e20c9be0d14737
   languageName: node
   linkType: hard
 
-"@next/eslint-plugin-next@npm:15.4.1":
-  version: 15.4.1
-  resolution: "@next/eslint-plugin-next@npm:15.4.1"
+"@next/eslint-plugin-next@npm:15.4.4":
+  version: 15.4.4
+  resolution: "@next/eslint-plugin-next@npm:15.4.4"
   dependencies:
     fast-glob: "npm:3.3.1"
-  checksum: 10c0/81b7fefc62b2163cfaca8e5cf9ba58c0fb0e84b306e528b53de09dfbe593717c178b85aa5c44d9fd254a1b5d2c7ff4036c1d0a1188190937d1e05a9e0bb676c2
+  checksum: 10c0/e32bd4c00beaaf7d815df678d99703824be840e6a416897aa69d861c72351b45343aaea4d79c489176f35ef94e0218fbee7185a55b0dea91a0ef1babaed8d602
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-arm64@npm:15.4.1":
-  version: 15.4.1
-  resolution: "@next/swc-darwin-arm64@npm:15.4.1"
+"@next/swc-darwin-arm64@npm:15.4.4":
+  version: 15.4.4
+  resolution: "@next/swc-darwin-arm64@npm:15.4.4"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-x64@npm:15.4.1":
-  version: 15.4.1
-  resolution: "@next/swc-darwin-x64@npm:15.4.1"
+"@next/swc-darwin-x64@npm:15.4.4":
+  version: 15.4.4
+  resolution: "@next/swc-darwin-x64@npm:15.4.4"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-gnu@npm:15.4.1":
-  version: 15.4.1
-  resolution: "@next/swc-linux-arm64-gnu@npm:15.4.1"
+"@next/swc-linux-arm64-gnu@npm:15.4.4":
+  version: 15.4.4
+  resolution: "@next/swc-linux-arm64-gnu@npm:15.4.4"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-musl@npm:15.4.1":
-  version: 15.4.1
-  resolution: "@next/swc-linux-arm64-musl@npm:15.4.1"
+"@next/swc-linux-arm64-musl@npm:15.4.4":
+  version: 15.4.4
+  resolution: "@next/swc-linux-arm64-musl@npm:15.4.4"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-gnu@npm:15.4.1":
-  version: 15.4.1
-  resolution: "@next/swc-linux-x64-gnu@npm:15.4.1"
+"@next/swc-linux-x64-gnu@npm:15.4.4":
+  version: 15.4.4
+  resolution: "@next/swc-linux-x64-gnu@npm:15.4.4"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-musl@npm:15.4.1":
-  version: 15.4.1
-  resolution: "@next/swc-linux-x64-musl@npm:15.4.1"
+"@next/swc-linux-x64-musl@npm:15.4.4":
+  version: 15.4.4
+  resolution: "@next/swc-linux-x64-musl@npm:15.4.4"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-win32-arm64-msvc@npm:15.4.1":
-  version: 15.4.1
-  resolution: "@next/swc-win32-arm64-msvc@npm:15.4.1"
+"@next/swc-win32-arm64-msvc@npm:15.4.4":
+  version: 15.4.4
+  resolution: "@next/swc-win32-arm64-msvc@npm:15.4.4"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-win32-x64-msvc@npm:15.4.1":
-  version: 15.4.1
-  resolution: "@next/swc-win32-x64-msvc@npm:15.4.1"
+"@next/swc-win32-x64-msvc@npm:15.4.4":
+  version: 15.4.4
+  resolution: "@next/swc-win32-x64-msvc@npm:15.4.4"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3470,12 +3469,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:^22.16.4":
-  version: 22.16.4
-  resolution: "@types/node@npm:22.16.4"
+"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:^22.16.5":
+  version: 22.16.5
+  resolution: "@types/node@npm:22.16.5"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/a6e3f345c2d9656451ceac349e59c4cafa2b03f793acf3ab4f318fd90cee47d76c4fa79a7a08b8772978958a42fb03c8c71caa50c064b4e88613085dea287c2d
+  checksum: 10c0/93a245e96a01f4a6aa38475000070292a9299e17b95bc1fc8180c652fb3a62f9b3b9ec0b78f9fc6a78b9274d3dfce456e80c7bb68b5357c8f7dbf581df4408c1
   languageName: node
   linkType: hard
 
@@ -5623,11 +5622,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-next@npm:15.4.1":
-  version: 15.4.1
-  resolution: "eslint-config-next@npm:15.4.1"
+"eslint-config-next@npm:15.4.4":
+  version: 15.4.4
+  resolution: "eslint-config-next@npm:15.4.4"
   dependencies:
-    "@next/eslint-plugin-next": "npm:15.4.1"
+    "@next/eslint-plugin-next": "npm:15.4.4"
     "@rushstack/eslint-patch": "npm:^1.10.3"
     "@typescript-eslint/eslint-plugin": "npm:^5.4.2 || ^6.0.0 || ^7.0.0 || ^8.0.0"
     "@typescript-eslint/parser": "npm:^5.4.2 || ^6.0.0 || ^7.0.0 || ^8.0.0"
@@ -5643,7 +5642,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/2920bd1513d66ce27c7b96ed3a398450bb3d82f85f4407f4b1654530b9c157f760b3dd813e56391eb8df52496c3c849728206f4b53dc84c765086fcfb08527d3
+  checksum: 10c0/bc7b288b5f7cb338d2af7dbba9403e0e0b3264d72626bd2e5198321dd208d999450d0f4188fb7f09326f071137c7e8c41cd0826312024611ef4222423a6ebe9d
   languageName: node
   linkType: hard
 
@@ -5817,14 +5816,14 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-testing-library@npm:^7.6.0":
-  version: 7.6.1
-  resolution: "eslint-plugin-testing-library@npm:7.6.1"
+  version: 7.6.2
+  resolution: "eslint-plugin-testing-library@npm:7.6.2"
   dependencies:
     "@typescript-eslint/scope-manager": "npm:^8.15.0"
     "@typescript-eslint/utils": "npm:^8.15.0"
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
-  checksum: 10c0/d6bf84792e8829fdf5a50ddc0096e0bc9ca55d99bf2f542408d98e23c5def773780bc00e5cdaf92fd0f6b7daa440717000d222ac5070feff87a9b5bf49da7ff8
+  checksum: 10c0/8ce365a9b71aa8149c33f41afb65a1dfa17f4609075eef92124f8db7ca672cf1e1d35aaacf3028045bba4f4f20408475aa570b19e179c672468534d49b1ad3b0
   languageName: node
   linkType: hard
 
@@ -5852,7 +5851,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9.31.0":
+"eslint@npm:^9.32.0":
   version: 9.32.0
   resolution: "eslint@npm:9.32.0"
   dependencies:
@@ -6246,9 +6245,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^12.23.9":
-  version: 12.23.9
-  resolution: "framer-motion@npm:12.23.9"
+"framer-motion@npm:^12.23.11":
+  version: 12.23.11
+  resolution: "framer-motion@npm:12.23.11"
   dependencies:
     motion-dom: "npm:^12.23.9"
     motion-utils: "npm:^12.23.6"
@@ -6264,7 +6263,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/099a414c557712cc9697071f0753528b9c6a332c8f77c805bb8730800225960742f814f5b3837b6f713145885e511e78a8c54c92204850cc2261d4c129defcdc
+  checksum: 10c0/eb7df3d717a3a96ab125afa2615265dbc306f6f409e478eb1f019b1408f2dd19ad05227f532777952519f36816cd04da4174e342b065528def9729795b58f523
   languageName: node
   linkType: hard
 
@@ -6688,7 +6687,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hono@npm:^4.8.5":
+"hono@npm:^4.8.9":
   version: 4.8.9
   resolution: "hono@npm:4.8.9"
   checksum: 10c0/385539d1787fdc747bc869ef0e5ccc9f39cbe40289b94f23eecfc82c6ca440f059704647cd6381a5066d2cf7baa43ab25184c78d44af4c5c98a5c5b07670059e
@@ -7387,7 +7386,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^6.0.11":
+"jose@npm:^6.0.11, jose@npm:^6.0.12":
   version: 6.0.12
   resolution: "jose@npm:6.0.12"
   checksum: 10c0/e5ca51b078b2443f6ca671e14d72e0ffd21b760dac0d77cabd7af649a127376ec90665c8b25f34dd88bb31094915ee662daf76e0b33a025d28dbc2bc17413dec
@@ -7521,7 +7520,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knip@npm:^5.61.3":
+"knip@npm:^5.62.0":
   version: 5.62.0
   resolution: "knip@npm:5.62.0"
   dependencies:
@@ -8246,11 +8245,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion@npm:^12.23.5":
-  version: 12.23.9
-  resolution: "motion@npm:12.23.9"
+"motion@npm:^12.23.11":
+  version: 12.23.11
+  resolution: "motion@npm:12.23.11"
   dependencies:
-    framer-motion: "npm:^12.23.9"
+    framer-motion: "npm:^12.23.11"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
@@ -8263,7 +8262,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/6b92437a617b8b4ec25d25c96258a9138b9c8848b92a5a44fa3c5243503e4d8503f4a14d64482d8fefe8ef6c9fbc1b49cea13bd3bc0ca7bedc5cd0167c39526f
+  checksum: 10c0/ea0baddbf9b51b3b8496d9a5f4976dcbaa64d2afa3a65ddb9f5771346eea12b848619f62bf21485a4d458eed269b3b80fcbf4d53dcbd9b6225074664cc4d0915
   languageName: node
   linkType: hard
 
@@ -8352,19 +8351,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:15.4.1":
-  version: 15.4.1
-  resolution: "next@npm:15.4.1"
+"next@npm:15.4.4":
+  version: 15.4.4
+  resolution: "next@npm:15.4.4"
   dependencies:
-    "@next/env": "npm:15.4.1"
-    "@next/swc-darwin-arm64": "npm:15.4.1"
-    "@next/swc-darwin-x64": "npm:15.4.1"
-    "@next/swc-linux-arm64-gnu": "npm:15.4.1"
-    "@next/swc-linux-arm64-musl": "npm:15.4.1"
-    "@next/swc-linux-x64-gnu": "npm:15.4.1"
-    "@next/swc-linux-x64-musl": "npm:15.4.1"
-    "@next/swc-win32-arm64-msvc": "npm:15.4.1"
-    "@next/swc-win32-x64-msvc": "npm:15.4.1"
+    "@next/env": "npm:15.4.4"
+    "@next/swc-darwin-arm64": "npm:15.4.4"
+    "@next/swc-darwin-x64": "npm:15.4.4"
+    "@next/swc-linux-arm64-gnu": "npm:15.4.4"
+    "@next/swc-linux-arm64-musl": "npm:15.4.4"
+    "@next/swc-linux-x64-gnu": "npm:15.4.4"
+    "@next/swc-linux-x64-musl": "npm:15.4.4"
+    "@next/swc-win32-arm64-msvc": "npm:15.4.4"
+    "@next/swc-win32-x64-msvc": "npm:15.4.4"
     "@swc/helpers": "npm:0.5.15"
     caniuse-lite: "npm:^1.0.30001579"
     postcss: "npm:8.4.31"
@@ -8407,7 +8406,7 @@ __metadata:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: 10c0/5a3c6a5d411c21917457eb66be577def739d3237f95663eed94dbe8274b7cdee64a76c2b05ec792930c6488587b613d125413927d1d5202414b8d576e527f8e0
+  checksum: 10c0/b81c7c1270dbefa8e1e77d0fadc7368569d381190d00b45f647fe792337f93e3f7a188ff64813fe4c1f6d254e83306047d254967adc192c40561c46a28023d51
   languageName: node
   linkType: hard
 
@@ -9424,7 +9423,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.60.0":
+"react-hook-form@npm:^7.61.1":
   version: 7.61.1
   resolution: "react-hook-form@npm:7.61.1"
   peerDependencies:
@@ -9593,7 +9592,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^2.26.0":
+"remeda@npm:^2.26.1":
   version: 2.26.1
   resolution: "remeda@npm:2.26.1"
   dependencies:
@@ -10742,9 +10741,9 @@ __metadata:
     "@graphql-codegen/cli": "npm:^5.0.7"
     "@graphql-codegen/fragment-matcher": "npm:^5.1.0"
     "@graphql-codegen/typescript-resolvers": "npm:^4.5.1"
-    "@graphql-tools/graphql-file-loader": "npm:^8.0.21"
-    "@graphql-tools/load": "npm:^8.1.1"
-    "@graphql-tools/schema": "npm:^10.0.24"
+    "@graphql-tools/graphql-file-loader": "npm:^8.0.22"
+    "@graphql-tools/load": "npm:^8.1.2"
+    "@graphql-tools/schema": "npm:^10.0.25"
     "@hookform/devtools": "npm:^4.4.0"
     "@navikt/aksel-icons": "npm:^7.25.1"
     "@navikt/diagnosekoder": "npm:^1.2025.0"
@@ -10756,29 +10755,29 @@ __metadata:
     "@navikt/next-api-proxy": "npm:^4.1.4"
     "@navikt/next-logger": "npm:^4.1.5"
     "@navikt/oasis": "npm:^3.8.0"
-    "@navikt/smart-on-fhir": "npm:1.3.3"
+    "@navikt/smart-on-fhir": "npm:1.3.7"
     "@opentelemetry/api": "npm:^1.9.0"
     "@parcel/watcher": "npm:^2.5.1"
     "@playwright/test": "npm:1.54.1"
     "@reduxjs/toolkit": "npm:^2.8.2"
     "@tailwindcss/postcss": "npm:^4.1.11"
-    "@types/node": "npm:^22.16.4"
+    "@types/node": "npm:^22.16.5"
     "@types/react": "npm:^19.1.8"
     "@types/react-dom": "npm:^19.1.6"
     "@unleash/nextjs": "npm:^1.6.2"
     clsx: "npm:^2.1.1"
     concurrently: "npm:^9.2.0"
     date-fns: "npm:^4.1.0"
-    eslint: "npm:^9.31.0"
-    eslint-config-next: "npm:15.4.1"
+    eslint: "npm:^9.32.0"
+    eslint-config-next: "npm:15.4.4"
     fuse.js: "npm:^7.1.0"
     graphql: "npm:^16.11.0"
     husky: "npm:^9.1.7"
     iovalkey: "npm:^0.3.3"
-    knip: "npm:^5.61.3"
+    knip: "npm:^5.62.0"
     lint-staged: "npm:^16.1.2"
-    motion: "npm:^12.23.5"
-    next: "npm:15.4.1"
+    motion: "npm:^12.23.11"
+    next: "npm:15.4.4"
     next-logger: "npm:^5.0.1"
     nextleton: "npm:^0.6.1"
     node-cache: "npm:^5.1.2"
@@ -10790,10 +10789,10 @@ __metadata:
     prettier: "npm:^3.6.2"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
-    react-hook-form: "npm:^7.60.0"
+    react-hook-form: "npm:^7.61.1"
     react-minimal-pie-chart: "npm:^9.1.1"
     react-redux: "npm:^9.2.0"
-    remeda: "npm:^2.26.0"
+    remeda: "npm:^2.26.1"
     server-only: "npm:^0.0.1"
     sonda: "npm:^0.9.0"
     sonner: "npm:^2.0.6"
@@ -10802,7 +10801,7 @@ __metadata:
     typescript: "npm:^5.8.3"
     vite-tsconfig-paths: "npm:^5.1.4"
     vitest: "npm:^3.2.4"
-    zod: "npm:^4.0.5"
+    zod: "npm:^4.0.10"
   languageName: unknown
   linkType: soft
 
@@ -11990,7 +11989,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^4.0.5":
+"zod@npm:^4.0.10":
   version: 4.0.10
   resolution: "zod@npm:4.0.10"
   checksum: 10c0/8d1145e767c22b571a7967c198632f69ef15ce571b5021cdba84cf31d9af2ca40b033ea2fcbe5797cfd2da9c67b3a6ebe435938eabfbb1d1f3ab2f17f00f443b
