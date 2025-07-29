@@ -46,7 +46,7 @@ test('should be able to duplicate an existing sykmelding with correct values', a
         submitSykmelding(),
     )(page)
 
-    await page.getByRole('link', { name: 'Tilbake til pasientoversikt' }).click()
+    await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
     await page.getByRole('button', { name: 'Dupliser sykmelding' }).click()
 
     await userInteractionsGroup(
@@ -97,7 +97,7 @@ test('should be able to forlenge an existing sykmelding with correct values', as
         submitSykmelding(),
     )(page)
 
-    await page.getByRole('link', { name: 'Tilbake til pasientoversikt' }).click()
+    await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
     await page.getByRole('button', { name: 'Forleng sykmeldingen' }).click()
 
     const periodeRegion = page.getByRole('region', { name: 'Periode' })

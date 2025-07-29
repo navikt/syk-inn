@@ -2,8 +2,7 @@ import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 import { Page, PageBlock } from '@navikt/ds-react/Page'
 
-import ExistingSykmeldingKvittering from '@components/existing-sykmelding-kvittering/ExistingSykmeldingKvittering'
-import PdfDebugView from '@components/pdf-debug-view/PdfDebugView'
+import ExistingSykmeldingKvittering from '@features/existing-sykmelding-kvittering/ExistingSykmeldingKvittering'
 
 type Props = {
     params: Promise<{
@@ -20,10 +19,7 @@ async function KvitteringPage({ params }: Props): Promise<ReactElement> {
                 <Heading level="2" size="medium" spacing>
                     Kvittering på innsendt sykmelding
                 </Heading>
-                <div className="flex gap-8">
-                    <ExistingSykmeldingKvittering sykmeldingId={sykmeldingId} />
-                    <PdfDebugView sykmeldingId={sykmeldingId} />
-                </div>
+                <ExistingSykmeldingKvittering sykmeldingId={sykmeldingId} />
             </PageBlock>
         </Page>
     )

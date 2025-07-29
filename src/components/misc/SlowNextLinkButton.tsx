@@ -45,7 +45,14 @@ export function SlowNextLinkButton({
     }
 
     return (
-        <Button as={AssableNextLink} type="button" href={href} loading={isLinkPending || loading} {...buttonProps}>
+        <Button
+            as={AssableNextLink}
+            type="button"
+            href={href}
+            loading={isLinkPending || loading}
+            icon={icon}
+            {...buttonProps}
+        >
             {children}
             <LinkStatusSynchronizer setPending={setLinkPending} />
         </Button>
