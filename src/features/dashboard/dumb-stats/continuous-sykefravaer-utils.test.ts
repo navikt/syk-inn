@@ -1,7 +1,8 @@
 import { expect, describe, test } from 'vitest'
 
-import { continiousSykefravaer } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 import { SykmeldingFragment } from '@queries'
+
+import { continiousSykefravaer } from './continuous-sykefravaer-utils'
 
 describe('continiousSykefravaer', () => {
     test('happy case - uten tidligere sykmeldinger', () => {

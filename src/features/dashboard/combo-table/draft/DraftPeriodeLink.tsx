@@ -2,9 +2,10 @@ import React, { ReactElement } from 'react'
 import { Detail, Link as AkselLink } from '@navikt/ds-react'
 import Link from 'next/link'
 
-import { draftPeriodeText } from '@features/dashboard/combo-table/draft/draft-utils'
-import { AutoUpdatingDistance } from '@features/dashboard/combo-table/draft/AutoUpdatingDistance'
 import { DraftValues } from '@data-layer/draft/draft-schema'
+
+import { draftPeriodeText } from './draft-utils'
+import { AutoUpdatingDistance } from './AutoUpdatingDistance'
 
 type Props = {
     draftId: string

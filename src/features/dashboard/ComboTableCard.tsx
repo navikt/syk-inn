@@ -4,11 +4,12 @@ import { useQuery } from '@apollo/client'
 import { Alert, BodyShort, Heading, Skeleton, Table } from '@navikt/ds-react'
 import { FlowerPetalsIcon } from '@navikt/aksel-icons'
 
-import DashboardCard from '@features/dashboard/card/DashboardCard'
 import { AllSykmeldingerDocument, GetAllDraftsDocument } from '@queries'
-import { ComboTable, ComboTableHeader } from '@features/dashboard/combo-table/ComboTable'
-import DashboardTable from '@features/dashboard/table/DashboardTable'
 import useOnFocus from '@lib/hooks/useOnFocus'
+
+import { ComboTable, ComboTableHeader } from './combo-table/ComboTable'
+import DashboardCard from './card/DashboardCard'
+import DashboardTable from './table/DashboardTable'
 
 function ComboTableCard({ className }: { className?: string }): ReactElement {
     const allDrafts = useQuery(GetAllDraftsDocument)

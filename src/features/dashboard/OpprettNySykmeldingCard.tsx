@@ -2,13 +2,14 @@ import React, { CSSProperties, ReactElement, useEffect, useRef, useState } from 
 import { Alert, BodyShort, Button, ConfirmationPanel, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
-import { PasientDocument } from '@queries'
-import DashboardCard from '@features/dashboard/card/DashboardCard'
-import { ShortcutButtonLink } from '@components/shortcut/ShortcutButton'
 import { cn } from '@lib/tw'
-import DumbStats from '@features/dashboard/dumb-stats/DumbStats'
+import { PasientDocument } from '@queries'
+import { ShortcutButtonLink } from '@components/shortcut/ShortcutButton'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
+
+import DumbStats from './dumb-stats/DumbStats'
+import DashboardCard from './card/DashboardCard'
 
 function OpprettNySykmeldingCard({ className }: { className?: string }): ReactElement {
     const nextDraftId = useRef(crypto.randomUUID())

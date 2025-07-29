@@ -2,8 +2,9 @@ import React, { ReactElement } from 'react'
 import { Tooltip } from '@navikt/ds-react'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 
-import { DeleteDraftButton } from '@features/dashboard/combo-table/draft/DeleteDraftButton'
 import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
+
+import { DeleteDraftButton } from './DeleteDraftButton'
 
 export function DraftActions({ draftId }: { draftId: string }): ReactElement {
     return (

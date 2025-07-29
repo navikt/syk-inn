@@ -3,7 +3,8 @@ import { Link as AkselLink } from '@navikt/ds-react'
 import Link from 'next/link'
 
 import { SykmeldingFragment } from '@queries'
-import { sykmeldingPeriodeText } from '@features/dashboard/combo-table/sykmelding/sykmelding-utils'
+
+import { sykmeldingPeriodeText } from './sykmelding-utils'
 
 type Props = {
     sykmeldingId: string

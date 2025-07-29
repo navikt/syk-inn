@@ -4,24 +4,21 @@ import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
 import { DraftFragment, SykmeldingFragment } from '@queries'
-import {
-    draftAktivitetText,
-    draftArbeidsforholdText,
-    draftDiagnoseText,
-} from '@features/dashboard/combo-table/draft/draft-utils'
-import { DraftActions } from '@features/dashboard/combo-table/draft/DraftActions'
-import SykmeldingPeriodeLink from '@features/dashboard/combo-table/sykmelding/SykmeldingPeriodeLink'
-import {
-    sykmeldingArbeidsgiverText,
-    sykmeldingDiagnoseText,
-    sykmeldingGradText,
-} from '@features/dashboard/combo-table/sykmelding/sykmelding-utils'
-import { SykmeldingActions } from '@features/dashboard/combo-table/sykmelding/SykmeldingActions'
-import DraftPeriodeLink from '@features/dashboard/combo-table/draft/DraftPeriodeLink'
 import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 
 import DashboardTable from '../table/DashboardTable'
+import {
+    sykmeldingArbeidsgiverText,
+    sykmeldingDiagnoseText,
+    sykmeldingGradText,
+} from '../combo-table/sykmelding/sykmelding-utils'
+import { SykmeldingActions } from '../combo-table/sykmelding/SykmeldingActions'
+import DraftPeriodeLink from '../combo-table/draft/DraftPeriodeLink'
+import SykmeldingPeriodeLink from '../combo-table/sykmelding/SykmeldingPeriodeLink'
+
+import { DraftActions } from './draft/DraftActions'
+import { draftAktivitetText, draftArbeidsforholdText, draftDiagnoseText } from './draft/draft-utils'
 
 export function ComboTable({
     sykmeldinger,
