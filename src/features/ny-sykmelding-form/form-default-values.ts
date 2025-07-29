@@ -2,24 +2,24 @@ import { DefaultValues } from 'react-hook-form'
 import { isValid, toDate } from 'date-fns'
 import * as R from 'remeda'
 
-import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 import { DiagnoseFragment } from '@queries'
 import { dateOnly } from '@lib/date'
 import {
-    AktivitetStep,
-    AndreSporsmalStep,
-    ArbeidsforholdStep,
-    MainSectionValues,
-    MeldingerStep,
-    TilbakedateringStep,
+    NySykmeldingArbeidsforhold,
+    NySykmeldingFormState,
+    NySykmeldingAndreSporsmal,
+    NySykmeldingTilbakedatering,
+    NySykmeldingAktivitet,
+    NySykmeldingMeldinger,
 } from '@core/redux/reducers/ny-sykmelding'
 import { DraftValues } from '@data-layer/draft/draft-schema'
+import { Diagnose } from '@data-layer/common/diagnose'
 
 import { AktivitetsPeriode, NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
 
 type CreateDefaultValuesData = {
     draftValues: DraftValues | null
-    valuesInState: MainSectionValues | null
+    valuesInState: NySykmeldingFormState | null
     serverSuggestions: NySykmeldingSuggestions
 }
 
@@ -63,7 +63,7 @@ export function createDefaultFormValues({
 }
 
 function toInitialArbeidsforhold(
-    valuesInState: ArbeidsforholdStep | null,
+    valuesInState: NySykmeldingArbeidsforhold | null,
     draftValues: DraftValues['arbeidsforhold'] | null,
 ): NySykmeldingMainFormValues['arbeidsforhold'] {
     if (valuesInState != null) {
@@ -93,7 +93,7 @@ function toInitialArbeidsforhold(
 }
 
 function toAndreSporsmal(
-    valuesInState: AndreSporsmalStep | null,
+    valuesInState: NySykmeldingAndreSporsmal | null,
     draftValues: DraftValues | null,
 ): NySykmeldingMainFormValues['andreSporsmal'] {
     if (valuesInState != null) {
@@ -126,7 +126,7 @@ function toAndreSporsmal(
 }
 
 function toInitialTilbakedatering(
-    valuesInState: TilbakedateringStep | null,
+    valuesInState: NySykmeldingTilbakedatering | null,
     draftValues: DraftValues['tilbakedatering'] | null,
 ): NySykmeldingMainFormValues['tilbakedatering'] | null {
     if (valuesInState) {
@@ -157,10 +157,10 @@ function toInitialTilbakedatering(
  * Diagnose component has the responsibility of displaying eventual server errors
  */
 function toInitialDiagnose(
-    valuesInState: DiagnoseSuggestion | null,
+    valuesInState: Diagnose | null,
     draftValues: DraftValues['hoveddiagnose'] | null,
     serverSuggestion: DiagnoseFragment | null,
-): DiagnoseSuggestion | null {
+): Diagnose | null {
     if (valuesInState != null) {
         return valuesInState
     }
@@ -188,7 +188,7 @@ function toInitialDiagnose(
  */
 function toInitialPerioder(
     draftPerioder: DraftValues['perioder'] | null,
-    initialState: AktivitetStep[] | null,
+    initialState: NySykmeldingAktivitet[] | null,
 ): NySykmeldingMainFormValues['perioder'] {
     if (initialState != null) {
         return initialState.map((it) => toInitialPeriodeFromState(it))
@@ -201,7 +201,7 @@ function toInitialPerioder(
     return [getDefaultPeriode()]
 }
 
-function toInitialPeriodeFromState(aktivitet: AktivitetStep): NySykmeldingMainFormValues['perioder'][number] {
+function toInitialPeriodeFromState(aktivitet: NySykmeldingAktivitet): NySykmeldingMainFormValues['perioder'][number] {
     const periode = {
         periode: {
             fom: aktivitet.fom,
@@ -287,7 +287,7 @@ function toInitialPeriodeFromDraft(
 }
 
 function toInitialMeldinger(
-    meldingerInState: MeldingerStep | null,
+    meldingerInState: NySykmeldingMeldinger | null,
     draftMeldinger: DraftValues['meldinger'] | null,
 ): NySykmeldingMainFormValues['meldinger'] {
     if (meldingerInState != null) {

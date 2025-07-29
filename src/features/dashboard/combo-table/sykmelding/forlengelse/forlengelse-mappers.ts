@@ -5,10 +5,10 @@ import { addDays } from 'date-fns'
 import { SykmeldingFragment } from '@queries'
 import { raise } from '@lib/ts'
 import { dateOnly } from '@lib/date'
-import { AktivitetStep, nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingAktivitet, nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { sykmeldingFragmentToMainStepStateNoAktivitet } from '@data-layer/common/sykmelding-fragment-to-multistep-state'
 
-type Payload = Parameters<typeof nySykmeldingActions.completeMainStep>[0]
+type Payload = Parameters<typeof nySykmeldingActions.completeForm>[0]
 
 export function forlengSykmelding(sykmelding: SykmeldingFragment): Payload {
     const forlengetAktivitet = toForlengelsesAktivitet(sykmelding.values.aktivitet)
@@ -19,7 +19,7 @@ export function forlengSykmelding(sykmelding: SykmeldingFragment): Payload {
     }
 }
 
-function toForlengelsesAktivitet(previousAktivitet: SykmeldingFragment['values']['aktivitet']): AktivitetStep {
+function toForlengelsesAktivitet(previousAktivitet: SykmeldingFragment['values']['aktivitet']): NySykmeldingAktivitet {
     const latestPeriode = R.firstBy(previousAktivitet, [(it) => it.fom, 'desc'])
     if (!latestPeriode) {
         raise('Sykmelding without aktivitetsperioder, this should not happen')
@@ -41,7 +41,7 @@ function toForlengelsesAktivitet(previousAktivitet: SykmeldingFragment['values']
                     arbeidsrelaterteArsaker: latestPeriode.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? [],
                     annenArbeidsrelatertArsak: latestPeriode.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
                 },
-            } satisfies AktivitetStep
+            } satisfies NySykmeldingAktivitet
 
         case 'Gradert':
             return {
@@ -49,7 +49,7 @@ function toForlengelsesAktivitet(previousAktivitet: SykmeldingFragment['values']
                 fom: nextFom,
                 tom: null,
                 grad: latestPeriode.grad,
-            } satisfies AktivitetStep
+            } satisfies NySykmeldingAktivitet
 
         case 'Reisetilskudd':
         case 'Avventende':
@@ -62,6 +62,6 @@ function toForlengelsesAktivitet(previousAktivitet: SykmeldingFragment['values']
                 grad: null,
                 fom: dateOnly(new Date()),
                 tom: null,
-            } satisfies AktivitetStep
+            } satisfies NySykmeldingAktivitet
     }
 }

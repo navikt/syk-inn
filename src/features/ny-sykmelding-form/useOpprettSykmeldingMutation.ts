@@ -18,7 +18,8 @@ import {
 import { spanBrowserAsync, withSpanBrowserAsync } from '@core/otel/browser'
 import { useAppSelector } from '@core/redux/hooks'
 import { useMode } from '@core/providers/Modes'
-import { AktivitetStep, NySykmeldingMultiStepState, TilbakedateringStep } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingAktivitet, NySykmeldingTilbakedatering } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingState } from '@core/redux/reducers/ny-sykmelding/ny-sykmelding-slice'
 
 import { useDraftId } from './draft/useDraftId'
 
@@ -82,7 +83,7 @@ export function useOpprettSykmeldingMutation(): {
     return { opprettSykmelding, result }
 }
 
-function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingMultiStepState): OpprettSykmeldingInput {
+function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingState): OpprettSykmeldingInput {
     if (multiStepState.pasient == null) {
         raise('Ingen pasient')
     }
@@ -125,12 +126,12 @@ function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingMultiStep
             skadedato: formState.andreSporsmal?.yrkesskadeDato,
         },
         tilbakedatering: tilbakedateringStepToInputTilbakedatering(formState.tilbakedatering),
-        pasientenSkalSkjermes: multiStepState.skalSkjermes ?? false,
+        pasientenSkalSkjermes: multiStepState.summary?.skalSkjermes ?? false,
     }
 }
 
 function tilbakedateringStepToInputTilbakedatering(
-    tilbakedatering: TilbakedateringStep | null,
+    tilbakedatering: NySykmeldingTilbakedatering | null,
 ): InputTilbakedatering | null {
     if (!tilbakedatering?.fom) {
         return null
@@ -143,7 +144,7 @@ function tilbakedateringStepToInputTilbakedatering(
 }
 
 function grunnToInputTilbakedateringBegrunnelse(
-    grunn: TilbakedateringStep['grunn'],
+    grunn: NySykmeldingTilbakedatering['grunn'],
     annenGrunn: string | null,
 ): string {
     switch (grunn) {
@@ -161,7 +162,7 @@ function grunnToInputTilbakedateringBegrunnelse(
     }
 }
 
-function aktivitetStepToInputAktivitet(value: AktivitetStep): InputAktivitet {
+function aktivitetStepToInputAktivitet(value: NySykmeldingAktivitet): InputAktivitet {
     switch (value.type) {
         case 'AKTIVITET_IKKE_MULIG':
             return {

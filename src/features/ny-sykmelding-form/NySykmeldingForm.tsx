@@ -8,10 +8,10 @@ import { raise } from '@lib/ts'
 import FormSection from '@components/form/form-section/FormSection'
 import FormSheet from '@components/form/form-section/FormSheet'
 import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButton'
-import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { DraftValues } from '@data-layer/draft/draft-schema'
-import { AktivitetStep, nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingAktivitet, nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { Diagnose } from '@data-layer/common/diagnose'
 
 import BidiagnoseSection from './diagnose/bidiagnose/BidiagnoseSection'
 import ArbeidsforholdSection from './arbeidsgiver/ArbeidsforholdSection'
@@ -100,14 +100,14 @@ function useHandleFormSubmit() {
 
     return async (values: NySykmeldingMainFormValues): Promise<void> => {
         dispatch(
-            nySykmeldingActions.completeMainStep({
+            nySykmeldingActions.completeForm({
                 arbeidsforhold: {
                     harFlereArbeidsforhold: jaEllerNeiToBoolean(values.arbeidsforhold.harFlereArbeidsforhold),
                     sykmeldtFraArbeidsforhold: values.arbeidsforhold.sykmeldtFraArbeidsforhold,
                 },
                 diagnose: {
                     hoved: values.diagnoser.hoved ?? raise("Can't submit step without hoveddiagnose"),
-                    bi: values.diagnoser.bidiagnoser.filter((it): it is DiagnoseSuggestion => {
+                    bi: values.diagnoser.bidiagnoser.filter((it): it is Diagnose => {
                         if (it == null) {
                             raise("Can't submit step with null bidiagnose")
                         }
@@ -146,7 +146,7 @@ function jaEllerNeiToBoolean(value: 'JA' | 'NEI' | null): boolean {
     return value === 'JA'
 }
 
-function formAktivitetToStepAktivitet(value: AktivitetsPeriode): AktivitetStep {
+function formAktivitetToStepAktivitet(value: AktivitetsPeriode): NySykmeldingAktivitet {
     switch (value.aktivitet.type) {
         case 'AKTIVITET_IKKE_MULIG':
             return {

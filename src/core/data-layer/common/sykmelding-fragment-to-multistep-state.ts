@@ -1,8 +1,9 @@
 import { SykmeldingFragment } from '@queries'
 import { raise } from '@lib/ts'
-import { nySykmeldingActions, TilbakedateringGrunn } from '@core/redux/reducers/ny-sykmelding'
+import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
 
-type Payload = Parameters<typeof nySykmeldingActions.completeMainStep>[0]
+type Payload = Parameters<typeof nySykmeldingActions.completeForm>[0]
 
 export function sykmeldingFragmentToMainStepStateNoAktivitet(
     sykmelding: SykmeldingFragment,

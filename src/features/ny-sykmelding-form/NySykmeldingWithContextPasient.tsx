@@ -20,7 +20,7 @@ function NySykmeldingWithContextPasient(): ReactElement {
     useEffect(() => {
         if (data?.pasient != null) {
             dispatch(
-                nySykmeldingActions.autoPatient({
+                nySykmeldingActions.activePatient({
                     type: 'auto',
                     ident: data.pasient.ident,
                     navn: data.pasient.navn,

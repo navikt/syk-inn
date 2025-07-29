@@ -2,10 +2,10 @@ import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
 import { SykmeldingFragment } from '@queries'
-import { AktivitetStep, nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingAktivitet, nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { sykmeldingFragmentToMainStepStateNoAktivitet } from '@data-layer/common/sykmelding-fragment-to-multistep-state'
 
-type Payload = Parameters<typeof nySykmeldingActions.completeMainStep>[0]
+type Payload = Parameters<typeof nySykmeldingActions.completeForm>[0]
 
 export function dupliserSykmelding(sykmelding: SykmeldingFragment): Payload {
     return {
@@ -14,7 +14,7 @@ export function dupliserSykmelding(sykmelding: SykmeldingFragment): Payload {
     }
 }
 
-function toDuplisertAktivitet(aktivitet: SykmeldingFragment['values']['aktivitet'][0]): AktivitetStep | null {
+function toDuplisertAktivitet(aktivitet: SykmeldingFragment['values']['aktivitet'][0]): NySykmeldingAktivitet | null {
     switch (aktivitet.__typename) {
         case 'AktivitetIkkeMulig':
             return {
@@ -29,7 +29,7 @@ function toDuplisertAktivitet(aktivitet: SykmeldingFragment['values']['aktivitet
                     arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? [],
                     annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
                 },
-            } satisfies AktivitetStep
+            } satisfies NySykmeldingAktivitet
 
         case 'Gradert':
             return {
@@ -37,7 +37,7 @@ function toDuplisertAktivitet(aktivitet: SykmeldingFragment['values']['aktivitet
                 fom: aktivitet.fom,
                 tom: aktivitet.tom,
                 grad: aktivitet.grad,
-            } satisfies AktivitetStep
+            } satisfies NySykmeldingAktivitet
 
         case 'Reisetilskudd':
         case 'Avventende':

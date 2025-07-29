@@ -3,7 +3,7 @@ import { DefaultValues } from 'react-hook-form'
 
 import { dateOnly } from '@lib/date'
 import { DraftValues } from '@data-layer/draft/draft-schema'
-import { MainSectionValues } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 
 import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
 import { createDefaultFormValues } from './form-default-values'
@@ -189,7 +189,7 @@ const fullDraft: DraftValues = {
     yrkesskade: { yrkesskade: true, skadedato: '2024-11-20' },
 }
 
-const fullExistingStateValues: MainSectionValues = {
+const fullExistingStateValues: NySykmeldingFormState = {
     arbeidsforhold: { harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Form values Arbeidsgiver' },
     aktiviteter: [
         { type: 'GRADERT', fom: '2025-02-01', tom: '2025-02-14', grad: 40 },

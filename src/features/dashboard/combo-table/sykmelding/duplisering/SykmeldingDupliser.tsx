@@ -18,7 +18,7 @@ export function DupliserSykmeldingButton({ sykmelding }: { sykmelding: Sykmeldin
             <SlowNextLinkButton
                 href={`/fhir/ny/${nextDraftId.current}`}
                 onClick={() => {
-                    dispatch(nySykmeldingActions.completeMainStep(dupliserSykmelding(sykmelding)))
+                    dispatch(nySykmeldingActions.completeForm(dupliserSykmelding(sykmelding)))
                 }}
                 icon={<TabsAddIcon aria-hidden />}
                 variant="tertiary"

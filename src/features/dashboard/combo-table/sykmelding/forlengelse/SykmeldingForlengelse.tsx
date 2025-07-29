@@ -18,7 +18,7 @@ export function ForlengSykmeldingButton({ sykmelding }: { sykmelding: Sykmelding
             <SlowNextLinkButton
                 href={`/fhir/ny/${nextDraftId.current}`}
                 onClick={() => {
-                    dispatch(nySykmeldingActions.completeMainStep(forlengSykmelding(sykmelding)))
+                    dispatch(nySykmeldingActions.completeForm(forlengSykmelding(sykmelding)))
                 }}
                 icon={<ChevronRightDoubleCircleIcon aria-hidden />}
                 variant="tertiary"

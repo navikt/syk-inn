@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/client'
 import { cn } from '@lib/tw'
 import { raise } from '@lib/ts'
 import { DiagnoseFragment, DiagnoseSearchDocument } from '@queries'
+import { Diagnose, DiagnoseSystem } from '@data-layer/common/diagnose'
 
 import {
     AkselifiedCombobox,
@@ -20,17 +21,13 @@ import {
     useStoreState,
 } from './AkselifiedCombobox'
 
-export type DiagnoseSystem = 'ICD10' | 'ICPC2'
-
-export type DiagnoseSuggestion = { system: DiagnoseSystem; code: string; text: string }
-
 interface Props {
     id?: string
     className?: string
-    value: DiagnoseSuggestion | null
+    value: Diagnose | null
     label: string
     description?: string
-    onSelect: (value: DiagnoseSuggestion) => void
+    onSelect: (value: Diagnose) => void
     onChange: () => void
     onBlur: () => void
     error: string | undefined
@@ -187,11 +184,11 @@ function useSuggestions(value: string): {
     return { isLoading: loading, hasError: error != null, suggestions }
 }
 
-function createUniqueValue(suggestion: DiagnoseSuggestion): string {
+function createUniqueValue(suggestion: Diagnose): string {
     return `${suggestion.code} - ${suggestion.system}`
 }
 
-function unwrapUniqueValue(value: string): Pick<DiagnoseSuggestion, 'code' | 'system'> {
+function unwrapUniqueValue(value: string): Pick<Diagnose, 'code' | 'system'> {
     const [code, system] = value.split(' - ')
 
     return {

@@ -1,6 +1,6 @@
-import { AktivitetStep } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingAktivitet } from '@core/redux/reducers/ny-sykmelding'
 
-export function aktivitetDescription(aktivitet: AktivitetStep): string {
+export function aktivitetDescription(aktivitet: NySykmeldingAktivitet): string {
     switch (aktivitet.type) {
         case 'AKTIVITET_IKKE_MULIG':
             return `Aktivitet ikke mulig (100% sykmeldt)`

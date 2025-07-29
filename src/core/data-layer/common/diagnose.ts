@@ -6,6 +6,7 @@ export const ICPC2_OID_VALUE = '2.16.578.1.12.4.1.1.7170'
 export type DiagnoseSystem = z.infer<typeof DiagnoseSystemSchema>
 export const DiagnoseSystemSchema = z.enum(['ICD10', 'ICPC2'])
 
+export type Diagnose = z.infer<typeof DiagnoseSchema>
 export const DiagnoseSchema = z.object({
     system: DiagnoseSystemSchema,
     code: z.string(),

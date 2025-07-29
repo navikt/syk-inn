@@ -5,12 +5,12 @@ import * as R from 'remeda'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
 import { useAppSelector } from '@core/redux/hooks'
 import {
-    AktivitetStep,
-    DiagnoseStep,
-    PasientStep,
-    TilbakedateringGrunn,
-    TilbakedateringStep,
+    NySykmeldingAktivitet,
+    NySykmeldingDiagnoser,
+    NySykmeldingTilbakedatering,
+    ActivePatient,
 } from '@core/redux/reducers/ny-sykmelding'
+import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
 
 import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
 import { useFormStep } from '../steps/useFormStep'
@@ -91,7 +91,7 @@ function FormValuesSummary({ className }: Props): ReactElement {
     )
 }
 
-function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[] | null }): ReactElement {
+function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: NySykmeldingAktivitet[] | null }): ReactElement {
     if (aktiviteter == null) {
         return (
             <FormSummary.Answer>
@@ -165,7 +165,11 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: AktivitetStep[]
     )
 }
 
-function TilbakedateringSummaryAnswers({ tilbakedatering }: { tilbakedatering: TilbakedateringStep }): ReactElement {
+function TilbakedateringSummaryAnswers({
+    tilbakedatering,
+}: {
+    tilbakedatering: NySykmeldingTilbakedatering
+}): ReactElement {
     return (
         <>
             <FormSummary.Answer>
@@ -197,7 +201,7 @@ function tilbakedateringGrunnToReadable(grunn: TilbakedateringGrunn): string {
     }
 }
 
-function DiagnoseSummaryAnswers({ diagnose }: { diagnose: DiagnoseStep | null }): ReactElement {
+function DiagnoseSummaryAnswers({ diagnose }: { diagnose: NySykmeldingDiagnoser | null }): ReactElement {
     if (diagnose == null) {
         return (
             <FormSummary.Answer>
@@ -239,7 +243,7 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: DiagnoseStep | null })
     )
 }
 
-function PatientSummaryAnswers({ pasient }: { pasient: PasientStep | null }): ReactElement {
+function PatientSummaryAnswers({ pasient }: { pasient: ActivePatient | null }): ReactElement {
     if (pasient == null) {
         return (
             <FormSummary.Answer>

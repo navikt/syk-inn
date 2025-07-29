@@ -11,7 +11,7 @@ import {
 } from 'react-hook-form'
 
 import { ArbeidsrelatertArsakType, DiagnoseFragment } from '@queries'
-import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
+import { Diagnose } from '@data-layer/common/diagnose'
 
 export type NySykmeldingSuggestions = {
     diagnose: {
@@ -82,8 +82,8 @@ export type NySykmeldingMainFormValues = {
     arbeidsforhold: ArbeidsforholdField
     perioder: AktivitetsPeriode[]
     diagnoser: {
-        hoved: DiagnoseSuggestion | null
-        bidiagnoser: (DiagnoseSuggestion | null)[]
+        hoved: Diagnose | null
+        bidiagnoser: (Diagnose | null)[]
     }
     tilbakedatering: TilbakedateringField | null
     meldinger: MeldingerField
