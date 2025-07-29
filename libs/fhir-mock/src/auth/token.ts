@@ -54,7 +54,7 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
     })
 }
 
-export async function assertConfidentialClient(
+async function assertConfidentialClient(
     body: FormData,
     headers: Record<string, string>,
     client: FhirClient,

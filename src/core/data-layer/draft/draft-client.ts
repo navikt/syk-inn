@@ -22,7 +22,7 @@ type ValkeyDraftEntry = DraftEntryCore & {
     values: string
 }
 
-export type DraftEntry = DraftEntryCore & {
+type DraftEntry = DraftEntryCore & {
     // Parsed and validated JSON object
     values: DraftValues
 }

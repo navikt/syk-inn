@@ -17,7 +17,7 @@ type ScenarioCreator = () => Scenario
 
 export type Scenarios = keyof typeof scenarios
 
-export const simpleScenarios = {
+const simpleScenarios = {
     normal: {
         description: 'Normal user with a few previous sykmeldinger, one current',
         scenario: () => ({

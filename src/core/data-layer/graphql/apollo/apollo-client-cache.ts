@@ -21,7 +21,7 @@ export type CacheIds = {
     pasient: Pick<NonNullable<Query['pasient']>, '__typename' | 'ident'>
 }
 
-export type QueryFieldPolicies = Record<keyof Query, FieldReadFunction<unknown> | undefined>
+type QueryFieldPolicies = Record<keyof Query, FieldReadFunction<unknown> | undefined>
 
 /**
  * These type policies are used to point queries such as `sykmelding(id: "123")` to the correct cache

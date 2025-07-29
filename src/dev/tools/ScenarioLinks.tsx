@@ -50,7 +50,7 @@ function ScenarioLinks(): ReactElement {
     )
 }
 
-export const fhirLaunchUrl = `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}` as const
+const fhirLaunchUrl = `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}` as const
 
 function createScenarioUrl(scenario: string): string {
     return pathWithBasePath(`/set-scenario/${scenario}?returnTo=${encodeURIComponent(fhirLaunchUrl)}`)
