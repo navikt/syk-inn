@@ -1,6 +1,6 @@
 import { expect, describe, test } from 'vitest'
 
-import { continiousSykefravaer } from '@components/dashboard/dumb-stats/continuous-sykefravaer-utils'
+import { continiousSykefravaer } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 import { SykmeldingFragment } from '@queries'
 
 describe('continiousSykefravaer', () => {

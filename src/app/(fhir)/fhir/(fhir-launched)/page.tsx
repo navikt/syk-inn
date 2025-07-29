@@ -5,9 +5,9 @@ import React, { ReactElement } from 'react'
 import { Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
-import OpprettNySykmeldingCard from '@components/dashboard/OpprettNySykmeldingCard'
+import OpprettNySykmeldingCard from '@features/dashboard/OpprettNySykmeldingCard'
 import { KonsultasjonDocument, PasientDocument } from '@queries'
-import ComboTableCard from '@components/dashboard/ComboTableCard'
+import ComboTableCard from '@features/dashboard/ComboTableCard'
 
 function DashboardPage(): ReactElement {
     const pasientQuery = useQuery(PasientDocument)

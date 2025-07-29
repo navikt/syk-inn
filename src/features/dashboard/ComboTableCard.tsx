@@ -4,10 +4,10 @@ import { useQuery } from '@apollo/client'
 import { Alert, BodyShort, Heading, Skeleton, Table } from '@navikt/ds-react'
 import { FlowerPetalsIcon } from '@navikt/aksel-icons'
 
-import DashboardCard from '@components/dashboard/card/DashboardCard'
+import DashboardCard from '@features/dashboard/card/DashboardCard'
 import { AllSykmeldingerDocument, GetAllDraftsDocument } from '@queries'
-import { ComboTable, ComboTableHeader } from '@components/dashboard/combo-table/ComboTable'
-import DashboardTable from '@components/dashboard/table/DashboardTable'
+import { ComboTable, ComboTableHeader } from '@features/dashboard/combo-table/ComboTable'
+import DashboardTable from '@features/dashboard/table/DashboardTable'
 import useOnFocus from '@lib/hooks/useOnFocus'
 
 function ComboTableCard({ className }: { className?: string }): ReactElement {

@@ -4,8 +4,8 @@ import { ChevronRightIcon } from '@navikt/aksel-icons'
 
 import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
 import { SykmeldingFragment } from '@queries'
-import { ForlengSykmeldingButton } from '@components/dashboard/combo-table/sykmelding/forlengelse/SykmeldingForlengelse'
-import { DupliserSykmeldingButton } from '@components/dashboard/combo-table/sykmelding/duplisering/SykmeldingDupliser'
+import { ForlengSykmeldingButton } from '@features/dashboard/combo-table/sykmelding/forlengelse/SykmeldingForlengelse'
+import { DupliserSykmeldingButton } from '@features/dashboard/combo-table/sykmelding/duplisering/SykmeldingDupliser'
 
 type SykmeldingActionProps = {
     sykmeldingId: string

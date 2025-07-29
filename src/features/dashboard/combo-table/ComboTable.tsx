@@ -8,16 +8,16 @@ import {
     draftAktivitetText,
     draftArbeidsforholdText,
     draftDiagnoseText,
-} from '@components/dashboard/combo-table/draft/draft-utils'
-import { DraftActions } from '@components/dashboard/combo-table/draft/DraftActions'
-import SykmeldingPeriodeLink from '@components/dashboard/combo-table/sykmelding/SykmeldingPeriodeLink'
+} from '@features/dashboard/combo-table/draft/draft-utils'
+import { DraftActions } from '@features/dashboard/combo-table/draft/DraftActions'
+import SykmeldingPeriodeLink from '@features/dashboard/combo-table/sykmelding/SykmeldingPeriodeLink'
 import {
     sykmeldingArbeidsgiverText,
     sykmeldingDiagnoseText,
     sykmeldingGradText,
-} from '@components/dashboard/combo-table/sykmelding/sykmelding-utils'
-import { SykmeldingActions } from '@components/dashboard/combo-table/sykmelding/SykmeldingActions'
-import DraftPeriodeLink from '@components/dashboard/combo-table/draft/DraftPeriodeLink'
+} from '@features/dashboard/combo-table/sykmelding/sykmelding-utils'
+import { SykmeldingActions } from '@features/dashboard/combo-table/sykmelding/SykmeldingActions'
+import DraftPeriodeLink from '@features/dashboard/combo-table/draft/DraftPeriodeLink'
 import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 

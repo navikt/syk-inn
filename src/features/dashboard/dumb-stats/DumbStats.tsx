@@ -5,7 +5,7 @@ import * as R from 'remeda'
 import { PieChart } from 'react-minimal-pie-chart'
 
 import { AllSykmeldingerDocument, GetAllDraftsDocument, SykmeldingFragment } from '@queries'
-import { continiousSykefravaer } from '@components/dashboard/dumb-stats/continuous-sykefravaer-utils'
+import { continiousSykefravaer } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
 
 function DumbStats(): ReactElement {

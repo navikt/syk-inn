@@ -3,10 +3,10 @@ import { Alert, BodyShort, Button, ConfirmationPanel, Detail, Heading, Skeleton 
 import { useQuery } from '@apollo/client'
 
 import { PasientDocument } from '@queries'
-import DashboardCard from '@components/dashboard/card/DashboardCard'
+import DashboardCard from '@features/dashboard/card/DashboardCard'
 import { ShortcutButtonLink } from '@components/shortcut/ShortcutButton'
 import { cn } from '@lib/tw'
-import DumbStats from '@components/dashboard/dumb-stats/DumbStats'
+import DumbStats from '@features/dashboard/dumb-stats/DumbStats'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
 
