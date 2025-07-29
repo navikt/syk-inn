@@ -6,7 +6,7 @@ import { cn } from '@lib/tw'
 import { PasientDocument } from '@queries'
 import { ShortcutButtonLink } from '@components/shortcut/ShortcutButton'
 import { useAppDispatch } from '@core/redux/hooks'
-import { nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
 import DumbStats from './dumb-stats/DumbStats'
 import DashboardCard from './card/DashboardCard'
@@ -23,7 +23,7 @@ function OpprettNySykmeldingCard({ className }: { className?: string }): ReactEl
          *
          * If user returns to a ID it should be loaded from the draft, and any new ID should start with a fresh form.
          */
-        dispatch(nySykmeldingMultistepActions.reset())
+        dispatch(nySykmeldingActions.reset())
     }, [dispatch])
 
     return (

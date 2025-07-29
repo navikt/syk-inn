@@ -19,5 +19,4 @@ const metadataSlice = createSlice({
 })
 
 export const metadataActions = metadataSlice.actions
-
-export default metadataSlice.reducer
+export const metadataReducer = metadataSlice.reducer

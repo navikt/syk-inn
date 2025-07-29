@@ -5,7 +5,7 @@ import { ChevronRightDoubleCircleIcon } from '@navikt/aksel-icons'
 import { SykmeldingFragment } from '@queries'
 import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
 import { useAppDispatch } from '@core/redux/hooks'
-import { nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
 import { forlengSykmelding } from './forlengelse-mappers'
 
@@ -18,7 +18,7 @@ export function ForlengSykmeldingButton({ sykmelding }: { sykmelding: Sykmelding
             <SlowNextLinkButton
                 href={`/fhir/ny/${nextDraftId.current}`}
                 onClick={() => {
-                    dispatch(nySykmeldingMultistepActions.completeMainStep(forlengSykmelding(sykmelding)))
+                    dispatch(nySykmeldingActions.completeMainStep(forlengSykmelding(sykmelding)))
                 }}
                 icon={<ChevronRightDoubleCircleIcon aria-hidden />}
                 variant="tertiary"

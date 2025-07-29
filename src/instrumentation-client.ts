@@ -1,8 +1,7 @@
 import { configureLogger, logger } from '@navikt/next-logger'
 
 import { getFaro } from '@core/otel/faro'
-
-import { bundledEnv } from './lib/env'
+import { bundledEnv } from '@lib/env'
 
 configureLogger({
     basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? undefined,

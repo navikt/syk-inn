@@ -18,11 +18,7 @@ import {
 import { spanBrowserAsync, withSpanBrowserAsync } from '@core/otel/browser'
 import { useAppSelector } from '@core/redux/hooks'
 import { useMode } from '@core/providers/Modes'
-import {
-    AktivitetStep,
-    NySykmeldingMultiStepState,
-    TilbakedateringStep,
-} from '@core/redux/reducers/ny-sykmelding-multistep'
+import { AktivitetStep, NySykmeldingMultiStepState, TilbakedateringStep } from '@core/redux/reducers/ny-sykmelding'
 
 import { useDraftId } from './draft/useDraftId'
 
@@ -33,7 +29,7 @@ export function useOpprettSykmeldingMutation(): {
     const mode = useMode()
     const draftId = useDraftId()
     const router = useRouter()
-    const formState = useAppSelector((state) => state.nySykmeldingMultistep)
+    const formState = useAppSelector((state) => state.nySykmelding)
     const [mutate, result] = useMutation(OpprettSykmeldingDocument, {
         // In case user navigates back to the dashboard
         refetchQueries: [{ query: AllSykmeldingerDocument }, { query: GetAllDraftsDocument }],

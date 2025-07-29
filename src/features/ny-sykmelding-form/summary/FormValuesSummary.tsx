@@ -10,7 +10,7 @@ import {
     PasientStep,
     TilbakedateringGrunn,
     TilbakedateringStep,
-} from '@core/redux/reducers/ny-sykmelding-multistep'
+} from '@core/redux/reducers/ny-sykmelding'
 
 import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
 import { useFormStep } from '../steps/useFormStep'
@@ -23,7 +23,7 @@ type Props = {
 
 function FormValuesSummary({ className }: Props): ReactElement {
     const [, setStep] = useFormStep()
-    const { pasient, values } = useAppSelector((state) => state.nySykmeldingMultistep)
+    const { pasient, values } = useAppSelector((state) => state.nySykmelding)
 
     return (
         <div className={className}>

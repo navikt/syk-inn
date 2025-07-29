@@ -3,7 +3,7 @@ import { DefaultValues } from 'react-hook-form'
 
 import { dateOnly } from '@lib/date'
 import { DraftValues } from '@data-layer/draft/draft-schema'
-import { MainSectionValues } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { MainSectionValues } from '@core/redux/reducers/ny-sykmelding'
 
 import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
 import { createDefaultFormValues } from './form-default-values'

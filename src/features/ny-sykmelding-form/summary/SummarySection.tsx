@@ -8,7 +8,7 @@ import { SimpleReveal } from '@components/animation/Reveal'
 import { BehandlerDocument, OutcomeFragment } from '@data-layer/graphql/queries.generated'
 import { ShortcutButton } from '@components/shortcut/ShortcutButton'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
-import { nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
 import BehandlerSummary from '../summary/BehandlerSummary'
 import FormValuesSummary from '../summary/FormValuesSummary'
@@ -20,7 +20,7 @@ import styles from './SummarySection.module.css'
 
 function SummarySection(): ReactElement {
     const [, setStep] = useFormStep()
-    const formState = useAppSelector((state) => state.nySykmeldingMultistep)
+    const formState = useAppSelector((state) => state.nySykmelding)
     const nySykmelding = useOpprettSykmeldingMutation()
     const dispatch = useAppDispatch()
     const behandlerQuery = useQuery(BehandlerDocument)
@@ -50,7 +50,7 @@ function SummarySection(): ReactElement {
                 <div className="flex flex-col gap-3 justify-end items-end">
                     <Checkbox
                         value={formState.skalSkjermes ?? false}
-                        onChange={(e) => dispatch(nySykmeldingMultistepActions.setSkalSkjermes(e.target.checked))}
+                        onChange={(e) => dispatch(nySykmeldingActions.setSkalSkjermes(e.target.checked))}
                     >
                         <option>Pasienten skal skjermes for medisinske opplysninger</option>
                     </Checkbox>

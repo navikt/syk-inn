@@ -98,7 +98,7 @@ const initialState: NySykmeldingMultiStepState = {
     skalSkjermes: null,
 }
 
-const nySykmeldingMultistep = createSlice({
+export const nySykmeldingSlice = createSlice({
     name: 'ny-sykmelding-multistep',
     initialState,
     reducers: {
@@ -126,7 +126,3 @@ const nySykmeldingMultistep = createSlice({
         },
     },
 })
-
-export const nySykmeldingMultistepActions = nySykmeldingMultistep.actions
-
-export default nySykmeldingMultistep.reducer

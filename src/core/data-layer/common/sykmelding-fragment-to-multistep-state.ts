@@ -1,8 +1,8 @@
 import { SykmeldingFragment } from '@queries'
 import { raise } from '@lib/ts'
-import { nySykmeldingMultistepActions, TilbakedateringGrunn } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { nySykmeldingActions, TilbakedateringGrunn } from '@core/redux/reducers/ny-sykmelding'
 
-type Payload = Parameters<typeof nySykmeldingMultistepActions.completeMainStep>[0]
+type Payload = Parameters<typeof nySykmeldingActions.completeMainStep>[0]
 
 export function sykmeldingFragmentToMainStepStateNoAktivitet(
     sykmelding: SykmeldingFragment,

@@ -7,7 +7,7 @@ import { DeleteDraftDocument, GetAllDraftsDocument, OpprettSykmeldingDraft } fro
 import { ShortcutButton } from '@components/shortcut/ShortcutButton'
 import { spanBrowserAsync } from '@core/otel/browser'
 import { useAppDispatch } from '@core/redux/hooks'
-import { nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { useMode } from '@core/providers/Modes'
 
 import { useFormContext } from '../form'
@@ -21,7 +21,7 @@ export function LagreDraftButton(): ReactElement {
     const [mutation, draftResult] = useSaveDraft({
         returnToDash: true,
         onCompleted: () => {
-            dispatch(nySykmeldingMultistepActions.reset())
+            dispatch(nySykmeldingActions.reset())
         },
     })
     const dispatch = useAppDispatch()
@@ -60,7 +60,7 @@ function ForkastDraftButton(): ReactElement {
             router.replace(redirectPath, { scroll: true })
 
             requestAnimationFrame(() => {
-                dispatch(nySykmeldingMultistepActions.reset())
+                dispatch(nySykmeldingActions.reset())
             })
         },
         refetchQueries: [{ query: GetAllDraftsDocument }],

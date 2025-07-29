@@ -24,7 +24,7 @@ import { pathWithBasePath } from '@lib/url'
 import { cleanId } from '@lib/string'
 import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
 import { useAppDispatch } from '@core/redux/hooks'
-import { nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { dupliserSykmelding } from '@features/dashboard/combo-table/sykmelding/duplisering/duplisering-mapper'
 import AssableNextLink from '@components/misc/AssableNextLink'
 
@@ -89,7 +89,7 @@ function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }
                 <SlowNextLinkButton
                     href={`/fhir/ny/${nextDraftId.current}`}
                     onClick={() => {
-                        dispatch(nySykmeldingMultistepActions.completeMainStep(dupliserSykmelding(sykmelding)))
+                        dispatch(nySykmeldingActions.completeMainStep(dupliserSykmelding(sykmelding)))
                     }}
                     icon={<TabsAddIcon aria-hidden />}
                     variant="tertiary"

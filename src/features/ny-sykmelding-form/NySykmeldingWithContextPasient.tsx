@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/client'
 import { PasientDocument } from '@queries'
 import { isSmartSessionInvalid } from '@data-layer/graphql/error/Errors'
 import { useAppDispatch } from '@core/redux/hooks'
-import { nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
 import { NoPractitionerSession } from '../../app/(fhir)/fhir/(fhir-launched)/launched-errors'
 
@@ -20,7 +20,7 @@ function NySykmeldingWithContextPasient(): ReactElement {
     useEffect(() => {
         if (data?.pasient != null) {
             dispatch(
-                nySykmeldingMultistepActions.autoPatient({
+                nySykmeldingActions.autoPatient({
                     type: 'auto',
                     ident: data.pasient.ident,
                     navn: data.pasient.navn,

@@ -1,4 +1,4 @@
-import { AktivitetStep } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { AktivitetStep } from '@core/redux/reducers/ny-sykmelding'
 
 export function aktivitetDescription(aktivitet: AktivitetStep): string {
     switch (aktivitet.type) {

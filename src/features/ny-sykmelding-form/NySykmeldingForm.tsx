@@ -11,7 +11,7 @@ import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButton'
 import { DiagnoseSuggestion } from '@components/form/diagnose-combobox/DiagnoseCombobox'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { DraftValues } from '@data-layer/draft/draft-schema'
-import { AktivitetStep, nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { AktivitetStep, nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
 import BidiagnoseSection from './diagnose/bidiagnose/BidiagnoseSection'
 import ArbeidsforholdSection from './arbeidsgiver/ArbeidsforholdSection'
@@ -35,7 +35,7 @@ type Props = {
 }
 
 function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactElement {
-    const initialValues = useAppSelector((state) => state.nySykmeldingMultistep.values)
+    const initialValues = useAppSelector((state) => state.nySykmelding.values)
     const onSubmit = useHandleFormSubmit()
     const form = useForm<NySykmeldingMainFormValues>({
         defaultValues: createDefaultFormValues({
@@ -100,7 +100,7 @@ function useHandleFormSubmit() {
 
     return async (values: NySykmeldingMainFormValues): Promise<void> => {
         dispatch(
-            nySykmeldingMultistepActions.completeMainStep({
+            nySykmeldingActions.completeMainStep({
                 arbeidsforhold: {
                     harFlereArbeidsforhold: jaEllerNeiToBoolean(values.arbeidsforhold.harFlereArbeidsforhold),
                     sykmeldtFraArbeidsforhold: values.arbeidsforhold.sykmeldtFraArbeidsforhold,

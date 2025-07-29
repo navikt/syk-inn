@@ -5,10 +5,10 @@ import { addDays } from 'date-fns'
 import { SykmeldingFragment } from '@queries'
 import { raise } from '@lib/ts'
 import { dateOnly } from '@lib/date'
-import { AktivitetStep, nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { AktivitetStep, nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { sykmeldingFragmentToMainStepStateNoAktivitet } from '@data-layer/common/sykmelding-fragment-to-multistep-state'
 
-type Payload = Parameters<typeof nySykmeldingMultistepActions.completeMainStep>[0]
+type Payload = Parameters<typeof nySykmeldingActions.completeMainStep>[0]
 
 export function forlengSykmelding(sykmelding: SykmeldingFragment): Payload {
     const forlengetAktivitet = toForlengelsesAktivitet(sykmelding.values.aktivitet)

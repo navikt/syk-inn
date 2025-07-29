@@ -12,7 +12,7 @@ import {
     MainSectionValues,
     MeldingerStep,
     TilbakedateringStep,
-} from '@core/redux/reducers/ny-sykmelding-multistep'
+} from '@core/redux/reducers/ny-sykmelding'
 import { DraftValues } from '@data-layer/draft/draft-schema'
 
 import { AktivitetsPeriode, NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
