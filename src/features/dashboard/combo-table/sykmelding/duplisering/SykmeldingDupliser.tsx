@@ -7,8 +7,6 @@ import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
-import { dupliserSykmelding } from './duplisering-mapper'
-
 export function DupliserSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
     const nextDraftId = useRef(crypto.randomUUID())
     const dispatch = useAppDispatch()
@@ -18,7 +16,7 @@ export function DupliserSykmeldingButton({ sykmelding }: { sykmelding: Sykmeldin
             <SlowNextLinkButton
                 href={`/fhir/ny/${nextDraftId.current}`}
                 onClick={() => {
-                    dispatch(nySykmeldingActions.completeForm(dupliserSykmelding(sykmelding)))
+                    dispatch(nySykmeldingActions.dupliser(sykmelding))
                 }}
                 icon={<TabsAddIcon aria-hidden />}
                 variant="tertiary"

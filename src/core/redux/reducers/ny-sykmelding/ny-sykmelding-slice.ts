@@ -1,8 +1,11 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
-import { ActivePatient, AutoPatient } from '@core/redux/reducers/ny-sykmelding/patient'
+import { SykmeldingFragment } from '@queries'
 import { NySykmeldingFormPayload, NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding/form'
+import { ActivePatient, AutoPatient } from '@core/redux/reducers/ny-sykmelding/patient'
+import { dupliserSykmelding } from '@core/redux/reducers/ny-sykmelding/mappers/duplisering'
+import { forlengSykmelding } from '@core/redux/reducers/ny-sykmelding/mappers/forlengelse'
 
 import { SummarySectionValues } from './summary'
 
@@ -27,6 +30,12 @@ export const nySykmeldingSlice = createSlice({
         },
         completeForm(state, action: PayloadAction<NySykmeldingFormPayload>) {
             state.values = action.payload
+        },
+        dupliser(state, action: PayloadAction<SykmeldingFragment>) {
+            state.values = dupliserSykmelding(action.payload)
+        },
+        forleng(state, action: PayloadAction<SykmeldingFragment>) {
+            state.values = forlengSykmelding(action.payload)
         },
         setSkalSkjermes(state, action: PayloadAction<boolean | null>) {
             if (state.summary == null) state.summary = { skalSkjermes: action.payload }

@@ -7,8 +7,6 @@ import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
-import { forlengSykmelding } from './forlengelse-mappers'
-
 export function ForlengSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
     const nextDraftId = useRef(crypto.randomUUID())
     const dispatch = useAppDispatch()
@@ -18,7 +16,7 @@ export function ForlengSykmeldingButton({ sykmelding }: { sykmelding: Sykmelding
             <SlowNextLinkButton
                 href={`/fhir/ny/${nextDraftId.current}`}
                 onClick={() => {
-                    dispatch(nySykmeldingActions.completeForm(forlengSykmelding(sykmelding)))
+                    dispatch(nySykmeldingActions.forleng(sykmelding))
                 }}
                 icon={<ChevronRightDoubleCircleIcon aria-hidden />}
                 variant="tertiary"

@@ -2,12 +2,10 @@ import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
 import { SykmeldingFragment } from '@queries'
-import { NySykmeldingAktivitet, nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingAktivitet, NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import { sykmeldingFragmentToMainStepStateNoAktivitet } from '@data-layer/common/sykmelding-fragment-to-multistep-state'
 
-type Payload = Parameters<typeof nySykmeldingActions.completeForm>[0]
-
-export function dupliserSykmelding(sykmelding: SykmeldingFragment): Payload {
+export function dupliserSykmelding(sykmelding: SykmeldingFragment): NySykmeldingFormState {
     return {
         ...sykmeldingFragmentToMainStepStateNoAktivitet(sykmelding),
         aktiviteter: sykmelding.values.aktivitet.map(toDuplisertAktivitet).filter(R.isNonNull),
