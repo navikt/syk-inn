@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-import { toReadableDatePeriod } from '@utils/date'
+import { toReadableDatePeriod } from '@lib/date'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { daysAgo, inDays, inputDate } from './utils/date-utils'

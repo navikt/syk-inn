@@ -1,6 +1,6 @@
 import { addDays, format, subDays } from 'date-fns'
 
-import { dateOnly } from '@utils/date'
+import { dateOnly } from '@lib/date'
 
 export const today = (): string => dateOnly(new Date())
 

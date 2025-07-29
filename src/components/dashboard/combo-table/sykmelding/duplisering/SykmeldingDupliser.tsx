@@ -4,9 +4,8 @@ import { TabsAddIcon } from '@navikt/aksel-icons'
 
 import { SykmeldingFragment } from '@queries'
 import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
-
-import { useAppDispatch } from '../../../../../providers/redux/hooks'
-import { nySykmeldingMultistepActions } from '../../../../../providers/redux/reducers/ny-sykmelding-multistep'
+import { useAppDispatch } from '@core/redux/hooks'
+import { nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
 
 import { dupliserSykmelding } from './duplisering-mapper'
 

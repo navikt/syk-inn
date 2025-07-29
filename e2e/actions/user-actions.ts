@@ -3,7 +3,7 @@ import { add } from 'date-fns'
 import { GraphQLRequest } from '@apollo/client'
 
 import { OpprettSykmeldingDocument } from '@queries'
-import { toReadableDatePeriod } from '@utils/date'
+import { toReadableDatePeriod } from '@lib/date'
 
 import { clickAndWait, waitForGqlRequest } from '../utils/request-utils'
 import { inputDate } from '../utils/date-utils'

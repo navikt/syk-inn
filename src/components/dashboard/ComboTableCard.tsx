@@ -8,8 +8,7 @@ import DashboardCard from '@components/dashboard/card/DashboardCard'
 import { AllSykmeldingerDocument, GetAllDraftsDocument } from '@queries'
 import { ComboTable, ComboTableHeader } from '@components/dashboard/combo-table/ComboTable'
 import DashboardTable from '@components/dashboard/table/DashboardTable'
-
-import useOnFocus from '../../hooks/useOnFocus'
+import useOnFocus from '@lib/hooks/useOnFocus'
 
 function ComboTableCard({ className }: { className?: string }): ReactElement {
     const allDrafts = useQuery(GetAllDraftsDocument)

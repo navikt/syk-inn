@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { logger as pinoLogger } from '@navikt/next-logger'
 
-import { isE2E, isLocal, isDemo } from '@utils/env'
+import { isE2E, isLocal, isDemo } from '@lib/env'
 
 import data from './data'
 

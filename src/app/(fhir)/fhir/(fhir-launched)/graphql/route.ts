@@ -1,5 +1,5 @@
-import { createApolloHandler } from '@graphql/apollo/apollo-server-utils'
-import { fhirSchema } from '@fhir/fhir-graphql-resolvers'
+import { createApolloHandler } from '@data-layer/graphql/apollo/apollo-server-utils'
+import { fhirSchema } from '@data-layer/fhir/fhir-graphql-resolvers'
 
 const handler = createApolloHandler(fhirSchema)
 

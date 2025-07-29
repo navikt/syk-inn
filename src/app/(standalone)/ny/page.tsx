@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 import { PageBlock } from '@navikt/ds-react/Page'
 
-import NySykmeldingWithContextPasient from '@components/ny-sykmelding-form/NySykmeldingWithContextPasient'
+import NySykmeldingWithContextPasient from '@features/ny-sykmelding-form/NySykmeldingWithContextPasient'
 
 async function Page(): Promise<ReactElement> {
     return (

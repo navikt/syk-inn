@@ -1,8 +1,8 @@
 import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { Heading } from '@navikt/ds-react'
 
-import { cleanId } from '@utils/string'
-import { cn } from '@utils/tw'
+import { cleanId } from '@lib/string'
+import { cn } from '@lib/tw'
 
 type Props = {
     title: string

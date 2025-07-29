@@ -3,10 +3,10 @@ import { logger } from '@navikt/next-logger'
 
 import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
-import { getHprFromFhirSession } from '@fhir/fhir-service'
-import { getFlag, getUserlessToggles, getUserToggles } from '@toggles/unleash'
-import { ToggleProvider } from '@toggles/context'
-import { spanServerAsync } from '@otel/server'
+import { getHprFromFhirSession } from '@data-layer/fhir/fhir-service'
+import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
+import { ToggleProvider } from '@core/toggles/context'
+import { spanServerAsync } from '@core/otel/server'
 
 import { NoPractitionerSession, NoValidHPR } from './launched-errors'
 

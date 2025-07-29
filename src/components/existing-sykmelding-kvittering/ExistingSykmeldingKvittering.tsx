@@ -19,10 +19,10 @@ import { useQuery } from '@apollo/client'
 import * as R from 'remeda'
 
 import { FormSection } from '@components/ui/form'
-import { toReadableDatePeriod } from '@utils/date'
+import { toReadableDatePeriod } from '@lib/date'
 import { SykmeldingSynchronization } from '@components/existing-sykmelding-kvittering/SykmeldingSynchronization'
 import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
-import { pathWithBasePath } from '@utils/url'
+import { pathWithBasePath } from '@lib/url'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 

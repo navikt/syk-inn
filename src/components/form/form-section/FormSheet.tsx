@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { cn } from '@utils/tw'
+import { cn } from '@lib/tw'
 
 function FormSheet({ children, className }: PropsWithChildren<{ className?: string }>): ReactElement {
     return (

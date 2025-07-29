@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { BodyShort, Checkbox, Heading } from '@navikt/ds-react'
 import { BriefcaseIcon, CalendarIcon, InformationSquareIcon, PillRectangleIcon } from '@navikt/aksel-icons'
 
-import { toReadableDatePeriod } from '@utils/date'
+import { toReadableDatePeriod } from '@lib/date'
 import { SykmeldingFragment } from '@queries'
 
 type SykmeldingProps = { sykmelding: SykmeldingFragment }

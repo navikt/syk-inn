@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 import { OpprettSykmeldingDocument } from '@queries'
-import { toReadableDate, toReadableDatePeriod } from '@utils/date'
+import { toReadableDate, toReadableDatePeriod } from '@lib/date'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { daysAgo, inDays, inputDate, today } from './utils/date-utils'

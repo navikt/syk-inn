@@ -3,14 +3,10 @@ import { logger } from '@navikt/next-logger'
 import { addDays } from 'date-fns'
 
 import { SykmeldingFragment } from '@queries'
-import { raise } from '@utils/ts'
-import { dateOnly } from '@utils/date'
-
-import {
-    AktivitetStep,
-    nySykmeldingMultistepActions,
-} from '../../../../../providers/redux/reducers/ny-sykmelding-multistep'
-import { sykmeldingFragmentToMainStepStateNoAktivitet } from '../../../../../data-layer/common/sykmelding-fragment-to-multistep-state'
+import { raise } from '@lib/ts'
+import { dateOnly } from '@lib/date'
+import { AktivitetStep, nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { sykmeldingFragmentToMainStepStateNoAktivitet } from '@data-layer/common/sykmelding-fragment-to-multistep-state'
 
 type Payload = Parameters<typeof nySykmeldingMultistepActions.completeMainStep>[0]
 

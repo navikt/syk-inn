@@ -4,8 +4,8 @@ import { PageBlock } from '@navikt/ds-react/Page'
 import React, { ReactElement } from 'react'
 import { BodyShort, Button, Heading } from '@navikt/ds-react'
 
-import { isLocal, isDemo } from '@utils/env'
-import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
+import { isLocal, isDemo } from '@lib/env'
+import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 
 export function NoPractitionerSession(): ReactElement {
     return (

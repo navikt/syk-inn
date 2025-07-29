@@ -3,12 +3,11 @@ import { NextRequest } from 'next/server'
 import { logger } from '@navikt/next-logger'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
-import { getApi } from '@services/api-fetcher'
-import { getHpr } from '@fhir/mappers/practitioner'
-import { getReadyClient } from '@fhir/smart/smart-client'
-import { getFlag, getUserlessToggles } from '@toggles/unleash'
-
-import { mockEngineForSession, shouldUseMockEngine } from '../../../../../../data-layer/mock-engine'
+import { getApi } from '@core/services/api-fetcher'
+import { getHpr } from '@data-layer/fhir/mappers/practitioner'
+import { getReadyClient } from '@data-layer/fhir/smart/smart-client'
+import { getFlag, getUserlessToggles } from '@core/toggles/unleash'
+import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
 
 /**
  * Proxies the PDF request to the syk-inn-api service, to the PDF is viewable from the users browser.

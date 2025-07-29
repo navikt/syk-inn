@@ -6,8 +6,8 @@ import { toast } from 'sonner'
 import { logger } from '@navikt/next-logger'
 
 import { DeleteDraftDocument } from '@queries'
-import { spanBrowserAsync } from '@otel/browser'
-import { deleteDraftIdFromList } from '@graphql/apollo/apollo-client-utils'
+import { spanBrowserAsync } from '@core/otel/browser'
+import { deleteDraftIdFromList } from '@data-layer/graphql/apollo/apollo-client-utils'
 
 export function DeleteDraftButton({ draftId }: { draftId: string }): ReactElement {
     const [deleteDraft, deleteDraftResult] = useMutation(DeleteDraftDocument, {

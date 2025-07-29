@@ -1,8 +1,8 @@
 import { test, Page } from '@playwright/test'
 
-import { ExpectedToggles } from '@toggles/toggles'
+import { ExpectedToggles } from '@core/toggles/toggles'
 
-import { Scenarios } from '../../src/data-layer/mock-engine/scenarios/scenarios'
+import { Scenarios } from '../../src/dev/mock-engine/scenarios/scenarios'
 
 export const launchPath = '/fhir/launch'
 

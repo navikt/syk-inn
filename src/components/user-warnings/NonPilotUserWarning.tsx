@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 import { BodyLong, Modal, Link as AkselLink } from '@navikt/ds-react'
 import { TestFlaskIcon } from '@navikt/aksel-icons'
 
-import { useFlag } from '@toggles/context'
+import { useFlag } from '@core/toggles/context'
 
 function NonPilotUserWarning(): ReactElement | null {
     const isPilotUser = useFlag('PILOT_USER')

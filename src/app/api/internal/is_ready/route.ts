@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { logger } from '@navikt/next-logger'
 
-import { getServerEnv } from '@utils/env'
+import { getServerEnv } from '@lib/env'
 
 export async function GET(): Promise<NextResponse> {
     try {

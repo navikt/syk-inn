@@ -2,8 +2,8 @@ import React, { ReactElement } from 'react'
 import { Alert, BodyShort, Link as AskelLink } from '@navikt/ds-react'
 import Link from 'next/link'
 
-import { isLocal, isDemo } from '@utils/env'
-import { raise } from '@utils/ts'
+import { isLocal, isDemo } from '@lib/env'
+import { raise } from '@lib/ts'
 
 function DemoWarning(): ReactElement | null {
     if (!(isLocal || isDemo)) {

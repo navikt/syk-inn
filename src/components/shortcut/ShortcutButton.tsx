@@ -5,9 +5,8 @@ import { AnimatePresence } from 'motion/react'
 
 import { FastFadeReveal } from '@components/animation/Reveal'
 import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
-
-import { Shortcut, useShortcut } from '../../lib/shortcuts/useShortcut'
-import { useCurrentModifier } from '../../lib/shortcuts/useCurrentModifier'
+import { Shortcut, useShortcut } from '@lib/hooks/shortcuts/useShortcut'
+import { useCurrentModifier } from '@lib/hooks/shortcuts/useCurrentModifier'
 
 type BaseShortcutButtonProps = {
     shortcut: Shortcut

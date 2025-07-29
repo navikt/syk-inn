@@ -1,4 +1,4 @@
-import { getAbsoluteURL } from '@utils/url'
+import { getAbsoluteURL } from '@lib/url'
 import { createFhirHandler } from '@navikt/fhir-mock-server/next'
 
 const handler = createFhirHandler({

@@ -18,9 +18,9 @@ import {
 } from '@components/dashboard/combo-table/sykmelding/sykmelding-utils'
 import { SykmeldingActions } from '@components/dashboard/combo-table/sykmelding/SykmeldingActions'
 import DraftPeriodeLink from '@components/dashboard/combo-table/draft/DraftPeriodeLink'
+import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
+import { safeParseDraft } from '@data-layer/draft/draft-schema'
 
-import { byActiveOrFutureSykmelding } from '../../../data-layer/common/sykmelding-utils'
-import { safeParseDraft } from '../../../data-layer/draft/draft-schema'
 import DashboardTable from '../table/DashboardTable'
 
 export function ComboTable({

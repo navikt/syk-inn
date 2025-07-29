@@ -3,11 +3,10 @@
 import React, { ReactElement } from 'react'
 import { BodyLong, Button, Modal } from '@navikt/ds-react'
 
-import { isLocal, isDemo } from '@utils/env'
-import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
-
-import { useAppSelector } from '../../providers/redux/hooks'
-import { useMode } from '../../providers/ModeProvider'
+import { isLocal, isDemo } from '@lib/env'
+import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
+import { useAppSelector } from '@core/redux/hooks'
+import { useMode } from '@core/providers/Modes'
 
 function LoggedOutWarning(): ReactElement | null {
     const isSessionExpired = useAppSelector((state) => state.metadata.sessionExpired)

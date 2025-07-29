@@ -14,16 +14,14 @@
         "incremental": true,
         "plugins": [{ "name": "next" }],
         "paths": {
-            "@fhir/*": ["./src/data-layer/fhir/*"],
-            "@helseid/*": ["./src/data-layer/helseid/*"],
-            "@graphql/*": ["./src/data-layer/graphql/*"],
-            "@queries": ["./src/data-layer/graphql/queries.generated.ts"],
-            "@resolvers": ["./src/data-layer/graphql/resolvers.generated.ts"],
-            "@utils/*": ["./src/utils/*"],
+            "@lib/*": ["./src/lib/*"],
+            "@core/*": ["./src/core/*"],
+            "@data-layer/*": ["./src/core/data-layer/*"],
+            "@queries": ["./src/core/data-layer/graphql/queries.generated.ts"],
+            "@resolvers": ["./src/core/data-layer/graphql/resolvers.generated.ts"],
+            "@features/*": ["./src/features/*"],
             "@components/*": ["./src/components/*"],
-            "@services/*": ["./src/services/*"],
-            "@toggles/*": ["./src/toggles/*"],
-            "@otel/*": ["./src/otel/*"]
+            "@dev/*": ["./src/dev/*"]
         },
         "target": "ES2017"
     },

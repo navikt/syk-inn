@@ -1,5 +1,5 @@
-import { createApolloHandler } from '@graphql/apollo/apollo-server-utils'
-import { helseIdSchema } from '@helseid/helseid-graphql-resolvers'
+import { createApolloHandler } from '@data-layer/graphql/apollo/apollo-server-utils'
+import { helseIdSchema } from '@data-layer/helseid/helseid-graphql-resolvers'
 
 const handler = createApolloHandler(helseIdSchema)
 

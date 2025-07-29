@@ -3,8 +3,8 @@ import React, { ReactElement, ReactNode, startTransition } from 'react'
 import { Alert, BodyShort, Button, Detail, ErrorMessage, Label } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
-import { cn } from '@utils/tw'
-import { raise } from '@utils/ts'
+import { cn } from '@lib/tw'
+import { raise } from '@lib/ts'
 import { DiagnoseFragment, DiagnoseSearchDocument } from '@queries'
 
 import {

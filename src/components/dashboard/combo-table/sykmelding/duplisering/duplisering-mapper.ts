@@ -2,12 +2,8 @@ import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
 import { SykmeldingFragment } from '@queries'
-
-import {
-    AktivitetStep,
-    nySykmeldingMultistepActions,
-} from '../../../../../providers/redux/reducers/ny-sykmelding-multistep'
-import { sykmeldingFragmentToMainStepStateNoAktivitet } from '../../../../../data-layer/common/sykmelding-fragment-to-multistep-state'
+import { AktivitetStep, nySykmeldingMultistepActions } from '@core/redux/reducers/ny-sykmelding-multistep'
+import { sykmeldingFragmentToMainStepStateNoAktivitet } from '@data-layer/common/sykmelding-fragment-to-multistep-state'
 
 type Payload = Parameters<typeof nySykmeldingMultistepActions.completeMainStep>[0]
 

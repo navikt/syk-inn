@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { BodyShort, Detail, Heading } from '@navikt/ds-react'
 
-import { pathWithBasePath } from '@utils/url'
+import { pathWithBasePath } from '@lib/url'
 
 type Props = {
     sykmeldingId: string

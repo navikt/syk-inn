@@ -2,7 +2,7 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 import * as Combobox from '@ariakit/react/combobox'
 import { Label, Loader } from '@navikt/ds-react'
 
-import { cn } from '@utils/tw'
+import { cn } from '@lib/tw'
 
 import styles from './AkselifiedCombobox.module.css'
 

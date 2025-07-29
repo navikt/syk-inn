@@ -1,8 +1,7 @@
 import { isValid, parseISO } from 'date-fns'
 
-import { toReadableDate, toReadableDatePeriod } from '@utils/date'
-
-import { DraftValues } from '../../../../data-layer/draft/draft-schema'
+import { toReadableDate, toReadableDatePeriod } from '@lib/date'
+import { DraftValues } from '@data-layer/draft/draft-schema'
 
 export function draftPeriodeText(perioder: { fom: string | null; tom: string | null }[] | null | undefined): string {
     if (!perioder || perioder.length === 0) {

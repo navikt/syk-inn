@@ -5,10 +5,9 @@ import React, { ReactElement } from 'react'
 import { notFound } from 'next/navigation'
 import { PageBlock } from '@navikt/ds-react/Page'
 
-import { isLocal, isDemo, getServerEnv } from '@utils/env'
-import { getAbsoluteURL, pathWithBasePath } from '@utils/url'
-
-import ScenarioLinks from '../../devtools/ScenarioLinks'
+import { isLocal, isDemo, getServerEnv } from '@lib/env'
+import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
+import ScenarioLinks from '@dev/tools/ScenarioLinks'
 
 import DumbDevHeader from './dumb/DumbDevHeader'
 

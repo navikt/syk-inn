@@ -2,8 +2,8 @@ import { after, NextResponse } from 'next/server'
 import { logger } from '@navikt/next-logger'
 import { notFound } from 'next/navigation'
 
-import { getLoopbackURL } from '@utils/url'
-import { isE2E } from '@utils/env'
+import { getLoopbackURL } from '@lib/url'
+import { isE2E } from '@lib/env'
 
 export function GET(): NextResponse {
     if (!isE2E) notFound()

@@ -1,7 +1,7 @@
 import * as R from 'remeda'
 
-import { raise } from '@utils/ts'
-import { toReadableDatePeriod } from '@utils/date'
+import { raise } from '@lib/ts'
+import { toReadableDatePeriod } from '@lib/date'
 import { AktivitetFragment, DiagnoseFragment, SykmeldingFragment } from '@queries'
 
 export function sykmeldingPeriodeText(perioder: { fom: string; tom: string }[]): string {

@@ -1,7 +1,7 @@
 import { expect, Page, test } from '@playwright/test'
 import { add } from 'date-fns'
 
-import { toReadableDatePeriod } from '@utils/date'
+import { toReadableDatePeriod } from '@lib/date'
 
 import { daysAgo, inputDate } from '../utils/date-utils'
 

@@ -4,8 +4,7 @@ import Link from 'next/link'
 
 import { draftPeriodeText } from '@components/dashboard/combo-table/draft/draft-utils'
 import { AutoUpdatingDistance } from '@components/dashboard/combo-table/draft/AutoUpdatingDistance'
-
-import { DraftValues } from '../../../../data-layer/draft/draft-schema'
+import { DraftValues } from '@data-layer/draft/draft-schema'
 
 type Props = {
     draftId: string

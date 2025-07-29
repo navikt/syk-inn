@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { motion } from 'motion/react'
 
-import { cn } from '@utils/tw'
+import { cn } from '@lib/tw'
 
 export function SimpleReveal({ className, children }: PropsWithChildren<{ className?: string }>): ReactElement {
     return (

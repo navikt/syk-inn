@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { UNLEASH_COOKIE_NAME } from '@toggles/const'
+import { UNLEASH_COOKIE_NAME } from '@core/toggles/const'
 
 export function middleware(request: NextRequest): NextResponse {
     const response = NextResponse.next()

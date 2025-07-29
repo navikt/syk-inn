@@ -3,11 +3,11 @@ import '../globals.css'
 import React, { PropsWithChildren, ReactElement } from 'react'
 import type { Metadata } from 'next'
 
-import { isLocal, isDemo } from '@utils/env'
+import { isLocal, isDemo } from '@lib/env'
 import DemoWarning from '@components/demo-warning'
+import Providers from '@core/providers/Providers'
+import { LazyDevTools } from '@dev/tools/LazyDevTools'
 
-import { LazyDevTools } from '../../devtools/LazyDevTools'
-import Providers from '../../providers/Providers'
 import Preload from '../preload'
 
 export const metadata: Metadata = {

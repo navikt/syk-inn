@@ -8,9 +8,9 @@ import { ListItem } from '@navikt/ds-react/List'
 import { usePathname } from 'next/navigation'
 import dynamic from 'next/dynamic'
 
-import { isLocal, isDemo } from '@utils/env'
+import { isLocal, isDemo } from '@lib/env'
 
-const LazyDevRelauncher = dynamic(() => import('../../devtools/DevRelauncher'), { ssr: false })
+const LazyDevRelauncher = dynamic(() => import('@dev/tools/DevRelauncher'), { ssr: false })
 
 type Props = {
     error: Error & { digest?: string }

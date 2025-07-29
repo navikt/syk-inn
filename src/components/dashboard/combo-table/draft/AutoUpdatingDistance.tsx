@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react'
 import { differenceInSeconds, formatDistanceToNowStrict } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
-import useInterval from '@utils/hooks/useInterval'
+import useInterval from '@lib/hooks/useInterval'
 
 export function AutoUpdatingDistance({ time }: { time: string }): ReactElement {
     const [rerernderino, triggerino] = useState(0)

@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client'
 
 import { DocumentStatusSuccess } from '@components/existing-sykmelding-kvittering/DocumentStatus'
 import { SynchronizeSykmeldingDocument } from '@queries'
-import { spanBrowserAsync } from '@otel/browser'
+import { spanBrowserAsync } from '@core/otel/browser'
 
 type Props = {
     sykmeldingId: string
