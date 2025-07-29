@@ -1,6 +1,8 @@
 import * as z from 'zod'
 import { logger } from '@navikt/next-logger'
 
+import { TilbakedateringGrunnSchema } from '@data-layer/common/tilbakedatering'
+
 export type DraftValues = z.infer<typeof DraftValuesSchema>
 export const DraftValuesSchema = z.object({
     arbeidsforhold: z
@@ -50,9 +52,7 @@ export const DraftValuesSchema = z.object({
     tilbakedatering: z
         .object({
             fom: z.string().nullable(),
-            grunn: z
-                .enum(['VENTETID_LEGETIME', 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM', 'ANNET'])
-                .nullable(),
+            grunn: TilbakedateringGrunnSchema.nullable(),
             annenGrunn: z.string().nullable(),
         })
         .nullable(),

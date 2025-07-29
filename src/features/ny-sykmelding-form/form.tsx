@@ -10,8 +10,9 @@ import {
     UseFieldArrayReturn,
 } from 'react-hook-form'
 
-import { ArbeidsrelatertArsakType, DiagnoseFragment } from '@queries'
 import { Diagnose } from '@data-layer/common/diagnose'
+import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
+import { ArbeidsrelatertArsakType, DiagnoseFragment } from '@queries'
 
 export type NySykmeldingSuggestions = {
     diagnose: {
@@ -53,8 +54,6 @@ export type TilbakedateringField = {
     grunn: TilbakedateringGrunn | null
     annenGrunn: string | null
 }
-
-type TilbakedateringGrunn = 'VENTETID_LEGETIME' | 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM' | 'ANNET'
 
 type MeldingerField = {
     showTilNav: boolean
