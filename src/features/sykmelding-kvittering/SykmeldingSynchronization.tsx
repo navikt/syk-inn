@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect } from 'react'
 import { Alert, Button, Heading, Skeleton } from '@navikt/ds-react'
 import { useMutation } from '@apollo/client'
 
-import { DocumentStatusSuccess } from '@features/existing-sykmelding-kvittering/DocumentStatus'
+import { DocumentStatusSuccess } from '@features/sykmelding-kvittering/DocumentStatus'
 import { SynchronizeSykmeldingDocument } from '@queries'
 import { spanBrowserAsync } from '@core/otel/browser'
 

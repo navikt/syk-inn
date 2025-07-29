@@ -7,8 +7,8 @@ import { useQuery } from '@apollo/client'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
+import TidligereSykmeldingView from '@features/tidligere-sykmelding/TidligereSykmelding'
 import { PasientDocument, SykmeldingByIdDocument } from '@queries'
-import TidligereSykmeldingView from '@components/sykmelding/TidligereSykmeldingView'
 import { earliestFom, latestTom } from '@data-layer/common/sykmelding-utils'
 
 function SykmeldingPage(): ReactElement {

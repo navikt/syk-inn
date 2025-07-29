@@ -7,7 +7,7 @@ import { SykmeldingFragment } from '@queries'
 
 type SykmeldingProps = { sykmelding: SykmeldingFragment }
 
-function TidligereSykmeldingView({ sykmelding }: SykmeldingProps): ReactElement {
+function TidligereSykmelding({ sykmelding }: SykmeldingProps): ReactElement {
     return (
         <div className="bg-transparent">
             <div className="grid grid-cols-1 gap-3">
@@ -69,4 +69,4 @@ function TidligereSykmeldingView({ sykmelding }: SykmeldingProps): ReactElement 
     )
 }
 
-export default TidligereSykmeldingView
+export default TidligereSykmelding

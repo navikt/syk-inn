@@ -1,16 +1,16 @@
 'use client'
 
-import React, { PropsWithChildren, ReactElement, useRef } from 'react'
+import React, { ReactElement, useRef } from 'react'
 import {
     Alert,
     BodyShort,
     Button,
     Detail,
+    ExpansionCard,
     Heading,
     Label,
     Link as AkselLink,
     Skeleton,
-    ExpansionCard,
 } from '@navikt/ds-react'
 import { HandBandageIcon, PersonIcon, TabsAddIcon, VitalsIcon } from '@navikt/aksel-icons'
 import Link from 'next/link'
@@ -18,22 +18,22 @@ import { useQuery } from '@apollo/client'
 import * as R from 'remeda'
 
 import { toReadableDatePeriod } from '@lib/date'
-import { SykmeldingSynchronization } from '@features/existing-sykmelding-kvittering/SykmeldingSynchronization'
 import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
 import { pathWithBasePath } from '@lib/url'
-import { cleanId } from '@lib/string'
 import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import AssableNextLink from '@components/misc/AssableNextLink'
 
+import { SykmeldingSynchronization } from './SykmeldingSynchronization'
+import { Section } from './SykmeldingKvitteringSection'
 import { DocumentStatusSuccess } from './DocumentStatus'
 
-type ExistingSykmeldingKvitteringProps = {
+type Props = {
     sykmeldingId: string
 }
 
-function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitteringProps): ReactElement {
+function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
     const { loading, data, error, refetch } = useQuery(SykmeldingByIdDocument, {
         variables: { id: sykmeldingId },
     })
@@ -44,7 +44,7 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitte
             {error && <SykmeldingKvitteringError error={error} refetch={refetch} />}
             {data?.sykmelding && (
                 <div className="flex flex-row gap-8">
-                    <SykmeldingKvittering sykmelding={data.sykmelding} />
+                    <SykmeldingKvitteringWithData sykmelding={data.sykmelding} />
                     <div className="max-w-prose">
                         {data.sykmelding?.documentStatus === 'COMPLETE' ? (
                             <DocumentStatusSuccess />
@@ -72,7 +72,7 @@ function ExistingSykmeldingKvittering({ sykmeldingId }: ExistingSykmeldingKvitte
     )
 }
 
-function SykmeldingKvittering({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
+function SykmeldingKvitteringWithData({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
     const nextDraftId = useRef(crypto.randomUUID())
     const dispatch = useAppDispatch()
     return (
@@ -192,26 +192,4 @@ function SykmeldingKvitteringError({ error, refetch }: { error: Error; refetch: 
     )
 }
 
-type SectionProps = {
-    title: string
-    icon?: ReactElement
-    description?: string
-}
-
-export function Section({ children, icon, title }: PropsWithChildren<SectionProps>): ReactElement {
-    const headingId = `section-heading-${cleanId(title)}`
-
-    return (
-        <div className="relative">
-            <section className="mb-4" aria-labelledby={headingId}>
-                <Heading level="2" size="medium" id={headingId} className="flex items-center gap-1" spacing>
-                    {icon}
-                    {title}
-                </Heading>
-                {children}
-            </section>
-        </div>
-    )
-}
-
-export default ExistingSykmeldingKvittering
+export default SykmeldingKvittering
