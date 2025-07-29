@@ -3,8 +3,8 @@ import '../globals.css'
 import React, { PropsWithChildren, ReactElement } from 'react'
 import type { Metadata } from 'next'
 
+import DemoWarning from '@components/user-warnings/DemoWarning'
 import { isLocal, isDemo } from '@lib/env'
-import DemoWarning from '@components/demo-warning'
 import Providers from '@core/providers/Providers'
 import { LazyDevTools } from '@dev/tools/LazyDevTools'
 

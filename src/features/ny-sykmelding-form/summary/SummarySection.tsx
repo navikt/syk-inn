@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client'
 
 import { SimpleReveal } from '@components/animation/Reveal'
 import { BehandlerDocument, OutcomeFragment } from '@data-layer/graphql/queries.generated'
-import { ShortcutButton } from '@components/shortcut/ShortcutButton'
+import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
@@ -57,7 +57,7 @@ function SummarySection(): ReactElement {
 
                     <div className="flex gap-3">
                         <ForkastDraftButton />
-                        <ShortcutButton
+                        <ShortcutButtons
                             variant="secondary"
                             onClick={() => setStep('main')}
                             disabled={nySykmelding.result.loading}
@@ -67,8 +67,8 @@ function SummarySection(): ReactElement {
                             }}
                         >
                             Forrige steg
-                        </ShortcutButton>
-                        <ShortcutButton
+                        </ShortcutButtons>
+                        <ShortcutButtons
                             variant="primary"
                             icon={<PaperplaneIcon aria-hidden />}
                             iconPosition="right"
@@ -80,7 +80,7 @@ function SummarySection(): ReactElement {
                             }}
                         >
                             Send inn
-                        </ShortcutButton>
+                        </ShortcutButtons>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Tooltip } from '@navikt/ds-react'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 
-import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
+import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 
 import { DeleteDraftButton } from './DeleteDraftButton'
 

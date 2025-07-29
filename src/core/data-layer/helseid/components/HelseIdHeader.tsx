@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { BodyShort, Detail, Heading } from '@navikt/ds-react'
 
-import { NavLogo } from '@components/ui/NavLogo'
+import { NavLogo } from '@components/misc/NavLogo'
 
 type Props = {
     behandler: {

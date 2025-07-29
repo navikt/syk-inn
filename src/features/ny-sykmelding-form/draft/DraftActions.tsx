@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { FloppydiskIcon } from '@navikt/aksel-icons'
 
 import { DeleteDraftDocument, GetAllDraftsDocument, OpprettSykmeldingDraft } from '@queries'
-import { ShortcutButton } from '@components/shortcut/ShortcutButton'
+import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { spanBrowserAsync } from '@core/otel/browser'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
@@ -27,7 +27,7 @@ export function LagreDraftButton(): ReactElement {
     const dispatch = useAppDispatch()
 
     return (
-        <ShortcutButton
+        <ShortcutButtons
             variant="secondary"
             icon={<FloppydiskIcon aria-hidden />}
             iconPosition="right"
@@ -43,7 +43,7 @@ export function LagreDraftButton(): ReactElement {
             }}
         >
             Lagre (utkast)
-        </ShortcutButton>
+        </ShortcutButtons>
     )
 }
 
@@ -77,7 +77,7 @@ function ForkastDraftButton(): ReactElement {
     })
 
     return (
-        <ShortcutButton
+        <ShortcutButtons
             variant="tertiary"
             onClick={() => spanBrowserAsync('DeleteDraft(forkast).mutation', async () => mutation())}
             loading={deleteResult.loading}
@@ -87,7 +87,7 @@ function ForkastDraftButton(): ReactElement {
             }}
         >
             Avbryt og forkast
-        </ShortcutButton>
+        </ShortcutButtons>
     )
 }
 

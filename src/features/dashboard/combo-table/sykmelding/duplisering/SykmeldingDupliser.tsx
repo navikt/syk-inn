@@ -3,7 +3,7 @@ import { Tooltip } from '@navikt/ds-react'
 import { TabsAddIcon } from '@navikt/aksel-icons'
 
 import { SykmeldingFragment } from '@queries'
-import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
+import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 

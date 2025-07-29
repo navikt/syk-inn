@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { AnimatePresence } from 'motion/react'
 
 import { FastFadeReveal } from '@components/animation/Reveal'
-import { SlowNextLinkButton } from '@components/misc/SlowNextLinkButton'
+import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { Shortcut, useShortcut } from '@lib/hooks/shortcuts/useShortcut'
 import { useCurrentModifier } from '@lib/hooks/shortcuts/useCurrentModifier'
 
@@ -12,7 +12,7 @@ type BaseShortcutButtonProps = {
     shortcut: Shortcut
 } & Pick<ButtonProps, 'id' | 'loading' | 'size' | 'variant' | 'disabled' | 'icon' | 'iconPosition'>
 
-export function ShortcutButton({
+export function ShortcutButtons({
     onClick,
     children,
     shortcut,

@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 
 import { cn } from '@lib/tw'
 import { PasientDocument } from '@queries'
-import { ShortcutButtonLink } from '@components/shortcut/ShortcutButton'
+import { ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
