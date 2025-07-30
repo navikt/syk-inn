@@ -9,7 +9,7 @@ type SykmeldingProps = { sykmelding: SykmeldingFragment }
 
 function TidligereSykmelding({ sykmelding }: SykmeldingProps): ReactElement {
     return (
-        <div className="bg-transparent">
+        <div className="max-w-prose">
             <div className="grid grid-cols-1 gap-3">
                 <div className="bg-bg-default p-4 rounded-sm">
                     <Heading className="flex gap-1.5 items-center" size="small" level="3" spacing>

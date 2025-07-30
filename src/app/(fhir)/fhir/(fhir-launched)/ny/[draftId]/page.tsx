@@ -1,16 +1,58 @@
-import React, { ReactElement } from 'react'
-import { Page, PageBlock } from '@navikt/ds-react/Page'
+'use client'
 
-import NySykmeldingWithContextPasient from '@features/ny-sykmelding-form/NySykmeldingWithContextPasient'
+import React, { ReactElement, useEffect } from 'react'
+import { useQuery } from '@apollo/client'
+import { Skeleton } from '@navikt/ds-react'
 
-async function NySykmeldingPage(): Promise<ReactElement> {
+import { PageLayout } from '@components/layout/Page'
+import { PasientDocument } from '@queries'
+import { useAppDispatch } from '@core/redux/hooks'
+import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { isSmartSessionInvalid } from '@data-layer/graphql/error/Errors'
+import NySykmeldingFormSteps from '@features/ny-sykmelding-form/NySykmeldingFormSteps'
+
+import { NoPractitionerSession } from '../../launched-errors'
+
+function NySykmeldingWithContextPasientPage(): ReactElement {
+    const { loading, data, error } = useQuery(PasientDocument)
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        if (data?.pasient != null) {
+            dispatch(
+                nySykmeldingActions.activePatient({
+                    type: 'auto',
+                    ident: data.pasient.ident,
+                    navn: data.pasient.navn,
+                }),
+            )
+        }
+    }, [dispatch, loading, data])
+
+    if (error) {
+        if (isSmartSessionInvalid(error)) {
+            return <NoPractitionerSession />
+        }
+
+        // Defer to global error handling
+        throw error
+    }
+
     return (
-        <Page className="bg-transparent">
-            <PageBlock as="main" gutters className="pt-4">
-                <NySykmeldingWithContextPasient />
-            </PageBlock>
-        </Page>
+        <PageLayout
+            heading={
+                <>
+                    <span>Sykmelding for</span>
+                    {loading && <Skeleton width={140} className="inline-block mx-2" />}
+                    {data?.pasient && ` ${data.pasient.navn} `}
+                </>
+            }
+        >
+            <div className="w-full">
+                <NySykmeldingFormSteps />
+            </div>
+        </PageLayout>
     )
 }
 
-export default NySykmeldingPage
+export default NySykmeldingWithContextPasientPage

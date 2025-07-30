@@ -1,18 +1,15 @@
+'use client'
+
 import React, { ReactElement } from 'react'
-import { Heading } from '@navikt/ds-react'
-import { PageBlock } from '@navikt/ds-react/Page'
 
-import NySykmeldingWithContextPasient from '@features/ny-sykmelding-form/NySykmeldingWithContextPasient'
+import NySykmeldingFormWithData from '@features/ny-sykmelding-form/NySykmeldingFormWithData'
+import { PageLayout } from '@components/layout/Page'
 
-async function Page(): Promise<ReactElement> {
+function Page(): ReactElement {
     return (
-        <PageBlock as="main" width="xl" gutters className="pt-4">
-            <Heading level="2" size="medium" spacing>
-                Opprett ny sykmelding
-            </Heading>
-
-            <NySykmeldingWithContextPasient />
-        </PageBlock>
+        <PageLayout heading="Opprett ny sykmelding">
+            <NySykmeldingFormWithData />
+        </PageLayout>
     )
 }
 
