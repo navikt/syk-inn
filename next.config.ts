@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
         optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
         authInterrupts: true,
     },
+    outputFileTracingIncludes: {
+        '/fhir/graphql': ['./src/core/data-layer/graphql/schema/**/*.graphqls'],
+    },
     images: { remotePatterns: [new URL('https://cdn.nav.no/**')] },
     logging: {
         fetches: {
