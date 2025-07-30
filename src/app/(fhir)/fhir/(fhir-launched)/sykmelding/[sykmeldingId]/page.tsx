@@ -27,7 +27,6 @@ function SykmeldingPage(): ReactElement {
                 </>
             }
         >
-            {loading && <Skeleton variant="rounded" className="max-w-prose " />}
             {error && (
                 <Alert variant="error">
                     <Heading size="small" level="3" spacing>
@@ -39,9 +38,9 @@ function SykmeldingPage(): ReactElement {
                     </Button>
                 </Alert>
             )}
-            {data?.sykmelding ? (
-                <TidligereSykmeldingView sykmelding={data.sykmelding} />
-            ) : (
+            {loading && <Skeleton variant="rounded" className="max-w-prose " />}
+            {!loading && data?.sykmelding && <TidligereSykmeldingView sykmelding={data.sykmelding} />}
+            {!loading && !data?.sykmelding && (
                 <Alert variant="error">
                     <Heading size="small" level="3" spacing>
                         Sykmelding ikke funnet
