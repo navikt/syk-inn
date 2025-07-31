@@ -179,7 +179,7 @@ function AktivitetSummaryAnswer({
 }): ReactElement {
     return (
         <FormSummary.Answer>
-            <FormSummary.Label>Periode {index != null ? index + 1 : undefined}</FormSummary.Label>
+            <FormSummary.Label>Periode{index != null ? ` ${index + 1}` : undefined}</FormSummary.Label>
             <FormSummary.Value>
                 {aktivitet.tom != null ? (
                     <BodyShort>

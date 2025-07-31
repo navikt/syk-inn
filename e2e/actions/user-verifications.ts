@@ -8,7 +8,7 @@ type SectionTitle =
     | 'Har pasienten flere arbeidsforhold?'
     | 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?'
     | 'Periode'
-    | 'Mulighet for arbeid'
+    | 'Perioder'
     | 'Dato for tilbakedatering'
     | 'Grunn for tilbakedatering'
     | 'Hoveddiagnose'
@@ -19,7 +19,7 @@ type SectionTitle =
 
 interface SummarySection {
     name: SectionTitle
-    values: string[]
+    values: (string | RegExp)[]
 }
 
 export function verifySummaryPage(sections: SummarySection[]) {

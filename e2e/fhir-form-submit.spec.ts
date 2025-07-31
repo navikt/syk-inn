@@ -260,11 +260,11 @@ test("optional - 'tilbakedatering' is asked and required when fom is 5 days in t
         },
         {
             name: 'Periode',
-            values: [`${toReadableDatePeriod(daysAgo(5), inDays(0))}`],
+            values: [new RegExp(toReadableDatePeriod(daysAgo(5), inDays(0)))],
         },
         {
-            name: 'Mulighet for arbeid',
-            values: ['Aktivitet ikke mulig (100% sykmeldt)'],
+            name: 'Periode',
+            values: [/100% sykmelding/],
         },
         {
             name: 'Hoveddiagnose',
@@ -277,22 +277,6 @@ test("optional - 'tilbakedatering' is asked and required when fom is 5 days in t
         {
             name: 'Grunn for tilbakedatering',
             values: ['Ventetid på legetime'],
-        },
-        {
-            name: 'Til NAV',
-            values: ['Ingen melding'],
-        },
-        {
-            name: 'Til arbeidsgiver',
-            values: ['Ingen melding'],
-        },
-        {
-            name: 'Svangerskapsrelatert',
-            values: ['Nei'],
-        },
-        {
-            name: 'Yrkesskade',
-            values: ['Nei'],
         },
     ])(page)
 

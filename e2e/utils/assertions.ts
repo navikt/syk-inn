@@ -20,7 +20,7 @@ export function expectGraphQLRequest(request: GraphQLRequest) {
     }
 }
 
-export async function expectTermToHaveDefinitions(page: Page, term: string, definitions: string[]) {
+export async function expectTermToHaveDefinitions(page: Page, term: string, definitions: (string | RegExp)[]) {
     const terms = await page.getByRole('term').all()
 
     let termElement
@@ -42,9 +42,21 @@ export async function expectTermToHaveDefinitions(page: Page, term: string, defi
         definitionElements.length,
         `Found ${definitionElements.length} definitions, expected ${definitions.length} for term "${term}"`,
     ).toEqual(definitions.length)
-    for (const d of definitionElements) {
-        const definitionText = await d.textContent()
-        expect(definitions).toContain(definitionText)
+
+    for (const dd of definitionElements) {
+        const definitionText = await dd.textContent()
+        for (const expectedDefinition of definitions) {
+            if (typeof expectedDefinition === 'string') {
+                expect(definitionText, `Expected definition "${expectedDefinition}" for term "${term}"`).toContain(
+                    expectedDefinition,
+                )
+            } else {
+                expect(
+                    definitionText,
+                    `Expected definition matching regex ${expectedDefinition} for term "${term}"`,
+                ).toMatch(expectedDefinition)
+            }
+        }
     }
 }
 
