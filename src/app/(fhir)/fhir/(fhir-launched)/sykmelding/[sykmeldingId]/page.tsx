@@ -8,7 +8,7 @@ import Link from 'next/link'
 
 import TidligereSykmeldingView from '@features/tidligere-sykmelding/TidligereSykmelding'
 import { PasientDocument, SykmeldingByIdDocument } from '@queries'
-import { PageLayout } from '@components/layout/Page'
+import { LoadablePageHeader, PageLayout } from '@components/layout/Page'
 
 function SykmeldingPage(): ReactElement {
     const param = useParams<{ sykmeldingId: string }>()
@@ -19,13 +19,7 @@ function SykmeldingPage(): ReactElement {
 
     return (
         <PageLayout
-            heading={
-                <>
-                    <span>Sykmelding for</span>
-                    {pasientQuery.loading && <Skeleton width={140} className="inline-block mx-2" />}
-                    {pasientQuery.data?.pasient && ` ${pasientQuery.data.pasient.navn} `}
-                </>
-            }
+            heading={<LoadablePageHeader lead="Sykmelding for" value={pasientQuery.data?.pasient?.navn ?? null} />}
         >
             {error && (
                 <Alert variant="error">
@@ -48,7 +42,7 @@ function SykmeldingPage(): ReactElement {
                     <BodyShort spacing>Fant ingen sykmelding med denne ID-en.</BodyShort>
                 </Alert>
             )}
-            <div className="flex justify-end p-4">
+            <div className="flex justify-end p-4 max-w-prose">
                 <Link href="/fhir">Lukk</Link>
             </div>
         </PageLayout>

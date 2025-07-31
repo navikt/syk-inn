@@ -2,9 +2,8 @@
 
 import React, { ReactElement, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
-import { Skeleton } from '@navikt/ds-react'
 
-import { PageLayout } from '@components/layout/Page'
+import { LoadablePageHeader, PageLayout } from '@components/layout/Page'
 import { PasientDocument } from '@queries'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
@@ -39,15 +38,7 @@ function NySykmeldingWithContextPasientPage(): ReactElement {
     }
 
     return (
-        <PageLayout
-            heading={
-                <>
-                    <span>Sykmelding for</span>
-                    {loading && <Skeleton width={140} className="inline-block mx-2" />}
-                    {data?.pasient && ` ${data.pasient.navn} `}
-                </>
-            }
-        >
+        <PageLayout heading={<LoadablePageHeader lead="Sykmelding for" value={data?.pasient?.navn ?? null} />}>
             <div className="w-full">
                 <NySykmeldingFormSteps />
             </div>
