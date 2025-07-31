@@ -50,41 +50,34 @@ function FormValuesSummary({ className }: Props): ReactElement {
                     {values?.tilbakedatering && (
                         <TilbakedateringSummaryAnswers tilbakedatering={values?.tilbakedatering} />
                     )}
+
                     <DiagnoseSummaryAnswers diagnose={values?.diagnose ?? null} />
 
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Til NAV</FormSummary.Label>
-                        {values?.meldinger?.tilNav ? (
+                    {values?.meldinger?.tilNav && (
+                        <FormSummary.Answer>
+                            <FormSummary.Label>Til NAV</FormSummary.Label>
                             <FormSummary.Value>{values?.meldinger?.tilNav}</FormSummary.Value>
-                        ) : (
-                            <FormSummary.Value className="italic">Ingen melding</FormSummary.Value>
-                        )}
-                    </FormSummary.Answer>
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Til arbeidsgiver</FormSummary.Label>
-                        {values?.meldinger?.tilArbeidsgiver ? (
+                        </FormSummary.Answer>
+                    )}
+                    {values?.meldinger?.tilArbeidsgiver && (
+                        <FormSummary.Answer>
+                            <FormSummary.Label>Til arbeidsgiver</FormSummary.Label>
                             <FormSummary.Value>{values?.meldinger?.tilArbeidsgiver}</FormSummary.Value>
-                        ) : (
-                            <FormSummary.Value className="italic">Ingen melding</FormSummary.Value>
-                        )}
-                    </FormSummary.Answer>
+                        </FormSummary.Answer>
+                    )}
 
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Svangerskapsrelatert</FormSummary.Label>
-                        {values?.andreSporsmal?.svangerskapsrelatert ? (
+                    {values?.andreSporsmal?.svangerskapsrelatert && (
+                        <FormSummary.Answer>
+                            <FormSummary.Label>Annen info</FormSummary.Label>
+                            <FormSummary.Value>Sykdommen er svangerskapsrelatert</FormSummary.Value>
+                        </FormSummary.Answer>
+                    )}
+                    {values?.andreSporsmal?.yrkesskade && (
+                        <FormSummary.Answer>
+                            <FormSummary.Label>Yrkesskade</FormSummary.Label>
                             <FormSummary.Value>Ja</FormSummary.Value>
-                        ) : (
-                            <FormSummary.Value>Nei</FormSummary.Value>
-                        )}
-                    </FormSummary.Answer>
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Yrkesskade</FormSummary.Label>
-                        {values?.andreSporsmal?.yrkesskade ? (
-                            <FormSummary.Value>Ja</FormSummary.Value>
-                        ) : (
-                            <FormSummary.Value>Nei</FormSummary.Value>
-                        )}
-                    </FormSummary.Answer>
+                        </FormSummary.Answer>
+                    )}
                 </FormSummary.Answers>
             </FormSummary>
         </div>
@@ -226,19 +219,21 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: NySykmeldingDiagnoser 
                     <Detail>{diagnose.hoved.system}</Detail>
                 </FormSummary.Value>
             </FormSummary.Answer>
-            <FormSummary.Answer>
-                <FormSummary.Label>Bidiagnoser</FormSummary.Label>
-                <FormSummary.Value>
-                    {(diagnose.bi ?? []).filter(R.isNonNull).map((bidiagnose, index) => (
-                        <div key={index}>
-                            <BodyShort>
-                                {bidiagnose.text} ({bidiagnose.code})
-                            </BodyShort>
-                            <Detail>{bidiagnose.system}</Detail>
-                        </div>
-                    ))}
-                </FormSummary.Value>
-            </FormSummary.Answer>
+            {(diagnose.bi == null || diagnose.bi.length === 0) && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>Bidiagnoser</FormSummary.Label>
+                    <FormSummary.Value>
+                        {diagnose.bi.filter(R.isNonNull).map((diagnose) => (
+                            <div key={`${diagnose.system}-${diagnose.code}`}>
+                                <BodyShort>
+                                    {diagnose.text} ({diagnose.code})
+                                </BodyShort>
+                                <Detail>{diagnose.system}</Detail>
+                            </div>
+                        ))}
+                    </FormSummary.Value>
+                </FormSummary.Answer>
+            )}
         </>
     )
 }
