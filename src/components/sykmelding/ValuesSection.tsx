@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
-import { BodyLong, Heading, Label } from '@navikt/ds-react'
+import { BodyLong, Heading, Label, Skeleton } from '@navikt/ds-react'
 
 type ValueSectionProps = {
     title: string
@@ -33,6 +33,19 @@ export function ValueItem({ title, children }: PropsWithChildren<SykmeldingValue
         <div className="not-last:border-b border-b-border-subtle not-last:mb-4 not-last:pb-4">
             <Label as="dt">{title}</Label>
             <BodyLong as="dd">{children}</BodyLong>
+        </div>
+    )
+}
+
+export function ValueItemSkeleton(): ReactElement {
+    return (
+        <div className="not-last:border-b border-b-border-subtle not-last:mb-4 not-last:pb-4">
+            <Label as="dt">
+                <Skeleton variant="text" width={98} />
+            </Label>
+            <BodyLong as="dd">
+                <Skeleton variant="text" width="100%" />
+            </BodyLong>
         </div>
     )
 }

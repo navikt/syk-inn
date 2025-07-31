@@ -1,33 +1,23 @@
 'use client'
 
-import React, { ReactElement, useRef } from 'react'
-import {
-    Alert,
-    BodyShort,
-    Button,
-    Detail,
-    ExpansionCard,
-    Heading,
-    Label,
-    Link as AkselLink,
-    Skeleton,
-} from '@navikt/ds-react'
-import { HandBandageIcon, PersonIcon, TabsAddIcon, VitalsIcon } from '@navikt/aksel-icons'
+import React, { ReactElement, useRef, useState } from 'react'
+import { Alert, BodyShort, Button, ExpansionCard, Heading, Link as AkselLink, Skeleton } from '@navikt/ds-react'
+import { ChevronDownIcon, TabsAddIcon } from '@navikt/aksel-icons'
 import Link from 'next/link'
 import { useQuery } from '@apollo/client'
-import * as R from 'remeda'
 
-import { toReadableDatePeriod } from '@lib/date'
-import { SykmeldingByIdDocument } from '@queries'
+import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
 import { pathWithBasePath } from '@lib/url'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { AssableNextLink } from '@components/links/AssableNextLink'
+import { ValueItemSkeleton } from '@components/sykmelding/ValuesSection'
+import SykmeldingValues from '@components/sykmelding/SykmeldingValues'
+import { cn } from '@lib/tw'
 
-import { SykmeldingSynchronization } from './SykmeldingSynchronization'
-import { Section } from './SykmeldingKvitteringSection'
 import { DocumentStatusSuccess } from './DocumentStatus'
+import { SykmeldingSynchronization } from './SykmeldingSynchronization'
 
 type Props = {
     sykmeldingId: string
@@ -79,66 +69,7 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
                 ) : null}
             </div>
             {error && <SykmeldingKvitteringError error={error ?? { message: 'Test' }} refetch={refetch} />}
-            {!error && (
-                <ExpansionCard aria-label="Innsendte opplysninger">
-                    <ExpansionCard.Header>
-                        <ExpansionCard.Title>Innsendte opplysninger</ExpansionCard.Title>
-                    </ExpansionCard.Header>
-                    <ExpansionCard.Content>
-                        {data?.sykmelding ? (
-                            <>
-                                <Section title="Den sykmeldte" icon={<PersonIcon />}>
-                                    <Detail>Fødselsnummer</Detail>
-                                    <BodyShort>{data.sykmelding.meta.pasientIdent}</BodyShort>
-                                </Section>
-                                <Section title="Diagnose" icon={<HandBandageIcon />}>
-                                    <Label>Hoveddiagnose</Label>
-                                    {data.sykmelding.values.hoveddiagnose != null ? (
-                                        <>
-                                            <BodyShort>
-                                                {data.sykmelding.values.hoveddiagnose.code} -{' '}
-                                                {data.sykmelding.values.hoveddiagnose.text}
-                                            </BodyShort>
-                                            <Detail>{data.sykmelding.values.hoveddiagnose.system}</Detail>
-                                        </>
-                                    ) : (
-                                        <BodyShort>Ingen hoveddiagnose er satt</BodyShort>
-                                    )}
-
-                                    {(data.sykmelding.values.bidiagnoser ?? []).some((b) => b != null) && (
-                                        <>
-                                            <Label className="mt-4">Bidiagnoser</Label>
-                                            {(data.sykmelding.values.bidiagnoser ?? [])
-                                                .filter(R.isNonNull)
-                                                .map((bidiagnose, index) => (
-                                                    <div key={index}>
-                                                        <BodyShort>
-                                                            {bidiagnose.code} - {bidiagnose.text}
-                                                        </BodyShort>
-                                                        <Detail>{bidiagnose.system}</Detail>
-                                                    </div>
-                                                ))}
-                                        </>
-                                    )}
-                                </Section>
-                                <Section title="Aktivitet" icon={<VitalsIcon />}>
-                                    <Detail>Sykmeldingsperiode</Detail>
-                                    <BodyShort>
-                                        {toReadableDatePeriod(
-                                            data.sykmelding.values.aktivitet[0].fom,
-                                            data.sykmelding.values.aktivitet[0].tom,
-                                        )}
-                                    </BodyShort>
-                                </Section>
-                            </>
-                        ) : (
-                            <>
-                                <Skeleton />
-                            </>
-                        )}
-                    </ExpansionCard.Content>
-                </ExpansionCard>
-            )}
+            {!error && <SykmeldingKvitteringValues loading={loading} sykmelding={sykmelding} />}
             <div className="mt-8">
                 {data?.sykmelding ? (
                     <AkselLink href={pathWithBasePath(`/fhir/pdf/${data.sykmelding.sykmeldingId}`)} target="_blank">
@@ -149,6 +80,67 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
                 )}
             </div>
         </>
+    )
+}
+
+type SykmeldingKvitteringValuesProps = {
+    sykmelding: SykmeldingFragment | null
+    loading: boolean
+}
+
+/**
+ * Here be dragons. This component hacks around quite a bit with the inner workings of ExpansionCard.
+ *
+ * Bigger Aksel upgrades should be bumped cautiously, remember to verify it's behaviour after. :-)
+ */
+function SykmeldingKvitteringValues({ sykmelding, loading }: SykmeldingKvitteringValuesProps): ReactElement {
+    const [open, setOpen] = useState(false)
+
+    return (
+        <ExpansionCard aria-label="Innsendte opplysninger" size="medium" open={open} className="relative">
+            <ExpansionCard.Header
+                onClick={() => setOpen((b) => !b)}
+                className="bg-surface-subtle border-b-0! rounded-br-none rounded-bl-none"
+            >
+                <ExpansionCard.Title as="h3" size="medium">
+                    Innsendte opplysninger
+                </ExpansionCard.Title>
+            </ExpansionCard.Header>
+            <ExpansionCard.Content
+                className={cn('block overflow-hidden [&>div]:[animation:none]', {
+                    'max-h-42': !open,
+                })}
+            >
+                {sykmelding ? (
+                    <SykmeldingValues sykmelding={sykmelding} />
+                ) : loading ? (
+                    <>
+                        <ValueItemSkeleton />
+                        <ValueItemSkeleton />
+                        <ValueItemSkeleton />
+                        <ValueItemSkeleton />
+                        <ValueItemSkeleton />
+                    </>
+                ) : null}
+                {!open && (
+                    <div className="absolute left-1 bottom-1 w-[99%] rounded-b-large">
+                        <div className="h-24 bg-gradient-to-b from-transparent to-white" />
+                        <div className="bg-white flex items-center justify-center">
+                            <Button
+                                className="flex flex-col items-center justify-center"
+                                variant="tertiary"
+                                icon={<ChevronDownIcon aria-hidden className="mr-2 -mt-2" />}
+                                iconPosition="right"
+                                size="small"
+                                onClick={() => setOpen(true)}
+                            >
+                                Vis mer
+                            </Button>
+                        </div>
+                    </div>
+                )}
+            </ExpansionCard.Content>
+        </ExpansionCard>
     )
 }
 
