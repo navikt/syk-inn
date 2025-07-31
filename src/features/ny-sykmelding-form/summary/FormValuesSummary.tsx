@@ -1,16 +1,25 @@
-import { Alert, BodyShort, Detail, FormSummary } from '@navikt/ds-react'
-import React, { ReactElement } from 'react'
+import { Alert, BodyShort, Detail, FormSummary, Heading, Skeleton } from '@navikt/ds-react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import * as R from 'remeda'
+import { useQuery } from '@apollo/client'
+import { logger } from '@navikt/next-logger'
 
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
-import { useAppSelector } from '@core/redux/hooks'
+import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import {
     NySykmeldingAktivitet,
     NySykmeldingDiagnoser,
     NySykmeldingTilbakedatering,
     ActivePatient,
+    nySykmeldingActions,
 } from '@core/redux/reducers/ny-sykmelding'
 import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
+import { useDraftId } from '@features/ny-sykmelding-form/draft/useDraftId'
+import { GetDraftDocument } from '@queries'
+import { safeParseDraft } from '@data-layer/draft/draft-schema'
+import { createDefaultFormValues } from '@features/ny-sykmelding-form/form-default-values'
+import { formValuesToStatePayload } from '@features/ny-sykmelding-form/form-mappers'
+import AkselNextLink from '@components/links/AkselNextLink'
 
 import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
 import { useFormStep } from '../steps/useFormStep'
@@ -22,8 +31,90 @@ type Props = {
 }
 
 function FormValuesSummary({ className }: Props): ReactElement {
+    const draftId = useDraftId()
     const [, setStep] = useFormStep()
+    const dispatch = useAppDispatch()
     const { pasient, values } = useAppSelector((state) => state.nySykmelding)
+    const draftQuery = useQuery(GetDraftDocument, {
+        variables: { draftId: draftId },
+        fetchPolicy: 'cache-first',
+    })
+    const [hasTriedDrafting, setHasTriedDrafting] = useState<boolean>(false)
+
+    useEffect(() => {
+        if (hasTriedDrafting) return
+
+        if (!draftQuery.loading && values == null && draftQuery.data?.draft != null) {
+            logger.info('Found existing draft when loading Summary page! Trying to load it into form state. :-)')
+
+            const formValuesFromDraft = createDefaultFormValues({
+                draftValues: safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values),
+                valuesInState: null,
+                serverSuggestions: { diagnose: { value: null } },
+            })
+
+            try {
+                const payload = formValuesToStatePayload(formValuesFromDraft)
+                dispatch(nySykmeldingActions.completeForm(payload))
+            } catch (e) {
+                logger.error(
+                    new Error('Tried to handle draft being loaded on Summary page, but form values were incomplete', {
+                        cause: e,
+                    }),
+                )
+            } finally {
+                setHasTriedDrafting(true)
+            }
+        }
+    }, [hasTriedDrafting, draftQuery.loading, values, draftQuery.data?.draft, dispatch])
+
+    if (draftQuery.loading) {
+        return (
+            <div className={className}>
+                <FormSummary>
+                    <FormSummary.Header>
+                        <FormSummary.Heading level="2">Oppsummering sykmelding</FormSummary.Heading>
+                        <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
+                    </FormSummary.Header>
+                    <FormSummary.Answers>
+                        <FormSummaryAnswerSkeleton />
+                        <FormSummaryAnswerSkeleton />
+                        <FormSummaryAnswerSkeleton />
+                        <FormSummaryAnswerSkeleton />
+                        <FormSummaryAnswerSkeleton />
+                        <FormSummaryAnswerSkeleton />
+                    </FormSummary.Answers>
+                </FormSummary>
+            </div>
+        )
+    }
+
+    if (!draftQuery.loading && values == null) {
+        return (
+            <div className={className}>
+                <FormSummary>
+                    <FormSummary.Header>
+                        <FormSummary.Heading level="2">Oppsummering sykmelding</FormSummary.Heading>
+                    </FormSummary.Header>
+                    <FormSummary.Answers>
+                        <Alert variant="warning">
+                            <Heading size="small" level="2" spacing>
+                                Ingen pågående sykmelding
+                            </Heading>
+                            <BodyShort spacing>
+                                Det ser ikke ut som dette er en pågående sykmelding. Dersom du har hatt nettleseren oppe
+                                siden sist du jobbet, så kan utkastet ha blitt slettet.
+                            </BodyShort>
+                            <BodyShort>
+                                Du kan begynne utfyllingen på nytt ved å gå tilbake til{' '}
+                                <AkselNextLink href="/fhir">pasientens oversikt</AkselNextLink> og beginne på nytt.
+                            </BodyShort>
+                        </Alert>
+                    </FormSummary.Answers>
+                </FormSummary>
+            </div>
+        )
+    }
 
     return (
         <div className={className}>
@@ -219,7 +310,7 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: NySykmeldingDiagnoser 
                     <Detail>{diagnose.hoved.system}</Detail>
                 </FormSummary.Value>
             </FormSummary.Answer>
-            {(diagnose.bi == null || diagnose.bi.length === 0) && (
+            {diagnose.bi != null && diagnose.bi.length !== 0 && (
                 <FormSummary.Answer>
                     <FormSummary.Label>Bidiagnoser</FormSummary.Label>
                     <FormSummary.Value>
@@ -263,6 +354,19 @@ function PatientSummaryAnswers({ pasient }: { pasient: ActivePatient | null }): 
                 <FormSummary.Value>{pasient.ident}</FormSummary.Value>
             </FormSummary.Answer>
         </>
+    )
+}
+
+function FormSummaryAnswerSkeleton(): ReactElement {
+    return (
+        <FormSummary.Answer>
+            <FormSummary.Label>
+                <Skeleton width={150} />
+            </FormSummary.Label>
+            <FormSummary.Value>
+                <Skeleton width={200} />
+            </FormSummary.Value>
+        </FormSummary.Answer>
     )
 }
 

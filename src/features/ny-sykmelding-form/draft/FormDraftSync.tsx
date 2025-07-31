@@ -6,7 +6,7 @@ import { logger } from '@navikt/next-logger'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { SaveDraftMutation } from '@queries'
-import { bundledEnv } from '@lib/env'
+import { bundledEnv, isLocal } from '@lib/env'
 import { DraftValues, safeParseDraft } from '@data-layer/draft/draft-schema'
 
 import { mapFormValuesToDraftValues, useSaveDraft } from '../draft/useSaveDraft'
@@ -33,6 +33,8 @@ function FormDraftSync(): null {
     const [mutation, draftResult] = useSaveDraft({
         returnToDash: false,
         onCompleted: () => {
+            if (isLocal) logger.info('Saved draft.')
+
             currentMutationPromise.current = null
         },
     })

@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react'
-import { Link as AkselLink } from '@navikt/ds-react'
-import Link from 'next/link'
 
 import { SykmeldingFragment } from '@queries'
+import AkselNextLink from '@components/links/AkselNextLink'
 
 import { sykmeldingPeriodeText } from './sykmelding-utils'
 
@@ -14,9 +13,7 @@ type Props = {
 function SykmeldingPeriodeLink({ sykmeldingId, aktivitet }: Props): ReactElement {
     return (
         <>
-            <AkselLink as={Link} href={`/fhir/sykmelding/${sykmeldingId}`}>
-                {sykmeldingPeriodeText(aktivitet)}
-            </AkselLink>
+            <AkselNextLink href={`/fhir/sykmelding/${sykmeldingId}`}>{sykmeldingPeriodeText(aktivitet)}</AkselNextLink>
         </>
     )
 }

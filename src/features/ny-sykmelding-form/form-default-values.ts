@@ -1,4 +1,3 @@
-import { DefaultValues } from 'react-hook-form'
 import { isValid, toDate } from 'date-fns'
 import * as R from 'remeda'
 
@@ -34,7 +33,7 @@ export function createDefaultFormValues({
     valuesInState,
     draftValues,
     serverSuggestions,
-}: CreateDefaultValuesData): DefaultValues<NySykmeldingMainFormValues> {
+}: CreateDefaultValuesData): NySykmeldingMainFormValues {
     return {
         arbeidsforhold: toInitialArbeidsforhold(
             valuesInState?.arbeidsforhold ?? null,

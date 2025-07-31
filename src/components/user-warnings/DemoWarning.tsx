@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort, Link as AskelLink } from '@navikt/ds-react'
-import Link from 'next/link'
+import { Alert, BodyShort } from '@navikt/ds-react'
 
 import { isLocal, isDemo } from '@lib/env'
 import { raise } from '@lib/ts'
+import AkselNextLink from '@components/links/AkselNextLink'
 
 function DemoWarning(): ReactElement | null {
     if (!(isLocal || isDemo)) {
@@ -17,9 +17,7 @@ function DemoWarning(): ReactElement | null {
                     Dette er en demoside og inneholder ikke dine personlige data.
                 </BodyShort>
                 <div className="text-xs">
-                    <AskelLink as={Link} href="/">
-                        ← Back to development page
-                    </AskelLink>
+                    <AkselNextLink href="/">← Back to development page</AkselNextLink>
                 </div>
             </Alert>
         </div>

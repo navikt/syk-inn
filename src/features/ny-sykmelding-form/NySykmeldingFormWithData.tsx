@@ -1,18 +1,18 @@
 import React, { ReactElement } from 'react'
 import { Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
-import { useParams } from 'next/navigation'
 
 import { DiagnoseFragment, GetDraftDocument, KonsultasjonDocument } from '@queries'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
+import { useDraftId } from '@features/ny-sykmelding-form/draft/useDraftId'
 
 import NySykmeldingForm from './NySykmeldingForm'
 
 function NySykmeldingFormWithData(): ReactElement {
-    const params = useParams<{ draftId: string }>()
+    const draftId = useDraftId()
     const konsultasjonsQuery = useQuery(KonsultasjonDocument)
     const draftQuery = useQuery(GetDraftDocument, {
-        variables: { draftId: params.draftId },
+        variables: { draftId },
         fetchPolicy: 'cache-first',
     })
 
