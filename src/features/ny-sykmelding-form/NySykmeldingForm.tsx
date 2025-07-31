@@ -47,7 +47,7 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
         <FormProvider {...form}>
             <FormDraftSync />
             <form onSubmit={form.handleSubmit(onSubmit)} className={styles.formGrid}>
-                <FormSheet className="row-span-3">
+                <FormSheet className="row-span-3 relative">
                     <FormSection title="Arbeidsgiver">
                         <ArbeidsforholdSection />
                     </FormSection>
@@ -55,6 +55,7 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                         <AktivitetSection />
                     </FormSection>
                     <DynamicTilbakedateringSection />
+                    <div className="bg-surface-subtle w-4 h-[calc(100%-2rem)] absolute -right-4 rounded" />
                 </FormSheet>
                 <FormSheet className="row-span-2">
                     <FormSection title="Diagnose">
