@@ -1,4 +1,4 @@
-import { Alert, BodyShort, Detail, FormSummary, Heading, Skeleton } from '@navikt/ds-react'
+import { Alert, BodyShort, Detail, FormSummary, Heading, List, Skeleton } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 import { useQuery } from '@apollo/client'
@@ -12,7 +12,7 @@ import {
 import { useAppSelector } from '@core/redux/hooks'
 import { AkselNextLink } from '@components/links/AkselNextLink'
 import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
-import { toReadableDate, toReadableDatePeriod } from '@lib/date'
+import { toReadableDate, toReadableDatePeriod, toReadablePeriodLength } from '@lib/date'
 import { PasientDocument } from '@queries'
 
 import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
@@ -52,7 +52,7 @@ function FormValuesSummary({ className }: Props): ReactElement {
         )
     }
 
-    if (!draftLoading && values == null) {
+    if (values == null) {
         return (
             <div className={className}>
                 <FormSummary>
@@ -91,42 +91,42 @@ function FormValuesSummary({ className }: Props): ReactElement {
                     <FormSummary.Answer>
                         <FormSummary.Label>Har pasienten flere arbeidsforhold?</FormSummary.Label>
                         <FormSummary.Value>
-                            {values?.arbeidsforhold?.harFlereArbeidsforhold ? 'Ja' : 'Nei'}
+                            {values.arbeidsforhold?.harFlereArbeidsforhold ? 'Ja' : 'Nei'}
                         </FormSummary.Value>
                     </FormSummary.Answer>
-                    {values?.arbeidsforhold?.harFlereArbeidsforhold && (
+                    {values.arbeidsforhold?.harFlereArbeidsforhold && (
                         <FormSummary.Answer>
                             <FormSummary.Label>Hvilke arbeidsforhold skal pasienten sykmeldes fra?</FormSummary.Label>
-                            <FormSummary.Value>{values?.arbeidsforhold?.sykmeldtFraArbeidsforhold}</FormSummary.Value>
+                            <FormSummary.Value>{values.arbeidsforhold?.sykmeldtFraArbeidsforhold}</FormSummary.Value>
                         </FormSummary.Answer>
                     )}
-                    <AktivitetSummaryAnswers aktiviteter={values?.aktiviteter ?? null} />
-                    {values?.tilbakedatering && (
-                        <TilbakedateringSummaryAnswers tilbakedatering={values?.tilbakedatering} />
+                    <AktivitetSummaryAnswers aktiviteter={values.aktiviteter} />
+                    {values.tilbakedatering && (
+                        <TilbakedateringSummaryAnswers tilbakedatering={values.tilbakedatering} />
                     )}
 
-                    <DiagnoseSummaryAnswers diagnose={values?.diagnose ?? null} />
+                    <DiagnoseSummaryAnswers diagnose={values.diagnose} />
 
-                    {values?.meldinger?.tilNav && (
+                    {values.meldinger?.tilNav && (
                         <FormSummary.Answer>
                             <FormSummary.Label>Til NAV</FormSummary.Label>
-                            <FormSummary.Value>{values?.meldinger?.tilNav}</FormSummary.Value>
+                            <FormSummary.Value>{values.meldinger?.tilNav}</FormSummary.Value>
                         </FormSummary.Answer>
                     )}
-                    {values?.meldinger?.tilArbeidsgiver && (
+                    {values.meldinger?.tilArbeidsgiver && (
                         <FormSummary.Answer>
                             <FormSummary.Label>Til arbeidsgiver</FormSummary.Label>
-                            <FormSummary.Value>{values?.meldinger?.tilArbeidsgiver}</FormSummary.Value>
+                            <FormSummary.Value>{values.meldinger?.tilArbeidsgiver}</FormSummary.Value>
                         </FormSummary.Answer>
                     )}
 
-                    {values?.andreSporsmal?.svangerskapsrelatert && (
+                    {values.andreSporsmal?.svangerskapsrelatert && (
                         <FormSummary.Answer>
                             <FormSummary.Label>Annen info</FormSummary.Label>
                             <FormSummary.Value>Sykdommen er svangerskapsrelatert</FormSummary.Value>
                         </FormSummary.Answer>
                     )}
-                    {values?.andreSporsmal?.yrkesskade && (
+                    {values.andreSporsmal?.yrkesskade && (
                         <FormSummary.Answer>
                             <FormSummary.Label>Yrkesskade</FormSummary.Label>
                             <FormSummary.Value>Ja</FormSummary.Value>
@@ -152,63 +152,91 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: NySykmeldingAkt
         )
     }
 
+    if (aktiviteter.length === 1) {
+        return <AktivitetSummaryAnswer aktivitet={aktiviteter[0]} index={null} />
+    }
+
     return (
-        <>
-            {aktiviteter.map((aktivitet, index) => (
-                <React.Fragment key={index}>
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Periode</FormSummary.Label>
-                        {aktivitet.tom != null ? (
-                            <FormSummary.Value>{toReadableDatePeriod(aktivitet.fom, aktivitet.tom)}</FormSummary.Value>
-                        ) : (
-                            <FormSummary.Value>
-                                <Alert variant="warning">Periode mangler datoer.</Alert>
-                            </FormSummary.Value>
+        <FormSummary.Answer>
+            <FormSummary.Label>Perioder</FormSummary.Label>
+            <FormSummary.Value>
+                <FormSummary.Answers>
+                    {aktiviteter.map((aktivitet, index) => (
+                        <AktivitetSummaryAnswer aktivitet={aktivitet} index={index} key={index} />
+                    ))}
+                </FormSummary.Answers>
+            </FormSummary.Value>
+        </FormSummary.Answer>
+    )
+}
+
+function AktivitetSummaryAnswer({
+    aktivitet,
+    index,
+}: {
+    aktivitet: NySykmeldingAktivitet
+    index: number | null
+}): ReactElement {
+    return (
+        <FormSummary.Answer>
+            <FormSummary.Label>Periode {index != null ? index + 1 : undefined}</FormSummary.Label>
+            <FormSummary.Value>
+                {aktivitet.tom != null ? (
+                    <BodyShort>
+                        {toReadableDatePeriod(aktivitet.fom, aktivitet.tom)}
+                        <span className="font-bold"> · </span>
+                        {toReadablePeriodLength(aktivitet.fom, aktivitet.tom)}
+                    </BodyShort>
+                ) : (
+                    <BodyShort>
+                        <Alert variant="warning">Periode mangler datoer.</Alert>
+                    </BodyShort>
+                )}
+                <BodyShort>{aktivitetDescription(aktivitet)}</BodyShort>
+                {aktivitet.type === 'AKTIVITET_IKKE_MULIG' && (
+                    <>
+                        {[
+                            aktivitet.medisinskArsak.isMedisinskArsak,
+                            aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak,
+                        ].some(R.isTruthy) && (
+                            <List>
+                                {aktivitet.medisinskArsak.isMedisinskArsak && (
+                                    <List.Item>Medisinske årsaker forhindrer arbeidsaktivitet</List.Item>
+                                )}
+                                {aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak && (
+                                    <List.Item>
+                                        <BodyShort>Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet</BodyShort>
+                                        <List size="small">
+                                            {aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker?.map((arsak) => {
+                                                if (arsak === 'ANNET') {
+                                                    return (
+                                                        <List.Item key={arsak}>
+                                                            <BodyShort>{ArbeidsrelaterteArsaker[arsak]}</BodyShort>
+                                                            <BodyShort size="small" className="italic">
+                                                                {
+                                                                    aktivitet.arbeidsrelatertArsak
+                                                                        .annenArbeidsrelatertArsak
+                                                                }
+                                                            </BodyShort>
+                                                        </List.Item>
+                                                    )
+                                                }
+
+                                                return (
+                                                    <List.Item key={arsak}>
+                                                        <BodyShort>{ArbeidsrelaterteArsaker[arsak]}</BodyShort>
+                                                    </List.Item>
+                                                )
+                                            })}
+                                        </List>
+                                    </List.Item>
+                                )}
+                            </List>
                         )}
-                    </FormSummary.Answer>
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Mulighet for arbeid</FormSummary.Label>
-                        <FormSummary.Value>{aktivitetDescription(aktivitet)}</FormSummary.Value>
-                    </FormSummary.Answer>
-                    {aktivitet.type === 'AKTIVITET_IKKE_MULIG' && (
-                        <>
-                            <FormSummary.Answer>
-                                <FormSummary.Label>Medisinsk årsak</FormSummary.Label>
-                                <FormSummary.Value>
-                                    {aktivitet.medisinskArsak.isMedisinskArsak ? 'Ja' : 'Nei'}
-                                </FormSummary.Value>
-                            </FormSummary.Answer>
-                            <FormSummary.Answer>
-                                <FormSummary.Label>Arbeidsrelatert årsak</FormSummary.Label>
-                                <FormSummary.Value>
-                                    {aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak ? 'Ja' : 'Nei'}
-                                </FormSummary.Value>
-                            </FormSummary.Answer>
-                            {aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak && (
-                                <>
-                                    <FormSummary.Answer>
-                                        <FormSummary.Label>Arbeidsrelaterte årsaker</FormSummary.Label>
-                                        <FormSummary.Value>
-                                            {aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker
-                                                ?.map((arsak) => ArbeidsrelaterteArsaker[arsak])
-                                                .join(', ')}
-                                        </FormSummary.Value>
-                                    </FormSummary.Answer>
-                                    {aktivitet.arbeidsrelatertArsak.annenArbeidsrelatertArsak && (
-                                        <FormSummary.Answer>
-                                            <FormSummary.Label>Andre arbeidsrelaterte årsaker</FormSummary.Label>
-                                            <FormSummary.Value>
-                                                {aktivitet.arbeidsrelatertArsak.annenArbeidsrelatertArsak}
-                                            </FormSummary.Value>
-                                        </FormSummary.Answer>
-                                    )}
-                                </>
-                            )}
-                        </>
-                    )}
-                </React.Fragment>
-            ))}
-        </>
+                    </>
+                )}
+            </FormSummary.Value>
+        </FormSummary.Answer>
     )
 }
 
@@ -235,17 +263,6 @@ function TilbakedateringSummaryAnswers({
             )}
         </>
     )
-}
-
-function tilbakedateringGrunnToReadable(grunn: TilbakedateringGrunn): string {
-    switch (grunn) {
-        case 'VENTETID_LEGETIME':
-            return 'Ventetid på legetime'
-        case 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM':
-            return 'Manglende sykdomsinnsikt grunnet alvorlig psykisk sykdom'
-        case 'ANNET':
-            return 'Annet'
-    }
 }
 
 function DiagnoseSummaryAnswers({ diagnose }: { diagnose: NySykmeldingDiagnoser | null }): ReactElement {
@@ -331,6 +348,17 @@ function FormSummaryAnswerSkeleton(): ReactElement {
             </FormSummary.Value>
         </FormSummary.Answer>
     )
+}
+
+function tilbakedateringGrunnToReadable(grunn: TilbakedateringGrunn): string {
+    switch (grunn) {
+        case 'VENTETID_LEGETIME':
+            return 'Ventetid på legetime'
+        case 'MANGLENDE_SYKDOMSINNSIKT_GRUNNET_ALVORLIG_PSYKISK_SYKDOM':
+            return 'Manglende sykdomsinnsikt grunnet alvorlig psykisk sykdom'
+        case 'ANNET':
+            return 'Annet'
+    }
 }
 
 export default FormValuesSummary

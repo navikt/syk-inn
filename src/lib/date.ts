@@ -1,4 +1,4 @@
-import { format, formatISO, getDate, isSameDay, isSameMonth, isSameYear } from 'date-fns'
+import { differenceInDays, format, formatISO, getDate, isSameDay, isSameMonth, isSameYear } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
 export function toReadableDateNoYear(date: string | Date): string {
@@ -27,4 +27,10 @@ export function toReadableDatePeriod(fom: string | Date, tom: string | Date): st
 
 export function dateOnly(date: string | Date): string {
     return formatISO(date, { representation: 'date' })
+}
+
+export function toReadablePeriodLength(fom: string | Date, tom: string | Date): string {
+    const daysInclusive = differenceInDays(tom, fom) + 1
+
+    return daysInclusive === 1 ? '1 dag' : `${daysInclusive} dager`
 }

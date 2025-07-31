@@ -1,10 +1,10 @@
 import React, { ReactElement, useState } from 'react'
 import { BodyShort, DatePicker, Detail, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
-import { differenceInDays, format, isSameDay, parseISO } from 'date-fns'
+import { format, isSameDay, parseISO } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 import { AnimatePresence } from 'motion/react'
 
-import { dateOnly } from '@lib/date'
+import { dateOnly, toReadablePeriodLength } from '@lib/date'
 import { cn } from '@lib/tw'
 import { SimpleReveal } from '@components/animation/Reveal'
 
@@ -148,10 +148,9 @@ function getRangeDescription(fom: string | null, tom: string | null): { top: str
 
     const isFomToday = isSameDay(fom, new Date())
     const isTomToday = isSameDay(tom, new Date())
-    const daysInclusive = differenceInDays(tom, fom) + 1
 
     return {
-        top: daysInclusive === 1 ? '1 dag' : `${daysInclusive} dager`,
+        top: toReadablePeriodLength(fom, tom),
         bottom: `Fra ${format(fom, 'EEEE d. MMMM', { locale: nb })}${isFomToday ? ' (i dag)' : ''} til ${format(tom, 'EEEE d. MMMM', { locale: nb })}${isTomToday ? ' (i dag)' : ''}`,
     }
 }
