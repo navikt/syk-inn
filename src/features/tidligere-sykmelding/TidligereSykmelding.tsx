@@ -1,72 +1,96 @@
 import React, { ReactElement } from 'react'
-import { BodyShort, Checkbox, Heading } from '@navikt/ds-react'
-import { BriefcaseIcon, CalendarIcon, InformationSquareIcon, PillRectangleIcon } from '@navikt/aksel-icons'
+import { useParams } from 'next/navigation'
+import { useQuery } from '@apollo/client'
+import { Alert, BodyShort, Button, Heading, Skeleton } from '@navikt/ds-react'
 
-import { toReadableDatePeriod } from '@lib/date'
-import { SykmeldingFragment } from '@queries'
+import { SykmeldingByIdDocument } from '@queries'
+import { toReadableDate } from '@lib/date'
+import { ValuesSection } from '@components/sykmelding/ValuesSection'
+import SykmeldingValues from '@components/sykmelding/SykmeldingValues'
+import BehandlerValues from '@components/sykmelding/BehandlerValues'
 
-type SykmeldingProps = { sykmelding: SykmeldingFragment }
+export function TidligereSykmelding(): ReactElement {
+    const params = useParams<{ sykmeldingId: string }>()
+    const { loading, data, error, refetch } = useQuery(SykmeldingByIdDocument, {
+        variables: { id: params.sykmeldingId },
+    })
 
-function TidligereSykmelding({ sykmelding }: SykmeldingProps): ReactElement {
+    if (error) {
+        return (
+            <div className="p-4">
+                <TidligereSykmeldingError refetch={() => refetch()} />
+            </div>
+        )
+    }
+
+    if (loading) {
+        return (
+            <div className="p-4">
+                <div className="pb-4 ml-4 flex flex-row gap-2">
+                    <span>Mottatt:</span>
+                    <Skeleton className="inline-flex" width={96} />
+                </div>
+                <div className="flex flex-row gap-8">
+                    <div className="max-w-prose w-[65ch]">
+                        <Skeleton variant="rounded" height={400} width="100%" />
+                    </div>
+                    <div className="max-w-prose w-[65ch]">
+                        <Skeleton variant="rounded" height={400} width="100%" />
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    if (data?.sykmelding == null) {
+        return (
+            <div className="p-4 max-w-prose w-[65ch]">
+                <Alert variant="error">
+                    <Heading size="small" level="3" spacing>
+                        Sykmelding ikke funnet
+                    </Heading>
+                    <BodyShort spacing>Fant ingen sykmelding med denne ID-en.</BodyShort>
+                </Alert>
+            </div>
+        )
+    }
+
     return (
-        <div className="max-w-prose">
-            <div className="grid grid-cols-1 gap-3">
-                <div className="bg-bg-default p-4 rounded-sm">
-                    <Heading className="flex gap-1.5 items-center" size="small" level="3" spacing>
-                        <BriefcaseIcon aria-hidden />
-                        Arbeidsforhold
-                    </Heading>
-                    <BodyShort>
-                        {sykmelding.values.arbeidsgiver?.arbeidsgivernavn ?? 'Ingen arbeidsgiver oppgitt'}
-                    </BodyShort>
+        <div className="p-4">
+            <div className="pb-4 ml-4 flex flex-row gap-2">
+                <span>Mottatt:</span>
+                {loading ? (
+                    <Skeleton className="inline-flex" width={96} />
+                ) : data?.sykmelding ? (
+                    <span>{toReadableDate(data.sykmelding.meta.mottatt)}</span>
+                ) : null}
+            </div>
+            <div className="flex flex-row gap-8">
+                <div className="max-w-prose w-[65ch]">
+                    <ValuesSection title="Innsendt sykmelding">
+                        <SykmeldingValues sykmelding={data.sykmelding} />
+                    </ValuesSection>
                 </div>
-                <div className="bg-bg-default p-4 rounded-sm">
-                    <Heading className="flex gap-1.5 items-center" size="small" level="3" spacing>
-                        <CalendarIcon />
-                        Perioder (f.o.m. - t.o.m.)
-                    </Heading>
-                    {sykmelding.values.aktivitet.map((it, index) => (
-                        <BodyShort key={index}>{toReadableDatePeriod(it.fom, it.tom)}</BodyShort>
-                    ))}
-                </div>
-                <div className="bg-bg-default p-4 rounded-sm">
-                    <Heading className="flex gap-1.5 items-center" size="small" level="3" spacing>
-                        <PillRectangleIcon />
-                        Medisinsk tilstand
-                    </Heading>
-                    <BodyShort>{sykmelding.values.hoveddiagnose?.text ?? 'Ingen hoveddiagnose oppgitt'}</BodyShort>
-                </div>
-                <div className="bg-bg-default p-4 rounded-sm">
-                    <Heading className="flex gap-1.5 items-center" size="small" level="3" spacing>
-                        <InformationSquareIcon />
-                        Annen info
-                    </Heading>
-                    <Checkbox readOnly checked={sykmelding.values.svangerskapsrelatert}>
-                        Sykdommen er svangerskapsrelatert
-                    </Checkbox>
-                    <Checkbox readOnly checked={sykmelding.values.pasientenSkalSkjermes}>
-                        Pasienten skal skjermes
-                    </Checkbox>
-                </div>
-                <div className="bg-bg-default p-4 rounded-sm">
-                    <Heading className="flex gap-1.5 items-center" size="small" level="3" spacing>
-                        <InformationSquareIcon />
-                        Meldinger til Nav
-                    </Heading>
-                    <BodyShort>{sykmelding.values.meldinger.tilNav ?? 'Ingen meldinger til Nav'}</BodyShort>
-                </div>
-                <div className="bg-bg-default p-4 rounded-sm">
-                    <Heading className="flex gap-1.5 items-center" size="small" level="3" spacing>
-                        <InformationSquareIcon />
-                        Meldinger til Arbeidsgiver
-                    </Heading>
-                    <BodyShort>
-                        {sykmelding.values.meldinger.tilArbeidsgiver ?? 'Ingen meldinger til arbeidsgiver'}
-                    </BodyShort>
+                <div className="max-w-prose w-[65ch]">
+                    <ValuesSection title="Signerende behandler">
+                        <BehandlerValues sykmeldingMeta={data.sykmelding.meta} />
+                    </ValuesSection>
                 </div>
             </div>
         </div>
     )
 }
 
-export default TidligereSykmelding
+function TidligereSykmeldingError({ refetch }: { refetch: () => void }): ReactElement {
+    return (
+        <Alert variant="error">
+            <Heading size="small" level="3" spacing>
+                Kunne ikke hente sykmelding
+            </Heading>
+            <BodyShort spacing>Det oppstod en feil under henting av sykmeldingen.</BodyShort>
+            <Button size="small" variant="secondary-neutral" onClick={() => refetch()}>
+                Prøv på nytt
+            </Button>
+        </Alert>
+    )
+}

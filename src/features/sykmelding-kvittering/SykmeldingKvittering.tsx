@@ -36,10 +36,10 @@ type Props = {
 function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
     return (
         <div className="p-4 flex flex-row gap-8">
-            <div className="max-w-prose">
+            <div className="max-w-prose w-[65ch]">
                 <SykmeldingKvitteringSummary sykmeldingId={sykmeldingId} />
             </div>
-            <div className="max-w-prose">
+            <div className="max-w-prose w-[65ch]">
                 <SykmeldingKvitteringStatus sykmeldingId={sykmeldingId} />
             </div>
         </div>
