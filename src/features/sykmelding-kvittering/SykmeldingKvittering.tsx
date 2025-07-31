@@ -108,7 +108,7 @@ function SykmeldingKvitteringValues({ sykmelding, loading }: SykmeldingKvitterin
             </ExpansionCard.Header>
             <ExpansionCard.Content
                 className={cn('block overflow-hidden [&>div]:[animation:none]', {
-                    'max-h-42': !open,
+                    'max-h-48': !open,
                 })}
             >
                 {sykmelding ? (
