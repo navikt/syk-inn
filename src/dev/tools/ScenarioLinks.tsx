@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useRef } from 'react'
 import { Heading, LinkCard } from '@navikt/ds-react'
 import { FlowerPetalsIcon, PlayIcon } from '@navikt/aksel-icons'
 import Image from 'next/image'
@@ -10,6 +10,13 @@ import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 import { scenarios } from '../mock-engine/scenarios/scenarios'
 
 function ScenarioLinks(): ReactElement {
+    const justLaunchRef = useRef<HTMLAnchorElement>(null)
+    useEffect(() => {
+        if (justLaunchRef.current) {
+            justLaunchRef.current.focus()
+        }
+    }, [])
+
     return (
         <div className="border border-border-subtle p-3 rounded-sm mt-2">
             <Heading level="2" size="small" className="-mt-7 bg-white w-fit px-2 py-0">
@@ -27,7 +34,9 @@ function ScenarioLinks(): ReactElement {
                             <PlayIcon fontSize="2rem" />
                         </LinkCard.Icon>
                         <LinkCard.Title>
-                            <LinkCard.Anchor href={pathWithBasePath(fhirLaunchUrl)}>Just launch</LinkCard.Anchor>
+                            <LinkCard.Anchor ref={justLaunchRef} href={pathWithBasePath(fhirLaunchUrl)}>
+                                Just launch
+                            </LinkCard.Anchor>
                         </LinkCard.Title>
                         <LinkCard.Description>
                             Just re-launches FHIR, does not change your scenario
