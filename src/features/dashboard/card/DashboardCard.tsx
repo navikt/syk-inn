@@ -18,7 +18,7 @@ function DashboardCard({
 
     return (
         <section
-            className={cn(className, 'bg-bg-default rounded-sm p-4')}
+            className={cn(className, 'bg-bg-default rounded-xl p-4')}
             aria-labelledby={id}
             aria-label={'ariaLabel' in rest ? rest.ariaLabel : undefined}
         >

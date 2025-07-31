@@ -22,19 +22,7 @@ export function SykmeldingSynchronization({ sykmeldingId }: Props): ReactElement
     }, [mutation])
 
     if (loading) {
-        return (
-            <div className="max-w-prose">
-                <div className="my-4">
-                    <Skeleton variant="rectangle" height={62} />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <Skeleton variant="rectangle" height={108} />
-                    <Skeleton variant="rectangle" height={132} />
-                    <Skeleton variant="rectangle" height={108} />
-                </div>
-                <div className="mt-4"></div>
-            </div>
-        )
+        return <Skeleton variant="rounded" height={62} />
     }
 
     if (error || data?.synchronizeSykmelding.documentStatus === 'ERRORED') {

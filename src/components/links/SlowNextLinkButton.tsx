@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { Button, ButtonProps } from '@navikt/ds-react'
 import { useLinkStatus } from 'next/link'
 
-import AssableNextLink from '@components/links/AssableNextLink'
+import { AssableNextLink } from '@components/links/AssableNextLink'
 
 /**
  * A button that behaves like a link, but gives the user some feedback when clicking the link. Useful if the
