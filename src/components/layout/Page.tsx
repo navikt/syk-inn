@@ -3,17 +3,22 @@ import { Page, PageBlock } from '@navikt/ds-react/Page'
 import { Heading } from '@navikt/ds-react'
 
 import LoadableHeader, { LoadableHeaderProps } from '@components/animation/LoadableHeader'
+import { cn } from '@lib/tw'
 
 type Props = {
     heading: ReactNode
+    bg: 'transparent' | 'white'
+    size: 'full' | 'fit'
 }
 
-export function PageLayout({ heading, children }: PropsWithChildren<Props>): ReactElement {
+export function PageLayout({ heading, size, bg, children }: PropsWithChildren<Props>): ReactElement {
     return (
         <Page className="bg-transparent">
             <PageBlock as="main" gutters className="pt-4">
                 {typeof heading === 'string' ? <StaticPageHeading>{heading}</StaticPageHeading> : heading}
-                {children}
+                <div className={cn('rounded-xl', { 'w-fit': size !== 'full', 'bg-white': bg === 'white' })}>
+                    {children}
+                </div>
             </PageBlock>
         </Page>
     )

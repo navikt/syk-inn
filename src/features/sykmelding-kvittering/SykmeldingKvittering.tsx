@@ -39,7 +39,7 @@ function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
     })
 
     return (
-        <div className="bg-white p-4 rounded-sm">
+        <div className="p-4">
             {loading && <SykmeldingKvitteringSkeleton />}
             {error && <SykmeldingKvitteringError error={error} refetch={refetch} />}
             {data?.sykmelding && (

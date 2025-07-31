@@ -20,6 +20,8 @@ function SykmeldingPage(): ReactElement {
     return (
         <PageLayout
             heading={<LoadablePageHeader lead="Sykmelding for" value={pasientQuery.data?.pasient?.navn ?? null} />}
+            bg="white"
+            size="fit"
         >
             {error && (
                 <Alert variant="error">

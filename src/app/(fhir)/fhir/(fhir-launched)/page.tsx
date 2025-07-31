@@ -23,8 +23,10 @@ function DashboardPage(): ReactElement {
                     tail="sitt sykefravær"
                 />
             }
+            size="full"
+            bg="transparent"
         >
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 w-full">
                 <OpprettNySykmeldingCard className="col-span-2" />
                 <ComboTableCard className="col-span-2" />
             </div>

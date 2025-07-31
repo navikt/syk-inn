@@ -1,14 +1,42 @@
 'use client'
 
-import React, { ReactElement, useState } from 'react'
+import React, { PropsWithChildren, ReactElement, ReactNode, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+
+import { PageLayout } from '@components/layout/Page'
 
 import { StepSection, useFormStep } from './steps/useFormStep'
 import SummarySection from './summary/SummarySection'
 import NySykmeldingFormWithData from './NySykmeldingFormWithData'
 
-function NySykmeldingFormSteps(): ReactElement {
+function NySykmeldingPageSteps({ heading }: { heading: ReactNode }): ReactElement {
     const [step] = useFormStep()
+
+    return (
+        <AnimateSectionChanges step={step}>
+            <Sections heading={heading} section={step} />
+        </AnimateSectionChanges>
+    )
+}
+
+function Sections({ heading, section }: { heading: ReactNode; section: StepSection }): ReactElement {
+    switch (section) {
+        case 'main':
+            return (
+                <PageLayout heading={heading} bg="white" size="fit">
+                    <NySykmeldingFormWithData />
+                </PageLayout>
+            )
+        case 'summary':
+            return (
+                <PageLayout heading={heading} bg="transparent" size="fit">
+                    <SummarySection />
+                </PageLayout>
+            )
+    }
+}
+
+function AnimateSectionChanges({ step, children }: PropsWithChildren<{ step: string }>): ReactElement {
     const [prevStep, setPrevStep] = useState(step)
     const [direction, setDirection] = useState<-1 | 1>(1)
 
@@ -31,20 +59,11 @@ function NySykmeldingFormSteps(): ReactElement {
                     transition={{ duration: 0.1 }}
                     layout="size"
                 >
-                    <Sections section={step} />
+                    {children}
                 </motion.div>
             </AnimatePresence>
         </div>
     )
 }
 
-function Sections({ section }: { section: StepSection }): ReactElement {
-    switch (section) {
-        case 'main':
-            return <NySykmeldingFormWithData />
-        case 'summary':
-            return <SummarySection />
-    }
-}
-
-export default NySykmeldingFormSteps
+export default NySykmeldingPageSteps

@@ -13,7 +13,7 @@ async function KvitteringPage({ params }: Props): Promise<ReactElement> {
     const { sykmeldingId } = await params
 
     return (
-        <PageLayout heading="Kvittering på innsendt sykmelding">
+        <PageLayout heading="Kvittering på innsendt sykmelding" bg="white" size="fit">
             <SykmeldingKvittering sykmeldingId={sykmeldingId} />
         </PageLayout>
     )

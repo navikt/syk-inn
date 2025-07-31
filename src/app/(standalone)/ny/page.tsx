@@ -7,7 +7,7 @@ import { PageLayout } from '@components/layout/Page'
 
 function Page(): ReactElement {
     return (
-        <PageLayout heading="Opprett ny sykmelding">
+        <PageLayout heading="Opprett ny sykmelding" bg="white" size="fit">
             <NySykmeldingFormWithData />
         </PageLayout>
     )

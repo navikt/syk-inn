@@ -3,12 +3,12 @@
 import React, { ReactElement, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 
-import { LoadablePageHeader, PageLayout } from '@components/layout/Page'
+import { LoadablePageHeader } from '@components/layout/Page'
 import { PasientDocument } from '@queries'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { isSmartSessionInvalid } from '@data-layer/graphql/error/Errors'
-import NySykmeldingFormSteps from '@features/ny-sykmelding-form/NySykmeldingFormSteps'
+import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
 
 import { NoPractitionerSession } from '../../launched-errors'
 
@@ -38,11 +38,10 @@ function NySykmeldingWithContextPasientPage(): ReactElement {
     }
 
     return (
-        <PageLayout heading={<LoadablePageHeader lead="Sykmelding for" value={data?.pasient?.navn ?? null} />}>
-            <div className="w-full">
-                <NySykmeldingFormSteps />
-            </div>
-        </PageLayout>
+        // Each step controls their own PageLayout
+        <NySykmeldingPageSteps
+            heading={<LoadablePageHeader lead="Sykmelding for" value={data?.pasient?.navn ?? null} />}
+        />
     )
 }
 
