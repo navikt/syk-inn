@@ -3,7 +3,7 @@ import { Alert, BodyShort } from '@navikt/ds-react'
 
 import { isLocal, isDemo } from '@lib/env'
 import { raise } from '@lib/ts'
-import AkselNextLink from '@components/links/AkselNextLink'
+import { AkselNextLink } from '@components/links/AkselNextLink'
 
 function DemoWarning(): ReactElement | null {
     if (!(isLocal || isDemo)) {

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Detail } from '@navikt/ds-react'
 
 import { DraftValues } from '@data-layer/draft/draft-schema'
-import AkselNextLink from '@components/links/AkselNextLink'
+import { AkselNextLink } from '@components/links/AkselNextLink'
 
 import { draftPeriodeText } from './draft-utils'
 import { AutoUpdatingDistance } from './AutoUpdatingDistance'

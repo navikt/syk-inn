@@ -1,29 +1,24 @@
 import { Alert, BodyShort, Detail, FormSummary, Heading, Skeleton } from '@navikt/ds-react'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 import { useQuery } from '@apollo/client'
-import { logger } from '@navikt/next-logger'
 
-import { toReadableDate, toReadableDatePeriod } from '@lib/date'
-import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import {
     NySykmeldingAktivitet,
     NySykmeldingDiagnoser,
     NySykmeldingTilbakedatering,
     ActivePatient,
-    nySykmeldingActions,
 } from '@core/redux/reducers/ny-sykmelding'
+import { useAppSelector } from '@core/redux/hooks'
+import { AkselNextLink } from '@components/links/AkselNextLink'
 import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
-import { useDraftId } from '@features/ny-sykmelding-form/draft/useDraftId'
-import { GetDraftDocument } from '@queries'
-import { safeParseDraft } from '@data-layer/draft/draft-schema'
-import { createDefaultFormValues } from '@features/ny-sykmelding-form/form-default-values'
-import { formValuesToStatePayload } from '@features/ny-sykmelding-form/form-mappers'
-import AkselNextLink from '@components/links/AkselNextLink'
+import { toReadableDate, toReadableDatePeriod } from '@lib/date'
+import { PasientDocument } from '@queries'
 
 import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
 import { useFormStep } from '../steps/useFormStep'
 
+import { useFormValuesSummaryDraft } from './useFormValuesSummaryDraft'
 import { aktivitetDescription } from './summary-text-utils'
 
 type Props = {
@@ -31,44 +26,12 @@ type Props = {
 }
 
 function FormValuesSummary({ className }: Props): ReactElement {
-    const draftId = useDraftId()
     const [, setStep] = useFormStep()
-    const dispatch = useAppDispatch()
     const { pasient, values } = useAppSelector((state) => state.nySykmelding)
-    const draftQuery = useQuery(GetDraftDocument, {
-        variables: { draftId: draftId },
-        fetchPolicy: 'cache-first',
-    })
-    const [hasTriedDrafting, setHasTriedDrafting] = useState<boolean>(false)
+    const { draftLoading } = useFormValuesSummaryDraft(values)
+    const pasientQuery = useQuery(PasientDocument)
 
-    useEffect(() => {
-        if (hasTriedDrafting) return
-
-        if (!draftQuery.loading && values == null && draftQuery.data?.draft != null) {
-            logger.info('Found existing draft when loading Summary page! Trying to load it into form state. :-)')
-
-            const formValuesFromDraft = createDefaultFormValues({
-                draftValues: safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values),
-                valuesInState: null,
-                serverSuggestions: { diagnose: { value: null } },
-            })
-
-            try {
-                const payload = formValuesToStatePayload(formValuesFromDraft)
-                dispatch(nySykmeldingActions.completeForm(payload))
-            } catch (e) {
-                logger.error(
-                    new Error('Tried to handle draft being loaded on Summary page, but form values were incomplete', {
-                        cause: e,
-                    }),
-                )
-            } finally {
-                setHasTriedDrafting(true)
-            }
-        }
-    }, [hasTriedDrafting, draftQuery.loading, values, draftQuery.data?.draft, dispatch])
-
-    if (draftQuery.loading) {
+    if (draftLoading || pasientQuery.loading) {
         return (
             <div className={className}>
                 <FormSummary>
@@ -89,7 +52,7 @@ function FormValuesSummary({ className }: Props): ReactElement {
         )
     }
 
-    if (!draftQuery.loading && values == null) {
+    if (!draftLoading && values == null) {
         return (
             <div className={className}>
                 <FormSummary>

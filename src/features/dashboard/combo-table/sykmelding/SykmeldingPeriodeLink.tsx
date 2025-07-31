@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 
 import { SykmeldingFragment } from '@queries'
-import AkselNextLink from '@components/links/AkselNextLink'
+import { AkselNextLink } from '@components/links/AkselNextLink'
 
 import { sykmeldingPeriodeText } from './sykmelding-utils'
 
