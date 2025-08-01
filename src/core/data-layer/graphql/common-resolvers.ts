@@ -2,7 +2,7 @@ import { Resolvers } from '@resolvers'
 
 export const typeResolvers: Resolvers = {
     OpprettetSykmelding: {
-        __resolveType: (parent) => ('sykmeldingId' in parent ? 'Sykmelding' : 'OpprettSykmeldingRuleOutcome'),
+        __resolveType: (parent) => ('sykmeldingId' in parent ? 'SykmeldingFull' : 'OpprettSykmeldingRuleOutcome'),
     },
     Aktivitet: {
         __resolveType: (parent) => {
@@ -17,6 +17,16 @@ export const typeResolvers: Resolvers = {
                     return 'Gradert'
                 case 'REISETILSKUDD':
                     return 'Reisetilskudd'
+            }
+        },
+    },
+    Sykmelding: {
+        __resolveType: (parent) => {
+            switch (parent.kind as 'light' | 'full') {
+                case 'light':
+                    return 'SykmeldingLight'
+                case 'full':
+                    return 'SykmeldingFull'
             }
         },
     },

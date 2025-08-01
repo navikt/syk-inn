@@ -11,6 +11,18 @@ type Props = {
 }
 
 function SykmeldingValues({ sykmelding }: Props): ReactElement {
+    if (sykmelding.__typename === 'SykmeldingLight') {
+        return (
+            <>
+                <ValueItem title="Perioder (f.o.m. - t.o.m.)">
+                    {sykmelding.values.aktivitet.map((it, index) => (
+                        <BodyShort key={index}>{toReadableDatePeriod(it.fom, it.tom)}</BodyShort>
+                    ))}
+                </ValueItem>
+            </>
+        )
+    }
+
     return (
         <>
             <ValueItem title="Arbeidsforhold">

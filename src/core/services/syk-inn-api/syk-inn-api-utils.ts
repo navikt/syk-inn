@@ -1,16 +1,44 @@
-import { DocumentStatus, InputAktivitet, OpprettSykmeldingInput, Sykmelding } from '@resolvers'
+import {
+    AktivitetType,
+    DocumentStatus,
+    InputAktivitet,
+    OpprettSykmeldingInput,
+    SykmeldingFull,
+    SykmeldingLight,
+} from '@resolvers'
 import {
     OpprettSykmeldingAktivitet,
     OpprettSykmeldingMeta,
     OpprettSykmeldingPayload,
 } from '@core/services/syk-inn-api/schema/opprett'
-import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
+import { SykInnApiSykmelding, SykInnApiSykmeldingLight } from '@core/services/syk-inn-api/schema/sykmelding'
+
+export function sykInnApiSykmeldingLightToResolverSykmelding(sykmelding: SykInnApiSykmeldingLight): SykmeldingLight {
+    return {
+        kind: 'light',
+        sykmeldingId: sykmelding.sykmeldingId,
+        meta: {
+            pasientIdent: sykmelding.meta.pasientIdent,
+            legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
+            mottatt: sykmelding.meta.mottatt,
+            sykmelderHpr: sykmelding.meta.sykmelder.hprNummer,
+        },
+        values: {
+            aktivitet: sykmelding.values.aktivitet.map((it) => ({
+                ...it,
+                type: it.type as AktivitetType,
+            })),
+        },
+        utfall: sykmelding.utfall,
+    }
+}
 
 export function sykInnApiSykmeldingToResolverSykmelding(
     sykmelding: SykInnApiSykmelding,
     documentStatus?: DocumentStatus,
-): Sykmelding {
+): SykmeldingFull {
     return {
+        kind: 'full',
         sykmeldingId: sykmelding.sykmeldingId,
         meta: {
             pasientIdent: sykmelding.meta.pasientIdent,

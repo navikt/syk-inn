@@ -87,29 +87,57 @@ const SykmelderSchema = z.object({
     etternavn: z.string().nullable(),
 })
 
-export type SykInnApiSykmelding = z.infer<typeof SykInnApiSykmeldingSchema>
-export const SykInnApiSykmeldingSchema = z.object({
-    sykmeldingId: z.string(),
-    meta: z.object({
-        pasientIdent: z.string(),
-        sykmelder: SykmelderSchema,
-        legekontorOrgnr: z.string(),
-        legekontorTlf: z.string().nullable(),
-        mottatt: z.string(),
-    }),
-    values: z.object({
-        hoveddiagnose: DiagnoseSchema.nullable(),
-        bidiagnoser: z.array(DiagnoseSchema).nullable(),
-        aktivitet: z.array(AktivitetSchema),
-        svangerskapsrelatert: z.boolean(),
-        pasientenSkalSkjermes: z.boolean(),
-        meldinger: MeldingerSchema,
-        yrkesskade: YrkesskadeSchema.nullable(),
-        arbeidsgiver: ArbeidsgiverSchema.nullable(),
-        tilbakedatering: TilbakedateringSchema.nullable(),
-    }),
-    utfall: RuleResultSchema,
+const SykInnApiSykmeldingMeta = z.object({
+    pasientIdent: z.string(),
+    sykmelder: SykmelderSchema,
+    legekontorOrgnr: z.string(),
+    legekontorTlf: z.string().nullable(),
+    mottatt: z.string(),
 })
+
+export type SykInnApiSykmelding = z.infer<typeof SykInnApiSykmeldingSchema>
+export const SykInnApiSykmeldingSchema = z
+    .object({
+        sykmeldingId: z.string(),
+        meta: SykInnApiSykmeldingMeta,
+        values: z.object({
+            hoveddiagnose: DiagnoseSchema.nullable(),
+            bidiagnoser: z.array(DiagnoseSchema).nullable(),
+            aktivitet: z.array(AktivitetSchema),
+            svangerskapsrelatert: z.boolean(),
+            pasientenSkalSkjermes: z.boolean(),
+            meldinger: MeldingerSchema,
+            yrkesskade: YrkesskadeSchema.nullable(),
+            arbeidsgiver: ArbeidsgiverSchema.nullable(),
+            tilbakedatering: TilbakedateringSchema.nullable(),
+        }),
+        utfall: RuleResultSchema,
+    })
+    .transform((it) => ({
+        kind: 'full' as const,
+        ...it,
+    }))
+
+export type SykInnApiSykmeldingLight = z.infer<typeof SykInnApiSykmeldingLightSchema>
+export const SykInnApiSykmeldingLightSchema = z
+    .object({
+        sykmeldingId: z.string(),
+        meta: SykInnApiSykmeldingMeta,
+        values: z.object({
+            aktivitet: z.array(
+                z.object({
+                    fom: z.string(),
+                    tom: z.string(),
+                    type: z.string(),
+                }),
+            ),
+        }),
+        utfall: RuleResultSchema,
+    })
+    .transform((it) => ({
+        kind: 'light' as const,
+        ...it,
+    }))
 
 export type SykInnApiRuleOutcome = z.infer<typeof SykInnApiRuleOutcomeSchema>
 export const SykInnApiRuleOutcomeSchema = z.object({
