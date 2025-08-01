@@ -36,6 +36,13 @@ export type AktivitetIkkeMuligInput = {
     dummy: Scalars['Boolean']['input']
 }
 
+export type AktivitetLight = FomTom & {
+    __typename?: 'AktivitetLight'
+    fom: Scalars['DateOnly']['output']
+    tom: Scalars['DateOnly']['output']
+    type: AktivitetType
+}
+
 export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'GRADERT' | 'REISETILSKUDD'
 
 export type Arbeidsforhold = {
@@ -236,7 +243,7 @@ export type OpprettSykmeldingRuleOutcome = {
     tree: Scalars['String']['output']
 }
 
-export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | Sykmelding
+export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | SykmeldingFull
 
 export type Outcome = {
     __typename?: 'Outcome'
@@ -302,14 +309,31 @@ export type ReisetilskuddInput = {
     dummy: Scalars['Boolean']['input']
 }
 
-export type Sykmelding = {
-    __typename?: 'Sykmelding'
+export type Sykmelding = SykmeldingFull | SykmeldingLight
+
+export type SykmeldingFull = {
+    __typename?: 'SykmeldingFull'
     /** Status on the document in the EHR system. */
     documentStatus?: Maybe<DocumentStatus>
+    kind: Scalars['String']['output']
     meta: SykmeldingMeta
     sykmeldingId: Scalars['String']['output']
     utfall: Outcome
     values: SykmeldingValues
+}
+
+export type SykmeldingLight = {
+    __typename?: 'SykmeldingLight'
+    kind: Scalars['String']['output']
+    meta: SykmeldingMeta
+    sykmeldingId: Scalars['String']['output']
+    utfall: Outcome
+    values: SykmeldingLightValues
+}
+
+export type SykmeldingLightValues = {
+    __typename?: 'SykmeldingLightValues'
+    aktivitet: Array<AktivitetLight>
 }
 
 export type SykmeldingMelding = {
@@ -432,12 +456,13 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
     Aktivitet: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
     OpprettetSykmelding:
         | OpprettSykmeldingRuleOutcome
-        | (Omit<Sykmelding, 'values'> & { values: _RefType['SykmeldingValues'] })
+        | (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingValues'] })
+    Sykmelding: (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingValues'] }) | SykmeldingLight
 }
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-    FomTom: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
+    FomTom: AktivitetIkkeMulig | AktivitetLight | Avventende | Behandlingsdager | Gradert | Reisetilskudd
     Person: Pasient | QueriedPerson
 }
 
@@ -446,6 +471,7 @@ export type ResolversTypes = {
     Aktivitet: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Aktivitet']>
     AktivitetIkkeMulig: ResolverTypeWrapper<AktivitetIkkeMulig>
     AktivitetIkkeMuligInput: AktivitetIkkeMuligInput
+    AktivitetLight: ResolverTypeWrapper<AktivitetLight>
     AktivitetType: AktivitetType
     Arbeidsforhold: ResolverTypeWrapper<Arbeidsforhold>
     Arbeidsgiver: ResolverTypeWrapper<Arbeidsgiver>
@@ -490,7 +516,10 @@ export type ResolversTypes = {
     Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>
     ReisetilskuddInput: ReisetilskuddInput
     String: ResolverTypeWrapper<Scalars['String']['output']>
-    Sykmelding: ResolverTypeWrapper<Omit<Sykmelding, 'values'> & { values: ResolversTypes['SykmeldingValues'] }>
+    Sykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Sykmelding']>
+    SykmeldingFull: ResolverTypeWrapper<Omit<SykmeldingFull, 'values'> & { values: ResolversTypes['SykmeldingValues'] }>
+    SykmeldingLight: ResolverTypeWrapper<SykmeldingLight>
+    SykmeldingLightValues: ResolverTypeWrapper<SykmeldingLightValues>
     SykmeldingMelding: ResolverTypeWrapper<SykmeldingMelding>
     SykmeldingMeta: ResolverTypeWrapper<SykmeldingMeta>
     SykmeldingValues: ResolverTypeWrapper<
@@ -506,6 +535,7 @@ export type ResolversParentTypes = {
     Aktivitet: ResolversUnionTypes<ResolversParentTypes>['Aktivitet']
     AktivitetIkkeMulig: AktivitetIkkeMulig
     AktivitetIkkeMuligInput: AktivitetIkkeMuligInput
+    AktivitetLight: AktivitetLight
     Arbeidsforhold: Arbeidsforhold
     Arbeidsgiver: Arbeidsgiver
     ArbeidsrelatertArsak: ArbeidsrelatertArsak
@@ -546,7 +576,10 @@ export type ResolversParentTypes = {
     Reisetilskudd: Reisetilskudd
     ReisetilskuddInput: ReisetilskuddInput
     String: Scalars['String']['output']
-    Sykmelding: Omit<Sykmelding, 'values'> & { values: ResolversParentTypes['SykmeldingValues'] }
+    Sykmelding: ResolversUnionTypes<ResolversParentTypes>['Sykmelding']
+    SykmeldingFull: Omit<SykmeldingFull, 'values'> & { values: ResolversParentTypes['SykmeldingValues'] }
+    SykmeldingLight: SykmeldingLight
+    SykmeldingLightValues: SykmeldingLightValues
     SykmeldingMelding: SykmeldingMelding
     SykmeldingMeta: SykmeldingMeta
     SykmeldingValues: Omit<SykmeldingValues, 'aktivitet'> & { aktivitet: Array<ResolversParentTypes['Aktivitet']> }
@@ -573,6 +606,16 @@ export type AktivitetIkkeMuligResolvers<
     arbeidsrelatertArsak?: Resolver<Maybe<ResolversTypes['ArbeidsrelatertArsak']>, ParentType, ContextType>
     fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     medisinskArsak?: Resolver<Maybe<ResolversTypes['MedisinskArsak']>, ParentType, ContextType>
+    tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type AktivitetLightResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['AktivitetLight'] = ResolversParentTypes['AktivitetLight'],
+> = {
+    fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
@@ -662,7 +705,7 @@ export type FomTomResolvers<
     ParentType extends ResolversParentTypes['FomTom'] = ResolversParentTypes['FomTom'],
 > = {
     __resolveType: TypeResolveFn<
-        'AktivitetIkkeMulig' | 'Avventende' | 'Behandlingsdager' | 'Gradert' | 'Reisetilskudd',
+        'AktivitetIkkeMulig' | 'AktivitetLight' | 'Avventende' | 'Behandlingsdager' | 'Gradert' | 'Reisetilskudd',
         ParentType,
         ContextType
     >
@@ -757,7 +800,7 @@ export type OpprettetSykmeldingResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['OpprettetSykmelding'] = ResolversParentTypes['OpprettetSykmelding'],
 > = {
-    __resolveType: TypeResolveFn<'OpprettSykmeldingRuleOutcome' | 'Sykmelding', ParentType, ContextType>
+    __resolveType: TypeResolveFn<'OpprettSykmeldingRuleOutcome' | 'SykmeldingFull', ParentType, ContextType>
 }
 
 export type OutcomeResolvers<
@@ -841,11 +884,39 @@ export type SykmeldingResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Sykmelding'] = ResolversParentTypes['Sykmelding'],
 > = {
+    __resolveType: TypeResolveFn<'SykmeldingFull' | 'SykmeldingLight', ParentType, ContextType>
+}
+
+export type SykmeldingFullResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['SykmeldingFull'] = ResolversParentTypes['SykmeldingFull'],
+> = {
     documentStatus?: Resolver<Maybe<ResolversTypes['DocumentStatus']>, ParentType, ContextType>
+    kind?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     meta?: Resolver<ResolversTypes['SykmeldingMeta'], ParentType, ContextType>
     sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     utfall?: Resolver<ResolversTypes['Outcome'], ParentType, ContextType>
     values?: Resolver<ResolversTypes['SykmeldingValues'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type SykmeldingLightResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['SykmeldingLight'] = ResolversParentTypes['SykmeldingLight'],
+> = {
+    kind?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    meta?: Resolver<ResolversTypes['SykmeldingMeta'], ParentType, ContextType>
+    sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    utfall?: Resolver<ResolversTypes['Outcome'], ParentType, ContextType>
+    values?: Resolver<ResolversTypes['SykmeldingLightValues'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type SykmeldingLightValuesResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['SykmeldingLightValues'] = ResolversParentTypes['SykmeldingLightValues'],
+> = {
+    aktivitet?: Resolver<Array<ResolversTypes['AktivitetLight']>, ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -915,6 +986,7 @@ export type YrkesskadeResolvers<
 export type Resolvers<ContextType = any> = {
     Aktivitet?: AktivitetResolvers<ContextType>
     AktivitetIkkeMulig?: AktivitetIkkeMuligResolvers<ContextType>
+    AktivitetLight?: AktivitetLightResolvers<ContextType>
     Arbeidsforhold?: ArbeidsforholdResolvers<ContextType>
     Arbeidsgiver?: ArbeidsgiverResolvers<ContextType>
     ArbeidsrelatertArsak?: ArbeidsrelatertArsakResolvers<ContextType>
@@ -940,6 +1012,9 @@ export type Resolvers<ContextType = any> = {
     Query?: QueryResolvers<ContextType>
     Reisetilskudd?: ReisetilskuddResolvers<ContextType>
     Sykmelding?: SykmeldingResolvers<ContextType>
+    SykmeldingFull?: SykmeldingFullResolvers<ContextType>
+    SykmeldingLight?: SykmeldingLightResolvers<ContextType>
+    SykmeldingLightValues?: SykmeldingLightValuesResolvers<ContextType>
     SykmeldingMelding?: SykmeldingMeldingResolvers<ContextType>
     SykmeldingMeta?: SykmeldingMetaResolvers<ContextType>
     SykmeldingValues?: SykmeldingValuesResolvers<ContextType>

@@ -1,4 +1,4 @@
-union OpprettetSykmelding = OpprettSykmeldingRuleOutcome | Sykmelding
+union OpprettetSykmelding = OpprettSykmeldingRuleOutcome | SykmeldingFull
 
 type OpprettSykmeldingRuleOutcome {
     status: String!

@@ -4,12 +4,15 @@ import {
     SykInnApiAktivitet,
     SykInnApiAktivitetIkkeMulig,
     SykInnApiSykmelding,
+    SykInnApiSykmeldingLight,
+    SykInnApiSykmeldingLightSchema,
 } from '@core/services/syk-inn-api/schema/sykmelding'
 import { dateOnly } from '@lib/date'
 
 export class SykmeldingBuilder {
     private readonly mottatt: string = '2020-02-01'
     private readonly _sykmelding: SykInnApiSykmelding = {
+        kind: 'full',
         sykmeldingId: 'sykmelding-id',
         utfall: {
             result: 'OK',
@@ -103,5 +106,13 @@ export class SykmeldingBuilder {
         }
 
         return this._sykmelding
+    }
+
+    buildLight(): SykInnApiSykmeldingLight {
+        if (this._sykmelding.values.aktivitet.length === 0) {
+            throw new Error('Sykmelding må ha minst en aktivitet! Dumbass >:(')
+        }
+
+        return SykInnApiSykmeldingLightSchema.parse(this._sykmelding)
     }
 }

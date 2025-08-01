@@ -12,6 +12,7 @@ export function sykInnApiPayloadToResponse(
     payload: OpprettSykmeldingPayload,
 ): SykInnApiSykmelding {
     return {
+        kind: 'full',
         sykmeldingId,
         meta: {
             pasientIdent: payload.meta.pasientIdent,

@@ -2,7 +2,7 @@ import * as R from 'remeda'
 
 import { raise } from '@lib/ts'
 import { toReadableDatePeriod } from '@lib/date'
-import { AktivitetFragment, DiagnoseFragment, SykmeldingFragment } from '@queries'
+import { AktivitetFragment, DiagnoseFragment } from '@queries'
 
 export function sykmeldingPeriodeText(perioder: { fom: string; tom: string }[]): string {
     const earliestPeriode = R.firstBy(perioder, [(it) => it.fom, 'desc'])
@@ -36,7 +36,9 @@ export function sykmeldingGradText(aktivitet: AktivitetFragment[]): string {
     }
 }
 
-export function sykmeldingArbeidsgiverText(arbeidsgiver: SykmeldingFragment['values']['arbeidsgiver']): string | null {
+export function sykmeldingArbeidsgiverText(
+    arbeidsgiver: { arbeidsgivernavn: string } | null | undefined,
+): string | null {
     if (!arbeidsgiver) {
         return null
     }

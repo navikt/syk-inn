@@ -1,4 +1,4 @@
-import { SykmeldingFragment } from '@queries'
+import { SykmeldingFullFragment } from '@queries'
 import { raise } from '@lib/ts'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
@@ -6,7 +6,7 @@ import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
 type Payload = Parameters<typeof nySykmeldingActions.completeForm>[0]
 
 export function sykmeldingFragmentToMainStepStateNoAktivitet(
-    sykmelding: SykmeldingFragment,
+    sykmelding: SykmeldingFullFragment,
 ): Omit<Payload, 'aktiviteter'> {
     return {
         meldinger: {
@@ -47,7 +47,7 @@ export function sykmeldingFragmentToMainStepStateNoAktivitet(
 }
 
 function toTilbakedatering(
-    tilbakedatering: SykmeldingFragment['values']['tilbakedatering'] | null,
+    tilbakedatering: SykmeldingFullFragment['values']['tilbakedatering'] | null,
 ): Payload['tilbakedatering'] | null {
     if (!tilbakedatering) {
         return null

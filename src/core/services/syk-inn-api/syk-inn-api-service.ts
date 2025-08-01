@@ -5,6 +5,8 @@ import {
     SykInnApiRuleOutcome,
     SykInnApiRuleOutcomeSchema,
     SykInnApiSykmelding,
+    SykInnApiSykmeldingLight,
+    SykInnApiSykmeldingLightSchema,
     SykInnApiSykmeldingSchema,
 } from '@core/services/syk-inn-api/schema/sykmelding'
 import { ApiFetchErrors, fetchInternalAPI } from '@core/services/api-fetcher'
@@ -44,7 +46,10 @@ export const sykInnApiService = {
             responseValidStatus: [422],
         })
     },
-    getSykmelding: async (sykmeldingId: string, hpr: string): Promise<SykInnApiSykmelding | ApiFetchErrors> => {
+    getSykmelding: async (
+        sykmeldingId: string,
+        hpr: string,
+    ): Promise<SykInnApiSykmelding | SykInnApiSykmeldingLight | ApiFetchErrors> => {
         if (shouldUseMockEngine()) {
             logger.info(`Running in ${bundledEnv.runtimeEnv} environment, returning mocked sykmelding by id data`)
 
@@ -60,10 +65,13 @@ export const sykInnApiService = {
                 'Content-Type': 'application/json',
                 HPR: hpr,
             },
-            responseSchema: SykInnApiSykmeldingSchema,
+            responseSchema: z.union([SykInnApiSykmeldingSchema, SykInnApiSykmeldingLightSchema]),
         })
     },
-    getSykmeldinger: async (pasientIdent: string, hpr: string): Promise<SykInnApiSykmelding[] | ApiFetchErrors> => {
+    getSykmeldinger: async (
+        pasientIdent: string,
+        hpr: string,
+    ): Promise<(SykInnApiSykmelding | SykInnApiSykmeldingLight)[] | ApiFetchErrors> => {
         if (shouldUseMockEngine()) {
             logger.info(`Running in ${bundledEnv.runtimeEnv} environment, returning mocked sykmelding data`)
 
@@ -80,7 +88,7 @@ export const sykInnApiService = {
                 Ident: pasientIdent,
                 HPR: hpr,
             },
-            responseSchema: z.array(SykInnApiSykmeldingSchema),
+            responseSchema: z.array(z.union([SykInnApiSykmeldingSchema, SykInnApiSykmeldingLightSchema])),
         })
     },
     getSykmeldingPdf: async (sykmeldingId: string, hpr: string): Promise<ArrayBuffer | ApiFetchErrors> => {
