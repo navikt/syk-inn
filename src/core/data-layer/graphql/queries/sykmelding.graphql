@@ -29,47 +29,69 @@ fragment Outcome on OpprettSykmeldingRuleOutcome {
 }
 
 fragment Sykmelding on Sykmelding {
-    sykmeldingId
-    meta {
-        pasientIdent
-        sykmelderHpr
-        legekontorOrgnr
-        mottatt
-    }
-    utfall {
-        result
-        message
-    }
-    values {
-        hoveddiagnose {
-            ...Diagnose
+    ... on SykmeldingLight {
+        sykmeldingId
+        meta {
+            pasientIdent
+            sykmelderHpr
+            legekontorOrgnr
+            mottatt
         }
-        bidiagnoser {
-            ...Diagnose
+        utfall {
+            result
+            message
         }
-        aktivitet {
-            ...Aktivitet
-        }
-        arbeidsgiver {
-            harFlere
-            arbeidsgivernavn
-        }
-        svangerskapsrelatert
-        pasientenSkalSkjermes
-        meldinger {
-            tilNav
-            tilArbeidsgiver
-        }
-        yrkesskade {
-            yrkesskade
-            skadedato
-        }
-        tilbakedatering {
-            startdato
-            begrunnelse
+        values {
+            aktivitet {
+                type
+                fom
+                tom
+            }
         }
     }
-    documentStatus
+    ... on SykmeldingFull {
+        sykmeldingId
+        meta {
+            pasientIdent
+            sykmelderHpr
+            legekontorOrgnr
+            mottatt
+        }
+        utfall {
+            result
+            message
+        }
+        values {
+            hoveddiagnose {
+                ...Diagnose
+            }
+            bidiagnoser {
+                ...Diagnose
+            }
+            aktivitet {
+                ...Aktivitet
+            }
+            arbeidsgiver {
+                harFlere
+                arbeidsgivernavn
+            }
+            svangerskapsrelatert
+            pasientenSkalSkjermes
+            meldinger {
+                tilNav
+                tilArbeidsgiver
+            }
+            yrkesskade {
+                yrkesskade
+                skadedato
+            }
+            tilbakedatering {
+                startdato
+                begrunnelse
+            }
+        }
+        documentStatus
+    }
 }
 
 fragment Aktivitet on Aktivitet {

@@ -1,4 +1,15 @@
-type Sykmelding {
+union Sykmelding = SykmeldingLight | SykmeldingFull
+
+type SykmeldingLight {
+    kind: String!
+    sykmeldingId: String!
+    meta: SykmeldingMeta!
+    values: SykmeldingLightValues!
+    utfall: Outcome!
+}
+
+type SykmeldingFull {
+    kind: String!
     sykmeldingId: String!
     meta: SykmeldingMeta!
     values: SykmeldingValues!
@@ -26,6 +37,10 @@ type SykmeldingValues {
     yrkesskade: Yrkesskade
     arbeidsgiver: Arbeidsgiver
     tilbakedatering: Tilbakedatering
+}
+
+type SykmeldingLightValues {
+    aktivitet: [AktivitetLight!]!
 }
 
 type SykmeldingMelding {

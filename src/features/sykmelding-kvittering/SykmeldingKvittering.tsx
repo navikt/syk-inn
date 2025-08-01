@@ -149,6 +149,10 @@ function SykmeldingKvitteringStatus({ sykmeldingId }: { sykmeldingId: string }):
         variables: { id: sykmeldingId },
     })
 
+    if (data?.sykmelding?.__typename === 'SykmeldingLight') {
+        throw new Error('Tried displaying kvittering, but got SykmeldingLight, that should not happen')
+    }
+
     return (
         <div>
             {loading ? (

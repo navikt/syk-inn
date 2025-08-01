@@ -64,3 +64,9 @@ type Reisetilskudd implements FomTom {
 }
 
 union Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
+
+type AktivitetLight implements FomTom {
+    type: AktivitetType!
+    fom: DateOnly!
+    tom: DateOnly!
+}

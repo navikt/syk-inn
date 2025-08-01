@@ -34,6 +34,13 @@ export type AktivitetIkkeMuligInput = {
     dummy: Scalars['Boolean']['input']
 }
 
+export type AktivitetLight = FomTom & {
+    __typename: 'AktivitetLight'
+    fom: Scalars['DateOnly']['output']
+    tom: Scalars['DateOnly']['output']
+    type: AktivitetType
+}
+
 export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'GRADERT' | 'REISETILSKUDD'
 
 export type Arbeidsforhold = {
@@ -234,7 +241,7 @@ export type OpprettSykmeldingRuleOutcome = {
     tree: Scalars['String']['output']
 }
 
-export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | Sykmelding
+export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | SykmeldingFull
 
 export type Outcome = {
     __typename: 'Outcome'
@@ -300,14 +307,31 @@ export type ReisetilskuddInput = {
     dummy: Scalars['Boolean']['input']
 }
 
-export type Sykmelding = {
-    __typename: 'Sykmelding'
+export type Sykmelding = SykmeldingFull | SykmeldingLight
+
+export type SykmeldingFull = {
+    __typename: 'SykmeldingFull'
     /** Status on the document in the EHR system. */
     documentStatus?: Maybe<DocumentStatus>
+    kind: Scalars['String']['output']
     meta: SykmeldingMeta
     sykmeldingId: Scalars['String']['output']
     utfall: Outcome
     values: SykmeldingValues
+}
+
+export type SykmeldingLight = {
+    __typename: 'SykmeldingLight'
+    kind: Scalars['String']['output']
+    meta: SykmeldingMeta
+    sykmeldingId: Scalars['String']['output']
+    utfall: Outcome
+    values: SykmeldingLightValues
+}
+
+export type SykmeldingLightValues = {
+    __typename: 'SykmeldingLightValues'
+    aktivitet: Array<AktivitetLight>
 }
 
 export type SykmeldingMelding = {
@@ -466,122 +490,176 @@ export type SykmeldingByIdQueryVariables = Exact<{
 
 export type SykmeldingByIdQuery = {
     __typename: 'Query'
-    sykmelding?: {
-        __typename: 'Sykmelding'
-        sykmeldingId: string
-        documentStatus?: DocumentStatus | null
-        meta: {
-            __typename: 'SykmeldingMeta'
-            pasientIdent: string
-            sykmelderHpr: string
-            legekontorOrgnr: string
-            mottatt: string
-        }
-        utfall: { __typename: 'Outcome'; result: string; message?: string | null }
-        values: {
-            __typename: 'SykmeldingValues'
-            svangerskapsrelatert: boolean
-            pasientenSkalSkjermes: boolean
-            hoveddiagnose?: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
-            bidiagnoser?: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
-            aktivitet: Array<
-                | {
-                      __typename: 'AktivitetIkkeMulig'
-                      fom: string
-                      tom: string
-                      type: AktivitetType
-                      arbeidsrelatertArsak?: {
-                          __typename: 'ArbeidsrelatertArsak'
-                          isArbeidsrelatertArsak: boolean
-                          arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
-                          annenArbeidsrelatertArsak?: string | null
-                      } | null
-                      medisinskArsak?: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
+    sykmelding?:
+        | {
+              __typename: 'SykmeldingFull'
+              sykmeldingId: string
+              documentStatus?: DocumentStatus | null
+              meta: {
+                  __typename: 'SykmeldingMeta'
+                  pasientIdent: string
+                  sykmelderHpr: string
+                  legekontorOrgnr: string
+                  mottatt: string
+              }
+              utfall: { __typename: 'Outcome'; result: string; message?: string | null }
+              values: {
+                  __typename: 'SykmeldingValues'
+                  svangerskapsrelatert: boolean
+                  pasientenSkalSkjermes: boolean
+                  hoveddiagnose?: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
+                  bidiagnoser?: Array<{
+                      __typename: 'Diagnose'
+                      system: DiagnoseSystem
+                      code: string
+                      text: string
+                  }> | null
+                  aktivitet: Array<
+                      | {
+                            __typename: 'AktivitetIkkeMulig'
+                            fom: string
+                            tom: string
+                            type: AktivitetType
+                            arbeidsrelatertArsak?: {
+                                __typename: 'ArbeidsrelatertArsak'
+                                isArbeidsrelatertArsak: boolean
+                                arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                                annenArbeidsrelatertArsak?: string | null
+                            } | null
+                            medisinskArsak?: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
+                        }
+                      | {
+                            __typename: 'Avventende'
+                            fom: string
+                            tom: string
+                            type: AktivitetType
+                            innspillTilArbeidsgiver: string
+                        }
+                      | {
+                            __typename: 'Behandlingsdager'
+                            fom: string
+                            tom: string
+                            type: AktivitetType
+                            antallBehandlingsdager: number
+                        }
+                      | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                      | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                  >
+                  arbeidsgiver?: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
+                  meldinger: {
+                      __typename: 'SykmeldingMelding'
+                      tilNav?: string | null
+                      tilArbeidsgiver?: string | null
                   }
-                | {
-                      __typename: 'Avventende'
-                      fom: string
-                      tom: string
-                      type: AktivitetType
-                      innspillTilArbeidsgiver: string
-                  }
-                | {
-                      __typename: 'Behandlingsdager'
-                      fom: string
-                      tom: string
-                      type: AktivitetType
-                      antallBehandlingsdager: number
-                  }
-                | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
-                | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
-            >
-            arbeidsgiver?: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
-            meldinger: { __typename: 'SykmeldingMelding'; tilNav?: string | null; tilArbeidsgiver?: string | null }
-            yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
-            tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
-        }
-    } | null
+                  yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
+                  tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+              }
+          }
+        | {
+              __typename: 'SykmeldingLight'
+              sykmeldingId: string
+              meta: {
+                  __typename: 'SykmeldingMeta'
+                  pasientIdent: string
+                  sykmelderHpr: string
+                  legekontorOrgnr: string
+                  mottatt: string
+              }
+              utfall: { __typename: 'Outcome'; result: string; message?: string | null }
+              values: {
+                  __typename: 'SykmeldingLightValues'
+                  aktivitet: Array<{ __typename: 'AktivitetLight'; type: AktivitetType; fom: string; tom: string }>
+              }
+          }
+        | null
 }
 
 export type AllSykmeldingerQueryVariables = Exact<{ [key: string]: never }>
 
 export type AllSykmeldingerQuery = {
     __typename: 'Query'
-    sykmeldinger?: Array<{
-        __typename: 'Sykmelding'
-        sykmeldingId: string
-        documentStatus?: DocumentStatus | null
-        meta: {
-            __typename: 'SykmeldingMeta'
-            pasientIdent: string
-            sykmelderHpr: string
-            legekontorOrgnr: string
-            mottatt: string
-        }
-        utfall: { __typename: 'Outcome'; result: string; message?: string | null }
-        values: {
-            __typename: 'SykmeldingValues'
-            svangerskapsrelatert: boolean
-            pasientenSkalSkjermes: boolean
-            hoveddiagnose?: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
-            bidiagnoser?: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
-            aktivitet: Array<
-                | {
-                      __typename: 'AktivitetIkkeMulig'
-                      fom: string
-                      tom: string
-                      type: AktivitetType
-                      arbeidsrelatertArsak?: {
-                          __typename: 'ArbeidsrelatertArsak'
-                          isArbeidsrelatertArsak: boolean
-                          arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
-                          annenArbeidsrelatertArsak?: string | null
-                      } | null
-                      medisinskArsak?: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
+    sykmeldinger?: Array<
+        | {
+              __typename: 'SykmeldingFull'
+              sykmeldingId: string
+              documentStatus?: DocumentStatus | null
+              meta: {
+                  __typename: 'SykmeldingMeta'
+                  pasientIdent: string
+                  sykmelderHpr: string
+                  legekontorOrgnr: string
+                  mottatt: string
+              }
+              utfall: { __typename: 'Outcome'; result: string; message?: string | null }
+              values: {
+                  __typename: 'SykmeldingValues'
+                  svangerskapsrelatert: boolean
+                  pasientenSkalSkjermes: boolean
+                  hoveddiagnose?: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
+                  bidiagnoser?: Array<{
+                      __typename: 'Diagnose'
+                      system: DiagnoseSystem
+                      code: string
+                      text: string
+                  }> | null
+                  aktivitet: Array<
+                      | {
+                            __typename: 'AktivitetIkkeMulig'
+                            fom: string
+                            tom: string
+                            type: AktivitetType
+                            arbeidsrelatertArsak?: {
+                                __typename: 'ArbeidsrelatertArsak'
+                                isArbeidsrelatertArsak: boolean
+                                arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                                annenArbeidsrelatertArsak?: string | null
+                            } | null
+                            medisinskArsak?: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
+                        }
+                      | {
+                            __typename: 'Avventende'
+                            fom: string
+                            tom: string
+                            type: AktivitetType
+                            innspillTilArbeidsgiver: string
+                        }
+                      | {
+                            __typename: 'Behandlingsdager'
+                            fom: string
+                            tom: string
+                            type: AktivitetType
+                            antallBehandlingsdager: number
+                        }
+                      | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                      | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                  >
+                  arbeidsgiver?: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
+                  meldinger: {
+                      __typename: 'SykmeldingMelding'
+                      tilNav?: string | null
+                      tilArbeidsgiver?: string | null
                   }
-                | {
-                      __typename: 'Avventende'
-                      fom: string
-                      tom: string
-                      type: AktivitetType
-                      innspillTilArbeidsgiver: string
-                  }
-                | {
-                      __typename: 'Behandlingsdager'
-                      fom: string
-                      tom: string
-                      type: AktivitetType
-                      antallBehandlingsdager: number
-                  }
-                | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
-                | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
-            >
-            arbeidsgiver?: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
-            meldinger: { __typename: 'SykmeldingMelding'; tilNav?: string | null; tilArbeidsgiver?: string | null }
-            yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
-            tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
-        }
-    }> | null
+                  yrkesskade?: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato?: string | null } | null
+                  tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+              }
+          }
+        | {
+              __typename: 'SykmeldingLight'
+              sykmeldingId: string
+              meta: {
+                  __typename: 'SykmeldingMeta'
+                  pasientIdent: string
+                  sykmelderHpr: string
+                  legekontorOrgnr: string
+                  mottatt: string
+              }
+              utfall: { __typename: 'Outcome'; result: string; message?: string | null }
+              values: {
+                  __typename: 'SykmeldingLightValues'
+                  aktivitet: Array<{ __typename: 'AktivitetLight'; type: AktivitetType; fom: string; tom: string }>
+              }
+          }
+    > | null
 }
 
 export type OpprettSykmeldingMutationVariables = Exact<{
@@ -594,7 +672,7 @@ export type OpprettSykmeldingMutation = {
     opprettSykmelding:
         | { __typename: 'OpprettSykmeldingRuleOutcome'; status: string; message: string; rule: string; tree: string }
         | {
-              __typename: 'Sykmelding'
+              __typename: 'SykmeldingFull'
               sykmeldingId: string
               documentStatus?: DocumentStatus | null
               meta: {
@@ -667,8 +745,8 @@ export type OutcomeFragment = {
     tree: string
 }
 
-export type SykmeldingFragment = {
-    __typename: 'Sykmelding'
+type Sykmelding_SykmeldingFull_Fragment = {
+    __typename: 'SykmeldingFull'
     sykmeldingId: string
     documentStatus?: DocumentStatus | null
     meta: {
@@ -722,6 +800,25 @@ export type SykmeldingFragment = {
         tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
     }
 }
+
+type Sykmelding_SykmeldingLight_Fragment = {
+    __typename: 'SykmeldingLight'
+    sykmeldingId: string
+    meta: {
+        __typename: 'SykmeldingMeta'
+        pasientIdent: string
+        sykmelderHpr: string
+        legekontorOrgnr: string
+        mottatt: string
+    }
+    utfall: { __typename: 'Outcome'; result: string; message?: string | null }
+    values: {
+        __typename: 'SykmeldingLightValues'
+        aktivitet: Array<{ __typename: 'AktivitetLight'; type: AktivitetType; fom: string; tom: string }>
+    }
+}
+
+export type SykmeldingFragment = Sykmelding_SykmeldingFull_Fragment | Sykmelding_SykmeldingLight_Fragment
 
 type Aktivitet_AktivitetIkkeMulig_Fragment = {
     __typename: 'AktivitetIkkeMulig'
@@ -961,117 +1058,196 @@ export const SykmeldingFragmentDoc = {
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
-                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
                     {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'meta' },
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingLight' } },
                         selectionSet: {
                             kind: 'SelectionSet',
                             selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
-                        },
-                    },
-                    {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'utfall' },
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'result' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'message' } },
-                            ],
-                        },
-                    },
-                    {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'values' },
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'hoveddiagnose' },
+                                    name: { kind: 'Name', value: 'meta' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
                                         ],
                                     },
                                 },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'bidiagnoser' },
+                                    name: { kind: 'Name', value: 'utfall' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'message' } },
                                         ],
                                     },
                                 },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'aktivitet' },
+                                    name: { kind: 'Name', value: 'values' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Aktivitet' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'arbeidsgiver' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'harFlere' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'arbeidsgivernavn' } },
-                                        ],
-                                    },
-                                },
-                                { kind: 'Field', name: { kind: 'Name', value: 'svangerskapsrelatert' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'meldinger' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'tilNav' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'tilArbeidsgiver' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'yrkesskade' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'yrkesskade' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'skadedato' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'tilbakedatering' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'aktivitet' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                                                    ],
+                                                },
+                                            },
                                         ],
                                     },
                                 },
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingFull' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'meta' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'utfall' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'message' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'values' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'hoveddiagnose' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Diagnose' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'bidiagnoser' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Diagnose' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'aktivitet' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Aktivitet' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'arbeidsgiver' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'harFlere' } },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'arbeidsgivernavn' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'svangerskapsrelatert' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'meldinger' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'tilNav' } },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'tilArbeidsgiver' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'yrkesskade' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'yrkesskade' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'skadedato' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'tilbakedatering' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                                { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                            ],
+                        },
+                    },
                 ],
             },
         },
@@ -1763,117 +1939,196 @@ export const SykmeldingByIdDocument = {
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
-                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
                     {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'meta' },
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingLight' } },
                         selectionSet: {
                             kind: 'SelectionSet',
                             selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
-                        },
-                    },
-                    {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'utfall' },
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'result' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'message' } },
-                            ],
-                        },
-                    },
-                    {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'values' },
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'hoveddiagnose' },
+                                    name: { kind: 'Name', value: 'meta' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
                                         ],
                                     },
                                 },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'bidiagnoser' },
+                                    name: { kind: 'Name', value: 'utfall' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'message' } },
                                         ],
                                     },
                                 },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'aktivitet' },
+                                    name: { kind: 'Name', value: 'values' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Aktivitet' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'arbeidsgiver' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'harFlere' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'arbeidsgivernavn' } },
-                                        ],
-                                    },
-                                },
-                                { kind: 'Field', name: { kind: 'Name', value: 'svangerskapsrelatert' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'meldinger' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'tilNav' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'tilArbeidsgiver' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'yrkesskade' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'yrkesskade' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'skadedato' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'tilbakedatering' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'aktivitet' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                                                    ],
+                                                },
+                                            },
                                         ],
                                     },
                                 },
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingFull' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'meta' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'utfall' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'message' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'values' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'hoveddiagnose' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Diagnose' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'bidiagnoser' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Diagnose' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'aktivitet' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Aktivitet' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'arbeidsgiver' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'harFlere' } },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'arbeidsgivernavn' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'svangerskapsrelatert' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'meldinger' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'tilNav' } },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'tilArbeidsgiver' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'yrkesskade' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'yrkesskade' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'skadedato' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'tilbakedatering' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                                { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                            ],
+                        },
+                    },
                 ],
             },
         },
@@ -2017,117 +2272,196 @@ export const AllSykmeldingerDocument = {
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
-                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
                     {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'meta' },
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingLight' } },
                         selectionSet: {
                             kind: 'SelectionSet',
                             selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
-                        },
-                    },
-                    {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'utfall' },
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'result' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'message' } },
-                            ],
-                        },
-                    },
-                    {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'values' },
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'hoveddiagnose' },
+                                    name: { kind: 'Name', value: 'meta' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
                                         ],
                                     },
                                 },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'bidiagnoser' },
+                                    name: { kind: 'Name', value: 'utfall' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'message' } },
                                         ],
                                     },
                                 },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'aktivitet' },
+                                    name: { kind: 'Name', value: 'values' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Aktivitet' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'arbeidsgiver' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'harFlere' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'arbeidsgivernavn' } },
-                                        ],
-                                    },
-                                },
-                                { kind: 'Field', name: { kind: 'Name', value: 'svangerskapsrelatert' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'meldinger' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'tilNav' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'tilArbeidsgiver' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'yrkesskade' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'yrkesskade' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'skadedato' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'tilbakedatering' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'aktivitet' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                                                    ],
+                                                },
+                                            },
                                         ],
                                     },
                                 },
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingFull' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'meta' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'utfall' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'message' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'values' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'hoveddiagnose' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Diagnose' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'bidiagnoser' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Diagnose' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'aktivitet' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Aktivitet' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'arbeidsgiver' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'harFlere' } },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'arbeidsgivernavn' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'svangerskapsrelatert' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'meldinger' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'tilNav' } },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'tilArbeidsgiver' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'yrkesskade' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'yrkesskade' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'skadedato' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'tilbakedatering' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                                { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                            ],
+                        },
+                    },
                 ],
             },
         },
@@ -2322,117 +2656,196 @@ export const OpprettSykmeldingDocument = {
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
-                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
                     {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'meta' },
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingLight' } },
                         selectionSet: {
                             kind: 'SelectionSet',
                             selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
-                        },
-                    },
-                    {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'utfall' },
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'result' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'message' } },
-                            ],
-                        },
-                    },
-                    {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'values' },
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'hoveddiagnose' },
+                                    name: { kind: 'Name', value: 'meta' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
                                         ],
                                     },
                                 },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'bidiagnoser' },
+                                    name: { kind: 'Name', value: 'utfall' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'message' } },
                                         ],
                                     },
                                 },
                                 {
                                     kind: 'Field',
-                                    name: { kind: 'Name', value: 'aktivitet' },
+                                    name: { kind: 'Name', value: 'values' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Aktivitet' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'arbeidsgiver' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'harFlere' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'arbeidsgivernavn' } },
-                                        ],
-                                    },
-                                },
-                                { kind: 'Field', name: { kind: 'Name', value: 'svangerskapsrelatert' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'meldinger' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'tilNav' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'tilArbeidsgiver' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'yrkesskade' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'yrkesskade' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'skadedato' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'tilbakedatering' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
-                                            { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'aktivitet' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                                                    ],
+                                                },
+                                            },
                                         ],
                                     },
                                 },
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingFull' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'meta' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'utfall' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'result' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'message' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'values' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'hoveddiagnose' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Diagnose' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'bidiagnoser' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Diagnose' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'aktivitet' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Aktivitet' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'arbeidsgiver' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'harFlere' } },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'arbeidsgivernavn' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'svangerskapsrelatert' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'meldinger' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'tilNav' } },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'tilArbeidsgiver' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'yrkesskade' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'yrkesskade' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'skadedato' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'tilbakedatering' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'startdato' } },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'begrunnelse' } },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                                { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                            ],
+                        },
+                    },
                 ],
             },
         },
