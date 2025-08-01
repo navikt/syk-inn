@@ -1,6 +1,6 @@
 import * as R from 'remeda'
 
-import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
+import { SykInnApiSykmelding, SykInnApiSykmeldingLight } from '@core/services/syk-inn-api/schema/sykmelding'
 import { AaregArbeidsforhold } from '@core/services/aareg/aareg-schema'
 
 import { SykmeldingBuilder } from './SykInnApiSykmeldingBuilder'
@@ -8,7 +8,7 @@ import { DraftBuilder, ScenarioDraft } from './DraftBuilder'
 import { multipleAaregArbeidsforhold, simpleAaregArbeidsforhold } from './aareg-arbeidsforhold'
 
 export type Scenario = {
-    sykmeldinger: SykInnApiSykmelding[]
+    sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingLight)[]
     arbeidsforhold: AaregArbeidsforhold[]
     drafts: ScenarioDraft[]
 }
@@ -60,6 +60,18 @@ const simpleScenarios = {
             sykmeldinger: [],
             arbeidsforhold: simpleAaregArbeidsforhold,
             drafts: R.range(0, 15).map((idx) => new DraftBuilder().lastUpdated(idx * 3).build()),
+        }),
+    },
+    'some-light-sykmeldinger': {
+        description: 'Mix of own sykmeldinger and sykmeldinger from other behandlere',
+        scenario: () => ({
+            sykmeldinger: [
+                new SykmeldingBuilder({ offset: -7 }).enkelAktivitet({ offset: 0, days: 14 }).build(),
+                new SykmeldingBuilder({ offset: -50 }).enkelAktivitet({ offset: 0, days: 7 }).buildLight(),
+                new SykmeldingBuilder({ offset: -90 }).enkelAktivitet({ offset: 0, days: 7 }).buildLight(),
+            ],
+            arbeidsforhold: simpleAaregArbeidsforhold,
+            drafts: [],
         }),
     },
 } satisfies Record<string, { description: string; scenario: ScenarioCreator }>

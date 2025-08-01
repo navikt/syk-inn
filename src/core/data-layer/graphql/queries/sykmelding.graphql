@@ -28,7 +28,28 @@ fragment Outcome on OpprettSykmeldingRuleOutcome {
     tree
 }
 
-fragment Sykmelding on Sykmelding {
+fragment SykmeldingLight on SykmeldingLight {
+    sykmeldingId
+    meta {
+        pasientIdent
+        sykmelderHpr
+        legekontorOrgnr
+        mottatt
+    }
+    utfall {
+        result
+        message
+    }
+    values {
+        aktivitet {
+            type
+            fom
+            tom
+        }
+    }
+}
+
+fragment SykmeldingFull on SykmeldingFull {
     sykmeldingId
     meta {
         pasientIdent
@@ -70,6 +91,11 @@ fragment Sykmelding on Sykmelding {
         }
     }
     documentStatus
+}
+
+fragment Sykmelding on Sykmelding {
+    ...SykmeldingLight
+    ...SykmeldingFull
 }
 
 fragment Aktivitet on Aktivitet {

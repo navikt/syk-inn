@@ -3,7 +3,7 @@ import { BodyShort, Table, Tag, TagProps } from '@navikt/ds-react'
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
-import { DraftFragment, SykmeldingFragment } from '@queries'
+import { DraftFragment, SykmeldingFragment, SykmeldingFullFragment, SykmeldingLightFragment } from '@queries'
 import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 
@@ -35,74 +35,33 @@ export function ComboTable({
             <ComboTableHeader />
             <Table.Body>
                 {children}
-                {drafts.map((draft) => {
-                    const values = safeParseDraft(draft.draftId, draft.values)
-
-                    return (
-                        <TableRow
-                            key={draft.draftId}
-                            periode={
-                                <DraftPeriodeLink
-                                    draftId={draft.draftId}
-                                    lastChanged={draft.lastUpdated}
-                                    perioder={values?.perioder}
-                                />
-                            }
-                            diagnose={draftDiagnoseText(values?.hoveddiagnose)}
-                            grad={draftAktivitetText(values?.perioder)}
-                            arbeidsgiver={draftArbeidsforholdText(values?.arbeidsforhold)}
-                            utfall={null}
-                            status="draft"
-                            actions={<DraftActions draftId={draft.draftId} />}
-                        ></TableRow>
-                    )
-                })}
-                {current.map((sykmelding) => {
-                    return (
-                        <TableRow
+                {drafts.map((draft) => (
+                    <DraftTableRow draft={draft} key={draft.draftId} />
+                ))}
+                {current.map((sykmelding) =>
+                    sykmelding.__typename === 'SykmeldingFull' ? (
+                        <FullTableRow
                             key={sykmelding.sykmeldingId}
-                            periode={
-                                <SykmeldingPeriodeLink
-                                    sykmeldingId={sykmelding.sykmeldingId}
-                                    aktivitet={sykmelding.values.aktivitet}
-                                />
-                            }
-                            diagnose={sykmeldingDiagnoseText(sykmelding.values.hoveddiagnose)}
-                            grad={sykmeldingGradText(sykmelding.values.aktivitet)}
-                            arbeidsgiver={sykmeldingArbeidsgiverText(sykmelding.values.arbeidsgiver)}
-                            utfall={<Utfall utfall={sykmelding.utfall} />}
+                            sykmelding={sykmelding}
                             status="current"
-                            actions={
-                                <SykmeldingActions
-                                    sykmeldingId={sykmelding.sykmeldingId}
-                                    sykmelding={sykmelding}
-                                    forlengable
-                                />
-                            }
+                            forlengable
                         />
-                    )
-                })}
-                {previous.map((sykmelding) => {
-                    return (
-                        <TableRow
+                    ) : (
+                        <LightTableRow
                             key={sykmelding.sykmeldingId}
-                            periode={
-                                <SykmeldingPeriodeLink
-                                    sykmeldingId={sykmelding.sykmeldingId}
-                                    aktivitet={sykmelding.values.aktivitet}
-                                />
-                            }
-                            diagnose={sykmeldingDiagnoseText(sykmelding.values.hoveddiagnose)}
-                            grad={sykmeldingGradText(sykmelding.values.aktivitet)}
-                            arbeidsgiver={sykmeldingArbeidsgiverText(sykmelding.values.arbeidsgiver)}
-                            utfall={<Utfall utfall={sykmelding.utfall} />}
-                            status="previous"
-                            actions={
-                                <SykmeldingActions sykmeldingId={sykmelding.sykmeldingId} sykmelding={sykmelding} />
-                            }
+                            sykmelding={sykmelding}
+                            status="current"
+                            forlengable
                         />
-                    )
-                })}
+                    ),
+                )}
+                {previous.map((sykmelding) =>
+                    sykmelding.__typename === 'SykmeldingFull' ? (
+                        <FullTableRow key={sykmelding.sykmeldingId} sykmelding={sykmelding} status="previous" />
+                    ) : (
+                        <LightTableRow key={sykmelding.sykmeldingId} sykmelding={sykmelding} status="previous" />
+                    ),
+                )}
             </Table.Body>
         </DashboardTable>
     )
@@ -127,9 +86,87 @@ export function ComboTableHeader({ className }: { className?: string }): ReactEl
     )
 }
 
+function DraftTableRow({ draft }: { draft: DraftFragment }): ReactElement {
+    const values = safeParseDraft(draft.draftId, draft.values)
+
+    return (
+        <TableRow
+            periode={
+                <DraftPeriodeLink draftId={draft.draftId} lastChanged={draft.lastUpdated} perioder={values?.perioder} />
+            }
+            diagnose={draftDiagnoseText(values?.hoveddiagnose)}
+            grad={draftAktivitetText(values?.perioder)}
+            arbeidsgiver={draftArbeidsforholdText(values?.arbeidsforhold)}
+            utfall={null}
+            status="draft"
+            actions={<DraftActions draftId={draft.draftId} />}
+        />
+    )
+}
+
+function FullTableRow({
+    sykmelding,
+    status,
+    forlengable,
+}: {
+    sykmelding: SykmeldingFullFragment
+    status: 'draft' | 'previous' | 'current'
+    forlengable?: true
+}): ReactElement {
+    return (
+        <TableRow
+            periode={
+                <SykmeldingPeriodeLink sykmeldingId={sykmelding.sykmeldingId} aktivitet={sykmelding.values.aktivitet} />
+            }
+            diagnose={sykmeldingDiagnoseText(sykmelding.values.hoveddiagnose)}
+            grad={sykmeldingGradText(sykmelding.values.aktivitet)}
+            arbeidsgiver={sykmeldingArbeidsgiverText(sykmelding.values.arbeidsgiver)}
+            utfall={<Utfall utfall={sykmelding.utfall} />}
+            status={status}
+            actions={
+                <SykmeldingActions
+                    sykmeldingId={sykmelding.sykmeldingId}
+                    sykmelding={sykmelding}
+                    forlengable={forlengable}
+                />
+            }
+        />
+    )
+}
+
+function LightTableRow({
+    sykmelding,
+    status,
+    forlengable,
+}: {
+    sykmelding: SykmeldingLightFragment
+    status: 'draft' | 'previous' | 'current'
+    forlengable?: true
+}): ReactElement {
+    return (
+        <TableRow
+            periode={
+                <SykmeldingPeriodeLink sykmeldingId={sykmelding.sykmeldingId} aktivitet={sykmelding.values.aktivitet} />
+            }
+            diagnose={null}
+            grad={null}
+            arbeidsgiver={null}
+            utfall={<Utfall utfall={sykmelding.utfall} />}
+            status={status}
+            actions={
+                <SykmeldingActions
+                    sykmeldingId={sykmelding.sykmeldingId}
+                    sykmelding={sykmelding}
+                    forlengable={forlengable}
+                />
+            }
+        />
+    )
+}
+
 function TableRow(props: {
     periode: string | ReactNode
-    diagnose: string
+    diagnose: string | null
     grad: string | null
     arbeidsgiver: string | null
     utfall: ReactNode | null

@@ -20,6 +20,7 @@ import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service
 import { getFnrIdent, getNameFromPdl } from '@core/services/pdl/pdl-api-utils'
 import {
     resolverInputToSykInnApiPayload,
+    sykInnApiSykmeldingLightToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmelding,
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
@@ -110,6 +111,10 @@ const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
+            if (sykmelding.kind === 'light') {
+                return sykInnApiSykmeldingLightToResolverSykmelding(sykmelding)
+            }
+
             const existingDocumentReference = await client.request(`DocumentReference/${sykmeldingId}` as const)
 
             return sykInnApiSykmeldingToResolverSykmelding(
@@ -143,7 +148,11 @@ const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            return sykmeldinger.map((it) => sykInnApiSykmeldingToResolverSykmelding(it))
+            return sykmeldinger.map((it) => {
+                return it.kind === 'light'
+                    ? sykInnApiSykmeldingLightToResolverSykmelding(it)
+                    : sykInnApiSykmeldingToResolverSykmelding(it)
+            })
         },
         person: async (_, { ident }) => {
             // Only validate session

@@ -6,9 +6,10 @@ export interface PossibleTypesResultData {
 const result: PossibleTypesResultData = {
     possibleTypes: {
         Aktivitet: ['AktivitetIkkeMulig', 'Avventende', 'Behandlingsdager', 'Gradert', 'Reisetilskudd'],
-        FomTom: ['AktivitetIkkeMulig', 'Avventende', 'Behandlingsdager', 'Gradert', 'Reisetilskudd'],
-        OpprettetSykmelding: ['OpprettSykmeldingRuleOutcome', 'Sykmelding'],
+        FomTom: ['AktivitetIkkeMulig', 'AktivitetLight', 'Avventende', 'Behandlingsdager', 'Gradert', 'Reisetilskudd'],
+        OpprettetSykmelding: ['OpprettSykmeldingRuleOutcome', 'SykmeldingFull'],
         Person: ['Pasient', 'QueriedPerson'],
+        Sykmelding: ['SykmeldingFull', 'SykmeldingLight'],
     },
 }
 export default result

@@ -60,6 +60,13 @@ export async function createDocumentReference(
         return { error: 'API_ERROR' }
     }
 
+    if (sykmelding.kind === 'light') {
+        logger.warn(
+            `Tried creating document reference for light sykmelding with id ${sykmeldingId}, this is owned by ${sykmelding.meta.sykmelder.hprNummer}, not ${hpr}`,
+        )
+        return { error: 'API_ERROR' }
+    }
+
     const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.create(
         'DocumentReference',
         {
