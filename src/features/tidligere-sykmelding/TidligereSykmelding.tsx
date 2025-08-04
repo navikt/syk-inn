@@ -9,6 +9,8 @@ import { ValuesSection } from '@components/sykmelding/ValuesSection'
 import SykmeldingValues from '@components/sykmelding/SykmeldingValues'
 import BehandlerValues from '@components/sykmelding/BehandlerValues'
 
+import { TidligereSykmeldingActions } from './TidligereSykmeldingActions'
+
 export function TidligereSykmelding(): ReactElement {
     const params = useParams<{ sykmeldingId: string }>()
     const { loading, data, error, refetch } = useQuery(SykmeldingByIdDocument, {
@@ -57,13 +59,16 @@ export function TidligereSykmelding(): ReactElement {
 
     return (
         <div className="p-4">
-            <div className="pb-4 ml-4 flex flex-row gap-2">
-                <span>Mottatt:</span>
-                {loading ? (
-                    <Skeleton className="inline-flex" width={96} />
-                ) : data?.sykmelding ? (
-                    <span>{toReadableDate(data.sykmelding.meta.mottatt)}</span>
-                ) : null}
+            <div className="flex justify-between items-center mb-4">
+                <div className="flex flex-row gap-2 ml-4">
+                    <span>Mottatt:</span>
+                    {loading ? (
+                        <Skeleton className="inline-flex" width={96} />
+                    ) : data?.sykmelding ? (
+                        <span>{toReadableDate(data.sykmelding.meta.mottatt)}</span>
+                    ) : null}
+                </div>
+                {data?.sykmelding && <TidligereSykmeldingActions sykmelding={data?.sykmelding} />}
             </div>
             <div className="flex flex-row gap-8">
                 <div className="max-w-prose w-[65ch]">
