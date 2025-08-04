@@ -1,19 +1,23 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 import { logger } from '@navikt/next-logger'
 import { GraphQLSchema } from 'graphql/type'
 import { createYoga, Plugin } from 'graphql-yoga'
 
 import { bundledEnv, isDemo, isLocal } from '@lib/env'
 import { wait } from '@lib/wait'
-import { pathWithBasePath } from '@lib/url'
 
-export const createGraphQLHandler = (schema: GraphQLSchema) => {
-    const { handleRequest } = createYoga({
+interface NextContext {
+    params: Promise<Record<string, string>>
+}
+
+export function createGraphQLHandler(
+    schema: GraphQLSchema,
+    path: '/fhir/graphql' | '/graphql',
+): (request: Request, ctx: NextContext) => Response | Promise<Response> {
+    const { handleRequest } = createYoga<NextContext>({
         schema,
         logging: logger,
         plugins: isLocal || isDemo ? [slowdownPlugin()] : undefined,
-        graphqlEndpoint: pathWithBasePath('/fhir/graphql'),
+        graphqlEndpoint: path,
         fetchAPI: { Response },
     })
 
