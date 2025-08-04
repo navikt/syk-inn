@@ -30,9 +30,7 @@
     "dependencies": {
         "@apollo/client": "^3.13.9",
         "@apollo/client-integration-nextjs": "^0.12.3",
-        "@apollo/server": "^5.0.0",
         "@ariakit/react": "^0.4.17",
-        "@as-integrations/next": "^4.0.0",
         "@grafana/faro-web-sdk": "^1.19.0",
         "@grafana/faro-web-tracing": "^1.19.0",
         "@graphql-tools/graphql-file-loader": "^8.0.22",
@@ -55,6 +53,7 @@
         "date-fns": "^4.1.0",
         "fuse.js": "^7.1.0",
         "graphql": "^16.11.0",
+        "graphql-yoga": "^5.15.1",
         "iovalkey": "^0.3.3",
         "motion": "^12.23.12",
         "next": "15.4.5",

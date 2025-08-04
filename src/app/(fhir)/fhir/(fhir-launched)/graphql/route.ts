@@ -1,6 +1,6 @@
-import { createApolloHandler } from '@data-layer/graphql/apollo/apollo-server-utils'
+import { createGraphQLHandler } from '@data-layer/graphql/yoga-server'
 import { fhirSchema } from '@data-layer/fhir/fhir-graphql-resolvers'
 
-const handler = createApolloHandler(fhirSchema)
+const handler = createGraphQLHandler(fhirSchema)
 
 export { handler as GET, handler as POST }
