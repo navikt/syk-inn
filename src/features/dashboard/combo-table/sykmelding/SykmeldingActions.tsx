@@ -1,12 +1,11 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useRef } from 'react'
 import { Tooltip } from '@navikt/ds-react'
-import { ChevronRightIcon } from '@navikt/aksel-icons'
+import { ChevronRightDoubleCircleIcon, ChevronRightIcon, TabsAddIcon } from '@navikt/aksel-icons'
 
 import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { SykmeldingFragment } from '@queries'
-
-import { ForlengSykmeldingButton } from './forlengelse/SykmeldingForlengelse'
-import { DupliserSykmeldingButton } from './duplisering/SykmeldingDupliser'
+import { useAppDispatch } from '@core/redux/hooks'
+import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
 type SykmeldingActionProps = {
     sykmeldingId: string
@@ -28,5 +27,43 @@ export function SykmeldingActions({ sykmeldingId, sykmelding, forlengable }: Syk
             <DupliserSykmeldingButton sykmelding={sykmelding} />
             {forlengable && <ForlengSykmeldingButton sykmelding={sykmelding} />}
         </div>
+    )
+}
+
+function DupliserSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
+    const nextDraftId = useRef(crypto.randomUUID())
+    const dispatch = useAppDispatch()
+
+    return (
+        <Tooltip content="Dupliser sykmeldingen">
+            <SlowNextLinkButton
+                href={`/fhir/ny/${nextDraftId.current}`}
+                onClick={() => {
+                    dispatch(nySykmeldingActions.dupliser(sykmelding))
+                }}
+                icon={<TabsAddIcon aria-hidden />}
+                variant="tertiary"
+                size="small"
+            />
+        </Tooltip>
+    )
+}
+
+function ForlengSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
+    const nextDraftId = useRef(crypto.randomUUID())
+    const dispatch = useAppDispatch()
+
+    return (
+        <Tooltip content="Forleng sykmeldingen">
+            <SlowNextLinkButton
+                href={`/fhir/ny/${nextDraftId.current}`}
+                onClick={() => {
+                    dispatch(nySykmeldingActions.forleng(sykmelding))
+                }}
+                icon={<ChevronRightDoubleCircleIcon aria-hidden />}
+                variant="tertiary"
+                size="small"
+            />
+        </Tooltip>
     )
 }
