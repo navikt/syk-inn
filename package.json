@@ -31,6 +31,7 @@
         "@apollo/client": "^3.13.9",
         "@apollo/client-integration-nextjs": "^0.12.3",
         "@ariakit/react": "^0.4.17",
+        "@envelop/opentelemetry": "^8.0.0",
         "@grafana/faro-web-sdk": "^1.19.0",
         "@grafana/faro-web-tracing": "^1.19.0",
         "@graphql-tools/graphql-file-loader": "^8.0.22",
