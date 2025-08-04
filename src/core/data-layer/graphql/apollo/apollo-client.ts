@@ -41,6 +41,10 @@ export function makeApolloClient(store: AppStore) {
             fetch: (input, options) => {
                 const operationName = inferOperationName(options?.body as string | undefined)
 
+                if (operationName === 'DiagnoseSearch' && options?.signal != null) {
+                    options.signal = undefined
+                }
+
                 return spanBrowserAsync(`GQL Fetch: ${operationName}`, async () => fetch(input, options))
             },
         })
