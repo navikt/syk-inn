@@ -8,7 +8,18 @@ import { globalInMemoryValkey } from '@dev/mock-engine/valkey/global-inmem-valke
 
 import { getKnownFhirServers } from './issuers'
 
-const smartClientScopes = ['openid', 'profile', 'launch', 'fhirUser', 'patient/*.read', 'user/*.read offline_access']
+const smartClientScopes = [
+    'openid',
+    'profile',
+    'launch',
+    'fhirUser',
+    'offline_access',
+    'patient/Patient.read',
+    'patient/Encounter.read',
+    'patient/Condition.read',
+    'patient/DocumentReference.read',
+    'patient/DocumentReference.write',
+]
 
 if (isDemo || isLocal) {
     smartClientScopes.push('https://helseid.nhn.no')
