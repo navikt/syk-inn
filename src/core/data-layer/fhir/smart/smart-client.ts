@@ -19,9 +19,22 @@ import { globalInMemoryValkey } from '@dev/mock-engine/valkey/global-inmem-valke
 
 import { knownFhirServers } from './issuers'
 
+const smartClientScopes = [
+    'openid',
+    'profile',
+    'launch',
+    'fhirUser',
+    'offline_access',
+    'patient/Patient.read',
+    'patient/Encounter.read',
+    'patient/Condition.read',
+    'patient/DocumentReference.read',
+    'patient/DocumentReference.write',
+]
+
 const smartClientConfig: SmartClientConfiguration = {
     client_id: 'syk-inn',
-    scope: 'openid profile launch fhirUser patient/*.read user/*.read offline_access',
+    scope: smartClientScopes.join(' '),
     redirect_url: `${getAbsoluteURL()}/fhir`,
     callback_url: `${getAbsoluteURL()}/fhir/callback`,
     knownFhirServers,
