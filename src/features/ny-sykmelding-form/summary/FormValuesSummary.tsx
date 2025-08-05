@@ -7,7 +7,10 @@ import {
     NySykmeldingAktivitet,
     NySykmeldingDiagnoser,
     NySykmeldingTilbakedatering,
+    NySykmeldingMeldinger,
+    NySykmeldingAndreSporsmal,
     ActivePatient,
+    NySykmeldingArbeidsforhold,
 } from '@core/redux/reducers/ny-sykmelding'
 import { useAppSelector } from '@core/redux/hooks'
 import { AkselNextLink } from '@components/links/AkselNextLink'
@@ -84,54 +87,18 @@ function FormValuesSummary({ className }: Props): ReactElement {
             <FormSummary>
                 <FormSummary.Header>
                     <FormSummary.Heading level="2">Oppsummering sykmelding</FormSummary.Heading>
-                    <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
+                    <FormSummary.EditLink as="button" onClick={() => setStep('main')}>
+                        Endre
+                    </FormSummary.EditLink>
                 </FormSummary.Header>
                 <FormSummary.Answers>
                     <PatientSummaryAnswers pasient={pasient} />
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Har pasienten flere arbeidsforhold?</FormSummary.Label>
-                        <FormSummary.Value>
-                            {values.arbeidsforhold?.harFlereArbeidsforhold ? 'Ja' : 'Nei'}
-                        </FormSummary.Value>
-                    </FormSummary.Answer>
-                    {values.arbeidsforhold?.harFlereArbeidsforhold && (
-                        <FormSummary.Answer>
-                            <FormSummary.Label>Hvilke arbeidsforhold skal pasienten sykmeldes fra?</FormSummary.Label>
-                            <FormSummary.Value>{values.arbeidsforhold?.sykmeldtFraArbeidsforhold}</FormSummary.Value>
-                        </FormSummary.Answer>
-                    )}
+                    <ArbeidsforholdSummaryAnswers arbeidsforhold={values.arbeidsforhold} />
                     <AktivitetSummaryAnswers aktiviteter={values.aktiviteter} />
-                    {values.tilbakedatering && (
-                        <TilbakedateringSummaryAnswers tilbakedatering={values.tilbakedatering} />
-                    )}
-
+                    <TilbakedateringSummaryAnswers tilbakedatering={values.tilbakedatering} />
                     <DiagnoseSummaryAnswers diagnose={values.diagnose} />
-
-                    {values.meldinger?.tilNav && (
-                        <FormSummary.Answer>
-                            <FormSummary.Label>Til NAV</FormSummary.Label>
-                            <FormSummary.Value>{values.meldinger?.tilNav}</FormSummary.Value>
-                        </FormSummary.Answer>
-                    )}
-                    {values.meldinger?.tilArbeidsgiver && (
-                        <FormSummary.Answer>
-                            <FormSummary.Label>Til arbeidsgiver</FormSummary.Label>
-                            <FormSummary.Value>{values.meldinger?.tilArbeidsgiver}</FormSummary.Value>
-                        </FormSummary.Answer>
-                    )}
-
-                    {values.andreSporsmal?.svangerskapsrelatert && (
-                        <FormSummary.Answer>
-                            <FormSummary.Label>Annen info</FormSummary.Label>
-                            <FormSummary.Value>Sykdommen er svangerskapsrelatert</FormSummary.Value>
-                        </FormSummary.Answer>
-                    )}
-                    {values.andreSporsmal?.yrkesskade && (
-                        <FormSummary.Answer>
-                            <FormSummary.Label>Yrkesskade</FormSummary.Label>
-                            <FormSummary.Value>Ja</FormSummary.Value>
-                        </FormSummary.Answer>
-                    )}
+                    <MeldingerSummaryAnswers meldinger={values.meldinger} />
+                    <AnderSporsmalSummaryAnswers andreSporsmal={values.andreSporsmal} />
                 </FormSummary.Answers>
             </FormSummary>
         </div>
@@ -243,8 +210,11 @@ function AktivitetSummaryAnswer({
 function TilbakedateringSummaryAnswers({
     tilbakedatering,
 }: {
-    tilbakedatering: NySykmeldingTilbakedatering
+    tilbakedatering: NySykmeldingTilbakedatering | null
 }): ReactElement {
+    if (tilbakedatering == null) {
+        return <React.Fragment />
+    }
     return (
         <>
             <FormSummary.Answer>
@@ -257,7 +227,7 @@ function TilbakedateringSummaryAnswers({
             </FormSummary.Answer>
             {tilbakedatering.annenGrunn && (
                 <FormSummary.Answer>
-                    <FormSummary.Label>Annen for tilbakedatering</FormSummary.Label>
+                    <FormSummary.Label>Annen grunn for tilbakedatering</FormSummary.Label>
                     <FormSummary.Value>{tilbakedatering.annenGrunn}</FormSummary.Value>
                 </FormSummary.Answer>
             )}
@@ -309,11 +279,66 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: NySykmeldingDiagnoser 
     )
 }
 
+function MeldingerSummaryAnswers({ meldinger }: { meldinger: NySykmeldingMeldinger | null }): ReactElement {
+    if (meldinger == null) {
+        return <React.Fragment />
+    }
+    return (
+        <>
+            {meldinger?.showTilNav && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>Til NAV</FormSummary.Label>
+                    <FormSummary.Value>{meldinger?.tilNav}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {meldinger?.showTilArbeidsgiver && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>Til arbeidsgiver</FormSummary.Label>
+                    <FormSummary.Value>{meldinger?.tilArbeidsgiver}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+        </>
+    )
+}
+
+function AnderSporsmalSummaryAnswers({
+    andreSporsmal,
+}: {
+    andreSporsmal: NySykmeldingAndreSporsmal | null
+}): ReactElement {
+    if (andreSporsmal == null) {
+        return <React.Fragment />
+    }
+
+    return (
+        <>
+            {andreSporsmal?.svangerskapsrelatert && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>Annen info</FormSummary.Label>
+                    <FormSummary.Value>Sykdommen er svangerskapsrelatert</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {andreSporsmal?.yrkesskade && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>Kan skyldes yrkesskade</FormSummary.Label>
+                    <FormSummary.Value>Ja</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {andreSporsmal?.yrkesskadeDato && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>Dato for yrkesskade</FormSummary.Label>
+                    <FormSummary.Value>{toReadableDate(andreSporsmal.yrkesskadeDato)}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+        </>
+    )
+}
+
 function PatientSummaryAnswers({ pasient }: { pasient: ActivePatient | null }): ReactElement {
     if (pasient == null) {
         return (
             <FormSummary.Answer>
-                <FormSummary.Label>Navn</FormSummary.Label>
+                <FormSummary.Label>Sykmeldingen gjelder</FormSummary.Label>
                 <FormSummary.Value>
                     <Alert variant="warning">
                         Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
@@ -326,13 +351,31 @@ function PatientSummaryAnswers({ pasient }: { pasient: ActivePatient | null }): 
     return (
         <>
             <FormSummary.Answer>
-                <FormSummary.Label>Navn</FormSummary.Label>
+                <FormSummary.Label>Sykmeldingen gjelder</FormSummary.Label>
                 <FormSummary.Value>{pasient.navn}</FormSummary.Value>
-            </FormSummary.Answer>
-            <FormSummary.Answer>
-                <FormSummary.Label>Fødselsnummer</FormSummary.Label>
                 <FormSummary.Value>{pasient.ident}</FormSummary.Value>
             </FormSummary.Answer>
+        </>
+    )
+}
+
+function ArbeidsforholdSummaryAnswers({
+    arbeidsforhold,
+}: {
+    arbeidsforhold: NySykmeldingArbeidsforhold | null
+}): ReactElement {
+    return (
+        <>
+            <FormSummary.Answer>
+                <FormSummary.Label>Har pasienten flere arbeidsforhold?</FormSummary.Label>
+                <FormSummary.Value>{arbeidsforhold?.harFlereArbeidsforhold ? 'Ja' : 'Nei'}</FormSummary.Value>
+            </FormSummary.Answer>
+            {arbeidsforhold?.harFlereArbeidsforhold && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>Hvilke arbeidsforhold skal pasienten sykmeldes fra?</FormSummary.Label>
+                    <FormSummary.Value>{arbeidsforhold?.sykmeldtFraArbeidsforhold}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
         </>
     )
 }

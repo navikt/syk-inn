@@ -45,17 +45,17 @@ export async function expectTermToHaveDefinitions(page: Page, term: string, defi
 
     for (const dd of definitionElements) {
         const definitionText = await dd.textContent()
-        for (const expectedDefinition of definitions) {
+        const match = definitions.find((expectedDefinition) => {
             if (typeof expectedDefinition === 'string') {
-                expect(definitionText, `Expected definition "${expectedDefinition}" for term "${term}"`).toContain(
-                    expectedDefinition,
-                )
+                return definitionText?.includes(expectedDefinition)
             } else {
-                expect(
-                    definitionText,
-                    `Expected definition matching regex ${expectedDefinition} for term "${term}"`,
-                ).toMatch(expectedDefinition)
+                return definitionText?.match(expectedDefinition)
             }
+        })
+        if (!match) {
+            fail(
+                `Definition "${definitionText}" for term "${term}" does not match any of the expected definitions: ${definitions}`,
+            )
         }
     }
 }

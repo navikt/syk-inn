@@ -250,10 +250,9 @@ test("optional - 'tilbakedatering' is asked and required when fom is 5 days in t
 
     await verifySummaryPage([
         {
-            name: 'Navn',
-            values: ['Espen Eksempel'],
+            name: 'Sykmeldingen gjelder',
+            values: ['Espen Eksempel', '21037712323'],
         },
-        { name: 'Fødselsnummer', values: ['21037712323'] },
         {
             name: 'Har pasienten flere arbeidsforhold?',
             values: ['Nei'],

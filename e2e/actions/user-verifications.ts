@@ -3,8 +3,7 @@ import { test, expect, Page } from '@playwright/test'
 import { expectTermToHaveDefinitions } from '../utils/assertions'
 
 type SectionTitle =
-    | 'Navn'
-    | 'Fødselsnummer'
+    | 'Sykmeldingen gjelder'
     | 'Har pasienten flere arbeidsforhold?'
     | 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?'
     | 'Periode'
@@ -25,8 +24,9 @@ interface SummarySection {
 export function verifySummaryPage(sections: SummarySection[]) {
     return async (page: Page) => {
         await test.step('Verify summary page', async () => {
+            await page.screenshot({})
             await expect(page.getByRole('heading', { name: 'Oppsummering sykmelding' })).toBeVisible()
-            await expect(page.getByRole('button', { name: 'Endre svar' })).toBeVisible()
+            await expect(page.getByRole('button', { name: 'Endre' })).toBeVisible()
 
             await Promise.all(
                 sections.map(async (section) => {
