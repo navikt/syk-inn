@@ -60,9 +60,9 @@ export async function createDocumentReference(
         return { error: 'API_ERROR' }
     }
 
-    if (sykmelding.kind === 'light') {
+    if (sykmelding.kind === 'redacted') {
         logger.warn(
-            `Tried creating document reference for light sykmelding with id ${sykmeldingId}, this is owned by ${sykmelding.meta.sykmelder.hprNummer}, not ${hpr}`,
+            `Tried creating document reference for redacted sykmelding with id ${sykmeldingId}, this is owned by ${sykmelding.meta.sykmelder.hprNummer}, not ${hpr}`,
         )
         return { error: 'API_ERROR' }
     }

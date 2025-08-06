@@ -34,8 +34,8 @@ export type AktivitetIkkeMuligInput = {
     dummy: Scalars['Boolean']['input']
 }
 
-export type AktivitetLight = FomTom & {
-    __typename: 'AktivitetLight'
+export type AktivitetRedacted = FomTom & {
+    __typename: 'AktivitetRedacted'
     fom: Scalars['DateOnly']['output']
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
@@ -307,7 +307,7 @@ export type ReisetilskuddInput = {
     dummy: Scalars['Boolean']['input']
 }
 
-export type Sykmelding = SykmeldingFull | SykmeldingLight
+export type Sykmelding = SykmeldingFull | SykmeldingRedacted
 
 export type SykmeldingFull = {
     __typename: 'SykmeldingFull'
@@ -318,20 +318,6 @@ export type SykmeldingFull = {
     sykmeldingId: Scalars['String']['output']
     utfall: Outcome
     values: SykmeldingValues
-}
-
-export type SykmeldingLight = {
-    __typename: 'SykmeldingLight'
-    kind: Scalars['String']['output']
-    meta: SykmeldingMeta
-    sykmeldingId: Scalars['String']['output']
-    utfall: Outcome
-    values: SykmeldingLightValues
-}
-
-export type SykmeldingLightValues = {
-    __typename: 'SykmeldingLightValues'
-    aktivitet: Array<AktivitetLight>
 }
 
 export type SykmeldingMelding = {
@@ -346,6 +332,20 @@ export type SykmeldingMeta = {
     mottatt: Scalars['DateTime']['output']
     pasientIdent: Scalars['String']['output']
     sykmelderHpr: Scalars['String']['output']
+}
+
+export type SykmeldingRedacted = {
+    __typename: 'SykmeldingRedacted'
+    kind: Scalars['String']['output']
+    meta: SykmeldingMeta
+    sykmeldingId: Scalars['String']['output']
+    utfall: Outcome
+    values: SykmeldingRedactedValues
+}
+
+export type SykmeldingRedactedValues = {
+    __typename: 'SykmeldingRedactedValues'
+    aktivitet: Array<AktivitetRedacted>
 }
 
 export type SykmeldingValues = {
@@ -556,7 +556,7 @@ export type SykmeldingByIdQuery = {
               }
           }
         | {
-              __typename: 'SykmeldingLight'
+              __typename: 'SykmeldingRedacted'
               sykmeldingId: string
               meta: {
                   __typename: 'SykmeldingMeta'
@@ -567,8 +567,8 @@ export type SykmeldingByIdQuery = {
               }
               utfall: { __typename: 'Outcome'; result: string; message?: string | null }
               values: {
-                  __typename: 'SykmeldingLightValues'
-                  aktivitet: Array<{ __typename: 'AktivitetLight'; type: AktivitetType; fom: string; tom: string }>
+                  __typename: 'SykmeldingRedactedValues'
+                  aktivitet: Array<{ __typename: 'AktivitetRedacted'; type: AktivitetType; fom: string; tom: string }>
               }
           }
         | null
@@ -644,7 +644,7 @@ export type AllSykmeldingerQuery = {
               }
           }
         | {
-              __typename: 'SykmeldingLight'
+              __typename: 'SykmeldingRedacted'
               sykmeldingId: string
               meta: {
                   __typename: 'SykmeldingMeta'
@@ -655,8 +655,8 @@ export type AllSykmeldingerQuery = {
               }
               utfall: { __typename: 'Outcome'; result: string; message?: string | null }
               values: {
-                  __typename: 'SykmeldingLightValues'
-                  aktivitet: Array<{ __typename: 'AktivitetLight'; type: AktivitetType; fom: string; tom: string }>
+                  __typename: 'SykmeldingRedactedValues'
+                  aktivitet: Array<{ __typename: 'AktivitetRedacted'; type: AktivitetType; fom: string; tom: string }>
               }
           }
     > | null
@@ -745,8 +745,8 @@ export type OutcomeFragment = {
     tree: string
 }
 
-export type SykmeldingLightFragment = {
-    __typename: 'SykmeldingLight'
+export type SykmeldingRedactedFragment = {
+    __typename: 'SykmeldingRedacted'
     sykmeldingId: string
     meta: {
         __typename: 'SykmeldingMeta'
@@ -757,8 +757,8 @@ export type SykmeldingLightFragment = {
     }
     utfall: { __typename: 'Outcome'; result: string; message?: string | null }
     values: {
-        __typename: 'SykmeldingLightValues'
-        aktivitet: Array<{ __typename: 'AktivitetLight'; type: AktivitetType; fom: string; tom: string }>
+        __typename: 'SykmeldingRedactedValues'
+        aktivitet: Array<{ __typename: 'AktivitetRedacted'; type: AktivitetType; fom: string; tom: string }>
     }
 }
 
@@ -874,8 +874,8 @@ type Sykmelding_SykmeldingFull_Fragment = {
     }
 }
 
-type Sykmelding_SykmeldingLight_Fragment = {
-    __typename: 'SykmeldingLight'
+type Sykmelding_SykmeldingRedacted_Fragment = {
+    __typename: 'SykmeldingRedacted'
     sykmeldingId: string
     meta: {
         __typename: 'SykmeldingMeta'
@@ -886,12 +886,12 @@ type Sykmelding_SykmeldingLight_Fragment = {
     }
     utfall: { __typename: 'Outcome'; result: string; message?: string | null }
     values: {
-        __typename: 'SykmeldingLightValues'
-        aktivitet: Array<{ __typename: 'AktivitetLight'; type: AktivitetType; fom: string; tom: string }>
+        __typename: 'SykmeldingRedactedValues'
+        aktivitet: Array<{ __typename: 'AktivitetRedacted'; type: AktivitetType; fom: string; tom: string }>
     }
 }
 
-export type SykmeldingFragment = Sykmelding_SykmeldingFull_Fragment | Sykmelding_SykmeldingLight_Fragment
+export type SykmeldingFragment = Sykmelding_SykmeldingFull_Fragment | Sykmelding_SykmeldingRedacted_Fragment
 
 type Aktivitet_AktivitetIkkeMulig_Fragment = {
     __typename: 'AktivitetIkkeMulig'
@@ -1001,13 +1001,13 @@ export const OutcomeFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<OutcomeFragment, unknown>
-export const SykmeldingLightFragmentDoc = {
+export const SykmeldingRedactedFragmentDoc = {
     kind: 'Document',
     definitions: [
         {
             kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'SykmeldingLight' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingLight' } },
+            name: { kind: 'Name', value: 'SykmeldingRedacted' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
@@ -1061,7 +1061,7 @@ export const SykmeldingLightFragmentDoc = {
             },
         },
     ],
-} as unknown as DocumentNode<SykmeldingLightFragment, unknown>
+} as unknown as DocumentNode<SykmeldingRedactedFragment, unknown>
 export const DiagnoseFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -1428,7 +1428,7 @@ export const SykmeldingFragmentDoc = {
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
-                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingLight' } },
+                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
                     { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingFull' } },
                 ],
             },
@@ -1545,8 +1545,8 @@ export const SykmeldingFragmentDoc = {
         },
         {
             kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'SykmeldingLight' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingLight' } },
+            name: { kind: 'Name', value: 'SykmeldingRedacted' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
@@ -2183,8 +2183,8 @@ export const SykmeldingByIdDocument = {
         },
         {
             kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'SykmeldingLight' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingLight' } },
+            name: { kind: 'Name', value: 'SykmeldingRedacted' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
@@ -2475,7 +2475,7 @@ export const SykmeldingByIdDocument = {
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
-                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingLight' } },
+                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
                     { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingFull' } },
                 ],
             },
@@ -2505,8 +2505,8 @@ export const AllSykmeldingerDocument = {
         },
         {
             kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'SykmeldingLight' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingLight' } },
+            name: { kind: 'Name', value: 'SykmeldingRedacted' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
@@ -2797,7 +2797,7 @@ export const AllSykmeldingerDocument = {
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
-                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingLight' } },
+                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
                     { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingFull' } },
                 ],
             },
@@ -2878,8 +2878,8 @@ export const OpprettSykmeldingDocument = {
         },
         {
             kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'SykmeldingLight' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingLight' } },
+            name: { kind: 'Name', value: 'SykmeldingRedacted' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
@@ -3170,7 +3170,7 @@ export const OpprettSykmeldingDocument = {
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
-                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingLight' } },
+                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
                     { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingFull' } },
                 ],
             },

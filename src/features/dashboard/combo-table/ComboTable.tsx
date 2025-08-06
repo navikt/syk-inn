@@ -3,7 +3,7 @@ import { BodyShort, Table, Tag, TagProps } from '@navikt/ds-react'
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
-import { DraftFragment, SykmeldingFragment, SykmeldingFullFragment, SykmeldingLightFragment } from '@queries'
+import { DraftFragment, SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
 import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 
@@ -47,7 +47,7 @@ export function ComboTable({
                             forlengable
                         />
                     ) : (
-                        <LightTableRow
+                        <RedactedTableRow
                             key={sykmelding.sykmeldingId}
                             sykmelding={sykmelding}
                             status="current"
@@ -59,7 +59,7 @@ export function ComboTable({
                     sykmelding.__typename === 'SykmeldingFull' ? (
                         <FullTableRow key={sykmelding.sykmeldingId} sykmelding={sykmelding} status="previous" />
                     ) : (
-                        <LightTableRow key={sykmelding.sykmeldingId} sykmelding={sykmelding} status="previous" />
+                        <RedactedTableRow key={sykmelding.sykmeldingId} sykmelding={sykmelding} status="previous" />
                     ),
                 )}
             </Table.Body>
@@ -134,12 +134,12 @@ function FullTableRow({
     )
 }
 
-function LightTableRow({
+function RedactedTableRow({
     sykmelding,
     status,
     forlengable,
 }: {
-    sykmelding: SykmeldingLightFragment
+    sykmelding: SykmeldingRedactedFragment
     status: 'draft' | 'previous' | 'current'
     forlengable?: true
 }): ReactElement {

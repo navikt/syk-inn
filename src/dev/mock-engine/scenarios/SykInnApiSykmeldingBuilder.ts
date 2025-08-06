@@ -4,8 +4,8 @@ import {
     SykInnApiAktivitet,
     SykInnApiAktivitetIkkeMulig,
     SykInnApiSykmelding,
-    SykInnApiSykmeldingLight,
-    SykInnApiSykmeldingLightSchema,
+    SykInnApiSykmeldingRedacted,
+    SykInnApiSykmeldingRedactedSchema,
 } from '@core/services/syk-inn-api/schema/sykmelding'
 import { dateOnly } from '@lib/date'
 
@@ -108,11 +108,11 @@ export class SykmeldingBuilder {
         return this._sykmelding
     }
 
-    buildLight(): SykInnApiSykmeldingLight {
+    buildRedacted(): SykInnApiSykmeldingRedacted {
         if (this._sykmelding.values.aktivitet.length === 0) {
             throw new Error('Sykmelding må ha minst en aktivitet! Dumbass >:(')
         }
 
-        return SykInnApiSykmeldingLightSchema.parse(this._sykmelding)
+        return SykInnApiSykmeldingRedactedSchema.parse(this._sykmelding)
     }
 }

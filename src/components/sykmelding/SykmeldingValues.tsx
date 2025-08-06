@@ -11,7 +11,7 @@ type Props = {
 }
 
 function SykmeldingValues({ sykmelding }: Props): ReactElement {
-    if (sykmelding.__typename === 'SykmeldingLight') {
+    if (sykmelding.__typename === 'SykmeldingRedacted') {
         return (
             <>
                 <ValueItem title="Perioder (f.o.m. - t.o.m.)">

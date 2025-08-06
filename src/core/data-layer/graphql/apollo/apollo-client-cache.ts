@@ -49,7 +49,7 @@ const QueryTypePolicies = {
             )
 
             return toReference({
-                __typename: hasFull ? 'SykmeldingFull' : 'SykmeldingLight',
+                __typename: hasFull ? 'SykmeldingFull' : 'SykmeldingRedacted',
                 sykmeldingId: args.id,
             } satisfies CacheIds['sykmelding'])
         },

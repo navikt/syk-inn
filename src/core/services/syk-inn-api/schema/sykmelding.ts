@@ -118,8 +118,8 @@ export const SykInnApiSykmeldingSchema = z
         ...it,
     }))
 
-export type SykInnApiSykmeldingLight = z.infer<typeof SykInnApiSykmeldingLightSchema>
-export const SykInnApiSykmeldingLightSchema = z
+export type SykInnApiSykmeldingRedacted = z.infer<typeof SykInnApiSykmeldingRedactedSchema>
+export const SykInnApiSykmeldingRedactedSchema = z
     .object({
         sykmeldingId: z.string(),
         meta: SykInnApiSykmeldingMeta,
@@ -135,7 +135,7 @@ export const SykInnApiSykmeldingLightSchema = z
         utfall: RuleResultSchema,
     })
     .transform((it) => ({
-        kind: 'light' as const,
+        kind: 'redacted' as const,
         ...it,
     }))
 
