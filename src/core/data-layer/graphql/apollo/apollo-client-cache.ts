@@ -38,16 +38,21 @@ type QueryFieldPolicies = Record<keyof Query, FieldReadFunction<unknown> | undef
  */
 const QueryTypePolicies = {
     fields: {
-        /* TODO: Fix cache redirects for union
-        sykmelding: (_, { args, toReference, ...rest }) => {
+        sykmelding: (_, { args, toReference, canRead }) => {
             if (!args?.id) return
 
+            const hasFull = canRead(
+                toReference({
+                    __typename: 'SykmeldingFull',
+                    sykmeldingId: args.id,
+                } satisfies CacheIds['sykmelding']),
+            )
+
             return toReference({
-                __typename: 'Sykmelding',
+                __typename: hasFull ? 'SykmeldingFull' : 'SykmeldingLight',
                 sykmeldingId: args.id,
             } satisfies CacheIds['sykmelding'])
         },
-         */
         draft: (_, { args, toReference }) => {
             if (!args?.draftId) return
             return toReference({
