@@ -6,6 +6,7 @@ import { logger } from '@navikt/next-logger'
 import { DraftFragment, SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
 import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
+import Redaction from '@components/misc/Redaction'
 
 import DashboardTable from '../table/DashboardTable'
 import {
@@ -148,9 +149,9 @@ function RedactedTableRow({
             periode={
                 <SykmeldingPeriodeLink sykmeldingId={sykmelding.sykmeldingId} aktivitet={sykmelding.values.aktivitet} />
             }
-            diagnose={null}
-            grad={null}
-            arbeidsgiver={null}
+            diagnose={<Redaction className="w-42" />}
+            grad={<Redaction className="w-8" />}
+            arbeidsgiver={<Redaction className="w-2/3" />}
             utfall={<Utfall utfall={sykmelding.utfall} />}
             status={status}
             actions={
@@ -166,9 +167,9 @@ function RedactedTableRow({
 
 function TableRow(props: {
     periode: string | ReactNode
-    diagnose: string | null
-    grad: string | null
-    arbeidsgiver: string | null
+    diagnose: string | ReactNode | null
+    grad: string | ReactNode | null
+    arbeidsgiver: string | ReactNode | null
     utfall: ReactNode | null
     status: 'draft' | 'previous' | 'current'
     actions: ReactElement | null

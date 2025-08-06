@@ -1,0 +1,9 @@
+.redaction {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--a-border-subtle) 0,
+        var(--a-border-subtle) 5px,
+        transparent 5px,
+        transparent 10px
+    );
+}
