@@ -29,7 +29,7 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
     },
     SYK_INN_SHOW_REDACTED: {
         name: 'SYK_INN_SHOW_REDACTED',
-        ...off,
+        ...on,
     },
 }
 

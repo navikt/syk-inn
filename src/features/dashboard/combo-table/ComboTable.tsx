@@ -149,9 +149,9 @@ function RedactedTableRow({
             periode={
                 <SykmeldingPeriodeLink sykmeldingId={sykmelding.sykmeldingId} aktivitet={sykmelding.values.aktivitet} />
             }
-            diagnose={<Redaction className="w-42" />}
-            grad={<Redaction className="w-8" />}
-            arbeidsgiver={<Redaction className="w-2/3" />}
+            diagnose={<Redaction className="w-42" title="Diagnose skjult" />}
+            grad={<Redaction className="w-8" title="Sykmeldingsgrad skjult" />}
+            arbeidsgiver={<Redaction className="w-2/3" title="Arbeidsgiver skjult" />}
             utfall={<Utfall utfall={sykmelding.utfall} />}
             status={status}
             actions={
