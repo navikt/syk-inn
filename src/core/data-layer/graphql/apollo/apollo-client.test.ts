@@ -15,7 +15,10 @@ import {
     SykmeldingByIdDocument,
     SykmeldingByIdQuery,
 } from '@queries'
-import { sykInnApiSykmeldingToResolverSykmelding } from '@core/services/syk-inn-api/syk-inn-api-utils'
+import {
+    sykInnApiSykmeldingLightToResolverSykmelding,
+    sykInnApiSykmeldingToResolverSykmelding,
+} from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { typeResolvers } from '@data-layer/graphql/common-resolvers'
 import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
@@ -69,7 +72,7 @@ describe('apollo cache normalization - draft', () => {
     })
 })
 
-describe('apollo cache normalization - sykmeldintg', async () => {
+describe('apollo cache normalization - sykmelding', async () => {
     /**
      * This seems crazy, but this lets us re-use the data-builder from the mock-engine, the mapper
      * from the resolvers, and applies __typenames the same way an apollo-client/sever combo would.
@@ -80,8 +83,14 @@ describe('apollo cache normalization - sykmeldintg', async () => {
                 sykmeldinger: () =>
                     [
                         new SykmeldingBuilder({ offset: 0 }, 'sykme-1').enkelAktivitet({ offset: 0, days: 7 }).build(),
-                        new SykmeldingBuilder({ offset: 7 }, 'sykme-2').enkelAktivitet({ offset: 8, days: 7 }).build(),
-                    ].map((it) => sykInnApiSykmeldingToResolverSykmelding(it)),
+                        new SykmeldingBuilder({ offset: 7 }, 'sykme-2')
+                            .enkelAktivitet({ offset: 8, days: 7 })
+                            .buildLight(),
+                    ].map((it) =>
+                        it.kind === 'full'
+                            ? sykInnApiSykmeldingToResolverSykmelding(it)
+                            : sykInnApiSykmeldingLightToResolverSykmelding(it),
+                    ),
             },
             ...typeResolvers,
         }),
@@ -103,6 +112,22 @@ describe('apollo cache normalization - sykmeldintg', async () => {
         })
 
         expect(data.sykmelding).toEqual(sykmeldinger[0])
+    })
+
+    test('sykmelding: hits cache redirect when sykmelding list is already fetched for "Redacted" sykmelding', async () => {
+        const [client, cache] = createTestApollo()
+
+        cache.writeQuery({
+            query: AllSykmeldingerDocument,
+            data: { __typename: 'Query', sykmeldinger: sykmeldinger },
+        })
+
+        const { data } = await client.query<SykmeldingByIdQuery>({
+            query: SykmeldingByIdDocument,
+            variables: { id: 'sykme-2' },
+        })
+
+        expect(data.sykmelding).toEqual(sykmeldinger[1])
     })
 
     test('sykmelding: cache redirect shall do a network request when item is not in cache', async () => {
