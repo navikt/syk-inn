@@ -112,6 +112,9 @@ const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             }
 
             if (sykmelding.kind === 'redacted') {
+                const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
+                if (!showRedactedFlag.enabled) return null
+
                 return sykInnApiSykmeldingRedactedToResolverSykmelding(sykmelding)
             }
 
@@ -143,10 +146,18 @@ const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const sykmeldinger = await sykInnApiService.getSykmeldinger(ident, hpr)
-            if ('errorType' in sykmeldinger) {
+            const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(ident, hpr)
+            if ('errorType' in sykInnSykmeldinger) {
                 throw new GraphQLError('API_ERROR')
             }
+
+            /**
+             * Only return kind='redacted' sykmeldinger if SYK_INN_SHOW_REDACTED is enabled for this user
+             */
+            const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
+            const sykmeldinger = showRedactedFlag.enabled
+                ? sykInnSykmeldinger
+                : sykInnSykmeldinger.filter((it) => it.kind !== 'redacted')
 
             return sykmeldinger.map((it) => {
                 return it.kind === 'redacted'
