@@ -211,9 +211,9 @@ function TilbakedateringSummaryAnswers({
     tilbakedatering,
 }: {
     tilbakedatering: NySykmeldingTilbakedatering | null
-}): ReactElement {
+}): ReactElement | null {
     if (tilbakedatering == null) {
-        return <React.Fragment />
+        return null
     }
     return (
         <>
@@ -279,9 +279,9 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: NySykmeldingDiagnoser 
     )
 }
 
-function MeldingerSummaryAnswers({ meldinger }: { meldinger: NySykmeldingMeldinger | null }): ReactElement {
+function MeldingerSummaryAnswers({ meldinger }: { meldinger: NySykmeldingMeldinger | null }): ReactElement | null {
     if (meldinger == null) {
-        return <React.Fragment />
+        return null
     }
     return (
         <>
@@ -305,9 +305,9 @@ function AnderSporsmalSummaryAnswers({
     andreSporsmal,
 }: {
     andreSporsmal: NySykmeldingAndreSporsmal | null
-}): ReactElement {
+}): ReactElement | null {
     if (andreSporsmal == null) {
-        return <React.Fragment />
+        return null
     }
 
     return (
