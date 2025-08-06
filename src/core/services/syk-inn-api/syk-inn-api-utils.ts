@@ -4,18 +4,20 @@ import {
     InputAktivitet,
     OpprettSykmeldingInput,
     SykmeldingFull,
-    SykmeldingLight,
+    SykmeldingRedacted,
 } from '@resolvers'
 import {
     OpprettSykmeldingAktivitet,
     OpprettSykmeldingMeta,
     OpprettSykmeldingPayload,
 } from '@core/services/syk-inn-api/schema/opprett'
-import { SykInnApiSykmelding, SykInnApiSykmeldingLight } from '@core/services/syk-inn-api/schema/sykmelding'
+import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '@core/services/syk-inn-api/schema/sykmelding'
 
-export function sykInnApiSykmeldingLightToResolverSykmelding(sykmelding: SykInnApiSykmeldingLight): SykmeldingLight {
+export function sykInnApiSykmeldingRedactedToResolverSykmelding(
+    sykmelding: SykInnApiSykmeldingRedacted,
+): SykmeldingRedacted {
     return {
-        kind: 'light',
+        kind: 'redacted',
         sykmeldingId: sykmelding.sykmeldingId,
         meta: {
             pasientIdent: sykmelding.meta.pasientIdent,

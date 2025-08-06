@@ -22,9 +22,9 @@ export const typeResolvers: Resolvers = {
     },
     Sykmelding: {
         __resolveType: (parent) => {
-            switch (parent.kind as 'light' | 'full') {
-                case 'light':
-                    return 'SykmeldingLight'
+            switch (parent.kind as 'redacted' | 'full') {
+                case 'redacted':
+                    return 'SykmeldingRedacted'
                 case 'full':
                     return 'SykmeldingFull'
             }

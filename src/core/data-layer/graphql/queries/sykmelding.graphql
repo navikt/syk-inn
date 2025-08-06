@@ -28,7 +28,7 @@ fragment Outcome on OpprettSykmeldingRuleOutcome {
     tree
 }
 
-fragment SykmeldingLight on SykmeldingLight {
+fragment SykmeldingRedacted on SykmeldingRedacted {
     sykmeldingId
     meta {
         pasientIdent
@@ -94,7 +94,7 @@ fragment SykmeldingFull on SykmeldingFull {
 }
 
 fragment Sykmelding on Sykmelding {
-    ...SykmeldingLight
+    ...SykmeldingRedacted
     ...SykmeldingFull
 }
 

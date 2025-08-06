@@ -20,7 +20,7 @@ import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service
 import { getFnrIdent, getNameFromPdl } from '@core/services/pdl/pdl-api-utils'
 import {
     resolverInputToSykInnApiPayload,
-    sykInnApiSykmeldingLightToResolverSykmelding,
+    sykInnApiSykmeldingRedactedToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmelding,
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
@@ -111,8 +111,8 @@ const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            if (sykmelding.kind === 'light') {
-                return sykInnApiSykmeldingLightToResolverSykmelding(sykmelding)
+            if (sykmelding.kind === 'redacted') {
+                return sykInnApiSykmeldingRedactedToResolverSykmelding(sykmelding)
             }
 
             const existingDocumentReference = await client.request(`DocumentReference/${sykmeldingId}` as const)
@@ -149,8 +149,8 @@ const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             }
 
             return sykmeldinger.map((it) => {
-                return it.kind === 'light'
-                    ? sykInnApiSykmeldingLightToResolverSykmelding(it)
+                return it.kind === 'redacted'
+                    ? sykInnApiSykmeldingRedactedToResolverSykmelding(it)
                     : sykInnApiSykmeldingToResolverSykmelding(it)
             })
         },

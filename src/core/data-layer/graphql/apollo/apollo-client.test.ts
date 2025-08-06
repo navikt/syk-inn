@@ -16,7 +16,7 @@ import {
     SykmeldingByIdQuery,
 } from '@queries'
 import {
-    sykInnApiSykmeldingLightToResolverSykmelding,
+    sykInnApiSykmeldingRedactedToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmelding,
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { createSchema } from '@data-layer/graphql/create-schema'
@@ -85,11 +85,11 @@ describe('apollo cache normalization - sykmelding', async () => {
                         new SykmeldingBuilder({ offset: 0 }, 'sykme-1').enkelAktivitet({ offset: 0, days: 7 }).build(),
                         new SykmeldingBuilder({ offset: 7 }, 'sykme-2')
                             .enkelAktivitet({ offset: 8, days: 7 })
-                            .buildLight(),
+                            .buildRedacted(),
                     ].map((it) =>
                         it.kind === 'full'
                             ? sykInnApiSykmeldingToResolverSykmelding(it)
-                            : sykInnApiSykmeldingLightToResolverSykmelding(it),
+                            : sykInnApiSykmeldingRedactedToResolverSykmelding(it),
                     ),
             },
             ...typeResolvers,

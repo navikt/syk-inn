@@ -2,15 +2,15 @@ import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 import { addDays } from 'date-fns'
 
-import { SykmeldingFragment, SykmeldingFullFragment, SykmeldingLightFragment } from '@queries'
+import { SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
 import { raise } from '@lib/ts'
 import { dateOnly } from '@lib/date'
 import { NySykmeldingAktivitet, NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import { sykmeldingFragmentToMainStepStateNoAktivitet } from '@data-layer/common/sykmelding-fragment-to-multistep-state'
 
 export function forlengSykmelding(sykmelding: SykmeldingFragment): NySykmeldingFormState {
-    if (sykmelding.__typename === 'SykmeldingLight') {
-        return forlengLightSykmelding(sykmelding)
+    if (sykmelding.__typename === 'SykmeldingRedacted') {
+        return forlengRedactedSykmelding(sykmelding)
     }
 
     const forlengetAktivitet = toForlengelsesAktivitet(sykmelding.values.aktivitet)
@@ -70,7 +70,7 @@ function toForlengelsesAktivitet(
     }
 }
 
-function forlengLightSykmelding(sykmelding: SykmeldingLightFragment): NySykmeldingFormState {
+function forlengRedactedSykmelding(sykmelding: SykmeldingRedactedFragment): NySykmeldingFormState {
     const latestPeriode = R.firstBy(sykmelding.values.aktivitet, [(it) => it.fom, 'desc'])
     if (!latestPeriode) {
         raise('Sykmelding without aktivitetsperioder, this should not happen')

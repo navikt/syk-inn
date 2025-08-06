@@ -1,6 +1,6 @@
 import Valkey from 'iovalkey'
 
-import { SykInnApiSykmelding, SykInnApiSykmeldingLight } from '@core/services/syk-inn-api/schema/sykmelding'
+import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '@core/services/syk-inn-api/schema/sykmelding'
 import { OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
 import { AaregArbeidsforhold } from '@core/services/aareg/aareg-schema'
 import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
@@ -69,17 +69,17 @@ export class AaregMock {
 }
 
 export class SykInnApiMock {
-    private readonly _sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingLight)[]
+    private readonly _sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[]
 
-    constructor(sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingLight)[]) {
+    constructor(sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[]) {
         this._sykmeldinger = sykmeldinger
     }
 
-    allSykmeldinger(): (SykInnApiSykmelding | SykInnApiSykmeldingLight)[] {
+    allSykmeldinger(): (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[] {
         return this._sykmeldinger
     }
 
-    sykmeldingById(sykmeldingId: string): SykInnApiSykmelding | SykInnApiSykmeldingLight {
+    sykmeldingById(sykmeldingId: string): SykInnApiSykmelding | SykInnApiSykmeldingRedacted {
         const sykmelding = this._sykmeldinger.find((sykmelding) => sykmelding.sykmeldingId === sykmeldingId)
 
         if (!sykmelding) {

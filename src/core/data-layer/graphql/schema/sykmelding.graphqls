@@ -1,10 +1,10 @@
-union Sykmelding = SykmeldingLight | SykmeldingFull
+union Sykmelding = SykmeldingRedacted | SykmeldingFull
 
-type SykmeldingLight {
+type SykmeldingRedacted {
     kind: String!
     sykmeldingId: String!
     meta: SykmeldingMeta!
-    values: SykmeldingLightValues!
+    values: SykmeldingRedactedValues!
     utfall: Outcome!
 }
 
@@ -39,8 +39,8 @@ type SykmeldingValues {
     tilbakedatering: Tilbakedatering
 }
 
-type SykmeldingLightValues {
-    aktivitet: [AktivitetLight!]!
+type SykmeldingRedactedValues {
+    aktivitet: [AktivitetRedacted!]!
 }
 
 type SykmeldingMelding {

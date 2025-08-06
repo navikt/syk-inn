@@ -1,13 +1,13 @@
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
-import { SykmeldingFragment, SykmeldingFullFragment, SykmeldingLightFragment } from '@queries'
+import { SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
 import { NySykmeldingAktivitet, NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import { sykmeldingFragmentToMainStepStateNoAktivitet } from '@data-layer/common/sykmelding-fragment-to-multistep-state'
 
 export function dupliserSykmelding(sykmelding: SykmeldingFragment): NySykmeldingFormState {
-    if (sykmelding.__typename === 'SykmeldingLight') {
-        return dupliserLightSykmelding(sykmelding)
+    if (sykmelding.__typename === 'SykmeldingRedacted') {
+        return dupliserRedactedSykmelding(sykmelding)
     }
 
     return {
@@ -51,9 +51,9 @@ function toDuplisertFullAktivitet(
     }
 }
 
-function dupliserLightSykmelding(sykmelding: SykmeldingLightFragment): NySykmeldingFormState {
+function dupliserRedactedSykmelding(sykmelding: SykmeldingRedactedFragment): NySykmeldingFormState {
     return {
-        aktiviteter: sykmelding.values.aktivitet.map(toDuplisertLightAktivitet).filter(R.isNonNull),
+        aktiviteter: sykmelding.values.aktivitet.map(toDuplisertRedactedAktivitet).filter(R.isNonNull),
         arbeidsforhold: null,
         tilbakedatering: null,
         diagnose: null,
@@ -62,8 +62,8 @@ function dupliserLightSykmelding(sykmelding: SykmeldingLightFragment): NySykmeld
     }
 }
 
-function toDuplisertLightAktivitet(
-    aktivitet: SykmeldingLightFragment['values']['aktivitet'][0],
+function toDuplisertRedactedAktivitet(
+    aktivitet: SykmeldingRedactedFragment['values']['aktivitet'][0],
 ): NySykmeldingAktivitet | null {
     switch (aktivitet.type) {
         case 'AKTIVITET_IKKE_MULIG':
