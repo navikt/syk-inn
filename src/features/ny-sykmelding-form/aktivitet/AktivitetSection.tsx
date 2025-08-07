@@ -4,6 +4,7 @@ import { addDays } from 'date-fns'
 import { TrashIcon } from '@navikt/aksel-icons'
 
 import { dateOnly } from '@lib/date'
+import FormSection from '@components/form/form-section/FormSection'
 
 import { AktivitetsPeriode, useFieldArray, useFormContext } from '../form'
 import { getDefaultPeriode } from '../form-default-values'
@@ -20,7 +21,7 @@ function AktivitetSection(): ReactElement {
     return (
         <>
             {fields.map((periode, index) => (
-                <Fragment key={periode.id}>
+                <FormSection title="Periode" key={periode.id}>
                     <div className="relative mb-4">
                         <PeriodePicker index={index} />
                         <AktivitetPicker index={index} />
@@ -36,9 +37,9 @@ function AktivitetSection(): ReactElement {
                             />
                         )}
                     </div>
-                </Fragment>
+                </FormSection>
             ))}
-            <div className="mt-4">
+            <div className="mt-2 mb-2">
                 <Button
                     variant="secondary"
                     type="button"

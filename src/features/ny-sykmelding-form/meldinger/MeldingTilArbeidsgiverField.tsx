@@ -9,7 +9,7 @@ function MeldingTilNavField(): ReactElement {
     const showTilArbeidsgiver = form.watch('meldinger.showTilArbeidsgiver')
 
     return (
-        <div className="max-w-prose">
+        <div className="max-w-prose bg-bg-subtle rounded-xl py-2 px-5">
             <Switch position="right" {...form.register('meldinger.showTilArbeidsgiver')}>
                 Melding til arbeidsgiver
             </Switch>
@@ -19,6 +19,7 @@ function MeldingTilNavField(): ReactElement {
                     label="Innspill til arbeidsgiver"
                     description="For eksempel tilrettelegging som bør gjøres på arbeidsplassen"
                     {...form.register('meldinger.tilArbeidsgiver')}
+                    className="mb-2"
                 />
             )}
         </div>

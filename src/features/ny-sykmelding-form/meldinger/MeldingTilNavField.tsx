@@ -8,7 +8,7 @@ function MeldingTilNavField(): ReactElement {
     const showTilNav = form.watch('meldinger.showTilNav')
 
     return (
-        <div className="max-w-prose">
+        <div className="max-w-prose bg-bg-subtle rounded-xl py-2 px-5">
             <Switch position="right" {...form.register('meldinger.showTilNav')}>
                 Melding til Nav
             </Switch>
@@ -20,7 +20,7 @@ function MeldingTilNavField(): ReactElement {
                         description="Behov for tiltak, dialogmøte eller annen oppfølging fra Nav. Her kan det også gis andre opplysninger til Nav du mener er nødvendige."
                         {...form.register('meldinger.tilNav')}
                     />
-                    <ReadMore header="Hva gjør Nav med denne informasjonen?">
+                    <ReadMore header="Hva gjør Nav med denne informasjonen?" className="mb-2">
                         Når du har fylt ut dette feltet, blir det opprettet en oppgave til veileder på Nav-kontoret med
                         informasjon om hva det gjelder. Hvis nav har behov for mer informasjon vil du bli kontaktet.
                     </ReadMore>

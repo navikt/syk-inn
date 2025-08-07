@@ -5,7 +5,7 @@ import MeldingTilArbeidsgiverField from './MeldingTilArbeidsgiverField'
 
 function MeldingerSection(): ReactElement {
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
             <MeldingTilNavField />
             <MeldingTilArbeidsgiverField />
         </div>

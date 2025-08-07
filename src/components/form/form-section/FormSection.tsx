@@ -27,8 +27,8 @@ function FormSection({
             aria-labelledby={cardTitleId}
             className={cn(className, 'pb-4', { 'border-b border-b-border-subtle': !hideBorder })}
         >
-            <div className="flex flex-row gap-1 mb-2">
-                <Heading size="medium" level="2" id={cardTitleId} className={cn({ 'sr-only': hideTitle })}>
+            <div className="flex flex-row gap-1">
+                <Heading size="small" level="2" id={cardTitleId} className={cn({ 'sr-only': hideTitle })} spacing>
                     {title}
                 </Heading>
                 {helpText}

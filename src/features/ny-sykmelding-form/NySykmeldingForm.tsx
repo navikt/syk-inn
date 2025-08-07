@@ -51,9 +51,7 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                     <FormSection title="Arbeidsgiver">
                         <ArbeidsforholdSection />
                     </FormSection>
-                    <FormSection title="Periode">
-                        <AktivitetSection />
-                    </FormSection>
+                    <AktivitetSection />
                     <DynamicTilbakedateringSection />
                     <div className="bg-surface-subtle w-4 h-[calc(100%-2rem)] absolute -right-4 rounded" />
                 </FormSheet>
