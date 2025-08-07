@@ -292,7 +292,7 @@ export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | nu
 
             if (tilNav) {
                 await region.getByRole('checkbox', { name: 'Melding til Nav' }).check()
-                await region.getByRole('textbox', { name: 'Har du noen tilbakemeldinger?' }).fill(tilNav)
+                await region.getByRole('textbox', { name: 'Melding til Nav' }).fill(tilNav)
             }
 
             if (tilArbeidsgiver) {

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Switch, Textarea } from '@navikt/ds-react'
+import { ReadMore, Switch, Textarea } from '@navikt/ds-react'
 
 import { useFormContext } from '../form'
 
@@ -14,11 +14,18 @@ function MeldingTilNavField(): ReactElement {
             </Switch>
 
             {showTilNav && (
-                <Textarea
-                    label="Har du noen tilbakemeldinger?"
-                    description="For eksempel om det er behov for tiltak, dialogmøter eller annen oppfølging fra Nav. Her kan du også gi andre opplysninger til Nav, for eksempel vurdering av prognose."
-                    {...form.register('meldinger.tilNav')}
-                />
+                <div className="flex flex-col gap-4">
+                    <Textarea
+                        label="Melding til Nav"
+                        hideLabel
+                        description="Behov for tiltak, dialogmøte eller annen oppfølging fra Nav. Her kan det også gis andre opplysninger til Nav du mener er nødvendige."
+                        {...form.register('meldinger.tilNav')}
+                    />
+                    <ReadMore header="Hva gjør Nav med denne informasjonen?">
+                        Når du har fylt ut dette feltet, blir det opprettet en oppgave til veileder på Nav-kontoret med
+                        informasjon om hva det gjelder. Hvis nav har behov for mer informasjon vil du bli kontaktet.
+                    </ReadMore>
+                </div>
             )}
         </div>
     )

@@ -129,13 +129,9 @@ export function expectMeldinger({
             }
 
             if (tilNav) {
-                await expect(
-                    meldingerRegion.getByRole('textbox', { name: 'Har du noen tilbakemeldinger?' }),
-                ).toHaveValue(tilNav)
+                await expect(meldingerRegion.getByRole('textbox', { name: 'Melding til Nav' })).toHaveValue(tilNav)
             } else {
-                await expect(
-                    meldingerRegion.getByRole('textbox', { name: 'Har du noen tilbakemeldinger?' }),
-                ).toBeEmpty()
+                await expect(meldingerRegion.getByRole('textbox', { name: 'Melding til Nav' })).toBeEmpty()
             }
 
             if (tilArbeidsgiver) {
