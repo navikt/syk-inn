@@ -12,6 +12,7 @@ export function launchWithMock(
     scenario: Scenarios = 'normal',
     toggleOverrides: Partial<Record<ExpectedToggles, boolean>> = {
         SYK_INN_AAREG: false,
+        SYK_INN_SHOW_REDACTED: false,
     },
 ) {
     return async (page: Page): Promise<void> => {

@@ -38,6 +38,14 @@ const simpleScenarios = {
             drafts: [],
         }),
     },
+    'one-current-to-tomorrow': {
+        description: 'One current sykmelding, active until tomorrow',
+        scenario: () => ({
+            sykmeldinger: [new SykmeldingBuilder({ offset: -13 }).enkelAktivitet({ offset: 0, days: 14 }).build()],
+            arbeidsforhold: simpleAaregArbeidsforhold,
+            drafts: [],
+        }),
+    },
     'multiple-arbeidsforhold': {
         description: 'Multiple arbeidsforhold, no sykmeldinger',
         scenario: () => ({
