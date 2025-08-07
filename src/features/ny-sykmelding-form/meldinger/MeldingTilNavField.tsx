@@ -16,8 +16,7 @@ function MeldingTilNavField(): ReactElement {
             {showTilNav && (
                 <div className="flex flex-col gap-4">
                     <Textarea
-                        label="Melding til Nav"
-                        hideLabel
+                        label={<p className="sr-only">Melding til Nav</p>}
                         description="Behov for tiltak, dialogmøte eller annen oppfølging fra Nav. Her kan det også gis andre opplysninger til Nav du mener er nødvendige."
                         {...form.register('meldinger.tilNav')}
                     />
