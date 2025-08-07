@@ -1,7 +1,30 @@
-import { addDays, addMonths, addWeeks, subDays } from 'date-fns'
+import { addDays, addMonths, addWeeks, parseISO, subDays } from 'date-fns'
+
+import { isDateValid } from '@lib/date'
 
 type ValidShorthand = 'd' | 'u' | 'm'
 type ShorthandTuple = [unit: ValidShorthand, amount: number]
+
+/**
+ * Same as {@link parseShorthand}, but takes into account the currently selected from date and
+ * which input field is being interactied with. When there already is a date, and user is interacting
+ * with the tom field, the fom should stay the same.
+ */
+export function getShorthandRange(
+    currentFom: string | null,
+    side: 'fom' | 'tom' | null,
+    value: string | null,
+): { from: Date; to: Date } | null {
+    if (!value || !side) return null
+
+    /**
+     * When the event is triggered from the "tom" field, and we have a valid fom-date already, assume
+     * the user want to add days from the "fom" date instead of overwriting it.
+     */
+    const from = side === 'tom' && currentFom && isDateValid(currentFom) ? parseISO(currentFom) : new Date()
+
+    return parseShorthand(value, from)
+}
 
 /**
  * Looks for two types of shorthand:

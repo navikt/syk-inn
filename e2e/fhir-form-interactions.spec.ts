@@ -127,4 +127,26 @@ test.describe("'shorthand' date interactions", () => {
         await expect(fom).toHaveValue(inputDate(inDays(5 + 3)))
         await expect(tom).toHaveValue(inputDate(inDays(5 + 3 + 11)))
     })
+
+    test('should display popover with hint for fom field', async ({ page }) => {
+        const periodeRegion = page.getByRole('region', { name: 'Periode' })
+        const fom = periodeRegion.getByRole('textbox', { name: 'Fra og med' })
+
+        await fom.fill('7d')
+
+        const popover = periodeRegion.getByRole('region', { name: 'Trykk Enter for å bruke følgende datoer' })
+        await expect(popover).toBeVisible()
+        await expect(popover).toHaveText(/Fra .* \d{1,2}\. .* til .* \d{1,2}\. .*/)
+    })
+
+    test('should display popover with hint for tom field', async ({ page }) => {
+        const periodeRegion = page.getByRole('region', { name: 'Periode' })
+        const tom = periodeRegion.getByRole('textbox', { name: 'Til og med' })
+
+        await tom.fill('7d')
+
+        const popover = periodeRegion.getByRole('region', { name: 'Trykk Enter for å bruke følgende datoer' })
+        await expect(popover).toBeVisible()
+        await expect(popover).toHaveText(/Fra .* \d{1,2}\. .* til .* \d{1,2}\. .*/)
+    })
 })

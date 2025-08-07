@@ -1,16 +1,18 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, RefObject, useImperativeHandle, useRef, useState } from 'react'
 import { BodyShort, DatePicker, Detail, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
-import { format, isSameDay, parseISO } from 'date-fns'
-import { nb } from 'date-fns/locale/nb'
+import { parseISO } from 'date-fns'
 import { AnimatePresence } from 'motion/react'
+import { RefCallBack } from 'react-hook-form'
 
-import { dateOnly, isDateValid, toReadablePeriodLength } from '@lib/date'
+import { dateOnly } from '@lib/date'
 import { cn } from '@lib/tw'
 import { SimpleReveal } from '@components/animation/Reveal'
 
-import { parseShorthand } from '../aktivitet/periode-shorthand'
 import { useController, useFormContext } from '../form'
 
+import { getShorthandRange } from './periode/periode-shorthand'
+import { getRangeDescription } from './periode/periode-utils'
+import { ShorthandHint } from './ShorthandHint'
 import styles from './PeriodePicker.module.css'
 
 function PeriodePicker({ index }: { index: number }): ReactElement {
@@ -72,16 +74,8 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
 
     const handleShorthandEvent = (event: React.KeyboardEvent<HTMLInputElement>, side: 'fom' | 'tom'): void => {
         if (event.key === 'Enter') {
-            /**
-             * When the event is triggered from the "tom" field, and we have a valid fom-date already, assume
-             * the user want to add days from the "fom" date instead of overwriting it.
-             */
-            const from =
-                side === 'tom' && fomField.field.value && isDateValid(fomField.field.value)
-                    ? parseISO(fomField.field.value)
-                    : new Date()
+            const shorthand = getShorthandRange(fomField.field.value, side, event.currentTarget.value)
 
-            const shorthand = parseShorthand(event.currentTarget.value, from)
             if (shorthand) {
                 event.preventDefault()
                 event.stopPropagation()
@@ -106,6 +100,8 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
         }
     }
 
+    const { focusState, handleFocusState, handleBlurState } = useFocusState()
+    const { fomFieldRef, tomFieldRef } = useFieldRefs(fomField.field.ref, tomField.field.ref)
     const rangeDescription = getRangeDescription(fomField.field.value, tomField.field.value)
 
     return (
@@ -114,11 +110,15 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
                 <DatePicker {...datepickerProps} wrapperClassName={styles.dateRangePicker}>
                     <DatePicker.Input
                         className={styles.dateRangeInput}
-                        ref={fomField.field.ref}
+                        ref={fomFieldRef}
                         name={fomField.field.name}
                         {...fromInputProps}
                         label="Fra og med"
-                        onBlur={fomField.field.onBlur}
+                        onFocus={() => handleFocusState('fom')}
+                        onBlur={() => {
+                            handleBlurState()
+                            fomField.field.onBlur()
+                        }}
                         error={fomField.fieldState.error?.message}
                         onKeyDown={(event) => {
                             handleShorthandEvent(event, 'fom')
@@ -126,15 +126,27 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
                     />
                     <DatePicker.Input
                         className={styles.dateRangeInput}
-                        ref={tomField.field.ref}
+                        ref={tomFieldRef}
                         name={tomField.field.name}
                         {...toInputProps}
                         label="Til og med"
-                        onBlur={fomField.field.onBlur}
+                        onFocus={() => handleFocusState('tom')}
+                        onBlur={() => {
+                            handleBlurState()
+                            fomField.field.onBlur()
+                        }}
                         error={tomField.fieldState.error?.message}
                         onKeyDown={(event) => {
                             handleShorthandEvent(event, 'tom')
                         }}
+                    />
+                    <ShorthandHint
+                        selectedFom={fomField.field.value}
+                        fomAnchorEl={fomFieldRef.current}
+                        tomAnchorEl={tomFieldRef.current}
+                        focusedField={focusState}
+                        fomInputValue={typeof fromInputProps.value === 'string' ? fromInputProps.value : null}
+                        tomInputValue={typeof toInputProps.value === 'string' ? toInputProps.value : null}
                     />
                 </DatePicker>
             </div>
@@ -150,18 +162,43 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
     )
 }
 
-function getRangeDescription(fom: string | null, tom: string | null): { top: string; bottom: string } | null {
-    if (fom == null || tom == null || fom === '' || tom === '') {
-        return null
+function useFieldRefs(
+    fomField: RefCallBack,
+    tomField: RefCallBack,
+): {
+    fomFieldRef: RefObject<HTMLInputElement | null>
+    tomFieldRef: RefObject<HTMLInputElement | null>
+} {
+    /**
+     * We want to be able to share refs between RHF and ourselves, so we use `useImperativeHandle`
+     *
+     * See: https://react-hook-form.com/faqs#Howtosharerefusage
+     */
+    const fomFieldRef = useRef<HTMLInputElement>(null)
+    const tomFieldRef = useRef<HTMLInputElement>(null)
+
+    useImperativeHandle(fomField, () => fomFieldRef.current)
+    useImperativeHandle(tomField, () => tomFieldRef.current)
+
+    return { fomFieldRef, tomFieldRef }
+}
+
+function useFocusState(): {
+    focusState: 'fom' | 'tom' | null
+    handleFocusState: (side: 'fom' | 'tom') => void
+    handleBlurState: () => void
+} {
+    const [focusState, setFocusState] = useState<'fom' | 'tom' | null>(null)
+
+    const handleFocusState = (side: 'fom' | 'tom'): void => {
+        setFocusState(side)
     }
 
-    const isFomToday = isSameDay(fom, new Date())
-    const isTomToday = isSameDay(tom, new Date())
-
-    return {
-        top: toReadablePeriodLength(fom, tom),
-        bottom: `Fra ${format(fom, 'EEEE d. MMMM', { locale: nb })}${isFomToday ? ' (i dag)' : ''} til ${format(tom, 'EEEE d. MMMM', { locale: nb })}${isTomToday ? ' (i dag)' : ''}`,
+    const handleBlurState = (): void => {
+        setFocusState(null)
     }
+
+    return { focusState, handleFocusState, handleBlurState }
 }
 
 export default PeriodePicker
