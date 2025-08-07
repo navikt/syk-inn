@@ -1,4 +1,14 @@
-import { differenceInDays, format, formatISO, getDate, isSameDay, isSameMonth, isSameYear } from 'date-fns'
+import {
+    differenceInDays,
+    format,
+    formatISO,
+    getDate,
+    isSameDay,
+    isSameMonth,
+    isSameYear,
+    isValid,
+    toDate,
+} from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
 export function toReadableDateNoYear(date: string | Date): string {
@@ -33,4 +43,10 @@ export function toReadablePeriodLength(fom: string | Date, tom: string | Date): 
     const daysInclusive = differenceInDays(tom, fom) + 1
 
     return daysInclusive === 1 ? '1 dag' : `${daysInclusive} dager`
+}
+
+export function isDateValid(date: Date | string | null | undefined): boolean {
+    if (date == null) return false
+
+    return isValid(toDate(date))
 }

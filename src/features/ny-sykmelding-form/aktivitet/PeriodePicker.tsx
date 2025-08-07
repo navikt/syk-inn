@@ -4,7 +4,7 @@ import { format, isSameDay, parseISO } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 import { AnimatePresence } from 'motion/react'
 
-import { dateOnly, toReadablePeriodLength } from '@lib/date'
+import { dateOnly, isDateValid, toReadablePeriodLength } from '@lib/date'
 import { cn } from '@lib/tw'
 import { SimpleReveal } from '@components/animation/Reveal'
 
@@ -70,9 +70,18 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
         },
     })
 
-    const handleShorthandEvent = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    const handleShorthandEvent = (event: React.KeyboardEvent<HTMLInputElement>, side: 'fom' | 'tom'): void => {
         if (event.key === 'Enter') {
-            const shorthand = parseShorthand(event.currentTarget.value)
+            /**
+             * When the event is triggered from the "tom" field, and we have a valid fom-date already, assume
+             * the user want to add days from the "fom" date instead of overwriting it.
+             */
+            const from =
+                side === 'tom' && fomField.field.value && isDateValid(fomField.field.value)
+                    ? parseISO(fomField.field.value)
+                    : new Date()
+
+            const shorthand = parseShorthand(event.currentTarget.value, from)
             if (shorthand) {
                 event.preventDefault()
                 event.stopPropagation()
@@ -112,7 +121,7 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
                         onBlur={fomField.field.onBlur}
                         error={fomField.fieldState.error?.message}
                         onKeyDown={(event) => {
-                            handleShorthandEvent(event)
+                            handleShorthandEvent(event, 'fom')
                         }}
                     />
                     <DatePicker.Input
@@ -124,7 +133,7 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
                         onBlur={fomField.field.onBlur}
                         error={tomField.fieldState.error?.message}
                         onKeyDown={(event) => {
-                            handleShorthandEvent(event)
+                            handleShorthandEvent(event, 'tom')
                         }}
                     />
                 </DatePicker>
