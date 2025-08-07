@@ -31,6 +31,26 @@ describe('parseShorthand', () => {
         })
     })
 
+    it('should handle a case with offset on right side, 7d +2', () => {
+        const value = '7d +2'
+        const result = parseShorthand(value, staticNow)
+
+        expect(toAssertableRange(result)).toEqual({
+            from: '2025-06-09',
+            to: '2025-06-15',
+        })
+    })
+
+    it('should handle a case with offset on right side and inverse, 7d 2+', () => {
+        const value = '7d 2+'
+        const result = parseShorthand(value, staticNow)
+
+        expect(toAssertableRange(result)).toEqual({
+            from: '2025-06-09',
+            to: '2025-06-15',
+        })
+    })
+
     it('should handle a case with offset, -2 7d', () => {
         const value = '-2 7d'
         const result = parseShorthand(value, staticNow)

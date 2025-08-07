@@ -24,12 +24,13 @@ export function parseShorthand(value: string, now = new Date()): { from: Date; t
 
         return shorthandToRange(shorthand, now)
     } else if (splat.length === 2) {
-        // Look for shorthand with offset
-        const offset = matchOffset(splat[0])
+        // Look for shorthand with offset, both sides
+        const offset = matchOffset(splat[0]) ?? matchOffset(splat[1])
         // If no valid offset, we give up
         if (offset === null) return null
 
-        const shorthand = matchShorthand(splat[1])
+        // If right side was offset, fallback to left side for shorthand
+        const shorthand = matchShorthand(splat[1]) ?? matchShorthand(splat[0])
         if (!shorthand) return null
 
         return shorthandToRange(shorthand, addDays(now, offset))
