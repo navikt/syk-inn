@@ -16,7 +16,7 @@ import { getDraftId } from './utils/request-utils'
 import { verifySignerendeBehandler, verifySummaryPage } from './actions/user-verifications'
 import { userInteractionsGroup } from './utils/actions'
 
-test('aareg (feature toggle) - should be able to fill arbeidsforhold with AAREG data', async ({ page }) => {
+test('aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG data', async ({ page }) => {
     await userInteractionsGroup(
         launchWithMock('multiple-arbeidsforhold', {
             SYK_INN_AAREG: true,
@@ -66,7 +66,7 @@ test('aareg (feature toggle) - should be able to fill arbeidsforhold with AAREG 
     })
 })
 
-test('aareg (feature toggle) - going to summary and returning should keep arbeidsgiver in Select', async ({ page }) => {
+test('aareg @feature-toggle - going to summary and returning should keep arbeidsgiver in Select', async ({ page }) => {
     await userInteractionsGroup(
         launchWithMock('multiple-arbeidsforhold', {
             SYK_INN_AAREG: true,
@@ -107,7 +107,7 @@ test('aareg (feature toggle) - going to summary and returning should keep arbeid
     })
 })
 
-test('aareg (feature toggle) - saving a draft and returning should keep arbeidsgiver in Select', async ({ page }) => {
+test('aareg @feature-toggle - saving a draft and returning should keep arbeidsgiver in Select', async ({ page }) => {
     await userInteractionsGroup(
         launchWithMock('multiple-arbeidsforhold', {
             SYK_INN_AAREG: true,

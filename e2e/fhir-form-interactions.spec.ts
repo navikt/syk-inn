@@ -105,9 +105,11 @@ test('when using shorthand on a forlenget sykmelding in the tom field, the shorh
     await expect(tom).toHaveValue(inputDate(inDays(8)))
 })
 
-test.skip('when using shorthand on n+1 period, the shorhand should be from the tom+1 of the previous period', async ({
+test('when using shorthand on n+1 period, the shorhand should be from the tom+1 of the previous period', async ({
     page,
 }) => {
+    test.fail(true, 'Currently an unimplemented feature in PeriodePicker')
+
     await launchWithMock('empty')(page)
     await startNewSykmelding()(page)
 

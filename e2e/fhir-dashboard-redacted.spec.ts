@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 import { launchWithMock } from './actions/fhir-actions'
 
-test('redacted (feature toggle) should see other users sykmeldinger as redacted versions', async ({ page }) => {
+test('redacted @feature-toggle should see other users sykmeldinger as redacted versions', async ({ page }) => {
     await launchWithMock('some-redacted-sykmeldinger', {
         SYK_INN_SHOW_REDACTED: true,
     })(page)
@@ -20,7 +20,7 @@ test('redacted (feature toggle) should see other users sykmeldinger as redacted 
     await expect(rows.nth(3).getByRole('cell').nth(1)).toHaveText('Diagnose skjult')
 })
 
-test('redacted (feature toggle) toggled off - should not display any other sykmeldinger', async ({ page }) => {
+test('redacted @feature-toggle toggled off - should not display any other sykmeldinger', async ({ page }) => {
     await launchWithMock('some-redacted-sykmeldinger', {
         SYK_INN_SHOW_REDACTED: false,
     })(page)
