@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort, Button, FormSummary, Heading, Skeleton } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, FormSummary, Heading, Label, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
 import { BehandlerDocument } from '@queries'
@@ -97,12 +97,12 @@ function BehandlerSummary({ className }: Props): ReactElement {
                 </FormSummary.Answers>
             </FormSummary>
             <Alert variant="info" className="mt-4" size="small">
+                <Label as="p" size="small">
+                    Er opplysningene om behandler feil?
+                </Label>
                 <BodyShort spacing size="small">
-                    Dersom signerende behandler ikke er korrekt, må du logge ut av EPJ-systemet og logge på med din egen
-                    profil.
-                </BodyShort>
-                <BodyShort size="small">
-                    Dersom HPR-nummeret mangler, eller ikke er ditt. Må du korrigere dette i EPJ-systemet.
+                    Logg ut av EPJ og inn med din egen profil hvis navnet på behandler ikke stemmer. Manglende eller
+                    feil HPR-nummer må rettes i EPJ før innsending.
                 </BodyShort>
             </Alert>
         </div>
