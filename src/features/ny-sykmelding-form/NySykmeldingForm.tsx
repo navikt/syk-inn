@@ -34,6 +34,7 @@ type Props = {
 
 function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactElement {
     const initialValues = useAppSelector((state) => state.nySykmelding.values)
+    const formMeta = useAppSelector((state) => state.nySykmelding.meta)
     const onSubmit = useHandleFormSubmit()
     const form = useForm<NySykmeldingMainFormValues>({
         defaultValues: createDefaultFormValues({
@@ -51,7 +52,7 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                     <FormSection title="Arbeidsgiver">
                         <ArbeidsforholdSection />
                     </FormSection>
-                    <AktivitetSection />
+                    <AktivitetSection initialFom={formMeta?.initialFom ?? null} />
                     <DynamicTilbakedateringSection />
                     <div className="bg-surface-subtle w-4 h-[calc(100%-2rem)] absolute -right-4 rounded" />
                 </FormSheet>

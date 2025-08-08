@@ -8,17 +8,20 @@ import { dateOnly } from '@lib/date'
 import { NySykmeldingAktivitet, NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import { sykmeldingFragmentToMainStepStateNoAktivitet } from '@data-layer/common/sykmelding-fragment-to-multistep-state'
 
-export function forlengSykmelding(sykmelding: SykmeldingFragment): NySykmeldingFormState {
+export function forlengSykmelding(sykmelding: SykmeldingFragment): [state: NySykmeldingFormState, date: string] {
     if (sykmelding.__typename === 'SykmeldingRedacted') {
         return forlengRedactedSykmelding(sykmelding)
     }
 
     const forlengetAktivitet = toForlengelsesAktivitet(sykmelding.values.aktivitet)
 
-    return {
-        ...sykmeldingFragmentToMainStepStateNoAktivitet(sykmelding),
-        aktiviteter: [forlengetAktivitet],
-    }
+    return [
+        {
+            ...sykmeldingFragmentToMainStepStateNoAktivitet(sykmelding),
+            aktiviteter: [forlengetAktivitet],
+        },
+        forlengetAktivitet.fom,
+    ]
 }
 
 function toForlengelsesAktivitet(
@@ -70,7 +73,9 @@ function toForlengelsesAktivitet(
     }
 }
 
-function forlengRedactedSykmelding(sykmelding: SykmeldingRedactedFragment): NySykmeldingFormState {
+function forlengRedactedSykmelding(
+    sykmelding: SykmeldingRedactedFragment,
+): [state: NySykmeldingFormState, date: string] {
     const latestPeriode = R.firstBy(sykmelding.values.aktivitet, [(it) => it.fom, 'desc'])
     if (!latestPeriode) {
         raise('Sykmelding without aktivitetsperioder, this should not happen')
@@ -117,12 +122,15 @@ function forlengRedactedSykmelding(sykmelding: SykmeldingRedactedFragment): NySy
             } satisfies NySykmeldingAktivitet
     }
 
-    return {
-        aktiviteter: [nextAkvititet],
-        arbeidsforhold: null,
-        tilbakedatering: null,
-        diagnose: null,
-        meldinger: null,
-        andreSporsmal: null,
-    }
+    return [
+        {
+            aktiviteter: [nextAkvititet],
+            arbeidsforhold: null,
+            tilbakedatering: null,
+            diagnose: null,
+            meldinger: null,
+            andreSporsmal: null,
+        },
+        nextAkvititet.fom,
+    ]
 }

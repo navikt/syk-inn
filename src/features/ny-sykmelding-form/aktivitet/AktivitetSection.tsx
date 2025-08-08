@@ -1,4 +1,4 @@
-import React, { Fragment, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { Button } from '@navikt/ds-react'
 import { addDays } from 'date-fns'
 import { TrashIcon } from '@navikt/aksel-icons'
@@ -12,7 +12,14 @@ import { getDefaultPeriode } from '../form-default-values'
 import AktivitetPicker from './AktivitetPicker'
 import PeriodePicker from './PeriodePicker'
 
-function AktivitetSection(): ReactElement {
+type Props = {
+    /**
+     * For example when sykmelding is based on a previous sykmelding, this is the initial fom date.
+     */
+    initialFom: string | null
+}
+
+function AktivitetSection({ initialFom }: Props): ReactElement {
     const { getValues } = useFormContext()
     const { fields, append, remove } = useFieldArray({
         name: 'perioder' as const,
@@ -23,7 +30,7 @@ function AktivitetSection(): ReactElement {
             {fields.map((periode, index) => (
                 <FormSection title="Periode" key={periode.id}>
                     <div className="relative mb-4">
-                        <PeriodePicker index={index} />
+                        <PeriodePicker index={index} initialFom={index === 0 ? initialFom : null} />
                         <AktivitetPicker index={index} />
 
                         {index > 0 && (

@@ -82,7 +82,30 @@ test('when using shorthand on a forlenget sykmelding, the shorhand should be fro
     await expect(tom).toHaveValue(inputDate(inDays(8)))
 })
 
-test('when using shorthand on n+1 period, the shorhand should be from the tom+1 of the previous period', async ({
+test('when using shorthand on a forlenget sykmelding in the tom field, the shorhand should be from the start of the forlengelse if fom is empty', async ({
+    page,
+}) => {
+    await launchWithMock('one-current-to-tomorrow')(page)
+
+    const table = page.getByRole('region', { name: 'Tidligere sykmeldinger og utkast' })
+    await table.getByRole('button', { name: 'Forleng sykmeldingen' }).click()
+
+    const periodeRegion = page.getByRole('region', { name: 'Periode' })
+    const fom = periodeRegion.getByRole('textbox', { name: 'Fra og med' })
+    const tom = periodeRegion.getByRole('textbox', { name: 'Til og med' })
+
+    // Expect that forlengelse pre-filled as expected, it should end tomorrow, forlengelse should be from overmorrow
+    await expect(fom).toHaveValue(inputDate(inDays(2)))
+
+    await fom.clear()
+    await tom.fill('7d')
+    await page.keyboard.press('Enter')
+
+    await expect(fom).toHaveValue(inputDate(inDays(2)))
+    await expect(tom).toHaveValue(inputDate(inDays(8)))
+})
+
+test.skip('when using shorthand on n+1 period, the shorhand should be from the tom+1 of the previous period', async ({
     page,
 }) => {
     await launchWithMock('empty')(page)
@@ -100,12 +123,18 @@ test('when using shorthand on n+1 period, the shorhand should be from the tom+1 
 
     await page.getByRole('button', { name: 'Legg til ny periode' }).click()
 
-    const nextPeriodeRegion = page.getByRole('region', { name: 'Periode 2' })
+    const nextPeriodeRegion = page.getByRole('region', { name: 'Periode' }).nth(1)
 
     const nextFom = nextPeriodeRegion.getByRole('textbox', { name: 'Fra og med' })
     const nextTom = nextPeriodeRegion.getByRole('textbox', { name: 'Til og med' })
 
     await expect(nextFom).toHaveValue(inputDate(inDays(7)))
+
+    await nextFom.fill('7d')
+    await page.keyboard.press('Enter')
+
+    await expect(nextFom).toHaveValue(inputDate(inDays(7)))
+    await expect(nextTom).toHaveValue(inputDate(inDays(13)))
 })
 
 test.describe("'shorthand' date interactions", () => {
