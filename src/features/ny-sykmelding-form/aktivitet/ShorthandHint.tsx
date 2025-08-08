@@ -1,42 +1,24 @@
 import React, { ReactElement } from 'react'
 import { BodyShort, Detail, Popover } from '@navikt/ds-react'
 
-import { parseShorthandFom, parseShorthandTom } from '@features/ny-sykmelding-form/aktivitet/periode/periode-shorthand'
 import { getRangeDescription } from '@features/ny-sykmelding-form/aktivitet/periode/periode-utils'
 
 type Props = {
-    initialFom: string | null
-    selectedFom: string | null
-    focusedField: 'fom' | 'tom' | null
-    fomInputValue: string | null
-    tomInputValue: string | null
-    fomAnchorEl: Element | null
-    tomAnchorEl: Element | null
+    focused: boolean
+    suggestion: { from: Date; to: Date } | null
+    anchorEl: Element | null
 }
 
 /**
  * Custom Popover that displays a hint when the user is focused and has typed a valid shorthand date range
  */
-export function ShorthandHint({
-    initialFom,
-    selectedFom,
-    fomAnchorEl,
-    tomAnchorEl,
-    focusedField,
-    fomInputValue,
-    tomInputValue,
-}: Props): ReactElement {
-    const suggestedRange =
-        focusedField === 'fom'
-            ? parseShorthandFom(initialFom, fomInputValue)
-            : parseShorthandTom(initialFom, selectedFom, tomInputValue)
-
-    const description = suggestedRange != null ? getRangeDescription(suggestedRange.from, suggestedRange.to) : null
-    const isOpen = focusedField != null && suggestedRange != null
+export function ShorthandHint({ focused, suggestion, anchorEl }: Props): ReactElement {
+    const description = suggestion != null ? getRangeDescription(suggestion.from, suggestion.to) : null
+    const isOpen = focused && suggestion != null
 
     return (
         <Popover
-            anchorEl={focusedField === 'fom' ? fomAnchorEl : tomAnchorEl}
+            anchorEl={anchorEl}
             open={isOpen}
             onClose={() => void 0}
             placement="top"

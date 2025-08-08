@@ -22,9 +22,8 @@ type Props = {
 
 function PeriodePicker({ index, initialFom }: Props): ReactElement {
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
-    const { clearErrors, watch } = useFormContext()
-    const previousTomValue = watch(`perioder.${index - 1}.periode.tom` as const)
-    const previousTomPlusOne = previousTomValue ? dateOnly(addDays(previousTomValue, 1)) : null
+    const { clearErrors } = useFormContext()
+    const nextFom = useNextFomFromPreviousPeriode(initialFom, index)
 
     const fomField = useController({
         name: `perioder.${index}.periode.fom` as const,
@@ -83,12 +82,8 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
         if (event.key === 'Enter') {
             const shorthand =
                 side === 'fom'
-                    ? parseShorthandFom(initialFom ?? previousTomPlusOne ?? null, event.currentTarget.value)
-                    : parseShorthandTom(
-                          initialFom ?? previousTomPlusOne ?? null,
-                          fomField.field.value,
-                          event.currentTarget.value,
-                      )
+                    ? parseShorthandFom(nextFom, event.currentTarget.value)
+                    : parseShorthandTom(nextFom, fomField.field.value, event.currentTarget.value)
 
             if (shorthand) {
                 event.preventDefault()
@@ -138,6 +133,14 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
                             handleShorthandEvent(event, 'fom')
                         }}
                     />
+                    <ShorthandHint
+                        anchorEl={fomFieldRef.current}
+                        focused={focusState === 'fom'}
+                        suggestion={parseShorthandFom(
+                            nextFom,
+                            typeof fromInputProps.value === 'string' ? fromInputProps.value : null,
+                        )}
+                    />
                     <DatePicker.Input
                         className={styles.dateRangeInput}
                         ref={tomFieldRef}
@@ -155,13 +158,13 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
                         }}
                     />
                     <ShorthandHint
-                        initialFom={initialFom ?? previousTomPlusOne ?? null}
-                        selectedFom={fomField.field.value}
-                        fomAnchorEl={fomFieldRef.current}
-                        tomAnchorEl={tomFieldRef.current}
-                        focusedField={focusState}
-                        fomInputValue={typeof fromInputProps.value === 'string' ? fromInputProps.value : null}
-                        tomInputValue={typeof toInputProps.value === 'string' ? toInputProps.value : null}
+                        anchorEl={tomFieldRef.current}
+                        focused={focusState === 'tom'}
+                        suggestion={parseShorthandTom(
+                            nextFom,
+                            fomField.field.value,
+                            typeof toInputProps.value === 'string' ? toInputProps.value : null,
+                        )}
                     />
                 </DatePicker>
             </div>
@@ -214,6 +217,24 @@ function useFocusState(): {
     }
 
     return { focusState, handleFocusState, handleBlurState }
+}
+
+/**
+ * Infers the "previous" fom, only the first item in the periode pickers should care about the initialFom (typically
+ * when a sykmelding is being created based on a previous sykmelding). Other periods should only care about the previous
+ * periode's tom + 1 day.
+ */
+function useNextFomFromPreviousPeriode(initialFom: string | null, index: number): string | null {
+    const { watch } = useFormContext()
+
+    const previousTomValue = index >= 1 ? watch(`perioder.${index - 1}.periode.tom` as const) : null
+    const previousPlusOne = previousTomValue ? dateOnly(addDays(previousTomValue, 1)) : null
+
+    if (index === 0) {
+        return initialFom ?? previousPlusOne ?? null
+    } else {
+        return previousPlusOne ?? null
+    }
 }
 
 export default PeriodePicker
