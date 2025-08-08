@@ -10,12 +10,17 @@ import { SimpleReveal } from '@components/animation/Reveal'
 
 import { useController, useFormContext } from '../form'
 
-import { getShorthandRange } from './periode/periode-shorthand'
+import { parseShorthandFom, parseShorthandTom } from './periode/periode-shorthand'
 import { getRangeDescription } from './periode/periode-utils'
 import { ShorthandHint } from './ShorthandHint'
 import styles from './PeriodePicker.module.css'
 
-function PeriodePicker({ index }: { index: number }): ReactElement {
+type Props = {
+    index: number
+    initialFom: string | null
+}
+
+function PeriodePicker({ index, initialFom }: Props): ReactElement {
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
     const { clearErrors } = useFormContext()
 
@@ -74,7 +79,10 @@ function PeriodePicker({ index }: { index: number }): ReactElement {
 
     const handleShorthandEvent = (event: React.KeyboardEvent<HTMLInputElement>, side: 'fom' | 'tom'): void => {
         if (event.key === 'Enter') {
-            const shorthand = getShorthandRange(fomField.field.value, side, event.currentTarget.value)
+            const shorthand =
+                side === 'fom'
+                    ? parseShorthandFom(initialFom ?? null, event.currentTarget.value)
+                    : parseShorthandTom(initialFom ?? null, fomField.field.value, event.currentTarget.value)
 
             if (shorthand) {
                 event.preventDefault()

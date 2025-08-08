@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { BodyShort, Detail, Popover } from '@navikt/ds-react'
 
-import { getShorthandRange } from '@features/ny-sykmelding-form/aktivitet/periode/periode-shorthand'
+import { parseShorthandFom, parseShorthandTom } from '@features/ny-sykmelding-form/aktivitet/periode/periode-shorthand'
 import { getRangeDescription } from '@features/ny-sykmelding-form/aktivitet/periode/periode-utils'
 
 type Props = {
@@ -24,11 +24,11 @@ export function ShorthandHint({
     fomInputValue,
     tomInputValue,
 }: Props): ReactElement {
-    const suggestedRange = getShorthandRange(
-        selectedFom,
-        focusedField,
-        focusedField === 'fom' ? fomInputValue : tomInputValue,
-    )
+    const suggestedRange =
+        focusedField === 'fom'
+            ? parseShorthandFom(null, fomInputValue)
+            : parseShorthandTom(null, selectedFom, tomInputValue)
+
     const description = suggestedRange != null ? getRangeDescription(suggestedRange.from, suggestedRange.to) : null
     const isOpen = focusedField != null && suggestedRange != null
 

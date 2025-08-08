@@ -6,22 +6,34 @@ type ValidShorthand = 'd' | 'u' | 'm'
 type ShorthandTuple = [unit: ValidShorthand, amount: number]
 
 /**
- * Same as {@link parseShorthand}, but takes into account the currently selected from date and
- * which input field is being interactied with. When there already is a date, and user is interacting
- * with the tom field, the fom should stay the same.
+ * Parsing shorthand in the fom-field may also come with an initial fom date, e.g. if the sykmelding is being forleng'd
+ * or if it's the nth period in a multi-period sykmelding.
  */
-export function getShorthandRange(
-    currentFom: string | null,
-    side: 'fom' | 'tom' | null,
+export function parseShorthandFom(initialFom: string | null, value: string | null): { from: Date; to: Date } | null {
+    if (!value) return null
+
+    const from = initialFom && isDateValid(initialFom) ? parseISO(initialFom) : new Date()
+
+    return parseShorthand(value, from)
+}
+
+/**
+ * Parsing shorthand for the tom-field requires us to first base us on the existing (input) fom date, and fall back to
+ * any previous (i.e. forlengelse, multi-period) fom date.
+ */
+export function parseShorthandTom(
+    initialFom: string | null,
+    existingFom: string | null,
     value: string | null,
 ): { from: Date; to: Date } | null {
-    if (!value || !side) return null
+    if (!value) return null
 
-    /**
-     * When the event is triggered from the "tom" field, and we have a valid fom-date already, assume
-     * the user want to add days from the "fom" date instead of overwriting it.
-     */
-    const from = side === 'tom' && currentFom && isDateValid(currentFom) ? parseISO(currentFom) : new Date()
+    const from =
+        initialFom && isDateValid(initialFom)
+            ? parseISO(initialFom)
+            : existingFom && isDateValid(existingFom)
+              ? parseISO(existingFom)
+              : new Date()
 
     return parseShorthand(value, from)
 }
