@@ -5,6 +5,7 @@ import { parseShorthandFom, parseShorthandTom } from '@features/ny-sykmelding-fo
 import { getRangeDescription } from '@features/ny-sykmelding-form/aktivitet/periode/periode-utils'
 
 type Props = {
+    initialFom: string | null
     selectedFom: string | null
     focusedField: 'fom' | 'tom' | null
     fomInputValue: string | null
@@ -17,6 +18,7 @@ type Props = {
  * Custom Popover that displays a hint when the user is focused and has typed a valid shorthand date range
  */
 export function ShorthandHint({
+    initialFom,
     selectedFom,
     fomAnchorEl,
     tomAnchorEl,
@@ -26,8 +28,8 @@ export function ShorthandHint({
 }: Props): ReactElement {
     const suggestedRange =
         focusedField === 'fom'
-            ? parseShorthandFom(null, fomInputValue)
-            : parseShorthandTom(null, selectedFom, tomInputValue)
+            ? parseShorthandFom(initialFom, fomInputValue)
+            : parseShorthandTom(initialFom, selectedFom, tomInputValue)
 
     const description = suggestedRange != null ? getRangeDescription(suggestedRange.from, suggestedRange.to) : null
     const isOpen = focusedField != null && suggestedRange != null

@@ -1,6 +1,6 @@
 import React, { ReactElement, RefObject, useImperativeHandle, useRef, useState } from 'react'
 import { BodyShort, DatePicker, Detail, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
-import { parseISO } from 'date-fns'
+import { addDays, parseISO } from 'date-fns'
 import { AnimatePresence } from 'motion/react'
 import { RefCallBack } from 'react-hook-form'
 
@@ -22,7 +22,9 @@ type Props = {
 
 function PeriodePicker({ index, initialFom }: Props): ReactElement {
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
-    const { clearErrors } = useFormContext()
+    const { clearErrors, watch } = useFormContext()
+    const previousTomValue = watch(`perioder.${index - 1}.periode.tom` as const)
+    const previousTomPlusOne = previousTomValue ? dateOnly(addDays(previousTomValue, 1)) : null
 
     const fomField = useController({
         name: `perioder.${index}.periode.fom` as const,
@@ -81,8 +83,12 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
         if (event.key === 'Enter') {
             const shorthand =
                 side === 'fom'
-                    ? parseShorthandFom(initialFom ?? null, event.currentTarget.value)
-                    : parseShorthandTom(initialFom ?? null, fomField.field.value, event.currentTarget.value)
+                    ? parseShorthandFom(initialFom ?? previousTomPlusOne ?? null, event.currentTarget.value)
+                    : parseShorthandTom(
+                          initialFom ?? previousTomPlusOne ?? null,
+                          fomField.field.value,
+                          event.currentTarget.value,
+                      )
 
             if (shorthand) {
                 event.preventDefault()
@@ -149,6 +155,7 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
                         }}
                     />
                     <ShorthandHint
+                        initialFom={initialFom ?? previousTomPlusOne ?? null}
                         selectedFom={fomField.field.value}
                         fomAnchorEl={fomFieldRef.current}
                         tomAnchorEl={tomFieldRef.current}
