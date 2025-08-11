@@ -301,7 +301,10 @@ const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
             return true
         },
         opprettSykmelding: async (_, { draftId, values }) => {
-            const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
+            const [client, practitioner] = await getReadyClientForResolvers({
+                withPractitioner: true,
+                validateHelseId: true,
+            })
 
             const hpr = getHpr(practitioner.identifier)
             if (hpr == null) {

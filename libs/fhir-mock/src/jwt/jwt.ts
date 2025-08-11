@@ -24,10 +24,11 @@ async function privateKey(): Promise<CryptoKey> {
     return privateKey
 }
 
-export async function createIdToken(): Promise<string> {
+export async function createIdToken(additionalClaims: Record<string, unknown> = {}): Promise<string> {
     const token = await new SignJWT({
         profile: 'Practitioner/a1f1ed62-066a-4050-90f7-81e8f62eb3c2',
         fhirUser: 'Practitioner/a1f1ed62-066a-4050-90f7-81e8f62eb3c2',
+        ...additionalClaims,
     })
         .setProtectedHeader({ alg: 'RS256', kid: 'very-cool-kid' }) // Use the same 'kid' as in /keys
         .setIssuedAt()

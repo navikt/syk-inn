@@ -8,6 +8,7 @@ import {
 } from '@navikt/smart-on-fhir/client'
 import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
 import Valkey from 'iovalkey'
+import { logger } from '@navikt/next-logger'
 
 import { productionValkey } from '@core/services/valkey/client'
 import { getAbsoluteURL } from '@lib/url'
@@ -16,6 +17,7 @@ import { NoSmartSession } from '@data-layer/graphql/error/Errors'
 import { getFlag, getUserlessToggles } from '@core/toggles/unleash'
 import { isDemo, isE2E, isLocal } from '@lib/env'
 import { globalInMemoryValkey } from '@dev/mock-engine/valkey/global-inmem-valkey'
+import { HelseIdClaimSchema } from '@data-layer/fhir/smart/helseid'
 
 import { knownFhirServers } from './issuers'
 
@@ -59,9 +61,11 @@ export async function getReadyClient(opts: {
 export async function getReadyClientForResolvers(): Promise<[ReadyClient]>
 export async function getReadyClientForResolvers(params: {
     withPractitioner: true
+    validateHelseId?: boolean
 }): Promise<[ReadyClient, FhirPractitioner]>
 export async function getReadyClientForResolvers(params?: {
     withPractitioner: true
+    validateHelseId?: boolean
 }): Promise<[ReadyClient] | [ReadyClient, FhirPractitioner]> {
     const autoTokenRefresh = getFlag('SYK_INN_REFRESH_TOKEN', await getUserlessToggles()).enabled
     const client = await getReadyClient({ validate: true, autoRefresh: autoTokenRefresh })
@@ -71,6 +75,29 @@ export async function getReadyClientForResolvers(params?: {
 
     if (params == null) {
         return [client]
+    }
+
+    if (params.validateHelseId && (isLocal || isDemo)) {
+        try {
+            const helseIdClaim = client.getClaim('https://helseid.nhn.no', HelseIdClaimSchema)
+
+            if ('error' in helseIdClaim) {
+                logger.warn(
+                    `Smart session was attempted to be launched with HelseID claim, but client says: ${helseIdClaim.error}`,
+                )
+            } else {
+                logger.info(
+                    `Smart session is launched with HelseID claim, and access_token of length ${helseIdClaim.access_token.length} was found`,
+                )
+            }
+        } catch (e) {
+            logger.warn(
+                new Error(
+                    'HelseID token validation is only in proof-of-concept mode, this is expected in demo/local, ignoring claim error',
+                    { cause: e },
+                ),
+            )
+        }
     }
 
     const practitioner = await client.user.request()
