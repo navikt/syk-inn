@@ -51,6 +51,11 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
         need_patient_banner: true,
         patient: 'cd09f5d4-55f7-4a24-a25d-a5b65c7a8805',
         encounter: '320fd29a-31b9-4c9f-963c-c6c88332d89a',
+        'https://helseid.nhn.no': {
+            access_token: createAccessToken('https://helseid.nhn.no'),
+            issuer: 'https://helseid.nhn.no',
+            scope: 'nav:syk-inn',
+        },
     })
 }
 

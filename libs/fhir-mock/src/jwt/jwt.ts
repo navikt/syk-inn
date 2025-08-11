@@ -40,9 +40,7 @@ export async function createIdToken(): Promise<string> {
 }
 
 export async function createAccessToken(audience: string): Promise<string> {
-    const token = await new SignJWT({
-        yo: 'sup',
-    })
+    const token = await new SignJWT()
         .setProtectedHeader({ alg: 'RS256', kid: 'very-cool-kid' }) // Use the same 'kid' as in /keys
         .setIssuedAt()
         .setIssuer(fhirServerTestData.wellKnown().issuer)

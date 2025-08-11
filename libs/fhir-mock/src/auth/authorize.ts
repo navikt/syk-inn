@@ -10,7 +10,11 @@ const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
 export function authorize(request: HonoRequest): Response {
     const url = new URL(request.url)
 
-    logger.info(`/auth/authorize request with params: \n\t${Array.from(url.searchParams.entries()).join('\n\t')}`)
+    logger.info(
+        `/auth/authorize request with params: \n\t${Array.from(url.searchParams.entries())
+            .map((it) => it.join(': '))
+            .join('\n\t')}`,
+    )
 
     const redirectUri = url.searchParams.get('redirect_uri')
     if (!redirectUri) {

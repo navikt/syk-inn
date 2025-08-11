@@ -14,14 +14,20 @@ import { getAbsoluteURL } from '@lib/url'
 import { getSessionId } from '@data-layer/fhir/smart/session'
 import { NoSmartSession } from '@data-layer/graphql/error/Errors'
 import { getFlag, getUserlessToggles } from '@core/toggles/unleash'
-import { isDemo, isE2E } from '@lib/env'
+import { isDemo, isE2E, isLocal } from '@lib/env'
 import { globalInMemoryValkey } from '@dev/mock-engine/valkey/global-inmem-valkey'
 
 import { knownFhirServers } from './issuers'
 
+const smartClientScopes = ['openid', 'profile', 'launch', 'fhirUser', 'patient/*.read', 'user/*.read offline_access']
+
+if (isDemo || isLocal) {
+    smartClientScopes.push('https://helseid.nhn.no')
+}
+
 const smartClientConfig: SmartClientConfiguration = {
     client_id: 'syk-inn',
-    scope: 'openid profile launch fhirUser patient/*.read user/*.read offline_access',
+    scope: smartClientScopes.join(' '),
     redirect_url: `${getAbsoluteURL()}/fhir`,
     callback_url: `${getAbsoluteURL()}/fhir/callback`,
     knownFhirServers,
