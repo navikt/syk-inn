@@ -67,8 +67,6 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                     <FormSection title="Meldinger" hideBorder>
                         <MeldingerSection />
                     </FormSection>
-                </FormSheet>
-                <FormSheet className="flex items-end justify-end">
                     <div className="flex gap-3 p-2">
                         <ForkastDraftButton />
                         <LagreDraftButton />
