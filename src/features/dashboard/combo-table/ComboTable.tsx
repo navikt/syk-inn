@@ -81,7 +81,7 @@ export function ComboTableHeader({ className }: { className?: string }): ReactEl
                     Status
                 </Table.HeaderCell>
                 {/* Action buttons */}
-                <Table.HeaderCell scope="col" className="w-32 max-w-32" />
+                <Table.HeaderCell scope="col" className="w-44 max-w-44" />
             </Table.Row>
         </Table.Header>
     )
@@ -184,9 +184,7 @@ function TableRow(props: {
             <Table.DataCell>
                 <StatusTag status={props.status} />
             </Table.DataCell>
-            <Table.DataCell>
-                <div className="w-full flex justify-end">{props.actions}</div>
-            </Table.DataCell>
+            <Table.DataCell>{props.actions}</Table.DataCell>
         </Table.Row>
     )
 }

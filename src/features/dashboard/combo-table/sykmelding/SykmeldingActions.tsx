@@ -1,6 +1,6 @@
 import React, { ReactElement, useRef } from 'react'
 import { Tooltip } from '@navikt/ds-react'
-import { ChevronRightDoubleCircleIcon, ChevronRightIcon, TabsAddIcon } from '@navikt/aksel-icons'
+import { ChevronRightIcon, TabsAddIcon } from '@navikt/aksel-icons'
 
 import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { SykmeldingFragment } from '@queries'
@@ -15,7 +15,7 @@ type SykmeldingActionProps = {
 
 export function SykmeldingActions({ sykmeldingId, sykmelding, forlengable }: SykmeldingActionProps): ReactElement {
     return (
-        <div className="grid grid-cols-3 gap-2 w-fit ml-2">
+        <div className="grid grid-flow-col auto-cols-max gap-2">
             <Tooltip content="Se sykmelding">
                 <SlowNextLinkButton
                     href={`/fhir/sykmelding/${sykmeldingId}`}
@@ -60,10 +60,11 @@ function ForlengSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragmen
                 onClick={() => {
                     dispatch(nySykmeldingActions.forleng(sykmelding))
                 }}
-                icon={<ChevronRightDoubleCircleIcon aria-hidden />}
-                variant="tertiary"
+                variant="secondary"
                 size="small"
-            />
+            >
+                Forleng
+            </SlowNextLinkButton>
         </Tooltip>
     )
 }
