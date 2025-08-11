@@ -152,9 +152,11 @@ export async function getApi(
 
     const tokenResult = await requestAzureClientCredentialsToken(scope)
     if (!tokenResult.ok) {
-        logger.error(`Unable to exchange client credentials token for ${scope}`, {
-            cause: tokenResult.error,
-        })
+        logger.error(
+            new Error(`Unable to exchange client credentials token for ${scope}`, {
+                cause: tokenResult.error,
+            }),
+        )
 
         return { errorType: 'TOKEN_EXCHANGE_FAILED' }
     }
