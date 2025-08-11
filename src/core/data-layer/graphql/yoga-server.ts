@@ -32,7 +32,7 @@ export function createGraphQLHandler(
     const { handleRequest } = createYoga<NextContext>({
         schema,
         logging: logger,
-        plugins: isLocal || isDemo ? [...defaultPlugins, slowdownPlugin()] : defaultPlugins,
+        plugins: isLocal || isDemo ? [...defaultPlugins, slowdownPlugin(path)] : defaultPlugins,
         graphqlEndpoint: path,
         fetchAPI: { Response },
     })
@@ -40,10 +40,12 @@ export function createGraphQLHandler(
     return handleRequest
 }
 
-function slowdownPlugin(): Plugin {
+function slowdownPlugin(path: '/fhir/graphql' | '/graphql'): Plugin {
     if (!(isLocal || isDemo)) {
         throw new Error(`Trying to use slowdown plugin in ${bundledEnv.runtimeEnv}, that's illegal!`)
     }
+
+    const loggerPrefix = path === '/fhir/graphql' ? '[GraphQL - FHIR]' : '[GraphQL - HelseID]'
 
     return {
         async onExecute({ args }) {
@@ -51,7 +53,7 @@ function slowdownPlugin(): Plugin {
 
             const opName = args.operationName ?? 'Unnamed Operation'
             logger.warn(
-                "[GraphQL Yoga] SlowDownPlugin: Operation '%s' was artificially delayed by %d ms",
+                `${loggerPrefix} SlowDownPlugin: Operation '%s' was artificially delayed by %d ms`,
                 opName,
                 waitedTime,
             )

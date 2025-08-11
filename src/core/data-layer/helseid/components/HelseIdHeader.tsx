@@ -18,7 +18,7 @@ type Props = {
  */
 function HelseIdHeader({ behandler }: Props): ReactElement {
     return (
-        <div className="border-b border-b-border-subtle h-20 max-h-20 flex justify-between px-2">
+        <div className="border-b border-b-border-subtle h-20 max-h-20 flex justify-between px-2 bg-white">
             <div className="flex justify-center items-center gap-8">
                 <NavLogo className="ml-2 text-nav-red" />
                 <Heading level="1" size="medium">

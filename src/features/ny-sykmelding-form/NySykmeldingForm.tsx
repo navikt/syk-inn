@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ArrowRightIcon } from '@navikt/aksel-icons'
 import dynamic from 'next/dynamic'
+import { Alert, BodyShort, Heading } from '@navikt/ds-react'
 
 import FormSection from '@components/form/form-section/FormSection'
 import FormSheet from '@components/form/form-section/FormSheet'
@@ -9,9 +10,9 @@ import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { DraftValues } from '@data-layer/draft/draft-schema'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
-import { formValuesToStatePayload } from '@features/ny-sykmelding-form/form-mappers'
 
 import type { NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
+import { formValuesToStatePayload } from './form-mappers'
 import { useFormStep } from './steps/useFormStep'
 import { createDefaultFormValues } from './form-default-values'
 import BidiagnoseSection from './diagnose/bidiagnose/BidiagnoseSection'
@@ -33,6 +34,7 @@ type Props = {
 }
 
 function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactElement {
+    const selectedPasient = useAppSelector((state) => state.nySykmelding.pasient)
     const initialValues = useAppSelector((state) => state.nySykmelding.values)
     const formMeta = useAppSelector((state) => state.nySykmelding.meta)
     const onSubmit = useHandleFormSubmit()
@@ -49,6 +51,7 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
             <FormDraftSync />
             <form onSubmit={form.handleSubmit(onSubmit)} className={styles.formGrid}>
                 <FormSheet className="row-span-3 relative">
+                    {selectedPasient == null && <NoActivePasientWarning />}
                     <FormSection title="Arbeidsgiver">
                         <ArbeidsforholdSection />
                     </FormSection>
@@ -79,6 +82,7 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                                 modifier: 'alt',
                                 key: 'n',
                             }}
+                            disabled={selectedPasient == null}
                         >
                             Neste steg
                         </ShortcutSubmitButton>
@@ -99,6 +103,24 @@ function useHandleFormSubmit() {
 
         await setStep('summary')
     }
+}
+
+function NoActivePasientWarning(): ReactElement {
+    return (
+        <div>
+            <Alert variant="warning">
+                <Heading level="2" size="small" spacing>
+                    Ingen pasient er valgt
+                </Heading>
+                <BodyShort spacing>
+                    Det har skjedd en feil under oppstart av sykmeldingsskjemaet. Dette skal ikke skje.
+                </BodyShort>
+                <BodyShort spacing>
+                    Prøv å start skjemaet på nytt, eller kontakt support dersom feilen vedvarer.
+                </BodyShort>
+            </Alert>
+        </div>
+    )
 }
 
 export default NySykmeldingForm

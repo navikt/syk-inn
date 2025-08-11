@@ -39,7 +39,9 @@ function DumbDevHeader(): ReactElement {
                     <span>
                         Utviklingsside for <span className="wavy">syk-inn</span>
                     </span>
-                    <Detail className="-mt-2">Denne siden er ikke synlig i dev/demo/prod</Detail>
+                    <Detail className="-mt-2">
+                        Denne siden er ikke synlig i dev-gcp eller prod-gcp, kun lokal utvikling og demo
+                    </Detail>
                 </div>
             </FastFadeReveal>
         </AnimatePresence>

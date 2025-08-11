@@ -3,15 +3,11 @@ import '../globals.css'
 import React, { PropsWithChildren, ReactElement } from 'react'
 import type { Metadata } from 'next'
 
-import DemoWarning from '@components/user-warnings/DemoWarning'
-import { isLocal, isDemo } from '@lib/env'
 import { getUserToggles } from '@core/toggles/unleash'
 import { getHelseIdUserInfo } from '@data-layer/helseid/helseid-userinfo'
-import HelseIdHeader from '@data-layer/helseid/components/HelseIdHeader'
-import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 import { ToggleProvider } from '@core/toggles/context'
-import { LazyDevTools } from '@dev/tools/LazyDevTools'
-import Providers from '@core/providers/Providers'
+import { isDemo, isLocal } from '@lib/env'
+import DemoWarning from '@components/user-warnings/DemoWarning'
 
 import Preload from '../preload'
 
@@ -37,20 +33,8 @@ export default async function StandaloneLayout({ children }: PropsWithChildren):
             </head>
             <Preload />
             <body>
-                <HelseIdHeader
-                    behandler={{
-                        navn: 'TODO',
-                        hpr: behandler?.hpr_number ?? 'TODO',
-                    }}
-                />
                 {(isLocal || isDemo) && <DemoWarning />}
-                <ToggleProvider toggles={toggles}>
-                    <Providers mode="HelseID">
-                        <LoggedOutWarning />
-                        {children}
-                        {(isLocal || isDemo) && <LazyDevTools />}
-                    </Providers>
-                </ToggleProvider>
+                <ToggleProvider toggles={toggles}>{children}</ToggleProvider>
             </body>
         </html>
     )
