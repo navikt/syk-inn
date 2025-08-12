@@ -8,6 +8,7 @@ import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unlea
 import { ToggleProvider } from '@core/toggles/context'
 import { spanServerAsync } from '@core/otel/server'
 import { NoValidHPR } from '@components/errors/NoValidHPR'
+import QueryStateToSessionStorageOnInit from '@data-layer/fhir/smart/QueryStateToSessionStorageOnInit'
 
 import { NoPractitionerSession } from './launched-errors'
 
@@ -35,6 +36,7 @@ async function LaunchedLayout({ children }: PropsWithChildren): Promise<ReactEle
 
     return (
         <ToggleProvider toggles={toggles}>
+            <QueryStateToSessionStorageOnInit />
             {children}
             <LoggedOutWarning />
             <NonPilotUserWarning />

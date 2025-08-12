@@ -22,6 +22,21 @@ const createErrorLink = (store: AppStore): ApolloLink =>
         }
     })
 
+const multiUserLink = new ApolloLink((operation, forward) => {
+    const activeUser = sessionStorage.getItem('FHIR_ACTIVE_PATIENT') ?? null
+    if (!activeUser) return forward(operation)
+
+    logger.info(`Found multi launch user ID, setting ${activeUser} as FHIR-Active-Patient in Apollo Headers`)
+    operation.setContext(({ headers }: { headers: Record<string, string> }) => ({
+        headers: {
+            ...headers,
+            'FHIR-Active-Patient': activeUser,
+        },
+    }))
+
+    return forward(operation)
+})
+
 const inferOperationName = (body: string | undefined): string => {
     if (!body) return 'UnknownOperation'
 
@@ -58,8 +73,8 @@ export function makeApolloClient(store: AppStore) {
 
         const links =
             isLocal || isDemo
-                ? from([errorLink, FailingLinkDev(), retryLink, httpLink])
-                : from([errorLink, retryLink, httpLink])
+                ? from([errorLink, FailingLinkDev(), retryLink, multiUserLink, httpLink])
+                : from([errorLink, retryLink, multiUserLink, httpLink])
 
         return new ApolloClient({
             cache: createInMemoryCache(),

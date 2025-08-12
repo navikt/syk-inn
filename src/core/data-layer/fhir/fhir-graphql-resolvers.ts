@@ -2,7 +2,6 @@ import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 import { teamLogger } from '@navikt/next-logger/team-log'
-import { ReadyClient } from '@navikt/smart-on-fhir/client'
 
 import { Behandler, OpprettSykmeldingRuleOutcome, QueriedPerson, Resolvers } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
@@ -27,6 +26,7 @@ import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett
 import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
 import { aaregService } from '@core/services/aareg/aareg-service'
 import { raise } from '@lib/ts'
+import { FhirGraphQLContext } from '@data-layer/fhir/fhir-graphql-context'
 
 import { searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
@@ -34,7 +34,7 @@ import { DraftValuesSchema } from '../draft/draft-schema'
 
 import { getReadyClientForResolvers } from './smart/smart-client'
 
-const fhirResolvers: Resolvers<{ readyClient?: ReadyClient }> = {
+const fhirResolvers: Resolvers<FhirGraphQLContext> = {
     Query: {
         behandler: async () => {
             const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })

@@ -33,6 +33,7 @@ const smartClientConfig: SmartClientConfiguration = {
     redirectUrl: `${getAbsoluteURL()}/fhir`,
     callbackUrl: `${getAbsoluteURL()}/fhir/callback`,
     knownFhirServers,
+    enableMultiLaunch: true,
 }
 
 export function getSmartClient(sessionId: string | null, autoRefreshToggle: boolean): SmartClient {

@@ -2,7 +2,7 @@
 
 import { logger } from '@navikt/next-logger'
 import { GraphQLSchema } from 'graphql/type'
-import { createYoga, Plugin } from 'graphql-yoga'
+import { createYoga, Plugin, YogaServerOptions } from 'graphql-yoga'
 import { useOpenTelemetry } from '@envelop/opentelemetry'
 import { trace } from '@opentelemetry/api'
 
@@ -13,9 +13,10 @@ interface NextContext {
     params: Promise<Record<string, string>>
 }
 
-export function createGraphQLHandler(
+export function createGraphQLHandler<UserContext extends Record<string, unknown>>(
     schema: GraphQLSchema,
     path: '/fhir/graphql' | '/graphql',
+    context?: YogaServerOptions<NextContext, UserContext>['context'],
 ): (request: Request, ctx: NextContext) => Response | Promise<Response> {
     const defaultPlugins = [
         useOpenTelemetry(
@@ -29,12 +30,13 @@ export function createGraphQLHandler(
         ),
     ]
 
-    const { handleRequest } = createYoga<NextContext>({
+    const { handleRequest } = createYoga<NextContext, UserContext>({
         schema,
         logging: logger,
         plugins: isLocal || isDemo ? [...defaultPlugins, slowdownPlugin(path)] : defaultPlugins,
         graphqlEndpoint: path,
         fetchAPI: { Response },
+        context,
     })
 
     return handleRequest
