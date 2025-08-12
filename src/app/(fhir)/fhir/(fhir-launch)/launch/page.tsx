@@ -48,7 +48,7 @@ async function LaunchPage({ searchParams }: Props): Promise<ReactElement> {
         return <InvalidIssuer issuer={issuerParam} />
     }
 
-    redirect(launchResult.redirect_url, RedirectType.replace)
+    redirect(launchResult.redirectUrl, RedirectType.replace)
 }
 
 export default LaunchPage

@@ -28,10 +28,10 @@ if (isDemo || isLocal) {
 }
 
 const smartClientConfig: SmartClientConfiguration = {
-    client_id: 'syk-inn',
+    clientId: 'syk-inn',
     scope: smartClientScopes.join(' '),
-    redirect_url: `${getAbsoluteURL()}/fhir`,
-    callback_url: `${getAbsoluteURL()}/fhir/callback`,
+    redirectUrl: `${getAbsoluteURL()}/fhir`,
+    callbackUrl: `${getAbsoluteURL()}/fhir/callback`,
     knownFhirServers,
 }
 

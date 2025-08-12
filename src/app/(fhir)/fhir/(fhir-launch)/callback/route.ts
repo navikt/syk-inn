@@ -41,5 +41,5 @@ export async function GET(request: Request): Promise<Response> {
         redirect(pathWithBasePath('/fhir/error?reason=callback-failed'))
     }
 
-    redirect(callback.redirect_url)
+    redirect(callback.redirectUrl)
 }
