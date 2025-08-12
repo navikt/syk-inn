@@ -7,8 +7,9 @@ import { getHprFromFhirSession } from '@data-layer/fhir/fhir-service'
 import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
 import { ToggleProvider } from '@core/toggles/context'
 import { spanServerAsync } from '@core/otel/server'
+import { NoValidHPR } from '@components/errors/NoValidHPR'
 
-import { NoPractitionerSession, NoValidHPR } from './launched-errors'
+import { NoPractitionerSession } from './launched-errors'
 
 async function LaunchedLayout({ children }: PropsWithChildren): Promise<ReactElement> {
     const [toggles, hpr] = await spanServerAsync('FhirLayout toggles', async () => {
@@ -24,7 +25,7 @@ async function LaunchedLayout({ children }: PropsWithChildren): Promise<ReactEle
             case 'NO_SESSION':
                 return <NoPractitionerSession />
             case 'NO_HPR':
-                return <NoValidHPR />
+                return <NoValidHPR mode="FHIR" />
         }
     }
 
