@@ -5,7 +5,7 @@ import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { getApi } from '@core/services/api-fetcher'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
-import { getReadyClient } from '@data-layer/fhir/smart/smart-client'
+import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { getFlag, getUserlessToggles } from '@core/toggles/unleash'
 import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
 

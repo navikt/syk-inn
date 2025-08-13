@@ -2,13 +2,14 @@ import { logger } from '@navikt/next-logger'
 import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
 
-import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { getHpr } from '@data-layer/fhir/mappers/practitioner'
-import { createNewDocumentReferencePayload } from '@data-layer/fhir/mappers/document-reference'
 import { toReadableDatePeriod } from '@lib/date'
-import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
-import { getReadyClient } from '@data-layer/fhir/smart/smart-client'
 import { getFlag, getUserlessToggles } from '@core/toggles/unleash'
+import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
+import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
+
+import { getHpr } from './mappers/practitioner'
+import { createNewDocumentReferencePayload } from './mappers/document-reference'
+import { getReadyClient } from './smart/ready-client'
 
 export async function getHprFromFhirSession(
     client?: ReadyClient,

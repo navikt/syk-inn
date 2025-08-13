@@ -37,7 +37,7 @@ async function LaunchPage({ searchParams }: Props): Promise<ReactElement> {
         return <MissingLaunchParams />
     }
 
-    const launchResult = await getSmartClient(sessionId, false).launch({
+    const launchResult = await getSmartClient(sessionId, null, false).launch({
         iss: issuerParam,
         launch,
     })

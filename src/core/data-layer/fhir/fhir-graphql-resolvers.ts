@@ -27,12 +27,11 @@ import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unlea
 import { aaregService } from '@core/services/aareg/aareg-service'
 import { raise } from '@lib/ts'
 import { FhirGraphQLContext } from '@data-layer/fhir/fhir-graphql-context'
+import { getReadyClientForResolvers } from '@data-layer/fhir/smart/ready-client'
 
 import { searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
-
-import { getReadyClientForResolvers } from './smart/smart-client'
 
 const fhirResolvers: Resolvers<FhirGraphQLContext> = {
     Query: {
