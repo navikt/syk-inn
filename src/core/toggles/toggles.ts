@@ -9,4 +9,5 @@ export const EXPECTED_TOGGLES = [
     'SYK_INN_REFRESH_TOKEN',
     'SYK_INN_AAREG',
     'SYK_INN_SHOW_REDACTED',
+    'SYK_INN_SYKEFRAVAER_INFO',
 ] as const
