@@ -1,6 +1,7 @@
 import { KnownFhirServer } from '@navikt/smart-on-fhir/client'
 
 import { bundledEnv } from '@lib/env'
+import { raise } from '@lib/ts'
 
 /**
  * Should be provided by an external configuration or self-service system. But for now we'll hardcode the trusted issuers.
@@ -8,7 +9,6 @@ import { bundledEnv } from '@lib/env'
 export const knownFhirServers: KnownFhirServer[] = [
     { issuer: 'https://launch.smarthealthit.org/v/r4/fhir', type: 'public' },
     { issuer: 'https://fhir.ekstern.dev.nav.no', type: 'public' },
-    { issuer: 'https://fhir-api-auth.public.webmedepj.no', type: 'public' },
 ]
 
 switch (bundledEnv.runtimeEnv) {
@@ -30,6 +30,14 @@ switch (bundledEnv.runtimeEnv) {
         })
         break
     case 'dev-gcp':
+        knownFhirServers.push({
+            issuer: 'https://fhir-api-auth.public.webmedepj.no',
+            type: 'confidential-symmetric',
+            method: 'client_secret_basic',
+            clientSecret:
+                process.env.WEBMED_CLIENT_SECRET ?? raise('WEBMED_CLIENT_SECRET is not set in dev-gcp environment'),
+        })
+        break
     case 'prod-gcp':
         break
 }

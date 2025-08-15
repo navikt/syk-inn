@@ -74,4 +74,5 @@ spec:
       value: none
   envFrom:
     - secret: login-config-syk-inn
+    - secret: tsm-syk-inn-epj-secrets
     - secret: tsm-unleash-api-token
