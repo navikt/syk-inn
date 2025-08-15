@@ -1,12 +1,12 @@
 import { SmartClient, SmartClientConfiguration, SmartStorage } from '@navikt/smart-on-fhir/client'
 import Valkey from 'iovalkey'
 
+import { globalInMemoryValkey } from '@dev/mock-engine/valkey/global-inmem-valkey'
 import { productionValkey } from '@core/services/valkey/client'
 import { getAbsoluteURL } from '@lib/url'
 import { isDemo, isE2E, isLocal } from '@lib/env'
-import { globalInMemoryValkey } from '@dev/mock-engine/valkey/global-inmem-valkey'
 
-import { getKnownFhirServers } from './issuers'
+import { getKnownFhirServers } from './issuers/issuers'
 
 const smartClientScopes = [
     'openid',
@@ -25,22 +25,23 @@ if (isDemo || isLocal) {
     smartClientScopes.push('https://helseid.nhn.no')
 }
 
-const smartClientConfig: Omit<SmartClientConfiguration, 'knownFhirServers'> = {
-    clientId: 'syk-inn',
-    scope: smartClientScopes.join(' '),
-    redirectUrl: `${getAbsoluteURL()}/fhir`,
-    callbackUrl: `${getAbsoluteURL()}/fhir/callback`,
-}
-
 export function getSmartClient(
     sessionId: string | null,
     activePatient: string | null,
     autoRefreshToggle: boolean,
 ): SmartClient {
+    const smartClientConfig: SmartClientConfiguration = {
+        clientId: 'syk-inn',
+        scope: smartClientScopes.join(' '),
+        redirectUrl: `${getAbsoluteURL()}/fhir`,
+        callbackUrl: `${getAbsoluteURL()}/fhir/callback`,
+        knownFhirServers: getKnownFhirServers(),
+    }
+
     return new SmartClient(
         { sessionId: sessionId, activePatient: activePatient },
         getSmartStorage(),
-        { ...smartClientConfig, knownFhirServers: getKnownFhirServers() },
+        smartClientConfig,
         { autoRefresh: autoRefreshToggle, enableMultiLaunch: true },
     )
 }
