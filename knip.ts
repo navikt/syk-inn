@@ -12,8 +12,9 @@ const config: KnipConfig = {
         'next-logger.config.js',
         'postcss.config.mjs',
         'scripts/**',
+        // Not automatically picked up by knip nextjs plugin yet
+        'src/app/global-not-found.tsx',
     ],
-
     ignoreDependencies: ['@navikt/ds-css', 'pino-pretty', 'eslint-config-next'],
 }
 
