@@ -6,7 +6,7 @@ import { productionValkey } from '@core/services/valkey/client'
 import { getAbsoluteURL } from '@lib/url'
 import { isDemo, isE2E, isLocal } from '@lib/env'
 
-import { getKnownFhirServers } from './issuers/issuers'
+import { getKnownFhirServers } from './issuers'
 
 const smartClientScopes = [
     'openid',
