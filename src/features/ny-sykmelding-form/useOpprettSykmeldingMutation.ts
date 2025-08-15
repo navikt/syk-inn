@@ -15,7 +15,7 @@ import {
     OpprettSykmeldingInput,
     OpprettSykmeldingMutation,
 } from '@queries'
-import { spanBrowserAsync, withSpanBrowserAsync } from '@core/otel/browser'
+import { spanBrowserAsync, withSpanBrowserAsync } from '@lib/otel/browser'
 import { useAppSelector } from '@core/redux/hooks'
 import { useMode } from '@core/providers/Modes'
 import { NySykmeldingAktivitet, NySykmeldingTilbakedatering } from '@core/redux/reducers/ny-sykmelding'

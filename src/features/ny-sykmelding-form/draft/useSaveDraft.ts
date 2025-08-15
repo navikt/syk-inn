@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import * as R from 'remeda'
 
 import { GetAllDraftsDocument, SaveDraftDocument, SaveDraftMutation } from '@queries'
-import { spanBrowserAsync } from '@core/otel/browser'
+import { spanBrowserAsync } from '@lib/otel/browser'
 import { DraftValues } from '@data-layer/draft/draft-schema'
 import { useMode } from '@core/providers/Modes'
 

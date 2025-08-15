@@ -4,7 +4,7 @@ import { RetryLink } from '@apollo/client/link/retry'
 import { onError } from '@apollo/client/link/error'
 import { logger } from '@navikt/next-logger'
 
-import { spanBrowserAsync } from '@core/otel/browser'
+import { spanBrowserAsync } from '@lib/otel/browser'
 import { AppStore } from '@core/redux/store'
 import { metadataActions } from '@core/redux/reducers/metadata'
 import { pathWithBasePath } from '@lib/url'

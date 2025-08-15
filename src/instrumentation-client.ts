@@ -1,6 +1,6 @@
 import { configureLogger, logger } from '@navikt/next-logger'
 
-import { getFaro } from '@core/otel/faro'
+import { getFaro } from '@lib/otel/faro'
 import { bundledEnv } from '@lib/env'
 
 configureLogger({

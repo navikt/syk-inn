@@ -13,7 +13,7 @@ import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 import { ToggleProvider } from '@core/toggles/context'
 import { LazyDevTools } from '@dev/tools/LazyDevTools'
 import Providers from '@core/providers/Providers'
-import { spanServerAsync } from '@core/otel/server'
+import { spanServerAsync } from '@lib/otel/server'
 import { NoValidHPR } from '@components/errors/NoValidHPR'
 import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
 

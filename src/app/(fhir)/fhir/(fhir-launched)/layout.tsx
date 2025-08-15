@@ -6,7 +6,7 @@ import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
 import { getHprFromFhirSession } from '@data-layer/fhir/fhir-service'
 import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
 import { ToggleProvider } from '@core/toggles/context'
-import { spanServerAsync } from '@core/otel/server'
+import { spanServerAsync } from '@lib/otel/server'
 import { NoValidHPR } from '@components/errors/NoValidHPR'
 import QueryStateToSessionStorageOnInit from '@data-layer/fhir/smart/QueryStateToSessionStorageOnInit'
 

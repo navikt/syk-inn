@@ -3,7 +3,7 @@ import { logger as pinoLogger } from '@navikt/next-logger'
 import * as z from 'zod'
 
 import { getServerEnv } from '@lib/env'
-import { failServerSpan, spanServerAsync } from '@core/otel/server'
+import { failServerSpan, spanServerAsync } from '@lib/otel/server'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[API FETCHER]: ' })
 

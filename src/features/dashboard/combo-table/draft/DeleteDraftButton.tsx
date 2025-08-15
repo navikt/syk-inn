@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { logger } from '@navikt/next-logger'
 
 import { DeleteDraftDocument } from '@queries'
-import { spanBrowserAsync } from '@core/otel/browser'
+import { spanBrowserAsync } from '@lib/otel/browser'
 import { deleteDraftIdFromList } from '@data-layer/graphql/apollo/apollo-client-utils'
 
 export function DeleteDraftButton({ draftId }: { draftId: string }): ReactElement {

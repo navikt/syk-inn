@@ -4,7 +4,7 @@ import { logger } from '@navikt/next-logger'
 import Valkey from 'iovalkey'
 
 import { productionValkey } from '@core/services/valkey/client'
-import { withSpanServerAsync } from '@core/otel/server'
+import { withSpanServerAsync } from '@lib/otel/server'
 import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
 
 import { DraftValues } from './draft-schema'

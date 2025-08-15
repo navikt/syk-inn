@@ -5,7 +5,7 @@ import { FloppydiskIcon } from '@navikt/aksel-icons'
 
 import { DeleteDraftDocument, GetAllDraftsDocument, OpprettSykmeldingDraft } from '@queries'
 import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
-import { spanBrowserAsync } from '@core/otel/browser'
+import { spanBrowserAsync } from '@lib/otel/browser'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { useMode } from '@core/providers/Modes'

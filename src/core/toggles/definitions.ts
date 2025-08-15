@@ -2,7 +2,7 @@ import { getDefinitions } from '@unleash/nextjs'
 import * as R from 'remeda'
 import NodeCache from 'node-cache'
 
-import { spanServerAsync } from '@core/otel/server'
+import { spanServerAsync } from '@lib/otel/server'
 import { raise } from '@lib/ts'
 import { EXPECTED_TOGGLES } from '@core/toggles/toggles'
 import { unleashLogger } from '@core/toggles/unleash'

@@ -1,5 +1,5 @@
-import { APP_NAME } from '@core/otel/common'
-import { getBrowserOTEL } from '@core/otel/faro'
+import { APP_NAME } from '@lib/otel/common'
+import { getBrowserOTEL } from '@lib/otel/faro'
 
 export function spanBrowserAsync<Result>(name: string, fn: () => Promise<Result>): Promise<Result> {
     const otel = getBrowserOTEL()
