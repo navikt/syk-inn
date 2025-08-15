@@ -6,7 +6,7 @@ import { getAbsoluteURL } from '@lib/url'
 import { isDemo, isE2E, isLocal } from '@lib/env'
 import { globalInMemoryValkey } from '@dev/mock-engine/valkey/global-inmem-valkey'
 
-import { knownFhirServers } from './issuers'
+import { getKnownFhirServers } from './issuers'
 
 const smartClientScopes = ['openid', 'profile', 'launch', 'fhirUser', 'patient/*.read', 'user/*.read offline_access']
 
@@ -14,12 +14,11 @@ if (isDemo || isLocal) {
     smartClientScopes.push('https://helseid.nhn.no')
 }
 
-const smartClientConfig: SmartClientConfiguration = {
+const smartClientConfig: Omit<SmartClientConfiguration, 'knownFhirServers'> = {
     clientId: 'syk-inn',
     scope: smartClientScopes.join(' '),
     redirectUrl: `${getAbsoluteURL()}/fhir`,
     callbackUrl: `${getAbsoluteURL()}/fhir/callback`,
-    knownFhirServers,
 }
 
 export function getSmartClient(
@@ -30,7 +29,7 @@ export function getSmartClient(
     return new SmartClient(
         { sessionId: sessionId, activePatient: activePatient },
         getSmartStorage(),
-        smartClientConfig,
+        { ...smartClientConfig, knownFhirServers: getKnownFhirServers() },
         { autoRefresh: autoRefreshToggle, enableMultiLaunch: true },
     )
 }
