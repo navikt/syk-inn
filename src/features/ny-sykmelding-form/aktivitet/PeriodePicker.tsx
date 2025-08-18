@@ -1,6 +1,6 @@
 import React, { ReactElement, RefObject, useImperativeHandle, useRef, useState } from 'react'
 import { BodyShort, DatePicker, Detail, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
-import { addDays, parseISO } from 'date-fns'
+import { addDays, differenceInDays, parseISO, isBefore, toDate } from 'date-fns'
 import { AnimatePresence } from 'motion/react'
 import { RefCallBack } from 'react-hook-form'
 
@@ -23,15 +23,14 @@ type Props = {
 function PeriodePicker({ index, initialFom }: Props): ReactElement {
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
     const { clearErrors } = useFormContext()
-    const nextFom = useNextFomFromPreviousPeriode(initialFom, index)
+    const previousTomPlusOne = useNextFomFromPreviousPeriode(initialFom, index)
 
     const fomField = useController({
         name: `perioder.${index}.periode.fom` as const,
         rules: {
             validate: (value) => {
-                if (rangeError?.from.isInvalid) {
-                    return 'Fra og med dato må være en gyldig dato'
-                }
+                if (rangeError?.from.isInvalid) return 'Fra og med dato må være en gyldig dato'
+                if (rangeError?.from.isDisabled) return 'Periode kan ikke overlappe med forrige periode'
 
                 if (!value) {
                     return 'Du må fylle inn fra og med dato'
@@ -39,6 +38,14 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
 
                 if (tomField.field.value && value > tomField.field.value) {
                     return 'Fra og med dato kan ikke være etter til og med dato'
+                }
+
+                if (previousTomPlusOne && isBefore(value, previousTomPlusOne)) {
+                    return 'Periode kan ikke overlappe med forrige periode'
+                }
+
+                if (previousTomPlusOne && differenceInDays(value, previousTomPlusOne) > 0) {
+                    return 'Det kan ikke være opphold mellom perioder'
                 }
             },
         },
@@ -63,6 +70,7 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
             from: fomField.field.value ? parseISO(fomField.field.value) : undefined,
             to: tomField.field.value ? parseISO(tomField.field.value) : undefined,
         },
+        disabled: previousTomPlusOne ? [{ before: toDate(previousTomPlusOne) }] : undefined,
         onRangeChange: (range) => {
             if (!range) {
                 fomField.field.onChange(null)
@@ -82,8 +90,8 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
         if (event.key === 'Enter') {
             const shorthand =
                 side === 'fom'
-                    ? parseShorthandFom(nextFom, event.currentTarget.value)
-                    : parseShorthandTom(nextFom, fomField.field.value, event.currentTarget.value)
+                    ? parseShorthandFom(previousTomPlusOne, event.currentTarget.value)
+                    : parseShorthandTom(previousTomPlusOne, fomField.field.value, event.currentTarget.value)
 
             if (shorthand) {
                 event.preventDefault()
@@ -137,7 +145,7 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
                         anchorEl={fomFieldRef.current}
                         focused={focusState === 'fom'}
                         suggestion={parseShorthandFom(
-                            nextFom,
+                            previousTomPlusOne,
                             typeof fromInputProps.value === 'string' ? fromInputProps.value : null,
                         )}
                     />
@@ -161,7 +169,7 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
                         anchorEl={tomFieldRef.current}
                         focused={focusState === 'tom'}
                         suggestion={parseShorthandTom(
-                            nextFom,
+                            previousTomPlusOne,
                             fomField.field.value,
                             typeof toInputProps.value === 'string' ? toInputProps.value : null,
                         )}

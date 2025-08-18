@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, Locator, Page, test } from '@playwright/test'
 
 import { launchWithMock } from './actions/fhir-actions'
 import {
@@ -260,5 +260,60 @@ test.describe("'shorthand' date interactions", () => {
         const popover = periodeRegion.getByRole('region', { name: 'Trykk Enter for å bruke følgende datoer' })
         await expect(popover).toBeVisible()
         await expect(popover).toHaveText(/Fra .* \d{1,2}\. .* til .* \d{1,2}\. .*/)
+    })
+})
+
+test.describe('periode ranges', () => {
+    async function fillPeriode(
+        page: Page,
+        values: { nth: number; fom: number | { expect: number }; tom: number },
+    ): Promise<[Locator]> {
+        const periode = page.getByRole('region', { name: 'Periode' }).nth(values.nth)
+        const fom = periode.getByRole('textbox', { name: 'Fra og med' })
+        if (typeof values.fom !== 'number') {
+            await expect(periode.getByRole('textbox', { name: 'Fra og med' })).toHaveValue(inputDate(inDays(7)))
+        } else {
+            await fom.fill(inputDate(inDays(values.fom)))
+        }
+        await periode.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(inDays(values.tom)))
+        await periode.getByRole('textbox', { name: 'Sykmeldingsgrad (%)' }).fill('60')
+
+        return [fom]
+    }
+
+    test('simple happy path, ranges are back to back everyone is happy', async ({ page }) => {
+        await launchWithMock('empty')(page)
+        await startNewSykmelding()(page)
+
+        await fillPeriode(page, { nth: 0, fom: 0, tom: 6 })
+        await page.getByRole('button', { name: 'Legg til ny periode' }).click()
+        await fillPeriode(page, { nth: 1, fom: { expect: 7 }, tom: 13 })
+
+        await page.getByRole('button', { name: 'Neste steg' }).click()
+        await expect(page.getByRole('heading', { name: 'Oppsummering' })).toBeVisible()
+    })
+
+    test('overlapping one day should give validation error', async ({ page }) => {
+        await launchWithMock('empty')(page)
+        await startNewSykmelding()(page)
+
+        await fillPeriode(page, { nth: 0, fom: 0, tom: 6 })
+        await page.getByRole('button', { name: 'Legg til ny periode' }).click()
+        const [fom] = await fillPeriode(page, { nth: 1, fom: 6, tom: 13 })
+
+        await page.getByRole('button', { name: 'Neste steg' }).click()
+        await expect(fom).toHaveAccessibleDescription('Periode kan ikke overlappe med forrige periode')
+    })
+
+    test('one day gap should give validation error', async ({ page }) => {
+        await launchWithMock('empty')(page)
+        await startNewSykmelding()(page)
+
+        await fillPeriode(page, { nth: 0, fom: 0, tom: 6 })
+        await page.getByRole('button', { name: 'Legg til ny periode' }).click()
+        const [fom] = await fillPeriode(page, { nth: 1, fom: 8, tom: 13 })
+
+        await page.getByRole('button', { name: 'Neste steg' }).click()
+        await expect(fom).toHaveAccessibleDescription('Det kan ikke være opphold mellom perioder')
     })
 })
