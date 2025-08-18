@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 
 import { SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
 import { NySykmeldingAktivitet, NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
-import { sykmeldingFragmentToMainStepStateNoAktivitet } from '@data-layer/common/sykmelding-fragment-to-multistep-state'
+import { sykmeldingFragmentToNySykmeldingFormPayload } from '@core/redux/reducers/ny-sykmelding/mappers/common'
 
 export function dupliserSykmelding(sykmelding: SykmeldingFragment): NySykmeldingFormState {
     if (sykmelding.__typename === 'SykmeldingRedacted') {
@@ -11,8 +11,10 @@ export function dupliserSykmelding(sykmelding: SykmeldingFragment): NySykmelding
     }
 
     return {
-        ...sykmeldingFragmentToMainStepStateNoAktivitet(sykmelding),
+        ...sykmeldingFragmentToNySykmeldingFormPayload(sykmelding),
         aktiviteter: sykmelding.values.aktivitet.map(toDuplisertFullAktivitet).filter(R.isNonNull),
+        // Meldinger are specifically not part of the duplisering
+        meldinger: null,
     }
 }
 

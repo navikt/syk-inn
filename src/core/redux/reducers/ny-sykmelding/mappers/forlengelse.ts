@@ -6,7 +6,7 @@ import { SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment 
 import { raise } from '@lib/ts'
 import { dateOnly } from '@lib/date'
 import { NySykmeldingAktivitet, NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
-import { sykmeldingFragmentToMainStepStateNoAktivitet } from '@data-layer/common/sykmelding-fragment-to-multistep-state'
+import { sykmeldingFragmentToNySykmeldingFormPayload } from '@core/redux/reducers/ny-sykmelding/mappers/common'
 
 export function forlengSykmelding(sykmelding: SykmeldingFragment): [state: NySykmeldingFormState, date: string] {
     if (sykmelding.__typename === 'SykmeldingRedacted') {
@@ -17,8 +17,10 @@ export function forlengSykmelding(sykmelding: SykmeldingFragment): [state: NySyk
 
     return [
         {
-            ...sykmeldingFragmentToMainStepStateNoAktivitet(sykmelding),
+            ...sykmeldingFragmentToNySykmeldingFormPayload(sykmelding),
             aktiviteter: [forlengetAktivitet],
+            // Meldinger are specifically not part of the forlenging
+            meldinger: null,
         },
         forlengetAktivitet.fom,
     ]

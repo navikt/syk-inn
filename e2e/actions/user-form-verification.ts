@@ -131,7 +131,7 @@ export function expectMeldinger({
             if (tilNav) {
                 await expect(meldingerRegion.getByRole('textbox', { name: 'Melding til Nav' })).toHaveValue(tilNav)
             } else {
-                await expect(meldingerRegion.getByRole('textbox', { name: 'Melding til Nav' })).toBeEmpty()
+                await expect(meldingerRegion.getByRole('checkbox', { name: 'Melding til Nav' })).not.toBeChecked()
             }
 
             if (tilArbeidsgiver) {
@@ -139,7 +139,7 @@ export function expectMeldinger({
                     tilArbeidsgiver,
                 )
             } else {
-                await expect(meldingerRegion.getByRole('textbox', { name: 'Innspill til arbeidsgiver' })).toBeEmpty()
+                await expect(meldingerRegion.getByRole('checkbox', { name: 'Melding til Nav' })).not.toBeChecked()
             }
         })
     }

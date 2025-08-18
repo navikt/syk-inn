@@ -54,9 +54,10 @@ test('should be able to duplicate an existing sykmelding with correct values', a
         expectPeriode({ type: '100%', fromRelative: -1, days: 14 }),
         expectHoveddiagnose('H931 - Tinnitus'),
         expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        // Don't copy meldinger during duplication
         expectMeldinger({
-            tilNav: 'Trenger definitivt to sykmeldinger',
-            tilArbeidsgiver: 'Dobbelt så mange sykmeldinger!',
+            tilNav: null,
+            tilArbeidsgiver: null,
         }),
     )(page)
 
@@ -108,9 +109,10 @@ test('should be able to forlenge an existing sykmelding with correct values', as
         expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         expectHoveddiagnose('H931 - Tinnitus'),
         expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        // Don't copy meldinger during forlengelse
         expectMeldinger({
-            tilNav: 'Trenger definitivt to sykmeldinger',
-            tilArbeidsgiver: 'Dobbelt så mange sykmeldinger!',
+            tilNav: null,
+            tilArbeidsgiver: null,
         }),
     )(page)
 
