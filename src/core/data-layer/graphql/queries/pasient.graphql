@@ -4,6 +4,13 @@ query Pasient {
     }
 }
 
+query PasientWithExists {
+    pasient {
+        ...Person
+        userExists
+    }
+}
+
 query Arbeidsforhold {
     pasient {
         ident

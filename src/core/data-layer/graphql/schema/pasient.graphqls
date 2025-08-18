@@ -7,4 +7,8 @@ type Pasient implements Person {
     ident: String!
     navn: String!
     arbeidsforhold: [Arbeidsforhold!]
+    """
+    Does the user exist outside of FHIR? In other words, is this a real person?
+    """
+    userExists: Boolean
 }

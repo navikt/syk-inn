@@ -1,11 +1,11 @@
-import { Alert, BodyShort, Checkbox, Heading } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Checkbox, Heading } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
 import { AnimatePresence } from 'motion/react'
 import { useQuery } from '@apollo/client'
 
+import { BehandlerDocument, OutcomeFragment, PasientWithExistsDocument } from '@queries'
 import { SimpleReveal } from '@components/animation/Reveal'
-import { BehandlerDocument, OutcomeFragment } from '@data-layer/graphql/queries.generated'
 import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
@@ -24,6 +24,9 @@ function SummarySection(): ReactElement {
     const nySykmelding = useOpprettSykmeldingMutation()
     const dispatch = useAppDispatch()
     const behandlerQuery = useQuery(BehandlerDocument)
+    const pasientQuery = useQuery(PasientWithExistsDocument, {
+        notifyOnNetworkStatusChange: true,
+    })
 
     return (
         <div className={styles.summaryGrid}>
@@ -43,6 +46,27 @@ function SummarySection(): ReactElement {
                     {nySykmelding.result.error && (
                         <SimpleReveal>
                             <UnknownErrorAlert error={nySykmelding.result.error} />
+                        </SimpleReveal>
+                    )}
+                </AnimatePresence>
+
+                <AnimatePresence>
+                    {!pasientQuery.loading && pasientQuery.error != null && (
+                        <UnableToVerifyPersonsExistence
+                            refetching={pasientQuery.loading}
+                            refetch={pasientQuery.refetch}
+                        />
+                    )}
+                    {!pasientQuery.loading && !pasientQuery.data?.pasient?.userExists && (
+                        <SimpleReveal>
+                            {pasientQuery.data?.pasient?.userExists == null ? (
+                                <UnableToVerifyPersonsExistence
+                                    refetching={pasientQuery.loading}
+                                    refetch={pasientQuery.refetch}
+                                />
+                            ) : (
+                                <PasientDoesNotExistAlert {...pasientQuery.data.pasient} />
+                            )}
                         </SimpleReveal>
                     )}
                 </AnimatePresence>
@@ -72,7 +96,8 @@ function SummarySection(): ReactElement {
                             variant="primary"
                             icon={<PaperplaneIcon aria-hidden />}
                             iconPosition="right"
-                            loading={nySykmelding.result.loading || behandlerQuery.loading}
+                            disabled={!pasientQuery.data?.pasient?.userExists}
+                            loading={nySykmelding.result.loading || behandlerQuery.loading || pasientQuery.loading}
                             onClick={() => nySykmelding.opprettSykmelding()}
                             shortcut={{
                                 modifier: 'alt',
@@ -104,6 +129,46 @@ function RuleOutcomeWarning({ outcome }: { outcome: OutcomeFragment }): ReactEle
                     {outcome.tree} - {outcome.rule}
                 </code>
             </BodyShort>
+        </Alert>
+    )
+}
+
+function PasientDoesNotExistAlert({ navn, ident }: { navn: string; ident: string }): ReactElement {
+    return (
+        <Alert variant="warning">
+            <Heading size="small" level="3" spacing>
+                Fant ikke {navn} ({ident}) i folkeregisteret.
+            </Heading>
+            <BodyShort spacing>
+                Det ser ut som pasienten du prøver å sende inn sykmeldingen for ikke finnes i Navs systemer.
+            </BodyShort>
+            <BodyShort spacing>
+                Dersom du mener dette er en feil, vennligst kontakt lege- og behandlertelefon.
+            </BodyShort>
+        </Alert>
+    )
+}
+
+function UnableToVerifyPersonsExistence({
+    refetching,
+    refetch,
+}: {
+    refetching: boolean
+    refetch: () => void
+}): ReactElement {
+    return (
+        <Alert variant="error">
+            <Heading size="small" level="3" spacing>
+                Kunne ikke bekrefte at personen finnes folkeregisteret
+            </Heading>
+            <BodyShort spacing>
+                Dette kan skyldes at et bakoverliggende system er nede. Du vil ikke kunne sende inn sykmeldingen akkurat
+                nå. Du kan lagre utkastet og prøve igjen senere.
+            </BodyShort>
+            <BodyShort spacing>Dersom problemet vedvarer, vennligst kontakt lege- og behandlertelefon.</BodyShort>
+            <Button size="xsmall" onClick={() => refetch()} variant="secondary-neutral" loading={refetching}>
+                Prøv på nytt
+            </Button>
         </Alert>
     )
 }

@@ -2,7 +2,7 @@ import * as R from 'remeda'
 import { Checkbox, CheckboxGroup, Textarea } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 
-import { ArbeidsrelatertArsakType } from '@data-layer/graphql/queries.generated'
+import { ArbeidsrelatertArsakType } from '@queries'
 
 import { useController } from '../form'
 

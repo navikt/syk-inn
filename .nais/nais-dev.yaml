@@ -56,8 +56,6 @@ spec:
         - host: 'fhir-api-auth.public.webmedepj.no'
         - host: 'helseid-sts.test.nhn.no'
         - host: 'tsm-unleash-api.nav.cloud.nais.io'
-        # TODO: Remove
-        - host: 'launch.smarthealthit.org'
       rules:
         - application: syk-inn-api
         - application: tsm-pdl-cache

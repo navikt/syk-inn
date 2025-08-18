@@ -254,6 +254,8 @@ export type Pasient = Person & {
     arbeidsforhold?: Maybe<Array<Arbeidsforhold>>
     ident: Scalars['String']['output']
     navn: Scalars['String']['output']
+    /** Does the user exist outside of FHIR? In other words, is this a real person? */
+    userExists?: Maybe<Scalars['Boolean']['output']>
 }
 
 export type Person = {
@@ -462,6 +464,13 @@ export type PasientQueryVariables = Exact<{ [key: string]: never }>
 export type PasientQuery = {
     __typename: 'Query'
     pasient?: { __typename: 'Pasient'; ident: string; navn: string } | null
+}
+
+export type PasientWithExistsQueryVariables = Exact<{ [key: string]: never }>
+
+export type PasientWithExistsQuery = {
+    __typename: 'Query'
+    pasient?: { __typename: 'Pasient'; userExists?: boolean | null; ident: string; navn: string } | null
 }
 
 export type ArbeidsforholdQueryVariables = Exact<{ [key: string]: never }>
@@ -2061,6 +2070,44 @@ export const PasientDocument = {
         },
     ],
 } as unknown as DocumentNode<PasientQuery, PasientQueryVariables>
+export const PasientWithExistsDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'query',
+            name: { kind: 'Name', value: 'PasientWithExists' },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'pasient' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Person' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'userExists' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Person' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Person' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'ident' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<PasientWithExistsQuery, PasientWithExistsQueryVariables>
 export const ArbeidsforholdDocument = {
     kind: 'Document',
     definitions: [

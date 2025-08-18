@@ -256,6 +256,8 @@ export type Pasient = Person & {
     arbeidsforhold?: Maybe<Array<Arbeidsforhold>>
     ident: Scalars['String']['output']
     navn: Scalars['String']['output']
+    /** Does the user exist outside of FHIR? In other words, is this a real person? */
+    userExists?: Maybe<Scalars['Boolean']['output']>
 }
 
 export type Person = {
@@ -819,6 +821,7 @@ export type PasientResolvers<
     arbeidsforhold?: Resolver<Maybe<Array<ResolversTypes['Arbeidsforhold']>>, ParentType, ContextType>
     ident?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    userExists?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 

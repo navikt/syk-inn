@@ -22,6 +22,11 @@ export function ToggleAPIFailures(): ReactElement {
                 Pasient
             </Checkbox>
         ),
+        PasientWithExists: (
+            <Checkbox key="pasient-with-exists" value="PasientWithExists">
+                Pasient med oppslag i PDL
+            </Checkbox>
+        ),
         Konsultasjon: (
             <Checkbox key="konsultasjon" value="Konsultasjon">
                 Konsultasjon
