@@ -33,7 +33,7 @@ export function useFormValuesSummaryDraft(values: NySykmeldingFormState | null):
             const formValuesFromDraft = createDefaultFormValues({
                 draftValues: safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values),
                 valuesInState: null,
-                serverSuggestions: { diagnose: { value: null } },
+                serverSuggestions: { diagnose: { value: null }, bidiagnoser: null },
             })
 
             try {

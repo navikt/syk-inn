@@ -19,6 +19,7 @@ export type NySykmeldingSuggestions = {
         value: DiagnoseFragment | null
         error?: { error: 'FHIR_FAILED' }
     }
+    bidiagnoser: DiagnoseFragment[] | null
 }
 
 export type PeriodeField = {

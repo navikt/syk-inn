@@ -1,8 +1,6 @@
 import * as z from 'zod'
 import { KnownFhirServer } from '@navikt/smart-on-fhir/client'
 
-import { KeysOfUnion } from '@lib/ts'
-
 type FhirConfigurationDev = z.infer<typeof FhirConfigurationDevSchema>
 const FhirConfigurationDevSchema = z.object({
     webmedClientSecret: z.string(),
@@ -11,7 +9,7 @@ const FhirConfigurationDevSchema = z.object({
 export const getDevFhirConfiguration = (): FhirConfigurationDev =>
     FhirConfigurationDevSchema.parse({
         webmedClientSecret: process.env.WEBMED_CLIENT_SECRET,
-    } satisfies Record<KeysOfUnion<FhirConfigurationDev>, unknown | undefined>)
+    } satisfies Record<keyof FhirConfigurationDev, unknown | undefined>)
 
 export function getKnownDevFhirServers(): KnownFhirServer[] {
     const configuration = getDevFhirConfiguration()

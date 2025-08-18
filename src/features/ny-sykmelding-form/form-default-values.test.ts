@@ -94,7 +94,7 @@ test('form values shall have higher presedence than draft values', () => {
         ],
         diagnoser: {
             hoved: { system: 'ICPC2', code: 'L02', text: 'Ryggsmerter' },
-            bidiagnoser: [{ system: 'ICD10', code: 'M54.5', text: 'Lumbago' }],
+            bidiagnoser: [{ system: 'ICPC2', code: 'L73', text: 'Brudd legg/ankel' }],
         },
         tilbakedatering: { fom: '2025-01-20', grunn: 'VENTETID_LEGETIME', annenGrunn: null },
         meldinger: {
@@ -133,6 +133,44 @@ test('server suggestions shall be used if no draft or form values are provided',
     } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
 
+test('multiple bidiagnoser from server suggestion shall be used', () => {
+    const defaultValues = createDefaultFormValues({
+        valuesInState: null,
+        draftValues: null,
+        serverSuggestions: {
+            ...fullServerSuggestions,
+            bidiagnoser: [
+                { system: 'ICPC2', code: 'A01', text: 'Influensa', __typename: 'Diagnose' },
+                { system: 'ICPC2', code: 'B02', text: 'Forkjølelse', __typename: 'Diagnose' },
+            ],
+        },
+    })
+
+    expect(defaultValues).toEqual({
+        arbeidsforhold: { harFlereArbeidsforhold: 'NEI', sykmeldtFraArbeidsforhold: null, aaregArbeidsforhold: null },
+        // Server suggested diagnose
+        diagnoser: {
+            hoved: { system: 'ICPC2', code: 'A01', text: 'Influensa' },
+            bidiagnoser: [
+                { system: 'ICPC2', code: 'A01', text: 'Influensa' },
+                { system: 'ICPC2', code: 'B02', text: 'Forkjølelse' },
+            ],
+        },
+        perioder: [
+            {
+                // Default periode is GRADERT from Today
+                periode: { fom: dateOnly(new Date()), tom: '' },
+                aktivitet: { type: 'GRADERT', grad: null },
+                medisinskArsak: null,
+                arbeidsrelatertArsak: null,
+            },
+        ],
+        tilbakedatering: null,
+        meldinger: { showTilNav: false, tilNav: null, showTilArbeidsgiver: false, tilArbeidsgiver: null },
+        andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: false, skadedato: null } },
+    } satisfies DefaultValues<NySykmeldingMainFormValues>)
+})
+
 const fullServerSuggestions: NySykmeldingSuggestions = {
     diagnose: {
         value: {
@@ -142,6 +180,7 @@ const fullServerSuggestions: NySykmeldingSuggestions = {
             text: 'Influensa',
         },
     },
+    bidiagnoser: null,
 }
 
 const fullDraft: DraftValues = {

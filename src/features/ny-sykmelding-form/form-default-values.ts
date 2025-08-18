@@ -46,11 +46,12 @@ export function createDefaultFormValues({
                 draftValues?.hoveddiagnose ?? null,
                 serverSuggestions.diagnose.value,
             ),
-            bidiagnoser: (draftValues?.bidiagnoser ?? [])
-                .filter(R.isNonNull)
-                .map((draftBi, index) =>
-                    toInitialDiagnose(valuesInState?.diagnose?.bi?.[index] ?? null, draftBi, null),
-                ),
+            bidiagnoser:
+                toInitialBidiagnoser(
+                    valuesInState?.diagnose?.bi ?? null,
+                    draftValues?.bidiagnoser ?? null,
+                    serverSuggestions.bidiagnoser ?? null,
+                ) ?? [],
         },
         tilbakedatering: toInitialTilbakedatering(
             valuesInState?.tilbakedatering ?? null,
@@ -148,10 +149,11 @@ function toInitialTilbakedatering(
 }
 
 /**
- * Presedence for hoveddiagnose:
+ * Precedence for hoved-diagnose:
  * 1. Existing diagnose in form (redux)
- * 2. Initial suggestions from server
- * 3. Null
+ * 2. Draft values (if available)
+ * 3. Initial suggestions from server
+ * 4. Null
  *
  * Diagnose component has the responsibility of displaying eventual server errors
  */
@@ -174,6 +176,45 @@ function toInitialDiagnose(
 
     if (serverSuggestion != null) {
         return R.omit(serverSuggestion, ['__typename'])
+    }
+
+    return null
+}
+
+/**
+ * Precedence for bi-diagnose:
+ * 1. Existing diagnose in form (redux)
+ * 2. Draft values (if available)
+ * 3. Initial suggestions from server
+ * 4. Null
+ */
+function toInitialBidiagnoser(
+    valuesInState: Diagnose[] | null,
+    draftValues: Diagnose[] | null,
+    serverSuggestion: Diagnose[] | null,
+): Diagnose[] | null {
+    if (valuesInState != null) {
+        valuesInState.map((it) => ({
+            system: it.system,
+            code: it.code,
+            text: it.text,
+        }))
+    }
+
+    if (draftValues != null) {
+        return draftValues.map((it) => ({
+            system: it.system,
+            code: it.code,
+            text: it.text,
+        }))
+    }
+
+    if (serverSuggestion != null) {
+        return serverSuggestion.map((it) => ({
+            system: it.system,
+            code: it.code,
+            text: it.text,
+        }))
     }
 
     return null

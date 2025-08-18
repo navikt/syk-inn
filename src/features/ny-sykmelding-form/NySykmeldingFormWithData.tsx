@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client'
 import { DiagnoseFragment, GetDraftDocument, KonsultasjonDocument } from '@queries'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import { useDraftId } from '@features/ny-sykmelding-form/draft/useDraftId'
+import { useFlag } from '@core/toggles/context'
 
 import NySykmeldingForm from './NySykmeldingForm'
 
@@ -15,6 +16,7 @@ function NySykmeldingFormWithData(): ReactElement {
         variables: { draftId },
         fetchPolicy: 'cache-first',
     })
+    const serverBidiagnoser = useFlag('SYK_INN_AUTO_BIDIAGNOSER')
 
     if (konsultasjonsQuery.loading || draftQuery.loading) {
         return (
@@ -34,6 +36,9 @@ function NySykmeldingFormWithData(): ReactElement {
                     value: pickMostRelevantDiagnose(konsultasjonsQuery.data?.konsultasjon?.diagnoser ?? null),
                     error: konsultasjonsQuery.error ? { error: 'FHIR_FAILED' } : undefined,
                 },
+                bidiagnoser: serverBidiagnoser.enabled
+                    ? (konsultasjonsQuery.data?.konsultasjon?.diagnoser?.slice(1) ?? null)
+                    : null,
             }}
         />
     )
