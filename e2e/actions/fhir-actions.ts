@@ -13,6 +13,7 @@ export function launchWithMock(
     toggleOverrides: Partial<Record<ExpectedToggles, boolean>> = {
         SYK_INN_AAREG: false,
         SYK_INN_SHOW_REDACTED: false,
+        SYK_INN_AUTO_BIDIAGNOSER: false,
     },
 ) {
     return async (page: Page): Promise<void> => {
