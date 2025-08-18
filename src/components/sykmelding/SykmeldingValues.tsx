@@ -1,10 +1,11 @@
 import * as R from 'remeda'
-import { BodyShort, List } from '@navikt/ds-react'
+import { BodyShort, Detail, List } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 
 import { SykmeldingFragment } from '@queries'
-import { toReadableDatePeriod } from '@lib/date'
+import { toReadableDate, toReadableDatePeriod } from '@lib/date'
 import { ValueItem } from '@components/sykmelding/ValuesSection'
+import { ArbeidsrelaterteArsaker } from '@features/ny-sykmelding-form/aktivitet/ArsakerPicker'
 
 type Props = {
     sykmelding: SykmeldingFragment
@@ -25,17 +26,92 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
 
     return (
         <>
-            <ValueItem title="Arbeidsforhold">
-                {sykmelding.values.arbeidsgiver?.arbeidsgivernavn ?? 'Ingen arbeidsgiver oppgitt'}
+            {sykmelding.values.aktivitet.map((it, index) => (
+                <ValueItem key={index} title="Periode">
+                    <BodyShort>{toReadableDatePeriod(it.fom, it.tom)}</BodyShort>
+                    {it.__typename === 'AktivitetIkkeMulig' && (
+                        <>
+                            <BodyShort>100% sykmelding</BodyShort>
+                            <ul className="list-disc pl-6">
+                                {it.medisinskArsak?.isMedisinskArsak && (
+                                    <li>Det er medisinske årsaker som forhindrer arbeidsrelatert aktivitet</li>
+                                )}
+                                {it.arbeidsrelatertArsak?.isArbeidsrelatertArsak && (
+                                    <li>
+                                        Det er arbeidsrelaterte årsaker som forhindrer arbeidsrelatert aktivitet
+                                        <ul className="list-disc pl-6">
+                                            {it.arbeidsrelatertArsak?.arbeidsrelaterteArsaker.map(
+                                                (arsak, arsakIndex) => (
+                                                    <li key={arsakIndex}>
+                                                        {ArbeidsrelaterteArsaker[arsak]}
+                                                        {arsak === 'ANNET' && (
+                                                            <ul className="list-disc pl-6">
+                                                                <li>
+                                                                    {it.arbeidsrelatertArsak?.annenArbeidsrelatertArsak}
+                                                                </li>
+                                                            </ul>
+                                                        )}
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </li>
+                                )}
+                            </ul>
+                        </>
+                    )}
+                    {it.__typename === 'Gradert' && <BodyShort>{it.grad}% gradert sykmelding</BodyShort>}
+                </ValueItem>
+            ))}
+            <ValueItem title="Har pasienten flere arbeidsforhold?">
+                {sykmelding.values.arbeidsgiver?.harFlere ? 'Ja' : 'Nei'}
             </ValueItem>
-            <ValueItem title="Perioder (f.o.m. - t.o.m.)">
-                {sykmelding.values.aktivitet.map((it, index) => (
-                    <BodyShort key={index}>{toReadableDatePeriod(it.fom, it.tom)}</BodyShort>
-                ))}
+            {sykmelding.values.arbeidsgiver?.harFlere && (
+                <ValueItem title="Hvilke arbeidsforhold skal pasienten sykmeldes fra?">
+                    {sykmelding.values.arbeidsgiver.arbeidsgivernavn}
+                </ValueItem>
+            )}
+            {sykmelding.values.tilbakedatering && (
+                <>
+                    <ValueItem title="Dato for tilbakedatering">
+                        {toReadableDate(sykmelding.values.tilbakedatering.startdato)}
+                    </ValueItem>
+                    <ValueItem title="Grunn for tilbakedatering">
+                        {sykmelding.values.tilbakedatering.begrunnelse}
+                    </ValueItem>
+                </>
+            )}
+
+            <ValueItem title="Hoveddiagnose">
+                <BodyShort>
+                    {sykmelding.values.hoveddiagnose?.text} ({sykmelding.values.hoveddiagnose?.code})
+                </BodyShort>
+                <Detail>{sykmelding.values.hoveddiagnose?.system}</Detail>
             </ValueItem>
-            <ValueItem title="Medisinsk tilstand">
-                {sykmelding.values.hoveddiagnose?.text ?? 'Ingen hoveddiagnose oppgitt'}
-            </ValueItem>
+            {sykmelding.values.bidiagnoser && sykmelding.values.bidiagnoser.length > 0 && (
+                <ValueItem title="Bidiagnoser">
+                    <ul className="list-disc pl-6">
+                        {sykmelding.values.bidiagnoser?.map((bidiagnose, index) => (
+                            <li key={index}>
+                                <BodyShort>
+                                    {bidiagnose.text} ({bidiagnose.code})
+                                </BodyShort>
+                                <Detail>{bidiagnose.system}</Detail>
+                            </li>
+                        ))}
+                    </ul>
+                </ValueItem>
+            )}
+            {sykmelding.values.yrkesskade?.yrkesskade && (
+                <ValueItem title="Yrkesskade">
+                    <BodyShort>Kan skyldes yrkesskade? Ja</BodyShort>
+                    {sykmelding.values.yrkesskade?.skadedato && (
+                        <BodyShort>
+                            Dato for yrkesskade: {toReadableDate(sykmelding.values.yrkesskade?.skadedato)}
+                        </BodyShort>
+                    )}
+                </ValueItem>
+            )}
             {[sykmelding.values.svangerskapsrelatert, sykmelding.values.pasientenSkalSkjermes].some(R.isTruthy) && (
                 <ValueItem title="Annen info">
                     <List>

@@ -48,13 +48,10 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
                 <Alert variant="success">Nav har mottatt sykmeldingen og sendt den til den sykmeldte</Alert>
             </div>
             <div className="flex justify-between mt-8 mb-4">
-                {data?.sykmelding ? (
-                    <AkselLink href={pathWithBasePath(`/fhir/pdf/${data.sykmelding.sykmeldingId}`)} target="_blank">
-                        Se innsendt dokument
-                    </AkselLink>
-                ) : (
-                    <Skeleton width={240} />
-                )}
+                <Button variant="tertiary" size="small" as={AssableNextLink} href="/fhir" className="underline">
+                    Tilbake til pasientoversikt
+                </Button>
+
                 {loading && data?.sykmelding == null ? (
                     <Skeleton variant="rounded" width={102} height={32} />
                 ) : sykmelding ? (
@@ -73,10 +70,14 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
             </div>
             {error && <SykmeldingKvitteringError error={error ?? { message: 'Test' }} refetch={refetch} />}
             {!error && <SykmeldingKvitteringValues loading={loading} sykmelding={sykmelding} />}
-            <div className="mt-8 flex justify-end">
-                <Button variant="primary" size="small" as={AssableNextLink} href="/fhir" className="underline">
-                    Tilbake til pasientoversikt
-                </Button>
+            <div className="mt-8">
+                {data?.sykmelding ? (
+                    <AkselLink href={pathWithBasePath(`/fhir/pdf/${data.sykmelding.sykmeldingId}`)} target="_blank">
+                        Se innsendt dokument
+                    </AkselLink>
+                ) : (
+                    <Skeleton width={240} />
+                )}
             </div>
         </>
     )
@@ -122,21 +123,27 @@ function SykmeldingKvitteringValues({ sykmelding, loading }: SykmeldingKvitterin
                     </>
                 ) : null}
                 {!open && (
-                    <div className="absolute left-1 bottom-1 w-[99%] rounded-b-large">
-                        <div className="h-24 bg-gradient-to-b from-transparent to-white" />
-                        <div className="bg-white flex items-center justify-center">
-                            <Button
-                                className="flex flex-col items-center justify-center"
-                                variant="tertiary"
-                                icon={<ChevronDownIcon aria-hidden className="mr-2 -mt-2" />}
-                                iconPosition="right"
-                                size="small"
-                                onClick={() => setOpen(true)}
-                            >
-                                Vis mer
-                            </Button>
+                    <>
+                        <div className="absolute left-1 bottom-1 w-[99%] rounded-b-large">
+                            <div className="h-24 bg-gradient-to-b from-transparent to-white" />
+                            <div className="bg-white flex items-center justify-center">
+                                <Button
+                                    className="flex flex-col items-center justify-center"
+                                    variant="tertiary"
+                                    icon={<ChevronDownIcon aria-hidden className="mr-2 -mt-2" />}
+                                    iconPosition="right"
+                                    size="small"
+                                    onClick={() => setOpen(true)}
+                                >
+                                    Vis mer
+                                </Button>
+                            </div>
                         </div>
-                    </div>
+                        <div
+                            className="absolute left-2 bottom-0 w-[97%] h-2 bg-white"
+                            style={{ borderBottom: '1px solid var(--a-border-default)' }}
+                        />
+                    </>
                 )}
             </ExpansionCard.Content>
         </ExpansionCard>
