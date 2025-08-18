@@ -4,7 +4,7 @@ import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
 import { DraftFragment, SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
-import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
+import { byActiveOrFutureSykmelding, latestTom } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import Redaction from '@components/misc/Redaction'
 
@@ -29,7 +29,11 @@ export function ComboTable({
     sykmeldinger: SykmeldingFragment[]
     drafts: DraftFragment[]
 }>): ReactElement {
-    const [current, previous] = R.partition<SykmeldingFragment>(sykmeldinger, byActiveOrFutureSykmelding)
+    const [current, previous] = R.pipe(
+        sykmeldinger,
+        R.sortBy([latestTom, 'desc']),
+        R.partition<SykmeldingFragment>(byActiveOrFutureSykmelding),
+    )
 
     return (
         <DashboardTable>
