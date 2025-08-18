@@ -231,6 +231,63 @@ test('optional - multiple bidiagnoser', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
 
+test('optional - should pre-fill bidiagnoser from FHIR @feature-toggle', async ({ page }) => {
+    await launchWithMock('empty', {
+        SYK_INN_AUTO_BIDIAGNOSER: true,
+    })(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+
+    await fillPeriodeRelative({
+        type: '100%',
+        days: 3,
+    })(page)
+
+    await nextStep()(page)
+    await verifySignerendeBehandler()(page)
+
+    const request = await submitSykmelding()(page)
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+        draftId: getDraftId(page) ?? 'missing',
+        values: {
+            // Pre filled from FHIR
+            hoveddiagnose: { code: 'L73', system: 'ICPC2' },
+            // Pre filled from FHIR
+            bidiagnoser: [
+                { system: 'ICPC2', code: 'P74' },
+                { system: 'ICD10', code: 'A051' },
+            ],
+            aktivitet: [
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: today(),
+                    tom: inDays(3),
+                    aktivitetIkkeMulig: { dummy: true },
+                    avventende: null,
+                    gradert: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
+                    medisinskArsak: {
+                        isMedisinskArsak: true,
+                    },
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: [],
+                        annenArbeidsrelatertArsak: null,
+                    },
+                },
+            ],
+            meldinger: { tilNav: null, tilArbeidsgiver: null },
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            arbeidsforhold: null,
+            tilbakedatering: null,
+            pasientenSkalSkjermes: false,
+        },
+    })
+
+    await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+})
+
 test("optional - 'tilbakedatering' is asked and required when fom is 5 days in the past", async ({ page }) => {
     await launchAndStart(page)
 
