@@ -48,10 +48,13 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
                 <Alert variant="success">Nav har mottatt sykmeldingen og sendt den til den sykmeldte</Alert>
             </div>
             <div className="flex justify-between mt-8 mb-4">
-                <Button variant="tertiary" size="small" as={AssableNextLink} href="/fhir" className="underline">
-                    Tilbake til pasientoversikt
-                </Button>
-
+                {data?.sykmelding ? (
+                    <AkselLink href={pathWithBasePath(`/fhir/pdf/${data.sykmelding.sykmeldingId}`)} target="_blank">
+                        Se innsendt dokument
+                    </AkselLink>
+                ) : (
+                    <Skeleton width={240} />
+                )}
                 {loading && data?.sykmelding == null ? (
                     <Skeleton variant="rounded" width={102} height={32} />
                 ) : sykmelding ? (
@@ -70,14 +73,10 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
             </div>
             {error && <SykmeldingKvitteringError error={error ?? { message: 'Test' }} refetch={refetch} />}
             {!error && <SykmeldingKvitteringValues loading={loading} sykmelding={sykmelding} />}
-            <div className="mt-8">
-                {data?.sykmelding ? (
-                    <AkselLink href={pathWithBasePath(`/fhir/pdf/${data.sykmelding.sykmeldingId}`)} target="_blank">
-                        Se innsendt dokument
-                    </AkselLink>
-                ) : (
-                    <Skeleton width={240} />
-                )}
+            <div className="mt-8 flex justify-end">
+                <Button variant="primary" size="small" as={AssableNextLink} href="/fhir" className="underline">
+                    Tilbake til pasientoversikt
+                </Button>
             </div>
         </>
     )
