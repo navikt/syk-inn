@@ -3,7 +3,7 @@ import { HonoRequest } from 'hono'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK] ' })
 
-const shouldReturn = false
+const shouldReturn = true
 
 export async function getDocumentReference(_: HonoRequest, docRefId: string): Promise<Response> {
     logger.info(`Incoming request: GET DocumentReference/${docRefId}`)

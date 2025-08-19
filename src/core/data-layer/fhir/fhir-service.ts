@@ -6,6 +6,7 @@ import { toReadableDatePeriod } from '@lib/date'
 import { getFlag, getUserlessToggles } from '@core/toggles/unleash'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
+import { failServerSpan, spanServerAsync } from '@lib/otel/server'
 
 import { getHpr } from './mappers/practitioner'
 import { createNewDocumentReferencePayload } from './mappers/document-reference'
@@ -42,54 +43,72 @@ export async function createDocumentReference(
     client: ReadyClient,
     sykmeldingId: string,
 ): Promise<FhirDocumentReference | { error: 'API_ERROR' } | { error: 'PARSING_ERROR' }> {
-    const practitioner = await client.user.request()
-    if ('error' in practitioner) {
-        return { error: 'API_ERROR' }
-    }
+    return spanServerAsync('FhirService.createDocumentReference', async (span) => {
+        const practitioner = await client.user.request()
+        if ('error' in practitioner) {
+            return { error: 'API_ERROR' }
+        }
 
-    const hpr = getHpr(practitioner.identifier)
-    if (hpr == null) {
-        return { error: 'PARSING_ERROR' }
-    }
+        const hpr = getHpr(practitioner.identifier)
+        if (hpr == null) {
+            return { error: 'PARSING_ERROR' }
+        }
 
-    const [sykmelding, pdfBuffer] = await Promise.all([
-        sykInnApiService.getSykmelding(sykmeldingId, hpr),
-        sykInnApiService.getSykmeldingPdf(sykmeldingId, hpr),
-    ])
+        const [sykmelding, pdfBuffer] = await Promise.all([
+            sykInnApiService.getSykmelding(sykmeldingId, hpr),
+            sykInnApiService.getSykmeldingPdf(sykmeldingId, hpr),
+        ])
 
-    if ('errorType' in pdfBuffer || 'errorType' in sykmelding) {
-        return { error: 'API_ERROR' }
-    }
+        if ('errorType' in pdfBuffer || 'errorType' in sykmelding) {
+            return { error: 'API_ERROR' }
+        }
 
-    if (sykmelding.kind === 'redacted') {
-        logger.warn(
-            `Tried creating document reference for redacted sykmelding with id ${sykmeldingId}, this is owned by ${sykmelding.meta.sykmelder.hprNummer}, not ${hpr}`,
+        if (sykmelding.kind === 'redacted') {
+            logger.warn(
+                `Tried creating document reference for redacted sykmelding with id ${sykmeldingId}, this is owned by ${sykmelding.meta.sykmelder.hprNummer}, not ${hpr}`,
+            )
+            return { error: 'API_ERROR' }
+        }
+
+        const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.update(
+            'DocumentReference',
+            {
+                id: sykmeldingId,
+                payload: createNewDocumentReferencePayload(
+                    {
+                        sykmeldingId,
+                        patientId: client.patient.id,
+                        encounterId: client.encounter.id,
+                        practitionerId: client.user.id,
+                        description: getSykmeldingDescription(sykmelding.values),
+                    },
+                    Buffer.from(pdfBuffer).toString('base64'),
+                ),
+            },
         )
-        return { error: 'API_ERROR' }
-    }
 
-    const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.create(
-        'DocumentReference',
-        {
-            payload: createNewDocumentReferencePayload(
-                {
-                    sykmeldingId,
-                    patientId: client.patient.id,
-                    encounterId: client.encounter.id,
-                    // TODO: hmmmm
-                    practitionerId: client.user.fhirUser.split('/')[1],
-                    description: getSykmeldingDescription(sykmelding.values),
-                },
-                Buffer.from(pdfBuffer).toString('base64'),
-            ),
-        },
-    )
+        if ('error' in createdDocumentReference) {
+            failServerSpan(
+                span,
+                // TODO: .loose messes up the typing :angst:
+                createdDocumentReference.error as string,
+                new Error(`Failed to create DocumentReference: ${createdDocumentReference.error}`),
+            )
+            return { error: 'API_ERROR' }
+        }
 
-    if ('error' in createdDocumentReference) {
-        return { error: 'API_ERROR' }
-    }
+        if (createdDocumentReference.id !== sykmeldingId) {
+            failServerSpan(
+                span,
+                'DocumentReference ID create mismatch',
+                new Error(
+                    `Created DocumentReference ID (${createdDocumentReference.id}) does not match the sykmelding ID (${sykmeldingId})`,
+                ),
+            )
+        }
 
-    return createdDocumentReference
+        return createdDocumentReference
+    })
 }
 
 function getSykmeldingDescription(sykmelding: SykInnApiSykmelding['values']): string {

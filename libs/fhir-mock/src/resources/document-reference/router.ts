@@ -16,4 +16,7 @@ export const documentReferenceRouter = new Hono()
         return getDocumentReferencesListResponse()
     })
     .post('/', (c) => c.json(createDocumentReference()))
+    .put('/:documentReferenceId', (c) =>
+        c.json({ ...createDocumentReference(), id: c.req.param('documentReferenceId') }),
+    )
     .get('/:documentReferenceId', (c) => getDocumentReference(c.req, c.req.param('documentReferenceId')))
