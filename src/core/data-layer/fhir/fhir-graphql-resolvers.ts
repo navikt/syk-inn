@@ -26,14 +26,13 @@ import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett
 import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
 import { aaregService } from '@core/services/aareg/aareg-service'
 import { raise } from '@lib/ts'
-import { FhirGraphQLContext } from '@data-layer/fhir/fhir-graphql-context'
 import { getReadyClientForResolvers } from '@data-layer/fhir/smart/ready-client'
 
 import { searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
 
-const fhirResolvers: Resolvers<FhirGraphQLContext> = {
+const fhirResolvers: Resolvers = {
     Query: {
         behandler: async () => {
             const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
