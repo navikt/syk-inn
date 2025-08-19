@@ -28,6 +28,7 @@ import { aaregService } from '@core/services/aareg/aareg-service'
 import { raise } from '@lib/ts'
 import { FhirGraphQLContext } from '@data-layer/fhir/fhir-graphql-context'
 import { getReadyClientForResolvers } from '@data-layer/fhir/smart/ready-client'
+import { squelchTracing } from '@lib/otel/server'
 
 import { searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
@@ -117,7 +118,9 @@ const fhirResolvers: Resolvers<FhirGraphQLContext> = {
                 return sykInnApiSykmeldingRedactedToResolverSykmelding(sykmelding)
             }
 
-            const existingDocumentReference = await client.request(`DocumentReference/${sykmeldingId}` as const)
+            const existingDocumentReference = await squelchTracing(() =>
+                client.request(`DocumentReference/${sykmeldingId}` as const),
+            )
 
             return sykInnApiSykmeldingToResolverSykmelding(
                 sykmelding,
@@ -392,7 +395,7 @@ const fhirResolvers: Resolvers<FhirGraphQLContext> = {
         synchronizeSykmelding: async (_, { id: sykmeldingId }) => {
             const [client] = await getReadyClientForResolvers()
 
-            const existingDocument = await client.request(`DocumentReference/${sykmeldingId}`)
+            const existingDocument = await squelchTracing(() => client.request(`DocumentReference/${sykmeldingId}`))
             if ('resourceType' in existingDocument) {
                 return {
                     navStatus: 'COMPLETE',

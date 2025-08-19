@@ -1,4 +1,5 @@
 import { context, Span, SpanStatusCode, trace } from '@opentelemetry/api'
+import { suppressTracing } from '@opentelemetry/core'
 import { logger } from '@navikt/next-logger'
 
 import { APP_NAME } from './common'
@@ -28,4 +29,8 @@ export function failServerSpan(span: Span, what: string, error: Error): void {
         span.recordException(error.cause instanceof Error ? error.cause : new Error(error.cause as string))
     }
     span.setStatus({ code: SpanStatusCode.ERROR, message: what })
+}
+
+export async function squelchTracing<Result>(fn: () => Promise<Result>): Promise<Result> {
+    return context.with(suppressTracing(context.active()), () => fn())
 }
