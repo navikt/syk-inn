@@ -2103,7 +2103,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
-    "@navikt/smart-on-fhir": "npm:1.4.2"
+    "@navikt/smart-on-fhir": "npm:1.4.4"
     "@types/node": "npm:^22.17.2"
     hono: "npm:^4.9.2"
     jose: "npm:^6.0.12"
@@ -2166,17 +2166,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.4.2":
-  version: 1.4.2
-  resolution: "@navikt/smart-on-fhir@npm:1.4.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.4.2%2Fb6c3654751131f65b89b9c79fadd64f456aae51d"
+"@navikt/smart-on-fhir@npm:1.4.4":
+  version: 1.4.4
+  resolution: "@navikt/smart-on-fhir@npm:1.4.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.4.4%2Fe0051bfc3cfab1ddf1bddf0e9f514b0f9dd2ca99"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
     "@opentelemetry/api": "npm:^1.9.0"
+    "@opentelemetry/core": "npm:^2.0.1"
     jose: "npm:^6.0.12"
     openid-client: "npm:^6.6.4"
     pino: "npm:^9.9.0"
     zod: "npm:^4.0.17"
-  checksum: 10c0/d973703b9765beb071c1b663cd6381e87ee9f06d85469afa1580f8879bcf4cc8c404734722a42c0838fe1f44a652e48c68621097ca771fab3276806c3fd93183
+  checksum: 10c0/a2245c676aff49a1d5fe193418e8af856357673ce8b6a1467b99e0d83142ad585cf58691cf51a31da409b654a71e93cf1ad64786167a8865d81cd3c5d6b2d3b5
   languageName: node
   linkType: hard
 
@@ -5182,9 +5183,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.204":
-  version: 1.5.206
-  resolution: "electron-to-chromium@npm:1.5.206"
-  checksum: 10c0/17381fd0b074b1a5ca7e33ae67e133498c1fc5e385c6d4f2ea27a0b9709ad4ba6511b438bd1c4d0a0c3db210c2475df3001812e5daecf76e4117da41f93046dc
+  version: 1.5.207
+  resolution: "electron-to-chromium@npm:1.5.207"
+  checksum: 10c0/33de5f996fcfdb7c7fcedfc76e9e36ed33f2b7a3136b1bbc5eae38f2b0441fbd114843511a46c80aaf21b9586d812fe469ff7f948c5cda0808038c69c4f76298
   languageName: node
   linkType: hard
 
@@ -10544,7 +10545,7 @@ __metadata:
     "@navikt/next-api-proxy": "npm:^4.1.4"
     "@navikt/next-logger": "npm:^4.1.5"
     "@navikt/oasis": "npm:^3.8.0"
-    "@navikt/smart-on-fhir": "npm:1.4.2"
+    "@navikt/smart-on-fhir": "npm:1.4.4"
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^2.0.1"
     "@parcel/watcher": "npm:^2.5.1"
@@ -10979,11 +10980,11 @@ __metadata:
   linkType: hard
 
 "ua-parser-js@npm:^1.0.32, ua-parser-js@npm:^1.0.35":
-  version: 1.0.40
-  resolution: "ua-parser-js@npm:1.0.40"
+  version: 1.0.41
+  resolution: "ua-parser-js@npm:1.0.41"
   bin:
     ua-parser-js: script/cli.js
-  checksum: 10c0/2b6ac642c74323957dae142c31f72287f2420c12dced9603d989b96c132b80232779c429b296d7de4012ef8b64e0d8fadc53c639ef06633ce13d785a78b5be6c
+  checksum: 10c0/45dc1f7f3ce8248e0e64640d2e29c65c0ea1fc9cb105594de84af80e2a57bba4f718b9376098ca7a5b0ffe240f8995b0fa3714afa9d36861c41370a378f1a274
   languageName: node
   linkType: hard
 
