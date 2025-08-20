@@ -1,6 +1,6 @@
 import '../globals.css'
 
-import React, { PropsWithChildren, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
 
 import DemoWarning from '@components/user-warnings/DemoWarning'
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: '(FHIR) Innsending av Sykmeldinger',
 }
 
-export default function FhirLayout({ children }: PropsWithChildren): ReactElement {
+export default function FhirLayout({ children }: LayoutProps<'/'>): ReactElement {
     return (
         <html lang="nb" className="bg-bg-subtle">
             <head>

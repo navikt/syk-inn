@@ -1,6 +1,6 @@
 import '../globals.css'
 
-import React, { PropsWithChildren, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
 
 import { getUserToggles } from '@core/toggles/unleash'
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: '(Ny) Innsending av Sykmeldinger',
 }
 
-export default async function StandaloneLayout({ children }: PropsWithChildren): Promise<ReactElement> {
+export default async function DevLayout({ children }: LayoutProps<'/'>): Promise<ReactElement> {
     const behandler = await getHelseIdUserInfo()
     const toggles = await getUserToggles(behandler?.hpr_number ?? 'unknown-hpr-number')
 

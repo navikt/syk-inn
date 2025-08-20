@@ -1,6 +1,6 @@
 import '../globals.css'
 
-import React, { PropsWithChildren, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
 import { logger } from '@navikt/next-logger'
 
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: '(Ny) Innsending av Sykmeldinger',
 }
 
-export default async function StandaloneLayout({ children }: PropsWithChildren): Promise<ReactElement> {
+export default async function StandaloneLayout({ children }: LayoutProps<'/'>): Promise<ReactElement> {
     const [toggles, behandler] = await spanServerAsync('OpenLayout toggles', async () => {
         const userInfo = await getHelseIdUserInfo()
         if (typeof userInfo?.hpr_number !== 'string') {

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { logger } from '@navikt/next-logger'
 
 import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
@@ -12,7 +12,7 @@ import QueryStateToSessionStorageOnInit from '@data-layer/fhir/smart/QueryStateT
 
 import { NoPractitionerSession } from './launched-errors'
 
-async function LaunchedLayout({ children }: PropsWithChildren): Promise<ReactElement> {
+async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<ReactElement> {
     const [toggles, hpr] = await spanServerAsync('FhirLayout toggles', async () => {
         const hpr = await getHprFromFhirSession()
         if (typeof hpr !== 'string') {
