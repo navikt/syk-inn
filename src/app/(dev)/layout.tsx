@@ -3,9 +3,6 @@ import '../globals.css'
 import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
 
-import { getUserToggles } from '@core/toggles/unleash'
-import { getHelseIdUserInfo } from '@data-layer/helseid/helseid-userinfo'
-import { ToggleProvider } from '@core/toggles/context'
 import { isDemo, isLocal } from '@lib/env'
 import DemoWarning from '@components/user-warnings/DemoWarning'
 
@@ -18,9 +15,6 @@ export const metadata: Metadata = {
 }
 
 export default async function DevLayout({ children }: LayoutProps<'/'>): Promise<ReactElement> {
-    const behandler = await getHelseIdUserInfo()
-    const toggles = await getUserToggles(behandler?.hpr_number ?? 'unknown-hpr-number')
-
     return (
         <html lang="nb" className="bg-bg-subtle">
             <head>
@@ -34,7 +28,7 @@ export default async function DevLayout({ children }: LayoutProps<'/'>): Promise
             <Preload />
             <body>
                 {(isLocal || isDemo) && <DemoWarning />}
-                <ToggleProvider toggles={toggles}>{children}</ToggleProvider>
+                {children}
             </body>
         </html>
     )
