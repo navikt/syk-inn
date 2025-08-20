@@ -7,9 +7,7 @@ const compat = new FlatCompat({
 })
 
 const eslintConfig = defineConfig([
-    ...compat.config({
-        extends: ['@navikt/teamsykmelding', 'next'],
-    }),
+    ...compat.extends('@navikt/teamsykmelding', 'next/core-web-vitals', 'next/typescript'),
     {
         files: ['e2e/**'],
         rules: { 'testing-library/prefer-screen-queries': 'off', 'testing-library/no-node-access': 'off' },
