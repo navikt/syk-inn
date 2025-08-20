@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation'
-import { cookies } from 'next/headers'
 import { logger as pinoLogger } from '@navikt/next-logger'
 
 import { pathWithBasePath } from '@lib/url'
 import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
+import { getSessionId } from '@data-layer/fhir/smart/session'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
 
@@ -25,9 +25,7 @@ export async function GET(request: Request): Promise<Response> {
         redirect(pathWithBasePath('/fhir/error?reason=invalid-code'))
     }
 
-    const cookieStore = await cookies()
-    const sessionId = cookieStore.get('syk-inn-session-id')?.value
-
+    const sessionId = await getSessionId()
     if (sessionId == null) {
         logger.error(`Missing sessionId cookie, session expired or middleware not middlewaring?`)
 

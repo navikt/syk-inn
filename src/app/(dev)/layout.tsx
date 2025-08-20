@@ -11,7 +11,7 @@ import Preload from '../preload'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-    title: '(Ny) Innsending av Sykmeldinger',
+    title: 'Scenarioer | syk-inn',
 }
 
 export default async function DevLayout({ children }: LayoutProps<'/'>): Promise<ReactElement> {

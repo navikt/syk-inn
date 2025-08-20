@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import { logger } from '@navikt/next-logger'
+import { redirect } from 'next/navigation'
 
 import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
-import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
 import { getHprFromFhirSession } from '@data-layer/fhir/fhir-service'
 import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
 import { ToggleProvider } from '@core/toggles/context'
@@ -32,6 +32,8 @@ async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<React
 
     if (!getFlag('PILOT_USER', toggles).enabled) {
         logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
+
+        redirect('/fhir/error/non-pilot-user')
     }
 
     return (
@@ -39,7 +41,6 @@ async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<React
             <QueryStateToSessionStorageOnInit />
             {children}
             <LoggedOutWarning />
-            <NonPilotUserWarning />
         </ToggleProvider>
     )
 }

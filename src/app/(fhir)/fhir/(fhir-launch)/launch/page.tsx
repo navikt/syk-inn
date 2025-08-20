@@ -1,9 +1,9 @@
 import { ReactElement } from 'react'
-import { cookies } from 'next/headers'
 import { logger as pinoLogger } from '@navikt/next-logger'
 import { redirect, RedirectType, unauthorized } from 'next/navigation'
 
 import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
+import { getSessionId } from '@data-layer/fhir/smart/session'
 
 import { InvalidIssuer, MissingLaunchParams } from '../launch-errors'
 
@@ -19,9 +19,7 @@ const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR] ' })
  * We initialize a session and generate a authorization_url that we redirect the user to.
  */
 async function LaunchPage({ searchParams }: Props): Promise<ReactElement> {
-    const cookieStore = await cookies()
-    const sessionId = cookieStore.get('syk-inn-session-id')?.value
-
+    const sessionId = await getSessionId()
     if (sessionId == null) {
         logger.error(`Missing sessionId cookie, session expired or middleware not middlewaring?`)
         // TODO: Just render error state since this is RSC?

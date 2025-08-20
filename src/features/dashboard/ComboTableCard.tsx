@@ -91,7 +91,7 @@ function ComboTableEmptyState(): ReactElement {
     )
 }
 
-function ComboTableSkeleton(): ReactElement {
+export function ComboTableSkeleton(): ReactElement {
     return (
         <DashboardTable>
             <ComboTableHeader />
