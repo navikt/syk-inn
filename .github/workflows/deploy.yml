@@ -22,6 +22,7 @@ jobs:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
         with:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - run: yarn next typegen
       - run: yarn lint
       - run: yarn tsc
       - name: Test app
