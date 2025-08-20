@@ -6,12 +6,12 @@ export function getNameFromFhir(name: Name): string {
     return `${name[0].given[0]} ${name[0].family}`
 }
 
-export function getValidPatientIdent(patient: FhirPatient): string | null {
-    if (patient.identifier == null) {
+export function getValidPatientIdent(identifier: FhirPatient['identifier']): string | null {
+    if (identifier == null) {
         return null
     }
 
-    const oids = patient.identifier.filter((id) => id.system.startsWith('urn:oid'))
+    const oids = identifier.filter((id) => id.system.startsWith('urn:oid'))
     if (oids.length === 0) {
         return null
     }

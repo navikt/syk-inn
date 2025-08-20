@@ -75,7 +75,7 @@ const fhirResolvers: Resolvers = {
 
             return {
                 navn: getNameFromFhir(patient.name),
-                ident: getValidPatientIdent(patient) ?? raise('Patient without valid FNR/DNR'),
+                ident: getValidPatientIdent(patient.identifier) ?? raise('Patient without valid FNR/DNR'),
             }
         },
         konsultasjon: async () => {
@@ -139,7 +139,7 @@ const fhirResolvers: Resolvers = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
-            const ident = getValidPatientIdent(patientInContext)
+            const ident = getValidPatientIdent(patientInContext.identifier)
             if (ident == null) {
                 logger.error('Missing valid FNR/DNR in patient resource')
                 teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(patientInContext, null, 2)}`)
@@ -211,7 +211,7 @@ const fhirResolvers: Resolvers = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const ident = getValidPatientIdent(pasient)
+            const ident = getValidPatientIdent(pasient.identifier)
             if (ident == null) {
                 logger.error('Missing valid FNR/DNR in patient resource')
                 teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
@@ -241,7 +241,7 @@ const fhirResolvers: Resolvers = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const ident = getValidPatientIdent(pasient)
+            const ident = getValidPatientIdent(pasient.identifier)
             if (ident == null) {
                 logger.error('Missing valid FNR/DNR in patient resource')
                 teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
@@ -284,7 +284,7 @@ const fhirResolvers: Resolvers = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const ident = getValidPatientIdent(pasient)
+            const ident = getValidPatientIdent(pasient.identifier)
             if (ident == null) {
                 logger.error('Missing valid FNR/DNR in patient resource')
                 teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
@@ -343,7 +343,7 @@ const fhirResolvers: Resolvers = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const pasientIdent = getValidPatientIdent(pasient)
+            const pasientIdent = getValidPatientIdent(pasient.identifier)
             if (pasientIdent == null) {
                 logger.error('Patient without valid FNR/DNR')
                 teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
