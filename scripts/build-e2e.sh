@@ -7,9 +7,8 @@ if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/internal/is_
   exit 1
 fi
 
-echo -e "\033[0;32mLooks good, lets build!\033[0m"
+echo -e "\033[0;32mLooks good, lets build (trying turbo)!\033[0m"
 
 cp .nais/envs/.env.demo .env.production
-NEXT_PUBLIC_ASSET_PREFIX= NEXT_PUBLIC_BASE_PATH= NEXT_PUBLIC_RUNTIME_ENV=e2e yarn build
+NEXT_PUBLIC_ASSET_PREFIX= NEXT_PUBLIC_BASE_PATH= NEXT_PUBLIC_RUNTIME_ENV=e2e yarn build --turbo
 cp -R .next/static .next/standalone/.next
-

@@ -27,4 +27,6 @@ const nextConfig: NextConfig = {
     productionBrowserSourceMaps: true,
 }
 
-export default process.env.NODE_ENV === 'development' ? nextConfig : withSondaAnalyzer(nextConfig)
+export default process.env.NODE_ENV === 'development' || process.env.TURBOPACK
+    ? nextConfig
+    : withSondaAnalyzer(nextConfig)
