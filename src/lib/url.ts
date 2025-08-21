@@ -10,6 +10,8 @@ export function getAbsoluteURL(): string {
             return 'https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
         case 'dev-gcp':
             return 'https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
+        case 'prod-gcp':
+            return 'https://nav.no/samarbeidspartner/sykmelding'
         default:
             throw new Error(`Unknown runtime environment ${bundledEnv.runtimeEnv}`)
     }

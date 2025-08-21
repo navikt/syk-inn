@@ -3,10 +3,10 @@ import '../globals.css'
 import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
 import { logger } from '@navikt/next-logger'
-import { unauthorized } from 'next/navigation'
+import { notFound, unauthorized } from 'next/navigation'
 
 import DemoWarning from '@components/user-warnings/DemoWarning'
-import { isLocal, isDemo } from '@lib/env'
+import { isLocal, isDemo, bundledEnv } from '@lib/env'
 import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
 import { getHelseIdUserInfo } from '@data-layer/helseid/helseid-userinfo'
 import HelseIdHeader from '@data-layer/helseid/components/HelseIdHeader'
@@ -26,6 +26,9 @@ export const metadata: Metadata = {
 }
 
 export default async function StandaloneLayout({ children }: LayoutProps<'/'>): Promise<ReactElement> {
+    // Standalone and wonderwall is disabled in production
+    if (bundledEnv.runtimeEnv === 'prod-gcp') return notFound()
+
     const [toggles, behandler] = await spanServerAsync('OpenLayout toggles', async () => {
         const userInfo = await getHelseIdUserInfo()
         if (typeof userInfo?.hpr_number !== 'string') {

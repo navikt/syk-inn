@@ -7,23 +7,16 @@ metadata:
     team: tsm
 spec:
   image: {{image}}
-  login:
-    provider: openid
-    enforce:
-      enabled: true
-      excludePaths:
-        - /samarbeidspartner/sykmelding/fhir/**
-        - /samarbeidspartner/sykmelding/api/**
   ingresses:
-    - 'https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
+    - 'https://nav.no/samarbeidspartner/sykmelding'
   valkey:
     # Same valkey as syk-inn, will be owned by syk-inn because it created it
     - instance: syk-inn
       access: readwrite
   port: 3000
   replicas:
-    min: 1
-    max: 2
+    min: 2
+    max: 4
   observability:
     autoInstrumentation:
       enabled: true
@@ -50,23 +43,15 @@ spec:
     outbound:
       external:
         - host: 'tsm-unleash-api.nav.cloud.nais.io'
-        - host: 'fhir-api-auth.public.webmedepj.no'
-        - host: 'helseid-sts.test.nhn.no'
       rules:
         - application: syk-inn-api
         - application: tsm-pdl-cache
-        # Team Logs: https://docs.nais.io/observability/logging/how-to/team-logs/
         - application: logging
           namespace: nais-system
   resources:
     requests:
       cpu: 50m
       memory: 200Mi
-  env:
-    # Stop double logging by auto instrumentation _and_ nais stdout logshipper
-    - name: OTEL_LOGS_EXPORTER
-      value: none
   envFrom:
-    - secret: login-config-syk-inn
     - secret: tsm-syk-inn-epj-secrets
     - secret: tsm-unleash-api-token

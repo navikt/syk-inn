@@ -7,6 +7,7 @@ on:
 
 env:
   APP: syk-inn
+  NAMESPACE: tsm
   BASE_PATH: /samarbeidspartner/sykmelding
 
 permissions:
@@ -48,8 +49,8 @@ jobs:
         id: build-and-publish
         with:
           app: ${{ env.APP }}
+          team: ${{ env.NAMESPACE }}
           env: dev
-          team: tsm
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -69,8 +70,8 @@ jobs:
         id: build-and-publish
         with:
           app: ${{ env.APP }}
+          team: ${{ env.NAMESPACE }}
           env: demo
-          team: tsm
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -126,15 +127,43 @@ jobs:
           VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }},appname=${{ env.APP }},replicas=1,branchState=alive
           NAIS_DEPLOY_SUMMARY: false
 
-  deploy-production:
-    if: github.ref_name == 'main'
-    name: Deploy main to production
+  build-prod:
+    name: Build for prod
     runs-on: ubuntu-latest
-    needs: [deploy-dev-main, run-playwright]
+    permissions:
+      packages: 'write'
+      contents: 'read'
+      id-token: 'write'
+    outputs:
+      image: ${{ steps.build-and-publish.outputs.image }}
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/next-to-docker@main
+        id: build-and-publish
+        with:
+          app: ${{ env.APP }}
+          team: ${{ env.NAMESPACE }}
+          env: prod
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-production:
+    name: Deploy main to production
+    # TODO: Don't deploy yet
+    if: github.ref_name == 'main' && false
+    environment:
+      name: production
+      url: https://nav.no/samarbeidspartner/sykmelding
+    runs-on: ubuntu-latest
+    needs: [deploy-dev-main, run-playwright, build-prod]
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          echo "![Image](https://cdn.nav.no/tsm/syk-inn/production.png)" >> "$GITHUB_STEP_SUMMARY"
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/nais-prod.yaml
+          VAR: image=${{ needs.build-prod.outputs.image }}
+          NAIS_DEPLOY_SUMMARY: false
 
   prebuild-app-for-playwright:
     name: Prebuild image for sharded playwright tests
@@ -236,7 +265,7 @@ jobs:
       - name: Upload HTML report to CDN
         uses: nais/deploy/actions/cdn-upload/v2@master
         with:
-          team: tsm
+          team: ${{ env.NAMESPACE }}
           source: playwright-report
           destination: /${{ github.repository }}/${{ github.run_number }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
@@ -250,4 +279,4 @@ jobs:
           ./scripts/playwright-reporter.sh playwright-report/report.json >> $GITHUB_STEP_SUMMARY
 
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Se hele rapporten [her](https://cdn.nav.no/tsm/${{ github.repository }}/${{ github.run_number }}/playwright-report/index.html)." >> $GITHUB_STEP_SUMMARY
+          echo "Se hele rapporten [her](https://cdn.nav.no/${{ env.NAMESPACE }}/${{ github.repository }}/${{ github.run_number }}/playwright-report/index.html)." >> $GITHUB_STEP_SUMMARY
