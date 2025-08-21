@@ -11,7 +11,7 @@ describe('in memory draft client', () => {
 
         await client.saveDraft('test-1', { hpr: '999', ident: '111' }, emptyDraft)
 
-        const draft = await client.getDraft('test-1')
+        const draft = await client.getDraft('test-1', { hpr: '999', ident: '111' })
 
         expect(draft).not.toBeNull()
         expect(draft?.draftId).toBe('test-1')
@@ -27,7 +27,7 @@ describe('in memory draft client', () => {
         const client = createDraftClient(createInMemoryValkey())
 
         await client.saveDraft('test-1', ownership, emptyDraft)
-        const draft = await client.getDraft('test-1')
+        const draft = await client.getDraft('test-1', { hpr: '999', ident: '111' })
 
         expect(draft).not.toBeNull()
         expect(draft?.draftId).toBe('test-1')
@@ -52,6 +52,18 @@ describe('in memory draft client', () => {
         const drafts = await client.getDrafts(ownership)
         expect(drafts).toHaveLength(3)
         expect(drafts.map((d) => d.draftId)).toEqual(['test-1', 'test-2', 'test-4'])
+    })
+
+    it('should verify owner when getting draft', async () => {
+        const client = createDraftClient(createInMemoryValkey())
+
+        await client.saveDraft('test-1', { hpr: '999', ident: '111' }, emptyDraft)
+        await expect(() => client.getDraft('test-1', { hpr: '666', ident: '111' })).rejects.toThrow(
+            'Draft with ID test-1 does not belong to ownership 666',
+        )
+        await expect(() => client.getDraft('test-1', { hpr: '999', ident: '222' })).rejects.toThrow(
+            'Draft with ID test-1 does not belong to ownership 999',
+        )
     })
 })
 

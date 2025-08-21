@@ -181,10 +181,29 @@ const fhirResolvers: Resolvers = {
             } satisfies QueriedPerson
         },
         draft: async (_, { draftId }) => {
+            const [client, practitioner] = await getReadyClientForResolvers({ withPractitioner: true })
             const draftClient = await getDraftClient()
 
-            // TODO verify access to draft
-            const draft = await draftClient.getDraft(draftId)
+            const hpr = getHpr(practitioner.identifier)
+            if (hpr == null) {
+                logger.error('Missing HPR identifier in practitioner resource')
+                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
+                throw new GraphQLError('PARSING_ERROR')
+            }
+
+            const pasient = await client.patient.request()
+            if ('error' in pasient) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const ident = getValidPatientIdent(pasient.identifier)
+            if (ident == null) {
+                logger.error('Missing valid FNR/DNR in patient resource')
+                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const draft = await draftClient.getDraft(draftId, { hpr, ident })
 
             if (draft == null) return null
 

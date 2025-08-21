@@ -30,7 +30,7 @@ type DraftEntry = DraftEntryCore & {
 export type DraftClient = {
     saveDraft: (draftId: string, owner: DraftOwnership, values: DraftValues) => Promise<DraftValues>
     deleteDraft: (draftId: string, owner: DraftOwnership) => Promise<void>
-    getDraft: (draftId: string) => Promise<DraftEntry | null>
+    getDraft: (draftId: string, owner: DraftOwnership) => Promise<DraftEntry | null>
     getDrafts: (owner: DraftOwnership) => Promise<DraftEntry[]>
 }
 
@@ -78,20 +78,34 @@ export function createDraftClient(valkey: Valkey): DraftClient {
             // If the ownership is not in the index, it's not this users draft
             const isMember = await valkey.sismember(ownershipKey, key)
             if (isMember !== 1) {
-                throw new Error(`Draft with ID ${draftId} does not belong to ownership ${owner.hpr}`)
+                throw new Error(`Draft with ID ${draftId} does not belong to ownership ${owner.hpr} or provided ident`)
             }
 
             await valkey.del(key)
             await valkey.srem(ownershipKey, key)
         }),
-        getDraft: withSpanServerAsync('draft client - get draft', async (draftId): Promise<DraftEntry | null> => {
-            const value = await valkey.hgetall(draftKey(draftId))
-            if (valkeyEmptyHashValueToNull(value) == null) {
-                return null
-            }
+        getDraft: withSpanServerAsync(
+            'draft client - get draft',
+            async (draftId, owner): Promise<DraftEntry | null> => {
+                const key = draftKey(draftId)
+                const ownershipKey = ownershipIndexKey(owner)
 
-            return internalEntryToDraftEntry(value)
-        }),
+                // If the ownership is not in the index, it's not this users draft
+                const isMember = await valkey.sismember(ownershipKey, key)
+                if (isMember !== 1) {
+                    throw new Error(
+                        `Draft with ID ${draftId} does not belong to ownership ${owner.hpr} or provided ident`,
+                    )
+                }
+
+                const value = await valkey.hgetall(draftKey(draftId))
+                if (valkeyEmptyHashValueToNull(value) == null) {
+                    return null
+                }
+
+                return internalEntryToDraftEntry(value)
+            },
+        ),
         getDrafts: withSpanServerAsync('draft client - get all drafts', async (ownership) => {
             const keys = await valkey.smembers(ownershipIndexKey(ownership))
             if (keys.length === 0) {
