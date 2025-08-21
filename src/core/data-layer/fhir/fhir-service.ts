@@ -88,12 +88,7 @@ export async function createDocumentReference(
         )
 
         if ('error' in createdDocumentReference) {
-            failServerSpan(
-                span,
-                // TODO: .loose messes up the typing :angst:
-                createdDocumentReference.error as string,
-                new Error(`Failed to create DocumentReference: ${createdDocumentReference.error}`),
-            )
+            failServerSpan(span, `Failed to create DocumentReference: ${createdDocumentReference.error}`)
             return { error: 'API_ERROR' }
         }
 

@@ -310,8 +310,6 @@ const fhirResolvers: Resolvers = {
             }
 
             const draftClient = await getDraftClient()
-
-            // TODO verify access to draft
             await draftClient.deleteDraft(draftId, { hpr, ident })
 
             logger.info(`Deleted draft ${draftId} from draft client`)
