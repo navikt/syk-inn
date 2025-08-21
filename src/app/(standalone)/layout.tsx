@@ -3,7 +3,7 @@ import '../globals.css'
 import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
 import { logger } from '@navikt/next-logger'
-import { redirect } from 'next/navigation'
+import { unauthorized } from 'next/navigation'
 
 import DemoWarning from '@components/user-warnings/DemoWarning'
 import { isLocal, isDemo } from '@lib/env'
@@ -40,8 +40,7 @@ export default async function StandaloneLayout({ children }: LayoutProps<'/'>): 
 
     if (!getFlag('PILOT_USER', toggles).enabled) {
         logger.warn(`Non-pilot user has accessed the app, HPR: ${behandler.hpr_number}`)
-
-        redirect('/error/non-pilot-user')
+        unauthorized()
     }
 
     return (
