@@ -4,6 +4,7 @@ on:
     paths:
       - .github/workflows/deploy-valkey.yml
       - .nais/nais-dev-valkey.yaml
+      - .nais/nais-prod-valkey.yaml
     branches:
       - main
 
@@ -20,3 +21,15 @@ jobs:
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-dev-valkey.yaml
+
+  deploy-valkey-prod:
+    # TODO: Don't deploy yet
+    if: false
+    name: Deploy Valkey to prod
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-prod-valkey.yaml
