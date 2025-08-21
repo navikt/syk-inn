@@ -10,6 +10,7 @@ import { metadataActions } from '@core/redux/reducers/metadata'
 import { pathWithBasePath } from '@lib/url'
 import { isDemo, isLocal } from '@lib/env'
 import { FailingLinkDev } from '@dev/tools/api-fail-toggle/apollo-dev-tools-link'
+import { ModeType } from '@core/providers/Modes'
 
 import { createInMemoryCache } from './apollo-client-cache'
 
@@ -49,10 +50,10 @@ const inferOperationName = (body: string | undefined): string => {
     }
 }
 
-export function makeApolloClient(store: AppStore) {
+export function makeApolloClient(store: AppStore, mode: ModeType) {
     return (): ApolloClient<unknown> => {
         const httpLink = new HttpLink({
-            uri: pathWithBasePath('/fhir/graphql'),
+            uri: pathWithBasePath(mode === 'FHIR' ? '/fhir/graphql' : '/graphql'),
             fetch: (input, options) => {
                 const operationName = inferOperationName(options?.body as string | undefined)
 

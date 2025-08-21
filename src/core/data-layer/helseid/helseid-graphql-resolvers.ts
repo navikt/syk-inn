@@ -1,5 +1,6 @@
 import { Resolvers } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
+import { commonQueryResolvers, typeResolvers } from '@data-layer/graphql/common-resolvers'
 
 const helseidResolvers: Resolvers = {
     Query: {
@@ -11,7 +12,9 @@ const helseidResolvers: Resolvers = {
                 hpr: '123456',
             },
         }),
+        ...commonQueryResolvers,
     },
+    ...typeResolvers,
 }
 
 export const helseIdSchema = createSchema(helseidResolvers)

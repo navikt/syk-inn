@@ -13,7 +13,7 @@ import {
     getOrganisasjonsnummerFromFhir,
     getOrganisasjonstelefonnummerFromFhir,
 } from '@data-layer/fhir/mappers/organization'
-import { typeResolvers } from '@data-layer/graphql/common-resolvers'
+import { commonQueryResolvers, typeResolvers } from '@data-layer/graphql/common-resolvers'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { getFnrIdent, getNameFromPdl } from '@core/services/pdl/pdl-api-utils'
@@ -28,7 +28,6 @@ import { aaregService } from '@core/services/aareg/aareg-service'
 import { raise } from '@lib/ts'
 import { getReadyClientForResolvers } from '@data-layer/fhir/smart/ready-client'
 
-import { searchDiagnose } from '../common/diagnose-search'
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
 
@@ -181,7 +180,6 @@ const fhirResolvers: Resolvers = {
                 navn: getNameFromPdl(person.navn),
             } satisfies QueriedPerson
         },
-        diagnose: (_, { query }) => searchDiagnose(query),
         draft: async (_, { draftId }) => {
             const draftClient = await getDraftClient()
 
@@ -224,6 +222,7 @@ const fhirResolvers: Resolvers = {
 
             return R.sortBy(allDrafts, [(it) => it.lastUpdated, 'desc'])
         },
+        ...commonQueryResolvers,
     },
     Mutation: {
         saveDraft: async (_, { draftId, values }) => {

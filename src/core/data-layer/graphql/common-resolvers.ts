@@ -1,4 +1,9 @@
-import { Resolvers } from '@resolvers'
+import { QueryResolvers, Resolvers } from '@resolvers'
+import { searchDiagnose } from '@data-layer/common/diagnose-search'
+
+export const commonQueryResolvers: QueryResolvers = {
+    diagnose: (_, { query }) => searchDiagnose(query),
+}
 
 export const typeResolvers: Resolvers = {
     OpprettetSykmelding: {

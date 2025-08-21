@@ -16,7 +16,7 @@ function Providers({ children, mode }: PropsWithChildren<{ mode: ModeType }>): R
     const store = useStoreRef()
 
     return (
-        <ApolloNextAppProvider makeClient={makeApolloClient(store)}>
+        <ApolloNextAppProvider makeClient={makeApolloClient(store, mode)}>
             <ReduxProvider store={store}>
                 <ModeProvider mode={mode}>
                     <NuqsAdapter>
