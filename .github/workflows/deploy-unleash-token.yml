@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - .github/workflows/deploy-unleash-token.yml
-      - .nais/nais-dev-unleash-token.yaml
+      - .nais/nais-unleash-token.yaml
     branches:
       - main
 
@@ -19,4 +19,16 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .nais/nais-dev-unleash-token.yaml
+          RESOURCE: .nais/nais-unleash-token.yaml
+          VAR: environment=development
+
+  deploy-unleash-token-prod:
+    name: Deploy unleash token to prod
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/nais-unleash-token.yaml
+          VAR: environment=production

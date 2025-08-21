@@ -11,4 +11,4 @@ spec:
     kind: RemoteUnleash
     name: tsm
   secretName: tsm-unleash-api-token
-  environment: development
+  environment: {{environment}}
