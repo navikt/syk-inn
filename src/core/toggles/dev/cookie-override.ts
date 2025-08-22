@@ -1,11 +1,11 @@
 import { cookies } from 'next/headers'
+import { IToggle } from '@unleash/nextjs'
 
-import { Toggles } from '@core/toggles/toggles'
 import { unleashLogger } from '@core/toggles/unleash'
 import { bundledEnv } from '@lib/env'
 import { localDevelopmentToggles } from '@core/toggles/dev/local'
 
-export async function developmentTogglesWithCookieOverrides(): Promise<Toggles> {
+export async function developmentTogglesWithCookieOverrides(): Promise<IToggle[]> {
     const cookieStore = await cookies()
     const localDevelopmentCookiesWithOverrides = localDevelopmentToggles.map((it) => {
         const enabledByCookieOrNull = cookieStore.get(it.name)?.value.includes('true') ?? null

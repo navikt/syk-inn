@@ -14,7 +14,7 @@ export function useDiagnoseSuggestions():
           suggestions: NySykmeldingSuggestions
       } {
     const konsultasjonsQuery = useQuery(KonsultasjonDocument)
-    const serverBidiagnoser = useFlag('SYK_INN_AUTO_BIDIAGNOSER')
+    const serverBidiagnoserToggle = useFlag('SYK_INN_AUTO_BIDIAGNOSER')
 
     if (konsultasjonsQuery.loading) {
         return { loading: true, suggestions: null }
@@ -27,7 +27,7 @@ export function useDiagnoseSuggestions():
                 value: pickMostRelevantDiagnose(konsultasjonsQuery.data?.konsultasjon?.diagnoser ?? null),
                 error: konsultasjonsQuery.error ? { error: 'FHIR_FAILED' } : undefined,
             },
-            bidiagnoser: serverBidiagnoser.enabled
+            bidiagnoser: serverBidiagnoserToggle
                 ? (konsultasjonsQuery.data?.konsultasjon?.diagnoser?.slice(1) ?? null)
                 : null,
         },

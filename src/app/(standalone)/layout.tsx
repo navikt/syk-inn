@@ -7,7 +7,7 @@ import { notFound, unauthorized } from 'next/navigation'
 
 import DemoWarning from '@components/user-warnings/DemoWarning'
 import { isLocal, isDemo, bundledEnv } from '@lib/env'
-import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
+import { getFlag, getUserlessToggles, getUserToggles, toToggleMap } from '@core/toggles/unleash'
 import { getHelseIdUserInfo } from '@data-layer/helseid/helseid-userinfo'
 import HelseIdHeader from '@data-layer/helseid/components/HelseIdHeader'
 import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
@@ -64,7 +64,7 @@ export default async function StandaloneLayout({ children }: LayoutProps<'/'>): 
                         hpr: behandler?.hpr_number ?? 'TODO',
                     }}
                 />
-                <ToggleProvider toggles={toggles.getAllToggles()}>
+                <ToggleProvider toggles={toToggleMap(toggles)}>
                     <Providers mode="HelseID">
                         {(isLocal || isDemo) && <DemoWarning />}
                         {children}

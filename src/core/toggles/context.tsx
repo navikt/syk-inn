@@ -4,9 +4,9 @@ import { ReactElement, createContext, PropsWithChildren, useContext } from 'reac
 
 import { raise } from '@lib/ts'
 
-import { ExpectedToggles, Toggle, Toggles } from './toggles'
+import { ExpectedToggles, Toggles } from './toggles'
 
-const FlagContext = createContext<{ toggles: Toggles }>({ toggles: [] })
+const FlagContext = createContext<{ toggles: Toggles | null }>({ toggles: null })
 
 export function ToggleProvider({ toggles, children }: PropsWithChildren<{ toggles: Toggles }>): ReactElement {
     if (toggles == null) {
@@ -16,13 +16,11 @@ export function ToggleProvider({ toggles, children }: PropsWithChildren<{ toggle
     return <FlagContext.Provider value={{ toggles: toggles ?? [] }}>{children}</FlagContext.Provider>
 }
 
-export function useFlag(name: ExpectedToggles): Toggle {
+export function useFlag(name: ExpectedToggles): boolean {
     const context = useContext(FlagContext)
-    const toggle = context.toggles.find((toggle) => toggle.name === name)
-
-    if (toggle == null) {
-        return { name, enabled: false, impressionData: false, variant: { name: 'disabled', enabled: false } }
+    if (context.toggles == null) {
+        raise('Toggles context is not provided, are you using ToggleProvider?')
     }
 
-    return toggle
+    return context.toggles[name]
 }

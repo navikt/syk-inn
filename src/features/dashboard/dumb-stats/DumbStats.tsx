@@ -38,7 +38,7 @@ function DumbStats(): ReactElement {
 
     return (
         <div className="-mt-2 mb-2 flex gap-12">
-            {sykefravaerInfoToggle.enabled && (
+            {sykefravaerInfoToggle && (
                 <div className="flex items-center relative">
                     <PieChart
                         className="size-48"

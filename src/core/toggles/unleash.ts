@@ -4,9 +4,10 @@ import { connection } from 'next/server'
 
 import { bundledEnv, isE2E, isLocal, isDemo } from '@lib/env'
 import { getAndValidateDefinitions } from '@core/toggles/definitions'
+import { raise } from '@lib/ts'
 
 import { developmentTogglesWithCookieOverrides } from './dev/cookie-override'
-import { EXPECTED_TOGGLES, ExpectedToggles, Toggle } from './toggles'
+import { EXPECTED_TOGGLES, ExpectedToggles } from './toggles'
 import { getUnleashSessionId } from './cookie'
 
 export const unleashLogger = pinoLogger.child({}, { msgPrefix: '[UNLEASH-TOGGLES] ' })
@@ -43,18 +44,19 @@ export async function getUserToggles(userId: string | true): Promise<UnleashClie
             environment: unleashEnvironment,
             userId: typeof userId === 'string' ? userId : undefined,
         })
-        return flagsClient(evaluatedFlags.toggles)
+        return flagsClient(evaluatedFlags.toggles, {
+            appName: 'syk-inn',
+            url: `${process.env.UNLEASH_SERVER_API_URL ?? raise('Missing UNLEASH_SERVER_API_URL')}/api`,
+        })
     } catch (e) {
         unleashLogger.error(new Error('Failed to get flags from Unleash. Falling back to default flags.', { cause: e }))
         return flagsClient(
-            EXPECTED_TOGGLES.map(
-                (it): Toggle => ({
-                    name: it,
-                    variant: { name: 'default', enabled: false },
-                    impressionData: false,
-                    enabled: false,
-                }),
-            ),
+            EXPECTED_TOGGLES.map((it) => ({
+                name: it,
+                variant: { name: 'default', enabled: false },
+                impressionData: false,
+                enabled: false,
+            })),
         )
     }
 }
@@ -69,4 +71,14 @@ export function getFlag(flag: ExpectedToggles, toggles: UnleashClient): boolean 
     }
 
     return enabled
+}
+
+export function toToggleMap(toggles: UnleashClient): Record<ExpectedToggles, boolean> {
+    return EXPECTED_TOGGLES.reduce(
+        (acc, toggle) => {
+            acc[toggle] = toggles.isEnabled(toggle)
+            return acc
+        },
+        {} as Record<ExpectedToggles, boolean>,
+    )
 }

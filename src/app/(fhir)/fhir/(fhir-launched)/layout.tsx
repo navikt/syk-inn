@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 
 import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 import { getHprFromFhirSession } from '@data-layer/fhir/fhir-service'
-import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
+import { getFlag, getUserlessToggles, getUserToggles, toToggleMap } from '@core/toggles/unleash'
 import { ToggleProvider } from '@core/toggles/context'
 import { spanServerAsync } from '@lib/otel/server'
 import { NoValidHPR } from '@components/errors/NoValidHPR'
@@ -37,7 +37,7 @@ async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<React
     }
 
     return (
-        <ToggleProvider toggles={toggles.getAllToggles()}>
+        <ToggleProvider toggles={toToggleMap(toggles)}>
             <QueryStateToSessionStorageOnInit />
             {children}
             <LoggedOutWarning />
