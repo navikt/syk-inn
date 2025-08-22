@@ -110,7 +110,7 @@ const fhirResolvers: Resolvers = {
 
             if (sykmelding.kind === 'redacted') {
                 const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
-                if (!showRedactedFlag.enabled) return null
+                if (!showRedactedFlag) return null
 
                 return sykInnApiSykmeldingRedactedToResolverSykmelding(sykmelding)
             }
@@ -154,7 +154,7 @@ const fhirResolvers: Resolvers = {
              * Only return kind='redacted' sykmeldinger if SYK_INN_SHOW_REDACTED is enabled for this user
              */
             const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
-            const sykmeldinger = showRedactedFlag.enabled
+            const sykmeldinger = showRedactedFlag
                 ? sykInnSykmeldinger
                 : sykInnSykmeldinger.filter((it) => it.kind !== 'redacted')
 
@@ -368,7 +368,7 @@ const fhirResolvers: Resolvers = {
 
             const toggles = await getUserToggles(hpr)
             const isPilotUser = getFlag('PILOT_USER', toggles)
-            if (!isPilotUser.enabled) {
+            if (!isPilotUser) {
                 logger.error(
                     `Non-pilot user tried to create a sykmelding, is modal not modalling? See team logs for HPR`,
                 )
@@ -434,8 +434,8 @@ const fhirResolvers: Resolvers = {
     },
     Pasient: {
         arbeidsforhold: async (parent) => {
-            const flag = getFlag('SYK_INN_AAREG', await getUserlessToggles())
-            if (!flag.enabled) {
+            const aaregToggle = getFlag('SYK_INN_AAREG', await getUserlessToggles())
+            if (!aaregToggle) {
                 logger.error(
                     'SYK_INN_AAREG flag is not enabled, why are you calling this? Remember to feature toggle your frontend as well.',
                 )

@@ -30,14 +30,14 @@ async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<React
         }
     }
 
-    if (!getFlag('PILOT_USER', toggles).enabled) {
+    if (!getFlag('PILOT_USER', toggles)) {
         logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
 
         redirect('/fhir/error/non-pilot-user')
     }
 
     return (
-        <ToggleProvider toggles={toggles}>
+        <ToggleProvider toggles={toggles.getAllToggles()}>
             <QueryStateToSessionStorageOnInit />
             {children}
             <LoggedOutWarning />

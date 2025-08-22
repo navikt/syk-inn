@@ -16,7 +16,7 @@ export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ sykmeldingId: string }> },
 ): Promise<Response> {
-    const autoTokenRefresh = getFlag('SYK_INN_REFRESH_TOKEN', await getUserlessToggles()).enabled
+    const autoTokenRefresh = getFlag('SYK_INN_REFRESH_TOKEN', await getUserlessToggles())
     const client = await getReadyClient({ validate: true, autoRefresh: autoTokenRefresh })
     if ('error' in client) {
         return new Response('Internal server error', { status: 500 })
