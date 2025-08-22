@@ -1,5 +1,4 @@
-import { ApolloLink, CombinedGraphQLErrors, HttpLink } from '@apollo/client'
-import { ApolloClient } from '@apollo/client-integration-nextjs'
+import { ApolloLink, CombinedGraphQLErrors, HttpLink, ApolloClient } from '@apollo/client'
 import { RetryLink } from '@apollo/client/link/retry'
 import { ErrorLink } from '@apollo/client/link/error'
 import { logger } from '@navikt/next-logger'

@@ -1,5 +1,4 @@
-import { InMemoryCache } from '@apollo/client-integration-nextjs'
-import { FieldReadFunction, Reference } from '@apollo/client'
+import { FieldReadFunction, Reference, InMemoryCache } from '@apollo/client'
 
 import possibleTypesGenerated from '@data-layer/graphql/possible-types.generated'
 import { Query } from '@queries'
