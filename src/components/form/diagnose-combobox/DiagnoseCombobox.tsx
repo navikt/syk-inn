@@ -1,7 +1,7 @@
 import * as R from 'remeda'
 import React, { ReactElement, ReactNode, startTransition } from 'react'
 import { Alert, BodyShort, Button, Detail, ErrorMessage, Label } from '@navikt/ds-react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 
 import { cn } from '@lib/tw'
 import { raise } from '@lib/ts'

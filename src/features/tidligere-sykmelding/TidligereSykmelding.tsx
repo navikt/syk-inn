@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { useParams } from 'next/navigation'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 import { Alert, BodyShort, Button, Heading, Skeleton } from '@navikt/ds-react'
 
 import { SykmeldingByIdDocument } from '@queries'

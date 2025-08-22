@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { Skeleton } from '@navikt/ds-react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 
 import { DiagnoseFragment, GetDraftDocument, KonsultasjonDocument } from '@queries'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'

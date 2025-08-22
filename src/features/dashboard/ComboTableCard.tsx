@@ -1,6 +1,6 @@
 import * as R from 'remeda'
 import React, { PropsWithChildren, ReactElement } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 import { Alert, BodyShort, Heading, Skeleton, Table } from '@navikt/ds-react'
 import { FlowerPetalsIcon } from '@navikt/aksel-icons'
 

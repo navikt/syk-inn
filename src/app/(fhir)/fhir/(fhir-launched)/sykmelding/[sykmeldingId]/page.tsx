@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ReactElement } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 import Link from 'next/link'
 
 import { PasientDocument } from '@queries'

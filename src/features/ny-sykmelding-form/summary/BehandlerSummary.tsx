@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { Alert, BodyShort, Button, FormSummary, Heading, Label, Skeleton } from '@navikt/ds-react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 
 import { BehandlerDocument } from '@queries'
 

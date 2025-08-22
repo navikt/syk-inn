@@ -1,5 +1,5 @@
 import React, { ReactElement, startTransition } from 'react'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient } from '@apollo/client/react'
 import { Button, Checkbox, CheckboxGroup } from '@navikt/ds-react'
 
 import { DevToolItem } from '../InternalDevToolItem'

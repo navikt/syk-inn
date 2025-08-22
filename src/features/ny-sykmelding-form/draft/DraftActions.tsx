@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client/react'
 import { useRouter } from 'next/navigation'
 import { FloppydiskIcon } from '@navikt/aksel-icons'
 

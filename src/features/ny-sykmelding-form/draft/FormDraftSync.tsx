@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 import * as R from 'remeda'
-import { FetchResult } from '@apollo/client'
+import { type ApolloClient } from '@apollo/client'
 import { useParams } from 'next/navigation'
 import { logger } from '@navikt/next-logger'
 import { teamLogger } from '@navikt/next-logger/team-log'
@@ -29,7 +29,7 @@ function FormDraftSync(): null {
     const { draftId } = useParams<{ draftId: string }>()
     const { formValues, isFormDirty } = useFormValues()
 
-    const currentMutationPromise = useRef<Promise<FetchResult<SaveDraftMutation>> | null>(null)
+    const currentMutationPromise = useRef<Promise<ApolloClient.MutateResult<SaveDraftMutation>> | null>(null)
     const [mutation, draftResult] = useSaveDraft({
         returnToDash: false,
         onCompleted: () => {

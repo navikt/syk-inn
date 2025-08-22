@@ -1,7 +1,7 @@
 import { Alert, BodyShort, Detail, FormSummary, Heading, List, Skeleton } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 
 import {
     NySykmeldingAktivitet,

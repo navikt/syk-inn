@@ -4,7 +4,7 @@ import React, { ReactElement, useRef, useState } from 'react'
 import { Alert, BodyShort, Button, ExpansionCard, Heading, Link as AkselLink, Skeleton } from '@navikt/ds-react'
 import { ChevronDownIcon, TabsAddIcon } from '@navikt/aksel-icons'
 import Link from 'next/link'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 
 import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
 import { pathWithBasePath } from '@lib/url'

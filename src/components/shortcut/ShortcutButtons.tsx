@@ -63,7 +63,7 @@ export function ShortcutButtonLink({
 
     return (
         <div className="relative">
-            <SlowNextLinkButton type="button" href={href} {...buttonProps}>
+            <SlowNextLinkButton type="button" href={href} {...buttonProps} suppressHydrationWarning>
                 {children}
             </SlowNextLinkButton>
             <div className="absolute -bottom-5 right-2 text-text-action">

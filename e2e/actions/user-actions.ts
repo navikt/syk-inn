@@ -1,6 +1,6 @@
 import { expect, Page, test } from '@playwright/test'
 import { add } from 'date-fns'
-import { GraphQLRequest } from '@apollo/client'
+import { ApolloLink } from '@apollo/client'
 
 import { OpprettSykmeldingDocument } from '@queries'
 import { toReadableDatePeriod } from '@lib/date'
@@ -304,7 +304,7 @@ export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | nu
 }
 
 export function submitSykmelding() {
-    return async (page: Page): Promise<GraphQLRequest> => {
+    return async (page: Page): Promise<ApolloLink.Request> => {
         return test.step('Submit the sykmelding', async () => {
             const request = await clickAndWait(
                 page.getByRole('button', { name: 'Send inn' }).click(),

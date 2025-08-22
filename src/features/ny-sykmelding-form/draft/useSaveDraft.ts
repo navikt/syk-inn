@@ -1,9 +1,9 @@
-import { FetchResult, MutationResult, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client/react'
 import { useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import * as R from 'remeda'
 
-import { GetAllDraftsDocument, SaveDraftDocument, SaveDraftMutation } from '@queries'
+import { GetAllDraftsDocument, SaveDraftDocument, SaveDraftMutation, SaveDraftMutationVariables } from '@queries'
 import { spanBrowserAsync } from '@lib/otel/browser'
 import { DraftValues } from '@data-layer/draft/draft-schema'
 import { useMode } from '@core/providers/Modes'
@@ -14,8 +14,11 @@ export function useSaveDraft(opts: {
     returnToDash: boolean
     onCompleted?: () => void
 }): [
-    (draftId: string, values: NySykmeldingMainFormValues) => Promise<FetchResult<SaveDraftMutation>>,
-    MutationResult<SaveDraftMutation>,
+    (
+        draftId: string,
+        values: NySykmeldingMainFormValues,
+    ) => ReturnType<useMutation.MutationFunction<SaveDraftMutation, SaveDraftMutationVariables>>,
+    useMutation.Result<SaveDraftMutation>,
 ] {
     const router = useRouter()
     const mode = useMode()
