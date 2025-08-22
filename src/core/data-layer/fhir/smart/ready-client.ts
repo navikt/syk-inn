@@ -39,7 +39,7 @@ export async function getReadyClientForResolvers(params?: {
     withPractitioner: true
     validateHelseId?: boolean
 }): Promise<[ReadyClient] | [ReadyClient, FhirPractitioner]> {
-    const autoTokenRefresh = getFlag('SYK_INN_REFRESH_TOKEN', await getUserlessToggles()).enabled
+    const autoTokenRefresh = getFlag('SYK_INN_REFRESH_TOKEN', await getUserlessToggles())
     const client = await getReadyClient({ validate: true, autoRefresh: autoTokenRefresh })
     if ('error' in client) {
         throw NoSmartSession()

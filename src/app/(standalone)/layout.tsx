@@ -41,7 +41,7 @@ export default async function StandaloneLayout({ children }: LayoutProps<'/'>): 
         return <NoValidHPR mode="HelseID" />
     }
 
-    if (!getFlag('PILOT_USER', toggles).enabled) {
+    if (!getFlag('PILOT_USER', toggles)) {
         logger.warn(`Non-pilot user has accessed the app, HPR: ${behandler.hpr_number}`)
         unauthorized()
     }
@@ -64,7 +64,7 @@ export default async function StandaloneLayout({ children }: LayoutProps<'/'>): 
                         hpr: behandler?.hpr_number ?? 'TODO',
                     }}
                 />
-                <ToggleProvider toggles={toggles}>
+                <ToggleProvider toggles={toggles.getAllToggles()}>
                     <Providers mode="HelseID">
                         {(isLocal || isDemo) && <DemoWarning />}
                         {children}
