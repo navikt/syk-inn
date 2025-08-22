@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ReactElement } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 
 import OpprettNySykmeldingCard from '@features/dashboard/OpprettNySykmeldingCard'
 import { KonsultasjonDocument, PasientDocument } from '@queries'

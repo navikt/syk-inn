@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
-import { GraphQLRequest, TypedDocumentNode } from '@apollo/client'
+import { ApolloLink, TypedDocumentNode } from '@apollo/client'
 import { expect, Page, test } from '@playwright/test'
 
-export function expectGraphQLRequest(request: GraphQLRequest) {
+export function expectGraphQLRequest(request: ApolloLink.Request) {
     return {
         toBe: async <Query, Variables>(document: TypedDocumentNode<Query, Variables>, expectedVariables: Variables) => {
             const firstDefinition = document.definitions[0]
@@ -13,6 +13,9 @@ export function expectGraphQLRequest(request: GraphQLRequest) {
                     : 'Non-OperationDefinition, no name'
 
             await test.step(`Verify that the GraphQL request is ${documentOperationName} with correct payload`, () => {
+                if (!('operationName' in request)) {
+                    fail("Request does not have an 'operationName' property")
+                }
                 expect(request.operationName, { message: 'Verify GraphQL Document' }).toEqual(documentOperationName)
                 expect(request.variables, { message: 'Verify GraphQL Variables' }).toEqual(expectedVariables)
             })

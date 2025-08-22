@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 import { logger } from '@navikt/next-logger'
 
 import { useAppDispatch } from '@core/redux/hooks'

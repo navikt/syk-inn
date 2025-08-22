@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client/react'
 import { Button, Tooltip } from '@navikt/ds-react'
 import { TrashIcon } from '@navikt/aksel-icons'
 import { toast } from 'sonner'

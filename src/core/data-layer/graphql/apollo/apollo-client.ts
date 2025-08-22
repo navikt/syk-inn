@@ -1,7 +1,7 @@
-import { ApolloLink, from, HttpLink } from '@apollo/client'
+import { ApolloLink, CombinedGraphQLErrors, HttpLink } from '@apollo/client'
 import { ApolloClient } from '@apollo/client-integration-nextjs'
 import { RetryLink } from '@apollo/client/link/retry'
-import { onError } from '@apollo/client/link/error'
+import { ErrorLink } from '@apollo/client/link/error'
 import { logger } from '@navikt/next-logger'
 
 import { spanBrowserAsync } from '@lib/otel/browser'
@@ -15,14 +15,17 @@ import { ModeType } from '@core/providers/Modes'
 import { createInMemoryCache } from './apollo-client-cache'
 
 const createErrorLink = (store: AppStore): ApolloLink =>
-    onError(({ graphQLErrors }) => {
-        if (graphQLErrors) {
-            if (graphQLErrors.some((e) => e.extensions?.code === 'SMART_SESSION_INVALID')) {
+    new ErrorLink(({ error }) => {
+        if (CombinedGraphQLErrors.is(error)) {
+            if (error.errors.some((e) => e.extensions?.code === 'SMART_SESSION_INVALID')) {
                 store.dispatch(metadataActions.setSessionExpired())
             }
         }
     })
 
+/**
+ * Should this be a SetConntextLink maybe?
+ */
 const multiUserLink = new ApolloLink((operation, forward) => {
     const activeUser = sessionStorage.getItem('FHIR_ACTIVE_PATIENT') ?? null
     if (!activeUser) return forward(operation)
@@ -51,7 +54,7 @@ const inferOperationName = (body: string | undefined): string => {
 }
 
 export function makeApolloClient(store: AppStore, mode: ModeType) {
-    return (): ApolloClient<unknown> => {
+    return (): ApolloClient => {
         const httpLink = new HttpLink({
             uri: pathWithBasePath(mode === 'FHIR' ? '/fhir/graphql' : '/graphql'),
             fetch: (input, options) => {
@@ -74,8 +77,8 @@ export function makeApolloClient(store: AppStore, mode: ModeType) {
 
         const links =
             isLocal || isDemo
-                ? from([errorLink, FailingLinkDev(), retryLink, multiUserLink, httpLink])
-                : from([errorLink, retryLink, multiUserLink, httpLink])
+                ? ApolloLink.from([errorLink, FailingLinkDev(), retryLink, multiUserLink, httpLink])
+                : ApolloLink.from([errorLink, retryLink, multiUserLink, httpLink])
 
         return new ApolloClient({
             cache: createInMemoryCache(),

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 import { BodyShort, Skeleton } from '@navikt/ds-react'
 import * as R from 'remeda'
 import { PieChart } from 'react-minimal-pie-chart'

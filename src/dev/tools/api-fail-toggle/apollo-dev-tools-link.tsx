@@ -13,7 +13,7 @@ export const FailingLinkDev = (): ApolloLink =>
         const queryOverrides = (params.get('query-fails') ?? '').split(',')
 
         const overrides: string[] = queryOverrides.filter((it) => !!it)
-        if (overrides.includes(operation.operationName)) {
+        if (operation.operationName && overrides.includes(operation.operationName)) {
             return new Observable((observer) => {
                 observer.error(new Error(`Operation "${operation.operationName}" failed intentionally`))
             })

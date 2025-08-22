@@ -1,7 +1,7 @@
 import { logger } from '@navikt/next-logger'
 import { startTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { FetchResult, MutationResult, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client/react'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { raise } from '@lib/ts'
@@ -14,6 +14,7 @@ import {
     OpprettSykmeldingDocument,
     OpprettSykmeldingInput,
     OpprettSykmeldingMutation,
+    OpprettSykmeldingMutationVariables,
 } from '@queries'
 import { spanBrowserAsync, withSpanBrowserAsync } from '@lib/otel/browser'
 import { useAppSelector } from '@core/redux/hooks'
@@ -24,8 +25,11 @@ import { NySykmeldingState } from '@core/redux/reducers/ny-sykmelding/ny-sykmeld
 import { useDraftId } from './draft/useDraftId'
 
 export function useOpprettSykmeldingMutation(): {
-    opprettSykmelding: () => Promise<FetchResult<OpprettSykmeldingMutation>>
-    result: MutationResult<OpprettSykmeldingMutation>
+    opprettSykmelding: () => ReturnType<
+        useMutation.MutationFunction<OpprettSykmeldingMutation, OpprettSykmeldingMutationVariables>
+    >
+
+    result: useMutation.Result<OpprettSykmeldingMutation>
 } {
     const mode = useMode()
     const draftId = useDraftId()
@@ -59,7 +63,7 @@ export function useOpprettSykmeldingMutation(): {
 
             startTransition(() => {
                 // Don't redirect on errors
-                if (createResult.errors != null || createResult.data == null) return
+                if (createResult.error != null || createResult.data == null) return
                 // Don't redirect on rule hits
                 if (createResult.data.opprettSykmelding.__typename !== 'SykmeldingFull') return
 

@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { ApolloClient, InMemoryCache } from '@apollo/client/core'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { MockLink } from '@apollo/client/testing'
 import { execute, ExecutionResult } from 'graphql/execution'
 import { addTypenameToDocument } from '@apollo/client/utilities'
@@ -52,7 +52,7 @@ describe('apollo cache normalization - draft', () => {
             variables: { draftId: 'draft-1' },
         })
 
-        expect(data.draft).toEqual(drafts[0])
+        expect(data!.draft).toEqual(drafts[0])
     })
 
     test('draft: cache redirect shall do a network request when item is not in cache', async () => {
@@ -111,7 +111,7 @@ describe('apollo cache normalization - sykmelding', async () => {
             variables: { id: 'sykme-1' },
         })
 
-        expect(data.sykmelding).toEqual(sykmeldinger[0])
+        expect(data!.sykmelding).toEqual(sykmeldinger[0])
     })
 
     test('sykmelding: hits cache redirect when sykmelding list is already fetched for "Redacted" sykmelding', async () => {
@@ -127,7 +127,7 @@ describe('apollo cache normalization - sykmelding', async () => {
             variables: { id: 'sykme-2' },
         })
 
-        expect(data.sykmelding).toEqual(sykmeldinger[1])
+        expect(data!.sykmelding).toEqual(sykmeldinger[1])
     })
 
     test('sykmelding: cache redirect shall do a network request when item is not in cache', async () => {
@@ -147,9 +147,9 @@ describe('apollo cache normalization - sykmelding', async () => {
     })
 })
 
-function createTestApollo(expectMockSpam: boolean = false): [ApolloClient<unknown>, InMemoryCache] {
+function createTestApollo(expectMockSpam: boolean = false): [ApolloClient, InMemoryCache] {
     const cache = createInMemoryCache()
-    const throwingLink = new MockLink([], undefined, { showWarnings: !expectMockSpam })
+    const throwingLink = new MockLink([], { showWarnings: !expectMockSpam })
     const client = new ApolloClient({
         cache,
         link: throwingLink,

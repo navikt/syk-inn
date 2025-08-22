@@ -22,57 +22,53 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client-integration-nextjs@npm:^0.12.3":
-  version: 0.12.3
-  resolution: "@apollo/client-integration-nextjs@npm:0.12.3"
+"@apollo/client-integration-nextjs@npm:^0.13.0":
+  version: 0.13.0
+  resolution: "@apollo/client-integration-nextjs@npm:0.13.0"
   dependencies:
-    "@apollo/client-react-streaming": "npm:0.12.3"
+    "@apollo/client-react-streaming": "npm:0.13.0"
   peerDependencies:
-    "@apollo/client": ^3.13.0
+    "@apollo/client": ^4.0.0
     next: ^15.2.3
     react: ^19
-  checksum: 10c0/9074cc976a5b97abfb23c4d04157424a8600b70fc76b176d487020bf2dae3b250e3f50ef74720182821f3ba2203db7276aedfd3c51b81466ba8cb81505a24510
+    rxjs: ^7.3.0
+  checksum: 10c0/440a4a07889cec37d4d57c1e08dd752d09ba51cbf2bc75d836e83f7bd0e9162240a5a8739f710a8325ddb209acff8c8897fdffc4e9a13abd72055a05568a8d5c
   languageName: node
   linkType: hard
 
-"@apollo/client-react-streaming@npm:0.12.3":
-  version: 0.12.3
-  resolution: "@apollo/client-react-streaming@npm:0.12.3"
+"@apollo/client-react-streaming@npm:0.13.0":
+  version: 0.13.0
+  resolution: "@apollo/client-react-streaming@npm:0.13.0"
   dependencies:
     "@types/react-dom": "npm:^19.0.0"
     "@wry/equality": "npm:^0.5.6"
-    ts-invariant: "npm:^0.10.3"
   peerDependencies:
-    "@apollo/client": ^3.13.0
+    "@apollo/client": ^4.0.0
     graphql: ^16 || >=17.0.0-alpha.2
     react: ^19
     react-dom: ^19
-  checksum: 10c0/e3b6ee935ae70f16bda933def469987783a170984163e923590fae214034492b43d36c07d6a17eb7b43588618192a77dd954a3cac281c30ecbcb5390eb8bcff2
+    rxjs: ^7.3.0
+  checksum: 10c0/61879a18388c2e5e38e64d45a68056dcc7843684d74f2cdef7ba19935750702269421d4bf58eed114f2b0a7add792bd0080b57aae4b78315126fe72e45b66664
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^3.13.9":
-  version: 3.13.9
-  resolution: "@apollo/client@npm:3.13.9"
+"@apollo/client@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@apollo/client@npm:4.0.0"
   dependencies:
     "@graphql-typed-document-node/core": "npm:^3.1.1"
     "@wry/caches": "npm:^1.0.0"
     "@wry/equality": "npm:^0.5.6"
     "@wry/trie": "npm:^0.5.0"
     graphql-tag: "npm:^2.12.6"
-    hoist-non-react-statics: "npm:^3.3.2"
     optimism: "npm:^0.18.0"
-    prop-types: "npm:^15.7.2"
-    rehackt: "npm:^0.1.0"
-    symbol-observable: "npm:^4.0.0"
-    ts-invariant: "npm:^0.10.3"
     tslib: "npm:^2.3.0"
-    zen-observable-ts: "npm:^1.2.5"
   peerDependencies:
-    graphql: ^15.0.0 || ^16.0.0
+    graphql: ^16.0.0
     graphql-ws: ^5.5.5 || ^6.0.3
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc
+    react: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
+    react-dom: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
+    rxjs: ^7.3.0
     subscriptions-transport-ws: ^0.9.0 || ^0.11.0
   peerDependenciesMeta:
     graphql-ws:
@@ -83,7 +79,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 10c0/aca33aa1d9971ae0814bd73912c993da83f69d53d9a5e7971e2b8364557821f0447276f507945b80365b1c4a6a541cd3602fa1343dc0d13769bc5a7d81a26461
+  checksum: 10c0/62d255aa8a9a5a8a38b4325e645cb6f160f39e5a201c2e015295badf5ca267495ff34cc2c6f178702eebc8e7ae23727ea61f3cb5f496ddf5ee77768caffab5f3
   languageName: node
   linkType: hard
 
@@ -1972,10 +1968,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/sourcemap-codec@npm:^1.4.10, @jridgewell/sourcemap-codec@npm:^1.4.14, @jridgewell/sourcemap-codec@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "@jridgewell/sourcemap-codec@npm:1.5.0"
-  checksum: 10c0/2eb864f276eb1096c3c11da3e9bb518f6d9fc0023c78344cdc037abadc725172c70314bdb360f2d4b7bffec7f5d657ce006816bc5d4ecb35e61b66132db00c18
+"@jridgewell/sourcemap-codec@npm:^1.4.10, @jridgewell/sourcemap-codec@npm:^1.4.14, @jridgewell/sourcemap-codec@npm:^1.5.5":
+  version: 1.5.5
+  resolution: "@jridgewell/sourcemap-codec@npm:1.5.5"
+  checksum: 10c0/f9e538f302b63c0ebc06eecb1dd9918dd4289ed36147a0ddce35d6ea4d7ebbda243cda7b2213b6a5e1d8087a298d5cf630fb2bd39329cdecb82017023f6081a0
   languageName: node
   linkType: hard
 
@@ -5183,9 +5179,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.204":
-  version: 1.5.207
-  resolution: "electron-to-chromium@npm:1.5.207"
-  checksum: 10c0/33de5f996fcfdb7c7fcedfc76e9e36ed33f2b7a3136b1bbc5eae38f2b0441fbd114843511a46c80aaf21b9586d812fe469ff7f948c5cda0808038c69c4f76298
+  version: 1.5.208
+  resolution: "electron-to-chromium@npm:1.5.208"
+  checksum: 10c0/75469e473296a24c66b2f77ab8081aaafe62c8ec700c642940b985a71b111cbf75ae3442ac0c25b7bf30bfd21b49f8e74c21366cc7c513e45366233dbb43ce2b
   languageName: node
   linkType: hard
 
@@ -6591,7 +6587,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.3.1, hoist-non-react-statics@npm:^3.3.2":
+"hoist-non-react-statics@npm:^3.3.1":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -6601,9 +6597,9 @@ __metadata:
   linkType: hard
 
 "hono@npm:^4.9.2":
-  version: 4.9.2
-  resolution: "hono@npm:4.9.2"
-  checksum: 10c0/0f1a25ea729e90ce9ace8f8dc4e05a180a1a41e3fdd68e5564a4348c260b784b7dccfc4e4c9e004eb0f42acbd9360bda0856639088ba11639c6851929c1d77f7
+  version: 4.9.4
+  resolution: "hono@npm:4.9.4"
+  checksum: 10c0/2ecea6846d6fb2f9135e1287af849c5fbafac0394b2e38b1d00d4afe00b791c20e39b6a6d8dcd6c444b97aafcf7043509f53d00960da636ce395fe91e089ede5
   languageName: node
   linkType: hard
 
@@ -7285,9 +7281,9 @@ __metadata:
   linkType: hard
 
 "jose@npm:^6.0.12":
-  version: 6.0.12
-  resolution: "jose@npm:6.0.12"
-  checksum: 10c0/e5ca51b078b2443f6ca671e14d72e0ffd21b760dac0d77cabd7af649a127376ec90665c8b25f34dd88bb31094915ee662daf76e0b33a025d28dbc2bc17413dec
+  version: 6.0.13
+  resolution: "jose@npm:6.0.13"
+  checksum: 10c0/e33510e784a0772718ec83e2a724e3f0f7cf79a8000267819b11c4c7981e2a49e6a2a5aea5261cf23697f4531f7e0dfaecd112e5e95ae3fa2b995fb54b1edc73
   languageName: node
   linkType: hard
 
@@ -7777,9 +7773,9 @@ __metadata:
   linkType: hard
 
 "loupe@npm:^3.1.0, loupe@npm:^3.1.4":
-  version: 3.2.0
-  resolution: "loupe@npm:3.2.0"
-  checksum: 10c0/f572fd9e38db8d36ae9eede305480686e310d69bc40394b6842838ebc6c3860a0e35ab30182f33606ab2d8a685d9ff6436649269f8218a1c3385ca329973cb2c
+  version: 3.2.1
+  resolution: "loupe@npm:3.2.1"
+  checksum: 10c0/910c872cba291309664c2d094368d31a68907b6f5913e989d301b5c25f30e97d76d77f23ab3bf3b46d0f601ff0b6af8810c10c31b91d2c6b2f132809ca2cc705
   languageName: node
   linkType: hard
 
@@ -7827,11 +7823,11 @@ __metadata:
   linkType: hard
 
 "magic-string@npm:^0.30.17":
-  version: 0.30.17
-  resolution: "magic-string@npm:0.30.17"
+  version: 0.30.18
+  resolution: "magic-string@npm:0.30.18"
   dependencies:
-    "@jridgewell/sourcemap-codec": "npm:^1.5.0"
-  checksum: 10c0/16826e415d04b88378f200fe022b53e638e3838b9e496edda6c0e086d7753a44a6ed187adc72d19f3623810589bf139af1a315541cd6a26ae0771a0193eaf7b8
+    "@jridgewell/sourcemap-codec": "npm:^1.5.5"
+  checksum: 10c0/80fba01e13ce1f5c474a0498a5aa462fa158eb56567310747089a0033e432d83a2021ee2c109ac116010cd9dcf90a5231d89fbe3858165f73c00a50a74dbefcd
   languageName: node
   linkType: hard
 
@@ -9153,7 +9149,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -9386,21 +9382,6 @@ __metadata:
     gopd: "npm:^1.2.0"
     set-function-name: "npm:^2.0.2"
   checksum: 10c0/83b88e6115b4af1c537f8dabf5c3744032cb875d63bc05c288b1b8c0ef37cbe55353f95d8ca817e8843806e3e150b118bc624e4279b24b4776b4198232735a77
-  languageName: node
-  linkType: hard
-
-"rehackt@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "rehackt@npm:0.1.0"
-  peerDependencies:
-    "@types/react": "*"
-    react: "*"
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    react:
-      optional: true
-  checksum: 10c0/3d838bfee84ec06c976f21027936f3b0fdb7660ab8a2d4d3f19c65e0daa78a268aa81352311352b8576b89a074714b36ae6cd5bdadb6e975eca079f2b342de73
   languageName: node
   linkType: hard
 
@@ -10519,8 +10500,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "syk-inn@workspace:."
   dependencies:
-    "@apollo/client": "npm:^3.13.9"
-    "@apollo/client-integration-nextjs": "npm:^0.12.3"
+    "@apollo/client": "npm:^4.0.0"
+    "@apollo/client-integration-nextjs": "npm:^0.13.0"
     "@ariakit/react": "npm:^0.4.18"
     "@envelop/core": "npm:^5.3.0"
     "@envelop/opentelemetry": "npm:^8.0.0"
@@ -10596,13 +10577,6 @@ __metadata:
     zod: "npm:^4.0.17"
   languageName: unknown
   linkType: soft
-
-"symbol-observable@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "symbol-observable@npm:4.0.0"
-  checksum: 10c0/5e9a3ab08263a6be8cbee76587ad5880dcc62a47002787ed5ebea56b1eb30dc87da6f0183d67e88286806799fbe21c69077fbd677be4be2188e92318d6c6f31d
-  languageName: node
-  linkType: hard
 
 "sync-fetch@npm:0.6.0-2":
   version: 0.6.0-2
@@ -10813,15 +10787,6 @@ __metadata:
   peerDependencies:
     typescript: ">=4.8.4"
   checksum: 10c0/9806a38adea2db0f6aa217ccc6bc9c391ddba338a9fe3080676d0d50ed806d305bb90e8cef0276e793d28c8a929f400abb184ddd7ff83a416959c0f4d2ce754f
-  languageName: node
-  linkType: hard
-
-"ts-invariant@npm:^0.10.3":
-  version: 0.10.3
-  resolution: "ts-invariant@npm:0.10.3"
-  dependencies:
-    tslib: "npm:^2.1.0"
-  checksum: 10c0/2fbc178d5903d325ee0b87fad38827eac11888b6e86979b06754fd4bcdcf44c2a99b8bcd5d59d149c0464ede55ae810b02a2aee6835ad10efe4dd0e22efd68c0
   languageName: node
   linkType: hard
 
@@ -11703,22 +11668,6 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: 10c0/dceb44c28578b31641e13695d200d34ec4ab3966a5729814d5445b194933c096b7ced71494ce53a0e8820685d1d010df8b2422e5bf2cdea7e469d97ffbea306f
-  languageName: node
-  linkType: hard
-
-"zen-observable-ts@npm:^1.2.5":
-  version: 1.2.5
-  resolution: "zen-observable-ts@npm:1.2.5"
-  dependencies:
-    zen-observable: "npm:0.8.15"
-  checksum: 10c0/21d586f3d0543e1d6f05d9333a137b407dbf337907c1ee1c2fa7a7da044f7e1262e4baf4ef8902f230c6f5acb561047659eb7df73df33307233cc451efe46db1
-  languageName: node
-  linkType: hard
-
-"zen-observable@npm:0.8.15":
-  version: 0.8.15
-  resolution: "zen-observable@npm:0.8.15"
-  checksum: 10c0/71cc2f2bbb537300c3f569e25693d37b3bc91f225cefce251a71c30bc6bb3e7f8e9420ca0eb57f2ac9e492b085b8dfa075fd1e8195c40b83c951dd59c6e4fbf8
   languageName: node
   linkType: hard
 

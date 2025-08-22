@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ReactElement, useEffect } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 
 import { LoadablePageHeader } from '@components/layout/Page'
 import { PasientDocument } from '@queries'

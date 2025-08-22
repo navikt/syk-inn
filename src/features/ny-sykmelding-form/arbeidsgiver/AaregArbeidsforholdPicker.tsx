@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import { Alert, BodyShort, ProgressBar, Radio, RadioGroup, Select, Stack, TextField } from '@navikt/ds-react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 import { AnimatePresence } from 'motion/react'
 
 import { Arbeidsforhold, ArbeidsforholdDocument } from '@queries'

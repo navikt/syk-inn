@@ -2,7 +2,7 @@ import { ApolloCache } from '@apollo/client'
 
 import { CacheIds, RootQueryType } from './apollo-client-cache'
 
-export function deleteDraftIdFromList(cache: ApolloCache<unknown>, draftId: string): void {
+export function deleteDraftIdFromList(cache: ApolloCache, draftId: string): void {
     cache.modify<RootQueryType>({
         id: 'ROOT_QUERY',
         fields: {

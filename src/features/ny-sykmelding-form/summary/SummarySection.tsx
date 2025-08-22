@@ -2,7 +2,7 @@ import { Alert, BodyShort, Button, Checkbox, Heading } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
 import { AnimatePresence } from 'motion/react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 
 import { BehandlerDocument, OutcomeFragment, PasientWithExistsDocument } from '@queries'
 import { SimpleReveal } from '@components/animation/Reveal'

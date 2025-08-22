@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react'
 import { Alert, Button, Heading, Skeleton } from '@navikt/ds-react'
-import { useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client/react'
 
 import { DocumentStatusSuccess } from '@features/sykmelding-kvittering/DocumentStatus'
 import { SynchronizeSykmeldingDocument } from '@queries'

@@ -1,6 +1,6 @@
 import React, { CSSProperties, ReactElement, useEffect, useRef, useState } from 'react'
 import { Alert, BodyShort, Button, ConfirmationPanel, Detail, Heading, Skeleton } from '@navikt/ds-react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 
 import { cn } from '@lib/tw'
 import { PasientDocument } from '@queries'
