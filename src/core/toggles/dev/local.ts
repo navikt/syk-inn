@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { IToggle } from '@unleash/nextjs'
 
 import { ExpectedToggles } from '../toggles'
@@ -18,10 +20,6 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
     PILOT_USER: {
         name: 'PILOT_USER',
         ...on,
-    },
-    SYK_INN_REFRESH_TOKEN: {
-        name: 'SYK_INN_REFRESH_TOKEN',
-        ...off,
     },
     SYK_INN_AAREG: {
         name: 'SYK_INN_AAREG',

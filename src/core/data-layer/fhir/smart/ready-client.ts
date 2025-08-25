@@ -3,7 +3,6 @@ import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
 import { logger } from '@navikt/next-logger'
 import { GraphQLError } from 'graphql/error'
 
-import { getFlag, getUserlessToggles } from '@core/toggles/unleash'
 import { NoSmartSession } from '@data-layer/graphql/error/Errors'
 import { isDemo, isLocal } from '@lib/env'
 import { getActivePatient } from '@data-layer/fhir/smart/active-patient'
@@ -12,13 +11,10 @@ import { HelseIdClaimSchema } from './helseid'
 import { getSmartClient } from './smart-client'
 import { getSessionId } from './session'
 
-export async function getReadyClient(opts: {
-    validate: true
-    autoRefresh: boolean
-}): Promise<ReadyClient | SmartClientReadyErrors> {
+export async function getReadyClient(opts: { validate: true }): Promise<ReadyClient | SmartClientReadyErrors> {
     const actualSessionId = await getSessionId()
     const activePatient = await getActivePatient()
-    const readyClient = await getSmartClient(actualSessionId, activePatient, opts?.autoRefresh ?? false).ready()
+    const readyClient = await getSmartClient(actualSessionId, activePatient).ready()
 
     if (opts?.validate) {
         const validToken = await readyClient.validate()
@@ -39,8 +35,7 @@ export async function getReadyClientForResolvers(params?: {
     withPractitioner: true
     validateHelseId?: boolean
 }): Promise<[ReadyClient] | [ReadyClient, FhirPractitioner]> {
-    const autoTokenRefresh = getFlag('SYK_INN_REFRESH_TOKEN', await getUserlessToggles())
-    const client = await getReadyClient({ validate: true, autoRefresh: autoTokenRefresh })
+    const client = await getReadyClient({ validate: true })
     if ('error' in client) {
         throw NoSmartSession()
     }

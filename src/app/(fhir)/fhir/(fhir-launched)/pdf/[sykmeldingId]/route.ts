@@ -6,7 +6,6 @@ import { teamLogger } from '@navikt/next-logger/team-log'
 import { getApi } from '@core/services/api-fetcher'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
-import { getFlag, getUserlessToggles } from '@core/toggles/unleash'
 import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
 
 /**
@@ -16,8 +15,7 @@ export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ sykmeldingId: string }> },
 ): Promise<Response> {
-    const autoTokenRefresh = getFlag('SYK_INN_REFRESH_TOKEN', await getUserlessToggles())
-    const client = await getReadyClient({ validate: true, autoRefresh: autoTokenRefresh })
+    const client = await getReadyClient({ validate: true })
     if ('error' in client) {
         return new Response('Internal server error', { status: 500 })
     }

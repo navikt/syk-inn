@@ -3,7 +3,6 @@ import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
 
 import { toReadableDatePeriod } from '@lib/date'
-import { getFlag, getUserlessToggles } from '@core/toggles/unleash'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
 import { failServerSpan, spanServerAsync } from '@lib/otel/server'
@@ -15,8 +14,7 @@ import { getReadyClient } from './smart/ready-client'
 export async function getHprFromFhirSession(
     client?: ReadyClient,
 ): Promise<string | { error: 'NO_SESSION' | 'NO_HPR' }> {
-    const autoTokenRefresh = getFlag('SYK_INN_REFRESH_TOKEN', await getUserlessToggles())
-    const readyClient = client ?? (await getReadyClient({ validate: true, autoRefresh: autoTokenRefresh }))
+    const readyClient = client ?? (await getReadyClient({ validate: true }))
     if ('error' in readyClient) {
         logger.warn(`Unable to get ready client, reason: ${readyClient.error}`)
         return { error: 'NO_SESSION' }

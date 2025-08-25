@@ -28,7 +28,7 @@ async function Page(): Promise<ReactElement> {
                 return
             }
 
-            const client = await getSmartClient(sessionId, null, false).ready()
+            const client = await getSmartClient(sessionId, null).ready()
             if ('error' in client) {
                 failServerSpan(span, `Non-pilot-user failed ready: ${client.error}`)
                 span.setAttribute('non-pilot-user.dry-run.outcome', 'fail')

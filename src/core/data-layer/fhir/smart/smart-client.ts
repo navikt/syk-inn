@@ -25,11 +25,7 @@ if (isDemo || isLocal) {
     smartClientScopes.push('https://helseid.nhn.no')
 }
 
-export function getSmartClient(
-    sessionId: string | null,
-    activePatient: string | null,
-    autoRefreshToggle: boolean,
-): SmartClient {
+export function getSmartClient(sessionId: string | null, activePatient: string | null): SmartClient {
     const smartClientConfig: SmartClientConfiguration = {
         clientId: 'syk-inn',
         scope: smartClientScopes.join(' '),
@@ -40,10 +36,7 @@ export function getSmartClient(
 
     return new SmartClient({ sessionId: sessionId, activePatient: activePatient }, smartClientConfig, {
         storage: getSmartStorage(),
-        options: {
-            autoRefresh: autoRefreshToggle,
-            enableMultiLaunch: true,
-        },
+        options: { autoRefresh: true, enableMultiLaunch: true },
     })
 }
 
