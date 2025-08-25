@@ -38,12 +38,13 @@ export function getSmartClient(
         knownFhirServers: getKnownFhirServers(),
     }
 
-    return new SmartClient(
-        { sessionId: sessionId, activePatient: activePatient },
-        getSmartStorage(),
-        smartClientConfig,
-        { autoRefresh: autoRefreshToggle, enableMultiLaunch: true },
-    )
+    return new SmartClient({ sessionId: sessionId, activePatient: activePatient }, smartClientConfig, {
+        storage: getSmartStorage(),
+        options: {
+            autoRefresh: autoRefreshToggle,
+            enableMultiLaunch: true,
+        },
+    })
 }
 
 function getSmartStorage(): SmartStorage {
