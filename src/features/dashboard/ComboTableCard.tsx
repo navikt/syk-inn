@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client/react'
 import { Alert, BodyShort, Heading, Skeleton, Table } from '@navikt/ds-react'
 import { FlowerPetalsIcon } from '@navikt/aksel-icons'
 
-import { AllSykmeldingerDocument, GetAllDraftsDocument } from '@queries'
+import { AllDashboardDocument } from '@queries'
 import useOnFocus from '@lib/hooks/useOnFocus'
 
 import { ComboTable, ComboTableHeader } from './combo-table/ComboTable'
@@ -12,25 +12,28 @@ import DashboardCard from './card/DashboardCard'
 import DashboardTable from './table/DashboardTable'
 
 function ComboTableCard({ className }: { className?: string }): ReactElement {
-    const allDrafts = useQuery(GetAllDraftsDocument)
-    const sykmeldinger = useQuery(AllSykmeldingerDocument)
-
-    useOnFocus(allDrafts.refetch)
-    useOnFocus(sykmeldinger.refetch)
+    const dashboardQuery = useQuery(AllDashboardDocument)
+    useOnFocus(dashboardQuery.refetch)
 
     return (
-        <DashboardCard className={className} ariaLabel="Tidligere sykmeldinger og utkast">
-            {allDrafts.loading || sykmeldinger.loading ? (
-                <ComboTableSkeleton />
-            ) : allDrafts.data?.drafts?.length === 0 && sykmeldinger.data?.sykmeldinger?.length === 0 ? (
-                <ComboTableEmptyState />
-            ) : (
-                <ComboTable sykmeldinger={sykmeldinger.data?.sykmeldinger ?? []} drafts={allDrafts.data?.drafts ?? []}>
-                    {allDrafts.error && !sykmeldinger.error && <AllDraftsError />}
-                    {sykmeldinger.error && !allDrafts.error && <AllSykmeldingerError />}
-                    {sykmeldinger.error && allDrafts.error && <AllSykmeldingerError />}
+        <DashboardCard
+            className={className}
+            ariaLabel="Tidligere sykmeldinger og utkast"
+            fetching={dashboardQuery.loading && dashboardQuery.dataState !== 'empty'}
+        >
+            {dashboardQuery.dataState === 'complete' && (
+                <ComboTable
+                    sykmeldinger={dashboardQuery.data.sykmeldinger ?? []}
+                    drafts={dashboardQuery.data.drafts ?? []}
+                >
+                    {dashboardQuery.error && !dashboardQuery.data.drafts == null && <AllDraftsError />}
+                    {dashboardQuery.error && !dashboardQuery.data.sykmeldinger == null && <AllSykmeldingerError />}
                 </ComboTable>
             )}
+            {dashboardQuery.loading && dashboardQuery.dataState !== 'complete' && <ComboTableSkeleton />}
+            {dashboardQuery.dataState === 'complete' &&
+                !dashboardQuery.data.sykmeldinger?.length &&
+                !dashboardQuery.data.drafts!.length && <ComboTableEmptyState />}
         </DashboardCard>
     )
 }

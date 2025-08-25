@@ -1,0 +1,8 @@
+query AllDashboard {
+    drafts {
+        ...Draft
+    }
+    sykmeldinger {
+        ...Sykmelding
+    }
+}
