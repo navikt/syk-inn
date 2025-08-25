@@ -7,12 +7,14 @@ import OpprettNySykmeldingCard from '@features/dashboard/OpprettNySykmeldingCard
 import { KonsultasjonDocument, PasientDocument } from '@queries'
 import ComboTableCard from '@features/dashboard/ComboTableCard'
 import { LoadablePageHeader, PageLayout } from '@components/layout/Page'
+import useOnFocus from '@lib/hooks/useOnFocus'
 
 function DashboardPage(): ReactElement {
     const pasientQuery = useQuery(PasientDocument)
 
-    // Preload Konsultasjon (with diagnosis) for the form
-    useQuery(KonsultasjonDocument)
+    // Preload Konsultasjon (with diagnosis) for the form, we refetch it on focus so that new diagnoses suggested
+    const konsultasjonDocument = useQuery(KonsultasjonDocument)
+    useOnFocus(konsultasjonDocument.refetch)
 
     return (
         <PageLayout
