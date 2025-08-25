@@ -15,12 +15,13 @@ import type { NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form
 import { formValuesToStatePayload } from './form-mappers'
 import { useFormStep } from './steps/useFormStep'
 import { createDefaultFormValues } from './form-default-values'
+import DiagnoseSection from './diagnose/DiagnoseSection'
+import DiagnoseInfoAlert from './diagnose/DiagnoseInfoAlert'
 import BidiagnoseSection from './diagnose/bidiagnose/BidiagnoseSection'
 import ArbeidsforholdSection from './arbeidsgiver/ArbeidsforholdSection'
 import AndreSporsmalSection from './andre-sporsmal/AndreSporsmalSection'
 import DynamicTilbakedateringSection from './tilbakedatering/DynamicTilbakedateringSection'
 import AktivitetSection from './aktivitet/AktivitetSection'
-import DiagnoseSection from './diagnose/DiagnoseSection'
 import MeldingerSection from './meldinger/MeldingerSection'
 import ForkastDraftButton, { LagreDraftButton } from './draft/DraftActions'
 import FormDraftSync from './draft/FormDraftSync'
@@ -63,6 +64,7 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                     <FormSection title="Diagnose">
                         <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
                         <BidiagnoseSection />
+                        <DiagnoseInfoAlert />
                     </FormSection>
                     <FormSection title="Andre spørsmål" hideTitle>
                         <AndreSporsmalSection />

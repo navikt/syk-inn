@@ -12,3 +12,9 @@ export const DiagnoseSchema = z.object({
     code: z.string(),
     text: z.string(),
 })
+
+export function isSameDiagnose(a: Diagnose | null, b: Diagnose | null): boolean {
+    if (a === b) return true
+    if (a === null || b === null) return false
+    return a.code === b.code && a.system === b.system
+}
