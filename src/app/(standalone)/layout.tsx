@@ -31,18 +31,19 @@ export default async function StandaloneLayout({ children }: LayoutProps<'/'>): 
 
     const [toggles, behandler] = await spanServerAsync('OpenLayout toggles', async () => {
         const userInfo = await getHelseIdUserInfo()
-        if (typeof userInfo?.hpr_number !== 'string') {
+        if (typeof userInfo?.['helseid://claims/hpr/hpr_number'] !== 'string') {
             return [await getUserlessToggles(), userInfo]
         }
-        return [await getUserToggles(userInfo.hpr_number), userInfo]
+        return [await getUserToggles(userInfo?.['helseid://claims/hpr/hpr_number']), userInfo]
     })
 
-    if (typeof behandler?.hpr_number !== 'string') {
+    const hpr = behandler?.['helseid://claims/hpr/hpr_number']
+    if (behandler == null || hpr == null) {
         return <NoValidHPR mode="HelseID" />
     }
 
     if (!getFlag('PILOT_USER', toggles)) {
-        logger.warn(`Non-pilot user has accessed the app, HPR: ${behandler.hpr_number}`)
+        logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
         unauthorized()
     }
 
@@ -60,8 +61,8 @@ export default async function StandaloneLayout({ children }: LayoutProps<'/'>): 
             <body>
                 <HelseIdHeader
                     behandler={{
-                        navn: 'TODO',
-                        hpr: behandler?.hpr_number ?? 'TODO',
+                        navn: behandler.name,
+                        hpr: hpr,
                     }}
                 />
                 <ToggleProvider toggles={toToggleMap(toggles)}>

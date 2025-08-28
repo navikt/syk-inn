@@ -2,10 +2,10 @@ import 'server-only'
 
 import * as z from 'zod'
 import { logger } from '@navikt/next-logger'
+import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { getHelseIdAccessToken, getHelseIdWellKnown } from './helseid-resources'
 
-type HprDetails = z.infer<typeof HprDetailsSchema>
 const HprDetailsSchema = z.object({
     approvals: z.array(
         z.object({
@@ -18,11 +18,14 @@ const HprDetailsSchema = z.object({
     hpr_number: z.number().transform((it) => `${it}`),
 })
 
+type UserInfo = z.infer<typeof UserInfoSchema>
 const UserInfoSchema = z.object({
+    name: z.string(),
+    'helseid://claims/hpr/hpr_number': z.string(),
     'helseid://claims/hpr/hpr_details': HprDetailsSchema,
 })
 
-export async function getHelseIdUserInfo(): Promise<HprDetails | null> {
+export async function getHelseIdUserInfo(): Promise<UserInfo | null> {
     const wellKnown = await getHelseIdWellKnown()
 
     logger.info(`Getting userinfo from: ${wellKnown.userinfo_endpoint}`)
@@ -39,8 +42,11 @@ export async function getHelseIdUserInfo(): Promise<HprDetails | null> {
         throw new Error(`Failed to fetch user info: ${response.statusText}`)
     }
 
-    const parsedResponse = UserInfoSchema.safeParse(await response.json())
+    const rawResponse: unknown = await response.json()
+    const parsedResponse = UserInfoSchema.safeParse(rawResponse)
     if (!parsedResponse.success) {
+        teamLogger.error(await getHelseIdAccessToken())
+        teamLogger.error(JSON.stringify(rawResponse, null, 2))
         logger.error(
             new Error(
                 `Tried to get /connect/userinfo from HelseID, but something looks wrong and zod parse failed: ${parsedResponse.error.message}`,
@@ -50,5 +56,5 @@ export async function getHelseIdUserInfo(): Promise<HprDetails | null> {
         return null
     }
 
-    return parsedResponse.data['helseid://claims/hpr/hpr_details']
+    return parsedResponse.data
 }
