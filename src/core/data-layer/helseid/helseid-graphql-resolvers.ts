@@ -1,18 +1,25 @@
 import { Resolvers } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { commonQueryResolvers, typeResolvers } from '@data-layer/graphql/common-resolvers'
+import { raise } from '@lib/ts'
 
 const helseidResolvers: Resolvers = {
     Query: {
-        pasient: () => ({
-            ident: 'woo',
-            navn: 'Navn',
-            fastlege: {
-                navn: 'Fastlegessen',
-                hpr: '123456',
-            },
-        }),
+        konsultasjon: () => null,
+        pasient: () => null,
+        behandler: () => null,
+        sykmelding: () => null,
+        sykmeldinger: () => null,
+        draft: () => null,
+        drafts: () => null,
+        person: () => null,
         ...commonQueryResolvers,
+    },
+    Mutation: {
+        saveDraft: () => raise('Not Implemented'),
+        deleteDraft: () => raise('Not Implemented'),
+        opprettSykmelding: () => raise('Not Implemented'),
+        synchronizeSykmelding: () => raise('Not Implemented'),
     },
     ...typeResolvers,
 }
