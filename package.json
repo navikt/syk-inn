@@ -57,6 +57,7 @@
         "graphql": "^16.11.0",
         "graphql-yoga": "^5.15.1",
         "iovalkey": "^0.3.3",
+        "jose": "^6.1.0",
         "motion": "^12.23.12",
         "next": "15.5.2",
         "next-logger": "^5.0.1",

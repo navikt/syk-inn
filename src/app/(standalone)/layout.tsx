@@ -8,7 +8,7 @@ import { notFound, unauthorized } from 'next/navigation'
 import DemoWarning from '@components/user-warnings/DemoWarning'
 import { isLocal, isDemo, bundledEnv } from '@lib/env'
 import { getFlag, getUserlessToggles, getUserToggles, toToggleMap } from '@core/toggles/unleash'
-import { getHelseIdUserInfo } from '@data-layer/helseid/helseid-userinfo'
+import { getHelseIdIdTokenInfo } from '@data-layer/helseid/helseid-userinfo'
 import HelseIdHeader from '@data-layer/helseid/components/HelseIdHeader'
 import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 import { ToggleProvider } from '@core/toggles/context'
@@ -30,7 +30,7 @@ export default async function StandaloneLayout({ children }: LayoutProps<'/'>): 
     if (bundledEnv.runtimeEnv === 'prod-gcp') return notFound()
 
     const [toggles, behandler] = await spanServerAsync('OpenLayout toggles', async () => {
-        const userInfo = await getHelseIdUserInfo()
+        const userInfo = await getHelseIdIdTokenInfo()
         if (typeof userInfo?.['helseid://claims/hpr/hpr_number'] !== 'string') {
             return [await getUserlessToggles(), userInfo]
         }

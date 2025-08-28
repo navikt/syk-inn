@@ -3,6 +3,7 @@ import 'server-only'
 import * as z from 'zod'
 import { logger } from '@navikt/next-logger'
 import { teamLogger } from '@navikt/next-logger/team-log'
+import { decodeJwt } from 'jose'
 
 import { getHelseIdAccessToken, getHelseIdIdToken, getHelseIdWellKnown } from './helseid-resources'
 
@@ -20,8 +21,6 @@ const HprDetailsSchema = z.object({
 
 type UserInfo = z.infer<typeof UserInfoSchema>
 const UserInfoSchema = z.object({
-    name: z.string(),
-    'helseid://claims/hpr/hpr_number': z.string(),
     'helseid://claims/hpr/hpr_details': HprDetailsSchema,
 })
 
@@ -63,4 +62,16 @@ export async function getHelseIdUserInfo(): Promise<UserInfo | null> {
     }
 
     return parsedResponse.data
+}
+
+type HelseIdIdToken = z.infer<typeof HelseIdIdTokenSchema>
+const HelseIdIdTokenSchema = z.object({
+    'helseid://claims/identity/pid': z.string(),
+    'helseid://claims/hpr/hpr_number': z.string(),
+    name: z.string(),
+})
+
+export async function getHelseIdIdTokenInfo(): Promise<HelseIdIdToken> {
+    const idToken = await getHelseIdIdToken()
+    return HelseIdIdTokenSchema.parse(decodeJwt(idToken))
 }

@@ -10484,6 +10484,7 @@ __metadata:
     graphql-yoga: "npm:^5.15.1"
     husky: "npm:^9.1.7"
     iovalkey: "npm:^0.3.3"
+    jose: "npm:^6.1.0"
     knip: "npm:^5.63.0"
     lint-staged: "npm:^16.1.5"
     motion: "npm:^12.23.12"
