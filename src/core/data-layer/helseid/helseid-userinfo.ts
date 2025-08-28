@@ -4,7 +4,7 @@ import * as z from 'zod'
 import { logger } from '@navikt/next-logger'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
-import { getHelseIdAccessToken, getHelseIdWellKnown } from './helseid-resources'
+import { getHelseIdAccessToken, getHelseIdIdToken, getHelseIdWellKnown } from './helseid-resources'
 
 const HprDetailsSchema = z.object({
     approvals: z.array(
@@ -40,6 +40,12 @@ export async function getHelseIdUserInfo(): Promise<UserInfo | null> {
 
     if (!response.ok) {
         throw new Error(`Failed to fetch user info: ${response.statusText}`)
+    }
+
+    try {
+        teamLogger.warn(await getHelseIdIdToken())
+    } catch (error) {
+        teamLogger.error('Failed to log id_token for debugging purposes', error instanceof Error ? error : undefined)
     }
 
     const rawResponse: unknown = await response.json()

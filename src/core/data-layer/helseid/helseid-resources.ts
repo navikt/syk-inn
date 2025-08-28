@@ -56,3 +56,16 @@ export async function getHelseIdAccessToken(): Promise<string> {
 
     return bearerToken.replace('Bearer ', '')
 }
+
+export async function getHelseIdIdToken(): Promise<string> {
+    if (isLocal || isDemo || isE2E) {
+        return 'foo-bar-token'
+    }
+
+    const idToken = (await headers()).get('X-Wonderwall-Id-Token')
+    if (!idToken) {
+        throw new Error('No HelseID id_token found')
+    }
+
+    return idToken
+}
