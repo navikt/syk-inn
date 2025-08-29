@@ -8,7 +8,7 @@ import { notFound, unauthorized } from 'next/navigation'
 import DemoWarning from '@components/user-warnings/DemoWarning'
 import { isLocal, isDemo, bundledEnv } from '@lib/env'
 import { getFlag, getUserlessToggles, getUserToggles, toToggleMap } from '@core/toggles/unleash'
-import { getHelseIdIdTokenInfo } from '@data-layer/helseid/helseid-userinfo'
+import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
 import HelseIdHeader from '@data-layer/helseid/components/HelseIdHeader'
 import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 import { ToggleProvider } from '@core/toggles/context'
@@ -30,20 +30,19 @@ export default async function StandaloneLayout({ children }: LayoutProps<'/'>): 
     if (bundledEnv.runtimeEnv === 'prod-gcp') return notFound()
 
     const [toggles, behandler] = await spanServerAsync('OpenLayout toggles', async () => {
-        const userInfo = await getHelseIdIdTokenInfo()
-        if (typeof userInfo?.['helseid://claims/hpr/hpr_number'] !== 'string') {
+        const userInfo = await getHelseIdBehandler()
+        if (userInfo.hpr == null) {
             return [await getUserlessToggles(), userInfo]
         }
-        return [await getUserToggles(userInfo?.['helseid://claims/hpr/hpr_number']), userInfo]
+        return [await getUserToggles(userInfo.hpr), userInfo]
     })
 
-    const hpr = behandler?.['helseid://claims/hpr/hpr_number']
-    if (behandler == null || hpr == null) {
+    if (behandler.hpr == null) {
         return <NoValidHPR mode="HelseID" />
     }
 
     if (!getFlag('PILOT_USER', toggles)) {
-        logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
+        logger.warn(`Non-pilot user has accessed the app, HPR: ${behandler.hpr}`)
         unauthorized()
     }
 
@@ -59,12 +58,7 @@ export default async function StandaloneLayout({ children }: LayoutProps<'/'>): 
             </head>
             <Preload />
             <body>
-                <HelseIdHeader
-                    behandler={{
-                        navn: behandler.name,
-                        hpr: hpr,
-                    }}
-                />
+                <HelseIdHeader behandler={{ navn: behandler.navn, hpr: behandler.hpr }} />
                 <ToggleProvider toggles={toToggleMap(toggles)}>
                     <Providers mode="HelseID">
                         {(isLocal || isDemo) && <DemoWarning />}
