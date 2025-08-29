@@ -62,10 +62,6 @@ spec:
     requests:
       cpu: 50m
       memory: 200Mi
-  env:
-    # Stop double logging by auto instrumentation _and_ nais stdout logshipper
-    - name: OTEL_LOGS_EXPORTER
-      value: none
   envFrom:
     - secret: login-config-syk-inn
     - secret: tsm-syk-inn-epj-secrets
