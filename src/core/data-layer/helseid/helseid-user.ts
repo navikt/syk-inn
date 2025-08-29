@@ -74,7 +74,7 @@ export async function getHelseIdUserInfo(): Promise<UserInfo | null> {
 type HelseIdIdToken = z.infer<typeof HelseIdIdTokenSchema>
 const HelseIdIdTokenSchema = z.object({
     'helseid://claims/identity/pid': z.string(),
-    'helseid://claims/hpr/hpr_number': z.string().nullable(),
+    'helseid://claims/hpr/hpr_number': z.string().nullable().optional(),
     name: z.string(),
 })
 

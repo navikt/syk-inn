@@ -12,7 +12,7 @@ export async function getHelseIdBehandler(): Promise<HelseIdBehandler> {
     const tokenPayload = await getHelseIdIdTokenInfo()
 
     return {
-        hpr: tokenPayload['helseid://claims/hpr/hpr_number'],
+        hpr: tokenPayload['helseid://claims/hpr/hpr_number'] ?? null,
         navn: tokenPayload.name,
     }
 }
