@@ -6,7 +6,7 @@ import { NavLogo } from '@components/misc/NavLogo'
 type Props = {
     behandler: {
         navn: string
-        hpr: string
+        hpr: string | null
     }
 }
 
@@ -29,7 +29,7 @@ function HelseIdHeader({ behandler }: Props): ReactElement {
                 <div className="flex gap-3 items-center">
                     <div>
                         <BodyShort>{behandler.navn}</BodyShort>
-                        <Detail>{behandler.hpr}</Detail>
+                        {behandler.hpr && <Detail>{behandler.hpr}</Detail>}
                     </div>
                 </div>
             </div>

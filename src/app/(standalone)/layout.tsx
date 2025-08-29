@@ -37,10 +37,6 @@ export default async function StandaloneLayout({ children }: LayoutProps<'/'>): 
         return [await getUserToggles(userInfo.hpr), userInfo]
     })
 
-    if (behandler.hpr == null) {
-        return <NoValidHPR mode="HelseID" />
-    }
-
     if (!getFlag('PILOT_USER', toggles)) {
         logger.warn(`Non-pilot user has accessed the app, HPR: ${behandler.hpr}`)
         unauthorized()
@@ -62,7 +58,7 @@ export default async function StandaloneLayout({ children }: LayoutProps<'/'>): 
                 <ToggleProvider toggles={toToggleMap(toggles)}>
                     <Providers mode="HelseID">
                         {(isLocal || isDemo) && <DemoWarning />}
-                        {children}
+                        {behandler.hpr == null ? <NoValidHPR mode="HelseID" /> : children}
                         <LoggedOutWarning />
                         {(isLocal || isDemo) && <LazyDevTools />}
                     </Providers>
