@@ -3,7 +3,7 @@ import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
 import { logger } from '@navikt/next-logger'
 import { GraphQLError } from 'graphql/error'
 
-import { NoSmartSession } from '@data-layer/graphql/error/Errors'
+import { NoSmartSession } from '@data-layer/fhir/error/Errors'
 import { isDemo, isLocal } from '@lib/env'
 import { getActivePatient } from '@data-layer/fhir/smart/active-patient'
 

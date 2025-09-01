@@ -6,8 +6,9 @@ import { teamLogger } from '@navikt/next-logger/team-log'
 import { decodeJwt } from 'jose'
 
 import { spanServerAsync } from '@lib/otel/server'
+import { getHelseIdWellKnown } from '@data-layer/helseid/token/well-known'
 
-import { getHelseIdAccessToken, getHelseIdIdToken, getHelseIdWellKnown } from './helseid-resources'
+import { getHelseIdAccessToken, getHelseIdIdToken } from './token/tokens'
 
 const HprDetailsSchema = z.object({
     approvals: z.array(

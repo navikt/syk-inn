@@ -7,7 +7,7 @@ import { LoadablePageHeader } from '@components/layout/Page'
 import { PasientDocument } from '@queries'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
-import { isSmartSessionInvalid } from '@data-layer/graphql/error/Errors'
+import { isSmartSessionInvalid } from '@data-layer/fhir/error/Errors'
 import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
 
 import { NoPractitionerSession } from '../../launched-errors'

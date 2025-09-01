@@ -1,15 +1,13 @@
-import 'server-only'
-
 import * as z from 'zod'
-import { headers } from 'next/headers'
 import { logger } from '@navikt/next-logger'
 
-import { getServerEnv, isE2E, isLocal, isDemo } from '@lib/env'
+import { getServerEnv, isDemo, isE2E, isLocal } from '@lib/env'
 import { getLoopbackURL, pathWithBasePath } from '@lib/url'
 
 type HelseIdWellKnown = z.infer<typeof HelseIdWellKnownSchema>
 const HelseIdWellKnownSchema = z.object({
     issuer: z.string(),
+    jwks_uri: z.url(),
     userinfo_endpoint: z.string(),
 })
 
@@ -18,6 +16,7 @@ export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
         const parsedSchema = HelseIdWellKnownSchema.parse({
             issuer: `${getLoopbackURL()}${pathWithBasePath('/api/mocks/helseid')}`,
             userinfo_endpoint: `${getLoopbackURL()}${pathWithBasePath('/api/mocks/helseid/connect/userinfo')}`,
+            jwks_uri: `${getLoopbackURL()}${pathWithBasePath('/api/mocks/helseid/.well-known/jwks.json')}`,
         } satisfies HelseIdWellKnown)
 
         logger.info(`Fake local or demo HelseID .well-known: ${JSON.stringify(parsedSchema, null, 2)}`)
@@ -37,35 +36,4 @@ export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
     }
 
     return HelseIdWellKnownSchema.parseAsync(await response.json())
-}
-
-/**
- * Wonderwall (see README.md) exchanges it's own session ID for the actual HelseID access token. This
- * is not available in a other contexts other than a RSC or route handler.
- */
-export async function getHelseIdAccessToken(): Promise<string> {
-    if (isLocal || isDemo || isE2E) {
-        return 'foo-bar-token'
-    }
-
-    const bearerToken = (await headers()).get('Authorization')
-
-    if (!bearerToken) {
-        throw new Error('No bearer token found')
-    }
-
-    return bearerToken.replace('Bearer ', '')
-}
-
-export async function getHelseIdIdToken(): Promise<string> {
-    if (isLocal || isDemo || isE2E) {
-        return 'foo-bar-token'
-    }
-
-    const idToken = (await headers()).get('X-Wonderwall-Id-Token')
-    if (!idToken) {
-        throw new Error('No HelseID id_token found')
-    }
-
-    return idToken
 }
