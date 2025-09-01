@@ -8,7 +8,7 @@ import { createSchema } from '@data-layer/graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
 import { getHpr, practitionerToBehandler } from '@data-layer/fhir/mappers/practitioner'
-import { createDocumentReference } from '@data-layer/fhir/fhir-service'
+import { createDocumentReference, getAllSykmeldingMetaFromFhir } from '@data-layer/fhir/fhir-service'
 import {
     getOrganisasjonsnummerFromFhir,
     getOrganisasjonstelefonnummerFromFhir,
@@ -27,6 +27,7 @@ import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unlea
 import { aaregService } from '@core/services/aareg/aareg-service'
 import { raise } from '@lib/ts'
 import { getReadyClientForResolvers } from '@data-layer/fhir/smart/ready-client'
+import { assertIsPilotUser } from '@data-layer/fhir/fhir-graphql-utils'
 
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
@@ -317,71 +318,13 @@ const fhirResolvers: Resolvers = {
             return true
         },
         opprettSykmelding: async (_, { draftId, values }) => {
-            const [client, practitioner] = await getReadyClientForResolvers({
-                withPractitioner: true,
-                validateHelseId: true,
-            })
+            const [client] = await getReadyClientForResolvers()
+            const { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf } =
+                await getAllSykmeldingMetaFromFhir(client)
 
-            const hpr = getHpr(practitioner.identifier)
-            if (hpr == null) {
-                logger.error('Missing HPR identifier in practitioner resource')
-                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
-                throw new GraphQLError('PARSING_ERROR')
-            }
+            await assertIsPilotUser(sykmelderHpr)
 
-            // TODO: Fetching these patient, encounter and organization can probably be done a bit more effective
-            const pasient = await client.patient.request()
-            if ('error' in pasient) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const encounter = await client.encounter.request()
-            if ('error' in encounter) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const organization = await client.request(encounter.serviceProvider.reference as `Organization/${string}`)
-            if ('error' in organization) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const orgnummer = getOrganisasjonsnummerFromFhir(organization)
-            if (orgnummer == null) {
-                logger.error('Organization without valid orgnummer')
-                teamLogger.error(`Organization without valid orgnummer: ${JSON.stringify(organization, null, 2)}`)
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const legekontorTlf = getOrganisasjonstelefonnummerFromFhir(organization)
-            if (legekontorTlf == null) {
-                logger.error('Organization without valid phone number')
-                teamLogger.error(`Organization without valid phone number: ${JSON.stringify(organization, null, 2)}`)
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const pasientIdent = getValidPatientIdent(pasient.identifier)
-            if (pasientIdent == null) {
-                logger.error('Patient without valid FNR/DNR')
-                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const toggles = await getUserToggles(hpr)
-            const isPilotUser = getFlag('PILOT_USER', toggles)
-            if (!isPilotUser) {
-                logger.error(
-                    `Non-pilot user tried to create a sykmelding, is modal not modalling? See team logs for HPR`,
-                )
-                teamLogger.error(`Non-pilot user tried to create a sykmelding, is modal not modalling? HPR: ${hpr}`)
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const meta: OpprettSykmeldingMeta = {
-                sykmelderHpr: hpr,
-                pasientIdent: pasientIdent,
-                legekontorOrgnr: orgnummer,
-                legekontorTlf: legekontorTlf,
-            }
+            const meta: OpprettSykmeldingMeta = { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf }
             const payload = resolverInputToSykInnApiPayload(values, meta)
             const result = await sykInnApiService.opprettSykmelding(payload)
 
@@ -402,7 +345,7 @@ const fhirResolvers: Resolvers = {
 
             // Delete the draft after successful creation
             const draftClient = await getDraftClient()
-            await draftClient.deleteDraft(draftId, { hpr, ident: pasientIdent })
+            await draftClient.deleteDraft(draftId, { hpr: sykmelderHpr, ident: pasientIdent })
 
             return sykInnApiSykmeldingToResolverSykmelding(result, 'PENDING')
         },

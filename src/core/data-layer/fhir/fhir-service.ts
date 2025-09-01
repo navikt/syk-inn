@@ -1,20 +1,84 @@
 import { logger } from '@navikt/next-logger'
 import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
+import { GraphQLError } from 'graphql/error'
+import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { toReadableDatePeriod } from '@lib/date'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
 import { failServerSpan, spanServerAsync } from '@lib/otel/server'
+import {
+    getOrganisasjonsnummerFromFhir,
+    getOrganisasjonstelefonnummerFromFhir,
+} from '@data-layer/fhir/mappers/organization'
+import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
+import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
 
 import { getHpr } from './mappers/practitioner'
 import { createNewDocumentReferencePayload } from './mappers/document-reference'
 import { getReadyClient } from './smart/ready-client'
 
-export async function getHprFromFhirSession(
-    client?: ReadyClient,
-): Promise<string | { error: 'NO_SESSION' | 'NO_HPR' }> {
-    const readyClient = client ?? (await getReadyClient({ validate: true }))
+/**
+ * Chonky boi. Fetches the FHIR resources: Practitioner, Patient, Encounter and Organization, and extracts the relevant
+ * metadata needed to create or validate a new sykmelding in syk-inn-api.
+ */
+export async function getAllSykmeldingMetaFromFhir(client: ReadyClient): Promise<OpprettSykmeldingMeta> {
+    return spanServerAsync('FhirService.all-meta-resources', async () => {
+        const [practitioner, encounter] = await Promise.all([client.user.request(), client.encounter.request()])
+
+        if ('error' in practitioner || 'error' in encounter) {
+            throw new GraphQLError('API_ERROR')
+        }
+
+        const sykmelderHpr = getHpr(practitioner.identifier)
+        if (sykmelderHpr == null) {
+            logger.error('Missing HPR identifier in practitioner resource')
+            teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
+            throw new GraphQLError('PARSING_ERROR')
+        }
+
+        const [patient, organization] = await Promise.all([
+            client.patient.request(),
+            client.request(encounter.serviceProvider.reference as `Organization/${string}`),
+        ])
+
+        if ('error' in patient || 'error' in organization) {
+            throw new GraphQLError('API_ERROR')
+        }
+
+        const legekontorOrgnr = getOrganisasjonsnummerFromFhir(organization)
+        if (legekontorOrgnr == null) {
+            logger.error('Organization without valid orgnummer')
+            teamLogger.error(`Organization without valid orgnummer: ${JSON.stringify(organization, null, 2)}`)
+            throw new GraphQLError('API_ERROR')
+        }
+
+        const legekontorTlf = getOrganisasjonstelefonnummerFromFhir(organization)
+        if (legekontorTlf == null) {
+            logger.error('Organization without valid phone number')
+            teamLogger.error(`Organization without valid phone number: ${JSON.stringify(organization, null, 2)}`)
+            throw new GraphQLError('API_ERROR')
+        }
+
+        const pasientIdent = getValidPatientIdent(patient.identifier)
+        if (pasientIdent == null) {
+            logger.error('Patient without valid FNR/DNR')
+            teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(patient, null, 2)}`)
+            throw new GraphQLError('API_ERROR')
+        }
+
+        return {
+            sykmelderHpr,
+            pasientIdent,
+            legekontorOrgnr,
+            legekontorTlf,
+        }
+    })
+}
+
+export async function getHprFromFhirSession(): Promise<string | { error: 'NO_SESSION' | 'NO_HPR' }> {
+    const readyClient = await getReadyClient({ validate: true })
     if ('error' in readyClient) {
         logger.warn(`Unable to get ready client, reason: ${readyClient.error}`)
         return { error: 'NO_SESSION' }
