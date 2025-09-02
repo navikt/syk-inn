@@ -1114,9 +1114,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-codegen/typescript-resolvers@npm:^4.5.1":
-  version: 4.5.1
-  resolution: "@graphql-codegen/typescript-resolvers@npm:4.5.1"
+"@graphql-codegen/typescript-resolvers@npm:^4.5.2":
+  version: 4.5.2
+  resolution: "@graphql-codegen/typescript-resolvers@npm:4.5.2"
   dependencies:
     "@graphql-codegen/plugin-helpers": "npm:^5.1.0"
     "@graphql-codegen/typescript": "npm:^4.1.6"
@@ -1130,7 +1130,7 @@ __metadata:
   peerDependenciesMeta:
     graphql-sock:
       optional: true
-  checksum: 10c0/40b56f9ef25d1cde868567131e1ff3dcdc6d707acf9ec547d445eea200465b98c28e44cb3f3cc6a963feb38451c99ed028ed8b828b170b640aec675fba19257b
+  checksum: 10c0/46d65a5f65604ac68a102697a38fb2ba1eb7f7b643b73ff4ca93fffe86416b643d65bc552e252912a11cfac9b49a85ce47c5a27a837c537bbb722937adffe15f
   languageName: node
   linkType: hard
 
@@ -2069,7 +2069,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
-    "@navikt/smart-on-fhir": "npm:1.4.13"
+    "@navikt/smart-on-fhir": "npm:1.4.14"
     "@types/node": "npm:^22.18.0"
     hono: "npm:^4.9.5"
     jose: "npm:^6.1.0"
@@ -2132,9 +2132,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.4.13":
-  version: 1.4.13
-  resolution: "@navikt/smart-on-fhir@npm:1.4.13::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.4.13%2F455845b640c023c3e4bf076f73d8b40746b47bab"
+"@navikt/smart-on-fhir@npm:1.4.14":
+  version: 1.4.14
+  resolution: "@navikt/smart-on-fhir@npm:1.4.14::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.4.14%2Fd0edd1beb5178e3df71925ff7a8a13bf605cd519"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
     "@opentelemetry/api": "npm:^1.9.0"
@@ -2143,7 +2143,7 @@ __metadata:
     openid-client: "npm:^6.7.0"
     pino: "npm:^9.9.0"
     zod: "npm:^4.1.4"
-  checksum: 10c0/671cb4d5b797a654b5f178ed032883b8173795185c711243f009b4c892b627b7d648e2e6a712f7c571af96b21e165ea8f6b99ebd877200dcd073675d2bd76842
+  checksum: 10c0/d32a52b657b1307673cd8a50a9409772fbf70c6aede9b4242a8cb0cff89ac1b46b8f33b114624fbf62870b03d11b36eb6d5c3051a8c8cb0a29b2dae2b06cb5cb
   languageName: node
   linkType: hard
 
@@ -4487,7 +4487,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^5.5.0":
+"chalk@npm:^5.6.0":
   version: 5.6.0
   resolution: "chalk@npm:5.6.0"
   checksum: 10c0/f8558fc12fd9805f167611803b325b0098bbccdc9f1d3bafead41c9bac61f263357f3c0df0cbe28bc2fd5fca3edcf618b01d6771a5a776b4c15d061482a72b23
@@ -6619,9 +6619,9 @@ __metadata:
   linkType: hard
 
 "immer@npm:^10.0.3":
-  version: 10.1.1
-  resolution: "immer@npm:10.1.1"
-  checksum: 10c0/b749e10d137ccae91788f41bd57e9387f32ea6d6ea8fd7eb47b23fd7766681575efc7f86ceef7fe24c3bc9d61e38ff5d2f49c2663b2b0c056e280a4510923653
+  version: 10.1.3
+  resolution: "immer@npm:10.1.3"
+  checksum: 10c0/b3929022c1999935c9c5e9491fce20d883c15a04072628056f3b8c51a63ac0876d1c1f25cec146e325c30c906bc7f15a636c29ed53156f0a3049150f152df4c8
   languageName: node
   linkType: hard
 
@@ -7560,15 +7560,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^16.1.5":
-  version: 16.1.5
-  resolution: "lint-staged@npm:16.1.5"
+"lint-staged@npm:^16.1.6":
+  version: 16.1.6
+  resolution: "lint-staged@npm:16.1.6"
   dependencies:
-    chalk: "npm:^5.5.0"
+    chalk: "npm:^5.6.0"
     commander: "npm:^14.0.0"
     debug: "npm:^4.4.1"
     lilconfig: "npm:^3.1.3"
-    listr2: "npm:^9.0.1"
+    listr2: "npm:^9.0.3"
     micromatch: "npm:^4.0.8"
     nano-spawn: "npm:^1.0.2"
     pidtree: "npm:^0.6.0"
@@ -7576,7 +7576,7 @@ __metadata:
     yaml: "npm:^2.8.1"
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/771e7be871f1d74ed09ef4e4eae5f835ed962965db7709be26cccf71bef8fed34f8d5d92f193b2a6fad32c12d955850aa74008e6180fabea8a7a6666cba2ac39
+  checksum: 10c0/e695edfec7e330f2c7cd0bb0e56220aa95d3b3655fe64a87a02140609a3594df67e1ea7abc2cc4ce69aa010418e406b1b24703ba4bd026c873a5b43a5ab16c6a
   languageName: node
   linkType: hard
 
@@ -7601,7 +7601,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"listr2@npm:^9.0.1":
+"listr2@npm:^9.0.3":
   version: 9.0.3
   resolution: "listr2@npm:9.0.3"
   dependencies:
@@ -10450,7 +10450,7 @@ __metadata:
     "@grafana/faro-web-tracing": "npm:^1.19.0"
     "@graphql-codegen/cli": "npm:^5.0.7"
     "@graphql-codegen/fragment-matcher": "npm:^5.1.0"
-    "@graphql-codegen/typescript-resolvers": "npm:^4.5.1"
+    "@graphql-codegen/typescript-resolvers": "npm:^4.5.2"
     "@graphql-tools/graphql-file-loader": "npm:^8.1.0"
     "@graphql-tools/load": "npm:^8.1.2"
     "@graphql-tools/schema": "npm:^10.0.25"
@@ -10466,7 +10466,7 @@ __metadata:
     "@navikt/next-api-proxy": "npm:^4.1.4"
     "@navikt/next-logger": "npm:^4.1.5"
     "@navikt/oasis": "npm:^3.8.0"
-    "@navikt/smart-on-fhir": "npm:1.4.13"
+    "@navikt/smart-on-fhir": "npm:1.4.14"
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^2.0.1"
     "@parcel/watcher": "npm:^2.5.1"
@@ -10489,7 +10489,7 @@ __metadata:
     iovalkey: "npm:^0.3.3"
     jose: "npm:^6.1.0"
     knip: "npm:^5.63.0"
-    lint-staged: "npm:^16.1.5"
+    lint-staged: "npm:^16.1.6"
     motion: "npm:^12.23.12"
     next: "npm:15.5.2"
     next-logger: "npm:^5.0.1"
@@ -11191,8 +11191,8 @@ __metadata:
   linkType: hard
 
 "vite@npm:^5.0.0 || ^6.0.0 || ^7.0.0-0":
-  version: 7.1.3
-  resolution: "vite@npm:7.1.3"
+  version: 7.1.4
+  resolution: "vite@npm:7.1.4"
   dependencies:
     esbuild: "npm:^0.25.0"
     fdir: "npm:^6.5.0"
@@ -11241,7 +11241,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/a0aa418beab80673dc9a3e9d1fa49472955d6ef9d41a4c9c6bd402953f411346f612864dae267adfb2bb8ceeb894482369316ffae5816c84fd45990e352b727d
+  checksum: 10c0/dbe2ba29926ffe8985c93d1b3718dcc9040080b7fa10a74c82a52aad7449136a391ba17b265288ff03b864e6f1033b9b537247521a96d5491a9d4af90ac04702
   languageName: node
   linkType: hard
 
