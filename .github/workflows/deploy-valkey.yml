@@ -23,8 +23,6 @@ jobs:
           RESOURCE: .nais/nais-dev-valkey.yaml
 
   deploy-valkey-prod:
-    # TODO: Don't deploy yet
-    if: false
     name: Deploy Valkey to prod
     runs-on: ubuntu-latest
     steps:

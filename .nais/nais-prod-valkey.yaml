@@ -7,5 +7,6 @@ metadata:
   name: valkey-tsm-syk-inn
   namespace: tsm
 spec:
+  # This can relatively easily be upgraded when we go prod-prod, see: https://nav-it.slack.com/archives/C60FFACN5/p1756799573675019
   plan: startup-4
   project: nav-prod
