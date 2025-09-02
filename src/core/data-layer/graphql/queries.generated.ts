@@ -233,15 +233,7 @@ export type OpprettSykmeldingInput = {
     yrkesskade?: InputMaybe<InputYrkesskade>
 }
 
-export type OpprettSykmeldingRuleOutcome = {
-    __typename: 'OpprettSykmeldingRuleOutcome'
-    message: Scalars['String']['output']
-    rule: Scalars['String']['output']
-    status: Scalars['String']['output']
-    tree: Scalars['String']['output']
-}
-
-export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | SykmeldingFull
+export type OpprettetSykmelding = RuleOutcome | SykmeldingFull
 
 export type Outcome = {
     __typename: 'Outcome'
@@ -307,6 +299,14 @@ export type Reisetilskudd = FomTom & {
 
 export type ReisetilskuddInput = {
     dummy: Scalars['Boolean']['input']
+}
+
+export type RuleOutcome = {
+    __typename: 'RuleOutcome'
+    message: Scalars['String']['output']
+    rule: Scalars['String']['output']
+    status: Scalars['String']['output']
+    tree: Scalars['String']['output']
 }
 
 export type Sykmelding = SykmeldingFull | SykmeldingRedacted
@@ -773,7 +773,7 @@ export type OpprettSykmeldingMutationVariables = Exact<{
 export type OpprettSykmeldingMutation = {
     __typename: 'Mutation'
     opprettSykmelding:
-        | { __typename: 'OpprettSykmeldingRuleOutcome'; status: string; message: string; rule: string; tree: string }
+        | { __typename: 'RuleOutcome'; status: string; message: string; rule: string; tree: string }
         | {
               __typename: 'SykmeldingFull'
               sykmeldingId: string
@@ -840,8 +840,8 @@ export type OpprettSykmeldingMutation = {
           }
 }
 
-export type OutcomeFragment = {
-    __typename: 'OpprettSykmeldingRuleOutcome'
+export type RuleOutcomeFragment = {
+    __typename: 'RuleOutcome'
     status: string
     message: string
     rule: string
@@ -1085,13 +1085,13 @@ export const DraftFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<DraftFragment, unknown>
-export const OutcomeFragmentDoc = {
+export const RuleOutcomeFragmentDoc = {
     kind: 'Document',
     definitions: [
         {
             kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'Outcome' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingRuleOutcome' } },
+            name: { kind: 'Name', value: 'RuleOutcome' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'RuleOutcome' } },
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
@@ -1103,7 +1103,7 @@ export const OutcomeFragmentDoc = {
             },
         },
     ],
-} as unknown as DocumentNode<OutcomeFragment, unknown>
+} as unknown as DocumentNode<RuleOutcomeFragment, unknown>
 export const SykmeldingRedactedFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -3343,14 +3343,11 @@ export const OpprettSykmeldingDocument = {
                                 },
                                 {
                                     kind: 'InlineFragment',
-                                    typeCondition: {
-                                        kind: 'NamedType',
-                                        name: { kind: 'Name', value: 'OpprettSykmeldingRuleOutcome' },
-                                    },
+                                    typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'RuleOutcome' } },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Outcome' } },
+                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'RuleOutcome' } },
                                         ],
                                     },
                                 },
@@ -3661,8 +3658,8 @@ export const OpprettSykmeldingDocument = {
         },
         {
             kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'Outcome' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingRuleOutcome' } },
+            name: { kind: 'Name', value: 'RuleOutcome' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'RuleOutcome' } },
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [

@@ -1,0 +1,6 @@
+type RuleOutcome {
+    status: String!
+    message: String!
+    rule: String!
+    tree: String!
+}

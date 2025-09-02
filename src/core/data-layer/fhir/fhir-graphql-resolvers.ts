@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
-import { Behandler, OpprettSykmeldingRuleOutcome, QueriedPerson, Resolvers } from '@resolvers'
+import { Behandler, RuleOutcome, QueriedPerson, Resolvers } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
@@ -335,12 +335,12 @@ const fhirResolvers: Resolvers = {
             if ('rule' in result) {
                 // We got a rule hit, don't delete the draft
                 return {
-                    __typename: 'OpprettSykmeldingRuleOutcome',
+                    __typename: 'RuleOutcome',
                     rule: result.rule,
                     status: result.status,
                     message: result.message,
                     tree: result.tree,
-                } satisfies OpprettSykmeldingRuleOutcome
+                } satisfies RuleOutcome
             }
 
             // Delete the draft after successful creation

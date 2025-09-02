@@ -7,7 +7,7 @@ export const commonQueryResolvers: QueryResolvers = {
 
 export const typeResolvers: Resolvers = {
     OpprettetSykmelding: {
-        __resolveType: (parent) => ('sykmeldingId' in parent ? 'SykmeldingFull' : 'OpprettSykmeldingRuleOutcome'),
+        __resolveType: (parent) => ('sykmeldingId' in parent ? 'SykmeldingFull' : 'RuleOutcome'),
     },
     Aktivitet: {
         __resolveType: (parent) => {

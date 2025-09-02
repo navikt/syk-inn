@@ -1,11 +1,4 @@
-union OpprettetSykmelding = OpprettSykmeldingRuleOutcome | SykmeldingFull
-
-type OpprettSykmeldingRuleOutcome {
-    status: String!
-    message: String!
-    rule: String!
-    tree: String!
-}
+union OpprettetSykmelding = RuleOutcome | SykmeldingFull
 
 input OpprettSykmeldingInput {
     pasientenSkalSkjermes: Boolean!

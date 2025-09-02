@@ -235,15 +235,7 @@ export type OpprettSykmeldingInput = {
     yrkesskade?: InputMaybe<InputYrkesskade>
 }
 
-export type OpprettSykmeldingRuleOutcome = {
-    __typename?: 'OpprettSykmeldingRuleOutcome'
-    message: Scalars['String']['output']
-    rule: Scalars['String']['output']
-    status: Scalars['String']['output']
-    tree: Scalars['String']['output']
-}
-
-export type OpprettetSykmelding = OpprettSykmeldingRuleOutcome | SykmeldingFull
+export type OpprettetSykmelding = RuleOutcome | SykmeldingFull
 
 export type Outcome = {
     __typename?: 'Outcome'
@@ -309,6 +301,14 @@ export type Reisetilskudd = FomTom & {
 
 export type ReisetilskuddInput = {
     dummy: Scalars['Boolean']['input']
+}
+
+export type RuleOutcome = {
+    __typename?: 'RuleOutcome'
+    message: Scalars['String']['output']
+    rule: Scalars['String']['output']
+    status: Scalars['String']['output']
+    tree: Scalars['String']['output']
 }
 
 export type Sykmelding = SykmeldingFull | SykmeldingRedacted
@@ -456,9 +456,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping of union types */
 export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
     Aktivitet: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
-    OpprettetSykmelding:
-        | OpprettSykmeldingRuleOutcome
-        | (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingValues'] })
+    OpprettetSykmelding: RuleOutcome | (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingValues'] })
     Sykmelding: (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingValues'] }) | SykmeldingRedacted
 }
 
@@ -508,7 +506,6 @@ export type ResolversTypes = {
     Mutation: ResolverTypeWrapper<{}>
     OpprettSykmeldingDraft: ResolverTypeWrapper<OpprettSykmeldingDraft>
     OpprettSykmeldingInput: OpprettSykmeldingInput
-    OpprettSykmeldingRuleOutcome: ResolverTypeWrapper<OpprettSykmeldingRuleOutcome>
     OpprettetSykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['OpprettetSykmelding']>
     Outcome: ResolverTypeWrapper<Outcome>
     Pasient: ResolverTypeWrapper<Pasient>
@@ -517,6 +514,7 @@ export type ResolversTypes = {
     Query: ResolverTypeWrapper<{}>
     Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>
     ReisetilskuddInput: ReisetilskuddInput
+    RuleOutcome: ResolverTypeWrapper<RuleOutcome>
     String: ResolverTypeWrapper<Scalars['String']['output']>
     Sykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Sykmelding']>
     SykmeldingFull: ResolverTypeWrapper<Omit<SykmeldingFull, 'values'> & { values: ResolversTypes['SykmeldingValues'] }>
@@ -568,7 +566,6 @@ export type ResolversParentTypes = {
     Mutation: {}
     OpprettSykmeldingDraft: OpprettSykmeldingDraft
     OpprettSykmeldingInput: OpprettSykmeldingInput
-    OpprettSykmeldingRuleOutcome: OpprettSykmeldingRuleOutcome
     OpprettetSykmelding: ResolversUnionTypes<ResolversParentTypes>['OpprettetSykmelding']
     Outcome: Outcome
     Pasient: Pasient
@@ -577,6 +574,7 @@ export type ResolversParentTypes = {
     Query: {}
     Reisetilskudd: Reisetilskudd
     ReisetilskuddInput: ReisetilskuddInput
+    RuleOutcome: RuleOutcome
     String: Scalars['String']['output']
     Sykmelding: ResolversUnionTypes<ResolversParentTypes>['Sykmelding']
     SykmeldingFull: Omit<SykmeldingFull, 'values'> & { values: ResolversParentTypes['SykmeldingValues'] }
@@ -786,23 +784,11 @@ export type OpprettSykmeldingDraftResolvers<
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
-export type OpprettSykmeldingRuleOutcomeResolvers<
-    ContextType = any,
-    ParentType extends
-        ResolversParentTypes['OpprettSykmeldingRuleOutcome'] = ResolversParentTypes['OpprettSykmeldingRuleOutcome'],
-> = {
-    message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    rule?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    status?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    tree?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
-}
-
 export type OpprettetSykmeldingResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['OpprettetSykmelding'] = ResolversParentTypes['OpprettetSykmelding'],
 > = {
-    __resolveType: TypeResolveFn<'OpprettSykmeldingRuleOutcome' | 'SykmeldingFull', ParentType, ContextType>
+    __resolveType: TypeResolveFn<'RuleOutcome' | 'SykmeldingFull', ParentType, ContextType>
 }
 
 export type OutcomeResolvers<
@@ -880,6 +866,17 @@ export type ReisetilskuddResolvers<
     fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type RuleOutcomeResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['RuleOutcome'] = ResolversParentTypes['RuleOutcome'],
+> = {
+    message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    rule?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    status?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    tree?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -1007,7 +1004,6 @@ export type Resolvers<ContextType = any> = {
     MedisinskArsak?: MedisinskArsakResolvers<ContextType>
     Mutation?: MutationResolvers<ContextType>
     OpprettSykmeldingDraft?: OpprettSykmeldingDraftResolvers<ContextType>
-    OpprettSykmeldingRuleOutcome?: OpprettSykmeldingRuleOutcomeResolvers<ContextType>
     OpprettetSykmelding?: OpprettetSykmeldingResolvers<ContextType>
     Outcome?: OutcomeResolvers<ContextType>
     Pasient?: PasientResolvers<ContextType>
@@ -1015,6 +1011,7 @@ export type Resolvers<ContextType = any> = {
     QueriedPerson?: QueriedPersonResolvers<ContextType>
     Query?: QueryResolvers<ContextType>
     Reisetilskudd?: ReisetilskuddResolvers<ContextType>
+    RuleOutcome?: RuleOutcomeResolvers<ContextType>
     Sykmelding?: SykmeldingResolvers<ContextType>
     SykmeldingFull?: SykmeldingFullResolvers<ContextType>
     SykmeldingMelding?: SykmeldingMeldingResolvers<ContextType>

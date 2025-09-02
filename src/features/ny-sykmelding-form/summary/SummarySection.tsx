@@ -4,7 +4,7 @@ import { PaperplaneIcon } from '@navikt/aksel-icons'
 import { AnimatePresence } from 'motion/react'
 import { useQuery } from '@apollo/client/react'
 
-import { BehandlerDocument, OutcomeFragment, PasientWithExistsDocument } from '@queries'
+import { BehandlerDocument, RuleOutcomeFragment, PasientWithExistsDocument } from '@queries'
 import { SimpleReveal } from '@components/animation/Reveal'
 import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
@@ -35,7 +35,7 @@ function SummarySection(): ReactElement {
 
             <div className="flex flex-col gap-3 justify-end w-[65ch] max-w-prose">
                 <AnimatePresence>
-                    {nySykmelding.result?.data?.opprettSykmelding.__typename === 'OpprettSykmeldingRuleOutcome' && (
+                    {nySykmelding.result?.data?.opprettSykmelding.__typename === 'RuleOutcome' && (
                         <SimpleReveal>
                             <RuleOutcomeWarning outcome={nySykmelding.result.data.opprettSykmelding} />
                         </SimpleReveal>
@@ -113,7 +113,7 @@ function SummarySection(): ReactElement {
     )
 }
 
-function RuleOutcomeWarning({ outcome }: { outcome: OutcomeFragment }): ReactElement {
+function RuleOutcomeWarning({ outcome }: { outcome: RuleOutcomeFragment }): ReactElement {
     return (
         <Alert variant="warning">
             <Heading size="medium" level="3" spacing>

@@ -41,7 +41,7 @@ export function useOpprettSykmeldingMutation(): {
         onCompleted: (data) => {
             if (data.opprettSykmelding.__typename === 'SykmeldingFull') {
                 logger.info(`Sykmelding created successfully: ${data.opprettSykmelding.sykmeldingId}`)
-            } else if (data.opprettSykmelding.__typename === 'OpprettSykmeldingRuleOutcome') {
+            } else if (data.opprettSykmelding.__typename === 'RuleOutcome') {
                 logger.info(`Sykmelding got rule hit: ${data.opprettSykmelding.rule}: ${data.opprettSykmelding.status}`)
             }
         },

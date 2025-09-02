@@ -15,13 +15,13 @@ mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!) 
         ... on Sykmelding {
             ...Sykmelding
         }
-        ... on OpprettSykmeldingRuleOutcome {
-            ...Outcome
+        ... on RuleOutcome {
+            ...RuleOutcome
         }
     }
 }
 
-fragment Outcome on OpprettSykmeldingRuleOutcome {
+fragment RuleOutcome on RuleOutcome {
     status
     message
     rule
