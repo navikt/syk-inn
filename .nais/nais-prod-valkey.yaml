@@ -7,5 +7,5 @@ metadata:
   name: valkey-tsm-syk-inn
   namespace: tsm
 spec:
-  plan: business-4
+  plan: startup-4
   project: nav-prod
