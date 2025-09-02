@@ -17,7 +17,6 @@ spec:
   ingresses:
     - 'https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
   valkey:
-    # Same valkey as syk-inn, will be owned by syk-inn because it created it
     - instance: syk-inn
       access: readwrite
   port: 3000

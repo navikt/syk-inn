@@ -12,5 +12,14 @@ export const getProdFhirConfiguration = (): EhrConfigurationProd =>
     } satisfies Record<keyof EhrConfigurationProd, unknown | undefined>)
 
 export function getKnownProdFhirServers(): KnownFhirServer[] {
-    return []
+    const configuration = getProdFhirConfiguration()
+
+    return [
+        {
+            issuer: 'https://fhirapi.public.webmed.no',
+            type: 'confidential-symmetric',
+            method: 'client_secret_basic',
+            clientSecret: configuration.webmedClientSecret,
+        },
+    ]
 }
