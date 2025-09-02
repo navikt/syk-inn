@@ -1,7 +1,7 @@
 import { logger } from '@navikt/next-logger'
 import { startTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { useMutation } from '@apollo/client/react'
+import { useMutation, useQuery } from '@apollo/client/react'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { raise } from '@lib/ts'
@@ -15,6 +15,9 @@ import {
     OpprettSykmeldingInput,
     OpprettSykmeldingMutation,
     OpprettSykmeldingMutationVariables,
+    ValiderSykmeldingDocument,
+    ValiderSykmeldingQuery,
+    ValiderSykmeldingQueryVariables,
 } from '@queries'
 import { spanBrowserAsync, withSpanBrowserAsync } from '@lib/otel/browser'
 import { useAppSelector } from '@core/redux/hooks'
@@ -25,16 +28,22 @@ import { NySykmeldingState } from '@core/redux/reducers/ny-sykmelding/ny-sykmeld
 import { useDraftId } from './draft/useDraftId'
 
 export function useOpprettSykmeldingMutation(): {
-    opprettSykmelding: () => ReturnType<
-        useMutation.MutationFunction<OpprettSykmeldingMutation, OpprettSykmeldingMutationVariables>
-    >
+    mutation: {
+        opprettSykmelding: () => ReturnType<
+            useMutation.MutationFunction<OpprettSykmeldingMutation, OpprettSykmeldingMutationVariables>
+        >
 
-    result: useMutation.Result<OpprettSykmeldingMutation>
+        result: useMutation.Result<OpprettSykmeldingMutation>
+    }
+    preValidation: useQuery.Result<ValiderSykmeldingQuery, ValiderSykmeldingQueryVariables>
 } {
     const mode = useMode()
     const draftId = useDraftId()
     const router = useRouter()
     const formState = useAppSelector((state) => state.nySykmelding)
+    const preValidateSykmeldingQuery = useQuery(ValiderSykmeldingDocument, {
+        variables: { values: formStateToOpprettSykmeldingInput(formState) },
+    })
     const [mutate, result] = useMutation(OpprettSykmeldingDocument, {
         // In case user navigates back to the dashboard
         refetchQueries: [{ query: AllSykmeldingerDocument }, { query: GetAllDraftsDocument }],
@@ -84,7 +93,7 @@ export function useOpprettSykmeldingMutation(): {
         }
     })
 
-    return { opprettSykmelding, result }
+    return { mutation: { opprettSykmelding, result }, preValidation: preValidateSykmeldingQuery }
 }
 
 function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingState): OpprettSykmeldingInput {

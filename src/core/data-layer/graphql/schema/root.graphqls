@@ -4,6 +4,7 @@ type Query {
     konsultasjon: Konsultasjon
     sykmelding(id: String!): Sykmelding
     sykmeldinger: [Sykmelding!]
+    validerSykmelding(values: OpprettSykmeldingInput!): SykmeldingValidering!
 
     diagnose(query: String!): [Diagnose!]
     person(ident: String): QueriedPerson

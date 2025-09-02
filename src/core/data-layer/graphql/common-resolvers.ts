@@ -6,6 +6,9 @@ export const commonQueryResolvers: QueryResolvers = {
 }
 
 export const typeResolvers: Resolvers = {
+    SykmeldingValidering: {
+        __resolveType: (parent) => ('ok' in parent ? 'RuleOK' : 'RuleOutcome'),
+    },
     OpprettetSykmelding: {
         __resolveType: (parent) => ('sykmeldingId' in parent ? 'SykmeldingFull' : 'RuleOutcome'),
     },

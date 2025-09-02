@@ -46,6 +46,28 @@ export const sykInnApiService = {
             responseValidStatus: [422],
         })
     },
+    verifySykmelding: async (
+        payload: OpprettSykmeldingPayload,
+    ): Promise<SykInnApiRuleOutcome | true | ApiFetchErrors> => {
+        if (shouldUseMockEngine()) {
+            logger.warn(
+                `Running in ${bundledEnv.runtimeEnv}, faking rule execution for values: ${JSON.stringify(payload, null, 2)}`,
+            )
+
+            // Valid
+            return true
+        }
+
+        return fetchInternalAPI({
+            api: 'syk-inn-api',
+            path: '/api/sykmelding/verify',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(OpprettSykmeldingPayloadSchema.parse(payload)),
+            responseSchema: z.union([z.literal(true), SykInnApiRuleOutcomeSchema]),
+            responseValidStatus: [422],
+        })
+    },
     getSykmelding: async (
         sykmeldingId: string,
         hpr: string,

@@ -274,6 +274,7 @@ export type Query = {
     person?: Maybe<QueriedPerson>
     sykmelding?: Maybe<Sykmelding>
     sykmeldinger?: Maybe<Array<Sykmelding>>
+    validerSykmelding: SykmeldingValidering
 }
 
 export type QueryDiagnoseArgs = {
@@ -292,6 +293,10 @@ export type QuerySykmeldingArgs = {
     id: Scalars['String']['input']
 }
 
+export type QueryValiderSykmeldingArgs = {
+    values: OpprettSykmeldingInput
+}
+
 export type Reisetilskudd = FomTom & {
     __typename?: 'Reisetilskudd'
     fom: Scalars['DateOnly']['output']
@@ -301,6 +306,11 @@ export type Reisetilskudd = FomTom & {
 
 export type ReisetilskuddInput = {
     dummy: Scalars['Boolean']['input']
+}
+
+export type RuleOk = {
+    __typename?: 'RuleOK'
+    ok: Scalars['Boolean']['output']
 }
 
 export type RuleOutcome = {
@@ -351,6 +361,8 @@ export type SykmeldingRedactedValues = {
     __typename?: 'SykmeldingRedactedValues'
     aktivitet: Array<AktivitetRedacted>
 }
+
+export type SykmeldingValidering = RuleOk | RuleOutcome
 
 export type SykmeldingValues = {
     __typename?: 'SykmeldingValues'
@@ -458,6 +470,7 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
     Aktivitet: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
     OpprettetSykmelding: RuleOutcome | (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingValues'] })
     Sykmelding: (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingValues'] }) | SykmeldingRedacted
+    SykmeldingValidering: RuleOk | RuleOutcome
 }
 
 /** Mapping of interface types */
@@ -514,6 +527,7 @@ export type ResolversTypes = {
     Query: ResolverTypeWrapper<{}>
     Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>
     ReisetilskuddInput: ReisetilskuddInput
+    RuleOK: ResolverTypeWrapper<RuleOk>
     RuleOutcome: ResolverTypeWrapper<RuleOutcome>
     String: ResolverTypeWrapper<Scalars['String']['output']>
     Sykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Sykmelding']>
@@ -522,6 +536,7 @@ export type ResolversTypes = {
     SykmeldingMeta: ResolverTypeWrapper<SykmeldingMeta>
     SykmeldingRedacted: ResolverTypeWrapper<SykmeldingRedacted>
     SykmeldingRedactedValues: ResolverTypeWrapper<SykmeldingRedactedValues>
+    SykmeldingValidering: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['SykmeldingValidering']>
     SykmeldingValues: ResolverTypeWrapper<
         Omit<SykmeldingValues, 'aktivitet'> & { aktivitet: Array<ResolversTypes['Aktivitet']> }
     >
@@ -574,6 +589,7 @@ export type ResolversParentTypes = {
     Query: {}
     Reisetilskudd: Reisetilskudd
     ReisetilskuddInput: ReisetilskuddInput
+    RuleOK: RuleOk
     RuleOutcome: RuleOutcome
     String: Scalars['String']['output']
     Sykmelding: ResolversUnionTypes<ResolversParentTypes>['Sykmelding']
@@ -582,6 +598,7 @@ export type ResolversParentTypes = {
     SykmeldingMeta: SykmeldingMeta
     SykmeldingRedacted: SykmeldingRedacted
     SykmeldingRedactedValues: SykmeldingRedactedValues
+    SykmeldingValidering: ResolversUnionTypes<ResolversParentTypes>['SykmeldingValidering']
     SykmeldingValues: Omit<SykmeldingValues, 'aktivitet'> & { aktivitet: Array<ResolversParentTypes['Aktivitet']> }
     SynchronizationStatus: SynchronizationStatus
     Tilbakedatering: Tilbakedatering
@@ -857,6 +874,12 @@ export type QueryResolvers<
         RequireFields<QuerySykmeldingArgs, 'id'>
     >
     sykmeldinger?: Resolver<Maybe<Array<ResolversTypes['Sykmelding']>>, ParentType, ContextType>
+    validerSykmelding?: Resolver<
+        ResolversTypes['SykmeldingValidering'],
+        ParentType,
+        ContextType,
+        RequireFields<QueryValiderSykmeldingArgs, 'values'>
+    >
 }
 
 export type ReisetilskuddResolvers<
@@ -866,6 +889,14 @@ export type ReisetilskuddResolvers<
     fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type RuleOkResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['RuleOK'] = ResolversParentTypes['RuleOK'],
+> = {
+    ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -941,6 +972,13 @@ export type SykmeldingRedactedValuesResolvers<
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
+export type SykmeldingValideringResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['SykmeldingValidering'] = ResolversParentTypes['SykmeldingValidering'],
+> = {
+    __resolveType: TypeResolveFn<'RuleOK' | 'RuleOutcome', ParentType, ContextType>
+}
+
 export type SykmeldingValuesResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['SykmeldingValues'] = ResolversParentTypes['SykmeldingValues'],
@@ -1011,6 +1049,7 @@ export type Resolvers<ContextType = any> = {
     QueriedPerson?: QueriedPersonResolvers<ContextType>
     Query?: QueryResolvers<ContextType>
     Reisetilskudd?: ReisetilskuddResolvers<ContextType>
+    RuleOK?: RuleOkResolvers<ContextType>
     RuleOutcome?: RuleOutcomeResolvers<ContextType>
     Sykmelding?: SykmeldingResolvers<ContextType>
     SykmeldingFull?: SykmeldingFullResolvers<ContextType>
@@ -1018,6 +1057,7 @@ export type Resolvers<ContextType = any> = {
     SykmeldingMeta?: SykmeldingMetaResolvers<ContextType>
     SykmeldingRedacted?: SykmeldingRedactedResolvers<ContextType>
     SykmeldingRedactedValues?: SykmeldingRedactedValuesResolvers<ContextType>
+    SykmeldingValidering?: SykmeldingValideringResolvers<ContextType>
     SykmeldingValues?: SykmeldingValuesResolvers<ContextType>
     SynchronizationStatus?: SynchronizationStatusResolvers<ContextType>
     Tilbakedatering?: TilbakedateringResolvers<ContextType>

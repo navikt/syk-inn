@@ -24,9 +24,7 @@ function SummarySection(): ReactElement {
     const nySykmelding = useOpprettSykmeldingMutation()
     const dispatch = useAppDispatch()
     const behandlerQuery = useQuery(BehandlerDocument)
-    const pasientQuery = useQuery(PasientWithExistsDocument, {
-        notifyOnNetworkStatusChange: true,
-    })
+    const pasientQuery = useQuery(PasientWithExistsDocument)
 
     return (
         <div className={styles.summaryGrid}>
@@ -35,17 +33,17 @@ function SummarySection(): ReactElement {
 
             <div className="flex flex-col gap-3 justify-end w-[65ch] max-w-prose">
                 <AnimatePresence>
-                    {nySykmelding.result?.data?.opprettSykmelding.__typename === 'RuleOutcome' && (
+                    {nySykmelding.mutation.result?.data?.opprettSykmelding.__typename === 'RuleOutcome' && (
                         <SimpleReveal>
-                            <RuleOutcomeWarning outcome={nySykmelding.result.data.opprettSykmelding} />
+                            <RuleOutcomeWarning outcome={nySykmelding.mutation.result.data.opprettSykmelding} />
                         </SimpleReveal>
                     )}
                 </AnimatePresence>
 
                 <AnimatePresence>
-                    {nySykmelding.result.error && (
+                    {nySykmelding.mutation.result.error && (
                         <SimpleReveal>
-                            <UnknownErrorAlert error={nySykmelding.result.error} />
+                            <UnknownErrorAlert error={nySykmelding.mutation.result.error} />
                         </SimpleReveal>
                     )}
                 </AnimatePresence>
@@ -84,7 +82,7 @@ function SummarySection(): ReactElement {
                         <ShortcutButtons
                             variant="secondary"
                             onClick={() => setStep('main')}
-                            disabled={nySykmelding.result.loading}
+                            disabled={nySykmelding.mutation.result.loading}
                             shortcut={{
                                 modifier: 'alt',
                                 key: 'arrowleft',
@@ -97,8 +95,10 @@ function SummarySection(): ReactElement {
                             icon={<PaperplaneIcon aria-hidden />}
                             iconPosition="right"
                             disabled={!pasientQuery.data?.pasient?.userExists}
-                            loading={nySykmelding.result.loading || behandlerQuery.loading || pasientQuery.loading}
-                            onClick={() => nySykmelding.opprettSykmelding()}
+                            loading={
+                                nySykmelding.mutation.result.loading || behandlerQuery.loading || pasientQuery.loading
+                            }
+                            onClick={() => nySykmelding.mutation.opprettSykmelding()}
                             shortcut={{
                                 modifier: 'alt',
                                 key: 'n',

@@ -165,6 +165,25 @@ const fhirResolvers: Resolvers = {
                     : sykInnApiSykmeldingToResolverSykmelding(it)
             })
         },
+        validerSykmelding: async (_, { values }) => {
+            const [client] = await getReadyClientForResolvers()
+            const { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf } =
+                await getAllSykmeldingMetaFromFhir(client)
+
+            const meta: OpprettSykmeldingMeta = { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf }
+            const payload = resolverInputToSykInnApiPayload(values, meta)
+            const result = await sykInnApiService.verifySykmelding(payload)
+
+            if (typeof result === 'object' && 'errorType' in result) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            if (result === true) {
+                return { ok: true }
+            }
+
+            return result
+        },
         person: async (_, { ident }) => {
             // Only validate session
             await getReadyClientForResolvers()
