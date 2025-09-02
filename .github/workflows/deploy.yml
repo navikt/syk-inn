@@ -149,8 +149,7 @@ jobs:
 
   deploy-production:
     name: Deploy main to production
-    # TODO: Don't deploy yet
-    if: github.ref_name == 'main' && false
+    if: github.ref_name == 'main'
     environment:
       name: production
       url: https://nav.no/samarbeidspartner/sykmelding

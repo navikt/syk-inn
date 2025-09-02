@@ -8,7 +8,7 @@ metadata:
 spec:
   image: {{image}}
   ingresses:
-    - 'https://nav.no/samarbeidspartner/sykmelding'
+    - 'https://www.nav.no/samarbeidspartner/sykmelding'
   valkey:
     - instance: syk-inn
       access: readwrite
