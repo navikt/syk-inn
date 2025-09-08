@@ -400,9 +400,12 @@ export type ResolverTypeWrapper<T> = Promise<T> | T
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
     resolve: ResolverFn<TResult, TParent, TContext, TArgs>
 }
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
-    | ResolverFn<TResult, TParent, TContext, TArgs>
-    | ResolverWithResolve<TResult, TParent, TContext, TArgs>
+export type Resolver<
+    TResult,
+    TParent = Record<PropertyKey, never>,
+    TContext = Record<PropertyKey, never>,
+    TArgs = Record<PropertyKey, never>,
+> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
     parent: TParent,
@@ -439,17 +442,23 @@ export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, 
     | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
     | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>
 
-export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
+export type SubscriptionResolver<
+    TResult,
+    TKey extends string,
+    TParent = Record<PropertyKey, never>,
+    TContext = Record<PropertyKey, never>,
+    TArgs = Record<PropertyKey, never>,
+> =
     | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
     | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>
 
-export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
+export type TypeResolveFn<TTypes, TParent = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>> = (
     parent: TParent,
     context: TContext,
     info: GraphQLResolveInfo,
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>
 
-export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
+export type IsTypeOfResolverFn<T = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>> = (
     obj: T,
     context: TContext,
     info: GraphQLResolveInfo,
@@ -457,7 +466,12 @@ export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
 
 export type NextResolverFn<T> = () => Promise<T>
 
-export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
+export type DirectiveResolverFn<
+    TResult = Record<PropertyKey, never>,
+    TParent = Record<PropertyKey, never>,
+    TContext = Record<PropertyKey, never>,
+    TArgs = Record<PropertyKey, never>,
+> = (
     next: NextResolverFn<TResult>,
     parent: TParent,
     args: TArgs,
@@ -516,7 +530,7 @@ export type ResolversTypes = {
     Konsultasjon: ResolverTypeWrapper<Konsultasjon>
     MedisinskArsak: ResolverTypeWrapper<MedisinskArsak>
     MedisinskArsakInput: MedisinskArsakInput
-    Mutation: ResolverTypeWrapper<{}>
+    Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>
     OpprettSykmeldingDraft: ResolverTypeWrapper<OpprettSykmeldingDraft>
     OpprettSykmeldingInput: OpprettSykmeldingInput
     OpprettetSykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['OpprettetSykmelding']>
@@ -524,7 +538,7 @@ export type ResolversTypes = {
     Pasient: ResolverTypeWrapper<Pasient>
     Person: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Person']>
     QueriedPerson: ResolverTypeWrapper<QueriedPerson>
-    Query: ResolverTypeWrapper<{}>
+    Query: ResolverTypeWrapper<Record<PropertyKey, never>>
     Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>
     ReisetilskuddInput: ReisetilskuddInput
     RuleOK: ResolverTypeWrapper<RuleOk>
@@ -578,7 +592,7 @@ export type ResolversParentTypes = {
     Konsultasjon: Konsultasjon
     MedisinskArsak: MedisinskArsak
     MedisinskArsakInput: MedisinskArsakInput
-    Mutation: {}
+    Mutation: Record<PropertyKey, never>
     OpprettSykmeldingDraft: OpprettSykmeldingDraft
     OpprettSykmeldingInput: OpprettSykmeldingInput
     OpprettetSykmelding: ResolversUnionTypes<ResolversParentTypes>['OpprettetSykmelding']
@@ -586,7 +600,7 @@ export type ResolversParentTypes = {
     Pasient: Pasient
     Person: ResolversInterfaceTypes<ResolversParentTypes>['Person']
     QueriedPerson: QueriedPerson
-    Query: {}
+    Query: Record<PropertyKey, never>
     Reisetilskudd: Reisetilskudd
     ReisetilskuddInput: ReisetilskuddInput
     RuleOK: RuleOk
@@ -644,7 +658,6 @@ export type ArbeidsforholdResolvers<
 > = {
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type ArbeidsgiverResolvers<
@@ -653,7 +666,6 @@ export type ArbeidsgiverResolvers<
 > = {
     arbeidsgivernavn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     harFlere?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type ArbeidsrelatertArsakResolvers<
@@ -663,7 +675,6 @@ export type ArbeidsrelatertArsakResolvers<
     annenArbeidsrelatertArsak?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     arbeidsrelaterteArsaker?: Resolver<Array<ResolversTypes['ArbeidsrelatertArsakType']>, ParentType, ContextType>
     isArbeidsrelatertArsak?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type AvventendeResolvers<
@@ -685,7 +696,6 @@ export type BehandlerResolvers<
     legekontorTlf?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type BehandlingsdagerResolvers<
@@ -714,7 +724,6 @@ export type DiagnoseResolvers<
     code?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     system?: Resolver<ResolversTypes['DiagnoseSystem'], ParentType, ContextType>
     text?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type FomTomResolvers<
@@ -726,8 +735,6 @@ export type FomTomResolvers<
         ParentType,
         ContextType
     >
-    fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
-    tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
 }
 
 export type GradertResolvers<
@@ -750,7 +757,6 @@ export type KonsultasjonResolvers<
     ParentType extends ResolversParentTypes['Konsultasjon'] = ResolversParentTypes['Konsultasjon'],
 > = {
     diagnoser?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type MedisinskArsakResolvers<
@@ -758,7 +764,6 @@ export type MedisinskArsakResolvers<
     ParentType extends ResolversParentTypes['MedisinskArsak'] = ResolversParentTypes['MedisinskArsak'],
 > = {
     isMedisinskArsak?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type MutationResolvers<
@@ -798,7 +803,6 @@ export type OpprettSykmeldingDraftResolvers<
     draftId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     lastUpdated?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>
     values?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type OpprettetSykmeldingResolvers<
@@ -814,7 +818,6 @@ export type OutcomeResolvers<
 > = {
     message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     result?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type PasientResolvers<
@@ -833,8 +836,6 @@ export type PersonResolvers<
     ParentType extends ResolversParentTypes['Person'] = ResolversParentTypes['Person'],
 > = {
     __resolveType: TypeResolveFn<'Pasient' | 'QueriedPerson', ParentType, ContextType>
-    ident?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
 }
 
 export type QueriedPersonResolvers<
@@ -937,7 +938,6 @@ export type SykmeldingMeldingResolvers<
 > = {
     tilArbeidsgiver?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     tilNav?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type SykmeldingMetaResolvers<
@@ -948,7 +948,6 @@ export type SykmeldingMetaResolvers<
     mottatt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>
     pasientIdent?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     sykmelderHpr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type SykmeldingRedactedResolvers<
@@ -969,7 +968,6 @@ export type SykmeldingRedactedValuesResolvers<
         ResolversParentTypes['SykmeldingRedactedValues'] = ResolversParentTypes['SykmeldingRedactedValues'],
 > = {
     aktivitet?: Resolver<Array<ResolversTypes['AktivitetRedacted']>, ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type SykmeldingValideringResolvers<
@@ -992,7 +990,6 @@ export type SykmeldingValuesResolvers<
     svangerskapsrelatert?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     tilbakedatering?: Resolver<Maybe<ResolversTypes['Tilbakedatering']>, ParentType, ContextType>
     yrkesskade?: Resolver<Maybe<ResolversTypes['Yrkesskade']>, ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type SynchronizationStatusResolvers<
@@ -1001,7 +998,6 @@ export type SynchronizationStatusResolvers<
 > = {
     documentStatus?: Resolver<ResolversTypes['DocumentStatus'], ParentType, ContextType>
     navStatus?: Resolver<ResolversTypes['DocumentStatus'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type TilbakedateringResolvers<
@@ -1010,7 +1006,6 @@ export type TilbakedateringResolvers<
 > = {
     begrunnelse?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     startdato?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type YrkesskadeResolvers<
@@ -1019,7 +1014,6 @@ export type YrkesskadeResolvers<
 > = {
     skadedato?: Resolver<Maybe<ResolversTypes['DateOnly']>, ParentType, ContextType>
     yrkesskade?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type Resolvers<ContextType = any> = {
