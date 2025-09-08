@@ -6,6 +6,9 @@ import { ListItem } from '@navikt/ds-react/List'
 import { BugIcon } from '@navikt/aksel-icons'
 import { PageBlock } from '@navikt/ds-react/Page'
 
+import { isDemo, isLocal } from '@lib/env'
+import DemoWarning from '@components/user-warnings/DemoWarning'
+
 import Preload from './preload'
 
 function GlobalNotFound(): ReactElement {
@@ -21,6 +24,7 @@ function GlobalNotFound(): ReactElement {
             </head>
             <Preload />
             <body>
+                {(isLocal || isDemo) && <DemoWarning />}
                 <PageBlock as="main" width="xl" gutters>
                     <Box paddingBlock="20 16">
                         <VStack gap="16">
