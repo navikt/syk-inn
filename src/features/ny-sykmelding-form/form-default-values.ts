@@ -194,7 +194,7 @@ function toInitialBidiagnoser(
     serverSuggestion: Diagnose[] | null,
 ): Diagnose[] | null {
     if (valuesInState != null) {
-        valuesInState.map((it) => ({
+        return valuesInState.map((it) => ({
             system: it.system,
             code: it.code,
             text: it.text,

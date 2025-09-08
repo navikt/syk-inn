@@ -94,7 +94,10 @@ test('form values shall have higher presedence than draft values', () => {
         ],
         diagnoser: {
             hoved: { system: 'ICPC2', code: 'L02', text: 'Ryggsmerter' },
-            bidiagnoser: [{ system: 'ICPC2', code: 'L73', text: 'Brudd legg/ankel' }],
+            bidiagnoser: [
+                { system: 'ICD10', code: 'M54.5', text: 'Lumbago' },
+                { system: 'ICD10', code: 'R51', text: 'Hodepine' },
+            ],
         },
         tilbakedatering: { fom: '2025-01-20', grunn: 'VENTETID_LEGETIME', annenGrunn: null },
         meldinger: {
