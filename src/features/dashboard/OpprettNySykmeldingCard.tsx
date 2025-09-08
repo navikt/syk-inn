@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactElement, useEffect, useRef, useState } from 'react'
-import { Alert, BodyShort, Button, ConfirmationPanel, Detail, Heading, Skeleton } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Checkbox, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 
 import { cn } from '@lib/tw'
@@ -81,12 +81,14 @@ function OpprettNySykmeldingCard({ className }: { className?: string }): ReactEl
                                     } as CSSProperties
                                 }
                             >
-                                <ConfirmationPanel
+                                <Checkbox
                                     checked={hasLegged}
-                                    label="Pasienten er kjent eller har vist legitimasjon"
                                     onChange={() => setHasLegged((x) => !x)}
                                     size="small"
-                                />
+                                    className="p-4"
+                                >
+                                    Pasienten er kjent eller har vist legitimasjon
+                                </Checkbox>
                             </div>
 
                             <div className="flex items-center justify-end">
