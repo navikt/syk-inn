@@ -3,7 +3,8 @@ import { useMutation } from '@apollo/client/react'
 import { useRouter } from 'next/navigation'
 import { FloppydiskIcon } from '@navikt/aksel-icons'
 
-import { DeleteDraftDocument, GetAllDraftsDocument, OpprettSykmeldingDraft } from '@queries'
+import { CacheIds } from '@data-layer/graphql/apollo/apollo-client-cache'
+import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
 import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { spanBrowserAsync } from '@lib/otel/browser'
 import { useAppDispatch } from '@core/redux/hooks'
@@ -70,7 +71,7 @@ function ForkastDraftButton(): ReactElement {
                     id: cache.identify({
                         __typename: 'OpprettSykmeldingDraft',
                         draftId,
-                    } satisfies Partial<OpprettSykmeldingDraft>),
+                    } satisfies CacheIds['draft']),
                 })
             }
         },

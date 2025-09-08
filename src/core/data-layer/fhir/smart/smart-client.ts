@@ -37,7 +37,7 @@ export function getSmartClient(sessionId: string | null, activePatient: string |
 
     return new SmartClient({ sessionId: sessionId, activePatient: activePatient }, smartClientConfig, {
         storage: getSmartStorage(),
-        options: { autoRefresh: !(isLocal || isDemo), enableMultiLaunch: true },
+        options: { autoRefresh: !(isLocal || isDemo || isE2E), enableMultiLaunch: true },
     })
 }
 
