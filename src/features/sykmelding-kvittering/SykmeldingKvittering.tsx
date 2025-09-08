@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactElement, useRef, useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Alert, BodyShort, Button, ExpansionCard, Heading, Link as AkselLink, Skeleton } from '@navikt/ds-react'
 import { ChevronDownIcon, TabsAddIcon } from '@navikt/aksel-icons'
 import Link from 'next/link'
@@ -38,7 +38,6 @@ function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
 
 function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string }): ReactElement {
     const dispatch = useAppDispatch()
-    const nextDraftId = useRef(crypto.randomUUID())
     const { loading, data, error, refetch } = useQuery(SykmeldingByIdDocument, { variables: { id: sykmeldingId } })
     const sykmelding = data?.sykmelding ?? null
 
@@ -59,7 +58,7 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
                     <Skeleton variant="rounded" width={102} height={32} />
                 ) : sykmelding ? (
                     <SlowNextLinkButton
-                        href={`/fhir/ny/${nextDraftId.current}`}
+                        href="/fhir/ny"
                         onClick={() => {
                             dispatch(nySykmeldingActions.dupliser(sykmelding))
                         }}

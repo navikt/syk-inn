@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef } from 'react'
+import React, { ReactElement } from 'react'
 import { Tooltip } from '@navikt/ds-react'
 import { ChevronRightIcon, TabsAddIcon } from '@navikt/aksel-icons'
 
@@ -31,13 +31,12 @@ export function SykmeldingActions({ sykmeldingId, sykmelding, forlengable }: Syk
 }
 
 function DupliserSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
-    const nextDraftId = useRef(crypto.randomUUID())
     const dispatch = useAppDispatch()
 
     return (
         <Tooltip content="Dupliser sykmeldingen">
             <SlowNextLinkButton
-                href={`/fhir/ny/${nextDraftId.current}`}
+                href="/fhir/ny"
                 onClick={() => {
                     dispatch(nySykmeldingActions.dupliser(sykmelding))
                 }}
@@ -50,13 +49,12 @@ function DupliserSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragme
 }
 
 function ForlengSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
-    const nextDraftId = useRef(crypto.randomUUID())
     const dispatch = useAppDispatch()
 
     return (
         <Tooltip content="Forleng sykmeldingen">
             <SlowNextLinkButton
-                href={`/fhir/ny/${nextDraftId.current}`}
+                href="/fhir/ny"
                 onClick={() => {
                     dispatch(nySykmeldingActions.forleng(sykmelding))
                 }}

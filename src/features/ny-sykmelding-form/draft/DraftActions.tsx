@@ -17,7 +17,7 @@ import { useSaveDraft } from './useSaveDraft'
 import { useDraftId } from './useDraftId'
 
 export function LagreDraftButton(): ReactElement {
-    const draftId = useDraftId()
+    const [draftId, setDraftId] = useDraftId()
     const { getValues } = useFormContext()
     const [mutation, draftResult] = useSaveDraft({
         returnToDash: true,
@@ -33,9 +33,11 @@ export function LagreDraftButton(): ReactElement {
             icon={<FloppydiskIcon aria-hidden />}
             iconPosition="right"
             onClick={async () => {
-                const values = getValues()
+                const draftIdToUse = draftId ?? crypto.randomUUID()
+                if (draftId == null) await setDraftId(draftIdToUse)
 
-                await mutation(draftId, values)
+                const values = getValues()
+                await mutation(draftIdToUse, values)
             }}
             loading={draftResult.loading}
             shortcut={{
@@ -50,37 +52,49 @@ export function LagreDraftButton(): ReactElement {
 
 function ForkastDraftButton(): ReactElement {
     const mode = useMode()
-    const draftId = useDraftId()
+    const [draftId] = useDraftId()
     const router = useRouter()
     const dispatch = useAppDispatch()
 
     const [mutation, deleteResult] = useMutation(DeleteDraftDocument, {
-        variables: { draftId },
-        onCompleted: () => {
-            const redirectPath = mode === 'FHIR' ? '/fhir' : '/ny'
-            router.replace(redirectPath, { scroll: true })
-
-            requestAnimationFrame(() => {
-                dispatch(nySykmeldingActions.reset())
-            })
-        },
         refetchQueries: [{ query: GetAllDraftsDocument }],
-        update: (cache, result) => {
-            if (result.data?.deleteDraft == true) {
-                cache.evict({
-                    id: cache.identify({
-                        __typename: 'OpprettSykmeldingDraft',
-                        draftId,
-                    } satisfies CacheIds['draft']),
-                })
-            }
-        },
     })
 
     return (
         <ShortcutButtons
             variant="tertiary"
-            onClick={() => spanBrowserAsync('DeleteDraft(forkast).mutation', async () => mutation())}
+            onClick={() =>
+                spanBrowserAsync('DeleteDraft(forkast).mutation', async () => {
+                    const redirect = (): void => {
+                        const redirectPath = mode === 'FHIR' ? '/fhir' : '/ny'
+                        router.replace(redirectPath, { scroll: true })
+
+                        requestAnimationFrame(() => {
+                            dispatch(nySykmeldingActions.reset())
+                        })
+                    }
+
+                    if (!draftId) {
+                        redirect()
+                        return
+                    }
+
+                    return mutation({
+                        variables: { draftId: draftId },
+                        onCompleted: redirect,
+                        update: (cache, result) => {
+                            if (result.data?.deleteDraft == true) {
+                                cache.evict({
+                                    id: cache.identify({
+                                        __typename: 'OpprettSykmeldingDraft',
+                                        draftId,
+                                    } satisfies CacheIds['draft']),
+                                })
+                            }
+                        },
+                    })
+                })
+            }
             loading={deleteResult.loading}
             shortcut={{
                 modifier: 'alt',

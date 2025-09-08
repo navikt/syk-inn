@@ -11,7 +11,7 @@ export function DraftActions({ draftId }: { draftId: string }): ReactElement {
         <div className="grid grid-flow-col auto-cols-max gap-2">
             <Tooltip content="Åpne utkast">
                 <SlowNextLinkButton
-                    href={`/fhir/ny/${draftId}`}
+                    href={`/fhir/draft/${draftId}`}
                     icon={<ChevronRightIcon aria-hidden />}
                     variant="tertiary"
                     size="small"

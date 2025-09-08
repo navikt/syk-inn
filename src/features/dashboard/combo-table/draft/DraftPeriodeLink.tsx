@@ -16,7 +16,7 @@ type Props = {
 function DraftPeriodeLink({ draftId, lastChanged, perioder }: Props): ReactElement {
     return (
         <div className="flex gap-3 items-center">
-            <AkselNextLink href={`/fhir/ny/${draftId}`}>{draftPeriodeText(perioder)}</AkselNextLink>
+            <AkselNextLink href={`/fhir/draft/${draftId}`}>{draftPeriodeText(perioder)}</AkselNextLink>
             <Detail className="text-xs">
                 Sist endret <AutoUpdatingDistance time={lastChanged} />
             </Detail>

@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef } from 'react'
 import * as R from 'remeda'
 import { type ApolloClient } from '@apollo/client'
-import { useParams } from 'next/navigation'
 import { logger } from '@navikt/next-logger'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { SaveDraftMutation } from '@queries'
 import { bundledEnv, isLocal } from '@lib/env'
 import { DraftValues, safeParseDraft } from '@data-layer/draft/draft-schema'
+import { useDraftId } from '@features/ny-sykmelding-form/draft/useDraftId'
 
 import { mapFormValuesToDraftValues, useSaveDraft } from '../draft/useSaveDraft'
 import { NySykmeldingMainFormValues, useFormContext } from '../form'
@@ -26,7 +26,7 @@ type Changes = {
  * Fingers crossed for no endless useEffect-DDOS-loops.
  */
 function FormDraftSync(): null {
-    const { draftId } = useParams<{ draftId: string }>()
+    const [draftId, setDraftId] = useDraftId()
     const { formValues, isFormDirty } = useFormValues()
 
     const currentMutationPromise = useRef<Promise<ApolloClient.MutateResult<SaveDraftMutation>> | null>(null)
@@ -44,7 +44,10 @@ function FormDraftSync(): null {
             R.funnel(
                 async (args) => {
                     const doMutation = async (): Promise<void> => {
-                        const mutationPromise = mutation(draftId, args.currentValues)
+                        const draftIdToUse = draftId ?? crypto.randomUUID()
+                        if (draftId == null) await setDraftId(draftIdToUse)
+
+                        const mutationPromise = mutation(draftIdToUse, args.currentValues)
                         currentMutationPromise.current = mutationPromise
                         await mutationPromise
                     }
@@ -94,7 +97,7 @@ function FormDraftSync(): null {
                     }),
                 },
             ),
-        [draftId, mutation],
+        [draftId, mutation, setDraftId],
     )
 
     useEffect(() => {

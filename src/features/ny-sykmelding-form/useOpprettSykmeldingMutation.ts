@@ -38,7 +38,7 @@ export function useOpprettSykmeldingMutation(): {
     preValidation: useQuery.Result<ValiderSykmeldingQuery, ValiderSykmeldingQueryVariables>
 } {
     const mode = useMode()
-    const draftId = useDraftId()
+    const [draftId] = useDraftId()
     const router = useRouter()
     const formState = useAppSelector((state) => state.nySykmelding)
     const preValidateSykmeldingQuery = useQuery(ValiderSykmeldingDocument, {
@@ -64,9 +64,14 @@ export function useOpprettSykmeldingMutation(): {
 
             teamLogger.info(`(Client), mapped values: ${JSON.stringify(values)}`)
 
+            const draftIdToUse = draftId ?? crypto.randomUUID()
+            if (draftId == null) {
+                logger.info(`User managed to end up on Summary without draftId, created draft id: ${draftIdToUse}`)
+            }
+
             const createResult = await spanBrowserAsync('OpprettSykmelding.mutation', async () =>
                 mutate({
-                    variables: { draftId: draftId, values: values },
+                    variables: { draftId: draftIdToUse, values: values },
                 }),
             )
 

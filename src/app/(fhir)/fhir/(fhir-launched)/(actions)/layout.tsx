@@ -3,17 +3,17 @@
 import React, { ReactElement, useEffect } from 'react'
 import { useQuery } from '@apollo/client/react'
 
-import { LoadablePageHeader } from '@components/layout/Page'
 import { PasientDocument } from '@queries'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { isSmartSessionInvalid } from '@data-layer/fhir/error/Errors'
-import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
-import { NySykmeldingFormWithDraftAndSuggestions } from '@features/ny-sykmelding-form/NySykmeldingFormWithData'
 
-import { NoPractitionerSession } from '../../launched-errors'
+import { NoPractitionerSession } from '../launched-errors'
 
-function NySykmeldingWithContextPasientPage(): ReactElement {
+/**
+ * All this layout does is makes sure the contextually active patient is active in the store
+ */
+function ActivePatientLayout({ children }: LayoutProps<'/fhir'>): ReactElement {
     const { loading, data, error } = useQuery(PasientDocument)
     const dispatch = useAppDispatch()
 
@@ -38,14 +38,7 @@ function NySykmeldingWithContextPasientPage(): ReactElement {
         throw error
     }
 
-    return (
-        // Each step controls their own PageLayout
-        <NySykmeldingPageSteps
-            heading={<LoadablePageHeader lead="Sykmelding for" value={data?.pasient?.navn ?? null} />}
-        >
-            <NySykmeldingFormWithDraftAndSuggestions />
-        </NySykmeldingPageSteps>
-    )
+    return <>{children}</>
 }
 
-export default NySykmeldingWithContextPasientPage
+export default ActivePatientLayout
