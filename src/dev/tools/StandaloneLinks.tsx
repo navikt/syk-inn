@@ -1,14 +1,12 @@
 'use client'
 
-import React, { ReactElement, useRef } from 'react'
+import React, { ReactElement } from 'react'
 import { Heading, LinkCard } from '@navikt/ds-react'
 import { PlayIcon, ShieldLockIcon } from '@navikt/aksel-icons'
 
 import { pathWithBasePath } from '@lib/url'
 
 function StandaloneLinks(): ReactElement {
-    const nextDraftId = useRef(crypto.randomUUID())
-
     return (
         <div className="mt-4">
             <Heading level="3" size="xsmall" spacing className="flex gap-1 items-center">
@@ -20,7 +18,7 @@ function StandaloneLinks(): ReactElement {
                     <PlayIcon fontSize="2rem" />
                 </LinkCard.Icon>
                 <LinkCard.Title>
-                    <LinkCard.Anchor suppressHydrationWarning href={pathWithBasePath(`/ny/${nextDraftId.current}`)}>
+                    <LinkCard.Anchor suppressHydrationWarning href={pathWithBasePath(`/ny`)}>
                         Just go
                     </LinkCard.Anchor>
                 </LinkCard.Title>

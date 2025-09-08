@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef } from 'react'
+import React, { ReactElement } from 'react'
 import { ChevronRightDoubleCircleIcon, TabsAddIcon } from '@navikt/aksel-icons'
 
 import { SykmeldingFragment } from '@queries'
@@ -8,7 +8,6 @@ import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
 export function TidligereSykmeldingActions({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
-    const nextDraftId = useRef(crypto.randomUUID())
     const dispatch = useAppDispatch()
 
     const isActiveOrFuture = byActiveOrFutureSykmelding(sykmelding)
@@ -16,7 +15,7 @@ export function TidligereSykmeldingActions({ sykmelding }: { sykmelding: Sykmeld
     return (
         <div className="flex gap-2">
             <SlowNextLinkButton
-                href={`/fhir/ny/${nextDraftId.current}`}
+                href="/fhir/ny"
                 onClick={() => {
                     dispatch(nySykmeldingActions.dupliser(sykmelding))
                 }}
@@ -28,7 +27,7 @@ export function TidligereSykmeldingActions({ sykmelding }: { sykmelding: Sykmeld
             </SlowNextLinkButton>
             {isActiveOrFuture && (
                 <SlowNextLinkButton
-                    href={`/fhir/ny/${nextDraftId.current}`}
+                    href="/fhir/ny"
                     onClick={() => {
                         dispatch(nySykmeldingActions.forleng(sykmelding))
                     }}

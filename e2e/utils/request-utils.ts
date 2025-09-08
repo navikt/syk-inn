@@ -4,9 +4,7 @@ import { TypedDocumentNode } from '@apollo/client'
 import { fail } from './assertions'
 
 export function getDraftId(page: Page): string | null {
-    const url = new URL(page.url())
-
-    return url.pathname.split('/').pop() ?? null
+    return new URL(page.url()).searchParams.get('draft') ?? null
 }
 
 export function waitForHttp(url: string, method: string) {

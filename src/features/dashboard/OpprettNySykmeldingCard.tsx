@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactElement, useEffect, useRef, useState } from 'react'
+import React, { CSSProperties, ReactElement, useEffect, useState } from 'react'
 import { Alert, BodyShort, Button, Checkbox, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 
@@ -12,7 +12,6 @@ import DumbStats from './dumb-stats/DumbStats'
 import DashboardCard from './card/DashboardCard'
 
 function OpprettNySykmeldingCard({ className }: { className?: string }): ReactElement {
-    const nextDraftId = useRef(crypto.randomUUID())
     const { data, loading, error, refetch } = useQuery(PasientDocument)
     const [hasLegged, setHasLegged] = useState(true)
     const dispatch = useAppDispatch()
@@ -93,7 +92,7 @@ function OpprettNySykmeldingCard({ className }: { className?: string }): ReactEl
 
                             <div className="flex items-center justify-end">
                                 <ShortcutButtonLink
-                                    href={`/fhir/ny/${nextDraftId.current}`}
+                                    href="/fhir/ny"
                                     variant="primary"
                                     disabled={loading || !hasLegged}
                                     loading={loading}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client/react'
+import { skipToken, useQuery } from '@apollo/client/react'
 import { logger } from '@navikt/next-logger'
 
 import { useAppDispatch } from '@core/redux/hooks'
@@ -16,13 +16,18 @@ type UseFormValuesSummaryDraft = {
 }
 
 export function useFormValuesSummaryDraft(values: NySykmeldingFormState | null): UseFormValuesSummaryDraft {
-    const draftId = useDraftId()
+    const [draftId] = useDraftId()
     const dispatch = useAppDispatch()
     const [hasTriedDrafting, setHasTriedDrafting] = useState<boolean>(false)
-    const draftQuery = useQuery(GetDraftDocument, {
-        variables: { draftId: draftId },
-        fetchPolicy: 'cache-first',
-    })
+    const draftQuery = useQuery(
+        GetDraftDocument,
+        draftId != null
+            ? {
+                  variables: { draftId: draftId },
+                  fetchPolicy: 'cache-first',
+              }
+            : skipToken,
+    )
 
     useEffect(() => {
         if (hasTriedDrafting) return
