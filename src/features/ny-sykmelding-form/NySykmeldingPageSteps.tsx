@@ -7,7 +7,7 @@ import { PageLayout } from '@components/layout/Page'
 
 import { StepSection, useFormStep } from './steps/useFormStep'
 import SummarySection from './summary/SummarySection'
-import NySykmeldingFormWithData from './NySykmeldingFormWithData'
+import { NySykmeldingFormWithDraftAndSuggestions } from './NySykmeldingFormWithData'
 
 function NySykmeldingPageSteps({ heading }: { heading: ReactNode }): ReactElement {
     const [step] = useFormStep()
@@ -24,7 +24,7 @@ function Sections({ heading, section }: { heading: ReactNode; section: StepSecti
         case 'main':
             return (
                 <PageLayout heading={heading} bg="white" size="fit">
-                    <NySykmeldingFormWithData />
+                    <NySykmeldingFormWithDraftAndSuggestions />
                 </PageLayout>
             )
         case 'summary':

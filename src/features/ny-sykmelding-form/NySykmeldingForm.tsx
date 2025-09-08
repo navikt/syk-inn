@@ -8,13 +8,11 @@ import FormSection from '@components/form/form-section/FormSection'
 import FormSheet from '@components/form/form-section/FormSheet'
 import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
-import { DraftValues } from '@data-layer/draft/draft-schema'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
-import type { NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
+import type { NySykmeldingMainFormValues } from './form'
 import { formValuesToStatePayload } from './form-mappers'
 import { useFormStep } from './steps/useFormStep'
-import { createDefaultFormValues } from './form-default-values'
 import DiagnoseSection from './diagnose/DiagnoseSection'
 import DiagnoseInfoAlert from './diagnose/DiagnoseInfoAlert'
 import BidiagnoseSection from './diagnose/bidiagnose/BidiagnoseSection'
@@ -30,21 +28,26 @@ import styles from './NySykmeldingForm.module.css'
 const FormDevTools = dynamic(() => import('@dev/tools/NySykmeldingFormDevTools'), { ssr: false })
 
 type Props = {
-    draftValues: DraftValues | null
-    initialServerValues: NySykmeldingSuggestions
+    /**
+     * Any form rendered NEEDS to come provided with default values. The form can be rendered in different
+     * contexts, some that care about existing values/drafts/suggestions differently. This should be controlled
+     * by the parent.
+     */
+    defaultValues: NySykmeldingMainFormValues
+    /**
+     * Used for contexctually relevant error messages
+     */
+    contextualErrors: {
+        diagnose?: { error: 'FHIR_FAILED' }
+    }
 }
 
-function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactElement {
+function NySykmeldingForm({ defaultValues, contextualErrors }: Props): ReactElement {
     const selectedPasient = useAppSelector((state) => state.nySykmelding.pasient)
-    const initialValues = useAppSelector((state) => state.nySykmelding.values)
     const formMeta = useAppSelector((state) => state.nySykmelding.meta)
     const onSubmit = useHandleFormSubmit()
     const form = useForm<NySykmeldingMainFormValues>({
-        defaultValues: createDefaultFormValues({
-            draftValues: draftValues,
-            valuesInState: initialValues,
-            serverSuggestions: initialServerValues,
-        }),
+        defaultValues,
     })
 
     return (
@@ -62,7 +65,7 @@ function NySykmeldingForm({ draftValues, initialServerValues }: Props): ReactEle
                 </FormSheet>
                 <FormSheet className="row-span-2">
                     <FormSection title="Diagnose">
-                        <DiagnoseSection diagnosePrefillError={initialServerValues.diagnose.error} />
+                        <DiagnoseSection diagnosePrefillError={contextualErrors?.diagnose} />
                         <BidiagnoseSection />
                         <DiagnoseInfoAlert />
                     </FormSection>
