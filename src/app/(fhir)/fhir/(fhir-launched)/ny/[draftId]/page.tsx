@@ -9,6 +9,7 @@ import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { isSmartSessionInvalid } from '@data-layer/fhir/error/Errors'
 import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
+import { NySykmeldingFormWithDraftAndSuggestions } from '@features/ny-sykmelding-form/NySykmeldingFormWithData'
 
 import { NoPractitionerSession } from '../../launched-errors'
 
@@ -41,7 +42,9 @@ function NySykmeldingWithContextPasientPage(): ReactElement {
         // Each step controls their own PageLayout
         <NySykmeldingPageSteps
             heading={<LoadablePageHeader lead="Sykmelding for" value={data?.pasient?.navn ?? null} />}
-        />
+        >
+            <NySykmeldingFormWithDraftAndSuggestions />
+        </NySykmeldingPageSteps>
     )
 }
 

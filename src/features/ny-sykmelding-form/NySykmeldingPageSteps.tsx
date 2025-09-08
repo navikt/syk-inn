@@ -7,24 +7,29 @@ import { PageLayout } from '@components/layout/Page'
 
 import { StepSection, useFormStep } from './steps/useFormStep'
 import SummarySection from './summary/SummarySection'
-import { NySykmeldingFormWithDraftAndSuggestions } from './NySykmeldingFormWithData'
 
-function NySykmeldingPageSteps({ heading }: { heading: ReactNode }): ReactElement {
+function NySykmeldingPageSteps({ heading, children }: PropsWithChildren<{ heading: ReactNode }>): ReactElement {
     const [step] = useFormStep()
 
     return (
         <AnimateSectionChanges step={step}>
-            <Sections heading={heading} section={step} />
+            <Sections heading={heading} section={step}>
+                {children}
+            </Sections>
         </AnimateSectionChanges>
     )
 }
 
-function Sections({ heading, section }: { heading: ReactNode; section: StepSection }): ReactElement {
+function Sections({
+    heading,
+    section,
+    children,
+}: PropsWithChildren<{ heading: ReactNode; section: StepSection }>): ReactElement {
     switch (section) {
         case 'main':
             return (
                 <PageLayout heading={heading} bg="white" size="fit">
-                    <NySykmeldingFormWithDraftAndSuggestions />
+                    {children}
                 </PageLayout>
             )
         case 'summary':
