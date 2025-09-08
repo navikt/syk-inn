@@ -1,10 +1,11 @@
 import { SmartClient, SmartClientConfiguration, SmartStorage } from '@navikt/smart-on-fhir/client'
 import Valkey from 'iovalkey'
+import { logger } from '@navikt/next-logger'
 
 import { globalInMemoryValkey } from '@dev/mock-engine/valkey/global-inmem-valkey'
 import { productionValkey } from '@core/services/valkey/client'
 import { getAbsoluteURL } from '@lib/url'
-import { isDemo, isE2E, isLocal } from '@lib/env'
+import { getServerEnv, isDemo, isE2E, isLocal } from '@lib/env'
 
 import { getKnownFhirServers } from './issuers'
 
@@ -64,9 +65,13 @@ function sessionIdKey(sessionId: string): string {
  * scoped per user.
  */
 function getBackingStore(): Valkey {
-    if (isE2E || isDemo) {
+    if (isE2E || (isDemo && !getServerEnv().useLocalValkey)) {
         return globalInMemoryValkey()
     } else {
+        if (getServerEnv().useLocalValkey) {
+            logger.warn('USE_LOCAL_VALKEY is enabled, using actual valkey for smart sessions.')
+        }
+
         return productionValkey()
     }
 }

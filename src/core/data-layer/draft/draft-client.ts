@@ -6,6 +6,7 @@ import Valkey from 'iovalkey'
 import { productionValkey } from '@core/services/valkey/client'
 import { withSpanServerAsync } from '@lib/otel/server'
 import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
+import { getServerEnv } from '@lib/env'
 
 import { DraftValues } from './draft-schema'
 
@@ -38,9 +39,13 @@ export type DraftClient = {
  * In e2e/demo, each draft client is scoped to the users session, in production it is Valkey-backed.
  */
 export async function getDraftClient(): Promise<DraftClient> {
-    if (shouldUseMockEngine()) {
+    if (shouldUseMockEngine() && !getServerEnv().useLocalValkey) {
         const mockEngine = await mockEngineForSession()
         return mockEngine.draftClient
+    }
+
+    if (shouldUseMockEngine() && getServerEnv().useLocalValkey) {
+        logger.warn('USE_LOCAL_VALKEY is enabled, using actual valkey for drafts.')
     }
 
     return createDraftClient(productionValkey())

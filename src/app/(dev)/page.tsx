@@ -1,4 +1,4 @@
-import { BodyShort, Heading } from '@navikt/ds-react'
+import { Alert, BodyShort, Heading } from '@navikt/ds-react'
 import { LinkCard, LinkCardAnchor, LinkCardIcon, LinkCardTitle } from '@navikt/ds-react/LinkCard'
 import { TerminalIcon, VirusIcon } from '@navikt/aksel-icons'
 import React, { ReactElement } from 'react'
@@ -18,6 +18,7 @@ export default function Home(): ReactElement {
     }
 
     const isSykInnApiIntegrationEnabled = getServerEnv().useLocalSykInnApi
+    const isLocalValkeyEnabled = getServerEnv().useLocalValkey
     return (
         <Page className="bg-transparent">
             <PageBlock as="main" width="xl" gutters>
@@ -59,6 +60,21 @@ export default function Home(): ReactElement {
                                     </LinkCardTitle>
                                 </LinkCard>
                             </div>
+                        )}
+
+                        {isLocalValkeyEnabled && (
+                            <Alert variant="info" className="m-4">
+                                <BodyShort>
+                                    You have enabled local Valkey! Any scenarios that include drafts will not be a part
+                                    of the scenario you launch.
+                                </BodyShort>
+
+                                <BodyShort size="small" className="mt-2 mb-4">
+                                    Set{' '}
+                                    <code className="text-sm bg-bg-subtle p-1 rounded-md">USE_LOCAL_VALKEY=false</code>{' '}
+                                    in your .env.development file to re-enable drafts in scenarios.
+                                </BodyShort>
+                            </Alert>
                         )}
 
                         {!isSykInnApiIntegrationEnabled && <ScenarioLinks />}
