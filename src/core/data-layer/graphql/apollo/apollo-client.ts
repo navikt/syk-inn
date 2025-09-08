@@ -23,13 +23,12 @@ const createErrorLink = (store: AppStore): ApolloLink =>
     })
 
 /**
- * Should this be a SetConntextLink maybe?
+ * Should this be a SetContextLink maybe?
  */
 const multiUserLink = new ApolloLink((operation, forward) => {
     const activeUser = sessionStorage.getItem('FHIR_ACTIVE_PATIENT') ?? null
     if (!activeUser) return forward(operation)
 
-    logger.info(`Found multi launch user ID, setting ${activeUser} as FHIR-Active-Patient in Apollo Headers`)
     operation.setContext(({ headers }: { headers: Record<string, string> }) => ({
         headers: {
             ...headers,

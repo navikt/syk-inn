@@ -16,8 +16,6 @@ function initializeValkey(): Valkey {
     })
 
     client.on('error', (err: Error) => logger.error(err))
-    client.on('connect', () => logger.info('Valkey Client Connected'))
-    client.on('ready', () => logger.info('Valkey Client Ready'))
 
     return client
 }
