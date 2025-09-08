@@ -95,6 +95,10 @@ export function createDraftClient(valkey: Valkey): DraftClient {
                 const key = draftKey(draftId)
                 const ownershipKey = ownershipIndexKey(owner)
 
+                // Does document even exist?
+                const exists = await valkey.exists(key)
+                if (exists !== 1) return null
+
                 // If the ownership is not in the index, it's not this users draft
                 const isMember = await valkey.sismember(ownershipKey, key)
                 if (isMember !== 1) {
