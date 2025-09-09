@@ -27,6 +27,7 @@ export function verifySummaryPage(sections: SummarySection[]) {
             await page.screenshot({})
             await expect(page.getByRole('heading', { name: 'Oppsummering sykmelding' })).toBeVisible()
             await expect(page.getByRole('button', { name: 'Endre' })).toBeVisible()
+            await expect(page.getByText('Sykmeldingen gjelder')).toBeVisible()
 
             await Promise.all(
                 sections.map(async (section) => {
