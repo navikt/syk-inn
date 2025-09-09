@@ -65,7 +65,7 @@ function sessionIdKey(sessionId: string): string {
  * scoped per user.
  */
 function getBackingStore(): Valkey {
-    if (isE2E || (isDemo && !getServerEnv().useLocalValkey)) {
+    if ((isE2E || isDemo) && !getServerEnv().useLocalValkey) {
         return globalInMemoryValkey()
     } else {
         if (getServerEnv().useLocalValkey) {
