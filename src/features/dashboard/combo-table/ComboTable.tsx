@@ -4,7 +4,7 @@ import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
 import { DraftFragment, SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
-import { byActiveOrFutureSykmelding, latestTom } from '@data-layer/common/sykmelding-utils'
+import { byActiveOrFutureSykmelding, isWithinWeeksOldSykmelding, latestTom } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import Redaction from '@components/misc/Redaction'
 
@@ -62,7 +62,12 @@ export function ComboTable({
                 )}
                 {previous.map((sykmelding) =>
                     sykmelding.__typename === 'SykmeldingFull' ? (
-                        <FullTableRow key={sykmelding.sykmeldingId} sykmelding={sykmelding} status="previous" />
+                        <FullTableRow
+                            key={sykmelding.sykmeldingId}
+                            sykmelding={sykmelding}
+                            forlengable={isWithinWeeksOldSykmelding(sykmelding, 4) ? true : undefined}
+                            status="previous"
+                        />
                     ) : (
                         <RedactedTableRow key={sykmelding.sykmeldingId} sykmelding={sykmelding} status="previous" />
                     ),

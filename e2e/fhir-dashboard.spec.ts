@@ -13,6 +13,7 @@ import {
     fillArbeidsforhold,
     fillAndreSporsmal,
     fillMeldinger,
+    fillTilbakedatering,
 } from './actions/user-actions'
 import { verifySignerendeBehandler, verifySummaryPage } from './actions/user-verifications'
 import { userInteractionsGroup } from './utils/actions'
@@ -146,4 +147,26 @@ test('should be able to quickly delete a lot of drafts', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
     await expect(page.getByText('Her var det ingen tidligere sykmeldinger eller utkast')).toBeVisible()
+})
+
+test('should not be possible to extend old sykmelding', async ({ page }) => {
+    await launchWithMock('empty')(page)
+
+    await startNewSykmelding()(page)
+
+    await userInteractionsGroup(
+        fillPeriodeRelative({ type: '100%', fromRelative: -35, days: 5 }),
+        fillTilbakedatering({
+            contact: daysAgo(4),
+            reason: 'Ventetid på legetime',
+        }),
+        pickHoveddiagnose({ search: 'H931', select: /Tinnitus/ }),
+        nextStep(),
+        verifySignerendeBehandler(),
+        submitSykmelding(),
+    )(page)
+
+    await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
+
+    await expect(page.getByRole('button', { name: 'Forleng' })).not.toBeVisible()
 })

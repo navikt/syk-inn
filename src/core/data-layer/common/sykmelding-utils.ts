@@ -1,5 +1,5 @@
 import * as R from 'remeda'
-import { isAfter, isSameDay } from 'date-fns'
+import { isAfter, isSameDay, sub } from 'date-fns'
 
 import { raise } from '@lib/ts'
 import { SykmeldingFragment } from '@queries'
@@ -13,6 +13,20 @@ export function byActiveOrFutureSykmelding(sykmelding: { values: { aktivitet: { 
 
     const now = new Date()
     return isSameDay(latestPeriode.tom, now) || isAfter(latestPeriode.tom, now)
+}
+
+export function isWithinWeeksOldSykmelding(
+    sykmelding: { values: { aktivitet: { tom: string }[] } },
+    weeks: number,
+): boolean {
+    const latestPeriode = R.firstBy(sykmelding.values.aktivitet, [(it) => it.tom, 'desc'])
+
+    if (!latestPeriode) {
+        raise('Sykmelding without aktivitetsperioder, this should not happen')
+    }
+
+    const dateWeeksAgo = sub(new Date(), { weeks })
+    return isSameDay(latestPeriode.tom, dateWeeksAgo) || isAfter(latestPeriode.tom, dateWeeksAgo)
 }
 
 export function earliestFom(sykmelding: SykmeldingFragment): string {
