@@ -41,7 +41,7 @@ const opts: OptionsType = process.env.CI
             // Multiple tests in UI mode is pointless :D
             workers: 1,
             server: {
-                command: 'NEXT_PUBLIC_RUNTIME_ENV=e2e yarn dev --turbo',
+                command: 'NEXT_PUBLIC_RUNTIME_ENV=e2e yarn dev-e2e',
                 url: `http://localhost:${PORT}/api/internal/is_ready`,
                 timeout: 120 * 1000,
                 reuseExistingServer: true,

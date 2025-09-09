@@ -11,6 +11,7 @@
     ],
     "scripts": {
         "dev": "./scripts/pre-dev.sh && concurrently --names 'next,gen'  --prefix-colors 'blue,magenta' 'yarn dev:next' 'yarn gen:watch'",
+        "dev-e2e": "./scripts/pre-e2e-dev.sh && yarn dev:next",
         "dev:next": "next dev --turbo | pino-pretty --messageKey=message",
         "dev:valkey": "docker run --name syk-inn-dev-valkey -p 6379:6379 -d valkey/valkey:latest",
         "build": "./scripts/pre-build.sh && next build",
