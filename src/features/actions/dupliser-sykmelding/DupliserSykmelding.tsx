@@ -9,7 +9,7 @@ import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPage
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
-import SykmeldingFormErrors from '@features/actions/common/SykmeldingFormErrors'
+import { SykmeldingFormErrors } from '@features/actions/common/SykmeldingFormErrors'
 import { dupliserSykmeldingDefaultValues } from '@features/actions/dupliser-sykmelding/dupliser-sykmelding-mapper'
 
 interface Props {

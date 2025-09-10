@@ -12,6 +12,7 @@ import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingF
 import { createDefaultFormValues } from '@features/ny-sykmelding-form/form-default-values'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
+import { SykmeldingDraftFormErrors } from '@features/actions/common/SykmeldingFormErrors'
 
 function NySykmeldingFromDraft({ draftId }: { draftId: string }): ReactElement {
     const pasientQuery = useQuery(PasientDocument)
@@ -35,6 +36,10 @@ function DraftSykmeldingFormWithDefaultValues({ draftId }: { draftId: string }):
 
     if (suggestionsQuery.loading || draftQuery.loading) {
         return <NySykmeldingFormSkeleton />
+    }
+
+    if (draftQuery.error || draftQuery.data?.draft == null) {
+        return <SykmeldingDraftFormErrors refetch={draftQuery.refetch} />
     }
 
     const parsedDraft = safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values)

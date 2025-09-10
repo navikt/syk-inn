@@ -10,7 +10,7 @@ import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingF
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { forlengSykmeldingDefaultValues } from '@features/actions/forleng-sykmelding/forleng-sykmelding-mappers'
-import SykmeldingFormErrors from '@features/actions/common/SykmeldingFormErrors'
+import { SykmeldingFormErrors } from '@features/actions/common/SykmeldingFormErrors'
 
 interface Props {
     sykmeldingId: string
