@@ -8,8 +8,6 @@ import { useQuery } from '@apollo/client/react'
 
 import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
 import { pathWithBasePath } from '@lib/url'
-import { useAppDispatch } from '@core/redux/hooks'
-import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { AssableNextLink } from '@components/links/AssableNextLink'
 import { ValueItemSkeleton } from '@components/sykmelding/ValuesSection'
@@ -37,7 +35,6 @@ function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
 }
 
 function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string }): ReactElement {
-    const dispatch = useAppDispatch()
     const { loading, data, error, refetch } = useQuery(SykmeldingByIdDocument, { variables: { id: sykmeldingId } })
     const sykmelding = data?.sykmelding ?? null
 
@@ -58,10 +55,7 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
                     <Skeleton variant="rounded" width={102} height={32} />
                 ) : sykmelding ? (
                     <SlowNextLinkButton
-                        href="/fhir/ny"
-                        onClick={() => {
-                            dispatch(nySykmeldingActions.dupliser(sykmelding))
-                        }}
+                        href={`/fhir/dupliser/${sykmelding.sykmeldingId}`}
                         icon={<TabsAddIcon aria-hidden />}
                         variant="tertiary"
                         size="small"

@@ -35,6 +35,11 @@ type Props = {
      */
     defaultValues: NySykmeldingMainFormValues
     /**
+     * When for example forlenging a sykmelding, we need to know the last day+1 from the
+     * sykmelding we are forlenging.
+     */
+    initialFom?: string
+    /**
      * Used for contexctually relevant error messages
      */
     contextualErrors: {
@@ -42,9 +47,8 @@ type Props = {
     }
 }
 
-function NySykmeldingForm({ defaultValues, contextualErrors }: Props): ReactElement {
+function NySykmeldingForm({ defaultValues, initialFom, contextualErrors }: Props): ReactElement {
     const selectedPasient = useAppSelector((state) => state.nySykmelding.pasient)
-    const formMeta = useAppSelector((state) => state.nySykmelding.meta)
     const onSubmit = useHandleFormSubmit()
     const form = useForm<NySykmeldingMainFormValues>({
         defaultValues,
@@ -59,7 +63,7 @@ function NySykmeldingForm({ defaultValues, contextualErrors }: Props): ReactElem
                     <FormSection title="Arbeidsgiver">
                         <ArbeidsforholdSection />
                     </FormSection>
-                    <AktivitetSection initialFom={formMeta?.initialFom ?? null} />
+                    <AktivitetSection initialFom={initialFom ?? null} />
                     <DynamicTilbakedateringSection />
                     <div className="bg-surface-subtle w-4 h-[calc(100%-2rem)] absolute -right-4 rounded" />
                 </FormSheet>

@@ -4,8 +4,6 @@ import { ChevronRightIcon, TabsAddIcon } from '@navikt/aksel-icons'
 
 import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { SykmeldingFragment } from '@queries'
-import { useAppDispatch } from '@core/redux/hooks'
-import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 
 type SykmeldingActionProps = {
     sykmeldingId: string
@@ -31,15 +29,10 @@ export function SykmeldingActions({ sykmeldingId, sykmelding, forlengable }: Syk
 }
 
 function DupliserSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
-    const dispatch = useAppDispatch()
-
     return (
         <Tooltip content="Dupliser sykmeldingen">
             <SlowNextLinkButton
-                href="/fhir/ny"
-                onClick={() => {
-                    dispatch(nySykmeldingActions.dupliser(sykmelding))
-                }}
+                href={`/fhir/dupliser/${sykmelding.sykmeldingId}`}
                 icon={<TabsAddIcon aria-hidden />}
                 variant="tertiary"
                 size="small"
@@ -49,18 +42,9 @@ function DupliserSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragme
 }
 
 function ForlengSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
-    const dispatch = useAppDispatch()
-
     return (
         <Tooltip content="Forleng sykmeldingen">
-            <SlowNextLinkButton
-                href="/fhir/ny"
-                onClick={() => {
-                    dispatch(nySykmeldingActions.forleng(sykmelding))
-                }}
-                variant="secondary"
-                size="small"
-            >
+            <SlowNextLinkButton href={`/fhir/forleng/${sykmelding.sykmeldingId}`} variant="secondary" size="small">
                 Forleng
             </SlowNextLinkButton>
         </Tooltip>

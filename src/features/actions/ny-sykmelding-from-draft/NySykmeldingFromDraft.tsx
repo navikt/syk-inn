@@ -26,12 +26,12 @@ function NySykmeldingFromDraft({ draftId }: { draftId: string }): ReactElement {
 }
 
 function DraftSykmeldingFormWithDefaultValues({ draftId }: { draftId: string }): ReactElement {
-    const suggestionsQuery = useDiagnoseSuggestions()
-    const valuesInState = useAppSelector((state) => state.nySykmelding.values)
     const draftQuery = useQuery(GetDraftDocument, {
         variables: { draftId },
         fetchPolicy: 'cache-first',
     })
+    const valuesInState = useAppSelector((state) => state.nySykmelding.values)
+    const suggestionsQuery = useDiagnoseSuggestions()
 
     if (suggestionsQuery.loading || draftQuery.loading) {
         return <NySykmeldingFormSkeleton />
