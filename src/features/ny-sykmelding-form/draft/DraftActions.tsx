@@ -7,8 +7,6 @@ import { CacheIds } from '@data-layer/graphql/apollo/apollo-client-cache'
 import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
 import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { spanBrowserAsync } from '@lib/otel/browser'
-import { useAppDispatch } from '@core/redux/hooks'
-import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { useMode } from '@core/providers/Modes'
 
 import { useFormContext } from '../form'
@@ -21,11 +19,7 @@ export function LagreDraftButton(): ReactElement {
     const { getValues } = useFormContext()
     const [mutation, draftResult] = useSaveDraft({
         returnToDash: true,
-        onCompleted: () => {
-            dispatch(nySykmeldingActions.reset())
-        },
     })
-    const dispatch = useAppDispatch()
 
     return (
         <ShortcutButtons
@@ -54,7 +48,6 @@ function ForkastDraftButton(): ReactElement {
     const mode = useMode()
     const [draftId] = useDraftId()
     const router = useRouter()
-    const dispatch = useAppDispatch()
 
     const [mutation, deleteResult] = useMutation(DeleteDraftDocument, {
         refetchQueries: [{ query: GetAllDraftsDocument }],
@@ -68,10 +61,6 @@ function ForkastDraftButton(): ReactElement {
                     const redirect = (): void => {
                         const redirectPath = mode === 'FHIR' ? '/fhir' : '/ny'
                         router.replace(redirectPath, { scroll: true })
-
-                        requestAnimationFrame(() => {
-                            dispatch(nySykmeldingActions.reset())
-                        })
                     }
 
                     if (!draftId) {
