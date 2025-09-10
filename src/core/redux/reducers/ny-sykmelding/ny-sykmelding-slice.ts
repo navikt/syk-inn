@@ -32,8 +32,10 @@ export const nySykmeldingSlice = createSlice({
 
             state.summary.skalSkjermes = action.payload
         },
-        reset() {
-            return initialState
+        reset(state) {
+            // Don't nuke patient
+            state.values = null
+            state.summary = null
         },
     },
 })
