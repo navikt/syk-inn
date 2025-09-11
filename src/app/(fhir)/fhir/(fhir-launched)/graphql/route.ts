@@ -1,5 +1,6 @@
 import { createGraphQLHandler } from '@data-layer/graphql/yoga-server'
-import { createFhirResolverContext, fhirSchema } from '@data-layer/fhir/fhir-graphql-resolvers'
+import { fhirSchema } from '@data-layer/fhir/fhir-graphql-resolvers'
+import { createFhirResolverContext } from '@data-layer/fhir/fhir-graphql-context'
 
 const handler = createGraphQLHandler(fhirSchema, '/fhir/graphql', createFhirResolverContext)
 

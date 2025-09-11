@@ -2,9 +2,8 @@ import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 import { teamLogger } from '@navikt/next-logger/team-log'
-import { ReadyClient } from '@navikt/smart-on-fhir/client'
 
-import { Behandler, RuleOutcome, QueriedPerson, Resolvers } from '@resolvers'
+import { Behandler, QueriedPerson, Resolvers, RuleOutcome } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
@@ -27,26 +26,11 @@ import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett
 import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
 import { aaregService } from '@core/services/aareg/aareg-service'
 import { raise } from '@lib/ts'
-import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { assertIsPilotUser } from '@data-layer/fhir/fhir-graphql-utils'
-import { NoSmartSession } from '@data-layer/fhir/error/Errors'
+import { FhirGraphqlContext } from '@data-layer/fhir/fhir-graphql-context'
 
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
-
-export type FhirGraphqlContext = {
-    client: ReadyClient
-}
-
-export const createFhirResolverContext = async (): Promise<FhirGraphqlContext> => {
-    const client = await getReadyClient({ validate: true })
-
-    if ('error' in client) {
-        throw NoSmartSession()
-    }
-
-    return { client }
-}
 
 const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     Query: {
