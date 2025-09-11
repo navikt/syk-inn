@@ -6,7 +6,7 @@ import { bundledEnv, isLocal, isDemo } from '@lib/env'
 
 import { APP_NAME } from './common'
 
-export const getFaro = lazyNextleton('faro-a', (): Faro | null => {
+const getFaro = lazyNextleton('faro-a', (): Faro | null => {
     if (!bundledEnv.NEXT_PUBLIC_TELEMETRY_URL) return null
 
     return initializeFaro({

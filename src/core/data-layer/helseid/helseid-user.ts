@@ -1,5 +1,3 @@
-import 'server-only'
-
 import * as z from 'zod'
 import { logger } from '@navikt/next-logger'
 import { teamLogger } from '@navikt/next-logger/team-log'

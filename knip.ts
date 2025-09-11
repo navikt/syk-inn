@@ -15,7 +15,7 @@ const config: KnipConfig = {
         // Not automatically picked up by knip nextjs plugin yet
         'src/app/global-not-found.tsx',
     ],
-    ignoreDependencies: ['@navikt/ds-css', 'pino-pretty', 'eslint-config-next'],
+    ignoreDependencies: ['@navikt/ds-css', 'pino-pretty', 'eslint-config-next', '@opentelemetry/core'],
 }
 
 export default config
