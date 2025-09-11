@@ -1,5 +1,5 @@
 import * as R from 'remeda'
-import { addDays, differenceInSeconds, endOfDay } from 'date-fns'
+import { addDays, addSeconds, differenceInSeconds, endOfDay } from 'date-fns'
 import { logger } from '@navikt/next-logger'
 import Valkey from 'iovalkey'
 
@@ -16,6 +16,8 @@ type DraftEntryCore = {
     draftId: string
     // ISO 8601 date string
     lastUpdated: string
+    // ISO 8601 date string
+    deletesAt: string
 }
 
 type ValkeyDraftEntry = DraftEntryCore & {
@@ -58,16 +60,18 @@ export function createDraftClient(valkey: Valkey): DraftClient {
             async (draftId, owner, values, lastUpdated: Date = new Date()) => {
                 const key = draftKey(draftId)
                 const ownershipKey = ownershipIndexKey(owner)
+                const expireInSeconds = secondsToMidnightTomorrow()
 
                 await valkey.hset(key, {
                     draftId,
                     values: JSON.stringify(values),
                     lastUpdated: lastUpdated.toISOString(),
+                    deletesAt: addSeconds(lastUpdated, expireInSeconds).toISOString(),
                 } satisfies ValkeyDraftEntry)
                 await valkey.sadd(ownershipKey, key)
 
-                await valkey.expire(key, secondsToMidnightTomorro())
-                await valkey.expire(ownershipKey, secondsToMidnightTomorro())
+                await valkey.expire(key, expireInSeconds)
+                await valkey.expire(ownershipKey, expireInSeconds)
 
                 return values
             },
@@ -137,7 +141,7 @@ export function createDraftClient(valkey: Valkey): DraftClient {
 }
 
 function internalEntryToDraftEntry(value: Record<string, string>): DraftEntry | null {
-    if (!value.draftId || !value.lastUpdated || !value.values) {
+    if (!value.draftId || !value.lastUpdated || !value.deletesAt || !value.values) {
         logger.warn(
             `Found incomplete draft object, draftId: ${!!value.draftId}, lastUpdated: ${!!value.lastUpdated}, values: ${!!value.values}`,
         )
@@ -147,6 +151,7 @@ function internalEntryToDraftEntry(value: Record<string, string>): DraftEntry | 
     return {
         draftId: value.draftId,
         lastUpdated: value.lastUpdated,
+        deletesAt: value.deletesAt,
         values: JSON.parse(value.values),
     } satisfies DraftEntry
 }
@@ -155,7 +160,7 @@ function valkeyEmptyHashValueToNull(value: Record<string, string>): Record<strin
     return Object.keys(value).length === 0 ? null : value
 }
 
-function secondsToMidnightTomorro(): number {
+function secondsToMidnightTomorrow(): number {
     const now = new Date()
     const tomorrow = addDays(now, 1)
 

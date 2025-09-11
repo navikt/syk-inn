@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { differenceInHours, subHours } from 'date-fns'
 
 import { createInMemoryValkey } from '@dev/mock-engine/valkey/InMemValkey'
 
@@ -64,6 +65,17 @@ describe('in memory draft client', () => {
         await expect(() => client.getDraft('test-1', { hpr: '999', ident: '222' })).rejects.toThrow(
             'Draft with ID test-1 does not belong to ownership 999',
         )
+    })
+
+    it('should expire the draft tomorrow at midnight', async () => {
+        const ownership = { hpr: '999', ident: '111' }
+        const client = createDraftClient(createInMemoryValkey())
+
+        await client.saveDraft('test-1', ownership, emptyDraft)
+
+        const draft = await client.getDraft('test-1', ownership)
+        expect(draft).not.toBeNull()
+        expect(differenceInHours(draft!.deletesAt, subHours(new Date(), 1))).toBeGreaterThan(25)
     })
 })
 
