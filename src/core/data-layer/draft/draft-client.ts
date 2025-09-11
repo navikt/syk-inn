@@ -1,5 +1,5 @@
 import * as R from 'remeda'
-import { differenceInSeconds, endOfDay } from 'date-fns'
+import { addDays, differenceInSeconds, endOfDay } from 'date-fns'
 import { logger } from '@navikt/next-logger'
 import Valkey from 'iovalkey'
 
@@ -66,8 +66,8 @@ export function createDraftClient(valkey: Valkey): DraftClient {
                 } satisfies ValkeyDraftEntry)
                 await valkey.sadd(ownershipKey, key)
 
-                await valkey.expire(key, getSecondsUntilMidnight())
-                await valkey.expire(ownershipKey, getSecondsUntilMidnight())
+                await valkey.expire(key, secondsToMidnightTomorro())
+                await valkey.expire(ownershipKey, secondsToMidnightTomorro())
 
                 return values
             },
@@ -155,10 +155,11 @@ function valkeyEmptyHashValueToNull(value: Record<string, string>): Record<strin
     return Object.keys(value).length === 0 ? null : value
 }
 
-function getSecondsUntilMidnight(): number {
+function secondsToMidnightTomorro(): number {
     const now = new Date()
+    const tomorrow = addDays(now, 1)
 
-    return differenceInSeconds(endOfDay(now), new Date())
+    return differenceInSeconds(endOfDay(tomorrow), new Date())
 }
 
 function draftKey(draftId: string): `draft:${string}` {
