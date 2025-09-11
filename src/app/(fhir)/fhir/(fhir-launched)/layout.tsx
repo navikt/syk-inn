@@ -2,13 +2,13 @@ import React, { ReactElement } from 'react'
 import { logger } from '@navikt/next-logger'
 import { redirect } from 'next/navigation'
 
-import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
+import MultiUserQueryStateToSessionStorageOnInit from '@data-layer/fhir/multi-user/MultiUserQueryStateToSessionStorageOnInit'
 import { getHprFromFhirSession } from '@data-layer/fhir/fhir-service'
+import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
+import { NoValidHPR } from '@components/errors/NoValidHPR'
 import { getFlag, getUserlessToggles, getUserToggles, toToggleMap } from '@core/toggles/unleash'
 import { ToggleProvider } from '@core/toggles/context'
 import { spanServerAsync } from '@lib/otel/server'
-import { NoValidHPR } from '@components/errors/NoValidHPR'
-import QueryStateToSessionStorageOnInit from '@data-layer/fhir/smart/QueryStateToSessionStorageOnInit'
 
 import { NoPractitionerSession } from './launched-errors'
 
@@ -38,7 +38,7 @@ async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<React
 
     return (
         <ToggleProvider toggles={toToggleMap(toggles)}>
-            <QueryStateToSessionStorageOnInit />
+            <MultiUserQueryStateToSessionStorageOnInit />
             {children}
             <LoggedOutWarning />
         </ToggleProvider>

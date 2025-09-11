@@ -16,7 +16,10 @@ interface NextContext {
 export function createGraphQLHandler<UserContext extends Record<string, unknown>>(
     schema: GraphQLSchema,
     path: '/fhir/graphql' | '/graphql',
-    context?: YogaServerOptions<NextContext, UserContext>['context'],
+    options?: {
+        context?: YogaServerOptions<NextContext, UserContext>['context']
+        plugins?: Plugin[]
+    },
 ): (request: Request, ctx: NextContext) => Response | Promise<Response> {
     const defaultPlugins = [
         useOpenTelemetry(
@@ -30,13 +33,21 @@ export function createGraphQLHandler<UserContext extends Record<string, unknown>
         ),
     ]
 
+    const runtimeSpecificPlugins: Plugin[] = []
+    if (isLocal || isDemo) {
+        runtimeSpecificPlugins.push(slowdownPlugin(path))
+    }
+    if (options?.plugins) {
+        runtimeSpecificPlugins.push(...options.plugins)
+    }
+
     const { handleRequest } = createYoga<NextContext, UserContext>({
         schema,
         logging: logger,
-        plugins: isLocal || isDemo ? [...defaultPlugins, slowdownPlugin(path)] : defaultPlugins,
+        plugins: [...defaultPlugins, ...runtimeSpecificPlugins],
         graphqlEndpoint: path,
         fetchAPI: { Response },
-        context,
+        context: options?.context,
     })
 
     return handleRequest
