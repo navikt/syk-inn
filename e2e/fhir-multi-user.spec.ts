@@ -56,3 +56,39 @@ test('launching and opening a link in a new tab, should persist context and work
     await expectPatient(Kari)(newTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
     await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
 })
+
+test.fail(
+    'edge case: launching a second sessiond, returning to first one and opening a link in a new tab fails',
+    async ({ browser }) => {
+        const baseContext = await browser.newContext()
+
+        // Launch and verify Kari (tab 1)
+        const firstTab = await baseContext.newPage()
+        await launchWithMock('empty', { patient: 'kari' })(firstTab)
+        await expectPatient(Kari)(firstTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+
+        // Launch and verify Espen (tab 2)
+        const secondTab = await baseContext.newPage()
+        await launchWithMock('one-current-to-tomorrow', { patient: 'espen' })(secondTab)
+        await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+
+        // Back to first tab and open a new tab from there
+        const [thirdTab] = await Promise.all([
+            firstTab.context().waitForEvent('page'),
+            firstTab
+                .getByRole('region', { name: 'Opprett ny sykmelding' })
+                .getByRole('button', { name: 'Opprett sykmelding' })
+                .click({ modifiers: ['ControlOrMeta'] }),
+        ])
+        await thirdTab.getByRole('button', { name: 'Avbryt og forkast' }).click()
+        // This fails, because Espen's tab was the last to launch, so the server will default to that session
+        await expectPatient(Kari)(thirdTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+
+        await Promise.all([firstTab.reload(), thirdTab.reload(), secondTab.reload()])
+
+        // This should be work:
+        await expectPatient(Kari)(firstTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+        await expectPatient(Kari)(thirdTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+        await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+    },
+)
