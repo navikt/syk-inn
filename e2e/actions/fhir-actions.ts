@@ -6,7 +6,7 @@ import { Scenarios } from '../../src/dev/mock-engine/scenarios/scenarios'
 
 export const launchPath = '/fhir/launch'
 
-const launchUrl = `${launchPath}?iss=http://localhost:3000/api/mocks/fhir&launch=foo-bar-launch`
+const launchUrl = `${launchPath}?iss=http://localhost:3000/api/mocks/fhir&launch=local-dev-launch-espen`
 
 export function launchWithMock(
     scenario: Scenarios = 'normal',

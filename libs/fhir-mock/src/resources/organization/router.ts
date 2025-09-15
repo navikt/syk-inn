@@ -1,26 +1,29 @@
 import { Hono } from 'hono'
 import { FhirBundle, FhirOrganization } from '@navikt/smart-on-fhir/zod'
 
-import testData from '../../data'
 import { withAuthed } from '../../auth/verify-authed'
+import { getServerSession } from '../../config'
 
 export const organizationRouter = new Hono()
     .use('*', withAuthed)
     .get('/:organizationId', async (c) => {
-        const condition = testData.organization.byId(c.req.param('organizationId'))
-        if (!condition) {
+        const organization = getServerSession().getOrganization(c.req.param('organizationId'))
+        if (!organization) {
             return new Response('Not found', { status: 404 })
         }
-        return Response.json(condition)
+
+        return Response.json(organization satisfies FhirOrganization, { status: 200 })
     })
     .get('/', async () => {
         return Response.json(
             {
                 resourceType: 'Bundle',
                 type: 'searchset',
-                entry: testData.organization.all().map((org) => ({
-                    resource: org,
-                })),
+                entry: getServerSession()
+                    .getAllOrgsanizations()
+                    .map((org) => ({
+                        resource: org,
+                    })),
             } satisfies FhirBundle<FhirOrganization>,
             { status: 200 },
         )

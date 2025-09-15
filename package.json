@@ -47,7 +47,7 @@
         "@navikt/next-api-proxy": "^4.1.4",
         "@navikt/next-logger": "^4.1.5",
         "@navikt/oasis": "^3.8.0",
-        "@navikt/smart-on-fhir": "1.4.17",
+        "@navikt/smart-on-fhir": "1.4.21",
         "@opentelemetry/api": "^1.9.0",
         "@opentelemetry/core": "^2.1.0",
         "@reduxjs/toolkit": "^2.9.0",

@@ -1,9 +1,12 @@
 import { getAbsoluteURL } from '@lib/url'
 import { createFhirHandler } from '@navikt/fhir-mock-server/next'
 
+import { getMockStore } from './mock-storage'
+
 const handler = createFhirHandler({
     baseUrl: getAbsoluteURL(),
     fhirPath: '/api/mocks/fhir',
+    store: getMockStore,
     clients: [
         {
             clientId: 'syk-inn',
