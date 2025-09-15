@@ -1,9 +1,19 @@
-import { expect, Page, test } from '@playwright/test'
+import { expect, Locator, Page, test } from '@playwright/test'
 import { add } from 'date-fns'
 
 import { toReadableDatePeriod } from '@lib/date'
 
 import { daysAgo, inputDate } from '../utils/date-utils'
+
+export function expectPatient(patient: { name: string; fnr: string }) {
+    return async (region: Locator) => {
+        await test.step(`verify that the patient is ${patient.name}`, async () => {
+            await expect(region).toBeVisible()
+            await expect(region.getByText(patient.name)).toBeVisible()
+            await expect(region.getByText(new RegExp(`ID-nummer(.*)${patient.fnr}`))).toBeVisible()
+        })
+    }
+}
 
 export function expectPeriode({
     type,

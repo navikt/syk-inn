@@ -8,6 +8,8 @@ import { toReadableDatePeriod } from '@lib/date'
 import { clickAndWait, waitForGqlRequest } from '../utils/request-utils'
 import { inputDate } from '../utils/date-utils'
 
+import { expectPatient } from './user-form-verification'
+
 export function startNewSykmelding(patient?: { name: string; fnr: string }) {
     return async (page: Page) => {
         await test.step(
@@ -15,11 +17,7 @@ export function startNewSykmelding(patient?: { name: string; fnr: string }) {
             async () => {
                 const pasientInfoRegion = page.getByRole('region', { name: 'Opprett ny sykmelding' })
 
-                if (patient != null) {
-                    await expect(pasientInfoRegion).toBeVisible()
-                    await expect(pasientInfoRegion.getByText(patient.name)).toBeVisible()
-                    await expect(page.getByText(new RegExp(`ID-nummer(.*)${patient.fnr}`))).toBeVisible()
-                }
+                if (patient != null) await expectPatient(patient)(pasientInfoRegion)
 
                 await pasientInfoRegion.getByRole('button', { name: 'Opprett sykmelding' }).click()
             },
