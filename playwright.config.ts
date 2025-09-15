@@ -62,6 +62,9 @@ export default defineConfig({
         baseURL: opts.baseURL,
         trace: 'on-first-retry',
     },
+    expect: {
+        timeout: !process.env.CI ? 10_000 : undefined,
+    },
     webServer: opts.server,
     projects: [
         {
