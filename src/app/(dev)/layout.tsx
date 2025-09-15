@@ -2,6 +2,7 @@ import '../globals.css'
 
 import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 import { isDemo, isLocal } from '@lib/env'
 import DemoWarning from '@components/user-warnings/DemoWarning'
@@ -27,8 +28,10 @@ export default async function DevLayout({ children }: LayoutProps<'/'>): Promise
             </head>
             <Preload />
             <body>
-                {(isLocal || isDemo) && <DemoWarning />}
-                {children}
+                <NuqsAdapter>
+                    {(isLocal || isDemo) && <DemoWarning />}
+                    {children}
+                </NuqsAdapter>
             </body>
         </html>
     )
