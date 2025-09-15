@@ -52,7 +52,7 @@ export default function Home(): ReactElement {
                                     <LinkCardTitle>
                                         <LinkCardAnchor
                                             href={pathWithBasePath(
-                                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}`,
+                                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-launch-espen`}`,
                                             )}
                                         >
                                             Launch with syk-inn-api!

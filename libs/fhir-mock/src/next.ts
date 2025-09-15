@@ -16,3 +16,5 @@ export function createFhirHandler(config: FhirMockConfig): (req: Request) => Pro
 
     return handle(app)
 }
+
+export { FhirMockSession } from './server-session'

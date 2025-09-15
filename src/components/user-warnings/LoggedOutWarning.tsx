@@ -48,7 +48,7 @@ function LoggedOutWarning(): ReactElement | null {
                         as="a"
                         variant="secondary-neutral"
                         href={pathWithBasePath(
-                            `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}`,
+                            `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-launch-espen`}`,
                         )}
                     >
                         Relaunch dev FHIR

@@ -36,7 +36,7 @@ export function NoValidHPR({ mode }: { mode: ModeType }): ReactElement {
                             as="a"
                             variant="secondary-neutral"
                             href={pathWithBasePath(
-                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}`,
+                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-launch-espen`}`,
                             )}
                         >
                             Relaunch dev FHIR

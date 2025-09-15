@@ -3,7 +3,7 @@ import { HonoRequest } from 'hono'
 
 import { createAccessToken, createIdToken } from '../jwt/jwt'
 import { fhirServerTestData } from '../meta/data/fhir-server'
-import { FhirClient, getConfig } from '../config'
+import { FhirClient, getConfig, getServerSession } from '../config'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
 
@@ -34,29 +34,36 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
         return new Response('Confidential client assertion failed', { status: 403 })
     }
 
-    if (body.has('code')) {
-        logger.info(`Token exchange, got code`)
-    } else {
+    const code = body.get('code')
+    if (code == null || typeof code !== 'string') {
         logger.error(`Token exchange, missing code`)
         return new Response('Missing code', { status: 400 })
     }
 
+    const accessToken = await createAccessToken(fhirServerTestData.wellKnown().issuer)
+    const session = getServerSession().completeLaunch(code, accessToken)
+    const idToken = await createIdToken(session.practitioner.id, {
+        'https://helseid.nhn.no': {
+            access_token: await createAccessToken('https://helseid.nhn.no'),
+            issuer: 'https://helseid.nhn.no',
+            scope: 'nav:syk-inn',
+        },
+    })
+
+    logger.warn(
+        `Launch complete! \npatient: ${session.patient.id}\nencounter: ${session.encounter.id}\npractitioner: ${session.practitioner.id}\norganization: ${session.organization.id}`,
+    )
+
     return Response.json({
-        access_token: await createAccessToken(fhirServerTestData.wellKnown().issuer),
-        id_token: await createIdToken({
-            'https://helseid.nhn.no': {
-                access_token: await createAccessToken('https://helseid.nhn.no'),
-                issuer: 'https://helseid.nhn.no',
-                scope: 'nav:syk-inn',
-            },
-        }),
+        access_token: accessToken,
+        id_token: idToken,
+        patient: session.patient.id,
+        encounter: session.encounter.id,
         refresh_token: crypto.randomUUID(),
         token_type: 'Bearer',
         expires_in: 3600,
         scope: 'openid profile launch fhirUser patient/*.* user/*.* offline_access',
         need_patient_banner: true,
-        patient: 'cd09f5d4-55f7-4a24-a25d-a5b65c7a8805',
-        encounter: '320fd29a-31b9-4c9f-963c-c6c88332d89a',
     })
 }
 

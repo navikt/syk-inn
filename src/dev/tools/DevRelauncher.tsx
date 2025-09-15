@@ -16,7 +16,7 @@ function DevRelauncher(): ReactElement | null {
             setRelaunchIn(relaunchIn - 1)
         } else {
             window.location.href = pathWithBasePath(
-                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-id`}`,
+                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-launch-espen`}`,
             )
         }
     }, 1000)
