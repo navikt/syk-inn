@@ -22,7 +22,7 @@ function MeldingTilNavField(): ReactElement {
                     />
                     <ReadMore header="Hva gjør Nav med denne informasjonen?" className="mb-2">
                         Når du har fylt ut dette feltet, blir det opprettet en oppgave til veileder på Nav-kontoret med
-                        informasjon om hva det gjelder. Hvis nav har behov for mer informasjon vil du bli kontaktet.
+                        informasjon om hva det gjelder. Hvis Nav har behov for mer informasjon vil du bli kontaktet.
                     </ReadMore>
                 </div>
             )}
