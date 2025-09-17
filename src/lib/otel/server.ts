@@ -34,3 +34,8 @@ export function failServerSpan(span: Span, what: string, error?: Error): void {
 
     span.setStatus({ code: SpanStatusCode.ERROR, message: what })
 }
+
+export function failAndThrowSpan(span: Span, what: string, error: Error): never {
+    failServerSpan(span, what, error)
+    throw error
+}
