@@ -9,6 +9,7 @@ import FormSheet from '@components/form/form-section/FormSheet'
 import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { UtfyllendeSporsmalWithDataFetching } from '@features/ny-sykmelding-form/utfyllende-sporsmal/UtfyllendeSporsmalWithDataFetching'
 
 import type { NySykmeldingMainFormValues } from './form'
 import { formValuesToStatePayload } from './form-mappers'
@@ -73,6 +74,7 @@ function NySykmeldingForm({ defaultValues, initialFom, contextualErrors }: Props
                         <BidiagnoseSection />
                         <DiagnoseInfoAlert />
                     </FormSection>
+                    <UtfyllendeSporsmalWithDataFetching />
                     <FormSection title="Andre spørsmål" hideTitle>
                         <AndreSporsmalSection />
                     </FormSection>
