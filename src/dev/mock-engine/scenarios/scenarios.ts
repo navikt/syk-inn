@@ -82,6 +82,18 @@ const simpleScenarios = {
             drafts: [],
         }),
     },
+    'utfyllende-sporsmal': {
+        description: 'User with a long continuous sykefravær, should trigger utfyllende spørsmål',
+        scenario: () => ({
+            sykmeldinger: [
+                new SykmeldingBuilder({ offset: -10 }).enkelAktivitet({ offset: 0, days: 10 }).build(),
+                new SykmeldingBuilder({ offset: -50 }).enkelAktivitet({ offset: 0, days: 25 }).build(),
+                new SykmeldingBuilder({ offset: -100 }).enkelAktivitet({ offset: 0, days: 20 }).build(),
+            ],
+            arbeidsforhold: simpleAaregArbeidsforhold,
+            drafts: [],
+        }),
+    },
 } satisfies Record<string, { description: string; scenario: ScenarioCreator }>
 
 export const scenarios = { ...simpleScenarios }
