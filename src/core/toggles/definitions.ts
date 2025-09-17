@@ -1,13 +1,16 @@
 import { getDefinitions } from '@unleash/nextjs'
 import * as R from 'remeda'
-import NodeCache from 'node-cache'
+import QuickLRU from 'quick-lru'
 
 import { spanServerAsync } from '@lib/otel/server'
 import { raise } from '@lib/ts'
 import { EXPECTED_TOGGLES } from '@core/toggles/toggles'
 import { unleashLogger } from '@core/toggles/unleash'
 
-const unleashCache = new NodeCache({ stdTTL: 15 })
+const unleashCache = new QuickLRU<string, Awaited<ReturnType<typeof getDefinitions>>>({
+    maxAge: 15 * 1000,
+    maxSize: 10,
+})
 
 /**
  * Fetches the definitions from Unleash and caches them in a simple in-memory cache with 15 seconds TTL.
@@ -16,7 +19,7 @@ const unleashCache = new NodeCache({ stdTTL: 15 })
  */
 export async function getAndValidateDefinitions(): Promise<Awaited<ReturnType<typeof getDefinitions>>> {
     if (unleashCache.has('toggles')) {
-        const cachedToggles = unleashCache.get<Awaited<ReturnType<typeof getDefinitions>>>('toggles')
+        const cachedToggles = unleashCache.get('toggles')
         if (cachedToggles != null) {
             unleashLogger.info('Using cached unleash definitions')
             return cachedToggles

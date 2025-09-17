@@ -4799,13 +4799,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clone@npm:2.x":
-  version: 2.1.2
-  resolution: "clone@npm:2.1.2"
-  checksum: 10c0/ed0601cd0b1606bc7d82ee7175b97e68d1dd9b91fd1250a3617b38d34a095f8ee0431d40a1a611122dcccb4f93295b4fdb94942aa763392b5fe44effa50c2d5e
-  languageName: node
-  linkType: hard
-
 "clsx@npm:^2.1.0, clsx@npm:^2.1.1":
   version: 2.1.1
   resolution: "clsx@npm:2.1.1"
@@ -8281,15 +8274,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-cache@npm:^5.1.2":
-  version: 5.1.2
-  resolution: "node-cache@npm:5.1.2"
-  dependencies:
-    clone: "npm:2.x"
-  checksum: 10c0/2f91907510a1276415ae5898269d0765934d5a4f3682c8b1b19964694a9b841c8bd791e1a125d1f89050f412e1da5dd982179d714252b3a7223abb05b8cb24d5
-  languageName: node
-  linkType: hard
-
 "node-domexception@npm:^1.0.0":
   version: 1.0.0
   resolution: "node-domexception@npm:1.0.0"
@@ -9181,6 +9165,13 @@ __metadata:
   version: 7.1.0
   resolution: "quick-lru@npm:7.1.0"
   checksum: 10c0/ef2df33368a66e3d3b32a42c523fcd0939c03f6192ec7f29db36179e22f015d2c75790aa9ab530c719a0dd3fb510f972bc66acca4e92bc9f01f92f0e6c2084f2
+  languageName: node
+  linkType: hard
+
+"quick-lru@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "quick-lru@npm:7.2.0"
+  checksum: 10c0/e63c8c23df965d011795d742814b9677cd47a644076ad73568ef880b16c93a8d4d0ea7a0d81726850773aa211f6e1218651f3a4f77f5c685fe01462a9b41fc95
   languageName: node
   linkType: hard
 
@@ -10462,13 +10453,13 @@ __metadata:
     next: "npm:15.5.3"
     next-logger: "npm:^5.0.1"
     nextleton: "npm:^0.6.1"
-    node-cache: "npm:^5.1.2"
     nuqs: "npm:^2.6.0"
     pino: "npm:^9.9.5"
     pino-pretty: "npm:^13.1.1"
     pino-socket: "npm:^7.4.0"
     postcss: "npm:^8.5.6"
     prettier: "npm:^3.6.2"
+    quick-lru: "npm:^7.2.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
     react-hook-form: "npm:^7.62.0"
