@@ -24,6 +24,7 @@ import { useAppSelector } from '@core/redux/hooks'
 import { useMode } from '@core/providers/Modes'
 import { NySykmeldingAktivitet, NySykmeldingTilbakedatering } from '@core/redux/reducers/ny-sykmelding'
 import { NySykmeldingState } from '@core/redux/reducers/ny-sykmelding/ny-sykmelding-slice'
+import { isCloud, isLocal } from '@lib/env'
 
 import { useDraftId } from './draft/useDraftId'
 
@@ -57,12 +58,12 @@ export function useOpprettSykmeldingMutation(): {
     })
 
     const opprettSykmelding = withSpanBrowserAsync('submitSykmelding', async () => {
-        teamLogger.info(`(Client) Submitting values: ${JSON.stringify(formState)}`)
+        if (isLocal || isCloud) teamLogger.info(`(Client) Submitting values: ${JSON.stringify(formState)}`)
 
         try {
             const values = formStateToOpprettSykmeldingInput(formState)
 
-            teamLogger.info(`(Client), mapped values: ${JSON.stringify(values)}`)
+            if (isLocal || isCloud) teamLogger.info(`(Client), mapped values: ${JSON.stringify(values)}`)
 
             const draftIdToUse = draftId ?? crypto.randomUUID()
             if (draftId == null) {
