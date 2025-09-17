@@ -2,7 +2,7 @@ import { getDefinitions } from '@unleash/nextjs'
 import * as R from 'remeda'
 import QuickLRU from 'quick-lru'
 
-import { failAndThrowSpan, spanServerAsync } from '@lib/otel/server'
+import { failAndThrowServerSpan, failServerSpan, spanServerAsync } from '@lib/otel/server'
 import { raise } from '@lib/ts'
 import { EXPECTED_TOGGLES } from '@core/toggles/toggles'
 import { unleashLogger } from '@core/toggles/unleash'
@@ -24,35 +24,46 @@ let previousValid: ToggleDefinitions | null
  * Validates their presence against the expected toggles.
  */
 export async function getAndValidateDefinitions(): Promise<ToggleDefinitions> {
-    if (unleashCache.has(TOGGLES_KEY)) {
-        const cachedToggles = unleashCache.get(TOGGLES_KEY)
-        if (cachedToggles != null) {
-            unleashLogger.info(
-                `Using cached toggles, ttl: ${((unleashCache.expiresIn(TOGGLES_KEY) ?? -1000) / 1000).toFixed(1)}s`,
-            )
-            return cachedToggles
-        }
-    }
-
-    try {
-        const definitions = await fetchDefinitions()
-
-        unleashCache.set(TOGGLES_KEY, definitions)
-        previousValid = definitions
-
-        diffToggles(definitions)
-
-        return definitions
-    } catch (e) {
-        if (previousValid != null) {
-            unleashLogger.error(
-                new Error('Failed to fetch toggles from Unleash, using previous valid toggles', { cause: e }),
-            )
-            return previousValid
+    return spanServerAsync('unleash.get-and-validate-definitions', async (span) => {
+        if (unleashCache.has(TOGGLES_KEY)) {
+            const cachedToggles = unleashCache.get(TOGGLES_KEY)
+            if (cachedToggles != null) {
+                unleashLogger.info(
+                    `Using cached toggles, ttl: ${((unleashCache.expiresIn(TOGGLES_KEY) ?? -1000) / 1000).toFixed(1)}s`,
+                )
+                return cachedToggles
+            }
         }
 
-        throw new Error('Failed to fetch toggles from Unleash, and no previous valid toggles available', { cause: e })
-    }
+        try {
+            const definitions = await fetchDefinitions()
+
+            unleashCache.set(TOGGLES_KEY, definitions)
+            previousValid = definitions
+
+            diffToggles(definitions)
+
+            return definitions
+        } catch (e) {
+            if (previousValid != null) {
+                failServerSpan(
+                    span,
+                    'Toggle fallback',
+                    new Error('Failed to fetch toggles from Unleash, using previous valid toggles', { cause: e }),
+                )
+
+                return previousValid
+            }
+
+            failAndThrowServerSpan(
+                span,
+                'Toggle error',
+                new Error('Failed to fetch toggles from Unleash, and no previous valid toggles available', {
+                    cause: e,
+                }),
+            )
+        }
+    })
 }
 
 async function fetchDefinitions(): Promise<ToggleDefinitions> {
@@ -63,7 +74,7 @@ async function fetchDefinitions(): Promise<ToggleDefinitions> {
         })
 
         if ('message' in definitions) {
-            failAndThrowSpan(
+            failAndThrowServerSpan(
                 span,
                 'Unleash Toggles,',
                 new Error(`Toggle was 200 OK, but server said: ${definitions.message}`),
