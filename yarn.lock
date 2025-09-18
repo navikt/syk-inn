@@ -491,7 +491,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@envelop/core@npm:^5.2.3, @envelop/core@npm:^5.3.0, @envelop/core@npm:^5.3.1":
+"@envelop/core@npm:^5.2.3, @envelop/core@npm:^5.3.0":
   version: 5.3.1
   resolution: "@envelop/core@npm:5.3.1"
   dependencies:
@@ -500,6 +500,18 @@ __metadata:
     "@whatwg-node/promise-helpers": "npm:^1.2.4"
     tslib: "npm:^2.5.0"
   checksum: 10c0/b925c4809ac1889d822f91669da0e117052eaf26ebbdb911af11a01e4989c68c5771938e2835382d6fcf68a6fd62c14b48de5b7e55d03ecbcd4f1e08994781a4
+  languageName: node
+  linkType: hard
+
+"@envelop/core@npm:^5.3.2-alpha-20250916165622-afcd86a7cf2aa528aa13df82fd48b88b004595b6":
+  version: 5.3.2-alpha-20250916165622-afcd86a7cf2aa528aa13df82fd48b88b004595b6
+  resolution: "@envelop/core@npm:5.3.2-alpha-20250916165622-afcd86a7cf2aa528aa13df82fd48b88b004595b6"
+  dependencies:
+    "@envelop/instrumentation": "npm:^1.0.0"
+    "@envelop/types": "npm:^5.2.1"
+    "@whatwg-node/promise-helpers": "npm:^1.2.4"
+    tslib: "npm:^2.5.0"
+  checksum: 10c0/4083f4ba44af6265470372947937abbba42fee80dbda34ea2ba973e0d7833ddc0dcc7f01e61f02d84c69de271bfb11456c68574c0a6af7ea3d465c63fa9997a4
   languageName: node
   linkType: hard
 
@@ -2291,7 +2303,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
-    "@navikt/smart-on-fhir": "npm:1.4.24"
+    "@navikt/smart-on-fhir": "npm:1.4.30"
     "@types/node": "npm:^22.18.6"
     hono: "npm:^4.9.8"
     jose: "npm:^6.1.0"
@@ -2354,9 +2366,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.4.24":
-  version: 1.4.24
-  resolution: "@navikt/smart-on-fhir@npm:1.4.24::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.4.24%2Fcebd7f1e345607dbde2e1f07c7073f825d9e8697"
+"@navikt/smart-on-fhir@npm:1.4.30":
+  version: 1.4.30
+  resolution: "@navikt/smart-on-fhir@npm:1.4.30::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.4.30%2F4870734abc6705a0161624730756eb2fd82caad4"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
     "@opentelemetry/api": "npm:^1.9.0"
@@ -2366,7 +2378,7 @@ __metadata:
     pino: "npm:^9.9.5"
     quick-lru: "npm:^7.2.0"
     zod: "npm:^4.1.9"
-  checksum: 10c0/4a20eea74b21e23dcc14a84f02e7fa9f07bb256beda4091321c183fe8e3ff2f5b0855a74b3f6e8a8f41b0384c5a928713ea6b05e8d366bc276544dd7c6b902d5
+  checksum: 10c0/9f6d62ca486162cef5143569a9d7ce635c3c1eb703126806f91264ba451c80a90c1f06eda98eb60aba84b2058d54e9969caa8da33467eaaa81f452e0bf32c267
   languageName: node
   linkType: hard
 
@@ -6232,9 +6244,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^12.23.14":
-  version: 12.23.14
-  resolution: "framer-motion@npm:12.23.14"
+"framer-motion@npm:^12.23.13":
+  version: 12.23.13
+  resolution: "framer-motion@npm:12.23.13"
   dependencies:
     motion-dom: "npm:^12.23.12"
     motion-utils: "npm:^12.23.6"
@@ -6250,7 +6262,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/a960ebdc04ad8bf3141ee88ab5a36fce26fafafa1d34796e41b0d1c221f2a46fcda3eab30aaa179cb05212c47e09ce710345e87449a6f042816c237a02f73437
+  checksum: 10c0/3dc9df0f2746275ebd70d035a8ee5d37d06b2c0ad6433b477d08bf71aeeb89886c8e3282668565398f4c89668261611a84cd7b1f1e1c7a4e6745fee5f7698e0a
   languageName: node
   linkType: hard
 
@@ -8115,11 +8127,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion@npm:^12.23.14":
-  version: 12.23.14
-  resolution: "motion@npm:12.23.14"
+"motion@npm:^12.23.13":
+  version: 12.23.13
+  resolution: "motion@npm:12.23.13"
   dependencies:
-    framer-motion: "npm:^12.23.14"
+    framer-motion: "npm:^12.23.13"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
@@ -8132,7 +8144,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/03fc171d694d969a263e2f1a3a828ced5b5f1aac2ac81055dd7abc36f43acaabab5edb63ea86cb1e8a82d3b4fe5e8ca8726c56b9d00e0f39087824090ae60a86
+  checksum: 10c0/00e9aa733f0a6d4f9cbfda18a838eef679c0fc4aa943ab73da939fbb99de1dbce6bb4c40830f6500aacf246751be7838a97a3ac243676341a9ba52a29aed9a8f
   languageName: node
   linkType: hard
 
@@ -10450,7 +10462,7 @@ __metadata:
   dependencies:
     "@apollo/client": "npm:^4.0.5"
     "@ariakit/react": "npm:^0.4.18"
-    "@envelop/core": "npm:^5.3.1"
+    "@envelop/core": "npm:^5.3.2-alpha-20250916165622-afcd86a7cf2aa528aa13df82fd48b88b004595b6"
     "@envelop/opentelemetry": "npm:^8.0.0"
     "@eslint/eslintrc": "npm:^3.3.1"
     "@grafana/faro-web-sdk": "npm:^1.19.0"
@@ -10473,7 +10485,7 @@ __metadata:
     "@navikt/next-api-proxy": "npm:^4.1.4"
     "@navikt/next-logger": "npm:^4.1.5"
     "@navikt/oasis": "npm:^3.8.0"
-    "@navikt/smart-on-fhir": "npm:1.4.24"
+    "@navikt/smart-on-fhir": "npm:1.4.30"
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^2.1.0"
     "@parcel/watcher": "npm:^2.5.1"
@@ -10497,7 +10509,7 @@ __metadata:
     jose: "npm:^6.1.0"
     knip: "npm:^5.63.1"
     lint-staged: "npm:^16.1.6"
-    motion: "npm:^12.23.14"
+    motion: "npm:^12.23.13"
     next: "npm:15.5.3"
     next-logger: "npm:^5.0.1"
     nextleton: "npm:^0.6.1"
