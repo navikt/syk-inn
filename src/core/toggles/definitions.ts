@@ -28,9 +28,7 @@ export async function getAndValidateDefinitions(): Promise<ToggleDefinitions> {
         if (unleashCache.has(TOGGLES_KEY)) {
             const cachedToggles = unleashCache.get(TOGGLES_KEY)
             if (cachedToggles != null) {
-                unleashLogger.info(
-                    `Using cached toggles, ttl: ${((unleashCache.expiresIn(TOGGLES_KEY) ?? -1000) / 1000).toFixed(1)}s`,
-                )
+                span.setAttribute('unleash.cached-toggles', true)
                 return cachedToggles
             }
         }
@@ -42,6 +40,7 @@ export async function getAndValidateDefinitions(): Promise<ToggleDefinitions> {
             previousValid = definitions
 
             diffToggles(definitions)
+            span.setAttribute('unleash.cached-toggles', false)
 
             return definitions
         } catch (e) {
@@ -52,8 +51,12 @@ export async function getAndValidateDefinitions(): Promise<ToggleDefinitions> {
                     new Error('Failed to fetch toggles from Unleash, using previous valid toggles', { cause: e }),
                 )
 
+                span.setAttribute('unleash.fallback-hit', true)
+
                 return previousValid
             }
+
+            span.setAttribute('unleash.fallback-hit', false)
 
             failAndThrowServerSpan(
                 span,
@@ -99,10 +102,6 @@ function diffToggles(definitions: ToggleDefinitions): void {
     if (diff.length > 0) {
         unleashLogger.error(
             `Difference in expected flags and flags in unleash, expected but not in unleash: ${diff.join(', ')}`,
-        )
-    } else {
-        unleashLogger.info(
-            `Fetched ${definitions.features.length} flags from unleash, found all ${EXPECTED_TOGGLES.length} expected flags`,
         )
     }
 }
