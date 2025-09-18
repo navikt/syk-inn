@@ -9,6 +9,8 @@ import { NoValidHPR } from '@components/errors/NoValidHPR'
 import { getFlag, getUserlessToggles, getUserToggles, toToggleMap } from '@core/toggles/unleash'
 import { ToggleProvider } from '@core/toggles/context'
 import { spanServerAsync } from '@lib/otel/server'
+import { bundledEnv } from '@lib/env'
+import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
 
 import { NoPractitionerSession } from './launched-errors'
 
@@ -22,6 +24,11 @@ async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<React
     })
 
     if (typeof hpr !== 'string') {
+        if (bundledEnv.runtimeEnv === 'prod-gcp') {
+            logger.error(`Faking non-pilot page for error ${hpr.error} in production! 🙈`)
+            return <NonPilotUserWarning />
+        }
+
         switch (hpr.error) {
             case 'NO_SESSION':
                 return <NoPractitionerSession />
