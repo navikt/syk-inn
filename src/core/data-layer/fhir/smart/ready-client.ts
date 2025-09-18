@@ -7,17 +7,16 @@ import { HelseIdClaimSchema } from './helseid'
 import { getSmartClient } from './smart-client'
 import { getSessionId } from './session'
 
-export async function getReadyClient(opts: { validate: true }): Promise<ReadyClient | SmartClientReadyErrors> {
+export async function getReadyClient(): Promise<ReadyClient | SmartClientReadyErrors> {
     const actualSessionId = await getSessionId()
     const activePatient = await getActivePatient()
     const readyClient = await getSmartClient(actualSessionId, activePatient).ready()
 
-    if (opts?.validate) {
-        const validToken = await readyClient.validate()
-        if (!validToken) {
-            return { error: 'INVALID_TOKEN' }
-        }
-    }
+    // ReadyClient errors has higher precedence
+    if ('error' in readyClient) return readyClient
+
+    const validToken = await readyClient.validate()
+    if (!validToken) return { error: 'INVALID_TOKEN' }
 
     return readyClient
 }

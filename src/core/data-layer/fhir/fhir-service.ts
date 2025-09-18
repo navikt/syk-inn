@@ -78,9 +78,8 @@ export async function getAllSykmeldingMetaFromFhir(client: ReadyClient): Promise
 }
 
 export async function getHprFromFhirSession(): Promise<string | { error: 'NO_SESSION' | 'NO_HPR' }> {
-    const readyClient = await getReadyClient({ validate: true })
+    const readyClient = await getReadyClient()
     if ('error' in readyClient) {
-        logger.warn(`Unable to get ready client, reason: ${readyClient.error}`)
         return { error: 'NO_SESSION' }
     }
 

@@ -15,7 +15,7 @@ export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ sykmeldingId: string }> },
 ): Promise<Response> {
-    const client = await getReadyClient({ validate: true })
+    const client = await getReadyClient()
     if ('error' in client) {
         return new Response('Internal server error', { status: 500 })
     }
