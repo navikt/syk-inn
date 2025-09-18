@@ -8,7 +8,7 @@ export type FhirGraphqlContext = {
 }
 
 export const createFhirResolverContext = async (): Promise<FhirGraphqlContext> => {
-    const client = await getReadyClient({ validate: true })
+    const client = await getReadyClient()
 
     if ('error' in client) {
         throw NoSmartSession()
