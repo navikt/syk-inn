@@ -2,7 +2,7 @@ import { getDefinitions } from '@unleash/nextjs'
 import * as R from 'remeda'
 import QuickLRU from 'quick-lru'
 
-import { failAndThrowServerSpan, failServerSpan, spanServerAsync } from '@lib/otel/server'
+import { failSpan, spanServerAsync } from '@lib/otel/server'
 import { raise } from '@lib/ts'
 import { EXPECTED_TOGGLES } from '@core/toggles/toggles'
 import { unleashLogger } from '@core/toggles/unleash'
@@ -45,7 +45,7 @@ export async function getAndValidateDefinitions(): Promise<ToggleDefinitions> {
             return definitions
         } catch (e) {
             if (previousValid != null) {
-                failServerSpan(
+                failSpan(
                     span,
                     'Toggle fallback',
                     new Error('Failed to fetch toggles from Unleash, using previous valid toggles', { cause: e }),
@@ -58,7 +58,7 @@ export async function getAndValidateDefinitions(): Promise<ToggleDefinitions> {
 
             span.setAttribute('unleash.fallback-hit', false)
 
-            failAndThrowServerSpan(
+            failSpan.andThrow(
                 span,
                 'Toggle error',
                 new Error('Failed to fetch toggles from Unleash, and no previous valid toggles available', {
@@ -77,7 +77,7 @@ async function fetchDefinitions(): Promise<ToggleDefinitions> {
         })
 
         if ('message' in definitions) {
-            failAndThrowServerSpan(
+            failSpan.andThrow(
                 span,
                 'Unleash Toggles,',
                 new Error(`Toggle was 200 OK, but server said: ${definitions.message}`),

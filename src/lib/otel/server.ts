@@ -16,12 +16,18 @@ export function withSpanServerAsync<Result, Args extends unknown[]>(
     return async (...args) => spanServerAsync(name, () => fn(...args))
 }
 
+interface FailSpan {
+    (span: Span, what: string): void
+    (span: Span, what: string, error: Error): void
+    (span: Span, what: string, error?: Error): void
+    andThrow: (span: Span, what: string, error: Error) => never
+    silently: (span: Span, reason: string, cause?: Error) => void
+}
+
 /**
  * Marks the span as failed, as well as logs the exception.
  */
-export function failServerSpan(span: Span, what: string): void
-export function failServerSpan(span: Span, what: string, error: Error): void
-export function failServerSpan(span: Span, what: string, error?: Error): void {
+export const failSpan: FailSpan = ((span, what, error): void => {
     logger.error(error)
 
     if (error) {
@@ -33,9 +39,20 @@ export function failServerSpan(span: Span, what: string, error?: Error): void {
     }
 
     span.setStatus({ code: SpanStatusCode.ERROR, message: what })
+}) as FailSpan
+
+failSpan.andThrow = (span: Span, what: string, error: Error): never => {
+    failSpan(span, what, error)
+    throw error
 }
 
-export function failAndThrowServerSpan(span: Span, what: string, error: Error): never {
-    failServerSpan(span, what, error)
-    throw error
+failSpan.silently = (span: Span, reason: string, cause?: Error): void => {
+    if (cause) {
+        span.recordException(cause)
+        if (cause.cause != null) {
+            span.recordException(cause.cause instanceof Error ? cause.cause : new Error(cause.cause as string))
+        }
+    }
+
+    span.setStatus({ code: SpanStatusCode.ERROR, message: reason })
 }

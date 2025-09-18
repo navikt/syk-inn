@@ -3,12 +3,11 @@ import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
 import { GraphQLError } from 'graphql/error'
 import { teamLogger } from '@navikt/next-logger/team-log'
-import { SpanStatusCode } from '@opentelemetry/api'
 
 import { toReadableDatePeriod } from '@lib/date'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
-import { failServerSpan, spanServerAsync } from '@lib/otel/server'
+import { failSpan, spanServerAsync } from '@lib/otel/server'
 import {
     getOrganisasjonsnummerFromFhir,
     getOrganisasjonstelefonnummerFromFhir,
@@ -29,12 +28,15 @@ export async function getAllSykmeldingMetaFromFhir(client: ReadyClient): Promise
         const [practitioner, encounter] = await Promise.all([client.user.request(), client.encounter.request()])
 
         if ('error' in practitioner || 'error' in encounter) {
+            if ('error' in practitioner) failSpan(span, practitioner.error)
+            if ('error' in encounter) failSpan(span, encounter.error)
+
             throw new GraphQLError('API_ERROR')
         }
 
         const sykmelderHpr = getHpr(practitioner.identifier)
         if (sykmelderHpr == null) {
-            failServerSpan(span, 'Missing HPR identifier in practitioner resource')
+            failSpan(span, 'Missing HPR identifier in practitioner resource')
             teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
             throw new GraphQLError('PARSING_ERROR')
         }
@@ -45,29 +47,29 @@ export async function getAllSykmeldingMetaFromFhir(client: ReadyClient): Promise
         ])
 
         if ('error' in patient || 'error' in organization) {
-            if ('error' in patient) failServerSpan(span, patient.error)
-            if ('error' in organization) failServerSpan(span, organization.error)
+            if ('error' in patient) failSpan(span, patient.error)
+            if ('error' in organization) failSpan(span, organization.error)
 
             throw new GraphQLError('API_ERROR')
         }
 
         const legekontorOrgnr = getOrganisasjonsnummerFromFhir(organization)
         if (legekontorOrgnr == null) {
-            failServerSpan(span, 'Organization without valid orgnummer')
+            failSpan(span, 'Organization without valid orgnummer')
             teamLogger.error(`Organization without valid orgnummer: ${JSON.stringify(organization, null, 2)}`)
             throw new GraphQLError('API_ERROR')
         }
 
         const legekontorTlf = getOrganisasjonstelefonnummerFromFhir(organization)
         if (legekontorTlf == null) {
-            failServerSpan(span, 'Organization without valid phone number')
+            failSpan(span, 'Organization without valid phone number')
             teamLogger.error(`Organization without valid phone number: ${JSON.stringify(organization, null, 2)}`)
             throw new GraphQLError('API_ERROR')
         }
 
         const pasientIdent = getValidPatientIdent(patient.identifier)
         if (pasientIdent == null) {
-            failServerSpan(span, 'Patient without valid FNR/DNR')
+            failSpan(span, 'Patient without valid FNR/DNR')
             teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(patient, null, 2)}`)
             throw new GraphQLError('API_ERROR')
         }
@@ -85,13 +87,13 @@ export async function getHprFromFhirSession(): Promise<string | { error: 'NO_SES
     return spanServerAsync('FhirService.hpr-from-fhir-session', async (span) => {
         const readyClient = await getReadyClient()
         if ('error' in readyClient) {
-            span.setStatus({ code: SpanStatusCode.ERROR, message: readyClient.error })
+            failSpan.silently(span, readyClient.error)
             return { error: 'NO_SESSION' }
         }
 
         const practitioner = await readyClient.user.request()
         if ('error' in practitioner) {
-            span.setStatus({ code: SpanStatusCode.ERROR, message: practitioner.error })
+            failSpan.silently(span, practitioner.error)
             return { error: 'NO_SESSION' }
         }
 
@@ -115,13 +117,13 @@ export async function createDocumentReference(
     return spanServerAsync('FhirService.createDocumentReference', async (span) => {
         const practitioner = await client.user.request()
         if ('error' in practitioner) {
-            failServerSpan(span, practitioner.error)
+            failSpan(span, practitioner.error)
             return { error: 'API_ERROR' }
         }
 
         const hpr = getHpr(practitioner.identifier)
         if (hpr == null) {
-            failServerSpan(span, 'Missing HPR identifier in practitioner resource')
+            failSpan(span, 'Missing HPR identifier in practitioner resource')
             return { error: 'PARSING_ERROR' }
         }
 
@@ -131,8 +133,8 @@ export async function createDocumentReference(
         ])
 
         if ('errorType' in pdfBuffer || 'errorType' in sykmelding) {
-            if ('errorType' in pdfBuffer) failServerSpan(span, `Failed fetching PDF: ${pdfBuffer.errorType}`)
-            if ('errorType' in sykmelding) failServerSpan(span, `Failed fetching sykmelding: ${sykmelding.errorType}`)
+            if ('errorType' in pdfBuffer) failSpan(span, `Failed fetching PDF: ${pdfBuffer.errorType}`)
+            if ('errorType' in sykmelding) failSpan(span, `Failed fetching sykmelding: ${sykmelding.errorType}`)
 
             return { error: 'API_ERROR' }
         }
@@ -162,12 +164,12 @@ export async function createDocumentReference(
         )
 
         if ('error' in createdDocumentReference) {
-            failServerSpan(span, `Failed to create DocumentReference: ${createdDocumentReference.error}`)
+            failSpan(span, `Failed to create DocumentReference: ${createdDocumentReference.error}`)
             return { error: 'API_ERROR' }
         }
 
         if (createdDocumentReference.id !== sykmeldingId) {
-            failServerSpan(
+            failSpan(
                 span,
                 'DocumentReference ID create mismatch',
                 new Error(

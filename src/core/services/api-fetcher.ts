@@ -3,7 +3,7 @@ import { logger as pinoLogger } from '@navikt/next-logger'
 import * as z from 'zod'
 
 import { getServerEnv } from '@lib/env'
-import { failServerSpan, spanServerAsync } from '@lib/otel/server'
+import { failSpan, spanServerAsync } from '@lib/otel/server'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[API FETCHER]: ' })
 
@@ -89,7 +89,7 @@ export async function fetchInternalAPI<
             }
 
             const responseBody = await getFailedResponseBody(response)
-            failServerSpan(
+            failSpan(
                 span,
                 'API call failed',
                 new Error(
@@ -105,7 +105,7 @@ export async function fetchInternalAPI<
             return (await response.arrayBuffer()) as InferredReturnValue
         } else if (isPdfResponse && responseSchema !== 'ArrayBuffer') {
             const error = new Error(`Got PDF but expected response was not ArrayBuffer, for ${api}${path}, whats up?`)
-            failServerSpan(span, 'Invalid PDF', error)
+            failSpan(span, 'Invalid PDF', error)
             throw error
         }
 
@@ -114,7 +114,7 @@ export async function fetchInternalAPI<
             const error = new Error(
                 `Did not get JSON payload (got: ${response.headers.get('Content-Type') ?? 'nothing'}) was provided for ${api}${path}`,
             )
-            failServerSpan(span, 'Invalid Content-Type', error)
+            failSpan(span, 'Invalid Content-Type', error)
             throw error
         }
 
@@ -122,7 +122,7 @@ export async function fetchInternalAPI<
         const parsed = responseSchema.safeParse(result)
 
         if (!parsed.success) {
-            failServerSpan(
+            failSpan(
                 span,
                 'Invalid API response body',
                 new Error(`Invalid response from ${path}`, { cause: parsed.error }),
