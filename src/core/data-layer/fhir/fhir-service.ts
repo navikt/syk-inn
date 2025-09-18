@@ -3,6 +3,7 @@ import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
 import { GraphQLError } from 'graphql/error'
 import { teamLogger } from '@navikt/next-logger/team-log'
+import { SpanStatusCode } from '@opentelemetry/api'
 
 import { toReadableDatePeriod } from '@lib/date'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
@@ -24,7 +25,7 @@ import { getReadyClient } from './smart/ready-client'
  * metadata needed to create or validate a new sykmelding in syk-inn-api.
  */
 export async function getAllSykmeldingMetaFromFhir(client: ReadyClient): Promise<OpprettSykmeldingMeta> {
-    return spanServerAsync('FhirService.all-meta-resources', async () => {
+    return spanServerAsync('FhirService.all-meta-resources', async (span) => {
         const [practitioner, encounter] = await Promise.all([client.user.request(), client.encounter.request()])
 
         if ('error' in practitioner || 'error' in encounter) {
@@ -33,7 +34,7 @@ export async function getAllSykmeldingMetaFromFhir(client: ReadyClient): Promise
 
         const sykmelderHpr = getHpr(practitioner.identifier)
         if (sykmelderHpr == null) {
-            logger.error('Missing HPR identifier in practitioner resource')
+            failServerSpan(span, 'Missing HPR identifier in practitioner resource')
             teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
             throw new GraphQLError('PARSING_ERROR')
         }
@@ -44,26 +45,29 @@ export async function getAllSykmeldingMetaFromFhir(client: ReadyClient): Promise
         ])
 
         if ('error' in patient || 'error' in organization) {
+            if ('error' in patient) failServerSpan(span, patient.error)
+            if ('error' in organization) failServerSpan(span, organization.error)
+
             throw new GraphQLError('API_ERROR')
         }
 
         const legekontorOrgnr = getOrganisasjonsnummerFromFhir(organization)
         if (legekontorOrgnr == null) {
-            logger.error('Organization without valid orgnummer')
+            failServerSpan(span, 'Organization without valid orgnummer')
             teamLogger.error(`Organization without valid orgnummer: ${JSON.stringify(organization, null, 2)}`)
             throw new GraphQLError('API_ERROR')
         }
 
         const legekontorTlf = getOrganisasjonstelefonnummerFromFhir(organization)
         if (legekontorTlf == null) {
-            logger.error('Organization without valid phone number')
+            failServerSpan(span, 'Organization without valid phone number')
             teamLogger.error(`Organization without valid phone number: ${JSON.stringify(organization, null, 2)}`)
             throw new GraphQLError('API_ERROR')
         }
 
         const pasientIdent = getValidPatientIdent(patient.identifier)
         if (pasientIdent == null) {
-            logger.error('Patient without valid FNR/DNR')
+            failServerSpan(span, 'Patient without valid FNR/DNR')
             teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(patient, null, 2)}`)
             throw new GraphQLError('API_ERROR')
         }
@@ -78,23 +82,27 @@ export async function getAllSykmeldingMetaFromFhir(client: ReadyClient): Promise
 }
 
 export async function getHprFromFhirSession(): Promise<string | { error: 'NO_SESSION' | 'NO_HPR' }> {
-    const readyClient = await getReadyClient()
-    if ('error' in readyClient) {
-        return { error: 'NO_SESSION' }
-    }
+    return spanServerAsync('FhirService.hpr-from-fhir-session', async (span) => {
+        const readyClient = await getReadyClient()
+        if ('error' in readyClient) {
+            span.setStatus({ code: SpanStatusCode.ERROR, message: readyClient.error })
+            return { error: 'NO_SESSION' }
+        }
 
-    const practitioner = await readyClient.user.request()
-    if ('error' in practitioner) {
-        return { error: 'NO_SESSION' }
-    }
+        const practitioner = await readyClient.user.request()
+        if ('error' in practitioner) {
+            span.setStatus({ code: SpanStatusCode.ERROR, message: practitioner.error })
+            return { error: 'NO_SESSION' }
+        }
 
-    const hpr = getHpr(practitioner.identifier)
-    if (hpr == null) {
-        logger.warn(`Practitioner does not have HPR, practitioner: ${JSON.stringify(practitioner)}`)
-        return { error: 'NO_HPR' }
-    }
+        const hpr = getHpr(practitioner.identifier)
+        if (hpr == null) {
+            logger.warn(`Practitioner does not have HPR, practitioner: ${JSON.stringify(practitioner)}`)
+            return { error: 'NO_HPR' }
+        }
 
-    return hpr
+        return hpr
+    })
 }
 
 /**
@@ -107,11 +115,13 @@ export async function createDocumentReference(
     return spanServerAsync('FhirService.createDocumentReference', async (span) => {
         const practitioner = await client.user.request()
         if ('error' in practitioner) {
+            failServerSpan(span, practitioner.error)
             return { error: 'API_ERROR' }
         }
 
         const hpr = getHpr(practitioner.identifier)
         if (hpr == null) {
+            failServerSpan(span, 'Missing HPR identifier in practitioner resource')
             return { error: 'PARSING_ERROR' }
         }
 
@@ -121,6 +131,9 @@ export async function createDocumentReference(
         ])
 
         if ('errorType' in pdfBuffer || 'errorType' in sykmelding) {
+            if ('errorType' in pdfBuffer) failServerSpan(span, `Failed fetching PDF: ${pdfBuffer.errorType}`)
+            if ('errorType' in sykmelding) failServerSpan(span, `Failed fetching sykmelding: ${sykmelding.errorType}`)
+
             return { error: 'API_ERROR' }
         }
 
