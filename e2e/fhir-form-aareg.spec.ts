@@ -63,6 +63,11 @@ test('aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG d
             yrkesskade: anything(),
             pasientenSkalSkjermes: false,
             tilbakedatering: null,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
         },
     })
 })
