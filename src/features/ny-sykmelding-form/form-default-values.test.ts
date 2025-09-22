@@ -229,6 +229,7 @@ const fullDraft: DraftValues = {
     },
     svangerskapsrelatert: false,
     yrkesskade: { yrkesskade: true, skadedato: '2024-11-20' },
+    utdypendeSporsmal: null,
 }
 
 const fullExistingStateValues: NySykmeldingFormState = {
@@ -267,4 +268,5 @@ const fullExistingStateValues: NySykmeldingFormState = {
         yrkesskade: false,
         yrkesskadeDato: null,
     },
+    utdypendeSporsmal: null,
 }

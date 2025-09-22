@@ -90,5 +90,10 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
             yrkesskade: values.andreSporsmal.yrkesskade?.yrkesskade ?? false,
             skadedato: values.andreSporsmal.yrkesskade?.skadedato ?? null,
         },
+        utdypendeSporsmal: {
+            utfodringerMedArbeid: values.utdypendeSporsmal?.utfodringerMedArbeid ?? null,
+            medisinskOppsummering: values.utdypendeSporsmal?.medisinskOppsummering ?? null,
+            hensynPaArbeidsplassen: values.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
+        },
     }
 }

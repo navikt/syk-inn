@@ -78,6 +78,12 @@ type AndreSporsmalFields = {
     } | null
 }
 
+type UtdypendeSporsmalFields = {
+    utfodringerMedArbeid: string | null
+    medisinskOppsummering: string | null
+    hensynPaArbeidsplassen: string | null
+}
+
 export type NySykmeldingMainFormValues = {
     arbeidsforhold: ArbeidsforholdField
     perioder: AktivitetsPeriode[]
@@ -88,6 +94,7 @@ export type NySykmeldingMainFormValues = {
     tilbakedatering: TilbakedateringField | null
     meldinger: MeldingerField
     andreSporsmal: AndreSporsmalFields
+    utdypendeSporsmal: UtdypendeSporsmalFields | null
 }
 
 export const useFormContext = useRhfFormContext<NySykmeldingMainFormValues>

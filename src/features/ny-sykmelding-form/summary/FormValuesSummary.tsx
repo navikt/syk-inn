@@ -17,6 +17,7 @@ import { AkselNextLink } from '@components/links/AkselNextLink'
 import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
 import { toReadableDate, toReadableDatePeriod, toReadablePeriodLength } from '@lib/date'
 import { PasientDocument } from '@queries'
+import { NySykmeldingUtdypendeSporsmal } from '@core/redux/reducers/ny-sykmelding/form'
 
 import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
 import { useFormStep } from '../steps/useFormStep'
@@ -97,6 +98,7 @@ function FormValuesSummary({ className }: Props): ReactElement {
                     <AktivitetSummaryAnswers aktiviteter={values.aktiviteter} />
                     <TilbakedateringSummaryAnswers tilbakedatering={values.tilbakedatering} />
                     <DiagnoseSummaryAnswers diagnose={values.diagnose} />
+                    <UtdypendeSporsmalSummaryAnswers utdypendeSporsmal={values.utdypendeSporsmal} />
                     <MeldingerSummaryAnswers meldinger={values.meldinger} />
                     <AnderSporsmalSummaryAnswers andreSporsmal={values.andreSporsmal} />
                 </FormSummary.Answers>
@@ -275,6 +277,38 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: NySykmeldingDiagnoser 
                     </FormSummary.Value>
                 </FormSummary.Answer>
             )}
+        </>
+    )
+}
+
+function UtdypendeSporsmalSummaryAnswers({
+    utdypendeSporsmal,
+}: {
+    utdypendeSporsmal: NySykmeldingUtdypendeSporsmal | null
+}): ReactElement | null {
+    if (utdypendeSporsmal == null) {
+        return null
+    }
+
+    return (
+        <>
+            <FormSummary.Answer>
+                <FormSummary.Label>Hvilke utfordringer har pasienten med å utføre gradert arbeid?</FormSummary.Label>
+                <FormSummary.Value>{utdypendeSporsmal.utfodringerMedArbeid}</FormSummary.Value>
+            </FormSummary.Answer>
+            <FormSummary.Answer>
+                <FormSummary.Label>
+                    Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt
+                    behandling)
+                </FormSummary.Label>
+                <FormSummary.Value>{utdypendeSporsmal.medisinskOppsummering}</FormSummary.Value>
+            </FormSummary.Answer>
+            <FormSummary.Answer>
+                <FormSummary.Label>
+                    Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet?
+                </FormSummary.Label>
+                <FormSummary.Value>{utdypendeSporsmal.hensynPaArbeidsplassen}</FormSummary.Value>
+            </FormSummary.Answer>
         </>
     )
 }

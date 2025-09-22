@@ -50,6 +50,7 @@ export class SykmeldingBuilder {
                 tilNav: null,
                 tilArbeidsgiver: null,
             },
+            utdypendeSporsmal: null,
         },
     }
 

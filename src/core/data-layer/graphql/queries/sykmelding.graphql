@@ -92,6 +92,11 @@ fragment SykmeldingFull on SykmeldingFull {
             startdato
             begrunnelse
         }
+        utdypendeSporsmal {
+            utfodringerMedArbeid
+            medisinskOppsummering
+            hensynPaArbeidsplassen
+        }
     }
     documentStatus
 }
