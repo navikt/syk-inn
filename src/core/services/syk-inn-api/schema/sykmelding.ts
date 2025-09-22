@@ -66,6 +66,12 @@ const TilbakedateringSchema = z.object({
     begrunnelse: z.string(),
 })
 
+const UtdypendeSporsmalSchema = z.object({
+    utfodringerMedArbeid: z.string().nullable(),
+    medisinskOppsummering: z.string().nullable(),
+    hensynPaArbeidsplassen: z.string().nullable(),
+})
+
 const ArbeidsgiverSchema = z.object({
     harFlere: z.boolean(),
     arbeidsgivernavn: z.string(),
@@ -111,6 +117,7 @@ export const SykInnApiSykmeldingSchema = z
             yrkesskade: YrkesskadeSchema.nullable(),
             arbeidsgiver: ArbeidsgiverSchema.nullable(),
             tilbakedatering: TilbakedateringSchema.nullable(),
+            utdypendeSporsmal: UtdypendeSporsmalSchema.nullable(),
         }),
         utfall: RuleResultSchema,
     })

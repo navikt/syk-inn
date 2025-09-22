@@ -156,6 +156,7 @@ function forlengRedactedSykmelding(
                     skadedato: null,
                 },
             },
+            utdypendeSporsmal: null,
         },
         nextFom,
     ]

@@ -22,6 +22,7 @@ export class DraftBuilder {
             tilbakedatering: null,
             yrkesskade: null,
             meldinger: null,
+            utdypendeSporsmal: null,
         }
         this._lastUpdated = new Date()
     }
