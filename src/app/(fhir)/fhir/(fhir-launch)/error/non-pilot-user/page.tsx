@@ -9,6 +9,8 @@ import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 
+const SYK_INN_API_DEPLOYED_IN_PROD = false
+
 async function Page(): Promise<ReactElement> {
     const sessionId = await getSessionId()
 
@@ -61,14 +63,19 @@ async function Page(): Promise<ReactElement> {
                         return
                     }
 
-                    const sykmeldinger = await sykInnApiService.getSykmeldinger(ident, hpr)
-                    if ('errorType' in sykmeldinger) {
-                        failSpan(innerSpan, `Non-pilot-user failed to fetch sykmeldinger: ${sykmeldinger.errorType}`)
-                        span.setAttribute('non-pilot-user.dry-run.sykmeldinger', 'fail')
-                        return
-                    }
+                    if (SYK_INN_API_DEPLOYED_IN_PROD) {
+                        const sykmeldinger = await sykInnApiService.getSykmeldinger(ident, hpr)
+                        if ('errorType' in sykmeldinger) {
+                            failSpan(
+                                innerSpan,
+                                `Non-pilot-user failed to fetch sykmeldinger: ${sykmeldinger.errorType}`,
+                            )
+                            span.setAttribute('non-pilot-user.dry-run.sykmeldinger', 'fail')
+                            return
+                        }
 
-                    span.setAttribute('non-pilot-user.dry-run.sykmeldinger', `${sykmeldinger.length}`)
+                        span.setAttribute('non-pilot-user.dry-run.sykmeldinger', `${sykmeldinger.length}`)
+                    }
                 })
             })
         })
