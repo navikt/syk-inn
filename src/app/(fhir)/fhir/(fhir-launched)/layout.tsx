@@ -11,6 +11,7 @@ import { ToggleProvider } from '@core/toggles/context'
 import { spanServerAsync } from '@lib/otel/server'
 import { bundledEnv } from '@lib/env'
 import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
+import metrics from '@lib/prometheus/metrics'
 
 import { NoPractitionerSession } from './launched-errors'
 
@@ -32,12 +33,15 @@ async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<React
         switch (hpr.error) {
             case 'NO_SESSION':
                 return <NoPractitionerSession />
-            case 'NO_HPR':
+            case 'NO_HPR': {
+                metrics.smartLaunchesNoHprTotal.inc()
                 return <NoValidHPR mode="FHIR" />
+            }
         }
     }
 
     if (!getFlag('PILOT_USER', toggles)) {
+        metrics.smartLaunchesTotal.inc({ hpr: hpr })
         logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
 
         redirect('/fhir/error/non-pilot-user')
