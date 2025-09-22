@@ -55,6 +55,7 @@ function dupliserRedactedSykmelding(sykmelding: SykmeldingRedactedFragment): NyS
                 skadedato: null,
             },
         },
+        utdypendeSporsmal: null,
     }
 }
 

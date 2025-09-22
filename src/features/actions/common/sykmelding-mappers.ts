@@ -47,6 +47,7 @@ export function sykmeldingFragmentToNySykmeldingFormValues(
                   }))
                 : [],
         },
+        utdypendeSporsmal: null,
     }
 }
 

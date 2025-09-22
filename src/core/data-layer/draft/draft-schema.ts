@@ -71,6 +71,13 @@ export const DraftValuesSchema = z.object({
             skadedato: z.string().nullable(),
         })
         .nullable(),
+    utdypendeSporsmal: z
+        .object({
+            utfodringerMedArbeid: z.string().nullable(),
+            medisinskOppsummering: z.string().nullable(),
+            hensynPaArbeidsplassen: z.string().nullable(),
+        })
+        .nullable(),
 })
 
 /**

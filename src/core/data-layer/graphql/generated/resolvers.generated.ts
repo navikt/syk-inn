@@ -171,6 +171,12 @@ export type InputTilbakedatering = {
     startdato: Scalars['String']['input']
 }
 
+export type InputUtdypendeSporsmal = {
+    hensynPaArbeidsplassen?: InputMaybe<Scalars['String']['input']>
+    medisinskOppsummering?: InputMaybe<Scalars['String']['input']>
+    utfodringerMedArbeid?: InputMaybe<Scalars['String']['input']>
+}
+
 export type InputYrkesskade = {
     skadedato?: InputMaybe<Scalars['DateOnly']['input']>
     yrkesskade: Scalars['Boolean']['input']
@@ -243,6 +249,7 @@ export type OpprettSykmeldingInput = {
     pasientenSkalSkjermes: Scalars['Boolean']['input']
     svangerskapsrelatert: Scalars['Boolean']['input']
     tilbakedatering?: InputMaybe<InputTilbakedatering>
+    utdypendeSporsmal?: InputMaybe<InputUtdypendeSporsmal>
     yrkesskade?: InputMaybe<InputYrkesskade>
 }
 
@@ -389,6 +396,7 @@ export type SykmeldingValues = {
     pasientenSkalSkjermes: Scalars['Boolean']['output']
     svangerskapsrelatert: Scalars['Boolean']['output']
     tilbakedatering?: Maybe<Tilbakedatering>
+    utdypendeSporsmal?: Maybe<UtdypendeSporsmal>
     yrkesskade?: Maybe<Yrkesskade>
 }
 
@@ -402,6 +410,13 @@ export type Tilbakedatering = {
     __typename?: 'Tilbakedatering'
     begrunnelse: Scalars['String']['output']
     startdato: Scalars['DateOnly']['output']
+}
+
+export type UtdypendeSporsmal = {
+    __typename?: 'UtdypendeSporsmal'
+    hensynPaArbeidsplassen?: Maybe<Scalars['String']['output']>
+    medisinskOppsummering?: Maybe<Scalars['String']['output']>
+    utfodringerMedArbeid?: Maybe<Scalars['String']['output']>
 }
 
 export type Yrkesskade = {
@@ -542,6 +557,7 @@ export type ResolversTypes = {
     InputDiagnose: InputDiagnose
     InputMeldinger: InputMeldinger
     InputTilbakedatering: InputTilbakedatering
+    InputUtdypendeSporsmal: InputUtdypendeSporsmal
     InputYrkesskade: InputYrkesskade
     Int: ResolverTypeWrapper<Scalars['Int']['output']>
     JSON: ResolverTypeWrapper<Scalars['JSON']['output']>
@@ -577,6 +593,7 @@ export type ResolversTypes = {
     >
     SynchronizationStatus: ResolverTypeWrapper<SynchronizationStatus>
     Tilbakedatering: ResolverTypeWrapper<Tilbakedatering>
+    UtdypendeSporsmal: ResolverTypeWrapper<UtdypendeSporsmal>
     Yrkesskade: ResolverTypeWrapper<Yrkesskade>
 }
 
@@ -607,6 +624,7 @@ export type ResolversParentTypes = {
     InputDiagnose: InputDiagnose
     InputMeldinger: InputMeldinger
     InputTilbakedatering: InputTilbakedatering
+    InputUtdypendeSporsmal: InputUtdypendeSporsmal
     InputYrkesskade: InputYrkesskade
     Int: Scalars['Int']['output']
     JSON: Scalars['JSON']['output']
@@ -638,6 +656,7 @@ export type ResolversParentTypes = {
     SykmeldingValues: Omit<SykmeldingValues, 'aktivitet'> & { aktivitet: Array<ResolversParentTypes['Aktivitet']> }
     SynchronizationStatus: SynchronizationStatus
     Tilbakedatering: Tilbakedatering
+    UtdypendeSporsmal: UtdypendeSporsmal
     Yrkesskade: Yrkesskade
 }
 
@@ -1013,6 +1032,7 @@ export type SykmeldingValuesResolvers<
     pasientenSkalSkjermes?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     svangerskapsrelatert?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     tilbakedatering?: Resolver<Maybe<ResolversTypes['Tilbakedatering']>, ParentType, ContextType>
+    utdypendeSporsmal?: Resolver<Maybe<ResolversTypes['UtdypendeSporsmal']>, ParentType, ContextType>
     yrkesskade?: Resolver<Maybe<ResolversTypes['Yrkesskade']>, ParentType, ContextType>
 }
 
@@ -1030,6 +1050,15 @@ export type TilbakedateringResolvers<
 > = {
     begrunnelse?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     startdato?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+}
+
+export type UtdypendeSporsmalResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['UtdypendeSporsmal'] = ResolversParentTypes['UtdypendeSporsmal'],
+> = {
+    hensynPaArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    medisinskOppsummering?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    utfodringerMedArbeid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
 }
 
 export type YrkesskadeResolvers<
@@ -1080,5 +1109,6 @@ export type Resolvers<ContextType = any> = {
     SykmeldingValues?: SykmeldingValuesResolvers<ContextType>
     SynchronizationStatus?: SynchronizationStatusResolvers<ContextType>
     Tilbakedatering?: TilbakedateringResolvers<ContextType>
+    UtdypendeSporsmal?: UtdypendeSporsmalResolvers<ContextType>
     Yrkesskade?: YrkesskadeResolvers<ContextType>
 }
