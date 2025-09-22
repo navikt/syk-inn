@@ -491,27 +491,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@envelop/core@npm:^5.2.3, @envelop/core@npm:^5.3.0":
-  version: 5.3.1
-  resolution: "@envelop/core@npm:5.3.1"
+"@envelop/core@npm:^5.2.3, @envelop/core@npm:^5.3.0, @envelop/core@npm:^5.3.2":
+  version: 5.3.2
+  resolution: "@envelop/core@npm:5.3.2"
   dependencies:
     "@envelop/instrumentation": "npm:^1.0.0"
     "@envelop/types": "npm:^5.2.1"
     "@whatwg-node/promise-helpers": "npm:^1.2.4"
     tslib: "npm:^2.5.0"
-  checksum: 10c0/b925c4809ac1889d822f91669da0e117052eaf26ebbdb911af11a01e4989c68c5771938e2835382d6fcf68a6fd62c14b48de5b7e55d03ecbcd4f1e08994781a4
-  languageName: node
-  linkType: hard
-
-"@envelop/core@npm:^5.3.2-alpha-20250916165622-afcd86a7cf2aa528aa13df82fd48b88b004595b6":
-  version: 5.3.2-alpha-20250916165622-afcd86a7cf2aa528aa13df82fd48b88b004595b6
-  resolution: "@envelop/core@npm:5.3.2-alpha-20250916165622-afcd86a7cf2aa528aa13df82fd48b88b004595b6"
-  dependencies:
-    "@envelop/instrumentation": "npm:^1.0.0"
-    "@envelop/types": "npm:^5.2.1"
-    "@whatwg-node/promise-helpers": "npm:^1.2.4"
-    tslib: "npm:^2.5.0"
-  checksum: 10c0/4083f4ba44af6265470372947937abbba42fee80dbda34ea2ba973e0d7833ddc0dcc7f01e61f02d84c69de271bfb11456c68574c0a6af7ea3d465c63fa9997a4
+  checksum: 10c0/280c80472381d059d0cadee342d4f75399156a3fb8eac799f52684a1d7a2ffdb91b456d83d1e50c66a185dad3716838d3dbcad1735a2b78abcb8ed77f3277f01
   languageName: node
   linkType: hard
 
@@ -806,10 +794,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.35.0":
-  version: 9.35.0
-  resolution: "@eslint/js@npm:9.35.0"
-  checksum: 10c0/d40fe38724bc76c085c0b753cdf937fa35c0d6807ae76b2632e3f5f66c3040c91adcf1aff2ce70b4f45752e60629fadc415eeec9af3be3c274bae1cac54b9840
+"@eslint/js@npm:9.36.0":
+  version: 9.36.0
+  resolution: "@eslint/js@npm:9.36.0"
+  checksum: 10c0/e3f6fb7d6f117d79615574f7bef4f238bcfed6ece0465d28226c3a75d2b6fac9cc189121e8673562796ca8ccea2bf9861715ee5cf4a3dbef87d17811c0dac22c
   languageName: node
   linkType: hard
 
@@ -2303,7 +2291,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
-    "@navikt/smart-on-fhir": "npm:1.4.30"
+    "@navikt/smart-on-fhir": "npm:1.5.0"
     "@types/node": "npm:^22.18.6"
     hono: "npm:^4.9.8"
     jose: "npm:^6.1.0"
@@ -2366,19 +2354,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.4.30":
-  version: 1.4.30
-  resolution: "@navikt/smart-on-fhir@npm:1.4.30::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.4.30%2F4870734abc6705a0161624730756eb2fd82caad4"
+"@navikt/smart-on-fhir@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@navikt/smart-on-fhir@npm:1.5.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.5.0%2Fbfb7d07375540e1efc994951ea03c983b4c20854"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^2.1.0"
     jose: "npm:^6.1.0"
     openid-client: "npm:^6.8.0"
-    pino: "npm:^9.9.5"
+    pino: "npm:^9.10.0"
     quick-lru: "npm:^7.2.0"
     zod: "npm:^4.1.9"
-  checksum: 10c0/9f6d62ca486162cef5143569a9d7ce635c3c1eb703126806f91264ba451c80a90c1f06eda98eb60aba84b2058d54e9969caa8da33467eaaa81f452e0bf32c267
+  checksum: 10c0/8051fe9bc1e2b7e4e79d38e1abf108b07d9f9e380da08f5ee8a494bb9ec9929e2e376177785207e3bd87f9c3c6fbd21c6937d4ded024af4ec562d4f1a844c415
   languageName: node
   linkType: hard
 
@@ -2798,137 +2786,137 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-android-arm-eabi@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-android-arm-eabi@npm:11.8.0"
+"@oxc-resolver/binding-android-arm-eabi@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-android-arm-eabi@npm:11.8.2"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-android-arm64@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-android-arm64@npm:11.8.0"
+"@oxc-resolver/binding-android-arm64@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-android-arm64@npm:11.8.2"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-darwin-arm64@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-darwin-arm64@npm:11.8.0"
+"@oxc-resolver/binding-darwin-arm64@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-darwin-arm64@npm:11.8.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-darwin-x64@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-darwin-x64@npm:11.8.0"
+"@oxc-resolver/binding-darwin-x64@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-darwin-x64@npm:11.8.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-freebsd-x64@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-freebsd-x64@npm:11.8.0"
+"@oxc-resolver/binding-freebsd-x64@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-freebsd-x64@npm:11.8.2"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-linux-arm-gnueabihf@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-linux-arm-gnueabihf@npm:11.8.0"
+"@oxc-resolver/binding-linux-arm-gnueabihf@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-linux-arm-gnueabihf@npm:11.8.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-linux-arm-musleabihf@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-linux-arm-musleabihf@npm:11.8.0"
+"@oxc-resolver/binding-linux-arm-musleabihf@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-linux-arm-musleabihf@npm:11.8.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-linux-arm64-gnu@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-linux-arm64-gnu@npm:11.8.0"
+"@oxc-resolver/binding-linux-arm64-gnu@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-linux-arm64-gnu@npm:11.8.2"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-linux-arm64-musl@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-linux-arm64-musl@npm:11.8.0"
+"@oxc-resolver/binding-linux-arm64-musl@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-linux-arm64-musl@npm:11.8.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-linux-ppc64-gnu@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-linux-ppc64-gnu@npm:11.8.0"
+"@oxc-resolver/binding-linux-ppc64-gnu@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-linux-ppc64-gnu@npm:11.8.2"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-linux-riscv64-gnu@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-linux-riscv64-gnu@npm:11.8.0"
+"@oxc-resolver/binding-linux-riscv64-gnu@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-linux-riscv64-gnu@npm:11.8.2"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-linux-riscv64-musl@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-linux-riscv64-musl@npm:11.8.0"
+"@oxc-resolver/binding-linux-riscv64-musl@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-linux-riscv64-musl@npm:11.8.2"
   conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-linux-s390x-gnu@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-linux-s390x-gnu@npm:11.8.0"
+"@oxc-resolver/binding-linux-s390x-gnu@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-linux-s390x-gnu@npm:11.8.2"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-linux-x64-gnu@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-linux-x64-gnu@npm:11.8.0"
+"@oxc-resolver/binding-linux-x64-gnu@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-linux-x64-gnu@npm:11.8.2"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-linux-x64-musl@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-linux-x64-musl@npm:11.8.0"
+"@oxc-resolver/binding-linux-x64-musl@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-linux-x64-musl@npm:11.8.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-wasm32-wasi@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-wasm32-wasi@npm:11.8.0"
+"@oxc-resolver/binding-wasm32-wasi@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-wasm32-wasi@npm:11.8.2"
   dependencies:
     "@napi-rs/wasm-runtime": "npm:^1.0.5"
   conditions: cpu=wasm32
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-win32-arm64-msvc@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-win32-arm64-msvc@npm:11.8.0"
+"@oxc-resolver/binding-win32-arm64-msvc@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-win32-arm64-msvc@npm:11.8.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-win32-ia32-msvc@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-win32-ia32-msvc@npm:11.8.0"
+"@oxc-resolver/binding-win32-ia32-msvc@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-win32-ia32-msvc@npm:11.8.2"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@oxc-resolver/binding-win32-x64-msvc@npm:11.8.0":
-  version: 11.8.0
-  resolution: "@oxc-resolver/binding-win32-x64-msvc@npm:11.8.0"
+"@oxc-resolver/binding-win32-x64-msvc@npm:11.8.2":
+  version: 11.8.2
+  resolution: "@oxc-resolver/binding-win32-x64-msvc@npm:11.8.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3204,149 +3192,156 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-android-arm-eabi@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-android-arm-eabi@npm:4.50.2"
+"@rollup/rollup-android-arm-eabi@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-android-arm-eabi@npm:4.52.0"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"@rollup/rollup-android-arm64@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-android-arm64@npm:4.50.2"
+"@rollup/rollup-android-arm64@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-android-arm64@npm:4.52.0"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-darwin-arm64@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-darwin-arm64@npm:4.50.2"
+"@rollup/rollup-darwin-arm64@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-darwin-arm64@npm:4.52.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-darwin-x64@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-darwin-x64@npm:4.50.2"
+"@rollup/rollup-darwin-x64@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-darwin-x64@npm:4.52.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-freebsd-arm64@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-freebsd-arm64@npm:4.50.2"
+"@rollup/rollup-freebsd-arm64@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-freebsd-arm64@npm:4.52.0"
   conditions: os=freebsd & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-freebsd-x64@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-freebsd-x64@npm:4.50.2"
+"@rollup/rollup-freebsd-x64@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-freebsd-x64@npm:4.52.0"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm-gnueabihf@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.50.2"
+"@rollup/rollup-linux-arm-gnueabihf@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.52.0"
   conditions: os=linux & cpu=arm & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm-musleabihf@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-linux-arm-musleabihf@npm:4.50.2"
+"@rollup/rollup-linux-arm-musleabihf@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-linux-arm-musleabihf@npm:4.52.0"
   conditions: os=linux & cpu=arm & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm64-gnu@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.50.2"
+"@rollup/rollup-linux-arm64-gnu@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.52.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm64-musl@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.50.2"
+"@rollup/rollup-linux-arm64-musl@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.52.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-loong64-gnu@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-linux-loong64-gnu@npm:4.50.2"
+"@rollup/rollup-linux-loong64-gnu@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-linux-loong64-gnu@npm:4.52.0"
   conditions: os=linux & cpu=loong64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-ppc64-gnu@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-linux-ppc64-gnu@npm:4.50.2"
+"@rollup/rollup-linux-ppc64-gnu@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-linux-ppc64-gnu@npm:4.52.0"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-riscv64-gnu@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.50.2"
+"@rollup/rollup-linux-riscv64-gnu@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.52.0"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-riscv64-musl@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-linux-riscv64-musl@npm:4.50.2"
+"@rollup/rollup-linux-riscv64-musl@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-linux-riscv64-musl@npm:4.52.0"
   conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-s390x-gnu@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.50.2"
+"@rollup/rollup-linux-s390x-gnu@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.52.0"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-gnu@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.50.2"
+"@rollup/rollup-linux-x64-gnu@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.52.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-musl@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-linux-x64-musl@npm:4.50.2"
+"@rollup/rollup-linux-x64-musl@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-linux-x64-musl@npm:4.52.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-openharmony-arm64@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-openharmony-arm64@npm:4.50.2"
+"@rollup/rollup-openharmony-arm64@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-openharmony-arm64@npm:4.52.0"
   conditions: os=openharmony & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-arm64-msvc@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.50.2"
+"@rollup/rollup-win32-arm64-msvc@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.52.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-ia32-msvc@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.50.2"
+"@rollup/rollup-win32-ia32-msvc@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.52.0"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-x64-msvc@npm:4.50.2":
-  version: 4.50.2
-  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.50.2"
+"@rollup/rollup-win32-x64-gnu@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-win32-x64-gnu@npm:4.52.0"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-win32-x64-msvc@npm:4.52.0":
+  version: 4.52.0
+  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.52.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4512,11 +4507,11 @@ __metadata:
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.8.3":
-  version: 2.8.5
-  resolution: "baseline-browser-mapping@npm:2.8.5"
+  version: 2.8.6
+  resolution: "baseline-browser-mapping@npm:2.8.6"
   bin:
     baseline-browser-mapping: dist/cli.js
-  checksum: 10c0/550987bd4fa37e421b1c1a4dd2cd5381ba72351c6baaf6239ca479e8ae5090bbb57e26110606926d9907567dc2ebd3e048615c95572acaccd12586eb110195fd
+  checksum: 10c0/ea628db5048d1e5c0251d4783e0496f5ce8de7a0e20ea29c8876611cb0acf58ffc76bf6561786c6388db22f130646e3ecb91eebc1c03954552a21d38fa38320f
   languageName: node
   linkType: hard
 
@@ -5319,9 +5314,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.218":
-  version: 1.5.221
-  resolution: "electron-to-chromium@npm:1.5.221"
-  checksum: 10c0/d8d8c146d9e53251c85829bdf4f212b55459b8b260e714a55789b244f6d9319ecdeb3b1e27f347461bf40b4c8707bbfd3322e2603afe643c05995eb1ffb9e058
+  version: 1.5.222
+  resolution: "electron-to-chromium@npm:1.5.222"
+  checksum: 10c0/a81eb8d2b171236884faf9b5dd382c66d9250283032cb89a3e555d788bf3956f7f4f6bf7bf30b3daf9e5c945ef837bfcd1be21b3f41cfe186ed2f25da13c9af3
   languageName: node
   linkType: hard
 
@@ -5884,9 +5879,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9.35.0":
-  version: 9.35.0
-  resolution: "eslint@npm:9.35.0"
+"eslint@npm:^9.36.0":
+  version: 9.36.0
+  resolution: "eslint@npm:9.36.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.8.0"
     "@eslint-community/regexpp": "npm:^4.12.1"
@@ -5894,7 +5889,7 @@ __metadata:
     "@eslint/config-helpers": "npm:^0.3.1"
     "@eslint/core": "npm:^0.15.2"
     "@eslint/eslintrc": "npm:^3.3.1"
-    "@eslint/js": "npm:9.35.0"
+    "@eslint/js": "npm:9.36.0"
     "@eslint/plugin-kit": "npm:^0.3.5"
     "@humanfs/node": "npm:^0.16.6"
     "@humanwhocodes/module-importer": "npm:^1.0.1"
@@ -5930,7 +5925,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10c0/798c527520ccf62106f8cd210bd1db1f8eb1b0e7a56feb0a8b322bf3a1e6a0bc6dc3a414542c22b1b393d58d5e3cd0252c44c023049de9067b836450503a2f03
+  checksum: 10c0/0e2705a94847813b03f2f3c1367c0708319cbb66458250a09b2d056a088c56e079a1c1d76c44feebf51971d9ce64d010373b2a4f007cd1026fc24f95c89836df
   languageName: node
   linkType: hard
 
@@ -6244,9 +6239,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^12.23.13":
-  version: 12.23.13
-  resolution: "framer-motion@npm:12.23.13"
+"framer-motion@npm:^12.23.16":
+  version: 12.23.16
+  resolution: "framer-motion@npm:12.23.16"
   dependencies:
     motion-dom: "npm:^12.23.12"
     motion-utils: "npm:^12.23.6"
@@ -6262,7 +6257,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/3dc9df0f2746275ebd70d035a8ee5d37d06b2c0ad6433b477d08bf71aeeb89886c8e3282668565398f4c89668261611a84cd7b1f1e1c7a4e6745fee5f7698e0a
+  checksum: 10c0/a154b614581f9e4d359a16cd590da7331e27857ac099c83908b5ec2b6bd7092d12192d989ecf17029355e64290d119e508342b5a6b0db69462df36727c674781
   languageName: node
   linkType: hard
 
@@ -6595,9 +6590,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-yoga@npm:^5.15.2":
-  version: 5.15.2
-  resolution: "graphql-yoga@npm:5.15.2"
+"graphql-yoga@npm:^5.16.0":
+  version: 5.16.0
+  resolution: "graphql-yoga@npm:5.16.0"
   dependencies:
     "@envelop/core": "npm:^5.3.0"
     "@envelop/instrumentation": "npm:^1.0.0"
@@ -6614,7 +6609,7 @@ __metadata:
     tslib: "npm:^2.8.1"
   peerDependencies:
     graphql: ^15.2.0 || ^16.0.0
-  checksum: 10c0/d6cf780a8d84a35cc69956f87237d291a8fd3c300513cb590df1ff5d3f40cdb7ae970baea1c7a551bd77e83d2e1b98494e3cd52b27d74a8af961275e2b05efd3
+  checksum: 10c0/30015acaf6ef987d164f6c4b2c2579992dc3d8f0ddfb6e1a044a781645f9c50740e3e5bd2609885a9c0dbb6868cbb316a2bdbd7af66cfba5ae44baa4c2aa76ea
   languageName: node
   linkType: hard
 
@@ -8127,11 +8122,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion@npm:^12.23.13":
-  version: 12.23.13
-  resolution: "motion@npm:12.23.13"
+"motion@npm:^12.23.16":
+  version: 12.23.16
+  resolution: "motion@npm:12.23.16"
   dependencies:
-    framer-motion: "npm:^12.23.13"
+    framer-motion: "npm:^12.23.16"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
@@ -8144,7 +8139,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/00e9aa733f0a6d4f9cbfda18a838eef679c0fc4aa943ab73da939fbb99de1dbce6bb4c40830f6500aacf246751be7838a97a3ac243676341a9ba52a29aed9a8f
+  checksum: 10c0/a3ab7ca9ff4c5d6e35972fe9b978be6256dff1c27f15f30cd5ea731c427b3178110fa803589916d9d04d81f97622db5792b4f2df9ecab87abb759f14ab920831
   languageName: node
   linkType: hard
 
@@ -8667,28 +8662,28 @@ __metadata:
   linkType: hard
 
 "oxc-resolver@npm:^11.6.2":
-  version: 11.8.0
-  resolution: "oxc-resolver@npm:11.8.0"
+  version: 11.8.2
+  resolution: "oxc-resolver@npm:11.8.2"
   dependencies:
-    "@oxc-resolver/binding-android-arm-eabi": "npm:11.8.0"
-    "@oxc-resolver/binding-android-arm64": "npm:11.8.0"
-    "@oxc-resolver/binding-darwin-arm64": "npm:11.8.0"
-    "@oxc-resolver/binding-darwin-x64": "npm:11.8.0"
-    "@oxc-resolver/binding-freebsd-x64": "npm:11.8.0"
-    "@oxc-resolver/binding-linux-arm-gnueabihf": "npm:11.8.0"
-    "@oxc-resolver/binding-linux-arm-musleabihf": "npm:11.8.0"
-    "@oxc-resolver/binding-linux-arm64-gnu": "npm:11.8.0"
-    "@oxc-resolver/binding-linux-arm64-musl": "npm:11.8.0"
-    "@oxc-resolver/binding-linux-ppc64-gnu": "npm:11.8.0"
-    "@oxc-resolver/binding-linux-riscv64-gnu": "npm:11.8.0"
-    "@oxc-resolver/binding-linux-riscv64-musl": "npm:11.8.0"
-    "@oxc-resolver/binding-linux-s390x-gnu": "npm:11.8.0"
-    "@oxc-resolver/binding-linux-x64-gnu": "npm:11.8.0"
-    "@oxc-resolver/binding-linux-x64-musl": "npm:11.8.0"
-    "@oxc-resolver/binding-wasm32-wasi": "npm:11.8.0"
-    "@oxc-resolver/binding-win32-arm64-msvc": "npm:11.8.0"
-    "@oxc-resolver/binding-win32-ia32-msvc": "npm:11.8.0"
-    "@oxc-resolver/binding-win32-x64-msvc": "npm:11.8.0"
+    "@oxc-resolver/binding-android-arm-eabi": "npm:11.8.2"
+    "@oxc-resolver/binding-android-arm64": "npm:11.8.2"
+    "@oxc-resolver/binding-darwin-arm64": "npm:11.8.2"
+    "@oxc-resolver/binding-darwin-x64": "npm:11.8.2"
+    "@oxc-resolver/binding-freebsd-x64": "npm:11.8.2"
+    "@oxc-resolver/binding-linux-arm-gnueabihf": "npm:11.8.2"
+    "@oxc-resolver/binding-linux-arm-musleabihf": "npm:11.8.2"
+    "@oxc-resolver/binding-linux-arm64-gnu": "npm:11.8.2"
+    "@oxc-resolver/binding-linux-arm64-musl": "npm:11.8.2"
+    "@oxc-resolver/binding-linux-ppc64-gnu": "npm:11.8.2"
+    "@oxc-resolver/binding-linux-riscv64-gnu": "npm:11.8.2"
+    "@oxc-resolver/binding-linux-riscv64-musl": "npm:11.8.2"
+    "@oxc-resolver/binding-linux-s390x-gnu": "npm:11.8.2"
+    "@oxc-resolver/binding-linux-x64-gnu": "npm:11.8.2"
+    "@oxc-resolver/binding-linux-x64-musl": "npm:11.8.2"
+    "@oxc-resolver/binding-wasm32-wasi": "npm:11.8.2"
+    "@oxc-resolver/binding-win32-arm64-msvc": "npm:11.8.2"
+    "@oxc-resolver/binding-win32-ia32-msvc": "npm:11.8.2"
+    "@oxc-resolver/binding-win32-x64-msvc": "npm:11.8.2"
     napi-postinstall: "npm:^0.3.0"
   dependenciesMeta:
     "@oxc-resolver/binding-android-arm-eabi":
@@ -8729,7 +8724,7 @@ __metadata:
       optional: true
     "@oxc-resolver/binding-win32-x64-msvc":
       optional: true
-  checksum: 10c0/b6c64fd3af835e51a76e1722390dc6d9638a024cfbbfb5e12e3a443280eebe7814258f19111028d5cb229dbdd0387b71ba94fc22d6d6abb065ee2f96f14d7536
+  checksum: 10c0/101d66570d482ea75334b074f20a97c9ac6d5d7a59bb55b3ad0177e30c2872979db50a7853b096aee6c8f31446b3bbd2591b68d1c3992397d52a9f4cf1175f70
   languageName: node
   linkType: hard
 
@@ -8998,7 +8993,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino@npm:^9.10.0, pino@npm:^9.9.5":
+"pino@npm:^9.10.0":
   version: 9.10.0
   resolution: "pino@npm:9.10.0"
   dependencies:
@@ -9261,12 +9256,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.62.0":
-  version: 7.62.0
-  resolution: "react-hook-form@npm:7.62.0"
+"react-hook-form@npm:^7.63.0":
+  version: 7.63.0
+  resolution: "react-hook-form@npm:7.63.0"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10c0/451a25a2ddf07be14f690d2ad3f2f970e0b933fd059ef141c6da9e19d0566d739e9d5cc9c482e3533f3fd01d97e658b896a01ce45a1259ad7b0d4638ba0112c6
+  checksum: 10c0/0b46c0f41bcda524eae03aed16ac48237a351886d48495df8e67190da1eabc5bc113788db42e23c802f2a5e641f15bcca070a9092cbc26b4133e96b9a62c938e
   languageName: node
   linkType: hard
 
@@ -9415,12 +9410,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^2.31.1":
-  version: 2.31.1
-  resolution: "remeda@npm:2.31.1"
+"remeda@npm:^2.32.0":
+  version: 2.32.0
+  resolution: "remeda@npm:2.32.0"
   dependencies:
     type-fest: "npm:^4.41.0"
-  checksum: 10c0/cd35b18fed483cbb35e411da15d2196a907fb709135e4ff767af1d5905a4b922eed2bc69d717291da0096c9ee24ddd043e661336d7446fac83de0361ef3bf35d
+  checksum: 10c0/890ce245dac492eacffc657d6976680a6de8c9f96a5a1e86c37d91795e5209a62e6912dceeda20685f03d26bb5d54805c8c7a9ad0e91b16f1fcfacd70452ab00
   languageName: node
   linkType: hard
 
@@ -9575,30 +9570,31 @@ __metadata:
   linkType: hard
 
 "rollup@npm:^4.43.0":
-  version: 4.50.2
-  resolution: "rollup@npm:4.50.2"
+  version: 4.52.0
+  resolution: "rollup@npm:4.52.0"
   dependencies:
-    "@rollup/rollup-android-arm-eabi": "npm:4.50.2"
-    "@rollup/rollup-android-arm64": "npm:4.50.2"
-    "@rollup/rollup-darwin-arm64": "npm:4.50.2"
-    "@rollup/rollup-darwin-x64": "npm:4.50.2"
-    "@rollup/rollup-freebsd-arm64": "npm:4.50.2"
-    "@rollup/rollup-freebsd-x64": "npm:4.50.2"
-    "@rollup/rollup-linux-arm-gnueabihf": "npm:4.50.2"
-    "@rollup/rollup-linux-arm-musleabihf": "npm:4.50.2"
-    "@rollup/rollup-linux-arm64-gnu": "npm:4.50.2"
-    "@rollup/rollup-linux-arm64-musl": "npm:4.50.2"
-    "@rollup/rollup-linux-loong64-gnu": "npm:4.50.2"
-    "@rollup/rollup-linux-ppc64-gnu": "npm:4.50.2"
-    "@rollup/rollup-linux-riscv64-gnu": "npm:4.50.2"
-    "@rollup/rollup-linux-riscv64-musl": "npm:4.50.2"
-    "@rollup/rollup-linux-s390x-gnu": "npm:4.50.2"
-    "@rollup/rollup-linux-x64-gnu": "npm:4.50.2"
-    "@rollup/rollup-linux-x64-musl": "npm:4.50.2"
-    "@rollup/rollup-openharmony-arm64": "npm:4.50.2"
-    "@rollup/rollup-win32-arm64-msvc": "npm:4.50.2"
-    "@rollup/rollup-win32-ia32-msvc": "npm:4.50.2"
-    "@rollup/rollup-win32-x64-msvc": "npm:4.50.2"
+    "@rollup/rollup-android-arm-eabi": "npm:4.52.0"
+    "@rollup/rollup-android-arm64": "npm:4.52.0"
+    "@rollup/rollup-darwin-arm64": "npm:4.52.0"
+    "@rollup/rollup-darwin-x64": "npm:4.52.0"
+    "@rollup/rollup-freebsd-arm64": "npm:4.52.0"
+    "@rollup/rollup-freebsd-x64": "npm:4.52.0"
+    "@rollup/rollup-linux-arm-gnueabihf": "npm:4.52.0"
+    "@rollup/rollup-linux-arm-musleabihf": "npm:4.52.0"
+    "@rollup/rollup-linux-arm64-gnu": "npm:4.52.0"
+    "@rollup/rollup-linux-arm64-musl": "npm:4.52.0"
+    "@rollup/rollup-linux-loong64-gnu": "npm:4.52.0"
+    "@rollup/rollup-linux-ppc64-gnu": "npm:4.52.0"
+    "@rollup/rollup-linux-riscv64-gnu": "npm:4.52.0"
+    "@rollup/rollup-linux-riscv64-musl": "npm:4.52.0"
+    "@rollup/rollup-linux-s390x-gnu": "npm:4.52.0"
+    "@rollup/rollup-linux-x64-gnu": "npm:4.52.0"
+    "@rollup/rollup-linux-x64-musl": "npm:4.52.0"
+    "@rollup/rollup-openharmony-arm64": "npm:4.52.0"
+    "@rollup/rollup-win32-arm64-msvc": "npm:4.52.0"
+    "@rollup/rollup-win32-ia32-msvc": "npm:4.52.0"
+    "@rollup/rollup-win32-x64-gnu": "npm:4.52.0"
+    "@rollup/rollup-win32-x64-msvc": "npm:4.52.0"
     "@types/estree": "npm:1.0.8"
     fsevents: "npm:~2.3.2"
   dependenciesMeta:
@@ -9642,13 +9638,15 @@ __metadata:
       optional: true
     "@rollup/rollup-win32-ia32-msvc":
       optional: true
+    "@rollup/rollup-win32-x64-gnu":
+      optional: true
     "@rollup/rollup-win32-x64-msvc":
       optional: true
     fsevents:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: 10c0/5415d0a5ae6f37fa5f10997b3c5cff20c2ea6bd1636db90e59672969a4f83b29f6168bf9dd26c1276c2e37e1d55674472758da90cbc46c8b08ada5d0ec60eb9b
+  checksum: 10c0/05b33f5143cfeb2c64df6bfa13a971c3d94081828f763e22b4154ed1452091abe648418d9a45abc8d5656a9a979f5b12e9cd5b390f247c3af4640ad8ed333523
   languageName: node
   linkType: hard
 
@@ -10462,7 +10460,7 @@ __metadata:
   dependencies:
     "@apollo/client": "npm:^4.0.5"
     "@ariakit/react": "npm:^0.4.18"
-    "@envelop/core": "npm:^5.3.2-alpha-20250916165622-afcd86a7cf2aa528aa13df82fd48b88b004595b6"
+    "@envelop/core": "npm:^5.3.2"
     "@envelop/opentelemetry": "npm:^8.0.0"
     "@eslint/eslintrc": "npm:^3.3.1"
     "@grafana/faro-web-sdk": "npm:^1.19.0"
@@ -10485,7 +10483,7 @@ __metadata:
     "@navikt/next-api-proxy": "npm:^4.1.4"
     "@navikt/next-logger": "npm:^4.1.5"
     "@navikt/oasis": "npm:^3.8.0"
-    "@navikt/smart-on-fhir": "npm:1.4.30"
+    "@navikt/smart-on-fhir": "npm:1.5.0"
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^2.1.0"
     "@parcel/watcher": "npm:^2.5.1"
@@ -10499,17 +10497,17 @@ __metadata:
     clsx: "npm:^2.1.1"
     concurrently: "npm:^9.2.1"
     date-fns: "npm:^4.1.0"
-    eslint: "npm:^9.35.0"
+    eslint: "npm:^9.36.0"
     eslint-config-next: "npm:15.5.3"
     fuse.js: "npm:^7.1.0"
     graphql: "npm:^16.11.0"
-    graphql-yoga: "npm:^5.15.2"
+    graphql-yoga: "npm:^5.16.0"
     husky: "npm:^9.1.7"
     iovalkey: "npm:^0.3.3"
     jose: "npm:^6.1.0"
     knip: "npm:^5.63.1"
     lint-staged: "npm:^16.1.6"
-    motion: "npm:^12.23.13"
+    motion: "npm:^12.23.16"
     next: "npm:15.5.3"
     next-logger: "npm:^5.0.1"
     nextleton: "npm:^0.6.1"
@@ -10524,10 +10522,10 @@ __metadata:
     quick-lru: "npm:^7.2.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    react-hook-form: "npm:^7.62.0"
+    react-hook-form: "npm:^7.63.0"
     react-minimal-pie-chart: "npm:^9.1.1"
     react-redux: "npm:^9.2.0"
-    remeda: "npm:^2.31.1"
+    remeda: "npm:^2.32.0"
     rxjs: "npm:^7.8.2"
     sonda: "npm:^0.9.0"
     sonner: "npm:^2.0.7"
@@ -10696,9 +10694,9 @@ __metadata:
   linkType: hard
 
 "tinyspy@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "tinyspy@npm:4.0.3"
-  checksum: 10c0/0a92a18b5350945cc8a1da3a22c9ad9f4e2945df80aaa0c43e1b3a3cfb64d8501e607ebf0305e048e3c3d3e0e7f8eb10cea27dc17c21effb73e66c4a3be36373
+  version: 4.0.4
+  resolution: "tinyspy@npm:4.0.4"
+  checksum: 10c0/a8020fc17799251e06a8398dcc352601d2770aa91c556b9531ecd7a12581161fd1c14e81cbdaff0c1306c93bfdde8ff6d1c1a3f9bbe6d91604f0fd4e01e2f1eb
   languageName: node
   linkType: hard
 
