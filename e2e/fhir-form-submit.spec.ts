@@ -74,6 +74,11 @@ test('simple - 100% sykmelding', async ({ page }) => {
             arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
         },
     })
 
@@ -123,6 +128,11 @@ test('simple - gradert sykmelding', async ({ page }) => {
             arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
         },
     })
 
@@ -173,6 +183,11 @@ test('simple - submit with only default values', async ({ page }) => {
             arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
         },
     })
 
@@ -230,6 +245,11 @@ test('optional - multiple bidiagnoser', async ({ page }) => {
             arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
         },
     })
 
@@ -288,6 +308,11 @@ test('optional - should pre-fill bidiagnoser from FHIR @feature-toggle', async (
             arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
         },
     })
 
@@ -379,6 +404,11 @@ test("optional - 'tilbakedatering' is asked and required when fom is 5 days in t
             yrkesskade: { yrkesskade: false, skadedato: null },
             arbeidsforhold: null,
             pasientenSkalSkjermes: false,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
         },
     })
 })
@@ -440,6 +470,11 @@ test('optional - "tilbakedatering" and "Annen årsak" input field is required an
             yrkesskade: { yrkesskade: false, skadedato: null },
             arbeidsforhold: null,
             pasientenSkalSkjermes: false,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
         },
     })
 })
@@ -498,6 +533,11 @@ test('optional - "har flere arbeidsforhold" should be part of payload if checked
             },
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
         },
     })
 })
@@ -558,6 +598,11 @@ test('optional - when 100%, "arbeidsrelaterte og medisinske årsaker" should be 
             yrkesskade: { yrkesskade: false, skadedato: null },
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
         },
     })
 })
@@ -610,6 +655,11 @@ test('summary - "skal skjermes" should be part of payload if checked', async ({ 
             arbeidsforhold: null,
             tilbakedatering: null,
             pasientenSkalSkjermes: true,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
         },
     })
 })

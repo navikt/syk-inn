@@ -52,7 +52,7 @@ export function UtfyllendeSporsmalWithDataFetching(): ReactElement | null {
                 error={medisinskOppsummering.fieldState.error?.message}
             />
             <TextField
-                label="Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet?"
+                label="Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet? (ikke obligatorisk)"
                 onChange={hensynPaArbeidsplassen.field.onChange}
                 value={hensynPaArbeidsplassen.field.value ?? ''}
                 error={hensynPaArbeidsplassen.fieldState.error?.message}
