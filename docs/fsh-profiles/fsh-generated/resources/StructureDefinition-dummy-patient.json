@@ -1,0 +1,23 @@
+{
+    "resourceType": "StructureDefinition",
+    "id": "dummy-patient",
+    "url": "http://hl7.org/fhir/us/example/StructureDefinition/dummy-patient",
+    "name": "NoBasisPatient",
+    "title": "Dummy Patient",
+    "status": "draft",
+    "description": "Minimal Patient profile for local testing of Norwegian Condition/Encounter basis profiles. This is just a dummy",
+    "fhirVersion": "4.0.1",
+    "kind": "resource",
+    "abstract": false,
+    "type": "Patient",
+    "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+    "derivation": "constraint",
+    "differential": {
+        "element": [
+            {
+                "id": "Patient",
+                "path": "Patient"
+            }
+        ]
+    }
+}

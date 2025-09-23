@@ -1,0 +1,5 @@
+Output File                                  Name                    Type      FSH File                    Lines
+StructureDefinition-dummy-patient.json       NoBasisPatient          Profile   dummy-patient.fsh           1 - 10
+StructureDefinition-no-basis-condition.json  NoBasisCondition        Profile   condition-basis.fsh         1 - 14
+StructureDefinition-no-basis-encounter.json  NoBasisEncounter        Profile   encounter-basis.fsh         1 - 24
+ValueSet-no-basis-condition-codes.json       NoBasisConditionCodeVS  ValueSet  NoBasisConditionCodeVS.fsh  1 - 7

@@ -1,0 +1,34 @@
+[
+    {
+        "outputFile": "StructureDefinition-dummy-patient.json",
+        "fshName": "NoBasisPatient",
+        "fshType": "Profile",
+        "fshFile": "dummy-patient.fsh",
+        "startLine": 1,
+        "endLine": 10
+    },
+    {
+        "outputFile": "StructureDefinition-no-basis-condition.json",
+        "fshName": "NoBasisCondition",
+        "fshType": "Profile",
+        "fshFile": "condition-basis.fsh",
+        "startLine": 1,
+        "endLine": 14
+    },
+    {
+        "outputFile": "StructureDefinition-no-basis-encounter.json",
+        "fshName": "NoBasisEncounter",
+        "fshType": "Profile",
+        "fshFile": "encounter-basis.fsh",
+        "startLine": 1,
+        "endLine": 24
+    },
+    {
+        "outputFile": "ValueSet-no-basis-condition-codes.json",
+        "fshName": "NoBasisConditionCodeVS",
+        "fshType": "ValueSet",
+        "fshFile": "NoBasisConditionCodeVS.fsh",
+        "startLine": 1,
+        "endLine": 7
+    }
+]
