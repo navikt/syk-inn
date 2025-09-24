@@ -602,3 +602,19 @@ test('summary - "skal skjermes" should be part of payload if checked', async ({ 
         },
     })
 })
+
+test('rule outcomes - simple sanity check: fails when submit gets a rule outcome', async ({ page }) => {
+    await launchAndStart(page)
+    await fillPeriodeRelative({
+        type: '100%',
+        days: 3,
+    })(page)
+
+    await nextStep()(page)
+    await verifySignerendeBehandler()(page)
+
+    await submitSykmelding('invalid')(page)
+    await expect(
+        page.getByRole('heading', { name: 'Sykmeldingen ble ikke sendt inn på grunn av regelsjekk' }),
+    ).toBeVisible()
+})

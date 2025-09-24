@@ -4,6 +4,7 @@ import { ApolloLink } from '@apollo/client'
 
 import { OpprettSykmeldingDocument } from '@queries'
 import { toReadableDatePeriod } from '@lib/date'
+import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
 
 import { clickAndWait, waitForGqlRequest } from '../utils/request-utils'
 import { inputDate } from '../utils/date-utils'
@@ -301,9 +302,23 @@ export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | nu
     }
 }
 
-export function submitSykmelding() {
+export function submitSykmelding(outcome: 'succeed' | 'invalid' | 'manual' | 'invalid-unexpected' = 'succeed') {
+    async function setFailParam(page: Page, outcome: 'invalid' | 'manual' | 'invalid-unexpected'): Promise<void> {
+        await page.evaluate(
+            ({ paramName, outcome }) => {
+                const u = new URL(location.href)
+                u.searchParams.set(paramName, outcome)
+                history.replaceState(null, '', u)
+            },
+            { paramName: MockRuleMarkers.query, outcome },
+        )
+    }
     return async (page: Page): Promise<ApolloLink.Request> => {
-        return test.step('Submit the sykmelding', async () => {
+        return test.step(`Submit the sykmelding (outcome: ${outcome})`, async () => {
+            if (outcome !== 'succeed') {
+                await setFailParam(page, outcome)
+            }
+
             const request = await clickAndWait(
                 page.getByRole('button', { name: 'Send inn' }).click(),
                 waitForGqlRequest(OpprettSykmeldingDocument)(page),

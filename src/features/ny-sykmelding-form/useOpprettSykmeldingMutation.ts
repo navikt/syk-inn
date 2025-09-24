@@ -21,7 +21,7 @@ import { useAppSelector } from '@core/redux/hooks'
 import { useMode } from '@core/providers/Modes'
 import { NySykmeldingAktivitet, NySykmeldingTilbakedatering } from '@core/redux/reducers/ny-sykmelding'
 import { NySykmeldingState } from '@core/redux/reducers/ny-sykmelding/ny-sykmelding-slice'
-import { isCloud, isDemo, isLocal } from '@lib/env'
+import { isCloud, isDemo, isE2E, isLocal } from '@lib/env'
 import { createBrowserRuleOverrideHeaders } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
 
 import { useDraftId } from './draft/useDraftId'
@@ -69,7 +69,7 @@ export function useOpprettSykmeldingMutation(): UseOpprettSykmeldingMutation {
             const createResult = await spanBrowserAsync('OpprettSykmelding.mutation', async () =>
                 mutate({
                     variables: { draftId: draftIdToUse, values: values },
-                    context: { headers: isLocal || isDemo ? createBrowserRuleOverrideHeaders() : undefined },
+                    context: { headers: isLocal || isDemo || isE2E ? createBrowserRuleOverrideHeaders() : undefined },
                 }),
             )
 
