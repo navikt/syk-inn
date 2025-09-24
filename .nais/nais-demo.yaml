@@ -5,7 +5,6 @@ metadata:
   namespace: tsm
   labels:
     team: tsm
-    branchState: {{branchState}}
 spec:
   image: {{image}}
   port: 3000
@@ -14,6 +13,9 @@ spec:
   replicas:
     min: {{replicas}}
     max: {{replicas}}
+  {{#if TTL_HOURS}}
+  ttl: {{ TTL_HOURS }}
+  {{/if }}
   liveness:
     path: /samarbeidspartner/sykmelding/api/internal/is_alive
   readiness:

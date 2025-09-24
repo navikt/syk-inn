@@ -124,8 +124,30 @@ jobs:
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-demo.yaml
-          VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }},appname=${{ env.APP }},replicas=1,branchState=alive
+          VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }},appname=${{ env.APP }},replicas=1
           NAIS_DEPLOY_SUMMARY: false
+
+  deploy-branch-demo-main:
+    if: startsWith(github.ref_name, 'demo')
+    name: Deploy branch to own demo ingress
+    runs-on: ubuntu-latest
+    needs: [build-demo, test-and-verify]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gacts/github-slug@v1
+        id: slug
+        with:
+          to-slug: ${{ env.APP }}-${{ github.ref_name }}
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-demo.yaml
+          VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ steps.slug.outputs.slug }}.ekstern.dev.nav.no${{ env.BASE_PATH }},appname=${{ steps.slug.outputs.slug }},replicas=1,TTL_HOURS=168h
+          NAIS_DEPLOY_SUMMARY: false
+      - run: |
+          echo "Deployet demo versjon av ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "https://${{ steps.slug.outputs.slug }}.ekstern.dev.nav.no${{ env.BASE_PATH }}" >> $GITHUB_STEP_SUMMARY
 
   build-prod:
     name: Build for prod
