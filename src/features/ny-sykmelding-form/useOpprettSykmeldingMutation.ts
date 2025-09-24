@@ -1,7 +1,7 @@
 import { logger } from '@navikt/next-logger'
 import { startTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { useMutation, useQuery } from '@apollo/client/react'
+import { useMutation } from '@apollo/client/react'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { raise } from '@lib/ts'
@@ -15,9 +15,6 @@ import {
     OpprettSykmeldingInput,
     OpprettSykmeldingMutation,
     OpprettSykmeldingMutationVariables,
-    ValiderSykmeldingDocument,
-    ValiderSykmeldingQuery,
-    ValiderSykmeldingQueryVariables,
 } from '@queries'
 import { spanBrowserAsync, withSpanBrowserAsync } from '@lib/otel/browser'
 import { useAppSelector } from '@core/redux/hooks'
@@ -36,15 +33,11 @@ export function useOpprettSykmeldingMutation(): {
 
         result: useMutation.Result<OpprettSykmeldingMutation>
     }
-    preValidation: useQuery.Result<ValiderSykmeldingQuery, ValiderSykmeldingQueryVariables>
 } {
     const mode = useMode()
     const [draftId] = useDraftId()
     const router = useRouter()
     const formState = useAppSelector((state) => state.nySykmelding)
-    const preValidateSykmeldingQuery = useQuery(ValiderSykmeldingDocument, {
-        variables: { values: formStateToOpprettSykmeldingInput(formState) },
-    })
     const [mutate, result] = useMutation(OpprettSykmeldingDocument, {
         // In case user navigates back to the dashboard
         refetchQueries: [{ query: AllSykmeldingerDocument }, { query: GetAllDraftsDocument }],
@@ -99,7 +92,7 @@ export function useOpprettSykmeldingMutation(): {
         }
     })
 
-    return { mutation: { opprettSykmelding, result }, preValidation: preValidateSykmeldingQuery }
+    return { mutation: { opprettSykmelding, result } }
 }
 
 function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingState): OpprettSykmeldingInput {

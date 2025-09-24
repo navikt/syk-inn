@@ -42,11 +42,6 @@ export function ToggleAPIFailures(): ReactElement {
                 Sykmelding
             </Checkbox>
         ),
-        ValiderSykmelding: (
-            <Checkbox key="validerSykmelding" value="ValiderSykmelding">
-                Valider Sykmelding
-            </Checkbox>
-        ),
         AllDashboard: (
             <Checkbox key="allDashboard" value="AllDashboard">
                 Alle sykmeldinger og utkast på dashboardet

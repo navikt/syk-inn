@@ -21,17 +21,6 @@ mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!) 
     }
 }
 
-query ValiderSykmelding($values: OpprettSykmeldingInput!) {
-    validerSykmelding(values: $values) {
-        ... on RuleOutcome {
-            ...RuleOutcome
-        }
-        ... on RuleOK {
-            ok
-        }
-    }
-}
-
 fragment RuleOutcome on RuleOutcome {
     status
     message

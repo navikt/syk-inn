@@ -274,7 +274,6 @@ export type Query = {
     person?: Maybe<QueriedPerson>
     sykmelding?: Maybe<Sykmelding>
     sykmeldinger?: Maybe<Array<Sykmelding>>
-    validerSykmelding: SykmeldingValidering
 }
 
 export type QueryDiagnoseArgs = {
@@ -291,10 +290,6 @@ export type QueryPersonArgs = {
 
 export type QuerySykmeldingArgs = {
     id: Scalars['String']['input']
-}
-
-export type QueryValiderSykmeldingArgs = {
-    values: OpprettSykmeldingInput
 }
 
 export type Reisetilskudd = FomTom & {
@@ -878,12 +873,6 @@ export type QueryResolvers<
         RequireFields<QuerySykmeldingArgs, 'id'>
     >
     sykmeldinger?: Resolver<Maybe<Array<ResolversTypes['Sykmelding']>>, ParentType, ContextType>
-    validerSykmelding?: Resolver<
-        ResolversTypes['SykmeldingValidering'],
-        ParentType,
-        ContextType,
-        RequireFields<QueryValiderSykmeldingArgs, 'values'>
-    >
 }
 
 export type ReisetilskuddResolvers<

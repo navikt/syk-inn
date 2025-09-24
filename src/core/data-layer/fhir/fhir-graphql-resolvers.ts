@@ -171,24 +171,6 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                     : sykInnApiSykmeldingToResolverSykmelding(it)
             })
         },
-        validerSykmelding: async (_, { values }, { client }) => {
-            const { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf } =
-                await getAllSykmeldingMetaFromFhir(client)
-
-            const meta: OpprettSykmeldingMeta = { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf }
-            const payload = resolverInputToSykInnApiPayload(values, meta)
-            const result = await sykInnApiService.verifySykmelding(payload)
-
-            if (typeof result === 'object' && 'errorType' in result) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            if (result === true) {
-                return { ok: true }
-            }
-
-            return result
-        },
         person: async (_, { ident }) => {
             if (!ident) throw new GraphQLError('MISSING_IDENT')
 

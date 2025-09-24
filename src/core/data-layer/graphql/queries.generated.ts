@@ -272,7 +272,6 @@ export type Query = {
     person?: Maybe<QueriedPerson>
     sykmelding?: Maybe<Sykmelding>
     sykmeldinger?: Maybe<Array<Sykmelding>>
-    validerSykmelding: SykmeldingValidering
 }
 
 export type QueryDiagnoseArgs = {
@@ -289,10 +288,6 @@ export type QueryPersonArgs = {
 
 export type QuerySykmeldingArgs = {
     id: Scalars['String']['input']
-}
-
-export type QueryValiderSykmeldingArgs = {
-    values: OpprettSykmeldingInput
 }
 
 export type Reisetilskudd = FomTom & {
@@ -852,17 +847,6 @@ export type OpprettSykmeldingMutation = {
                   tilbakedatering?: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
               }
           }
-}
-
-export type ValiderSykmeldingQueryVariables = Exact<{
-    values: OpprettSykmeldingInput
-}>
-
-export type ValiderSykmeldingQuery = {
-    __typename: 'Query'
-    validerSykmelding:
-        | { __typename: 'RuleOK'; ok: boolean }
-        | { __typename: 'RuleOutcome'; status: RuleOutcomeStatus; message: string; rule: string; tree: string }
 }
 
 export type RuleOutcomeFragment = {
@@ -3697,79 +3681,6 @@ export const OpprettSykmeldingDocument = {
         },
     ],
 } as unknown as DocumentNode<OpprettSykmeldingMutation, OpprettSykmeldingMutationVariables>
-export const ValiderSykmeldingDocument = {
-    kind: 'Document',
-    definitions: [
-        {
-            kind: 'OperationDefinition',
-            operation: 'query',
-            name: { kind: 'Name', value: 'ValiderSykmelding' },
-            variableDefinitions: [
-                {
-                    kind: 'VariableDefinition',
-                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'values' } },
-                    type: {
-                        kind: 'NonNullType',
-                        type: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingInput' } },
-                    },
-                },
-            ],
-            selectionSet: {
-                kind: 'SelectionSet',
-                selections: [
-                    {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'validerSykmelding' },
-                        arguments: [
-                            {
-                                kind: 'Argument',
-                                name: { kind: 'Name', value: 'values' },
-                                value: { kind: 'Variable', name: { kind: 'Name', value: 'values' } },
-                            },
-                        ],
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: [
-                                {
-                                    kind: 'InlineFragment',
-                                    typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'RuleOutcome' } },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'RuleOutcome' } },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'InlineFragment',
-                                    typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'RuleOK' } },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'ok' } }],
-                                    },
-                                },
-                            ],
-                        },
-                    },
-                ],
-            },
-        },
-        {
-            kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'RuleOutcome' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'RuleOutcome' } },
-            selectionSet: {
-                kind: 'SelectionSet',
-                selections: [
-                    { kind: 'Field', name: { kind: 'Name', value: 'status' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'message' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'rule' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'tree' } },
-                ],
-            },
-        },
-    ],
-} as unknown as DocumentNode<ValiderSykmeldingQuery, ValiderSykmeldingQueryVariables>
 export const SynchronizeSykmeldingDocument = {
     kind: 'Document',
     definitions: [
