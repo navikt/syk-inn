@@ -55,8 +55,9 @@ const AktivitetSchema = z.discriminatedUnion('type', [
     AktivitetReisetilskuddSchema,
 ])
 
+export type RuleResult = z.infer<typeof RuleResultSchema>
 const RuleResultSchema = z.object({
-    result: z.string(),
+    result: z.union([z.literal('OK'), z.literal('PENDING'), z.literal('INVALID')]),
     melding: z.string().nullable(),
 })
 

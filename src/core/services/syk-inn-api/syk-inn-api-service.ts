@@ -54,8 +54,8 @@ export const sykInnApiService = {
                 `Running in ${bundledEnv.runtimeEnv}, faking rule execution for values: ${JSON.stringify(payload, null, 2)}`,
             )
 
-            // Valid
-            return true
+            const mock = await mockEngineForSession()
+            return mock.sykInnApi.verifySykmelding(OpprettSykmeldingPayloadSchema.parse(payload))
         }
 
         return fetchInternalAPI({

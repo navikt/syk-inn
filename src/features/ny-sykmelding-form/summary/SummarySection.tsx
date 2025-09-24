@@ -1,20 +1,23 @@
-import { Alert, BodyShort, Button, Checkbox, Heading } from '@navikt/ds-react'
+import { ActionMenu, Alert, BodyShort, Button, Checkbox, Heading } from '@navikt/ds-react'
+import { MenuElipsisVerticalIcon, PaperplaneIcon, TerminalIcon } from '@navikt/aksel-icons'
 import React, { ReactElement } from 'react'
-import { PaperplaneIcon } from '@navikt/aksel-icons'
 import { AnimatePresence } from 'motion/react'
 import { useQuery } from '@apollo/client/react'
+import { useQueryState } from 'nuqs'
 
 import { BehandlerDocument, RuleOutcomeFragment, PasientWithExistsDocument } from '@queries'
 import { SimpleReveal } from '@components/animation/Reveal'
 import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
+import { isDemo, isLocal } from '@lib/env'
 
 import BehandlerSummary from '../summary/BehandlerSummary'
 import FormValuesSummary from '../summary/FormValuesSummary'
 import ForkastDraftButton from '../draft/DraftActions'
 import { useFormStep } from '../steps/useFormStep'
-import { useOpprettSykmeldingMutation } from '../useOpprettSykmeldingMutation'
+import { UseOpprettSykmeldingMutation, useOpprettSykmeldingMutation } from '../useOpprettSykmeldingMutation'
 
 import styles from './SummarySection.module.css'
 
@@ -106,6 +109,7 @@ function SummarySection(): ReactElement {
                         >
                             Send inn
                         </ShortcutButtons>
+                        {(isLocal || isDemo) && <LocalAndDemoBonusActionMenu mutation={nySykmelding.mutation} />}
                     </div>
                 </div>
             </div>
@@ -198,6 +202,74 @@ function UnknownErrorAlert({ error }: { error: Error }): ReactElement {
             <BodyShort spacing>Dersom problemet vedvarer, må du kontakte lege- og behandlertelefon.</BodyShort>
             <BodyShort size="small">Teknisk sporingstekst: {error.message}</BodyShort>
         </Alert>
+    )
+}
+
+function LocalAndDemoBonusActionMenu({
+    mutation,
+}: {
+    mutation: UseOpprettSykmeldingMutation['mutation']
+}): ReactElement {
+    const [, setVerifySendOverride] = useQueryState(MockRuleMarkers.query)
+
+    return (
+        <ActionMenu>
+            <ActionMenu.Trigger>
+                <Button
+                    variant="tertiary-neutral"
+                    loading={mutation.result.loading}
+                    icon={
+                        <figure title="Flere demo-handlinger" className="relative">
+                            <TerminalIcon aria-hidden />
+                            <div className="bg-bg-subtle h-2 w-2  absolute top-0 right-1.25" />
+                            <MenuElipsisVerticalIcon
+                                aria-hidden
+                                className="absolute -top-[6px] -right-[3px] animate-bounce"
+                            />
+                        </figure>
+                    }
+                    iconPosition="right"
+                />
+            </ActionMenu.Trigger>
+            <ActionMenu.Content>
+                <ActionMenu.Group label="Send sykmelding som blir...">
+                    <ActionMenu.Item
+                        onSelect={async () => {
+                            await setVerifySendOverride('invalid')
+                            await mutation.opprettSykmelding()
+                        }}
+                    >
+                        Avvist (forventet)
+                    </ActionMenu.Item>
+                    <ActionMenu.Item
+                        onSelect={async () => {
+                            await setVerifySendOverride('manual')
+                            await mutation.opprettSykmelding()
+                        }}
+                    >
+                        Manuell behandling (forventet)
+                    </ActionMenu.Item>
+                    <ActionMenu.Item
+                        onSelect={async () => {
+                            await setVerifySendOverride('invalid-unexpected')
+                            await mutation.opprettSykmelding()
+                        }}
+                    >
+                        Avvist med uforventet regelbrudd
+                    </ActionMenu.Item>
+                </ActionMenu.Group>
+                <ActionMenu.Group label="Fjern regeloverstyring">
+                    <ActionMenu.Item
+                        onSelect={async () => {
+                            await setVerifySendOverride(null)
+                            await mutation.opprettSykmelding()
+                        }}
+                    >
+                        Send uten overstyring
+                    </ActionMenu.Item>
+                </ActionMenu.Group>
+            </ActionMenu.Content>
+        </ActionMenu>
     )
 }
 

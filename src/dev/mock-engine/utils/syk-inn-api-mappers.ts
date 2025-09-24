@@ -1,14 +1,14 @@
 import { formatISO } from 'date-fns'
 import * as R from 'remeda'
 
-import { SykInnApiAktivitet, SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
+import { RuleResult, SykInnApiAktivitet, SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
 import { OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
 
 import { addDiagnoseText } from './diagnose'
 
 export function sykInnApiPayloadToResponse(
     sykmeldingId: string,
-    utfall: 'OK',
+    utfall: RuleResult,
     payload: OpprettSykmeldingPayload,
 ): SykInnApiSykmelding {
     return {
@@ -84,9 +84,6 @@ export function sykInnApiPayloadToResponse(
                 : null,
             tilbakedatering: payload.values.tilbakedatering ?? null,
         },
-        utfall: {
-            result: utfall,
-            melding: null,
-        },
+        utfall: utfall,
     }
 }

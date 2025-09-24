@@ -1,12 +1,9 @@
 import Valkey from 'iovalkey'
 
-import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '@core/services/syk-inn-api/schema/sykmelding'
-import { OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
 import { AaregArbeidsforhold } from '@core/services/aareg/aareg-schema'
-import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
 import { createDraftClient, DraftClient } from '@data-layer/draft/draft-client'
+import { SykInnApiMock } from '@dev/mock-engine/SykInnApiMock'
 
-import { sykInnApiPayloadToResponse } from './utils/syk-inn-api-mappers'
 import { createInMemoryValkey } from './valkey/InMemValkey'
 import { Scenario } from './scenarios/scenarios'
 
@@ -65,39 +62,5 @@ export class AaregMock {
 
     getArbeidsforhold(): AaregArbeidsforhold[] {
         return this.arbeidsforhold
-    }
-}
-
-export class SykInnApiMock {
-    private readonly _sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[]
-
-    constructor(sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[]) {
-        this._sykmeldinger = sykmeldinger
-    }
-
-    allSykmeldinger(): (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[] {
-        return this._sykmeldinger
-    }
-
-    sykmeldingById(sykmeldingId: string): SykInnApiSykmelding | SykInnApiSykmeldingRedacted {
-        const sykmelding = this._sykmeldinger.find((sykmelding) => sykmelding.sykmeldingId === sykmeldingId)
-
-        if (!sykmelding) {
-            throw new Error(`Sykmelding with id ${sykmeldingId} not found`)
-        }
-
-        return sykmelding
-    }
-
-    opprettSykmelding(payload: OpprettSykmeldingPayload): SykInnApiSykmelding {
-        const newSykmelding: SykInnApiSykmelding = sykInnApiPayloadToResponse(crypto.randomUUID(), 'OK', payload)
-        this._sykmeldinger.push(newSykmelding)
-        return newSykmelding
-    }
-
-    getPdf(): ArrayBuffer {
-        const pdfBuffer = Uint8Array.from(atob(base64ExamplePdf), (c) => c.charCodeAt(0))
-
-        return pdfBuffer.buffer
     }
 }
