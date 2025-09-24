@@ -315,9 +315,11 @@ export type RuleOutcome = {
     __typename: 'RuleOutcome'
     message: Scalars['String']['output']
     rule: Scalars['String']['output']
-    status: Scalars['String']['output']
+    status: RuleOutcomeStatus
     tree: Scalars['String']['output']
 }
+
+export type RuleOutcomeStatus = 'INVALID' | 'MANUAL_PROCESSING'
 
 export type Sykmelding = SykmeldingFull | SykmeldingRedacted
 
@@ -785,7 +787,7 @@ export type OpprettSykmeldingMutationVariables = Exact<{
 export type OpprettSykmeldingMutation = {
     __typename: 'Mutation'
     opprettSykmelding:
-        | { __typename: 'RuleOutcome'; status: string; message: string; rule: string; tree: string }
+        | { __typename: 'RuleOutcome'; status: RuleOutcomeStatus; message: string; rule: string; tree: string }
         | {
               __typename: 'SykmeldingFull'
               sykmeldingId: string
@@ -860,12 +862,12 @@ export type ValiderSykmeldingQuery = {
     __typename: 'Query'
     validerSykmelding:
         | { __typename: 'RuleOK'; ok: boolean }
-        | { __typename: 'RuleOutcome'; status: string; message: string; rule: string; tree: string }
+        | { __typename: 'RuleOutcome'; status: RuleOutcomeStatus; message: string; rule: string; tree: string }
 }
 
 export type RuleOutcomeFragment = {
     __typename: 'RuleOutcome'
-    status: string
+    status: RuleOutcomeStatus
     message: string
     rule: string
     tree: string

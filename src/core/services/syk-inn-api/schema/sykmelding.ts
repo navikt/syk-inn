@@ -141,7 +141,7 @@ export const SykInnApiSykmeldingRedactedSchema = z
 
 export type SykInnApiRuleOutcome = z.infer<typeof SykInnApiRuleOutcomeSchema>
 export const SykInnApiRuleOutcomeSchema = z.object({
-    status: z.string(),
+    status: z.union([z.literal('INVALID'), z.literal('MANUAL_PROCESSING')]),
     message: z.string(),
     rule: z.string(),
     tree: z.string(),

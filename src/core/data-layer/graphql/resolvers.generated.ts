@@ -317,9 +317,11 @@ export type RuleOutcome = {
     __typename?: 'RuleOutcome'
     message: Scalars['String']['output']
     rule: Scalars['String']['output']
-    status: Scalars['String']['output']
+    status: RuleOutcomeStatus
     tree: Scalars['String']['output']
 }
+
+export type RuleOutcomeStatus = 'INVALID' | 'MANUAL_PROCESSING'
 
 export type Sykmelding = SykmeldingFull | SykmeldingRedacted
 
@@ -543,6 +545,7 @@ export type ResolversTypes = {
     ReisetilskuddInput: ReisetilskuddInput
     RuleOK: ResolverTypeWrapper<RuleOk>
     RuleOutcome: ResolverTypeWrapper<RuleOutcome>
+    RuleOutcomeStatus: RuleOutcomeStatus
     String: ResolverTypeWrapper<Scalars['String']['output']>
     Sykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Sykmelding']>
     SykmeldingFull: ResolverTypeWrapper<Omit<SykmeldingFull, 'values'> & { values: ResolversTypes['SykmeldingValues'] }>
@@ -907,7 +910,7 @@ export type RuleOutcomeResolvers<
 > = {
     message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     rule?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    status?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    status?: Resolver<ResolversTypes['RuleOutcomeStatus'], ParentType, ContextType>
     tree?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }

@@ -1,6 +1,15 @@
+enum RuleOutcomeStatus {
+    INVALID
+    MANUAL_PROCESSING
+}
+
 type RuleOutcome {
-    status: String!
+    status: RuleOutcomeStatus!
     message: String!
     rule: String!
     tree: String!
+}
+
+type RuleOK {
+    ok: Boolean!
 }
