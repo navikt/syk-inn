@@ -133,12 +133,24 @@ function RuleOutcomeWarning({ outcome }: { outcome: RuleOutcomeFragment }): Reac
     )
 }
 
-function PasientDoesNotExistAlert({ navn, ident }: { navn: string; ident: string }): ReactElement {
+function PasientDoesNotExistAlert({
+    navn,
+    ident,
+}: {
+    navn: string | undefined
+    ident: string | undefined
+}): ReactElement {
     return (
         <Alert variant="warning">
-            <Heading size="small" level="3" spacing>
-                Fant ikke {navn} ({ident}) i folkeregisteret.
-            </Heading>
+            {navn && ident ? (
+                <Heading size="small" level="3" spacing>
+                    Fant ikke {navn} ({ident}) i folkeregisteret.
+                </Heading>
+            ) : (
+                <Heading size="small" level="3" spacing>
+                    Kunne ikke bekrefte pasientens identitet.
+                </Heading>
+            )}
             <BodyShort spacing>
                 Det ser ut som pasienten du prøver å sende inn sykmeldingen for ikke finnes i Navs systemer.
             </BodyShort>

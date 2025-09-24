@@ -26,14 +26,18 @@ export function SpecificErrorAlert({
     className,
     title,
     children,
+    level = 'error',
     retry,
+    noCallToAction,
 }: PropsWithChildren<{
     title: string
+    level?: 'warning' | 'error'
     className?: string
     retry?: () => void
+    noCallToAction?: true
 }>): ReactElement {
     return (
-        <Alert variant="error" className={className}>
+        <Alert variant={level} className={className}>
             <Heading level="3" size="small" spacing>
                 {title}
             </Heading>
@@ -43,7 +47,7 @@ export function SpecificErrorAlert({
                     Prøv på nytt
                 </Button>
             )}
-            <LegeOgBehandlerTelefonen />
+            {noCallToAction !== true && <LegeOgBehandlerTelefonen />}
         </Alert>
     )
 }

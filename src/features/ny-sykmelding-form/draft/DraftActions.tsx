@@ -44,7 +44,7 @@ export function LagreDraftButton(): ReactElement {
     )
 }
 
-function ForkastDraftButton(): ReactElement {
+function ForkastDraftButton({ inactive }: { inactive?: boolean }): ReactElement {
     const mode = useMode()
     const [draftId] = useDraftId()
     const router = useRouter()
@@ -89,6 +89,7 @@ function ForkastDraftButton(): ReactElement {
                 modifier: 'alt',
                 key: 'd',
             }}
+            inactive={inactive}
         >
             Avbryt og forkast
         </ShortcutButtons>

@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort, Button, FormSummary, Heading, Label, Skeleton } from '@navikt/ds-react'
+import { Alert, BodyShort, FormSummary, Label, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 
 import { BehandlerDocument } from '@queries'
+import { SpecificErrorAlert } from '@components/help/GeneralErrors'
 
 type Props = {
     className?: string
@@ -21,21 +22,10 @@ function BehandlerSummary({ className }: Props): ReactElement {
                         <FormSummary.Heading level="2">Signerende behandler</FormSummary.Heading>
                     </FormSummary.Header>
                     <div className="p-6">
-                        <Alert variant="error">
-                            <Heading size="small" level="3">
-                                Kunne ikke hente signerende behandler.
-                            </Heading>
-                            <BodyShort spacing>
-                                Dette hindrer deg i å sende inn sykmeldingen. Du kan lagre utkastet og prøve å sende inn
-                                sykmeldingen senere.
-                            </BodyShort>
-                            <BodyShort spacing>
-                                Dersom problemet vedvarer, må du kontakte lege- og behandlertelefon.
-                            </BodyShort>
-                            <Button variant="secondary-neutral" size="small" onClick={() => refetch()}>
-                                Prøv på nytt
-                            </Button>
-                        </Alert>
+                        <SpecificErrorAlert title="Kunne ikke hente signerende behandler." retry={() => refetch()}>
+                            Dette hindrer deg i å sende inn sykmeldingen. Du kan lagre utkastet og prøve å sende inn
+                            sykmeldingen senere.
+                        </SpecificErrorAlert>
                     </div>
                 </FormSummary>
             </div>
