@@ -10,12 +10,18 @@ import { useCurrentModifier } from '@lib/hooks/shortcuts/useCurrentModifier'
 
 type BaseShortcutButtonProps = {
     shortcut: Shortcut
+    /**
+     * Can be used when shortcut buttons are rendered behind for example a Modal, to avoid
+     * showing the shortcut hint when the button is not interactable.
+     */
+    inactive?: boolean
 } & Pick<ButtonProps, 'id' | 'loading' | 'size' | 'variant' | 'disabled' | 'icon' | 'iconPosition'>
 
 export function ShortcutButtons({
     onClick,
     children,
     shortcut,
+    inactive,
     ...buttonProps
 }: PropsWithChildren<BaseShortcutButtonProps & { onClick: () => void }>): ReactElement {
     const registeredShortcut = useShortcut(shortcut, () => {
@@ -31,7 +37,7 @@ export function ShortcutButtons({
             </Button>
             <div className="absolute -bottom-5 right-2 text-text-action">
                 <AnimatePresence>
-                    {currentMod === shortcut.modifier && (
+                    {currentMod === shortcut.modifier && inactive !== true && (
                         <FastFadeReveal>
                             <Detail className="font-bold">Hurtigtast: {registeredShortcut.label}</Detail>
                         </FastFadeReveal>
@@ -46,6 +52,7 @@ export function ShortcutButtonLink({
     href,
     children,
     shortcut,
+    inactive,
     ...buttonProps
 }: PropsWithChildren<
     BaseShortcutButtonProps & {
@@ -68,7 +75,7 @@ export function ShortcutButtonLink({
             </SlowNextLinkButton>
             <div className="absolute -bottom-5 right-2 text-text-action">
                 <AnimatePresence>
-                    {currentMod === shortcut.modifier && (
+                    {currentMod === shortcut.modifier && inactive !== true && (
                         <FastFadeReveal>
                             <Detail className="font-bold">Hurtigtast: {registeredShortcut.label}</Detail>
                         </FastFadeReveal>
@@ -82,6 +89,7 @@ export function ShortcutButtonLink({
 export function ShortcutSubmitButton({
     shortcut,
     children,
+    inactive,
     ...buttonProps
 }: PropsWithChildren<BaseShortcutButtonProps>): ReactElement {
     const buttonRef = useRef<HTMLButtonElement>(null)
@@ -100,7 +108,7 @@ export function ShortcutSubmitButton({
             </Button>
             <div className="absolute -bottom-5 right-2 text-text-action">
                 <AnimatePresence>
-                    {currentMod === shortcut.modifier && (
+                    {currentMod === shortcut.modifier && inactive !== true && (
                         <FastFadeReveal>
                             <Detail className="font-bold">Hurtigtast: {registeredShortcut.label}</Detail>
                         </FastFadeReveal>
