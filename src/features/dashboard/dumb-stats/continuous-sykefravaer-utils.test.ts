@@ -66,14 +66,14 @@ describe('sortAndFilter', () => {
         expect(result).toHaveLength(1)
         expect(result[0].utfall?.result).toBe('OK')
     })
-    test('should sort by latest tom asc', () => {
+    test('should sort by latest tom desc', () => {
         const result = sortAndFilter([
             createMockSykmelding('2023-01-01', '2023-01-05', 'OK'),
             createMockSykmelding('2023-01-06', '2023-01-10', 'OK'),
         ])
         expect(result).toHaveLength(2)
-        expect(result[0].values.aktivitet[0].tom).toBe('2023-01-05')
-        expect(result[1].values.aktivitet[0].tom).toBe('2023-01-10')
+        expect(result[0].values.aktivitet[0].tom).toBe('2023-01-10')
+        expect(result[1].values.aktivitet[0].tom).toBe('2023-01-05')
     })
     test('should filter out sykmeldinger with ISYFO_DAYS_GAP of 16 days or more', () => {
         const result = sortAndFilter([
