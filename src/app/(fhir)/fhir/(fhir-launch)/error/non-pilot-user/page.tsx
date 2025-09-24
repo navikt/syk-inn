@@ -45,7 +45,11 @@ async function Page(): Promise<ReactElement> {
             await spanServerAsync('NonPilotUser.resources', async () => {
                 const practitioner = await client.user.request()
                 const patient = await client.patient.request()
-                await client.encounter.request()
+                const encounter = await client.encounter.request()
+                await client.request(`Condition?encounter=${client.encounter.id}`)
+                if (!('error' in encounter)) {
+                    await client.request(encounter.serviceProvider.reference as `Organization/${string}`)
+                }
 
                 span.setAttribute('non-pilot-user.dry-run.outcome', 'ok')
 
