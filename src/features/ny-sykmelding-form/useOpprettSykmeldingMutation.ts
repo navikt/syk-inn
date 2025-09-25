@@ -12,6 +12,7 @@ import {
     InputAktivitet,
     InputTilbakedatering,
     OpprettSykmeldingDocument,
+    RuleOutcomeFragment,
     OpprettSykmeldingInput,
     OpprettSykmeldingMutation,
     OpprettSykmeldingMutationVariables,
@@ -28,15 +29,16 @@ import { useDraftId } from './draft/useDraftId'
 
 export type UseOpprettSykmeldingMutation = {
     mutation: {
-        opprettSykmelding: () => ReturnType<
-            useMutation.MutationFunction<OpprettSykmeldingMutation, OpprettSykmeldingMutationVariables>
-        >
-
+        opprettSykmelding: (
+            force?: true,
+        ) => ReturnType<useMutation.MutationFunction<OpprettSykmeldingMutation, OpprettSykmeldingMutationVariables>>
         result: useMutation.Result<OpprettSykmeldingMutation>
     }
 }
 
-export function useOpprettSykmeldingMutation(): UseOpprettSykmeldingMutation {
+export function useOpprettSykmeldingMutation(
+    onRuleOutcome: (outcome: RuleOutcomeFragment) => void,
+): UseOpprettSykmeldingMutation {
     const mode = useMode()
     const [draftId] = useDraftId()
     const router = useRouter()
@@ -49,11 +51,14 @@ export function useOpprettSykmeldingMutation(): UseOpprettSykmeldingMutation {
                 logger.info(`Sykmelding created successfully: ${data.opprettSykmelding.sykmeldingId}`)
             } else if (data.opprettSykmelding.__typename === 'RuleOutcome') {
                 logger.info(`Sykmelding got rule hit: ${data.opprettSykmelding.rule}: ${data.opprettSykmelding.status}`)
+                onRuleOutcome(data.opprettSykmelding)
+            } else if (data.opprettSykmelding.__typename === 'OtherSubmitOutcomes') {
+                logger.info(`Sykmelding got other outcome: ${data.opprettSykmelding.cause}`)
             }
         },
     })
 
-    const opprettSykmelding = withSpanBrowserAsync('submitSykmelding', async () => {
+    const opprettSykmelding = withSpanBrowserAsync('submitSykmelding', async (force?: true) => {
         if (isLocal || isCloud) teamLogger.info(`(Client) Submitting values: ${JSON.stringify(formState)}`)
 
         try {
@@ -68,7 +73,7 @@ export function useOpprettSykmeldingMutation(): UseOpprettSykmeldingMutation {
 
             const createResult = await spanBrowserAsync('OpprettSykmelding.mutation', async () =>
                 mutate({
-                    variables: { draftId: draftIdToUse, values: values },
+                    variables: { draftId: draftIdToUse, values: values, force: force ?? false },
                     context: { headers: isLocal || isDemo || isE2E ? createBrowserRuleOverrideHeaders() : undefined },
                 }),
             )
@@ -76,7 +81,7 @@ export function useOpprettSykmeldingMutation(): UseOpprettSykmeldingMutation {
             startTransition(() => {
                 // Don't redirect on errors
                 if (createResult.error != null || createResult.data == null) return
-                // Don't redirect on rule hits
+                // Don't redirect on rule hits or missing person
                 if (createResult.data.opprettSykmelding.__typename !== 'SykmeldingFull') return
 
                 // Nuke the history, so that browser back takes the user to a fresh form

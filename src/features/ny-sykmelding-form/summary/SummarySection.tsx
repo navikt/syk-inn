@@ -1,15 +1,18 @@
-import { Alert, BodyShort, Button, Checkbox, Heading } from '@navikt/ds-react'
+import { Alert, BodyShort, Checkbox, Heading } from '@navikt/ds-react'
 import { PaperplaneIcon } from '@navikt/aksel-icons'
 import React, { ReactElement } from 'react'
 import { AnimatePresence } from 'motion/react'
 import { useQuery } from '@apollo/client/react'
 
-import { BehandlerDocument, PasientWithExistsDocument, RuleOutcomeFragment } from '@queries'
+import { BehandlerDocument } from '@queries'
 import { SimpleReveal } from '@components/animation/Reveal'
 import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { LocalAndDemoBonusActionMenu } from '@dev/tools/LocalAndDemoBonusActionMenu'
+import { RuleHitSendAnywayModal } from '@features/ny-sykmelding-form/summary/rules/RuleHitSendAnywayModal'
+import { useSubmitRuleState } from '@features/ny-sykmelding-form/summary/rules/useSubmitRuleState'
+import { UnknownSystemError, SpecificErrorAlert } from '@components/help/GeneralErrors'
 import { isDemo, isLocal } from '@lib/env'
 
 import BehandlerSummary from '../summary/BehandlerSummary'
@@ -23,10 +26,10 @@ import styles from './SummarySection.module.css'
 function SummarySection(): ReactElement {
     const [, setStep] = useFormStep()
     const formState = useAppSelector((state) => state.nySykmelding)
-    const nySykmelding = useOpprettSykmeldingMutation()
+    const [ruleOutcomeState, { ruled, close }] = useSubmitRuleState()
+    const nySykmelding = useOpprettSykmeldingMutation(ruled)
     const dispatch = useAppDispatch()
     const behandlerQuery = useQuery(BehandlerDocument)
-    const pasientQuery = useQuery(PasientWithExistsDocument)
 
     return (
         <div className={styles.summaryGrid}>
@@ -35,9 +38,15 @@ function SummarySection(): ReactElement {
 
             <div className="flex flex-col gap-3 justify-end w-[65ch] max-w-prose">
                 <AnimatePresence>
-                    {nySykmelding.mutation.result?.data?.opprettSykmelding.__typename === 'RuleOutcome' && (
+                    {nySykmelding.mutation.result?.data?.opprettSykmelding.__typename === 'RuleOutcome' &&
+                        ruleOutcomeState.type === 'modal-closed' && (
+                            <SimpleReveal>
+                                <RuleOutcomeWarning />
+                            </SimpleReveal>
+                        )}
+                    {nySykmelding.mutation.result?.data?.opprettSykmelding.__typename === 'OtherSubmitOutcomes' && (
                         <SimpleReveal>
-                            <RuleOutcomeWarning outcome={nySykmelding.mutation.result.data.opprettSykmelding} />
+                            <PatientDoesNotExistAlert ident={formState.pasient?.ident} navn={formState.pasient?.navn} />
                         </SimpleReveal>
                     )}
                 </AnimatePresence>
@@ -45,31 +54,18 @@ function SummarySection(): ReactElement {
                 <AnimatePresence>
                     {nySykmelding.mutation.result.error && (
                         <SimpleReveal>
-                            <UnknownErrorAlert error={nySykmelding.mutation.result.error} />
+                            <UnknownSystemError />
                         </SimpleReveal>
                     )}
                 </AnimatePresence>
 
-                <AnimatePresence>
-                    {!pasientQuery.loading && pasientQuery.error != null && (
-                        <UnableToVerifyPersonsExistence
-                            refetching={pasientQuery.loading}
-                            refetch={pasientQuery.refetch}
-                        />
-                    )}
-                    {!pasientQuery.loading && !pasientQuery.data?.pasient?.userExists && (
-                        <SimpleReveal>
-                            {pasientQuery.data?.pasient?.userExists == null ? (
-                                <UnableToVerifyPersonsExistence
-                                    refetching={pasientQuery.loading}
-                                    refetch={pasientQuery.refetch}
-                                />
-                            ) : (
-                                <PasientDoesNotExistAlert {...pasientQuery.data.pasient} />
-                            )}
-                        </SimpleReveal>
-                    )}
-                </AnimatePresence>
+                {ruleOutcomeState.type === 'rule-outcome' && (
+                    <RuleHitSendAnywayModal
+                        nySykmelding={nySykmelding}
+                        outcome={ruleOutcomeState.outcome}
+                        onModalClose={close}
+                    />
+                )}
 
                 <div className="flex flex-col gap-3 justify-end items-end">
                     <Checkbox
@@ -80,7 +76,7 @@ function SummarySection(): ReactElement {
                     </Checkbox>
 
                     <div className="flex gap-3">
-                        <ForkastDraftButton />
+                        <ForkastDraftButton inactive={ruleOutcomeState.type === 'rule-outcome'} />
                         <ShortcutButtons
                             variant="secondary"
                             onClick={() => setStep('main')}
@@ -89,6 +85,7 @@ function SummarySection(): ReactElement {
                                 modifier: 'alt',
                                 key: 'arrowleft',
                             }}
+                            inactive={ruleOutcomeState.type === 'rule-outcome'}
                         >
                             Forrige steg
                         </ShortcutButtons>
@@ -96,15 +93,17 @@ function SummarySection(): ReactElement {
                             variant="primary"
                             icon={<PaperplaneIcon aria-hidden />}
                             iconPosition="right"
-                            disabled={!pasientQuery.data?.pasient?.userExists}
-                            loading={
-                                nySykmelding.mutation.result.loading || behandlerQuery.loading || pasientQuery.loading
+                            disabled={
+                                nySykmelding.mutation.result.data?.opprettSykmelding.__typename ===
+                                'OtherSubmitOutcomes'
                             }
+                            loading={nySykmelding.mutation.result.loading || behandlerQuery.loading}
                             onClick={() => nySykmelding.mutation.opprettSykmelding()}
                             shortcut={{
                                 modifier: 'alt',
                                 key: 'n',
                             }}
+                            inactive={ruleOutcomeState.type === 'rule-outcome'}
                         >
                             Send inn
                         </ShortcutButtons>
@@ -116,27 +115,20 @@ function SummarySection(): ReactElement {
     )
 }
 
-function RuleOutcomeWarning({ outcome }: { outcome: RuleOutcomeFragment }): ReactElement {
+function RuleOutcomeWarning(): ReactElement {
     return (
-        <Alert variant="warning">
-            <Heading size="medium" level="3" spacing>
-                Sykmeldingen ble ikke sendt inn på grunn av regelsjekk
-            </Heading>
-            <BodyShort spacing>
-                Sykmeldingen ble fylt ut rett, men den traff på en regel som gjorde at sykmeldingen ikke ville blitt
-                godkjent hos Nav.
-            </BodyShort>
-            <BodyShort>
-                Teknisk regelnavn:{' '}
-                <code className="text-sm">
-                    {outcome.tree} - {outcome.rule}
-                </code>
-            </BodyShort>
-        </Alert>
+        <SpecificErrorAlert
+            title="Sykmeldingen ble ikke sendt inn på grunn av regelsjekk"
+            level="warning"
+            noCallToAction
+        >
+            For å sende inn sykmeldingen, så kan du gå videre, og bekrefte at du ønsker å sende inn sykmeldingen til
+            tross for regelutfallet.
+        </SpecificErrorAlert>
     )
 }
 
-function PasientDoesNotExistAlert({
+function PatientDoesNotExistAlert({
     navn,
     ident,
 }: {
@@ -160,46 +152,6 @@ function PasientDoesNotExistAlert({
             <BodyShort spacing>
                 Dersom du mener dette er en feil, vennligst kontakt lege- og behandlertelefon.
             </BodyShort>
-        </Alert>
-    )
-}
-
-function UnableToVerifyPersonsExistence({
-    refetching,
-    refetch,
-}: {
-    refetching: boolean
-    refetch: () => void
-}): ReactElement {
-    return (
-        <Alert variant="error">
-            <Heading size="small" level="3" spacing>
-                Kunne ikke bekrefte at personen finnes folkeregisteret
-            </Heading>
-            <BodyShort spacing>
-                Dette kan skyldes at et bakoverliggende system er nede. Du vil ikke kunne sende inn sykmeldingen akkurat
-                nå. Du kan lagre utkastet og prøve igjen senere.
-            </BodyShort>
-            <BodyShort spacing>Dersom problemet vedvarer, vennligst kontakt lege- og behandlertelefon.</BodyShort>
-            <Button size="xsmall" onClick={() => refetch()} variant="secondary-neutral" loading={refetching}>
-                Prøv på nytt
-            </Button>
-        </Alert>
-    )
-}
-
-function UnknownErrorAlert({ error }: { error: Error }): ReactElement {
-    return (
-        <Alert variant="error">
-            <Heading size="medium" level="3" spacing>
-                Ukjent feil
-            </Heading>
-            <BodyShort spacing>
-                Det skjedde en ukjent feil under innsending av sykmeldingen. Du kan lagre utkastet og prøve å sende inn
-                sykmeldingen senere.
-            </BodyShort>
-            <BodyShort spacing>Dersom problemet vedvarer, må du kontakte lege- og behandlertelefon.</BodyShort>
-            <BodyShort size="small">Teknisk sporingstekst: {error.message}</BodyShort>
         </Alert>
     )
 }

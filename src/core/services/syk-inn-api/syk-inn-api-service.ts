@@ -17,9 +17,7 @@ import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
 const logger = pinoLogger.child({}, { msgPrefix: '[API Service]: ' })
 
 export const sykInnApiService = {
-    opprettSykmelding: async (
-        payload: OpprettSykmeldingPayload,
-    ): Promise<SykInnApiSykmelding | SykInnApiRuleOutcome | ApiFetchErrors> => {
+    opprettSykmelding: async (payload: OpprettSykmeldingPayload): Promise<SykInnApiSykmelding | ApiFetchErrors> => {
         if (shouldUseMockEngine()) {
             logger.warn(
                 `Running in ${bundledEnv.runtimeEnv}, submitting send sykmelding values: ${JSON.stringify(payload, null, 2)}`,

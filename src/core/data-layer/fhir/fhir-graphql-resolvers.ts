@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
-import { Behandler, QueriedPerson, Resolvers, RuleOutcome } from '@resolvers'
+import { Behandler, QueriedPerson, Resolvers } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
@@ -332,7 +332,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             return true
         },
-        opprettSykmelding: async (_, { draftId, values }, { client }) => {
+        opprettSykmelding: async (_, { draftId, values, force }, { client }) => {
             const { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf } =
                 await getAllSykmeldingMetaFromFhir(client)
 
@@ -340,21 +340,23 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const meta: OpprettSykmeldingMeta = { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf }
             const payload = resolverInputToSykInnApiPayload(values, meta)
-            const result = await sykInnApiService.opprettSykmelding(payload)
 
-            if ('errorType' in result) {
-                throw new GraphQLError('API_ERROR')
+            if (!force) {
+                // When not forcing, we first verify the sykmelding
+                const verifyResult = await sykInnApiService.verifySykmelding(payload)
+                if (typeof verifyResult === 'object' && 'errorType' in verifyResult) {
+                    throw new GraphQLError('API_ERROR')
+                }
+
+                // There are rule outcomes, short circuit and return them
+                if (typeof verifyResult === 'object') return verifyResult
+
+                // No rule hits, proceed to create the sykmelding
             }
 
-            if ('rule' in result) {
-                // We got a rule hit, don't delete the draft
-                return {
-                    __typename: 'RuleOutcome',
-                    rule: result.rule,
-                    status: result.status,
-                    message: result.message,
-                    tree: result.tree,
-                } satisfies RuleOutcome
+            const result = await sykInnApiService.opprettSykmelding(payload)
+            if ('errorType' in result) {
+                throw new GraphQLError('API_ERROR')
             }
 
             // Delete the draft after successful creation

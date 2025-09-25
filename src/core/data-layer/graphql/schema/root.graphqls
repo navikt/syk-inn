@@ -13,7 +13,25 @@ type Query {
 }
 
 type Mutation {
-    opprettSykmelding(draftId: String!, values: OpprettSykmeldingInput!): OpprettetSykmelding!
+    """
+    Because we are not (yet) allowed to do any of the following:
+    - Verify that the patient exists
+    - Verify the practitioners existence
+    - Execute rules for payload
+
+    We have to do a two-step process for creating a sykmelding.
+
+    In the future, these checks will be done more optimistically
+    """
+    opprettSykmelding(
+        draftId: String!
+        values: OpprettSykmeldingInput!
+        """
+        If the user has submitted, and has been informed that the sykmelding will incur a rule violation,
+        we allow them to force the submission. Set this to true to enable it.
+        """
+        force: Boolean!
+    ): OpprettetSykmelding!
     synchronizeSykmelding(id: String!): SynchronizationStatus!
 
     saveDraft(draftId: String!, values: JSON!): OpprettSykmeldingDraft!

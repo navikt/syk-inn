@@ -10,13 +10,16 @@ query AllSykmeldinger {
     }
 }
 
-mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!) {
-    opprettSykmelding(draftId: $draftId, values: $values) {
+mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!, $force: Boolean! = false) {
+    opprettSykmelding(draftId: $draftId, values: $values, force: $force) {
         ... on Sykmelding {
             ...Sykmelding
         }
         ... on RuleOutcome {
             ...RuleOutcome
+        }
+        ... on OtherSubmitOutcomes {
+            cause
         }
     }
 }
