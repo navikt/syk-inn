@@ -102,6 +102,21 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                     </ul>
                 </ValueItem>
             )}
+            {sykmelding.values.utdypendeSporsmal?.utfodringerMedArbeid && (
+                <ValueItem title="Hvilke utfordringer har pasienten med å utføre gradert arbeid?">
+                    {sykmelding.values.utdypendeSporsmal?.utfodringerMedArbeid}
+                </ValueItem>
+            )}
+            {sykmelding.values.utdypendeSporsmal?.medisinskOppsummering && (
+                <ValueItem title="Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt behandling)">
+                    {sykmelding.values.utdypendeSporsmal?.medisinskOppsummering}
+                </ValueItem>
+            )}
+            {sykmelding.values.utdypendeSporsmal?.hensynPaArbeidsplassen && (
+                <ValueItem title="Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet? (ikke obligatorisk)">
+                    {sykmelding.values.utdypendeSporsmal?.hensynPaArbeidsplassen}
+                </ValueItem>
+            )}
             {sykmelding.values.yrkesskade?.yrkesskade && (
                 <ValueItem title="Yrkesskade">
                     <BodyShort>Kan skyldes yrkesskade? Ja</BodyShort>
