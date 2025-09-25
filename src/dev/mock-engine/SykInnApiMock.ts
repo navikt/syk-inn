@@ -32,7 +32,7 @@ export class SykInnApiMock {
         return sykmelding
     }
 
-    async opprettSykmelding(payload: OpprettSykmeldingPayload): Promise<SykInnApiSykmelding | SykInnApiRuleOutcome> {
+    async opprettSykmelding(payload: OpprettSykmeldingPayload): Promise<SykInnApiSykmelding> {
         const headersStore = await headers()
         const rule = headersStore.get(MockRuleMarkers.header)
 
@@ -41,13 +41,6 @@ export class SykInnApiMock {
             const [ruleName, status] = MockRuleMarkers.unwrapMarker(rule)
             utfall.result = status === 'INVALID' ? 'INVALID' : 'PENDING'
             utfall.melding = `This is a local development rule hit for rule ${ruleName}`
-
-            return {
-                status,
-                rule: ruleName,
-                message: 'Dev only rule message for sender.',
-                tree: 'Local Mock Fake Tree',
-            }
         }
 
         const newSykmelding: SykInnApiSykmelding = sykInnApiPayloadToResponse(crypto.randomUUID(), utfall, payload)

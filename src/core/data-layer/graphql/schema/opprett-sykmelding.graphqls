@@ -1,4 +1,12 @@
-union OpprettetSykmelding = RuleOutcome | SykmeldingFull
+union OpprettetSykmelding = SykmeldingFull | RuleOutcome | OtherSubmitOutcomes
+
+enum OtherSubmitOutcomesEnum {
+    PATIENT_NOT_FOUND_IN_PDL
+}
+
+type OtherSubmitOutcomes {
+    cause: OtherSubmitOutcomesEnum!
+}
 
 input OpprettSykmeldingInput {
     pasientenSkalSkjermes: Boolean!

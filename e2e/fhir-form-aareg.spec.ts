@@ -50,6 +50,7 @@ test('aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG d
     const request = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
+        force: false,
         values: {
             arbeidsforhold: {
                 arbeidsgivernavn: 'Eksempel 2 AS',

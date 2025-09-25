@@ -1,5 +1,6 @@
 import { QueryResolvers, Resolvers } from '@resolvers'
 import { searchDiagnose } from '@data-layer/common/diagnose-search'
+import { raise } from '@lib/ts'
 
 export const commonQueryResolvers: QueryResolvers = {
     diagnose: (_, { query }) => searchDiagnose(query),
@@ -10,7 +11,17 @@ export const typeResolvers: Resolvers = {
         __resolveType: (parent) => ('ok' in parent ? 'RuleOK' : 'RuleOutcome'),
     },
     OpprettetSykmelding: {
-        __resolveType: (parent) => ('sykmeldingId' in parent ? 'SykmeldingFull' : 'RuleOutcome'),
+        __resolveType: (parent) => {
+            if ('cause' in parent) {
+                return 'OtherSubmitOutcomes'
+            } else if ('sykmeldingId' in parent) {
+                return 'SykmeldingFull'
+            } else if ('rule' in parent) {
+                return 'RuleOutcome'
+            }
+
+            return raise('Ukjent type OpprettetSykmelding')
+        },
     },
     Aktivitet: {
         __resolveType: (parent) => {

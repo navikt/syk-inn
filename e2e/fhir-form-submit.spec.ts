@@ -43,6 +43,7 @@ test('simple - 100% sykmelding', async ({ page }) => {
     const request = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
+        force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
             bidiagnoser: [{ system: 'ICD10', code: 'B600' }],
@@ -94,6 +95,7 @@ test('simple - gradert sykmelding', async ({ page }) => {
     const request = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
+        force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
             bidiagnoser: [],
@@ -143,6 +145,7 @@ test('simple - submit with only default values', async ({ page }) => {
     const request = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
+        force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'L73' },
             bidiagnoser: [],
@@ -193,6 +196,7 @@ test('optional - multiple bidiagnoser', async ({ page }) => {
     const request = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
+        force: false,
         values: {
             hoveddiagnose: { code: 'P74', system: 'ICPC2' },
             bidiagnoser: [
@@ -248,6 +252,7 @@ test('optional - should pre-fill bidiagnoser from FHIR @feature-toggle', async (
     const request = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
+        force: false,
         values: {
             // Pre filled from FHIR
             hoveddiagnose: { code: 'L73', system: 'ICPC2' },
@@ -340,6 +345,7 @@ test("optional - 'tilbakedatering' is asked and required when fom is 5 days in t
 
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
+        force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
             bidiagnoser: [],
@@ -400,6 +406,7 @@ test('optional - "tilbakedatering" and "Annen årsak" input field is required an
 
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
+        force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
             bidiagnoser: [],
@@ -458,6 +465,7 @@ test('optional - "har flere arbeidsforhold" should be part of payload if checked
     const request = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
+        force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
             bidiagnoser: [],
@@ -519,6 +527,7 @@ test('optional - when 100%, "arbeidsrelaterte og medisinske årsaker" should be 
     const request = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
+        force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
             bidiagnoser: [],
@@ -570,6 +579,7 @@ test('summary - "skal skjermes" should be part of payload if checked', async ({ 
 
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
+        force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
             bidiagnoser: [],
@@ -614,7 +624,5 @@ test('rule outcomes - simple sanity check: fails when submit gets a rule outcome
     await verifySignerendeBehandler()(page)
 
     await submitSykmelding('invalid')(page)
-    await expect(
-        page.getByRole('heading', { name: 'Sykmeldingen ble ikke sendt inn på grunn av regelsjekk' }),
-    ).toBeVisible()
+    await expect(page.getByRole('dialog', { name: 'Vær oppmerksom' })).toBeVisible()
 })

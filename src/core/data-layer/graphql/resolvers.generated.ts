@@ -193,6 +193,16 @@ export type MedisinskArsakInput = {
 export type Mutation = {
     __typename?: 'Mutation'
     deleteDraft: Scalars['Boolean']['output']
+    /**
+     * Because we are not (yet) allowed to do any of the following:
+     * - Verify that the patient exists
+     * - Verify the practitioners existence
+     * - Execute rules for payload
+     *
+     * We have to do a two-step process for creating a sykmelding.
+     *
+     * In the future, these checks will be done more optimistically
+     */
     opprettSykmelding: OpprettetSykmelding
     saveDraft: OpprettSykmeldingDraft
     synchronizeSykmelding: SynchronizationStatus
@@ -204,6 +214,7 @@ export type MutationDeleteDraftArgs = {
 
 export type MutationOpprettSykmeldingArgs = {
     draftId: Scalars['String']['input']
+    force: Scalars['Boolean']['input']
     values: OpprettSykmeldingInput
 }
 
@@ -235,7 +246,14 @@ export type OpprettSykmeldingInput = {
     yrkesskade?: InputMaybe<InputYrkesskade>
 }
 
-export type OpprettetSykmelding = RuleOutcome | SykmeldingFull
+export type OpprettetSykmelding = OtherSubmitOutcomes | RuleOutcome | SykmeldingFull
+
+export type OtherSubmitOutcomes = {
+    __typename?: 'OtherSubmitOutcomes'
+    cause: OtherSubmitOutcomesEnum
+}
+
+export type OtherSubmitOutcomesEnum = 'PATIENT_NOT_FOUND_IN_PDL'
 
 export type Outcome = {
     __typename?: 'Outcome'
@@ -479,7 +497,10 @@ export type DirectiveResolverFn<
 /** Mapping of union types */
 export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
     Aktivitet: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
-    OpprettetSykmelding: RuleOutcome | (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingValues'] })
+    OpprettetSykmelding:
+        | OtherSubmitOutcomes
+        | RuleOutcome
+        | (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingValues'] })
     Sykmelding: (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingValues'] }) | SykmeldingRedacted
     SykmeldingValidering: RuleOk | RuleOutcome
 }
@@ -531,6 +552,8 @@ export type ResolversTypes = {
     OpprettSykmeldingDraft: ResolverTypeWrapper<OpprettSykmeldingDraft>
     OpprettSykmeldingInput: OpprettSykmeldingInput
     OpprettetSykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['OpprettetSykmelding']>
+    OtherSubmitOutcomes: ResolverTypeWrapper<OtherSubmitOutcomes>
+    OtherSubmitOutcomesEnum: OtherSubmitOutcomesEnum
     Outcome: ResolverTypeWrapper<Outcome>
     Pasient: ResolverTypeWrapper<Pasient>
     Person: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Person']>
@@ -594,6 +617,7 @@ export type ResolversParentTypes = {
     OpprettSykmeldingDraft: OpprettSykmeldingDraft
     OpprettSykmeldingInput: OpprettSykmeldingInput
     OpprettetSykmelding: ResolversUnionTypes<ResolversParentTypes>['OpprettetSykmelding']
+    OtherSubmitOutcomes: OtherSubmitOutcomes
     Outcome: Outcome
     Pasient: Pasient
     Person: ResolversInterfaceTypes<ResolversParentTypes>['Person']
@@ -778,7 +802,7 @@ export type MutationResolvers<
         ResolversTypes['OpprettetSykmelding'],
         ParentType,
         ContextType,
-        RequireFields<MutationOpprettSykmeldingArgs, 'draftId' | 'values'>
+        RequireFields<MutationOpprettSykmeldingArgs, 'draftId' | 'force' | 'values'>
     >
     saveDraft?: Resolver<
         ResolversTypes['OpprettSykmeldingDraft'],
@@ -807,7 +831,15 @@ export type OpprettetSykmeldingResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['OpprettetSykmelding'] = ResolversParentTypes['OpprettetSykmelding'],
 > = {
-    __resolveType: TypeResolveFn<'RuleOutcome' | 'SykmeldingFull', ParentType, ContextType>
+    __resolveType: TypeResolveFn<'OtherSubmitOutcomes' | 'RuleOutcome' | 'SykmeldingFull', ParentType, ContextType>
+}
+
+export type OtherSubmitOutcomesResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['OtherSubmitOutcomes'] = ResolversParentTypes['OtherSubmitOutcomes'],
+> = {
+    cause?: Resolver<ResolversTypes['OtherSubmitOutcomesEnum'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type OutcomeResolvers<
@@ -1029,6 +1061,7 @@ export type Resolvers<ContextType = any> = {
     Mutation?: MutationResolvers<ContextType>
     OpprettSykmeldingDraft?: OpprettSykmeldingDraftResolvers<ContextType>
     OpprettetSykmelding?: OpprettetSykmeldingResolvers<ContextType>
+    OtherSubmitOutcomes?: OtherSubmitOutcomesResolvers<ContextType>
     Outcome?: OutcomeResolvers<ContextType>
     Pasient?: PasientResolvers<ContextType>
     Person?: PersonResolvers<ContextType>

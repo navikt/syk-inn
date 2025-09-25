@@ -191,6 +191,16 @@ export type MedisinskArsakInput = {
 export type Mutation = {
     __typename: 'Mutation'
     deleteDraft: Scalars['Boolean']['output']
+    /**
+     * Because we are not (yet) allowed to do any of the following:
+     * - Verify that the patient exists
+     * - Verify the practitioners existence
+     * - Execute rules for payload
+     *
+     * We have to do a two-step process for creating a sykmelding.
+     *
+     * In the future, these checks will be done more optimistically
+     */
     opprettSykmelding: OpprettetSykmelding
     saveDraft: OpprettSykmeldingDraft
     synchronizeSykmelding: SynchronizationStatus
@@ -202,6 +212,7 @@ export type MutationDeleteDraftArgs = {
 
 export type MutationOpprettSykmeldingArgs = {
     draftId: Scalars['String']['input']
+    force: Scalars['Boolean']['input']
     values: OpprettSykmeldingInput
 }
 
@@ -233,7 +244,14 @@ export type OpprettSykmeldingInput = {
     yrkesskade?: InputMaybe<InputYrkesskade>
 }
 
-export type OpprettetSykmelding = RuleOutcome | SykmeldingFull
+export type OpprettetSykmelding = OtherSubmitOutcomes | RuleOutcome | SykmeldingFull
+
+export type OtherSubmitOutcomes = {
+    __typename: 'OtherSubmitOutcomes'
+    cause: OtherSubmitOutcomesEnum
+}
+
+export type OtherSubmitOutcomesEnum = 'PATIENT_NOT_FOUND_IN_PDL'
 
 export type Outcome = {
     __typename: 'Outcome'
@@ -777,11 +795,13 @@ export type AllSykmeldingerQuery = {
 export type OpprettSykmeldingMutationVariables = Exact<{
     draftId: Scalars['String']['input']
     values: OpprettSykmeldingInput
+    force?: Scalars['Boolean']['input']
 }>
 
 export type OpprettSykmeldingMutation = {
     __typename: 'Mutation'
     opprettSykmelding:
+        | { __typename: 'OtherSubmitOutcomes'; cause: OtherSubmitOutcomesEnum }
         | { __typename: 'RuleOutcome'; status: RuleOutcomeStatus; message: string; rule: string; tree: string }
         | {
               __typename: 'SykmeldingFull'
@@ -3318,6 +3338,15 @@ export const OpprettSykmeldingDocument = {
                         type: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingInput' } },
                     },
                 },
+                {
+                    kind: 'VariableDefinition',
+                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'force' } },
+                    type: {
+                        kind: 'NonNullType',
+                        type: { kind: 'NamedType', name: { kind: 'Name', value: 'Boolean' } },
+                    },
+                    defaultValue: { kind: 'BooleanValue', value: false },
+                },
             ],
             selectionSet: {
                 kind: 'SelectionSet',
@@ -3335,6 +3364,11 @@ export const OpprettSykmeldingDocument = {
                                 kind: 'Argument',
                                 name: { kind: 'Name', value: 'values' },
                                 value: { kind: 'Variable', name: { kind: 'Name', value: 'values' } },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'force' },
+                                value: { kind: 'Variable', name: { kind: 'Name', value: 'force' } },
                             },
                         ],
                         selectionSet: {
@@ -3358,6 +3392,17 @@ export const OpprettSykmeldingDocument = {
                                         selections: [
                                             { kind: 'FragmentSpread', name: { kind: 'Name', value: 'RuleOutcome' } },
                                         ],
+                                    },
+                                },
+                                {
+                                    kind: 'InlineFragment',
+                                    typeCondition: {
+                                        kind: 'NamedType',
+                                        name: { kind: 'Name', value: 'OtherSubmitOutcomes' },
+                                    },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'cause' } }],
                                     },
                                 },
                             ],
