@@ -73,7 +73,7 @@ function FormValuesSummary({ className }: Props): ReactElement {
                             </BodyShort>
                             <BodyShort>
                                 Du kan begynne utfyllingen på nytt ved å gå tilbake til{' '}
-                                <AkselNextLink href="/fhir">pasientens oversikt</AkselNextLink> og beginne på nytt.
+                                <AkselNextLink href="/fhir">pasientens oversikt</AkselNextLink> og begynne på nytt.
                             </BodyShort>
                         </Alert>
                     </FormSummary.Answers>
