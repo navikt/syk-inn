@@ -122,6 +122,39 @@ export function editBidiagnose({
     }
 }
 
+export function addUtdypendeSporsmal({
+    utfodringerMedArbeid,
+    medisinskOppsummering,
+    hensynPaArbeidsplassen,
+}: {
+    utfodringerMedArbeid: string
+    medisinskOppsummering: string
+    hensynPaArbeidsplassen?: string
+}) {
+    return async (page: Page) => {
+        await test.step('Add utdypende spørsmål', async () => {
+            const utdypendeSporsmalRegion = page.getByRole('region', { name: 'Utdypende spørsmål', exact: true })
+            await expect(utdypendeSporsmalRegion).toBeVisible()
+
+            await utdypendeSporsmalRegion
+                .getByRole('textbox', { name: 'Hvilke utfordringer har pasienten med å utføre gradert arbeid?' })
+                .fill(utfodringerMedArbeid)
+            await utdypendeSporsmalRegion
+                .getByRole('textbox', {
+                    name: 'Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt behandling)',
+                })
+                .fill(medisinskOppsummering)
+            if (hensynPaArbeidsplassen) {
+                await utdypendeSporsmalRegion
+                    .getByRole('textbox', {
+                        name: 'Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet? (ikke obligatorisk)',
+                    })
+                    .fill(hensynPaArbeidsplassen)
+            }
+        })
+    }
+}
+
 export function fillArbeidsforhold({
     harFlereArbeidsforhold,
     sykmeldtFraArbeidsforhold = null,
