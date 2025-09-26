@@ -3,7 +3,7 @@ import { SykInnApiRuleOutcome } from '@core/services/syk-inn-api/schema/sykmeldi
 export const MockRuleMarkers = {
     header: 'Rule-Outcome-Override',
     query: 'submit-mock-rule-override',
-    createMarker: (rule: string, status: SykInnApiRuleOutcome['status']) => `${rule}:${status}`,
+    createMarker: (rule: string, status: SykInnApiRuleOutcome['status']) => `${rule}:${status}` as const,
     unwrapMarker: (marker: string) => {
         const [ruleName, status] = marker.split(':')
         return [ruleName, status as SykInnApiRuleOutcome['status']] as const

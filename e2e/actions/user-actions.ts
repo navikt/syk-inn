@@ -1,4 +1,4 @@
-import { expect, Page, test } from '@playwright/test'
+import { expect, Locator, Page, test } from '@playwright/test'
 import { add } from 'date-fns'
 import { ApolloLink } from '@apollo/client'
 
@@ -321,6 +321,18 @@ export function submitSykmelding(outcome: 'succeed' | 'invalid' | 'manual' | 'in
 
             const request = await clickAndWait(
                 page.getByRole('button', { name: 'Send inn' }).click(),
+                waitForGqlRequest(OpprettSykmeldingDocument)(page),
+            )
+            return request.postDataJSON()
+        })
+    }
+}
+
+export function confirmRuleOutcomeSubmit(modal: Locator) {
+    return async (page: Page): Promise<ApolloLink.Request> => {
+        return test.step(`Confirm the sykmelding should be submit with rule outcome`, async () => {
+            const request = await clickAndWait(
+                modal.getByRole('button', { name: 'Send inn' }).click(),
                 waitForGqlRequest(OpprettSykmeldingDocument)(page),
             )
             return request.postDataJSON()

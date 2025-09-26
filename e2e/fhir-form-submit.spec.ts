@@ -15,6 +15,7 @@ import {
     fillArbeidsforhold,
     fillArsakerTilAktivitetIkkeMulig,
     addBidiagnose,
+    confirmRuleOutcomeSubmit,
 } from './actions/user-actions'
 import { expectGraphQLRequest } from './utils/assertions'
 import { getDraftId } from './utils/request-utils'
@@ -613,16 +614,147 @@ test('summary - "skal skjermes" should be part of payload if checked', async ({ 
     })
 })
 
-test('rule outcomes - simple sanity check: fails when submit gets a rule outcome', async ({ page }) => {
-    await launchAndStart(page)
-    await fillPeriodeRelative({
-        type: '100%',
-        days: 3,
-    })(page)
+test.describe('rule outcomes', () => {
+    const launchAndFillBasic = userInteractionsGroup(
+        launchAndStart,
+        fillPeriodeRelative({ type: '100%', days: 3 }),
+        nextStep(),
+        verifySignerendeBehandler(),
+    )
 
-    await nextStep()(page)
-    await verifySignerendeBehandler()(page)
+    test('invalid but functionally expected: should be able to submit læll', async ({ page }) => {
+        await launchAndFillBasic(page)
+        await submitSykmelding('invalid')(page)
 
-    await submitSykmelding('invalid')(page)
-    await expect(page.getByRole('dialog', { name: 'Vær oppmerksom' })).toBeVisible()
+        const confirmationModal = page.getByRole('dialog', { name: 'Vær oppmerksom' })
+        await expect(confirmationModal).toBeVisible()
+
+        const request = await confirmRuleOutcomeSubmit(confirmationModal)(page)
+        await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+            draftId: getDraftId(page) ?? 'missing',
+            force: true,
+            values: {
+                hoveddiagnose: { system: 'ICPC2', code: 'L73' },
+                bidiagnoser: [],
+                aktivitet: [
+                    {
+                        type: 'AKTIVITET_IKKE_MULIG',
+                        fom: today(),
+                        tom: inDays(3),
+                        aktivitetIkkeMulig: { dummy: true },
+                        avventende: null,
+                        gradert: null,
+                        behandlingsdager: null,
+                        reisetilskudd: null,
+                        medisinskArsak: {
+                            isMedisinskArsak: true,
+                        },
+                        arbeidsrelatertArsak: {
+                            isArbeidsrelatertArsak: false,
+                            arbeidsrelaterteArsaker: [],
+                            annenArbeidsrelatertArsak: null,
+                        },
+                    },
+                ],
+                meldinger: { tilNav: null, tilArbeidsgiver: null },
+                svangerskapsrelatert: false,
+                yrkesskade: { yrkesskade: false, skadedato: null },
+                arbeidsforhold: null,
+                tilbakedatering: null,
+                pasientenSkalSkjermes: false,
+            },
+        })
+        await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+    })
+
+    test('manuell behanlidng and expected: should be able to submit læll', async ({ page }) => {
+        await launchAndFillBasic(page)
+        await submitSykmelding('manual')(page)
+
+        const confirmationModal = page.getByRole('dialog', { name: 'Vær oppmerksom' })
+        await expect(confirmationModal).toBeVisible()
+
+        const request = await confirmRuleOutcomeSubmit(confirmationModal)(page)
+        await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+            draftId: getDraftId(page) ?? 'missing',
+            force: true,
+            values: {
+                hoveddiagnose: { system: 'ICPC2', code: 'L73' },
+                bidiagnoser: [],
+                aktivitet: [
+                    {
+                        type: 'AKTIVITET_IKKE_MULIG',
+                        fom: today(),
+                        tom: inDays(3),
+                        aktivitetIkkeMulig: { dummy: true },
+                        avventende: null,
+                        gradert: null,
+                        behandlingsdager: null,
+                        reisetilskudd: null,
+                        medisinskArsak: {
+                            isMedisinskArsak: true,
+                        },
+                        arbeidsrelatertArsak: {
+                            isArbeidsrelatertArsak: false,
+                            arbeidsrelaterteArsaker: [],
+                            annenArbeidsrelatertArsak: null,
+                        },
+                    },
+                ],
+                meldinger: { tilNav: null, tilArbeidsgiver: null },
+                svangerskapsrelatert: false,
+                yrkesskade: { yrkesskade: false, skadedato: null },
+                arbeidsforhold: null,
+                tilbakedatering: null,
+                pasientenSkalSkjermes: false,
+            },
+        })
+        await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+    })
+
+    test('invalid but unexpected: should be able to submit læll', async ({ page }) => {
+        await launchAndFillBasic(page)
+        await submitSykmelding('invalid-unexpected')(page)
+
+        const confirmationModal = page.getByRole('dialog', { name: 'Vær oppmerksom' })
+        await expect(confirmationModal).toBeVisible()
+        await expect(confirmationModal.getByText('Denne type regelutfall skal')).toBeVisible()
+
+        const request = await confirmRuleOutcomeSubmit(confirmationModal)(page)
+        await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+            draftId: getDraftId(page) ?? 'missing',
+            force: true,
+            values: {
+                hoveddiagnose: { system: 'ICPC2', code: 'L73' },
+                bidiagnoser: [],
+                aktivitet: [
+                    {
+                        type: 'AKTIVITET_IKKE_MULIG',
+                        fom: today(),
+                        tom: inDays(3),
+                        aktivitetIkkeMulig: { dummy: true },
+                        avventende: null,
+                        gradert: null,
+                        behandlingsdager: null,
+                        reisetilskudd: null,
+                        medisinskArsak: {
+                            isMedisinskArsak: true,
+                        },
+                        arbeidsrelatertArsak: {
+                            isArbeidsrelatertArsak: false,
+                            arbeidsrelaterteArsaker: [],
+                            annenArbeidsrelatertArsak: null,
+                        },
+                    },
+                ],
+                meldinger: { tilNav: null, tilArbeidsgiver: null },
+                svangerskapsrelatert: false,
+                yrkesskade: { yrkesskade: false, skadedato: null },
+                arbeidsforhold: null,
+                tilbakedatering: null,
+                pasientenSkalSkjermes: false,
+            },
+        })
+        await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+    })
 })
