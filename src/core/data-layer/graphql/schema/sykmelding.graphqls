@@ -39,6 +39,7 @@ type SykmeldingValues {
     yrkesskade: Yrkesskade
     arbeidsgiver: Arbeidsgiver
     tilbakedatering: Tilbakedatering
+    utdypendeSporsmal: UtdypendeSporsmal
 }
 
 type SykmeldingRedactedValues {
@@ -63,6 +64,12 @@ type Arbeidsgiver {
 type Tilbakedatering {
     startdato: DateOnly!
     begrunnelse: String!
+}
+
+type UtdypendeSporsmal {
+    utfodringerMedArbeid: String
+    medisinskOppsummering: String
+    hensynPaArbeidsplassen: String
 }
 
 type Outcome {

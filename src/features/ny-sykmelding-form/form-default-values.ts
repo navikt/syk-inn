@@ -13,6 +13,7 @@ import {
 } from '@core/redux/reducers/ny-sykmelding'
 import { DraftValues } from '@data-layer/draft/draft-schema'
 import { Diagnose } from '@data-layer/common/diagnose'
+import { NySykmeldingUtdypendeSporsmal } from '@core/redux/reducers/ny-sykmelding/form'
 
 import { AktivitetsPeriode, NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
 
@@ -59,6 +60,7 @@ export function createDefaultFormValues({
         ),
         meldinger: toInitialMeldinger(valuesInState?.meldinger ?? null, draftValues?.meldinger ?? null),
         andreSporsmal: toAndreSporsmal(valuesInState?.andreSporsmal ?? null, draftValues),
+        utdypendeSporsmal: toUtdypendeSporsmal(valuesInState?.utdypendeSporsmal ?? null, draftValues),
     }
 }
 
@@ -122,6 +124,31 @@ function toAndreSporsmal(
             yrkesskade: false,
             skadedato: null,
         },
+    }
+}
+
+function toUtdypendeSporsmal(
+    valuesInState: NySykmeldingUtdypendeSporsmal | null,
+    draftValues: DraftValues | null,
+): NySykmeldingMainFormValues['utdypendeSporsmal'] | null {
+    if (valuesInState != null) {
+        return {
+            utfodringerMedArbeid: valuesInState.utfodringerMedArbeid ?? null,
+            medisinskOppsummering: valuesInState.medisinskOppsummering ?? null,
+            hensynPaArbeidsplassen: valuesInState.hensynPaArbeidsplassen ?? null,
+        }
+    }
+    if (draftValues) {
+        return {
+            utfodringerMedArbeid: draftValues.utdypendeSporsmal?.utfodringerMedArbeid ?? null,
+            medisinskOppsummering: draftValues.utdypendeSporsmal?.medisinskOppsummering ?? null,
+            hensynPaArbeidsplassen: draftValues.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
+        }
+    }
+    return {
+        utfodringerMedArbeid: null,
+        medisinskOppsummering: null,
+        hensynPaArbeidsplassen: null,
     }
 }
 

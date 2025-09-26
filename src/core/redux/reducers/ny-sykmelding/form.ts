@@ -56,6 +56,12 @@ export type NySykmeldingAndreSporsmal = {
     yrkesskadeDato: string | null
 }
 
+export type NySykmeldingUtdypendeSporsmal = {
+    utfodringerMedArbeid: string | null
+    medisinskOppsummering: string | null
+    hensynPaArbeidsplassen: string | null
+}
+
 export type NySykmeldingFormState = {
     arbeidsforhold: NySykmeldingArbeidsforhold | null
     aktiviteter: NySykmeldingAktivitet[] | null
@@ -63,6 +69,7 @@ export type NySykmeldingFormState = {
     diagnose: NySykmeldingDiagnoser | null
     meldinger: NySykmeldingMeldinger | null
     andreSporsmal: NySykmeldingAndreSporsmal | null
+    utdypendeSporsmal: NySykmeldingUtdypendeSporsmal | null
 }
 
 export type NySykmeldingFormPayload = {
@@ -72,4 +79,5 @@ export type NySykmeldingFormPayload = {
     tilbakedatering: NySykmeldingTilbakedatering | null
     meldinger: NySykmeldingMeldinger
     andreSporsmal: NySykmeldingAndreSporsmal
+    utdypendeSporsmal: NySykmeldingUtdypendeSporsmal | null
 }

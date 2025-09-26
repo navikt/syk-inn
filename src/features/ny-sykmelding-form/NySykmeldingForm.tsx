@@ -9,6 +9,7 @@ import FormSheet from '@components/form/form-section/FormSheet'
 import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { UtdypendeSporsmal } from '@features/ny-sykmelding-form/utfyllende-sporsmal/UtfyllendeSporsmalWithDataFetching'
 
 import type { NySykmeldingMainFormValues } from './form'
 import { formValuesToStatePayload } from './form-mappers'
@@ -24,6 +25,7 @@ import MeldingerSection from './meldinger/MeldingerSection'
 import ForkastDraftButton, { LagreDraftButton } from './draft/DraftActions'
 import FormDraftSync from './draft/FormDraftSync'
 import styles from './NySykmeldingForm.module.css'
+import { SykmeldingDateRange } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 
 const FormDevTools = dynamic(() => import('@dev/tools/NySykmeldingFormDevTools'), { ssr: false })
 
@@ -39,6 +41,11 @@ type Props = {
      * sykmelding we are forlenging.
      */
     initialFom?: string
+    context: {
+        initialFom?: string
+        previousSykmeldingDateRange?: SykmeldingDateRange[]
+        hasAnsweredUtdypendeSporsmal?: boolean
+    }
     /**
      * Used for contexctually relevant error messages
      */
@@ -47,7 +54,7 @@ type Props = {
     }
 }
 
-function NySykmeldingForm({ defaultValues, initialFom, contextualErrors }: Props): ReactElement {
+function NySykmeldingForm({ defaultValues, initialFom, context, contextualErrors }: Props): ReactElement {
     const selectedPasient = useAppSelector((state) => state.nySykmelding.pasient)
     const onSubmit = useHandleFormSubmit()
     const form = useForm<NySykmeldingMainFormValues>({
@@ -73,6 +80,10 @@ function NySykmeldingForm({ defaultValues, initialFom, contextualErrors }: Props
                         <BidiagnoseSection />
                         <DiagnoseInfoAlert />
                     </FormSection>
+                    <UtdypendeSporsmal
+                        previousSykmeldingDateRange={context.previousSykmeldingDateRange}
+                        hasAnsweredUtdypendeSporsmal={context.hasAnsweredUtdypendeSporsmal}
+                    />
                     <FormSection title="Andre spørsmål" hideTitle>
                         <AndreSporsmalSection />
                     </FormSection>

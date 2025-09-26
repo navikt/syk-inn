@@ -52,6 +52,11 @@ test('draft values shall be used as default if provided', () => {
             tilArbeidsgiver: 'Draft Melding til Arbeidsgiver',
         },
         andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: true, skadedato: '2024-11-20' } },
+        utdypendeSporsmal: {
+            utfodringerMedArbeid: null,
+            medisinskOppsummering: null,
+            hensynPaArbeidsplassen: null,
+        },
     } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
 
@@ -107,6 +112,11 @@ test('form values shall have higher presedence than draft values', () => {
             tilArbeidsgiver: 'Pasienten anbefales å jobbe redusert i en periode.',
         },
         andreSporsmal: { svangerskapsrelatert: true, yrkesskade: { yrkesskade: false, skadedato: null } },
+        utdypendeSporsmal: {
+            utfodringerMedArbeid: null,
+            medisinskOppsummering: null,
+            hensynPaArbeidsplassen: null,
+        },
     } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
 
@@ -133,6 +143,11 @@ test('server suggestions shall be used if no draft or form values are provided',
         tilbakedatering: null,
         meldinger: { showTilNav: false, tilNav: null, showTilArbeidsgiver: false, tilArbeidsgiver: null },
         andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: false, skadedato: null } },
+        utdypendeSporsmal: {
+            utfodringerMedArbeid: null,
+            medisinskOppsummering: null,
+            hensynPaArbeidsplassen: null,
+        },
     } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
 
@@ -171,6 +186,11 @@ test('multiple bidiagnoser from server suggestion shall be used', () => {
         tilbakedatering: null,
         meldinger: { showTilNav: false, tilNav: null, showTilArbeidsgiver: false, tilArbeidsgiver: null },
         andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: false, skadedato: null } },
+        utdypendeSporsmal: {
+            utfodringerMedArbeid: null,
+            medisinskOppsummering: null,
+            hensynPaArbeidsplassen: null,
+        },
     } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
 
@@ -229,6 +249,7 @@ const fullDraft: DraftValues = {
     },
     svangerskapsrelatert: false,
     yrkesskade: { yrkesskade: true, skadedato: '2024-11-20' },
+    utdypendeSporsmal: null,
 }
 
 const fullExistingStateValues: NySykmeldingFormState = {
@@ -267,4 +288,5 @@ const fullExistingStateValues: NySykmeldingFormState = {
         yrkesskade: false,
         yrkesskadeDato: null,
     },
+    utdypendeSporsmal: null,
 }

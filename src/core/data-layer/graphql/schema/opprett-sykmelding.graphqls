@@ -18,6 +18,7 @@ input OpprettSykmeldingInput {
     yrkesskade: InputYrkesskade
     arbeidsforhold: InputArbeidsforhold
     tilbakedatering: InputTilbakedatering
+    utdypendeSporsmal: InputUtdypendeSporsmal
 }
 
 input InputDiagnose {
@@ -42,6 +43,12 @@ input InputArbeidsforhold {
 input InputTilbakedatering {
     startdato: String!
     begrunnelse: String!
+}
+
+input InputUtdypendeSporsmal {
+    utfodringerMedArbeid: String
+    medisinskOppsummering: String
+    hensynPaArbeidsplassen: String
 }
 
 """

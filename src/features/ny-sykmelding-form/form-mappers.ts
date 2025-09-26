@@ -40,6 +40,11 @@ export function formValuesToStatePayload(values: NySykmeldingMainFormValues): Ny
             yrkesskade: values.andreSporsmal.yrkesskade?.yrkesskade ?? false,
             yrkesskadeDato: values.andreSporsmal.yrkesskade?.skadedato ?? null,
         },
+        utdypendeSporsmal: {
+            utfodringerMedArbeid: values.utdypendeSporsmal?.utfodringerMedArbeid ?? null,
+            medisinskOppsummering: values.utdypendeSporsmal?.medisinskOppsummering ?? null,
+            hensynPaArbeidsplassen: values.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
+        },
     }
 }
 
