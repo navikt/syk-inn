@@ -1,42 +1,73 @@
-import { ReactElement } from 'react'
-import { useQuery } from '@apollo/client/react'
-import { Skeleton, TextField } from '@navikt/ds-react'
+import { ReactElement, useMemo } from 'react'
+import { TextField } from '@navikt/ds-react'
+import * as R from 'remeda'
 
 import FormSection from '@components/form/form-section/FormSection'
-import { AllSykmeldingerDocument } from '@data-layer/graphql/queries.generated'
 import {
-    shouldShowUtfyllendeSporsmal,
-    sortAndFilter,
+    currentSykmeldingIsAktivitetIkkeMulig,
+    SykmeldingDateRange,
 } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 import { useController, useFormContext } from '@features/ny-sykmelding-form/form'
+import { raise } from '@lib/ts'
 
-export function UtfyllendeSporsmalWithDataFetching(): ReactElement | null {
-    const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
+export function UtdypendeSporsmal({
+    previousSykmeldingDateRange,
+    hasAnsweredUtdypendeSporsmal,
+}: {
+    previousSykmeldingDateRange?: SykmeldingDateRange[]
+    hasAnsweredUtdypendeSporsmal?: boolean
+}): ReactElement | null {
+    //const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
     const perioder = useFormContext().getValues('perioder') ?? []
-
-    const utfodringerMedArbeid = useController({
-        name: 'utdypendeSporsmal.utfodringerMedArbeid',
-    })
-
-    const medisinskOppsummering = useController({
-        name: 'utdypendeSporsmal.medisinskOppsummering',
-    })
-
-    const hensynPaArbeidsplassen = useController({
-        name: 'utdypendeSporsmal.hensynPaArbeidsplassen',
-    })
-
-    if (alleSykmeldinger.loading) {
-        return <Skeleton variant="rounded" className="w-50 h-full" />
-    }
-
+    /*
     const sykmeldinger = sortAndFilter(alleSykmeldinger.data?.sykmeldinger ?? [])
 
     if (!shouldShowUtfyllendeSporsmal(sykmeldinger, perioder)) {
         // Todo: Allow sykmelder to fill out anyway?
         return null
+    }*/
+
+    const shouldShowUtdypendeSporsmal = useMemo(() => {
+        if (hasAnsweredUtdypendeSporsmal) return false
+
+        const aktivitetIkkeMulig = currentSykmeldingIsAktivitetIkkeMulig(perioder)
+        if (!aktivitetIkkeMulig) return false
+
+        console.log('UtdypendeSporsmal - aktivitetIkkeMulig', aktivitetIkkeMulig)
+
+        const currentPeriode: SykmeldingDateRange[] =
+            perioder?.length > 0
+                ? [
+                      {
+                          earliestFom: R.firstBy(perioder, [(it) => it.periode.fom ?? '', 'desc'])?.periode.fom,
+                          latestTom: R.firstBy(perioder, [(it) => it.periode.tom ?? '', 'desc'])?.periode.tom,
+                      },
+                  ]
+                : []
+        return [...(previousSykmeldingDateRange ?? []), ...currentPeriode]
+    }, [previousSykmeldingDateRange, perioder, hasAnsweredUtdypendeSporsmal])
+
+    if (shouldShowUtdypendeSporsmal) {
+        return <Uke7 />
     }
 
+    return null
+}
+
+function Uke7() {
+    const utfodringerMedArbeid = useController({
+        name: 'utdypendeSporsmal.utfodringerMedArbeid',
+        rules: { required: 'Du må fylle ut dette feltet' },
+    })
+
+    const medisinskOppsummering = useController({
+        name: 'utdypendeSporsmal.medisinskOppsummering',
+        rules: { required: 'Du må fylle ut dette feltet' },
+    })
+
+    const hensynPaArbeidsplassen = useController({
+        name: 'utdypendeSporsmal.hensynPaArbeidsplassen',
+    })
     return (
         <FormSection title="Utdypende spørsmål">
             <TextField
