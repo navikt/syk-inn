@@ -147,3 +147,8 @@ export const SykInnApiRuleOutcomeSchema = z.object({
     rule: z.string(),
     tree: z.string(),
 })
+
+export type SykInnApiPersonDoesNotExist = z.infer<typeof SykInnApiPersonDoesNotExistSchema>
+export const SykInnApiPersonDoesNotExistSchema = z.object({
+    message: z.literal('Person does not exist'),
+})

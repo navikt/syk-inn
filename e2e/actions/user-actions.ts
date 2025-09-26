@@ -302,8 +302,13 @@ export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | nu
     }
 }
 
-export function submitSykmelding(outcome: 'succeed' | 'invalid' | 'manual' | 'invalid-unexpected' = 'succeed') {
-    async function setFailParam(page: Page, outcome: 'invalid' | 'manual' | 'invalid-unexpected'): Promise<void> {
+export function submitSykmelding(
+    outcome: 'succeed' | 'invalid' | 'manual' | 'invalid-unexpected' | 'person-not-found' = 'succeed',
+) {
+    async function setFailParam(
+        page: Page,
+        outcome: 'invalid' | 'manual' | 'invalid-unexpected' | 'person-not-found',
+    ): Promise<void> {
         await page.evaluate(
             ({ paramName, outcome }) => {
                 const u = new URL(location.href)

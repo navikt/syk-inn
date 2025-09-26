@@ -7,7 +7,7 @@ import MockSessionStore from './MockSessionStore'
 import { MockEngine } from './MockEngine'
 import { Scenarios } from './scenarios/scenarios'
 
-const sessionRecord = lazyNextleton('mockarino-1', () => new MockSessionStore())
+const sessionRecord = lazyNextleton('mock-sessino-store', () => new MockSessionStore())
 
 export function overwriteScenarioForSession(sessionId: string, scenario: Scenarios): void {
     sessionRecord().set(sessionId, scenario)

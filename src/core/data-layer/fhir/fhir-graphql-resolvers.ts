@@ -348,8 +348,14 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                     throw new GraphQLError('API_ERROR')
                 }
 
-                // There are rule outcomes, short circuit and return them
-                if (typeof verifyResult === 'object') return verifyResult
+                if (typeof verifyResult === 'object' && 'status' in verifyResult) {
+                    // There are rule outcomes, short circuit and return them
+                    return verifyResult
+                }
+
+                if (typeof verifyResult === 'object' && verifyResult.message === 'Person does not exist') {
+                    return { cause: 'PATIENT_NOT_FOUND_IN_PDL' }
+                }
 
                 // No rule hits, proceed to create the sykmelding
             }

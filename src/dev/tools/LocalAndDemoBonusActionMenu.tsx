@@ -68,6 +68,14 @@ export function LocalAndDemoBonusActionMenu({
                     >
                         Avvist med uforventet regelbrudd
                     </ActionMenu.Item>
+                    <ActionMenu.Item
+                        onSelect={async () => {
+                            await setVerifySendOverride('person-not-found')
+                            await mutation.opprettSykmelding()
+                        }}
+                    >
+                        Person finnes ikke i PDL
+                    </ActionMenu.Item>
                 </ActionMenu.Group>
                 <ActionMenu.Group label="Fjern regeloverstyring">
                     <ActionMenu.Item

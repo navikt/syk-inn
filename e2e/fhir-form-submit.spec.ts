@@ -757,4 +757,13 @@ test.describe('rule outcomes', () => {
         })
         await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
     })
+
+    test('person does not exist in PDL: should not be able to submit', async ({ page }) => {
+        await launchAndFillBasic(page)
+        await submitSykmelding('person-not-found')(page)
+
+        await expect(
+            page.getByRole('heading', { name: 'Fant ikke Espen Eksempel (21037712323) i folkeregisteret' }),
+        ).toBeVisible()
+    })
 })

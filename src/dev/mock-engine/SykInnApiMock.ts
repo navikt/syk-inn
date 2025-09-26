@@ -2,6 +2,7 @@ import { headers } from 'next/headers'
 
 import {
     RuleResult,
+    SykInnApiPersonDoesNotExist,
     SykInnApiRuleOutcome,
     SykInnApiSykmelding,
     SykInnApiSykmeldingRedacted,
@@ -54,12 +55,16 @@ export class SykInnApiMock {
         return pdfBuffer.buffer
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async verifySykmelding(_: OpprettSykmeldingPayload): Promise<true | SykInnApiRuleOutcome> {
+    async verifySykmelding(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        _: OpprettSykmeldingPayload,
+    ): Promise<true | SykInnApiRuleOutcome | SykInnApiPersonDoesNotExist> {
         const headersStore = await headers()
 
         const rule = headersStore.get(MockRuleMarkers.header)
         if (rule) {
+            if (rule === 'person-not-found') return { message: 'Person does not exist' }
+
             const [ruleName, status] = MockRuleMarkers.unwrapMarker(rule)
             return {
                 status: status,

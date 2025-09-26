@@ -2,6 +2,8 @@ import { logger as pinoLogger } from '@navikt/next-logger'
 import * as z from 'zod'
 
 import {
+    SykInnApiPersonDoesNotExist,
+    SykInnApiPersonDoesNotExistSchema,
     SykInnApiRuleOutcome,
     SykInnApiRuleOutcomeSchema,
     SykInnApiSykmelding,
@@ -41,12 +43,11 @@ export const sykInnApiService = {
             },
             body: JSON.stringify(OpprettSykmeldingPayloadSchema.parse(payload)),
             responseSchema: z.union([SykInnApiSykmeldingSchema, SykInnApiRuleOutcomeSchema]),
-            responseValidStatus: [422],
         })
     },
     verifySykmelding: async (
         payload: OpprettSykmeldingPayload,
-    ): Promise<SykInnApiRuleOutcome | true | ApiFetchErrors> => {
+    ): Promise<true | SykInnApiRuleOutcome | SykInnApiPersonDoesNotExist | ApiFetchErrors> => {
         if (shouldUseMockEngine()) {
             logger.warn(
                 `Running in ${bundledEnv.runtimeEnv}, faking rule execution for values: ${JSON.stringify(payload, null, 2)}`,
@@ -62,7 +63,7 @@ export const sykInnApiService = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(OpprettSykmeldingPayloadSchema.parse(payload)),
-            responseSchema: z.union([z.literal(true), SykInnApiRuleOutcomeSchema]),
+            responseSchema: z.union([z.literal(true), SykInnApiRuleOutcomeSchema, SykInnApiPersonDoesNotExistSchema]),
             responseValidStatus: [422],
         })
     },
