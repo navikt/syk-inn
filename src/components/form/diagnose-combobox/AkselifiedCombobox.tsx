@@ -81,7 +81,13 @@ export function AkselifiedComboboxPopover({
     ...props
 }: PropsWithChildren<Combobox.ComboboxPopoverProps>): ReactElement {
     return (
-        <Combobox.ComboboxPopover gutter={8} sameWidth className="navds-combobox__list" {...props}>
+        <Combobox.ComboboxPopover
+            gutter={8}
+            sameWidth
+            className="navds-combobox__list"
+            render={<div className="z-popover" />}
+            {...props}
+        >
             {children}
         </Combobox.ComboboxPopover>
     )
