@@ -1,7 +1,7 @@
 import { collectDefaultMetrics, Counter } from 'prom-client'
 import { nextleton } from 'nextleton'
 
-export class AppMetrics {
+class AppMetrics {
     constructor() {
         collectDefaultMetrics()
     }
