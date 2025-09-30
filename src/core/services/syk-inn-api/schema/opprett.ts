@@ -5,6 +5,7 @@ import { DiagnoseSystemSchema } from '@data-layer/common/diagnose'
 
 export type OpprettSykmeldingMeta = z.infer<typeof OpprettSykmeldingMetaSchema>
 const OpprettSykmeldingMetaSchema = z.object({
+    source: z.string(),
     pasientIdent: z.string(),
     sykmelderHpr: z.string(),
     legekontorOrgnr: z.string(),
