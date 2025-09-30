@@ -338,7 +338,13 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             await assertIsPilotUser(sykmelderHpr)
 
-            const meta: OpprettSykmeldingMeta = { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf }
+            const meta: OpprettSykmeldingMeta = {
+                source: `${client.issuerName} (FHIR)`,
+                sykmelderHpr,
+                pasientIdent,
+                legekontorOrgnr,
+                legekontorTlf,
+            }
             const payload = resolverInputToSykInnApiPayload(values, meta)
 
             if (!force) {

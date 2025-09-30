@@ -23,7 +23,9 @@ import { getReadyClient } from './smart/ready-client'
  * Chonky boi. Fetches the FHIR resources: Practitioner, Patient, Encounter and Organization, and extracts the relevant
  * metadata needed to create or validate a new sykmelding in syk-inn-api.
  */
-export async function getAllSykmeldingMetaFromFhir(client: ReadyClient): Promise<OpprettSykmeldingMeta> {
+export async function getAllSykmeldingMetaFromFhir(
+    client: ReadyClient,
+): Promise<Omit<OpprettSykmeldingMeta, 'source'>> {
     return spanServerAsync('FhirService.all-meta-resources', async (span) => {
         const [practitioner, encounter] = await Promise.all([client.user.request(), client.encounter.request()])
 
