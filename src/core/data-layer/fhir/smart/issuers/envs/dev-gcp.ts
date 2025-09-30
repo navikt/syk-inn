@@ -16,6 +16,7 @@ export function getKnownDevFhirServers(): KnownFhirServer[] {
 
     return [
         {
+            name: 'WebMed (test)',
             issuer: 'https://fhir-api-auth.public.webmedepj.no',
             type: 'confidential-symmetric',
             method: 'client_secret_basic',

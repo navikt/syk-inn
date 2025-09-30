@@ -2291,7 +2291,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
-    "@navikt/smart-on-fhir": "npm:1.5.0"
+    "@navikt/smart-on-fhir": "npm:1.5.1"
     "@types/node": "npm:^22.18.6"
     hono: "npm:^4.9.9"
     jose: "npm:^6.1.0"
@@ -2354,9 +2354,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.5.0":
-  version: 1.5.0
-  resolution: "@navikt/smart-on-fhir@npm:1.5.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.5.0%2Fbfb7d07375540e1efc994951ea03c983b4c20854"
+"@navikt/smart-on-fhir@npm:1.5.1":
+  version: 1.5.1
+  resolution: "@navikt/smart-on-fhir@npm:1.5.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.5.1%2Fc1f6be81c25faba1abde01511af1fa6dbf3ba0a8"
   dependencies:
     "@navikt/pino-logger": "npm:^4.1.5"
     "@opentelemetry/api": "npm:^1.9.0"
@@ -2366,7 +2366,7 @@ __metadata:
     pino: "npm:^9.10.0"
     quick-lru: "npm:^7.2.0"
     zod: "npm:^4.1.9"
-  checksum: 10c0/8051fe9bc1e2b7e4e79d38e1abf108b07d9f9e380da08f5ee8a494bb9ec9929e2e376177785207e3bd87f9c3c6fbd21c6937d4ded024af4ec562d4f1a844c415
+  checksum: 10c0/46b8f5b42b2462f6946c934372200c5433ee3460630d395c047da1e6749aada82783a2372083c617637c21e897794b6e542db8cebd1717d79503feedf58d0200
   languageName: node
   linkType: hard
 
@@ -7664,9 +7664,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^16.2.1":
-  version: 16.2.1
-  resolution: "lint-staged@npm:16.2.1"
+"lint-staged@npm:^16.2.2":
+  version: 16.2.2
+  resolution: "lint-staged@npm:16.2.2"
   dependencies:
     commander: "npm:^14.0.1"
     listr2: "npm:^9.0.4"
@@ -7677,7 +7677,7 @@ __metadata:
     yaml: "npm:^2.8.1"
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/0f3211aad41b39cc5cf8a7d56398df5c8bd86264960fd0cd988b8121f772416b91d8140690040027553c633680266796da5f030d3c9e20f0a37c97c45a53b40d
+  checksum: 10c0/b2bd97f537f5331aed4f304afd32123f2774d20456a8be4df2ecc39ec9438cd969372f468e174469655a99c5c7085516f006e94d8d0659d3a5d21715e3e5c1a4
   languageName: node
   linkType: hard
 
@@ -10463,7 +10463,7 @@ __metadata:
     "@navikt/next-api-proxy": "npm:^4.1.4"
     "@navikt/next-logger": "npm:^4.1.5"
     "@navikt/oasis": "npm:^3.8.0"
-    "@navikt/smart-on-fhir": "npm:1.5.0"
+    "@navikt/smart-on-fhir": "npm:1.5.1"
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^2.1.0"
     "@parcel/watcher": "npm:^2.5.1"
@@ -10486,7 +10486,7 @@ __metadata:
     iovalkey: "npm:^0.3.3"
     jose: "npm:^6.1.0"
     knip: "npm:^5.64.1"
-    lint-staged: "npm:^16.2.1"
+    lint-staged: "npm:^16.2.2"
     motion: "npm:^12.23.22"
     next: "npm:15.5.4"
     next-logger: "npm:^5.0.1"

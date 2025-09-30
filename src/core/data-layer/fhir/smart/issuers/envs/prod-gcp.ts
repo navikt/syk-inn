@@ -16,6 +16,7 @@ export function getKnownProdFhirServers(): KnownFhirServer[] {
 
     return [
         {
+            name: 'WebMed',
             issuer: 'https://fhirapi.public.webmed.no',
             type: 'confidential-symmetric',
             method: 'client_secret_basic',
