@@ -1,0 +1,10 @@
+{
+    "permissions": {
+        "default": {
+            "env": true,
+            "read": ["/app", "/proc/self/limits"],
+            "sys": ["cpus", "hostname", "homedir", "uid"],
+            "net": true,
+        },
+    },
+}

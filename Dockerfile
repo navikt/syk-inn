@@ -1,13 +1,13 @@
-FROM gcr.io/distroless/nodejs24-debian12@sha256:55f91540ad9b01203b2bf7248f95a3113cf51a14ccc84441f07a6ed052b30e05
+FROM denoland/deno:distroless-2.6.0@sha256:df28d7173d68a386acacab9cc768ec7a1a67d81700e085fa923afaabff1602b9
 
 WORKDIR /app
 
 COPY next-logger.config.cjs /app/
 COPY .next/standalone /app/
+COPY deno.jsonc /app/
 
 EXPOSE 3000
 
 ENV NODE_ENV=production
-ENV HOSTNAME=0.0.0.0
 
-CMD ["server.js"]
+CMD ["--unstable-detect-cjs","--no-prompt","-P","server.js"]
