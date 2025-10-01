@@ -6,7 +6,7 @@ const config: CodegenConfig = {
     schema: './src/core/data-layer/graphql/schema/**/*.graphqls',
     documents: ['./src/core/data-layer/graphql/queries/**/*.graphql'],
     generates: {
-        './src/core/data-layer/graphql/queries.generated.ts': {
+        './src/core/data-layer/graphql/generated/queries.generated.ts': {
             plugins: ['typescript', 'typescript-operations', 'typed-document-node', eslintDisabler],
             config: {
                 enumsAsTypes: true,
@@ -14,15 +14,21 @@ const config: CodegenConfig = {
                 nonOptionalTypename: true,
             },
         },
-        './src/core/data-layer/graphql/resolvers.generated.ts': {
+        './src/core/data-layer/graphql/generated/resolvers.generated.ts': {
             plugins: ['typescript', 'typescript-resolvers', eslintDisabler],
             config: {
                 enumsAsTypes: true,
                 scalars: { DateTime: 'string', DateOnly: 'string', JSON: 'unknown' },
             },
         },
-        './src/core/data-layer/graphql/possible-types.generated.ts': {
+        './src/core/data-layer/graphql/generated/possible-types.generated.ts': {
             plugins: ['fragment-matcher'],
+        },
+        './src/core/data-layer/graphql/generated/schema.generated.json': {
+            plugins: ['introspection'],
+            config: {
+                minify: true,
+            },
         },
     },
     hooks: {

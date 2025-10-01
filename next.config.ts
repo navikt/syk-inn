@@ -9,13 +9,10 @@ const nextConfig: NextConfig = {
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
     eslint: { ignoreDuringBuilds: true },
     transpilePackages: ['@navikt/fhir-mock-server'],
-    serverExternalPackages: ['@navikt/next-logger', 'next-logger', 'pino', 'pino-socket'],
+    serverExternalPackages: ['@navikt/next-logger', 'next-logger', 'pino', 'pino-socket', '@whatwg-node'],
     experimental: {
         optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
         authInterrupts: true,
-    },
-    outputFileTracingIncludes: {
-        '/fhir/graphql': ['./src/core/data-layer/graphql/schema/**/*.graphqls'],
     },
     images: { remotePatterns: [new URL('https://cdn.nav.no/**')] },
     logging: {
