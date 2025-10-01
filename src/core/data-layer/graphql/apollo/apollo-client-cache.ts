@@ -1,7 +1,8 @@
 import { FieldReadFunction, Reference, InMemoryCache } from '@apollo/client'
 
-import possibleTypesGenerated from '@data-layer/graphql/possible-types.generated'
 import { Query } from '@queries'
+
+import possibleTypesGenerated from '../generated/possible-types.generated'
 
 /**
  * Values that are normalized, needs to be kept in sync with this type.

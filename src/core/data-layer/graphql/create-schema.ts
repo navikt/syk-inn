@@ -1,17 +1,16 @@
-import { loadSchemaSync } from '@graphql-tools/load'
-import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
-import { makeExecutableSchema } from '@graphql-tools/schema'
+import { addResolversToSchema } from '@graphql-tools/schema'
 import { GraphQLSchema } from 'graphql/type'
+import { buildClientSchema, IntrospectionQuery } from 'graphql'
 
 import { Resolvers } from '@resolvers'
 
-const typeDefs = loadSchemaSync('**/*.graphqls', {
-    loaders: [new GraphQLFileLoader()],
-})
+import introspectionSchema from './generated/schema.generated.json'
 
 export function createSchema(resolvers: Resolvers): GraphQLSchema {
-    return makeExecutableSchema({
-        typeDefs,
+    const base = buildClientSchema(introspectionSchema as unknown as IntrospectionQuery)
+
+    return addResolversToSchema({
+        schema: base,
         resolvers,
     })
 }

@@ -1,3 +1,1 @@
-src/data-layer/graphql/possible-types.generated.ts linguist-generated=true
-src/data-layer/graphql/queries.generated.ts linguist-generated=true
-src/data-layer/graphql/resolvers.generated.ts linguist-generated=true
+src/core/data-layer/graphql/generated/** linguist-generated=true
