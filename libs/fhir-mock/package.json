@@ -27,7 +27,7 @@
         "hono": "^4.9.9",
         "jose": "^6.1.0",
         "nextleton": "^0.6.1",
-        "pino": "^9.11.0"
+        "pino": "^9.12.0"
     },
     "devDependencies": {
         "@types/node": "^22.18.6",
