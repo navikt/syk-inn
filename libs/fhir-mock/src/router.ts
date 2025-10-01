@@ -10,6 +10,7 @@ import { organizationRouter } from './resources/organization/router'
 import { patientRouter } from './resources/patient/router'
 import { practitionerRouter } from './resources/practitioner/router'
 import { encounterRouter } from './resources/encounter/router'
+import { debugRouter } from './debug'
 
 export { setConfig, type FhirMockConfig } from './config'
 
@@ -27,6 +28,7 @@ export function createMockFhirApp(config: FhirMockConfig): Hono {
     app.route('/Patient', patientRouter)
     app.route('/Practitioner', practitionerRouter)
     app.route('/Encounter', encounterRouter)
+    app.route('/debug', debugRouter)
 
     app.notFound((c) => c.text(`Path ${c.req.path} is not a configured resource in the FHIR mock server.`, 404))
 

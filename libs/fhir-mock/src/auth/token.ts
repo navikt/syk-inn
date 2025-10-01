@@ -40,11 +40,11 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
         return new Response('Missing code', { status: 400 })
     }
 
-    const accessToken = await createAccessToken(fhirServerTestData.wellKnown().issuer)
+    const accessToken = await createAccessToken(fhirServerTestData.wellKnown().issuer, code)
     const session = getServerSession().completeLaunch(code, accessToken)
     const idToken = await createIdToken(session.practitioner.id, {
         'https://helseid.nhn.no': {
-            access_token: await createAccessToken('https://helseid.nhn.no'),
+            access_token: await createAccessToken('https://helseid.nhn.no', crypto.randomUUID()),
             issuer: 'https://helseid.nhn.no',
             scope: 'nav:syk-inn',
         },

@@ -28,7 +28,7 @@ export async function createIdToken(
     practitioner: string,
     additionalClaims: Record<string, unknown> = {},
 ): Promise<string> {
-    const token = await new SignJWT({
+    return await new SignJWT({
         profile: `Practitioner/${practitioner}`,
         fhirUser: `Practitioner/${practitioner}`,
         ...additionalClaims,
@@ -39,17 +39,13 @@ export async function createIdToken(
         .setAudience('syk-inn')
         .setExpirationTime('2h')
         .sign(await privateKey())
-
-    return token
 }
 
-export async function createAccessToken(audience: string): Promise<string> {
-    const token = await new SignJWT()
+export async function createAccessToken(audience: string, code: string): Promise<string> {
+    return await new SignJWT({ jti: code })
         .setProtectedHeader({ alg: 'RS256', kid: 'very-cool-kid' }) // Use the same 'kid' as in /keys
         .setIssuedAt()
         .setIssuer(fhirServerTestData.wellKnown().issuer)
         .setAudience(audience)
         .sign(await privateKey())
-
-    return token
 }

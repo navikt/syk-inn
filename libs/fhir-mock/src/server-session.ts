@@ -69,4 +69,13 @@ export class FhirMockSession {
     getAllPractitioners(): FhirPractitioner[] {
         return Object.values(this.practitioners)
     }
+
+    dump(): unknown {
+        return {
+            organizations: this.organizations,
+            practitioners: this.practitioners,
+            launches: this.launches,
+            sessions: this.sessions,
+        }
+    }
 }
