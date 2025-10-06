@@ -2325,13 +2325,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
-    "@navikt/pino-logger": "npm:^4.3.1"
-    "@navikt/smart-on-fhir": "npm:1.5.4"
+    "@navikt/pino-logger": "npm:^4.3.3"
+    "@navikt/smart-on-fhir": "npm:1.5.5"
     "@types/node": "npm:^22.18.8"
     hono: "npm:^4.9.9"
     jose: "npm:^6.1.0"
     nextleton: "npm:^0.6.1"
-    pino: "npm:^9.13.1"
+    pino: "npm:^10.0.0"
     pino-pretty: "npm:^13.1.1"
   languageName: unknown
   linkType: soft
@@ -2345,11 +2345,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^4.3.0":
-  version: 4.3.0
-  resolution: "@navikt/next-logger@npm:4.3.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.3.0%2F9fdba6ec0c7e35937960f481271ad5d4e56a4f14"
+"@navikt/next-logger@npm:^4.3.3":
+  version: 4.3.3
+  resolution: "@navikt/next-logger@npm:4.3.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.3.3%2Faa1c32684f7aad80ab7614e4122dadbb02b83cdf"
   dependencies:
-    "@navikt/pino-logger": "npm:^4.3.1"
+    "@navikt/pino-logger": "npm:^4.3.3"
     pino-roll: "npm:3"
   peerDependencies:
     next: 14 || 15
@@ -2357,7 +2357,7 @@ __metadata:
   dependenciesMeta:
     pino-roll:
       optional: true
-  checksum: 10c0/e958b6503a86007e94a2f16e286f435831b13cd9cf0a875fa125c0a6c53f3e0d8958287382353491c88da598aaa45487c69a424ac7f42d8fd4a6f0ab45d2d411
+  checksum: 10c0/56d9d27390a9d00488e16fe856b43f09567ee719e509d3faa36af28953805eaeb09b2a67e3d33e7ecb6e2c79d8e7fc5e86755f81433fabc71bc45077319ddc0f
   languageName: node
   linkType: hard
 
@@ -2372,9 +2372,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/pino-logger@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "@navikt/pino-logger@npm:4.3.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.3.1%2Fba14a959e47e65c8e31fad5806ae74fd49544902"
+"@navikt/pino-logger@npm:^4.3.3":
+  version: 4.3.3
+  resolution: "@navikt/pino-logger@npm:4.3.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.3.3%2Fc67b3263e9eb9d1b4dccaf45b21bcfe3c0acb8d4"
   dependencies:
     pino-roll: "npm:3"
     pino-socket: "npm:7"
@@ -2385,13 +2385,13 @@ __metadata:
       optional: true
     pino-socket:
       optional: true
-  checksum: 10c0/ca267a582d3832235e0b2c8053e2da9d4eff19acb8fdd4a7a50e24f8fd901be2f96f3eb0f438b4d2a6e5601f61df3339f08fb865417befb3dd0a72fa8d99f194
+  checksum: 10c0/59bc740ba0369891685074ea4698d53100f0e0139805ecfd21391514fee1254a202f53b05eda97f3f6ac9d38048925f11bc1b364392bae9955f86bfec2ed5fc8
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.5.4":
-  version: 1.5.4
-  resolution: "@navikt/smart-on-fhir@npm:1.5.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.5.4%2F7793bcb57432eda072e84b5ef729802e07462f56"
+"@navikt/smart-on-fhir@npm:1.5.5":
+  version: 1.5.5
+  resolution: "@navikt/smart-on-fhir@npm:1.5.5::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.5.5%2F74c8da6e46206cbce0d72a5f4baf4d5c83466bd5"
   dependencies:
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^2.1.0"
@@ -2402,7 +2402,7 @@ __metadata:
     "@navikt/pino-logger": 4
     pino: 9 || 10
     zod: 4
-  checksum: 10c0/1c5a5d4df1a95d8eeb07a286d9c930157c0eb07a8f1f557a90b24621b9d39a0294df5016377a591997f4b58e32a45ca671b8457a2d496ecfbee31feb1dff92dc
+  checksum: 10c0/e1ca82f09899696b6580b91a897184db02ecfcf81a8466103dc000d08f9e53d3839840b2fac3e951e66a8ce2db755cc3c5681596cd84a165d8c20d8e68f1b684
   languageName: node
   linkType: hard
 
@@ -9019,9 +9019,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino@npm:^9.13.1":
-  version: 9.13.1
-  resolution: "pino@npm:9.13.1"
+"pino@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "pino@npm:10.0.0"
   dependencies:
     atomic-sleep: "npm:^1.0.0"
     on-exit-leak-free: "npm:^2.1.0"
@@ -9036,7 +9036,7 @@ __metadata:
     thread-stream: "npm:^3.0.0"
   bin:
     pino: bin.js
-  checksum: 10c0/c99e879f9538f7255488ad276a46a857cf9114217b754b850b7f1441e31b724a6d6f0697228ead954d3d9601522704e03cad5d441c228108073eed2f37ea0e41
+  checksum: 10c0/f95fcc51523310e9ece1822f8ef4d8e6c2b35f67eca9805fe18fdef21dfac81fa128f1ebaa3c9a11571120854391b10b3b339f2e5836f805edaf6936781c6e6f
   languageName: node
   linkType: hard
 
@@ -10513,9 +10513,9 @@ __metadata:
     "@navikt/eslint-config-teamsykmelding": "npm:^8.1.1"
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/next-api-proxy": "npm:^4.1.4"
-    "@navikt/next-logger": "npm:^4.3.0"
+    "@navikt/next-logger": "npm:^4.3.3"
     "@navikt/oasis": "npm:^3.8.0"
-    "@navikt/smart-on-fhir": "npm:1.5.4"
+    "@navikt/smart-on-fhir": "npm:1.5.5"
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^2.1.0"
     "@parcel/watcher": "npm:^2.5.1"
@@ -10545,7 +10545,7 @@ __metadata:
     nextleton: "npm:^0.6.1"
     nock: "npm:^14.0.10"
     nuqs: "npm:^2.7.0"
-    pino: "npm:^9.13.1"
+    pino: "npm:^10.0.0"
     pino-pretty: "npm:^13.1.1"
     pino-socket: "npm:^7.4.0"
     postcss: "npm:^8.5.6"
