@@ -46,10 +46,7 @@ export async function getHelseIdUserInfo(): Promise<UserInfo | null> {
         try {
             teamLogger.warn(await getHelseIdIdToken())
         } catch (error) {
-            teamLogger.error(
-                'Failed to log id_token for debugging purposes',
-                error instanceof Error ? error : undefined,
-            )
+            teamLogger.error(new Error('Failed to log id_token for debugging purposes', { cause: error }))
         }
 
         const rawResponse: unknown = await response.json()
