@@ -11,7 +11,10 @@ import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/us
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingFormErrors } from '@features/actions/common/SykmeldingFormErrors'
 import { dupliserSykmeldingDefaultValues } from '@features/actions/dupliser-sykmelding/dupliser-sykmelding-mapper'
-import { mapSykmeldingToDateRanges } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
+import {
+    hasAnsweredUtdypendeSporsmal,
+    mapSykmeldingToDateRanges,
+} from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 
 interface Props {
     sykmeldingId: string
@@ -53,7 +56,10 @@ function DupliserSykmeldingFormWithDefaultValues({ sykmeldingId }: { sykmeldingI
     return (
         <NySykmeldingForm
             defaultValues={derivedDefaultValues}
-            context={{ previousSykmeldingDateRange }}
+            context={{
+                previousSykmeldingDateRange,
+                hasAnsweredUtdypendeSporsmal: hasAnsweredUtdypendeSporsmal(alleSykmeldinger.data?.sykmeldinger ?? []),
+            }}
             contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
         />
     )

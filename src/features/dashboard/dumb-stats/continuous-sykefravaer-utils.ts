@@ -58,8 +58,8 @@ export function hasAnsweredUtdypendeSporsmal(sykmelding: SykmeldingFragment[]): 
             R.filter((it) => {
                 if (it.values.__typename === 'SykmeldingValues') {
                     if (
-                        it.values.utdypendeSporsmal?.utfodringerMedArbeid!! &&
-                        it.values.utdypendeSporsmal?.medisinskOppsummering!!
+                        !!it.values.utdypendeSporsmal?.utfodringerMedArbeid &&
+                        !!it.values.utdypendeSporsmal?.medisinskOppsummering
                     ) {
                         return true
                     }
@@ -77,7 +77,7 @@ export function currentSykmeldingIsAktivitetIkkeMulig(perioder: AktivitetsPeriod
     return latestTomPeriode?.aktivitet.type === 'AKTIVITET_IKKE_MULIG' ? true : false
 }
 
-export function filterSykmeldingerWithinDaysGap2(sykmeldinger: SykmeldingDateRange[]): SykmeldingDateRange[] {
+export function filterSykmeldingerWithinDaysGap(sykmeldinger: SykmeldingDateRange[]): SykmeldingDateRange[] {
     const ISYFO_MAX_DAYS_GAP = 16
 
     return R.pipe(
@@ -111,7 +111,7 @@ export function calculateTotalLengthOfSykmeldinger(ranges: SykmeldingDateRange[]
 }
 
 // Assuming sort in desc order by latestTom, assuming there's no weird overlapping sykmeldinger etc
-export function filterSykmeldingerWithinDaysGap(sykmeldinger: SykmeldingFragment[]): SykmeldingFragment[] {
+export function __filterSykmeldingerWithinDaysGap(sykmeldinger: SykmeldingFragment[]): SykmeldingFragment[] {
     // TODO double check values from differenceindays etc
     const ISYFO_MAX_DAYS_GAP = 16
 
@@ -127,14 +127,14 @@ export function filterSykmeldingerWithinDaysGap(sykmeldinger: SykmeldingFragment
 }
 
 // Grand function to sort and filter all the stuff
-export function sortAndFilter(sykmeldinger: SykmeldingFragment[]): SykmeldingFragment[] {
+/*export function sortAndFilter(sykmeldinger: SykmeldingFragment[]): SykmeldingFragment[] {
     return R.pipe(
         sykmeldinger,
         R.filter((it) => it.utfall?.result === 'OK'),
         R.sortBy([(it) => latestTom(it), 'desc']),
         filterSykmeldingerWithinDaysGap,
     )
-}
+}*/
 
 export function calculateContinuousSykefravaer(sykmeldinger: SykmeldingFragment[]): number {
     if (sykmeldinger.length === 0) {
@@ -200,7 +200,6 @@ export function shouldShowUtfyllendeSporsmal(
     return continiousDays + diffFromLastSykmeldingToCurrent + lengthOfCurrentSykmelding > DAYS_IN_7_WEEKS + 7
 }
 
-// TODO for fredag
 /*
  * ✅ Flytte datafetching utenfor form komponent. Må mappes om til array med ealiestFom og latestTom
  * Ikke gjøre filtrering på perioder i første sortering, siden sykmeldinger kan tilbakedateres og påvirke gaps som ellers ville blitt filtrert ut

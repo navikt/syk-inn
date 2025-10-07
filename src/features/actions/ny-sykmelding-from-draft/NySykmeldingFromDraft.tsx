@@ -3,7 +3,7 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 
-import { GetDraftDocument, PasientDocument } from '@queries'
+import { AllSykmeldingerDocument, GetDraftDocument, PasientDocument } from '@queries'
 import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
 import { LoadablePageHeader } from '@components/layout/Page'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
@@ -13,6 +13,10 @@ import { createDefaultFormValues } from '@features/ny-sykmelding-form/form-defau
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingDraftFormErrors } from '@features/actions/common/SykmeldingFormErrors'
+import {
+    hasAnsweredUtdypendeSporsmal,
+    mapSykmeldingToDateRanges,
+} from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 
 function NySykmeldingFromDraft({ draftId }: { draftId: string }): ReactElement {
     const pasientQuery = useQuery(PasientDocument)
@@ -31,6 +35,8 @@ function DraftSykmeldingFormWithDefaultValues({ draftId }: { draftId: string }):
         variables: { draftId },
         fetchPolicy: 'cache-first',
     })
+    const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
+
     const valuesInState = useAppSelector((state) => state.nySykmelding.values)
     const suggestionsQuery = useDiagnoseSuggestions()
 
@@ -49,9 +55,15 @@ function DraftSykmeldingFormWithDefaultValues({ draftId }: { draftId: string }):
         serverSuggestions: suggestionsQuery.suggestions,
     })
 
+    const previousSykmeldingDateRange = mapSykmeldingToDateRanges(alleSykmeldinger.data?.sykmeldinger ?? [])
+
     return (
         <NySykmeldingForm
             defaultValues={defaultValues}
+            context={{
+                previousSykmeldingDateRange,
+                hasAnsweredUtdypendeSporsmal: hasAnsweredUtdypendeSporsmal(alleSykmeldinger.data?.sykmeldinger ?? []),
+            }}
             contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
         />
     )

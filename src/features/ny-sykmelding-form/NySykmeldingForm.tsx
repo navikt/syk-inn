@@ -10,6 +10,7 @@ import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { UtdypendeSporsmal } from '@features/ny-sykmelding-form/utfyllende-sporsmal/UtfyllendeSporsmalWithDataFetching'
+import { SykmeldingDateRange } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 
 import type { NySykmeldingMainFormValues } from './form'
 import { formValuesToStatePayload } from './form-mappers'
@@ -25,7 +26,6 @@ import MeldingerSection from './meldinger/MeldingerSection'
 import ForkastDraftButton, { LagreDraftButton } from './draft/DraftActions'
 import FormDraftSync from './draft/FormDraftSync'
 import styles from './NySykmeldingForm.module.css'
-import { SykmeldingDateRange } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 
 const FormDevTools = dynamic(() => import('@dev/tools/NySykmeldingFormDevTools'), { ssr: false })
 
