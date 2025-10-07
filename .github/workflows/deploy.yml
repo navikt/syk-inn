@@ -38,10 +38,6 @@ jobs:
   build-dev:
     name: Build for dev
     runs-on: ubuntu-latest
-    permissions:
-      packages: 'write'
-      contents: 'read'
-      id-token: 'write'
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
@@ -61,10 +57,6 @@ jobs:
     if: github.ref_name == 'main' || startsWith(github.ref_name, 'demo')
     name: Build for demo
     runs-on: ubuntu-latest
-    permissions:
-      packages: 'write'
-      contents: 'read'
-      id-token: 'write'
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
@@ -82,10 +74,6 @@ jobs:
   build-prod:
     name: Build for prod
     runs-on: ubuntu-latest
-    permissions:
-      packages: 'write'
-      contents: 'read'
-      id-token: 'write'
     outputs:
       image: ${{ steps.build-and-publish.outputs.image }}
     steps:
