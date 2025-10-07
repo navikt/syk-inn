@@ -1,14 +1,15 @@
-import { ReactElement, useMemo } from 'react'
+import { ReactElement } from 'react'
 import { TextField } from '@navikt/ds-react'
 import * as R from 'remeda'
 
 import FormSection from '@components/form/form-section/FormSection'
 import {
+    calculateTotalLengthOfSykmeldinger,
     currentSykmeldingIsAktivitetIkkeMulig,
+    filterSykmeldingerWithinDaysGap,
     SykmeldingDateRange,
 } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 import { useController, useFormContext } from '@features/ny-sykmelding-form/form'
-import { raise } from '@lib/ts'
 
 export function UtdypendeSporsmal({
     previousSykmeldingDateRange,
@@ -17,44 +18,52 @@ export function UtdypendeSporsmal({
     previousSykmeldingDateRange?: SykmeldingDateRange[]
     hasAnsweredUtdypendeSporsmal?: boolean
 }): ReactElement | null {
-    //const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
-    const perioder = useFormContext().getValues('perioder') ?? []
-    /*
-    const sykmeldinger = sortAndFilter(alleSykmeldinger.data?.sykmeldinger ?? [])
+    const perioder = useFormContext().watch('perioder')
 
-    if (!shouldShowUtfyllendeSporsmal(sykmeldinger, perioder)) {
-        // Todo: Allow sykmelder to fill out anyway?
-        return null
-    }*/
-
-    const shouldShowUtdypendeSporsmal = useMemo(() => {
+    const shouldShowUtdypendeSporsmal = (): boolean => {
+        const DAYS_IN_7_WEEKS = 7 * 7
         if (hasAnsweredUtdypendeSporsmal) return false
 
         const aktivitetIkkeMulig = currentSykmeldingIsAktivitetIkkeMulig(perioder)
+
         if (!aktivitetIkkeMulig) return false
 
-        console.log('UtdypendeSporsmal - aktivitetIkkeMulig', aktivitetIkkeMulig)
+        // First check if we're above 7 weeks already
+        const totalDaysExistingSykmeldinger = R.pipe(
+            previousSykmeldingDateRange ?? [],
+            filterSykmeldingerWithinDaysGap,
+            calculateTotalLengthOfSykmeldinger,
+        )
+        if (totalDaysExistingSykmeldinger > DAYS_IN_7_WEEKS) return true
 
+        // Check if adding current sykmelding will push above 8 weeks
         const currentPeriode: SykmeldingDateRange[] =
             perioder?.length > 0
                 ? [
                       {
-                          earliestFom: R.firstBy(perioder, [(it) => it.periode.fom ?? '', 'desc'])?.periode.fom,
-                          latestTom: R.firstBy(perioder, [(it) => it.periode.tom ?? '', 'desc'])?.periode.tom,
+                          earliestFom: R.firstBy(perioder, [(it) => it.periode.fom ?? '', 'desc'])?.periode.fom ?? '',
+                          latestTom: R.firstBy(perioder, [(it) => it.periode.tom ?? '', 'desc'])?.periode.tom ?? '',
                       },
                   ]
                 : []
-        return [...(previousSykmeldingDateRange ?? []), ...currentPeriode]
-    }, [previousSykmeldingDateRange, perioder, hasAnsweredUtdypendeSporsmal])
 
-    if (shouldShowUtdypendeSporsmal) {
+        const totalDays = R.pipe(
+            [...(previousSykmeldingDateRange ?? []), ...currentPeriode],
+            filterSykmeldingerWithinDaysGap,
+            calculateTotalLengthOfSykmeldinger,
+        )
+
+        return totalDays > DAYS_IN_7_WEEKS + 7
+    }
+
+    if (shouldShowUtdypendeSporsmal()) {
         return <Uke7 />
     }
 
     return null
 }
 
-function Uke7() {
+function Uke7(): ReactElement {
     const utfodringerMedArbeid = useController({
         name: 'utdypendeSporsmal.utfodringerMedArbeid',
         rules: { required: 'Du må fylle ut dette feltet' },

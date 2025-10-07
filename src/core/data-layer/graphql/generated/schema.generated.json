@@ -1086,6 +1086,42 @@
             },
             {
                 "kind": "INPUT_OBJECT",
+                "name": "InputUtdypendeSporsmal",
+                "description": null,
+                "isOneOf": false,
+                "fields": null,
+                "inputFields": [
+                    {
+                        "name": "hensynPaArbeidsplassen",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "medisinskOppsummering",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "utfodringerMedArbeid",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "interfaces": null,
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "INPUT_OBJECT",
                 "name": "InputYrkesskade",
                 "description": null,
                 "isOneOf": false,
@@ -1521,6 +1557,14 @@
                         "name": "tilbakedatering",
                         "description": null,
                         "type": { "kind": "INPUT_OBJECT", "name": "InputTilbakedatering", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "utdypendeSporsmal",
+                        "description": null,
+                        "type": { "kind": "INPUT_OBJECT", "name": "InputUtdypendeSporsmal", "ofType": null },
                         "defaultValue": null,
                         "isDeprecated": false,
                         "deprecationReason": null
@@ -2507,6 +2551,14 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "utdypendeSporsmal",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "OBJECT", "name": "UtdypendeSporsmal", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "yrkesskade",
                         "description": null,
                         "args": [],
@@ -2583,6 +2635,42 @@
                             "name": null,
                             "ofType": { "kind": "SCALAR", "name": "DateOnly", "ofType": null }
                         },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "UtdypendeSporsmal",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "hensynPaArbeidsplassen",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "medisinskOppsummering",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "utfodringerMedArbeid",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
                         "isDeprecated": false,
                         "deprecationReason": null
                     }

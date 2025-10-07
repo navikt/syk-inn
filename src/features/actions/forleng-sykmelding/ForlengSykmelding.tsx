@@ -3,7 +3,7 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 
-import { PasientDocument, SykmeldingByIdDocument } from '@queries'
+import { AllSykmeldingerDocument, PasientDocument, SykmeldingByIdDocument } from '@queries'
 import { LoadablePageHeader } from '@components/layout/Page'
 import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
@@ -11,6 +11,10 @@ import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/us
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { forlengSykmeldingDefaultValues } from '@features/actions/forleng-sykmelding/forleng-sykmelding-mappers'
 import { SykmeldingFormErrors } from '@features/actions/common/SykmeldingFormErrors'
+import {
+    hasAnsweredUtdypendeSporsmal,
+    mapSykmeldingToDateRanges,
+} from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 
 interface Props {
     sykmeldingId: string
@@ -35,6 +39,7 @@ function ForlengSykmeldingFormWithDefaultValues({ sykmeldingId }: { sykmeldingId
     const sykmeldingQuery = useQuery(SykmeldingByIdDocument, {
         variables: { id: sykmeldingId },
     })
+    const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
 
     if (suggestionsQuery.loading || sykmeldingQuery.loading) {
         return <NySykmeldingFormSkeleton />
@@ -46,9 +51,15 @@ function ForlengSykmeldingFormWithDefaultValues({ sykmeldingId }: { sykmeldingId
 
     const [derivedDefaultValues, nextFom] = forlengSykmeldingDefaultValues(sykmeldingQuery.data.sykmelding)
 
+    const previousSykmeldingDateRange = mapSykmeldingToDateRanges(alleSykmeldinger.data?.sykmeldinger ?? [])
+
     return (
         <NySykmeldingForm
             defaultValues={derivedDefaultValues}
+            context={{
+                previousSykmeldingDateRange,
+                hasAnsweredUtdypendeSporsmal: hasAnsweredUtdypendeSporsmal(alleSykmeldinger.data?.sykmeldinger ?? []),
+            }}
             contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
             initialFom={nextFom}
         />

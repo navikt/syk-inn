@@ -1,5 +1,7 @@
 import { test } from '@playwright/test'
 
+import { OpprettSykmeldingDocument } from '@core/data-layer/graphql/generated/queries.generated'
+
 import { launchWithMock } from './actions/fhir-actions'
 import {
     addUtdypendeSporsmal,
@@ -11,7 +13,6 @@ import {
 } from './actions/user-actions'
 import { userInteractionsGroup } from './utils/actions'
 import { verifySignerendeBehandler } from './actions/user-verifications'
-import { OpprettSykmeldingDocument } from '@core/data-layer/graphql/queries.generated'
 import { expectGraphQLRequest } from './utils/assertions'
 import { today, inDays } from './utils/date-utils'
 import { getDraftId } from './utils/request-utils'
