@@ -32,14 +32,11 @@ jobs:
         run: yarn knip --no-exit-code --reporter=markdown >> "$GITHUB_STEP_SUMMARY"
       - name: Test report
         if: always()
-        run: |
-          ./scripts/test-reporter.mjs ./test-results/vitest-report.json >> "$GITHUB_STEP_SUMMARY"
+        run: ./scripts/test-reporter.mjs ./test-results/vitest-report.json >> "$GITHUB_STEP_SUMMARY"
 
   build-dev:
     name: Build for dev
     runs-on: ubuntu-latest
-    outputs:
-      image: ${{ steps.next-build.outputs.image }}
     steps:
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
@@ -47,13 +44,13 @@ jobs:
           app: ${{ env.APP }}
           env: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      image: ${{ steps.next-build.outputs.image }}
 
   build-demo:
     if: github.ref_name == 'main' || startsWith(github.ref_name, 'demo')
     name: Build for demo
     runs-on: ubuntu-latest
-    outputs:
-      image: ${{ steps.next-build.outputs.image }}
     steps:
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
@@ -61,12 +58,12 @@ jobs:
           app: ${{ env.APP }}
           env: demo
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      image: ${{ steps.next-build.outputs.image }}
 
   build-prod:
     name: Build for prod
     runs-on: ubuntu-latest
-    outputs:
-      image: ${{ steps.next-build.outputs.image }}
     steps:
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
@@ -74,6 +71,8 @@ jobs:
           app: ${{ env.APP }}
           env: prod
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      image: ${{ steps.next-build.outputs.image }}
 
   deploy-dev-main:
     name: Deploy main to dev
@@ -143,45 +142,24 @@ jobs:
           VAR: image=${{ needs.build-prod.outputs.image }}
           NAIS_DEPLOY_SUMMARY: false
 
-  prebuild-app-for-playwright:
-    name: Prebuild image for sharded playwright tests
+  build-for-playwright:
+    name: Build for playwright
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ${{ github.repository }}-e2e
-      REGISTRY: ghcr.io
     steps:
-      - uses: actions/checkout@v5
-      - uses: navikt/tsm-workflows/actions/yarn@main
+      - uses: navikt/tsm-workflows/actions/playwright/build@main
+        id: playwright-build
         with:
-          READER_TOKEN: ${{ secrets.READER_TOKEN }}
-      - name: Build e2e version of app
-        run: |
-          cp .nais/envs/.env.demo .env.production
-          yarn build:e2e
-        env:
-          NEXT_PUBLIC_VERSION: ${{ github.sha }}
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
-      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+      image: ${{ steps.playwright-build.outputs.image }}
 
   run-playwright:
-    needs: [prebuild-app-for-playwright]
+    needs: [build-for-playwright]
     name: Playwright shard ${{ matrix.shardIndex }}
     runs-on: ubuntu-latest
     services:
       app:
-        image: ${{ needs.prebuild-app-for-playwright.outputs.image }}
+        image: ${{ needs.build-for-playwright.outputs.image }}
         ports: ['3000:3000']
     strategy:
       fail-fast: false
