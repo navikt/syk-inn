@@ -39,16 +39,11 @@ jobs:
     name: Build for dev
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ steps.build-and-publish.outputs.image }}
+      image: ${{ steps.next-build.outputs.image }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: navikt/tsm-workflows/actions/yarn@main
+      - uses: navikt/tsm-workflows/actions/next/build@main
+        id: next-build
         with:
-          READER_TOKEN: ${{ secrets.READER_TOKEN }}
-      - uses: navikt/tsm-workflows/actions/next-to-gar@main
-        id: build-and-publish
-        with:
-          build-command: 'yarn build'
           app: ${{ env.APP }}
           env: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,14 +53,10 @@ jobs:
     name: Build for demo
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ steps.build-and-publish.outputs.image }}
+      image: ${{ steps.next-build.outputs.image }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: navikt/tsm-workflows/actions/yarn@main
-        with:
-          READER_TOKEN: ${{ secrets.READER_TOKEN }}
-      - uses: navikt/tsm-workflows/actions/next-to-gar@main
-        id: build-and-publish
+      - uses: navikt/tsm-workflows/actions/next/build@main
+        id: next-build
         with:
           app: ${{ env.APP }}
           env: demo
@@ -75,14 +66,10 @@ jobs:
     name: Build for prod
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ steps.build-and-publish.outputs.image }}
+      image: ${{ steps.next-build.outputs.image }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: navikt/tsm-workflows/actions/yarn@main
-        with:
-          READER_TOKEN: ${{ secrets.READER_TOKEN }}
-      - uses: navikt/tsm-workflows/actions/next-to-gar@main
-        id: build-and-publish
+      - uses: navikt/tsm-workflows/actions/next/build@main
+        id: next-build
         with:
           app: ${{ env.APP }}
           env: prod
