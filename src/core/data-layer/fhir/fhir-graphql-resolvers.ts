@@ -58,7 +58,9 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const legekontorTlf = getOrganisasjonstelefonnummerFromFhir(organization)
             if (legekontorTlf == null) {
-                logger.error('Organization without valid phone number')
+                logger.error(
+                    `Organization without valid phone number, but we found ${organization.telecom.map((it) => it.system).join(', ')}`,
+                )
                 throw new GraphQLError('API_ERROR')
             }
 
