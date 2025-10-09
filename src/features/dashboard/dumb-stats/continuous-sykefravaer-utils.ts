@@ -110,101 +110,11 @@ export function calculateTotalLengthOfSykmeldinger(ranges: SykmeldingDateRange[]
     return days
 }
 
-// Assuming sort in desc order by latestTom, assuming there's no weird overlapping sykmeldinger etc
-export function __filterSykmeldingerWithinDaysGap(sykmeldinger: SykmeldingFragment[]): SykmeldingFragment[] {
-    // TODO double check values from differenceindays etc
-    const ISYFO_MAX_DAYS_GAP = 16
-
-    return R.filter(sykmeldinger, (value, index, array) => {
-        if (index === 0) return true
-        const prev = array[index - 1]
-
-        const prevFom = earliestFom(prev)
-        const currentTom = latestTom(value)
-        const diff = differenceInDays(prevFom, currentTom)
-        return diff < ISYFO_MAX_DAYS_GAP
-    })
-}
-
-// Grand function to sort and filter all the stuff
-/*export function sortAndFilter(sykmeldinger: SykmeldingFragment[]): SykmeldingFragment[] {
-    return R.pipe(
-        sykmeldinger,
-        R.filter((it) => it.utfall?.result === 'OK'),
-        R.sortBy([(it) => latestTom(it), 'desc']),
-        filterSykmeldingerWithinDaysGap,
-    )
-}*/
-
-export function calculateContinuousSykefravaer(sykmeldinger: SykmeldingFragment[]): number {
-    if (sykmeldinger.length === 0) {
-        return 0
-    }
-    const fom = earliestFom(R.last(sykmeldinger) ?? raise('No first element'))
-    const tom = latestTom(R.first(sykmeldinger) ?? raise('No last element'))
-
-    const days = differenceInDays(tom, fom) + 1
-    return days
-}
-
-export function calculateLengthOfCurrentSykmelding(perioder: AktivitetsPeriode[]): number {
-    if (perioder.length === 0) {
-        return 0
-    }
-
-    const firstFom = R.firstBy(perioder, [(it) => it.periode.fom ?? '', 'desc'])
-    const latestTom = R.firstBy(perioder, [(it) => it.periode.tom ?? '', 'desc'])
-
-    if (firstFom?.periode.fom && latestTom?.periode.tom) {
-        return differenceInDays(latestTom.periode.tom, firstFom?.periode.fom) + 1
-    }
-
-    return 0
-}
-
-export function shouldShowUtfyllendeSporsmal(
-    sykmeldinger: SykmeldingFragment[],
-    perioder: AktivitetsPeriode[],
-): boolean {
-    const DAYS_IN_7_WEEKS = 7 * 7
-
-    const continiousDays = calculateContinuousSykefravaer(sykmeldinger)
-
-    const newestSykmelding = sykmeldinger[sykmeldinger.length - 1]
-    // TODO: Sjekke på latestTom ikke første verdi i array
-    if (newestSykmelding?.values.aktivitet[0].type != 'AKTIVITET_IKKE_MULIG') {
-        return false
-    }
-
-    if (continiousDays > DAYS_IN_7_WEEKS) {
-        return true
-    }
-
-    const lengthOfCurrentSykmelding = calculateLengthOfCurrentSykmelding(perioder)
-    if (lengthOfCurrentSykmelding === 0) {
-        return false
-    }
-
-    const lastTom = latestTom(R.first(sykmeldinger) ?? raise('No last element'))
-    const firstFomCurrent = R.firstBy(perioder, [(it) => it.periode.fom ?? raise('No first element'), 'desc'])
-
-    const diffFromLastSykmeldingToCurrent = differenceInDays(
-        lastTom,
-        firstFomCurrent?.periode.fom ?? raise('No first element'),
-    )
-
-    if (diffFromLastSykmeldingToCurrent > 16) {
-        return false
-    }
-
-    return continiousDays + diffFromLastSykmeldingToCurrent + lengthOfCurrentSykmelding > DAYS_IN_7_WEEKS + 7
-}
-
 /*
  * ✅ Flytte datafetching utenfor form komponent. Må mappes om til array med ealiestFom og latestTom
- * Ikke gjøre filtrering på perioder i første sortering, siden sykmeldinger kan tilbakedateres og påvirke gaps som ellers ville blitt filtrert ut
- * Egen funksjon som tar med nåværende periode, regner ut gaps og returnerer om det skal vises eller ikke
- * Kun se på 100% sykmelding for perioden med latestTom i nåværende sykmelding for å avgjøre om spørsmålene skal vises
+ * ✅ Ikke gjøre filtrering på perioder i første sortering, siden sykmeldinger kan tilbakedateres og påvirke gaps som ellers ville blitt filtrert ut
+ * ✅ Egen funksjon som tar med nåværende periode, regner ut gaps og returnerer om det skal vises eller ikke
+ * ✅ Kun se på 100% sykmelding for perioden med latestTom i nåværende sykmelding for å avgjøre om spørsmålene skal vises
  * Utvide med funksjonalitet for visning av de andre ukesspørsmålene
  * ✅ Ikke vise spørsmål dersom tidligere ukesspørsmål er besvart
  * ✅ Playwright tester

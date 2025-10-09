@@ -30,7 +30,7 @@ export function isWithinWeeksOldSykmelding(
 }
 
 export function earliestFom(sykmelding: SykmeldingFragment): string {
-    const firstFom = R.firstBy(sykmelding.values.aktivitet, [(it) => it.fom, 'desc'])
+    const firstFom = R.firstBy(sykmelding.values.aktivitet, [(it) => it.fom, 'asc'])
     if (!firstFom) {
         raise('Sykmelding without aktivitetsperioder, this should not happen')
     }
@@ -38,7 +38,7 @@ export function earliestFom(sykmelding: SykmeldingFragment): string {
 }
 
 export function latestTom(sykmelding: SykmeldingFragment): string {
-    const latestTom = R.firstBy(sykmelding.values.aktivitet, [(it) => it.fom, 'desc'])
+    const latestTom = R.firstBy(sykmelding.values.aktivitet, [(it) => it.tom, 'desc'])
     if (!latestTom) {
         raise('Sykmelding without aktivitetsperioder, this should not happen')
     }
