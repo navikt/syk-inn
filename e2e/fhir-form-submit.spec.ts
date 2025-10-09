@@ -712,6 +712,11 @@ test.describe('rule outcomes', () => {
                 arbeidsforhold: null,
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
+                utdypendeSporsmal: {
+                    utfodringerMedArbeid: null,
+                    medisinskOppsummering: null,
+                    hensynPaArbeidsplassen: null,
+                },
             },
         })
         await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
@@ -757,6 +762,11 @@ test.describe('rule outcomes', () => {
                 arbeidsforhold: null,
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
+                utdypendeSporsmal: {
+                    utfodringerMedArbeid: null,
+                    medisinskOppsummering: null,
+                    hensynPaArbeidsplassen: null,
+                },
             },
         })
         await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
@@ -803,6 +813,11 @@ test.describe('rule outcomes', () => {
                 arbeidsforhold: null,
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
+                utdypendeSporsmal: {
+                    utfodringerMedArbeid: null,
+                    medisinskOppsummering: null,
+                    hensynPaArbeidsplassen: null,
+                },
             },
         })
         await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()

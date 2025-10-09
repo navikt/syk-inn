@@ -132,8 +132,8 @@ export function addUtdypendeSporsmal({
     hensynPaArbeidsplassen?: string
 }) {
     return async (page: Page) => {
-        await test.step('Add utdypende spørsmål', async () => {
-            const utdypendeSporsmalRegion = page.getByRole('region', { name: 'Utdypende spørsmål', exact: true })
+        await test.step('Add utdypende spørsmål uke 8', async () => {
+            const utdypendeSporsmalRegion = page.getByRole('region', { name: 'Utdypende spørsmål uke 8', exact: true })
             await expect(utdypendeSporsmalRegion).toBeVisible()
 
             await utdypendeSporsmalRegion
