@@ -3,9 +3,10 @@ import { expect, describe, test } from 'vitest'
 import { SykmeldingFragment } from '@queries'
 
 import {
-    calculateContinuousSykefravaer,
+    calculateTotalLengthOfSykmeldinger,
     continiousSykefravaer,
     filterSykmeldingerWithinDaysGap,
+    hasAnsweredUtdypendeSporsmal,
     mapSykmeldingToDateRanges,
 } from './continuous-sykefravaer-utils'
 
@@ -63,6 +64,24 @@ describe('mapSykmeldingToDateRanges', () => {
         const result = mapSykmeldingToDateRanges([])
         expect(result).toEqual([])
     })
+    test('should get earliest fom and latest tom when sykmelding contains multiple periods', () => {
+        const result = mapSykmeldingToDateRanges([
+            {
+                utfall: {
+                    result: 'OK',
+                },
+                values: {
+                    aktivitet: [
+                        { fom: '2023-01-01', tom: '2023-01-05' },
+                        { fom: '2023-01-10', tom: '2023-01-15' },
+                        { fom: '2023-01-16', tom: '2023-01-20' },
+                    ],
+                },
+            },
+        ] as unknown as SykmeldingFragment[])
+        expect(result).toHaveLength(1)
+        expect(result[0]).toEqual({ earliestFom: '2023-01-01', latestTom: '2023-01-20' })
+    })
     test('should filter out non-OK sykmeldinger', () => {
         const result = mapSykmeldingToDateRanges([
             { utfall: { result: 'OK' }, values: { aktivitet: [{ fom: '2023-01-01', tom: '2023-01-05' }] } },
@@ -97,28 +116,60 @@ describe('filterSykmeldingerWithinDaysGap', () => {
     })
 })
 
-describe('calculateContinuousSykefravaer', () => {
+describe('calculateTotalLengthOfSykmeldinger', () => {
     test('should return 0 when input is empty', () => {
-        const result = calculateContinuousSykefravaer([])
+        const result = calculateTotalLengthOfSykmeldinger([])
         expect(result).toBe(0)
     })
     test('calculates correct for single sykmelding', () => {
-        const result = calculateContinuousSykefravaer([createMockSykmelding('2023-01-01', '2023-01-10', 'OK')])
+        const result = calculateTotalLengthOfSykmeldinger([{ earliestFom: '2023-01-01', latestTom: '2023-01-10' }])
         expect(result).toBe(10)
     })
     test('calculates correct for two sykmeldinger without any days gap', () => {
-        const result = calculateContinuousSykefravaer([
-            createMockSykmelding('2023-01-11', '2023-01-20', 'OK'),
-            createMockSykmelding('2023-01-01', '2023-01-10', 'OK'),
+        const result = calculateTotalLengthOfSykmeldinger([
+            { earliestFom: '2023-01-11', latestTom: '2023-01-20' },
+            { earliestFom: '2023-01-01', latestTom: '2023-01-10' },
         ])
         expect(result).toBe(20)
     })
     test('calculates correct for two sykmeldinger with 15 days gap', () => {
-        const result = calculateContinuousSykefravaer([
-            createMockSykmelding('2023-01-25', '2023-01-31', 'OK'),
-            createMockSykmelding('2023-01-01', '2023-01-10', 'OK'),
+        const result = calculateTotalLengthOfSykmeldinger([
+            { earliestFom: '2023-01-25', latestTom: '2023-01-31' },
+            { earliestFom: '2023-01-01', latestTom: '2023-01-10' },
         ])
         expect(result).toBe(31)
+    })
+})
+
+describe('hasAnsweredUtdypendeSporsmal', () => {
+    test('should return false when input is empty', () => {
+        const result = hasAnsweredUtdypendeSporsmal([])
+        expect(result).toBe(false)
+    })
+    test('should return false when no sykmelding has OK result', () => {
+        const result = hasAnsweredUtdypendeSporsmal([createMockSykmelding('2023-01-01', '2023-01-05', 'NOT_OK')])
+        expect(result).toBe(false)
+    })
+    test('should return false when no sykmelding has answered utdypende sporsmal', () => {
+        const result = hasAnsweredUtdypendeSporsmal([
+            {
+                ...createMockSykmelding('2023-01-01', '2023-01-05', 'OK'),
+                values: { __typename: 'SykmeldingValues', utdypendeSporsmal: null },
+            } as unknown as SykmeldingFragment,
+        ])
+        expect(result).toBe(false)
+    })
+    test('should return true when at least one sykmelding has answered utdypende sporsmal', () => {
+        const result = hasAnsweredUtdypendeSporsmal([
+            {
+                ...createMockSykmelding('2023-01-01', '2023-01-05', 'OK'),
+                values: {
+                    __typename: 'SykmeldingValues',
+                    utdypendeSporsmal: { utfodringerMedArbeid: 'Arbeid', medisinskOppsummering: 'Medisinsk' },
+                },
+            } as unknown as SykmeldingFragment,
+        ])
+        expect(result).toBe(true)
     })
 })
 

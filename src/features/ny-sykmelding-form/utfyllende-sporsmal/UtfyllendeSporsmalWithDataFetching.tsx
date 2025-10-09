@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { TextField } from '@navikt/ds-react'
+import { BodyShort, Textarea } from '@navikt/ds-react'
 import * as R from 'remeda'
 
 import FormSection from '@components/form/form-section/FormSection'
@@ -78,20 +78,21 @@ function Uke7(): ReactElement {
         name: 'utdypendeSporsmal.hensynPaArbeidsplassen',
     })
     return (
-        <FormSection title="Utdypende spørsmål">
-            <TextField
+        <FormSection title="Utdypende spørsmål uke 8">
+            <BodyShort spacing>Helseopplysninger i Navs vurdering av aktivitetskrav og oppfølging</BodyShort>
+            <Textarea
                 label="Hvilke utfordringer har pasienten med å utføre gradert arbeid?"
                 onChange={utfodringerMedArbeid.field.onChange}
                 value={utfodringerMedArbeid.field.value ?? ''}
                 error={utfodringerMedArbeid.fieldState.error?.message}
             />
-            <TextField
+            <Textarea
                 label="Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt behandling)"
                 onChange={medisinskOppsummering.field.onChange}
                 value={medisinskOppsummering.field.value ?? ''}
                 error={medisinskOppsummering.fieldState.error?.message}
             />
-            <TextField
+            <Textarea
                 label="Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet? (ikke obligatorisk)"
                 onChange={hensynPaArbeidsplassen.field.onChange}
                 value={hensynPaArbeidsplassen.field.value ?? ''}
