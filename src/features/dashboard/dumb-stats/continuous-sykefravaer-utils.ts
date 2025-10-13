@@ -80,19 +80,24 @@ export function currentSykmeldingIsAktivitetIkkeMulig(perioder: AktivitetsPeriod
 export function filterSykmeldingerWithinDaysGap(sykmeldinger: SykmeldingDateRange[]): SykmeldingDateRange[] {
     const ISYFO_MAX_DAYS_GAP = 16
 
-    return R.pipe(
-        sykmeldinger,
-        R.sortBy([(it) => it.latestTom, 'desc']),
-        R.filter((value, index, array) => {
-            if (index === 0) return true
-            const prev = array[index - 1]
+    const sortedSykmeldinger = R.sortBy(sykmeldinger, [(it) => it.latestTom, 'desc'])
 
-            const prevFom = prev.earliestFom
-            const currentTom = value.latestTom
-            const diff = differenceInDays(prevFom, currentTom)
-            return diff < ISYFO_MAX_DAYS_GAP
-        }),
-    )
+    const filteredSykmeldinger: SykmeldingDateRange[] = []
+    for (const [i, sykmelding] of sortedSykmeldinger.entries()) {
+        if (i === 0) {
+            filteredSykmeldinger.push(sykmelding)
+            continue
+        }
+        const prev = sortedSykmeldinger[i - 1]
+        const prevFom = prev.earliestFom
+
+        const currentTom = sykmelding.latestTom
+
+        const diff = differenceInDays(prevFom, currentTom)
+        if (diff < ISYFO_MAX_DAYS_GAP) filteredSykmeldinger.push(sykmelding)
+        else break
+    }
+    return filteredSykmeldinger
 }
 
 export function calculateTotalLengthOfSykmeldinger(ranges: SykmeldingDateRange[]): number {
@@ -109,13 +114,3 @@ export function calculateTotalLengthOfSykmeldinger(ranges: SykmeldingDateRange[]
     const days = differenceInDays(tom.latestTom, fom.earliestFom) + 1
     return days
 }
-
-/*
- * ✅ Flytte datafetching utenfor form komponent. Må mappes om til array med ealiestFom og latestTom
- * ✅ Ikke gjøre filtrering på perioder i første sortering, siden sykmeldinger kan tilbakedateres og påvirke gaps som ellers ville blitt filtrert ut
- * ✅ Egen funksjon som tar med nåværende periode, regner ut gaps og returnerer om det skal vises eller ikke
- * ✅ Kun se på 100% sykmelding for perioden med latestTom i nåværende sykmelding for å avgjøre om spørsmålene skal vises
- * Utvide med funksjonalitet for visning av de andre ukesspørsmålene
- * ✅ Ikke vise spørsmål dersom tidligere ukesspørsmål er besvart
- * ✅ Playwright tester
- */

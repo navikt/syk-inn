@@ -112,7 +112,19 @@ describe('filterSykmeldingerWithinDaysGap', () => {
             { earliestFom: '2025-01-24', latestTom: '2025-02-01' },
             { earliestFom: '2025-02-17', latestTom: '2025-02-31' },
         ])
+        expect(result).toHaveLength(1)
+        expect(result[0]).toEqual({ earliestFom: '2025-02-17', latestTom: '2025-02-31' })
+    })
+    test('should only return the newest period with continious sykfraver', () => {
+        const result = filterSykmeldingerWithinDaysGap([
+            { earliestFom: '2025-01-01', latestTom: '2025-01-10' },
+            { earliestFom: '2025-01-11', latestTom: '2025-01-20' },
+            { earliestFom: '2024-01-01', latestTom: '2024-01-10' },
+            { earliestFom: '2024-01-11', latestTom: '2024-01-20' },
+        ])
         expect(result).toHaveLength(2)
+        expect(result[0]).toEqual({ earliestFom: '2025-01-11', latestTom: '2025-01-20' })
+        expect(result[1]).toEqual({ earliestFom: '2025-01-01', latestTom: '2025-01-10' })
     })
 })
 
@@ -171,6 +183,7 @@ describe('hasAnsweredUtdypendeSporsmal', () => {
         ])
         expect(result).toBe(true)
     })
+    test('should return false if questions are answered for a previous period', () => {})
 })
 
 const createMockSykmelding = (fom: string, tom: string, result: string): SykmeldingFragment =>
