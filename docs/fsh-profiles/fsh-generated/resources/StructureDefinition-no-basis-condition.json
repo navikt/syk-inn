@@ -5,7 +5,7 @@
     "name": "NoBasisCondition",
     "title": "Norwegian Basis Condition",
     "status": "draft",
-    "description": "Generic basis profile for Condition in Norwegian FHIR R4, allowing ICD-10 and ICPC-2 codes.",
+    "description": "Generic basis profile for Condition in Norwegian FHIR R4, allowing ICD-10 and ICPC-2 codes using open slicing.",
     "fhirVersion": "4.0.1",
     "kind": "resource",
     "abstract": false,
@@ -17,28 +17,57 @@
             {
                 "id": "Condition.code",
                 "path": "Condition.code",
-                "min": 1,
-                "mustSupport": true
+                "min": 1
             },
             {
                 "id": "Condition.code.coding",
                 "path": "Condition.code.coding",
-                "min": 1,
-                "mustSupport": true
+                "slicing": {
+                    "discriminator": [
+                        {
+                            "type": "pattern",
+                            "path": "system"
+                        }
+                    ],
+                    "rules": "open"
+                },
+                "min": 1
             },
             {
-                "id": "Condition.code.coding.system",
+                "id": "Condition.code.coding:icd10",
+                "path": "Condition.code.coding",
+                "sliceName": "icd10",
+                "min": 0,
+                "max": "1"
+            },
+            {
+                "id": "Condition.code.coding:icd10.system",
                 "path": "Condition.code.coding.system",
-                "binding": {
-                    "strength": "required",
-                    "valueSet": "http://hl7.org/fhir/us/example/ValueSet/no-basis-condition-codes"
-                }
+                "min": 1,
+                "patternUri": "urn:oid:2.16.578.1.12.4.1.1.7110"
             },
             {
-                "id": "Condition.code.coding.code",
+                "id": "Condition.code.coding:icd10.code",
                 "path": "Condition.code.coding.code",
+                "min": 1
+            },
+            {
+                "id": "Condition.code.coding:icpc2",
+                "path": "Condition.code.coding",
+                "sliceName": "icpc2",
+                "min": 0,
+                "max": "1"
+            },
+            {
+                "id": "Condition.code.coding:icpc2.system",
+                "path": "Condition.code.coding.system",
                 "min": 1,
-                "mustSupport": true
+                "patternUri": "urn:oid:2.16.578.1.12.4.1.1.7170"
+            },
+            {
+                "id": "Condition.code.coding:icpc2.code",
+                "path": "Condition.code.coding.code",
+                "min": 1
             },
             {
                 "id": "Condition.subject",
@@ -51,8 +80,7 @@
                             "http://hl7.org/fhir/us/example/StructureDefinition/dummy-patient"
                         ]
                     }
-                ],
-                "mustSupport": true
+                ]
             }
         ]
     }

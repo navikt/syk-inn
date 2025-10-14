@@ -13,7 +13,7 @@
         "fshType": "Profile",
         "fshFile": "condition-basis.fsh",
         "startLine": 1,
-        "endLine": 14
+        "endLine": 25
     },
     {
         "outputFile": "StructureDefinition-no-basis-encounter.json",
@@ -22,13 +22,5 @@
         "fshFile": "encounter-basis.fsh",
         "startLine": 1,
         "endLine": 24
-    },
-    {
-        "outputFile": "ValueSet-no-basis-condition-codes.json",
-        "fshName": "NoBasisConditionCodeVS",
-        "fshType": "ValueSet",
-        "fshFile": "NoBasisConditionCodeVS.fsh",
-        "startLine": 1,
-        "endLine": 7
     }
 ]
