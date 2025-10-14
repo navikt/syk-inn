@@ -286,29 +286,33 @@ function UtdypendeSporsmalSummaryAnswers({
 }: {
     utdypendeSporsmal: NySykmeldingUtdypendeSporsmal | null
 }): ReactElement | null {
-    if (utdypendeSporsmal == null) {
-        return null
-    }
-
     return (
         <>
-            <FormSummary.Answer>
-                <FormSummary.Label>Hvilke utfordringer har pasienten med å utføre gradert arbeid?</FormSummary.Label>
-                <FormSummary.Value>{utdypendeSporsmal.utfodringerMedArbeid}</FormSummary.Value>
-            </FormSummary.Answer>
-            <FormSummary.Answer>
-                <FormSummary.Label>
-                    Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt
-                    behandling)
-                </FormSummary.Label>
-                <FormSummary.Value>{utdypendeSporsmal.medisinskOppsummering}</FormSummary.Value>
-            </FormSummary.Answer>
-            <FormSummary.Answer>
-                <FormSummary.Label>
-                    Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet?
-                </FormSummary.Label>
-                <FormSummary.Value>{utdypendeSporsmal.hensynPaArbeidsplassen}</FormSummary.Value>
-            </FormSummary.Answer>
+            {utdypendeSporsmal?.utfodringerMedArbeid && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>
+                        Hvilke utfordringer har pasienten med å utføre gradert arbeid?
+                    </FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.utfodringerMedArbeid}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {utdypendeSporsmal?.medisinskOppsummering && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>
+                        Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt
+                        behandling)
+                    </FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.medisinskOppsummering}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {utdypendeSporsmal?.hensynPaArbeidsplassen && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>
+                        Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet?
+                    </FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.hensynPaArbeidsplassen}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
         </>
     )
 }
