@@ -44,7 +44,6 @@ type Props = {
     context: {
         initialFom?: string
         previousSykmeldingDateRange?: SykmeldingDateRange[]
-        hasAnsweredUtdypendeSporsmal?: boolean
     }
     /**
      * Used for contexctually relevant error messages
@@ -80,10 +79,7 @@ function NySykmeldingForm({ defaultValues, initialFom, context, contextualErrors
                         <BidiagnoseSection />
                         <DiagnoseInfoAlert />
                     </FormSection>
-                    <UtdypendeSporsmal
-                        previousSykmeldingDateRange={context.previousSykmeldingDateRange}
-                        hasAnsweredUtdypendeSporsmal={context.hasAnsweredUtdypendeSporsmal}
-                    />
+                    <UtdypendeSporsmal previousSykmeldingDateRange={context.previousSykmeldingDateRange} />
                     <FormSection title="Andre spørsmål" hideTitle>
                         <AndreSporsmalSection />
                     </FormSection>

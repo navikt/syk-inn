@@ -9,6 +9,12 @@ import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form'
 export interface SykmeldingDateRange {
     earliestFom: string
     latestTom: string
+    utdypendeSporsmal?: UtdypendeSporsmal | null
+}
+
+interface UtdypendeSporsmal {
+    utfodringerMedArbeid?: string | null
+    medisinskOppsummering?: string | null
 }
 
 export function continiousSykefravaer(sykmeldinger: SykmeldingFragment[]): number {
@@ -45,24 +51,20 @@ export function mapSykmeldingToDateRanges(sykmeldinger: SykmeldingFragment[]): S
         R.map((it) => ({
             earliestFom: earliestFom(it),
             latestTom: latestTom(it),
+            utdypendeSporsmal: it.values.__typename === 'SykmeldingValues' ? it.values.utdypendeSporsmal : null,
         })),
     )
 }
 
 // Only applies to 'uke 7'. There will be other questions for the other special weeks.
-export function hasAnsweredUtdypendeSporsmal(sykmelding: SykmeldingFragment[]): boolean {
+export function hasAnsweredUtdypendeSporsmal(sykmeldinger: SykmeldingDateRange[]): boolean {
     return (
         R.pipe(
-            sykmelding,
-            R.filter((it) => it.utfall?.result === 'OK'),
+            sykmeldinger,
+            filterSykmeldingerWithinDaysGap,
             R.filter((it) => {
-                if (it.values.__typename === 'SykmeldingValues') {
-                    if (
-                        !!it.values.utdypendeSporsmal?.utfodringerMedArbeid &&
-                        !!it.values.utdypendeSporsmal?.medisinskOppsummering
-                    ) {
-                        return true
-                    }
+                if (!!it.utdypendeSporsmal?.utfodringerMedArbeid && !!it.utdypendeSporsmal?.medisinskOppsummering) {
+                    return true
                 }
                 return false
             }),

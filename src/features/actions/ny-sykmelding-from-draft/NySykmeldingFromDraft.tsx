@@ -13,10 +13,7 @@ import { createDefaultFormValues } from '@features/ny-sykmelding-form/form-defau
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingDraftFormErrors } from '@features/actions/common/SykmeldingFormErrors'
-import {
-    hasAnsweredUtdypendeSporsmal,
-    mapSykmeldingToDateRanges,
-} from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
+import { mapSykmeldingToDateRanges } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 
 function NySykmeldingFromDraft({ draftId }: { draftId: string }): ReactElement {
     const pasientQuery = useQuery(PasientDocument)
@@ -62,7 +59,6 @@ function DraftSykmeldingFormWithDefaultValues({ draftId }: { draftId: string }):
             defaultValues={defaultValues}
             context={{
                 previousSykmeldingDateRange,
-                hasAnsweredUtdypendeSporsmal: hasAnsweredUtdypendeSporsmal(alleSykmeldinger.data?.sykmeldinger ?? []),
             }}
             contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
         />

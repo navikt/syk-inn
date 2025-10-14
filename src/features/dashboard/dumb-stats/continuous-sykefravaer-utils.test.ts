@@ -80,7 +80,7 @@ describe('mapSykmeldingToDateRanges', () => {
             },
         ] as unknown as SykmeldingFragment[])
         expect(result).toHaveLength(1)
-        expect(result[0]).toEqual({ earliestFom: '2023-01-01', latestTom: '2023-01-20' })
+        expect(result[0]).toEqual({ earliestFom: '2023-01-01', latestTom: '2023-01-20', utdypendeSporsmal: null })
     })
     test('should filter out non-OK sykmeldinger', () => {
         const result = mapSykmeldingToDateRanges([
@@ -88,7 +88,7 @@ describe('mapSykmeldingToDateRanges', () => {
             { utfall: { result: 'NOT_OK' }, values: { aktivitet: [{ fom: '2023-01-06', tom: '2023-01-10' }] } },
         ] as unknown as SykmeldingFragment[])
         expect(result).toHaveLength(1)
-        expect(result[0]).toEqual({ earliestFom: '2023-01-01', latestTom: '2023-01-05' })
+        expect(result[0]).toEqual({ earliestFom: '2023-01-01', latestTom: '2023-01-05', utdypendeSporsmal: null })
     })
 })
 
@@ -158,32 +158,37 @@ describe('hasAnsweredUtdypendeSporsmal', () => {
         const result = hasAnsweredUtdypendeSporsmal([])
         expect(result).toBe(false)
     })
-    test('should return false when no sykmelding has OK result', () => {
-        const result = hasAnsweredUtdypendeSporsmal([createMockSykmelding('2023-01-01', '2023-01-05', 'NOT_OK')])
-        expect(result).toBe(false)
-    })
     test('should return false when no sykmelding has answered utdypende sporsmal', () => {
         const result = hasAnsweredUtdypendeSporsmal([
             {
-                ...createMockSykmelding('2023-01-01', '2023-01-05', 'OK'),
-                values: { __typename: 'SykmeldingValues', utdypendeSporsmal: null },
-            } as unknown as SykmeldingFragment,
+                earliestFom: '2023-01-01',
+                latestTom: '2023-01-05',
+                utdypendeSporsmal: null,
+            },
         ])
         expect(result).toBe(false)
     })
     test('should return true when at least one sykmelding has answered utdypende sporsmal', () => {
         const result = hasAnsweredUtdypendeSporsmal([
             {
-                ...createMockSykmelding('2023-01-01', '2023-01-05', 'OK'),
-                values: {
-                    __typename: 'SykmeldingValues',
-                    utdypendeSporsmal: { utfodringerMedArbeid: 'Arbeid', medisinskOppsummering: 'Medisinsk' },
-                },
-            } as unknown as SykmeldingFragment,
+                earliestFom: '2023-01-01',
+                latestTom: '2023-01-05',
+                utdypendeSporsmal: { utfodringerMedArbeid: 'Arbeid', medisinskOppsummering: 'Medisinsk' },
+            },
         ])
         expect(result).toBe(true)
     })
-    test('should return false if questions are answered for a previous period', () => {})
+    test('should return false if questions are answered for a previous period', () => {
+        const result = hasAnsweredUtdypendeSporsmal([
+            {
+                earliestFom: '2023-01-01',
+                latestTom: '2023-01-05',
+                utdypendeSporsmal: { utfodringerMedArbeid: 'Arbeid', medisinskOppsummering: 'Medisinsk' },
+            },
+            { earliestFom: '2023-10-01', latestTom: '2023-10-31', utdypendeSporsmal: null },
+        ])
+        expect(result).toBe(false)
+    })
 })
 
 const createMockSykmelding = (fom: string, tom: string, result: string): SykmeldingFragment =>

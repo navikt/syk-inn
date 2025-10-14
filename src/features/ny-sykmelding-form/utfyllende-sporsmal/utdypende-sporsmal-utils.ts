@@ -6,6 +6,7 @@ import {
     currentSykmeldingIsAktivitetIkkeMulig,
     filterSykmeldingerWithinDaysGap,
     calculateTotalLengthOfSykmeldinger,
+    hasAnsweredUtdypendeSporsmal,
 } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form'
 
@@ -13,6 +14,11 @@ export const currentSykmeldingIsPartOfPeriode = (
     currentPerioder: AktivitetsPeriode[],
     previousSykmeldingDateRange?: SykmeldingDateRange[],
 ): boolean => {
+    if (!previousSykmeldingDateRange || previousSykmeldingDateRange.length === 0) {
+        // This is the first sykmelding, return true so we can check total length later on
+        return true
+    }
+
     const currentFom = R.firstBy(currentPerioder, [(it) => it.periode.fom ?? '', 'desc'])?.periode.fom ?? ''
     const previousLatestTom =
         R.firstBy(previousSykmeldingDateRange ?? [], [(it) => it.latestTom, 'desc'])?.latestTom ?? ''
@@ -32,15 +38,15 @@ export const totalDaysIsMoreThanDays = (sykmeldinger: SykmeldingDateRange[], day
 export const shouldShowUke7Sporsmal = (
     perioder: AktivitetsPeriode[],
     previousSykmeldingDateRange?: SykmeldingDateRange[],
-    hasAnsweredUtdypendeSporsmal?: boolean,
 ): boolean => {
     const DAYS_IN_7_WEEKS = 7 * 7
-    if (hasAnsweredUtdypendeSporsmal) return false
+
+    const havePreviouslyAnswered = hasAnsweredUtdypendeSporsmal(previousSykmeldingDateRange ?? [])
+    if (havePreviouslyAnswered) return false
 
     if (!currentSykmeldingIsAktivitetIkkeMulig(perioder)) return false
 
     if (!currentSykmeldingIsPartOfPeriode(perioder, previousSykmeldingDateRange)) return false
-
     // First check if we're above 7 weeks already
     if (totalDaysIsMoreThanDays(previousSykmeldingDateRange ?? [], DAYS_IN_7_WEEKS)) return true
 

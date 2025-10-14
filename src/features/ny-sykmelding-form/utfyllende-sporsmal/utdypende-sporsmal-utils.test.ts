@@ -5,7 +5,7 @@ import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-
 
 describe('shouldShowUke7Sporsmal', () => {
     test('should return false if hasAnsweredUtdypendeSporsmal is true', () => {
-        const result = shouldShowUke7Sporsmal([], [], true)
+        const result = shouldShowUke7Sporsmal([], [])
         expect(result).toBe(false)
     })
     test('should return false if current sykmelding is not aktivitetIkkeMulig', () => {
@@ -17,7 +17,6 @@ describe('shouldShowUke7Sporsmal', () => {
                 } as unknown as AktivitetsPeriode,
             ],
             [],
-            false,
         )
         expect(result).toBe(false)
     })
@@ -30,7 +29,6 @@ describe('shouldShowUke7Sporsmal', () => {
                 } as unknown as AktivitetsPeriode,
             ],
             [{ earliestFom: '2023-01-01', latestTom: '2023-01-10' }],
-            false,
         )
         expect(result).toBe(false)
     })
@@ -43,7 +41,6 @@ describe('shouldShowUke7Sporsmal', () => {
                 } as unknown as AktivitetsPeriode,
             ],
             [{ earliestFom: '2023-01-01', latestTom: '2023-01-10' }],
-            false,
         )
         expect(result).toBe(false)
     })
@@ -56,7 +53,6 @@ describe('shouldShowUke7Sporsmal', () => {
                 } as unknown as AktivitetsPeriode,
             ],
             [{ earliestFom: '2025-01-01', latestTom: '2025-02-19' }],
-            false,
         )
         expect(result).toBe(true)
     })
@@ -69,7 +65,18 @@ describe('shouldShowUke7Sporsmal', () => {
                 } as unknown as AktivitetsPeriode,
             ],
             [{ earliestFom: '2025-01-01', latestTom: '2025-02-18' }],
-            false,
+        )
+        expect(result).toBe(true)
+    })
+    test('should return true if no previous sykmelding, but current sykmelding is more than 8 weeks', () => {
+        const result = shouldShowUke7Sporsmal(
+            [
+                {
+                    periode: { fom: '2025-01-01', tom: '2025-03-01' },
+                    aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
+                } as unknown as AktivitetsPeriode,
+            ],
+            [],
         )
         expect(result).toBe(true)
     })

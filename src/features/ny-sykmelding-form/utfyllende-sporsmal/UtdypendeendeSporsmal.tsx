@@ -8,14 +8,12 @@ import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-
 
 export function UtdypendeSporsmal({
     previousSykmeldingDateRange,
-    hasAnsweredUtdypendeSporsmal,
 }: {
     previousSykmeldingDateRange?: SykmeldingDateRange[]
-    hasAnsweredUtdypendeSporsmal?: boolean
 }): ReactElement | null {
     const perioder = useFormContext().watch('perioder')
 
-    if (shouldShowUke7Sporsmal(perioder, previousSykmeldingDateRange, hasAnsweredUtdypendeSporsmal)) {
+    if (shouldShowUke7Sporsmal(perioder, previousSykmeldingDateRange)) {
         return <Uke7 />
     }
 
