@@ -50,7 +50,7 @@ export function LocalAndDemoBonusActionMenu({
                             await mutation.opprettSykmelding()
                         }}
                     >
-                        Avvist (forventet)
+                        Soft stop (send læll)
                     </ActionMenu.Item>
                     <ActionMenu.Item
                         onSelect={async () => {
@@ -58,7 +58,7 @@ export function LocalAndDemoBonusActionMenu({
                             await mutation.opprettSykmelding()
                         }}
                     >
-                        Manuell behandling (forventet)
+                        Soft stop - manuell behandling (send læll)
                     </ActionMenu.Item>
                     <ActionMenu.Item
                         onSelect={async () => {
@@ -66,7 +66,7 @@ export function LocalAndDemoBonusActionMenu({
                             await mutation.opprettSykmelding()
                         }}
                     >
-                        Avvist med uforventet regelbrudd
+                        Hard stop - Regelutfall
                     </ActionMenu.Item>
                     <ActionMenu.Item
                         onSelect={async () => {
@@ -74,7 +74,7 @@ export function LocalAndDemoBonusActionMenu({
                             await mutation.opprettSykmelding()
                         }}
                     >
-                        Person finnes ikke i PDL
+                        Hard stop - Pasient finnes ikke
                     </ActionMenu.Item>
                 </ActionMenu.Group>
                 <ActionMenu.Group label="Fjern regeloverstyring">

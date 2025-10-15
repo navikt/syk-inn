@@ -38,6 +38,7 @@ export type UseOpprettSykmeldingMutation = {
 
 export function useOpprettSykmeldingMutation(
     onRuleOutcome: (outcome: RuleOutcomeFragment) => void,
+    ruleReset: () => void,
 ): UseOpprettSykmeldingMutation {
     const mode = useMode()
     const [draftId] = useDraftId()
@@ -71,6 +72,7 @@ export function useOpprettSykmeldingMutation(
                 logger.info(`User managed to end up on Summary without draftId, created draft id: ${draftIdToUse}`)
             }
 
+            ruleReset()
             const createResult = await spanBrowserAsync('OpprettSykmelding.mutation', async () =>
                 mutate({
                     variables: { draftId: draftIdToUse, values: values, force: force ?? false },

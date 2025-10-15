@@ -772,58 +772,14 @@ test.describe('rule outcomes', () => {
         await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
     })
 
-    test('invalid but unexpected: should be able to submit læll', async ({ page }) => {
+    test('invalid but unexpected: should NOT be able to submit', async ({ page }) => {
         await launchAndFillBasic(page)
         await submitSykmelding('invalid-unexpected')(page)
 
-        const confirmationModal = page.getByRole('dialog', { name: 'Vær oppmerksom' })
-        await expect(confirmationModal).toBeVisible()
-        await expect(confirmationModal.getByText('Denne type regelutfall skal')).toBeVisible()
-
-        const request = await confirmRuleOutcomeSubmit(confirmationModal)(page)
-        await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-            draftId: getDraftId(page) ?? 'missing',
-            force: true,
-            values: {
-                hoveddiagnose: { system: 'ICPC2', code: 'L73' },
-                bidiagnoser: [],
-                aktivitet: [
-                    {
-                        type: 'AKTIVITET_IKKE_MULIG',
-                        fom: today(),
-                        tom: inDays(3),
-                        aktivitetIkkeMulig: { dummy: true },
-                        avventende: null,
-                        gradert: null,
-                        behandlingsdager: null,
-                        reisetilskudd: null,
-                        medisinskArsak: {
-                            isMedisinskArsak: true,
-                        },
-                        arbeidsrelatertArsak: {
-                            isArbeidsrelatertArsak: false,
-                            arbeidsrelaterteArsaker: [],
-                            annenArbeidsrelatertArsak: null,
-                        },
-                    },
-                ],
-                meldinger: { tilNav: null, tilArbeidsgiver: null },
-                svangerskapsrelatert: false,
-                yrkesskade: { yrkesskade: false, skadedato: null },
-                arbeidsforhold: null,
-                tilbakedatering: null,
-                pasientenSkalSkjermes: false,
-                utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
-                    medisinskOppsummering: null,
-                    hensynPaArbeidsplassen: null,
-                },
-            },
-        })
-        await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+        await expect(page.getByRole('heading', { name: 'Sykmelding kan ikke sendes inn' })).toBeVisible()
     })
 
-    test('person does not exist in PDL: should not be able to submit', async ({ page }) => {
+    test('person does not exist in PDL: should NOT be able to submit', async ({ page }) => {
         await launchAndFillBasic(page)
         await submitSykmelding('person-not-found')(page)
 

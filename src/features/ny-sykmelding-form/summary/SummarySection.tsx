@@ -21,13 +21,14 @@ import ForkastDraftButton from '../draft/DraftActions'
 import { useFormStep } from '../steps/useFormStep'
 import { useOpprettSykmeldingMutation } from '../useOpprettSykmeldingMutation'
 
+import { HardStop } from './explanations/HardStop'
 import styles from './SummarySection.module.css'
 
 function SummarySection(): ReactElement {
     const [, setStep] = useFormStep()
     const formState = useAppSelector((state) => state.nySykmelding)
-    const [ruleOutcomeState, { ruled, close }] = useSubmitRuleState()
-    const nySykmelding = useOpprettSykmeldingMutation(ruled)
+    const [ruleOutcomeState, { ruled, close, reset }] = useSubmitRuleState()
+    const nySykmelding = useOpprettSykmeldingMutation(ruled, reset)
     const dispatch = useAppDispatch()
     const behandlerQuery = useQuery(BehandlerDocument)
 
@@ -38,12 +39,16 @@ function SummarySection(): ReactElement {
 
             <div className="flex flex-col gap-3 justify-end w-[65ch] max-w-prose">
                 <AnimatePresence>
-                    {nySykmelding.mutation.result?.data?.opprettSykmelding.__typename === 'RuleOutcome' &&
-                        ruleOutcomeState.type === 'modal-closed' && (
-                            <SimpleReveal>
-                                <RuleOutcomeWarning />
-                            </SimpleReveal>
-                        )}
+                    {ruleOutcomeState.type === 'modal-closed' && (
+                        <SimpleReveal>
+                            <RuleOutcomeWarning />
+                        </SimpleReveal>
+                    )}
+                    {ruleOutcomeState.type === 'rule-outcome' && ruleOutcomeState.ruleType !== 'soft' && (
+                        <SimpleReveal>
+                            <HardStop outcome={ruleOutcomeState.outcome} />
+                        </SimpleReveal>
+                    )}
                     {nySykmelding.mutation.result?.data?.opprettSykmelding.__typename === 'OtherSubmitOutcomes' && (
                         <SimpleReveal>
                             <PatientDoesNotExistAlert ident={formState.pasient?.ident} navn={formState.pasient?.navn} />
@@ -59,7 +64,7 @@ function SummarySection(): ReactElement {
                     )}
                 </AnimatePresence>
 
-                {ruleOutcomeState.type === 'rule-outcome' && (
+                {ruleOutcomeState.type === 'rule-outcome' && ruleOutcomeState.ruleType === 'soft' && (
                     <RuleHitSendAnywayModal
                         nySykmelding={nySykmelding}
                         outcome={ruleOutcomeState.outcome}

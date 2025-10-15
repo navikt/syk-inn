@@ -1,4 +1,7 @@
-export const ruleTexts: Record<string, string> = {
+/**
+ * When these rules are hit, the user will be allowed to proceed (aka "send læll").
+ */
+const softRules: Record<string, string> = {
     BEHANDLER_SUSPENDERT: 'Behandler er suspendert av NAV på konsultasjonstidspunkt.',
     MANGLENDE_DYNAMISKE_SPOERSMAL_VERSJON2_UKE_39: 'Utdypende opplysninger som kreves ved uke 39 mangler.',
     UGYLDIG_ORGNR_LENGDE: 'Feil format på organisasjonsnummer. Dette skal være 9 sifre.',
@@ -35,4 +38,29 @@ export const ruleTexts: Record<string, string> = {
     OVER_1_MND_MED_BEGRUNNELSE: 'Sykmeldingen er tilbakedatert og felt 11.2 (begrunnelse) er utfylt',
     OVER_1_MND_SPESIALISTHELSETJENESTEN:
         'Sykmeldingen er tilbakedatert over 1 månede og er fra spesialisthelsetjenesten',
+}
+
+/**
+ * When these rules are hit, the user will be unable to submit, aka "hard stop".
+ */
+const hardRules: Record<string, string> = {}
+
+export function getRuleType(rule: string): 'soft' | 'hard' | 'unknown' {
+    if (softRules[rule]) {
+        return 'soft'
+    } else if (hardRules[rule]) {
+        return 'hard'
+    } else {
+        return 'unknown'
+    }
+}
+
+export function getRuleText(rule: string): string | null {
+    if (softRules[rule]) {
+        return softRules[rule]
+    } else if (hardRules[rule]) {
+        return hardRules[rule]
+    } else {
+        return null
+    }
 }
