@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { logger } from '@navikt/next-logger'
+import { logger as pinoLogger } from '@navikt/next-logger'
 import { GraphQLSchema } from 'graphql/type'
 import { createYoga, Plugin, YogaServerOptions } from 'graphql-yoga'
 import { useOpenTelemetry } from '@envelop/opentelemetry'
@@ -12,6 +12,8 @@ import { wait } from '@lib/wait'
 interface NextContext {
     params: Promise<Record<string, string>>
 }
+
+const logger = pinoLogger.child({}, { msgPrefix: '[GraphQL-Yoga]: ' })
 
 export function createGraphQLHandler<UserContext extends Record<string, unknown>>(
     schema: GraphQLSchema,
