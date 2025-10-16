@@ -4,7 +4,10 @@ import { logger as pinoLogger } from '@navikt/pino-logger'
 import { HonoRequest } from 'hono'
 
 import { getConfig, getServerSession } from '../config'
-import { Patients } from '../data/patients'
+import { MockPatients } from '../data/patients'
+import { MockLaunchType } from '../server-launch-types'
+import { MockPractitioners } from '../data/practitioner'
+import { MockOrganizations } from '../data/organization'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
 
@@ -34,31 +37,32 @@ export function authorize(request: HonoRequest): Response {
         )
     }
 
-    const launch = url.searchParams.get('launch')
+    const launch = url.searchParams.get('launch') as MockLaunchType | null
     if (!launch) {
         return Response.redirect(
             `${redirectUri}?error=unauthorized_client&error_description=Missing%20launch%20parameter`,
         )
     }
 
-    /**
-     * Based on the launch parameter, prime the launch state and select a patient
-     */
-    let patient: Patients
-    if (launch.startsWith('local-dev-launch-')) {
-        if (launch.endsWith('espen')) {
-            patient = 'Espen Eksempel'
-        } else if (launch.endsWith('kari')) {
-            patient = 'Kari Normann'
-        } else {
-            throw Error(`Unknown local dev launch, who is: ${launch.replace('local-dev-launch-', '')}?`)
-        }
-    } else {
-        throw Error(`Unsupported mock launch using parameter ${launch}`)
+    if (!launch.includes(':')) {
+        return new Response('Seems like mock launch parameter is misformed', { status: 400 })
+    }
+
+    const launchParts = launch.split(':')
+    const launchPatient: MockPatients = launchParts[1] as MockPatients
+    const launchPractitioner: MockPractitioners = (launchParts[2] as MockPractitioners) || 'Magnar Koman'
+    const launchOrganization: MockOrganizations = (launchParts[3] as MockOrganizations) || 'Magnar Legekontor'
+
+    if (!launchPatient || !launchOrganization || !launchPractitioner) {
+        throw Error(`Unknown local dev launch, launch string: ${launch}?`)
     }
 
     const notATokenCode = randomUUID()
-    getServerSession().initializeLaunch(notATokenCode, patient)
+    getServerSession().initializeLaunch(notATokenCode, {
+        patient: launchPatient,
+        practitioner: launchPractitioner,
+        organization: launchOrganization,
+    })
 
     const redirectUrl = `${redirectUri}?code=${notATokenCode}&state=${state}`
     logger.info(`/auth/authorize good, redirecting to ${redirectUrl}`)

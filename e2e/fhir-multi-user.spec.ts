@@ -11,12 +11,12 @@ test('launching twice independently in same browser, but different tabs, should 
 
     // Launch and verify Kari (tab 1)
     const firstTab = await baseContext.newPage()
-    await launchWithMock('empty', { patient: 'kari' })(firstTab)
+    await launchWithMock('empty', { patient: 'Kari Normann' })(firstTab)
     await expectPatient(Kari)(firstTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
 
     // Launch and verify Espen (tab 2)
     const secondTab = await baseContext.newPage()
-    await launchWithMock('one-current-to-tomorrow', { patient: 'espen' })(secondTab)
+    await launchWithMock('one-current-to-tomorrow', { patient: 'Espen Eksempel' })(secondTab)
     await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
 
     // Reload tab 1 and verify Kari again
@@ -34,7 +34,7 @@ test('launching and opening a link in a new tab, should persist context and work
     const baseContext = await browser.newContext()
 
     const firstTab = await baseContext.newPage()
-    await launchWithMock('empty', { patient: 'kari' })(firstTab)
+    await launchWithMock('empty', { patient: 'Kari Normann' })(firstTab)
 
     const pasientInfoRegion = firstTab.getByRole('region', { name: 'Opprett ny sykmelding' })
     await expectPatient(Kari)(pasientInfoRegion)
@@ -47,7 +47,7 @@ test('launching and opening a link in a new tab, should persist context and work
     await expectPatient(Kari)(newTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
 
     const secondTab = await baseContext.newPage()
-    await launchWithMock('one-current-to-tomorrow', { patient: 'espen' })(secondTab)
+    await launchWithMock('one-current-to-tomorrow', { patient: 'Espen Eksempel' })(secondTab)
     await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
 
     await Promise.all([firstTab.reload(), newTab.reload(), secondTab.reload()])
@@ -64,12 +64,12 @@ test.fail(
 
         // Launch and verify Kari (tab 1)
         const firstTab = await baseContext.newPage()
-        await launchWithMock('empty', { patient: 'kari' })(firstTab)
+        await launchWithMock('empty', { patient: 'Kari Normann' })(firstTab)
         await expectPatient(Kari)(firstTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
 
         // Launch and verify Espen (tab 2)
         const secondTab = await baseContext.newPage()
-        await launchWithMock('one-current-to-tomorrow', { patient: 'espen' })(secondTab)
+        await launchWithMock('one-current-to-tomorrow', { patient: 'Espen Eksempel' })(secondTab)
         await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
 
         // Back to first tab and open a new tab from there

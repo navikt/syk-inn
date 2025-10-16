@@ -19,6 +19,9 @@
         },
         "./pdfs": {
             "import": "./src/data/pdfs/index.ts"
+        },
+        "./types": {
+            "import": "./src/types.ts"
         }
     },
     "dependencies": {

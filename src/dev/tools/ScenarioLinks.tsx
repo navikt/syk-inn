@@ -6,14 +6,23 @@ import { FlowerPetalsIcon, PlayIcon } from '@navikt/aksel-icons'
 import Image from 'next/image'
 import { parseAsString, useQueryState } from 'nuqs'
 
+import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
 import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 
 import { scenarios } from '../mock-engine/scenarios/scenarios'
 
 function ScenarioLinks(): ReactElement {
-    const [pasient, setPasient] = useQueryState(
-        'pasient',
-        parseAsString.withDefault('espen').withOptions({ clearOnDefault: true }),
+    const [patient, setPatient] = useQueryState(
+        'patient',
+        parseAsString.withDefault('Espen Eksempel' satisfies MockPatients).withOptions({ clearOnDefault: true }),
+    )
+    const [practitioner, setPractitioner] = useQueryState(
+        'practitioner',
+        parseAsString.withDefault('').withOptions({ clearOnDefault: true }),
+    )
+    const [organization, setOrganization] = useQueryState(
+        'organization',
+        parseAsString.withDefault('').withOptions({ clearOnDefault: true }),
     )
 
     const justLaunchRef = useRef<HTMLAnchorElement>(null)
@@ -30,16 +39,42 @@ function ScenarioLinks(): ReactElement {
                     <Image src="https://cdn.nav.no/tsm/syk-inn/dass.gif" alt="" width="32" height="32" unoptimized />
                     FHIR scenarioer
                 </Heading>
-                <div className="">
+                <div className="flex gap-2 mb-4">
                     <Select
+                        className="max-w-32"
                         label="Pasient"
                         size="small"
-                        hideLabel
-                        onChange={(e) => setPasient(e.target.value)}
-                        value={pasient}
+                        onChange={(e) => setPatient(e.target.value)}
+                        value={patient}
                     >
-                        <option value="espen">Espen Eksempel</option>
-                        <option value="kari">Kari Normann</option>
+                        <option value={'Espen Eksempel' satisfies MockPatients}>Espen Eksempel</option>
+                        <option value={'Kari Normann' satisfies MockPatients}>Kari Normann</option>
+                    </Select>
+                    <Select
+                        className="max-w-32"
+                        label="Practitioner"
+                        size="small"
+                        onChange={(e) => setPractitioner(e.target.value)}
+                        value={practitioner}
+                    >
+                        <option value="" disabled>
+                            Default
+                        </option>
+                        <option value={'Magnar Koman' satisfies MockPractitioners}>Magnar Koman</option>
+                        <option value={'Badette Organitto' satisfies MockPractitioners}>Badette</option>
+                    </Select>
+                    <Select
+                        className="max-w-32"
+                        label="Organization"
+                        size="small"
+                        onChange={(e) => setOrganization(e.target.value)}
+                        value={organization}
+                    >
+                        <option value="" disabled>
+                            Default
+                        </option>
+                        <option value={'Magnar Legekontor' satisfies MockOrganizations}>Magnar Legekontor</option>
+                        <option value={'Manglerud' satisfies MockOrganizations}>Manglerud (har feil orgnummer)</option>
                     </Select>
                 </div>
             </div>
@@ -51,9 +86,15 @@ function ScenarioLinks(): ReactElement {
                     <LinkCard.Title>
                         <LinkCard.Anchor
                             ref={justLaunchRef}
-                            href={pathWithBasePath(`${fhirLaunchUrl}&launch=local-dev-launch-${pasient}`)}
+                            href={pathWithBasePath(
+                                `${fhirLaunchUrl}&launch=${buildLaunchParam(
+                                    patient as MockPatients,
+                                    (practitioner || null) as MockPractitioners | null,
+                                    (organization || null) as MockOrganizations | null,
+                                )}`,
+                            )}
                         >
-                            Just launch
+                            Keep scenario
                         </LinkCard.Anchor>
                     </LinkCard.Title>
                     <LinkCard.Description>Just re-launches FHIR, does not change your scenario</LinkCard.Description>
@@ -64,7 +105,14 @@ function ScenarioLinks(): ReactElement {
                             <FlowerPetalsIcon fontSize="2rem" />
                         </LinkCard.Icon>
                         <LinkCard.Title>
-                            <LinkCard.Anchor href={createScenarioUrl(scenarioKey, pasient)}>
+                            <LinkCard.Anchor
+                                href={createScenarioUrl(
+                                    scenarioKey,
+                                    patient as MockPatients,
+                                    (practitioner || null) as MockPractitioners | null,
+                                    (organization || null) as MockOrganizations | null,
+                                )}
+                            >
                                 {scenarioKey}
                             </LinkCard.Anchor>
                         </LinkCard.Title>
@@ -78,10 +126,28 @@ function ScenarioLinks(): ReactElement {
 
 const fhirLaunchUrl = `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir`}` as const
 
-function createScenarioUrl(scenario: string, pasient: string): string {
+function createScenarioUrl(
+    scenario: string,
+    patient: MockPatients,
+    practitioner: MockPractitioners | null,
+    organization: MockOrganizations | null,
+): string {
     return pathWithBasePath(
-        `/set-scenario/${scenario}?returnTo=${encodeURIComponent(`${fhirLaunchUrl}&launch=local-dev-launch-${pasient}`)}`,
+        `/set-scenario/${scenario}?returnTo=${encodeURIComponent(
+            `${fhirLaunchUrl}&launch=${buildLaunchParam(patient as MockPatients, practitioner, organization)}`,
+        )}`,
     )
+}
+
+function buildLaunchParam(
+    patient: MockPatients,
+    practitioner: MockPractitioners | null,
+    organization: MockOrganizations | null,
+): MockLaunchType {
+    let launch = `local-dev-launch:${patient}`
+    if (practitioner) launch += `:${practitioner}`
+    if (organization) launch += `:${organization}`
+    return launch as MockLaunchType
 }
 
 export default ScenarioLinks

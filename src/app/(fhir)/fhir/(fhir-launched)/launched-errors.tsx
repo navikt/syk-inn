@@ -6,6 +6,7 @@ import { BodyShort, Button, Heading } from '@navikt/ds-react'
 
 import { isDemo, isLocal } from '@lib/env'
 import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
+import { MockLaunchType } from '@navikt/fhir-mock-server/types'
 
 export function NoPractitionerSession(): ReactElement {
     return (
@@ -29,10 +30,10 @@ export function NoPractitionerSession(): ReactElement {
                             as="a"
                             variant="secondary-neutral"
                             href={pathWithBasePath(
-                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-launch-espen`}`,
+                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel` satisfies MockLaunchType}`}`,
                             )}
                         >
-                            Relaunch dev FHIR
+                            Relaunch dev FHIR (Espen)
                         </Button>
                     )}
                 </div>

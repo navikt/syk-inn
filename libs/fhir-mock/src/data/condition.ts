@@ -1,6 +1,6 @@
 import { CodeableConcept, FhirCondition, FhirPatient } from '@navikt/smart-on-fhir/zod'
 
-import { Patients } from './patients'
+import { MockPatients } from './patients'
 
 function createCondition(patientId: string, encounterId: string, coding: CodeableConcept): FhirCondition {
     return {
@@ -32,7 +32,11 @@ export const codingBotulisme = {
     code: 'A051',
 }
 
-export function getConditionsFor(patientName: Patients, encounterId: string, patient: FhirPatient): FhirCondition[] {
+export function getConditionsFor(
+    patientName: MockPatients,
+    encounterId: string,
+    patient: FhirPatient,
+): FhirCondition[] {
     switch (patientName) {
         case 'Kari Normann':
             return [createCondition(patient.id, encounterId, codingBotulisme)]

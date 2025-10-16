@@ -9,6 +9,7 @@ import { isLocal, isDemo, getServerEnv } from '@lib/env'
 import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 import ScenarioLinks from '@dev/tools/ScenarioLinks'
 import StandaloneLinks from '@dev/tools/StandaloneLinks'
+import { MockLaunchType } from '@navikt/fhir-mock-server/types'
 
 import DumbDevHeader from './dumb/DumbDevHeader'
 
@@ -52,7 +53,7 @@ export default function Home(): ReactElement {
                                     <LinkCardTitle>
                                         <LinkCardAnchor
                                             href={pathWithBasePath(
-                                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-launch-espen`}`,
+                                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel` satisfies MockLaunchType}`}`,
                                             )}
                                         >
                                             Launch with syk-inn-api!

@@ -7,6 +7,7 @@ import { BodyShort, Button, Heading } from '@navikt/ds-react'
 import { ModeType } from '@core/providers/Modes'
 import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 import { isDemo, isLocal } from '@lib/env'
+import { MockLaunchType } from '@navikt/fhir-mock-server/types'
 
 export function NoValidHPR({ mode }: { mode: ModeType }): ReactElement {
     return (
@@ -36,10 +37,10 @@ export function NoValidHPR({ mode }: { mode: ModeType }): ReactElement {
                             as="a"
                             variant="secondary-neutral"
                             href={pathWithBasePath(
-                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-launch-espen`}`,
+                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel` satisfies MockLaunchType}`}`,
                             )}
                         >
-                            Relaunch dev FHIR
+                            Relaunch dev FHIR (Espen)
                         </Button>
                     )}
                 </div>

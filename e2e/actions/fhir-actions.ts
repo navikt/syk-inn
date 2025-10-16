@@ -1,5 +1,6 @@
 import { test, Page } from '@playwright/test'
 
+import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
 import { ExpectedToggles } from '@core/toggles/toggles'
 import { Scenarios } from '@dev/mock-engine/scenarios/scenarios'
 
@@ -9,14 +10,32 @@ const launchUrl = `${launchPath}?iss=http://localhost:3000/api/mocks/fhir`
 
 type ToggleOverrides = Partial<Record<ExpectedToggles, boolean>>
 
-type AdditionalOptions = {
-    patient?: 'espen' | 'kari'
-}
+type AdditionalOptions =
+    | {
+          patient?: MockPatients
+          practitioner?: null
+          organization?: null
+      }
+    | {
+          patient: MockPatients
+          practitioner?: MockPractitioners
+          organization?: null
+      }
+    | {
+          patient: MockPatients
+          practitioner: MockPractitioners
+          organization: MockOrganizations
+      }
 
 export function launchWithMock(
     scenario: Scenarios = 'normal',
-    { patient = 'espen', ...toggleOverrides }: ToggleOverrides & AdditionalOptions = {
-        patient: 'espen',
+    {
+        patient = 'Espen Eksempel',
+        practitioner = null,
+        organization = null,
+        ...toggleOverrides
+    }: ToggleOverrides & AdditionalOptions = {
+        patient: 'Espen Eksempel',
         SYK_INN_AAREG: false,
         SYK_INN_SHOW_REDACTED: false,
         SYK_INN_AUTO_BIDIAGNOSER: false,
@@ -41,13 +60,24 @@ export function launchWithMock(
         if (scenario != 'normal') {
             return test.step(`Launch scenario ${scenario} (${patient})`, async () => {
                 await page.goto(
-                    `/set-scenario/${scenario}?returnTo=${encodeURIComponent(`${launchUrl}&launch=local-dev-launch-${patient}`)}`,
+                    `/set-scenario/${scenario}?returnTo=${encodeURIComponent(`${launchUrl}&launch=${buildLaunchParam(patient, practitioner, organization)}`)}`,
                 )
             })
         }
 
         return test.step(`Launch FHIR mock with default scenario (normal, ${patient})`, async () => {
-            await page.goto(`${launchUrl}&launch=local-dev-launch-${patient}`)
+            await page.goto(`${launchUrl}&launch=${buildLaunchParam(patient, practitioner, organization)}`)
         })
     }
+}
+
+function buildLaunchParam(
+    patient: MockPatients,
+    practitioner: MockPractitioners | null,
+    organization: MockOrganizations | null,
+): MockLaunchType {
+    let launch = `local-dev-launch:${patient}`
+    if (practitioner) launch += `:${practitioner}`
+    if (organization) launch += `:${organization}`
+    return launch as MockLaunchType
 }

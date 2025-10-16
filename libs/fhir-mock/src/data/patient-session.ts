@@ -8,7 +8,7 @@ import {
 
 import { getConditionsFor } from './condition'
 import { createEncounter } from './encounter'
-import { getPatient, Patients } from './patients'
+import { MockPatients } from './patients'
 
 /**
  * A holder for any resources, from the perspective of a patient.
@@ -24,13 +24,13 @@ export type PatientSession = {
 }
 
 export function createPatientSession(
-    patientName: Patients,
+    patientName: MockPatients,
+    patient: FhirPatient,
     practitioner: FhirPractitioner,
     organization: FhirOrganization,
 ): PatientSession {
     const encounterId = crypto.randomUUID()
 
-    const patient = getPatient(patientName)
     const conditions = getConditionsFor(patientName, encounterId, patient)
     const encounter = createEncounter(encounterId, patient, conditions, practitioner, organization)
 

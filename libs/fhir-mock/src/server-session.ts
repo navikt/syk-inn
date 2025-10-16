@@ -1,51 +1,68 @@
-import { FhirOrganization, FhirPractitioner } from '@navikt/smart-on-fhir/zod'
+import { FhirOrganization, FhirPatient, FhirPractitioner } from '@navikt/smart-on-fhir/zod'
 import { logger } from '@navikt/pino-logger'
 
-import { Patients } from './data/patients'
 import { createPatientSession, PatientSession } from './data/patient-session'
-import { createOrganizationMagmarLegekontor } from './data/static/organization'
-import { createPractitionerKomanMagnar } from './data/static/practitioner-koman-magnar'
+import { createPatientEspenEksempel, createPatientKariNormann, MockPatients } from './data/patients'
+import { createOrganizationMagmarLegekontor, createOrganizationManglerud, MockOrganizations } from './data/organization'
+import {
+    createPractitionerBadetteOrganitto,
+    createPractitionerKomanMagnar,
+    MockPractitioners,
+} from './data/practitioner'
+
+type LaunchPayload = {
+    patient: MockPatients
+    practitioner: MockPractitioners
+    organization: MockOrganizations
+}
 
 export class FhirMockSession {
-    private organizations: Record<string, FhirOrganization> = {}
+    private patients: [MockPatients, FhirPatient][] = [
+        ['Espen Eksempel', createPatientEspenEksempel()],
+        ['Kari Normann', createPatientKariNormann()],
+    ]
 
-    private practitioners: Record<string, FhirPractitioner> = {}
+    private organizations: [MockOrganizations, FhirOrganization][] = [
+        ['Magnar Legekontor', createOrganizationMagmarLegekontor()],
+        ['Manglerud', createOrganizationManglerud()],
+    ]
 
-    private launches: Record<string, Patients> = {}
+    private practitioners: [MockPractitioners, FhirPractitioner][] = [
+        ['Magnar Koman', createPractitionerKomanMagnar()],
+        ['Badette Organitto', createPractitionerBadetteOrganitto()],
+    ]
+
+    private launches: Record<string, LaunchPayload> = {}
 
     private sessions: Record<string, PatientSession> = {}
 
     constructor() {
         logger.warn('[FhirMockSession] Initialized new FhirMockSession')
-
-        const org1 = createOrganizationMagmarLegekontor()
-        this.organizations[org1.id] = org1
-
-        const magnar = createPractitionerKomanMagnar()
-        this.practitioners[magnar.id] = magnar
     }
 
-    initializeLaunch(code: string, patient: Patients): void {
-        logger.warn(`Initializing launch ${code} for patient ${patient}`)
+    initializeLaunch(code: string, payload: LaunchPayload): void {
+        logger.warn(
+            `Initializing launch ${code} for patient ${payload.patient} (${payload.practitioner}/${payload.organization})`,
+        )
 
-        this.launches[code] = patient
+        this.launches[code] = payload
     }
 
     completeLaunch(code: string, accessToken: string): PatientSession {
         logger.warn(`Completing launch for ${code}, got access token (${accessToken.length})`)
 
-        const patient = this.launches[code]
-        if (!patient) {
+        const launchPayload = this.launches[code]
+        if (!launchPayload) {
             throw new Error(`No launch found for code ${code}`)
         }
 
         delete this.launches[code]
 
         this.sessions[accessToken] = createPatientSession(
-            patient,
-            // Future feature: Support for launching with different practitioners and organizations
-            this.getAllPractitioners()[0],
-            this.getAllOrgsanizations()[0],
+            launchPayload.patient,
+            this.getPatientByName(launchPayload.patient),
+            this.getPractitionerByName(launchPayload.practitioner)!,
+            this.getOrganizationByName(launchPayload.organization)!,
         )
         return this.sessions[accessToken]
     }
@@ -55,19 +72,43 @@ export class FhirMockSession {
     }
 
     getOrganization(organizationId: string): FhirOrganization | null {
-        return this.organizations[organizationId] ?? null
+        return this.organizations.find((it) => it[1].id === organizationId)?.[1] ?? null
     }
 
-    getAllOrgsanizations(): FhirOrganization[] {
-        return Object.values(this.organizations)
+    getAllOrganizations(): FhirOrganization[] {
+        return Object.values(this.organizations).map((it) => it[1])
     }
 
     getPractitioner(practitionerId: string): FhirPractitioner | null {
-        return this.practitioners[practitionerId] ?? null
+        return this.practitioners.find((it) => it[1].id === practitionerId)?.[1] ?? null
     }
 
     getAllPractitioners(): FhirPractitioner[] {
-        return Object.values(this.practitioners)
+        return Object.values(this.practitioners).map((it) => it[1])
+    }
+
+    private getPatientByName(name: MockPatients): FhirPatient {
+        const patient = this.patients.find((it) => it[0] === name)
+        if (!patient) {
+            throw new Error(`No patient found for name ${name}`)
+        }
+        return patient[1]
+    }
+
+    private getPractitionerByName(name: MockPractitioners): FhirPractitioner {
+        const practitioner = this.practitioners.find((it) => it[0] === name)
+        if (!practitioner) {
+            throw new Error(`No practitioner found for name ${name}`)
+        }
+        return practitioner[1]
+    }
+
+    private getOrganizationByName(name: MockOrganizations): FhirOrganization {
+        const organization = this.organizations.find((it) => it[0] === name)
+        if (!organization) {
+            throw new Error(`No organization found for name ${name}`)
+        }
+        return organization[1]
     }
 
     dump(): unknown {

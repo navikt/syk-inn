@@ -1,8 +1,8 @@
 import { FhirPatient } from '@navikt/smart-on-fhir/zod'
 
-export type Patients = 'Espen Eksempel' | 'Kari Normann'
+export type MockPatients = 'Espen Eksempel' | 'Kari Normann'
 
-export const patientEspenEksempel = (): FhirPatient => ({
+export const createPatientEspenEksempel = (): FhirPatient => ({
     resourceType: 'Patient',
     id: crypto.randomUUID(),
     meta: { profile: ['http://hl7.no/fhir/StructureDefinition/no-basis-Patient'] },
@@ -18,7 +18,7 @@ export const patientEspenEksempel = (): FhirPatient => ({
         },
     ],
 })
-export const patientKariNormann = (): FhirPatient => ({
+export const createPatientKariNormann = (): FhirPatient => ({
     resourceType: 'Patient',
     id: crypto.randomUUID(),
     meta: { profile: ['http://hl7.no/fhir/StructureDefinition/no-basis-Patient'] },
@@ -34,12 +34,3 @@ export const patientKariNormann = (): FhirPatient => ({
         },
     ],
 })
-
-export function getPatient(name: Patients): FhirPatient {
-    switch (name) {
-        case 'Espen Eksempel':
-            return patientEspenEksempel()
-        case 'Kari Normann':
-            return patientKariNormann()
-    }
-}
