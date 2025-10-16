@@ -20,7 +20,7 @@ export const organizationRouter = new Hono()
                 resourceType: 'Bundle',
                 type: 'searchset',
                 entry: getServerSession()
-                    .getAllOrgsanizations()
+                    .getAllOrganizations()
                     .map((org) => ({
                         resource: org,
                     })),

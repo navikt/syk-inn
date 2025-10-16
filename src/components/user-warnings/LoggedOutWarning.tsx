@@ -7,6 +7,7 @@ import { isLocal, isDemo } from '@lib/env'
 import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 import { useAppSelector } from '@core/redux/hooks'
 import { useMode } from '@core/providers/Modes'
+import { MockLaunchType } from '@navikt/fhir-mock-server/types'
 
 function LoggedOutWarning(): ReactElement | null {
     const isSessionExpired = useAppSelector((state) => state.metadata.sessionExpired)
@@ -48,10 +49,10 @@ function LoggedOutWarning(): ReactElement | null {
                         as="a"
                         variant="secondary-neutral"
                         href={pathWithBasePath(
-                            `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=local-dev-launch-espen`}`,
+                            `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel` satisfies MockLaunchType}`}`,
                         )}
                     >
-                        Relaunch dev FHIR
+                        Relaunch dev FHIR (Espen)
                     </Button>
                 )}
             </Modal.Footer>
