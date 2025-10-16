@@ -11,7 +11,7 @@ const icd10Fuse = new Fuse(icd10, { keys: ['code', 'text', 'system'], threshold:
 const icpc2Fuse = new Fuse(icpc2, { keys: ['code', 'text', 'system'], threshold: 0.2 })
 
 export function searchDiagnose(query: string, system: DiagnoseSystem): Diagnose[] {
-    const fuseResult = (system === 'ICPC2' ? icd10Fuse : icpc2Fuse)
+    const fuseResult = (system === 'ICPC2' ? icpc2Fuse : icd10Fuse)
         .search(query)
         .map(
             (it) =>

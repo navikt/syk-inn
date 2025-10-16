@@ -32,7 +32,7 @@ test('should be able to duplicate an existing sykmelding with correct values', a
     await userInteractionsGroup(
         fillArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         fillPeriodeRelative({ type: '100%', fromRelative: -1, days: 14 }),
-        pickHoveddiagnose({ search: 'H931', select: /Tinnitus/ }),
+        pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
         fillAndreSporsmal({
             svangerskapsrelatert: true,
             yrkesskade: true,
@@ -53,7 +53,7 @@ test('should be able to duplicate an existing sykmelding with correct values', a
     await userInteractionsGroup(
         expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         expectPeriode({ type: '100%', fromRelative: -1, days: 14 }),
-        expectHoveddiagnose('H931 - Tinnitus'),
+        expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
         expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
         // Don't copy meldinger during duplication
         expectMeldinger({
@@ -84,7 +84,7 @@ test('should be able to forlenge an existing sykmelding with correct values', as
     await userInteractionsGroup(
         fillArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         fillPeriodeRelative({ type: '100%', fromRelative: 0, days: 14 }),
-        pickHoveddiagnose({ search: 'H931', select: /Tinnitus/ }),
+        pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
         fillAndreSporsmal({
             svangerskapsrelatert: true,
             yrkesskade: true,
@@ -108,7 +108,7 @@ test('should be able to forlenge an existing sykmelding with correct values', as
 
     await userInteractionsGroup(
         expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
-        expectHoveddiagnose('H931 - Tinnitus'),
+        expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
         expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
         // Don't copy meldinger during forlengelse
         expectMeldinger({
@@ -160,7 +160,7 @@ test('should not be possible to extend old sykmelding', async ({ page }) => {
             contact: daysAgo(4),
             reason: 'Ventetid på legetime',
         }),
-        pickHoveddiagnose({ search: 'H931', select: /Tinnitus/ }),
+        pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
         nextStep(),
         verifySignerendeBehandler(),
         submitSykmelding(),

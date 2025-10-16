@@ -46,12 +46,12 @@ const fillAllTheValues = userInteractionsGroup(
         select: /Angstlidelse/,
     }),
     addBidiagnose({
-        search: 'B600',
-        select: /Babesiose/,
+        search: 'A03',
+        select: /Feber/,
     }),
     addBidiagnose({
-        search: 'R772',
-        select: /Alfaføtoproteinabnormitet/,
+        search: 'S95',
+        select: /Molluscum contagiosum/,
     }),
     fillAndreSporsmal({
         svangerskapsrelatert: true,
@@ -68,7 +68,7 @@ const verifyAlltheValues = userInteractionsGroup(
     expectPeriode({ type: { grad: 65 }, fromRelative: -9, days: 14 }),
     expectTilbakedatering({ daysAgo: 4, reason: 'VENTETID_LEGETIME' }),
     expectHoveddiagnose('P74 - Angstlidelse'),
-    expectBidagnoses(['Babesiose', 'Alfaføtoproteinabnormitet']),
+    expectBidagnoses(['Feber', 'Molluscum contagiosum']),
     expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(2) }),
     expectMeldinger({ tilNav: 'Trenger mer penger', tilArbeidsgiver: 'Trenger sev-henk pult' }),
 )

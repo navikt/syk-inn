@@ -36,7 +36,7 @@ test('simple - 100% sykmelding', async ({ page }) => {
     })(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-    await addBidiagnose({ search: 'B600', select: /Babesiose/ })(page)
+    await addBidiagnose({ search: 'P17', select: /Tobakkmisbruk/ })(page)
 
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
@@ -47,7 +47,7 @@ test('simple - 100% sykmelding', async ({ page }) => {
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
-            bidiagnoser: [{ system: 'ICD10', code: 'B600' }],
+            bidiagnoser: [{ system: 'ICPC2', code: 'P17' }],
             aktivitet: [
                 {
                     type: 'AKTIVITET_IKKE_MULIG',
@@ -203,8 +203,8 @@ test('optional - multiple bidiagnoser', async ({ page }) => {
     })(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-    await addBidiagnose({ search: 'B600', select: /Babesiose/ })(page)
-    await addBidiagnose({ search: 'R772', select: /Alfaføtoproteinabnormitet/ })(page)
+    await addBidiagnose({ search: 'P17', select: /Tobakkmisbruk/ })(page)
+    await addBidiagnose({ search: 'B80', select: /Jernmangelanemi/ })(page)
 
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
@@ -216,8 +216,8 @@ test('optional - multiple bidiagnoser', async ({ page }) => {
         values: {
             hoveddiagnose: { code: 'P74', system: 'ICPC2' },
             bidiagnoser: [
-                { system: 'ICD10', code: 'B600' },
-                { system: 'ICD10', code: 'R772' },
+                { system: 'ICPC2', code: 'P17' },
+                { system: 'ICPC2', code: 'B80' },
             ],
             aktivitet: [
                 {

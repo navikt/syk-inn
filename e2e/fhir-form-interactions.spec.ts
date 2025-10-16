@@ -20,38 +20,38 @@ test('hoveddiagnose - shall be able to edit diagnose', async ({ page }) => {
     await expectHoveddiagnose(/L73 - Brudd legg\/ankel/)(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-    await editHoveddiagnose({ search: 'D290', select: /D290/ })(page)
-    await expectHoveddiagnose(/Godartet svulst i/)(page)
+    await editHoveddiagnose({ search: 'H75', select: /H75/ })(page)
+    await expectHoveddiagnose(/Svulst øre/)(page)
 })
 
 test('bidiagnoser - adding, editing, deleting adhd test', async ({ page }) => {
     await launchWithMock('empty')(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
-    await addBidiagnose({ search: 'B600', select: /Babesiose/ })(page)
-    await expectBidagnoses(['Babesiose'])(page)
-    await addBidiagnose({ search: 'A931', select: /Sandfluefeber/ })(page)
-    await expectBidagnoses(['Babesiose', 'Sandfluefeber'])(page)
+    await addBidiagnose({ search: 'P17', select: /Tobakkmisbruk/ })(page)
+    await expectBidagnoses(['Tobakkmisbruk'])(page)
+    await addBidiagnose({ search: 'A03', select: /Feber/ })(page)
+    await expectBidagnoses(['Tobakkmisbruk', 'Feber'])(page)
 
     await deleteBidiagnose(1)(page)
-    await expectBidagnoses(['Sandfluefeber'])(page)
+    await expectBidagnoses(['Feber'])(page)
 
     await deleteBidiagnose(1)(page)
     await expectBidagnoses([])(page)
 
-    await addBidiagnose({ search: 'B600', select: /Babesiose/ })(page)
-    await addBidiagnose({ search: 'A931', select: /Sandfluefeber/ })(page)
-    await addBidiagnose({ search: 'R772', select: /Alfaføtoproteinabnormitet/ })(page)
+    await addBidiagnose({ search: 'P17', select: /Tobakkmisbruk/ })(page)
+    await addBidiagnose({ search: 'A03', select: /Feber/ })(page)
+    await addBidiagnose({ search: 'S95', select: /Molluscum contagiosum/ })(page)
 
-    await expectBidagnoses(['Babesiose', 'Sandfluefeber', 'Alfaføtoproteinabnormitet'])(page)
-    await editBidiagnose({ index: 2, search: 'S022', select: /Brudd i neseben;lukket/ })(page)
-    await expectBidagnoses(['Babesiose', 'Brudd i neseben;lukket', 'Alfaføtoproteinabnormitet'])(page)
+    await expectBidagnoses(['Tobakkmisbruk', 'Feber', 'Molluscum contagiosum'])(page)
+    await editBidiagnose({ index: 2, search: 'L76', select: /Brudd IKA/ })(page)
+    await expectBidagnoses(['Tobakkmisbruk', 'Brudd IKA', 'Molluscum contagiosum'])(page)
 
-    await editBidiagnose({ index: 1, search: 'A051', select: /Botulisme/ })(page)
-    await expectBidagnoses(['Botulisme', 'Brudd i neseben;lukket', 'Alfaføtoproteinabnormitet'])(page)
+    await editBidiagnose({ index: 1, search: 'K93', select: /Lungeemboli/ })(page)
+    await expectBidagnoses(['Lungeemboli', 'Brudd IKA', 'Molluscum contagiosum'])(page)
 
-    await editBidiagnose({ index: 3, search: 'F609', select: /Uspesifisert personlighetsforstyrrelse/ })(page)
-    await expectBidagnoses(['Botulisme', 'Brudd i neseben;lukket', 'Uspesifisert personlighetsforstyrrelse'])(page)
+    await editBidiagnose({ index: 3, search: 'P80', select: /Personlighetsforstyrrelse/ })(page)
+    await expectBidagnoses(['Lungeemboli', 'Brudd IKA', 'Personlighetsforstyrrelse'])(page)
 
     await deleteBidiagnose(3)(page)
     await deleteBidiagnose(2)(page)
