@@ -92,8 +92,8 @@ function ScenarioLinks(): ReactElement {
                             href={pathWithBasePath(
                                 `${fhirLaunchUrl}&launch=${buildLaunchParam(
                                     patient as MockPatients,
-                                    (practitioner || null) as MockPractitioners | null,
-                                    (organization || null) as MockOrganizations | null,
+                                    (practitioner || 'Magnar Koman') as MockPractitioners,
+                                    (organization || 'Magnar Legekontor') as MockOrganizations,
                                 )}`,
                             )}
                         >
@@ -112,8 +112,8 @@ function ScenarioLinks(): ReactElement {
                                 href={createScenarioUrl(
                                     scenarioKey,
                                     patient as MockPatients,
-                                    (practitioner || null) as MockPractitioners | null,
-                                    (organization || null) as MockOrganizations | null,
+                                    (practitioner || 'Magnar Koman') as MockPractitioners,
+                                    (organization || 'Magnar Legekontor') as MockOrganizations,
                                 )}
                             >
                                 {scenarioKey}
@@ -132,8 +132,8 @@ const fhirLaunchUrl = `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir`}`
 function createScenarioUrl(
     scenario: string,
     patient: MockPatients,
-    practitioner: MockPractitioners | null,
-    organization: MockOrganizations | null,
+    practitioner: MockPractitioners,
+    organization: MockOrganizations,
 ): string {
     return pathWithBasePath(
         `/set-scenario/${scenario}?returnTo=${encodeURIComponent(
@@ -144,13 +144,10 @@ function createScenarioUrl(
 
 function buildLaunchParam(
     patient: MockPatients,
-    practitioner: MockPractitioners | null,
-    organization: MockOrganizations | null,
+    practitioner: MockPractitioners,
+    organization: MockOrganizations,
 ): MockLaunchType {
-    let launch = `local-dev-launch:${patient}`
-    if (practitioner) launch += `:${practitioner}`
-    if (organization) launch += `:${organization}`
-    return launch as MockLaunchType
+    return `local-dev-launch:${patient}:${practitioner}:${organization}`
 }
 
 export default ScenarioLinks
