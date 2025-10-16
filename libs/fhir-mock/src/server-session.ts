@@ -3,7 +3,12 @@ import { logger } from '@navikt/pino-logger'
 
 import { createPatientSession, PatientSession } from './data/patient-session'
 import { createPatientEspenEksempel, createPatientKariNormann, MockPatients } from './data/patients'
-import { createOrganizationMagmarLegekontor, createOrganizationManglerud, MockOrganizations } from './data/organization'
+import {
+    createOrganizationKarlsrud,
+    createOrganizationMagmarLegekontor,
+    createOrganizationManglerud,
+    MockOrganizations,
+} from './data/organization'
 import {
     createPractitionerBadetteOrganitto,
     createPractitionerKomanMagnar,
@@ -25,6 +30,7 @@ export class FhirMockSession {
     private organizations: [MockOrganizations, FhirOrganization][] = [
         ['Magnar Legekontor', createOrganizationMagmarLegekontor()],
         ['Manglerud', createOrganizationManglerud()],
+        ['Karlsrud', createOrganizationKarlsrud()],
     ]
 
     private practitioners: [MockPractitioners, FhirPractitioner][] = [

@@ -74,7 +74,10 @@ function ScenarioLinks(): ReactElement {
                             Default
                         </option>
                         <option value={'Magnar Legekontor' satisfies MockOrganizations}>Magnar Legekontor</option>
-                        <option value={'Manglerud' satisfies MockOrganizations}>Manglerud (har feil orgnummer)</option>
+                        <option value={'Karlsrud' satisfies MockOrganizations}>Karlsrud (feil lengde orgnr)</option>
+                        <option value={'Manglerud' satisfies MockOrganizations}>
+                            Manglerud (har feil lengde orgnr og uten tlf)
+                        </option>
                     </Select>
                 </div>
             </div>

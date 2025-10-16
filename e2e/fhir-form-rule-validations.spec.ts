@@ -7,7 +7,7 @@ test('UGYLDIG_ORGNR_LENGDE', async ({ page }) => {
     await launchWithMock('normal', {
         patient: 'Espen Eksempel',
         practitioner: 'Magnar Koman',
-        organization: 'Manglerud',
+        organization: 'Karlsrud',
     })(page)
     await startNewSykmelding()(page)
     await fillPeriodeRelative({
@@ -17,5 +17,5 @@ test('UGYLDIG_ORGNR_LENGDE', async ({ page }) => {
     await nextStep()(page)
 
     // TODO: Incomplete test
-    await expect(page.getByRole('heading', { name: 'Kunne ikke hente signerende behandler' })).toBeVisible()
+    await expect(page.getByText(/Organisasjonsnummer(.*)999/)).toBeVisible()
 })

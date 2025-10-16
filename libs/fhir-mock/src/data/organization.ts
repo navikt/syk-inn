@@ -1,6 +1,6 @@
 import { FhirOrganization } from '@navikt/smart-on-fhir/zod'
 
-export type MockOrganizations = 'Magnar Legekontor' | 'Manglerud'
+export type MockOrganizations = 'Magnar Legekontor' | 'Manglerud' | 'Karlsrud'
 
 export const createOrganizationMagmarLegekontor = (): FhirOrganization => ({
     resourceType: 'Organization',
@@ -40,4 +40,17 @@ export const createOrganizationManglerud = (): FhirOrganization => ({
             value: 'mangleru-lege@example.com',
         },
     ],
+})
+
+export const createOrganizationKarlsrud = (): FhirOrganization => ({
+    resourceType: 'Organization',
+    id: crypto.randomUUID(),
+    identifier: [
+        {
+            system: 'urn:oid:2.16.578.1.12.4.1.4.101',
+            value: '999',
+        },
+    ],
+    name: 'Karlsrud "Lege"-kontor',
+    telecom: [{ system: 'phone', value: '12345678' }],
 })
