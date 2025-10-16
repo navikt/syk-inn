@@ -1,7 +1,7 @@
 'use client'
 
-import React, { ReactElement, useEffect, useRef } from 'react'
-import { Heading, LinkCard, Select } from '@navikt/ds-react'
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
+import { Heading, LinkCard, Select, Link, Modal, BodyShort, Loader } from '@navikt/ds-react'
 import { FlowerPetalsIcon, PlayIcon } from '@navikt/aksel-icons'
 import Image from 'next/image'
 import { parseAsString, useQueryState } from 'nuqs'
@@ -12,6 +12,8 @@ import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 import { scenarios } from '../mock-engine/scenarios/scenarios'
 
 function ScenarioLinks(): ReactElement {
+    const [isLaunching, setIsLaunching] = useState<string | null>(null)
+
     const [patient, setPatient] = useQueryState(
         'patient',
         parseAsString.withDefault('Espen Eksempel' satisfies MockPatients).withOptions({ clearOnDefault: true }),
@@ -35,11 +37,11 @@ function ScenarioLinks(): ReactElement {
     return (
         <div className="mt-2">
             <div className="flex justify-between">
-                <Heading level="3" size="xsmall" spacing className="flex gap-1 items-center">
-                    <Image src="https://cdn.nav.no/tsm/syk-inn/dass.gif" alt="" width="32" height="32" unoptimized />
+                <Heading level="3" size="large" spacing className="flex gap-1 items-center">
+                    <Image src="https://cdn.nav.no/tsm/syk-inn/dass.gif" alt="" width="48" height="48" unoptimized />
                     FHIR scenarioer
                 </Heading>
-                <div className="flex gap-2 mb-4">
+                <div className="flex gap-2 mb-4 relative">
                     <Select
                         className="max-w-32"
                         label="Pasient"
@@ -79,6 +81,18 @@ function ScenarioLinks(): ReactElement {
                             Manglerud (har feil lengde orgnr og uten tlf)
                         </option>
                     </Select>
+                    <Link
+                        className="absolute -top-4 right-0 text-xs"
+                        as="button"
+                        type="button"
+                        onClick={() => {
+                            setPatient('Espen Eksempel' satisfies MockPatients)
+                            setPractitioner('')
+                            setOrganization('')
+                        }}
+                    >
+                        Reset
+                    </Link>
                 </div>
             </div>
             <div className="grid md:grid-cols-2 gap-3">
@@ -96,6 +110,7 @@ function ScenarioLinks(): ReactElement {
                                     (organization || 'Magnar Legekontor') as MockOrganizations,
                                 )}`,
                             )}
+                            onClick={() => setIsLaunching('keep previous')}
                         >
                             Keep scenario
                         </LinkCard.Anchor>
@@ -115,6 +130,7 @@ function ScenarioLinks(): ReactElement {
                                     (practitioner || 'Magnar Koman') as MockPractitioners,
                                     (organization || 'Magnar Legekontor') as MockOrganizations,
                                 )}
+                                onClick={() => setIsLaunching(scenarioKey)}
                             >
                                 {scenarioKey}
                             </LinkCard.Anchor>
@@ -123,6 +139,23 @@ function ScenarioLinks(): ReactElement {
                     </LinkCard>
                 ))}
             </div>
+            <Modal
+                open={isLaunching != null}
+                header={{
+                    heading: 'Launching...',
+                    closeButton: false,
+                    size: 'small',
+                    icon: <Loader size="medium" />,
+                }}
+                onClose={() => void 0}
+            >
+                <Modal.Body>
+                    <BodyShort>Scenario: {isLaunching ?? 'Unknown'}</BodyShort>
+                    <BodyShort>Patient: {patient}</BodyShort>
+                    <BodyShort>Practitioner: {practitioner || 'Default (Magnar Koman)'}</BodyShort>
+                    <BodyShort>Organization: {organization || 'Default (Magnar Legekontor)'}</BodyShort>
+                </Modal.Body>
+            </Modal>
         </div>
     )
 }
