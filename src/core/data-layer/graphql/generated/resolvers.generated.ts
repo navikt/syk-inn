@@ -303,6 +303,7 @@ export type Query = {
 
 export type QueryDiagnoseArgs = {
     query: Scalars['String']['input']
+    system: DiagnoseSystem
 }
 
 export type QueryDraftArgs = {
@@ -905,7 +906,7 @@ export type QueryResolvers<
         Maybe<Array<ResolversTypes['Diagnose']>>,
         ParentType,
         ContextType,
-        RequireFields<QueryDiagnoseArgs, 'query'>
+        RequireFields<QueryDiagnoseArgs, 'query' | 'system'>
     >
     draft?: Resolver<
         Maybe<ResolversTypes['OpprettSykmeldingDraft']>,

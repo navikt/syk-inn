@@ -3,7 +3,7 @@ import { searchDiagnose } from '@data-layer/common/diagnose-search'
 import { raise } from '@lib/ts'
 
 export const commonQueryResolvers: QueryResolvers = {
-    diagnose: (_, { query }) => searchDiagnose(query),
+    diagnose: (_, { query, system }) => searchDiagnose(query, system),
 }
 
 export const typeResolvers: Resolvers = {

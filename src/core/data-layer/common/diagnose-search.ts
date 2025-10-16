@@ -7,10 +7,11 @@ import { Diagnose, DiagnoseSystem } from '@data-layer/common/diagnose'
 const icd10 = ICD10.map((it) => ({ system: 'ICD10', ...it }))
 const icpc2 = ICPC2.map((it) => ({ system: 'ICPC2', ...it }))
 
-const megaFuse = new Fuse([...icd10, ...icpc2], { keys: ['code', 'text', 'system'], threshold: 0.2 })
+const icd10Fuse = new Fuse(icd10, { keys: ['code', 'text', 'system'], threshold: 0.2 })
+const icpc2Fuse = new Fuse(icpc2, { keys: ['code', 'text', 'system'], threshold: 0.2 })
 
-export function searchDiagnose(query: string): Diagnose[] {
-    const fuseResult = megaFuse
+export function searchDiagnose(query: string, system: DiagnoseSystem): Diagnose[] {
+    const fuseResult = (system === 'ICPC2' ? icd10Fuse : icpc2Fuse)
         .search(query)
         .map(
             (it) =>

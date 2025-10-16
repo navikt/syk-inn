@@ -1,5 +1,5 @@
 query DiagnoseSearch($query: String!) {
-    diagnose(query: $query) {
+    diagnose(query: $query, system: ICPC2) {
         ...Diagnose
     }
 }

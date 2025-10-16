@@ -5,7 +5,7 @@ type Query {
     sykmelding(id: String!): Sykmelding
     sykmeldinger: [Sykmelding!]
 
-    diagnose(query: String!): [Diagnose!]
+    diagnose(query: String!, system: DiagnoseSystem!): [Diagnose!]
     person(ident: String): QueriedPerson
 
     draft(draftId: String!): OpprettSykmeldingDraft

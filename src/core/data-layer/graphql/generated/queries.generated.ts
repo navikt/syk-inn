@@ -301,6 +301,7 @@ export type Query = {
 
 export type QueryDiagnoseArgs = {
     query: Scalars['String']['input']
+    system: DiagnoseSystem
 }
 
 export type QueryDraftArgs = {
@@ -2309,6 +2310,11 @@ export const DiagnoseSearchDocument = {
                                 kind: 'Argument',
                                 name: { kind: 'Name', value: 'query' },
                                 value: { kind: 'Variable', name: { kind: 'Name', value: 'query' } },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'system' },
+                                value: { kind: 'EnumValue', value: 'ICPC2' },
                             },
                         ],
                         selectionSet: {
