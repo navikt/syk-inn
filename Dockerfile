@@ -2,7 +2,7 @@ FROM gcr.io/distroless/nodejs24-debian12@sha256:5026fedf05325da8b8d6ff4d3618c73e
 
 WORKDIR /app
 
-COPY next-logger.config.js /app/
+COPY next-logger.config.cjs /app/
 COPY .next/standalone /app/
 
 EXPOSE 3000
