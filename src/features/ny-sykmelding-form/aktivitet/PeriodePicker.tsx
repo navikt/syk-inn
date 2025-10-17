@@ -29,16 +29,11 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
         name: `perioder.${index}.periode.fom` as const,
         rules: {
             validate: (value) => {
+                if (!value) return 'Du må fylle inn fra og med dato'
+
                 if (rangeError?.from.isInvalid) return 'Fra og med dato må være en gyldig dato'
                 if (rangeError?.from.isDisabled) return 'Periode kan ikke overlappe med forrige periode'
-
-                if (!value) {
-                    return 'Du må fylle inn fra og med dato'
-                }
-
-                if (tomField.field.value && value > tomField.field.value) {
-                    return 'Fra og med dato kan ikke være etter til og med dato'
-                }
+                if (rangeError?.to.isBeforeFrom) return 'Fra og med dato kan ikke være etter til og med dato'
 
                 if (previousTomPlusOne && isBefore(value, previousTomPlusOne)) {
                     return 'Periode kan ikke overlappe med forrige periode'
@@ -54,6 +49,7 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
         name: `perioder.${index}.periode.tom` as const,
         rules: {
             validate: (value) => {
+                if (rangeError?.to.isBeforeFrom) return
                 if (rangeError?.to.isInvalid) {
                     return 'Til og med dato må være en gyldig dato'
                 }

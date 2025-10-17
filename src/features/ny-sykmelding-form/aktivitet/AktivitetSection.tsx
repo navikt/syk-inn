@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Button } from '@navikt/ds-react'
+import { Button, ErrorMessage } from '@navikt/ds-react'
 import { addDays } from 'date-fns'
 import { TrashIcon } from '@navikt/aksel-icons'
 
@@ -20,9 +20,13 @@ type Props = {
 }
 
 function AktivitetSection({ initialFom }: Props): ReactElement {
-    const { getValues } = useFormContext()
+    const { getValues, formState } = useFormContext()
     const { fields, append, remove } = useFieldArray({
         name: 'perioder' as const,
+        rules: {
+            required: 'Du må ha minst én periode',
+            minLength: { value: 1, message: 'Du må ha minst én periode' },
+        },
     })
 
     return (
@@ -46,6 +50,9 @@ function AktivitetSection({ initialFom }: Props): ReactElement {
                     </div>
                 </FormSection>
             ))}
+            {formState.errors.perioder?.root?.message && (
+                <ErrorMessage>{formState.errors.perioder.root.message}</ErrorMessage>
+            )}
             <div className="mt-2 mb-2">
                 <Button
                     variant="secondary"
