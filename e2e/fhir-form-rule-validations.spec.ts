@@ -31,11 +31,13 @@ import { fillPeriodeRelative, nextStep, startNewSykmelding } from './actions/use
  *  'TILBAKEDATERT_MER_ENN_3_AR',
  *  'TOTAL_VARIGHET_OVER_ETT_AAR',
  *
- *  Misc:
- *  'MANGLENDE_DYNAMISKE_SPOERSMAL_VERSJON2_UKE_39',
+ *  Avventende sykmelding rules (currently impossible, no avventende type):
  *  'AVVENTENDE_SYKMELDING_KOMBINERT',
  *  'MANGLENDE_INNSPILL_TIL_ARBEIDSGIVER',
  *  'AVVENTENDE_SYKMELDING_OVER_16_DAGER',
+ *
+ *  Misc (probably not relevant for pilot):
+ *  'MANGLENDE_DYNAMISKE_SPOERSMAL_VERSJON2_UKE_39',
  *  'FOR_MANGE_BEHANDLINGSDAGER_PER_UKE',
  *  'OVER_1_MND_SPESIALISTHELSETJENESTEN',
  */
@@ -60,13 +62,13 @@ test.fail('UGYLDIG_ORGNR_LENGDE', async ({ page }) => {
     await expect(page.getByText(/Organisasjonsnummeret må være minst 11 siffer/)).toBeVisible()
 })
 
-test('Perioderegler', async ({ page }) => {
+test('"Periode"-rules', async ({ page }) => {
     await launchWithMock('normal', { patient: 'Kari Normann' })(page)
     await startNewSykmelding()(page)
 
     /**
      * Not really possible to achieve, but this test verifies that the "Slett periode" button is not available,
-     * and that the root useFieldArray is not visible.
+     * and that the root useFieldArray error message (length based) is not visible.
      */
     await test.step('PERIODER_MANGLER', async () => {
         await page.getByRole('textbox', { name: 'Fra og med' }).clear()
@@ -126,4 +128,29 @@ test('Perioderegler', async ({ page }) => {
         await nextStep()(page)
         await expect(fom).toHaveAccessibleDescription('Det kan ikke være opphold mellom perioder')
     })
+})
+
+/**
+ * TODO: Currently unimplemented validation
+ */
+test.fail('"Time in relation to now"-rules', async () => {
+    await test.step('FREMDATERT', async () => {
+        // TODO: Currently unimplemented validation
+        expect(true).toBeFalsy()
+    })
+    await test.step('TILBAKEDATERT_MER_ENN_3_AR', async () => {
+        // TODO: Currently unimplemented validation
+        expect(true).toBeFalsy()
+    })
+    await test.step('TOTAL_VARIGHET_OVER_ETT_AAR', async () => {
+        // TODO: Currently unimplemented validation
+        expect(true).toBeFalsy()
+    })
+})
+
+/**
+ * TODO: Currently unimplemented validation
+ */
+test.fail('UGYLDIG_KODEVERK_FOR_HOVEDDIAGNOSE, UGYLDIG_KODEVERK_FOR_BIDIAGNOSE', async () => {
+    expect(true).toBeFalsy()
 })
