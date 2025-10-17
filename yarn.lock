@@ -2345,11 +2345,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^4.3.3":
-  version: 4.3.3
-  resolution: "@navikt/next-logger@npm:4.3.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.3.3%2Faa1c32684f7aad80ab7614e4122dadbb02b83cdf"
+"@navikt/next-logger@npm:^4.4.0-20251017135637":
+  version: 4.4.0-20251017135637
+  resolution: "@navikt/next-logger@npm:4.4.0-20251017135637::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.4.0-20251017135637%2Ffa136ad9f55df3e7527bfceb4ed0e36d441dfab0"
   dependencies:
-    "@navikt/pino-logger": "npm:^4.3.3"
+    "@navikt/pino-logger": "npm:^4.4.0-20251017135637"
     pino-roll: "npm:3"
   peerDependencies:
     next: 14 || 15
@@ -2357,7 +2357,7 @@ __metadata:
   dependenciesMeta:
     pino-roll:
       optional: true
-  checksum: 10c0/56d9d27390a9d00488e16fe856b43f09567ee719e509d3faa36af28953805eaeb09b2a67e3d33e7ecb6e2c79d8e7fc5e86755f81433fabc71bc45077319ddc0f
+  checksum: 10c0/ca2500b98a11ad3037cccb3fdcd384e0f9513d0d4f5a6a11f902cf98d5b236b90f83f8f8a1c4ead4c0a7c3aa66112aa96388020b5a686d09eed35e0bdf2191c7
   languageName: node
   linkType: hard
 
@@ -2386,6 +2386,23 @@ __metadata:
     pino-socket:
       optional: true
   checksum: 10c0/59bc740ba0369891685074ea4698d53100f0e0139805ecfd21391514fee1254a202f53b05eda97f3f6ac9d38048925f11bc1b364392bae9955f86bfec2ed5fc8
+  languageName: node
+  linkType: hard
+
+"@navikt/pino-logger@npm:^4.4.0-20251017135637":
+  version: 4.4.0-20251017135637
+  resolution: "@navikt/pino-logger@npm:4.4.0-20251017135637::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.4.0-20251017135637%2F4e3bf605d7359c24938a4b164e187bfc9f189c46"
+  dependencies:
+    pino-roll: "npm:3"
+    pino-socket: "npm:7"
+  peerDependencies:
+    pino: 8 || 9 || 10
+  dependenciesMeta:
+    pino-roll:
+      optional: true
+    pino-socket:
+      optional: true
+  checksum: 10c0/73059d85aa552cfeee870ec958ad1056d120486a66acd7c476d11a4341a00b3918531a20e639c806d08fca61903ccc0c483bf8c117c5b75d2520d1e08b275ae4
   languageName: node
   linkType: hard
 
@@ -10513,7 +10530,7 @@ __metadata:
     "@navikt/eslint-config-teamsykmelding": "npm:^8.1.1"
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/next-api-proxy": "npm:^4.1.4"
-    "@navikt/next-logger": "npm:^4.3.3"
+    "@navikt/next-logger": "npm:^4.4.0-20251017135637"
     "@navikt/oasis": "npm:^3.8.0"
     "@navikt/smart-on-fhir": "npm:1.5.8"
     "@opentelemetry/api": "npm:^1.9.0"
