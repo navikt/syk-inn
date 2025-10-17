@@ -256,6 +256,67 @@ test('optional - multiple bidiagnoser', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })
 
+test('optional - multiple perioder back to back', async ({ page }) => {
+    await launchWithMock('empty')(page)
+    await startNewSykmelding()(page)
+
+    await fillPeriodeRelative({ nth: 0, type: { grad: 60 }, fromRelative: 0, days: 6 })(page)
+    await page.getByRole('button', { name: 'Legg til ny periode' }).click()
+    await fillPeriodeRelative({ nth: 1, type: { grad: 80 }, fromRelative: 7, days: 6 })(page)
+
+    await nextStep()(page)
+    await verifySignerendeBehandler()(page)
+
+    const request = await submitSykmelding()(page)
+    await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+        draftId: getDraftId(page) ?? 'missing',
+        force: false,
+        values: {
+            arbeidsforhold: null,
+            hoveddiagnose: { system: 'ICPC2', code: 'L73' },
+            bidiagnoser: [],
+            aktivitet: [
+                {
+                    type: 'GRADERT',
+                    fom: '2025-10-17',
+                    tom: '2025-10-23',
+                    gradert: { grad: 60, reisetilskudd: false },
+                    aktivitetIkkeMulig: null,
+                    avventende: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
+                    medisinskArsak: null,
+                    arbeidsrelatertArsak: null,
+                },
+                {
+                    type: 'GRADERT',
+                    fom: '2025-10-24',
+                    tom: '2025-10-30',
+                    gradert: { grad: 80, reisetilskudd: false },
+                    aktivitetIkkeMulig: null,
+                    avventende: null,
+                    behandlingsdager: null,
+                    reisetilskudd: null,
+                    medisinskArsak: null,
+                    arbeidsrelatertArsak: null,
+                },
+            ],
+            meldinger: { tilNav: null, tilArbeidsgiver: null },
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            tilbakedatering: null,
+            pasientenSkalSkjermes: false,
+            utdypendeSporsmal: {
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
+                hensynPaArbeidsplassen: null,
+            },
+        },
+    })
+
+    await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+})
+
 test('optional - should pre-fill bidiagnoser from FHIR @feature-toggle', async ({ page }) => {
     await launchWithMock('empty', {
         SYK_INN_AUTO_BIDIAGNOSER: true,

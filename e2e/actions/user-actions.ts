@@ -179,29 +179,42 @@ export function fillArbeidsforhold({
 export function fillPeriodeRelative({
     type,
     ...params
-}: { type: '100%' | { grad: number } } & ({ days: number } | { fromRelative: number; days: number })) {
+}: { type: '100%' | { grad: number } } & (
+    | { days: number; nth?: number }
+    | { fromRelative: number; days: number; nth?: number }
+)) {
     const [fomRelativeToToday, tomRelativeToToday] =
         'fromRelative' in params ? [params.fromRelative, params.fromRelative + params.days] : [0, params.days]
 
     const fom = add(new Date(), { days: fomRelativeToToday })
     const tom = add(new Date(), { days: tomRelativeToToday })
+    const nth = params.nth ?? 0
 
     return async (page: Page) => {
-        await test.step(`Input sykmeldingsperiode to ${toReadableDatePeriod(fom, tom)}`, async () => {
-            const periodeRegion = page.getByRole('region', { name: 'Periode' })
+        return await test.step(`Input sykmeldingsperiode to ${toReadableDatePeriod(fom, tom)}`, async () => {
+            const periodeRegion = page.getByRole('region', { name: 'Periode' }).nth(nth)
             await expect(periodeRegion).toBeVisible()
-            await periodeRegion.getByRole('textbox', { name: 'Fra og med' }).fill(inputDate(fom))
-            await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(tom))
+
+            const fomField = periodeRegion.getByRole('textbox', { name: 'Fra og med' })
+            await fomField.fill(inputDate(fom))
+            const tomField = periodeRegion.getByRole('textbox', { name: 'Til og med' })
+            await tomField.fill(inputDate(tom))
 
             if (typeof type === 'string' && type === '100%') {
-                await page.getByRole('combobox', { name: 'Mulighet for arbeid' }).selectOption('Aktivitet ikke mulig')
+                await periodeRegion
+                    .getByRole('combobox', { name: 'Mulighet for arbeid' })
+                    .selectOption('Aktivitet ikke mulig')
             }
 
             if (typeof type !== 'string' && 'grad' in type) {
-                await page.getByRole('combobox', { name: 'Mulighet for arbeid' }).selectOption('Gradert sykmelding')
+                await periodeRegion
+                    .getByRole('combobox', { name: 'Mulighet for arbeid' })
+                    .selectOption('Gradert sykmelding')
 
-                await page.getByRole('textbox', { name: 'Sykmeldingsgrad (%)' }).fill(`${type.grad}`)
+                await periodeRegion.getByRole('textbox', { name: 'Sykmeldingsgrad (%)' }).fill(`${type.grad}`)
             }
+
+            return [fomField, tomField]
         })
     }
 }

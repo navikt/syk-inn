@@ -77,6 +77,26 @@ test('Perioderegler', async ({ page }) => {
         await expect(page.getByText('Du må ha minst én periode')).not.toBeVisible()
     })
 
+    await test.step('IKKE_DEFINERT_PERIODE (GRADERT)', async () => {
+        await fillPeriodeRelative({ nth: 0, type: { grad: 50 }, fromRelative: 0, days: 6 })(page)
+
+        const gradField = page.getByRole('textbox', { name: 'Sykmeldingsgrad (%)' })
+        await gradField.clear()
+
+        await nextStep()(page)
+        await expect(gradField).toHaveAccessibleDescription('Du må fylle inn sykmeldingsgrad')
+    })
+
+    await test.step('IKKE_DEFINERT_PERIODE (100%)', async () => {
+        await fillPeriodeRelative({ nth: 0, type: '100%', fromRelative: 0, days: 6 })(page)
+
+        const gradField = page.getByRole('checkbox', { name: 'Medisinske årsaker forhindrer arbeidsaktivitet' })
+        await gradField.uncheck()
+
+        await nextStep()(page)
+        await expect(gradField).toHaveAccessibleDescription('Du må velge minst én årsak')
+    })
+
     await test.step('FRADATO_ETTER_TILDATO', async () => {
         await fillPeriodeRelative({
             type: '100%',
@@ -89,7 +109,21 @@ test('Perioderegler', async ({ page }) => {
         await expect(page.getByText('Fra og med dato kan ikke være etter til og med dato')).toBeVisible()
     })
 
-    await test.step('OVERLAPPENDE_PERIODER', async () => {})
-    await test.step('OPPHOLD_MELLOM_PERIODER', async () => {})
-    await test.step('IKKE_DEFINERT_PERIODE', async () => {})
+    await test.step('OVERLAPPENDE_PERIODER', async () => {
+        await fillPeriodeRelative({ nth: 0, type: '100%', fromRelative: 0, days: 6 })(page)
+        await page.getByRole('button', { name: 'Legg til ny periode' }).click()
+        const [fom] = await fillPeriodeRelative({ nth: 1, type: '100%', fromRelative: 6, days: 6 })(page)
+
+        await nextStep()(page)
+        await expect(fom).toHaveAccessibleDescription('Periode kan ikke overlappe med forrige periode')
+    })
+
+    await test.step('OPPHOLD_MELLOM_PERIODER', async () => {
+        await fillPeriodeRelative({ nth: 0, type: '100%', fromRelative: 0, days: 6 })(page)
+        await page.getByRole('button', { name: 'Legg til ny periode' }).click()
+        const [fom] = await fillPeriodeRelative({ nth: 1, type: '100%', fromRelative: 8, days: 6 })(page)
+
+        await nextStep()(page)
+        await expect(fom).toHaveAccessibleDescription('Det kan ikke være opphold mellom perioder')
+    })
 })
