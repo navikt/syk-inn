@@ -52,19 +52,18 @@ test('Submit sykmelding with utdypende spørsmål', async ({ page }) => {
                     type: 'AKTIVITET_IKKE_MULIG',
                     fom: today(),
                     tom: inDays(3),
-                    aktivitetIkkeMulig: { dummy: true },
+                    aktivitetIkkeMulig: {
+                        medisinskArsak: { isMedisinskArsak: true },
+                        arbeidsrelatertArsak: {
+                            isArbeidsrelatertArsak: false,
+                            arbeidsrelaterteArsaker: [],
+                            annenArbeidsrelatertArsak: null,
+                        },
+                    },
                     avventende: null,
                     gradert: null,
                     behandlingsdager: null,
                     reisetilskudd: null,
-                    medisinskArsak: {
-                        isMedisinskArsak: true,
-                    },
-                    arbeidsrelatertArsak: {
-                        isArbeidsrelatertArsak: false,
-                        arbeidsrelaterteArsaker: [],
-                        annenArbeidsrelatertArsak: null,
-                    },
                 },
             ],
             meldinger: { tilNav: null, tilArbeidsgiver: null },

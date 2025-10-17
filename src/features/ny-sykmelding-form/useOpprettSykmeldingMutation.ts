@@ -197,19 +197,20 @@ function aktivitetStepToInputAktivitet(value: NySykmeldingAktivitet): InputAktiv
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: value.fom,
                 tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
-                aktivitetIkkeMulig: { dummy: true },
+                aktivitetIkkeMulig: {
+                    medisinskArsak: {
+                        isMedisinskArsak: value.medisinskArsak.isMedisinskArsak ?? false,
+                    },
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: value.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
+                        arbeidsrelaterteArsaker: value.arbeidsrelatertArsak.arbeidsrelaterteArsaker ?? [],
+                        annenArbeidsrelatertArsak: value.arbeidsrelatertArsak.annenArbeidsrelatertArsak ?? null,
+                    },
+                },
                 avventende: null,
                 gradert: null,
                 behandlingsdager: null,
                 reisetilskudd: null,
-                medisinskArsak: {
-                    isMedisinskArsak: value.medisinskArsak.isMedisinskArsak ?? false,
-                },
-                arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: value.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
-                    arbeidsrelaterteArsaker: value.arbeidsrelatertArsak.arbeidsrelaterteArsaker ?? [],
-                    annenArbeidsrelatertArsak: value.arbeidsrelatertArsak.annenArbeidsrelatertArsak ?? null,
-                },
             }
         case 'GRADERT':
             return {
@@ -225,8 +226,6 @@ function aktivitetStepToInputAktivitet(value: NySykmeldingAktivitet): InputAktiv
                 avventende: null,
                 behandlingsdager: null,
                 reisetilskudd: null,
-                medisinskArsak: null,
-                arbeidsrelatertArsak: null,
             }
     }
 }

@@ -115,12 +115,13 @@ function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingA
             fom: aktivitet.fom,
             tom: aktivitet.tom,
             medisinskArsak: {
-                isMedisinskArsak: aktivitet.medisinskArsak?.isMedisinskArsak ?? false,
+                isMedisinskArsak: aktivitet.aktivitetIkkeMulig.medisinskArsak?.isMedisinskArsak ?? false,
             },
             arbeidsrelatertArsak: {
-                isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
+                isArbeidsrelatertArsak:
+                    aktivitet.aktivitetIkkeMulig.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
                 arbeidsrelaterteArsaker:
-                    aktivitet.arbeidsrelatertArsak?.arbeidsrelaterteArsaker.map((it) => {
+                    aktivitet.aktivitetIkkeMulig.arbeidsrelatertArsak?.arbeidsrelaterteArsaker.map((it) => {
                         switch (it) {
                             case 'TILRETTELEGGING_IKKE_MULIG':
                             case 'ANNET':
@@ -129,7 +130,8 @@ function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingA
                                 throw new Error(`Unknown arbeidsrelatertArsak: ${it}`)
                         }
                     }) ?? [],
-                annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
+                annenArbeidsrelatertArsak:
+                    aktivitet.aktivitetIkkeMulig.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
             },
         }
     } else if (aktivitet.gradert != null) {
