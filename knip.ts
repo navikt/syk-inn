@@ -9,7 +9,7 @@ const config: KnipConfig = {
         'src/**/*.generated.ts',
         'codegen.ts',
         'libs/fhir-mock/buntry-point.ts',
-        'next-logger.config.js',
+        'next-logger.config.cjs',
         'postcss.config.mjs',
         'scripts/**',
         // Not automatically picked up by knip nextjs plugin yet

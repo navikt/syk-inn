@@ -31,7 +31,8 @@ export type AktivitetIkkeMulig = FomTom & {
 }
 
 export type AktivitetIkkeMuligInput = {
-    dummy: Scalars['Boolean']['input']
+    arbeidsrelatertArsak: ArbeidsrelatertArsakInput
+    medisinskArsak: MedisinskArsakInput
 }
 
 export type AktivitetRedacted = FomTom & {
@@ -139,12 +140,10 @@ export type GradertInput = {
  */
 export type InputAktivitet = {
     aktivitetIkkeMulig?: InputMaybe<AktivitetIkkeMuligInput>
-    arbeidsrelatertArsak?: InputMaybe<ArbeidsrelatertArsakInput>
     avventende?: InputMaybe<AvventendeInput>
     behandlingsdager?: InputMaybe<BehandlingsdagerInput>
     fom: Scalars['String']['input']
     gradert?: InputMaybe<GradertInput>
-    medisinskArsak?: InputMaybe<MedisinskArsakInput>
     reisetilskudd?: InputMaybe<ReisetilskuddInput>
     tom: Scalars['String']['input']
     type: AktivitetType

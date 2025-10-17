@@ -66,8 +66,6 @@ input InputAktivitet {
     avventende: AvventendeInput
     behandlingsdager: BehandlingsdagerInput
     reisetilskudd: ReisetilskuddInput
-    medisinskArsak: MedisinskArsakInput
-    arbeidsrelatertArsak: ArbeidsrelatertArsakInput
 }
 
 input GradertInput {
@@ -76,7 +74,8 @@ input GradertInput {
 }
 
 input AktivitetIkkeMuligInput {
-    dummy: Boolean!
+    medisinskArsak: MedisinskArsakInput!
+    arbeidsrelatertArsak: ArbeidsrelatertArsakInput!
 }
 
 input ReisetilskuddInput {

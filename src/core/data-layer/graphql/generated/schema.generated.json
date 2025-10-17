@@ -93,12 +93,24 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "dummy",
+                        "name": "arbeidsrelatertArsak",
                         "description": null,
                         "type": {
                             "kind": "NON_NULL",
                             "name": null,
-                            "ofType": { "kind": "SCALAR", "name": "Boolean", "ofType": null }
+                            "ofType": { "kind": "INPUT_OBJECT", "name": "ArbeidsrelatertArsakInput", "ofType": null }
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "medisinskArsak",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "INPUT_OBJECT", "name": "MedisinskArsakInput", "ofType": null }
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -872,14 +884,6 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "arbeidsrelatertArsak",
-                        "description": null,
-                        "type": { "kind": "INPUT_OBJECT", "name": "ArbeidsrelatertArsakInput", "ofType": null },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "avventende",
                         "description": null,
                         "type": { "kind": "INPUT_OBJECT", "name": "AvventendeInput", "ofType": null },
@@ -911,14 +915,6 @@
                         "name": "gradert",
                         "description": null,
                         "type": { "kind": "INPUT_OBJECT", "name": "GradertInput", "ofType": null },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "medisinskArsak",
-                        "description": null,
-                        "type": { "kind": "INPUT_OBJECT", "name": "MedisinskArsakInput", "ofType": null },
                         "defaultValue": null,
                         "isDeprecated": false,
                         "deprecationReason": null
