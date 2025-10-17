@@ -28,6 +28,7 @@ jobs:
       - run: yarn tsc
       - name: Test app
         run: yarn test
+      - run: ./scripts/debt.sh >> $GITHUB_STEP_SUMMARY
       - name: Knip it
         run: yarn knip --no-exit-code --reporter=markdown >> "$GITHUB_STEP_SUMMARY"
       - name: Test report
