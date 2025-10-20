@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { Heading, LinkCard, Select, Link, Modal, BodyShort, Loader } from '@navikt/ds-react'
+import { Heading, LinkCard, Select, Link, Modal, Loader } from '@navikt/ds-react'
 import { FlowerPetalsIcon, PlayIcon } from '@navikt/aksel-icons'
 import Image from 'next/image'
 import { parseAsString, useQueryState } from 'nuqs'
@@ -150,10 +150,16 @@ function ScenarioLinks(): ReactElement {
                 onClose={() => void 0}
             >
                 <Modal.Body>
-                    <BodyShort>Scenario: {isLaunching ?? 'Unknown'}</BodyShort>
-                    <BodyShort>Patient: {patient}</BodyShort>
-                    <BodyShort>Practitioner: {practitioner || 'Default (Magnar Koman)'}</BodyShort>
-                    <BodyShort>Organization: {organization || 'Default (Magnar Legekontor)'}</BodyShort>
+                    <dl className="grid grid-cols-[6rem_1fr] gap-x-6 gap-y-2">
+                        <dt className="font-medium text-bold">Scenario</dt>
+                        <dd className="italic">{isLaunching ?? 'Unknown'}</dd>
+                        <dt className="font-medium text-bold">Patient</dt>
+                        <dd className="italic">{patient}</dd>
+                        <dt className="font-medium text-bold">Practitioner</dt>
+                        <dd className="italic">{practitioner || 'Default (Magnar Koman)'}</dd>
+                        <dt className="font-medium text-bold">Organization</dt>
+                        <dd className="italic">{organization || 'Default (Magnar Legekontor)'}</dd>
+                    </dl>
                 </Modal.Body>
             </Modal>
         </div>
