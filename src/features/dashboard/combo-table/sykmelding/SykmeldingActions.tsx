@@ -14,7 +14,7 @@ type SykmeldingActionProps = {
 export function SykmeldingActions({ sykmeldingId, sykmelding, forlengable }: SykmeldingActionProps): ReactElement {
     return (
         <div className="grid grid-flow-col auto-cols-max gap-2">
-            <Tooltip content="Se sykmelding">
+            <Tooltip content="Åpne">
                 <SlowNextLinkButton
                     href={`/fhir/sykmelding/${sykmeldingId}`}
                     icon={<ChevronRightIcon aria-hidden />}
@@ -30,7 +30,7 @@ export function SykmeldingActions({ sykmeldingId, sykmelding, forlengable }: Syk
 
 function DupliserSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
     return (
-        <Tooltip content="Dupliser sykmeldingen">
+        <Tooltip content="Dupliser">
             <SlowNextLinkButton
                 href={`/fhir/dupliser/${sykmelding.sykmeldingId}`}
                 icon={<TabsAddIcon aria-hidden />}
@@ -43,10 +43,8 @@ function DupliserSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragme
 
 function ForlengSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
     return (
-        <Tooltip content="Forleng sykmeldingen">
-            <SlowNextLinkButton href={`/fhir/forleng/${sykmelding.sykmeldingId}`} variant="secondary" size="small">
-                Forleng
-            </SlowNextLinkButton>
-        </Tooltip>
+        <SlowNextLinkButton href={`/fhir/forleng/${sykmelding.sykmeldingId}`} variant="secondary" size="small">
+            Forlenge
+        </SlowNextLinkButton>
     )
 }
