@@ -12,20 +12,20 @@ test('launching twice independently in same browser, but different tabs, should 
     // Launch and verify Kari (tab 1)
     const firstTab = await baseContext.newPage()
     await launchWithMock('empty', { patient: 'Kari Normann' })(firstTab)
-    await expectPatient(Kari)(firstTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+    await expectPatient(Kari)(firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
     // Launch and verify Espen (tab 2)
     const secondTab = await baseContext.newPage()
     await launchWithMock('one-current-to-tomorrow', { patient: 'Espen Eksempel' })(secondTab)
-    await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+    await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
     // Reload tab 1 and verify Kari again
     await firstTab.reload()
-    await expectPatient(Kari)(firstTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+    await expectPatient(Kari)(firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
     // Reload tab 2 and verify Espen again
     await secondTab.reload()
-    await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+    await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 })
 
 test('launching and opening a link in a new tab, should persist context and work with future launches', async ({
@@ -36,7 +36,7 @@ test('launching and opening a link in a new tab, should persist context and work
     const firstTab = await baseContext.newPage()
     await launchWithMock('empty', { patient: 'Kari Normann' })(firstTab)
 
-    const pasientInfoRegion = firstTab.getByRole('region', { name: 'Opprett ny sykmelding' })
+    const pasientInfoRegion = firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ })
     await expectPatient(Kari)(pasientInfoRegion)
     const [newTab] = await Promise.all([
         firstTab.context().waitForEvent('page'),
@@ -44,17 +44,17 @@ test('launching and opening a link in a new tab, should persist context and work
     ])
 
     await newTab.getByRole('button', { name: 'Avbryt og forkast' }).click()
-    await expectPatient(Kari)(newTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+    await expectPatient(Kari)(newTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
     const secondTab = await baseContext.newPage()
     await launchWithMock('one-current-to-tomorrow', { patient: 'Espen Eksempel' })(secondTab)
-    await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+    await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
     await Promise.all([firstTab.reload(), newTab.reload(), secondTab.reload()])
 
-    await expectPatient(Kari)(firstTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
-    await expectPatient(Kari)(newTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
-    await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+    await expectPatient(Kari)(firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+    await expectPatient(Kari)(newTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+    await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 })
 
 test.fail(
@@ -65,30 +65,30 @@ test.fail(
         // Launch and verify Kari (tab 1)
         const firstTab = await baseContext.newPage()
         await launchWithMock('empty', { patient: 'Kari Normann' })(firstTab)
-        await expectPatient(Kari)(firstTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+        await expectPatient(Kari)(firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
         // Launch and verify Espen (tab 2)
         const secondTab = await baseContext.newPage()
         await launchWithMock('one-current-to-tomorrow', { patient: 'Espen Eksempel' })(secondTab)
-        await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+        await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
         // Back to first tab and open a new tab from there
         const [thirdTab] = await Promise.all([
             firstTab.context().waitForEvent('page'),
             firstTab
-                .getByRole('region', { name: 'Opprett ny sykmelding' })
+                .getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ })
                 .getByRole('button', { name: 'Opprett sykmelding' })
                 .click({ modifiers: ['ControlOrMeta'] }),
         ])
         await thirdTab.getByRole('button', { name: 'Avbryt og forkast' }).click()
         // This fails, because Espen's tab was the last to launch, so the server will default to that session
-        await expectPatient(Kari)(thirdTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+        await expectPatient(Kari)(thirdTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
         await Promise.all([firstTab.reload(), thirdTab.reload(), secondTab.reload()])
 
         // This should be work:
-        await expectPatient(Kari)(firstTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
-        await expectPatient(Kari)(thirdTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
-        await expectPatient(Espen)(secondTab.getByRole('region', { name: 'Opprett ny sykmelding' }))
+        await expectPatient(Kari)(firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+        await expectPatient(Kari)(thirdTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+        await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
     },
 )

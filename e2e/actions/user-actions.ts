@@ -16,7 +16,7 @@ export function startNewSykmelding(patient?: { name: string; fnr: string }) {
         await test.step(
             patient == null ? 'Start new sykmelding' : 'Verify the patient and start new sykmelding',
             async () => {
-                const pasientInfoRegion = page.getByRole('region', { name: 'Opprett ny sykmelding' })
+                const pasientInfoRegion = page.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ })
 
                 if (patient != null) await expectPatient(patient)(pasientInfoRegion)
 

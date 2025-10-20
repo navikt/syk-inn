@@ -48,7 +48,7 @@ test('should be able to duplicate an existing sykmelding with correct values', a
     )(page)
 
     await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
-    await page.getByRole('button', { name: 'Dupliser sykmelding' }).click()
+    await page.getByRole('button', { name: 'Dupliser' }).click()
 
     await userInteractionsGroup(
         expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
@@ -100,7 +100,7 @@ test('should be able to forlenge an existing sykmelding with correct values', as
     )(page)
 
     await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
-    await page.getByRole('button', { name: 'Forleng sykmeldingen' }).click()
+    await page.getByRole('button', { name: 'Forlenge' }).click()
 
     const periodeRegion = page.getByRole('region', { name: 'Periode' })
     // One day ahead of the previous

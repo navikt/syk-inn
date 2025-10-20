@@ -9,7 +9,7 @@ export function expectPatient(patient: { name: string; fnr: string }) {
     return async (region: Locator) => {
         await test.step(`verify that the patient is ${patient.name}`, async () => {
             await expect(region).toBeVisible()
-            await expect(region.getByText(patient.name)).toBeVisible()
+            await expect(region.getByText(new RegExp(`Navn(.*)${patient.name}`))).toBeVisible()
             await expect(region.getByText(new RegExp(`ID-nummer(.*)${patient.fnr}`))).toBeVisible()
         })
     }

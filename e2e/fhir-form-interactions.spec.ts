@@ -67,7 +67,7 @@ test.describe("'shorthand' date interactions", () => {
         await launchWithMock('one-current-to-tomorrow')(page)
 
         const table = page.getByRole('region', { name: 'Tidligere sykmeldinger og utkast' })
-        await table.getByRole('button', { name: 'Forleng sykmeldingen' }).click()
+        await table.getByRole('button', { name: 'Forlenge' }).click()
 
         const periodeRegion = page.getByRole('region', { name: 'Periode' })
         const fom = periodeRegion.getByRole('textbox', { name: 'Fra og med' })
@@ -89,7 +89,7 @@ test.describe("'shorthand' date interactions", () => {
         await launchWithMock('one-current-to-tomorrow')(page)
 
         const table = page.getByRole('region', { name: 'Tidligere sykmeldinger og utkast' })
-        await table.getByRole('button', { name: 'Forleng sykmeldingen' }).click()
+        await table.getByRole('button', { name: 'Forlenge' }).click()
 
         const periodeRegion = page.getByRole('region', { name: 'Periode' })
         const fom = periodeRegion.getByRole('textbox', { name: 'Fra og med' })
