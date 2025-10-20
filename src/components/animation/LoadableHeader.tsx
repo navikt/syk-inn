@@ -9,6 +9,7 @@ export type LoadableHeaderProps = {
     tail?: string
     value: string | null
     skeletonWidth?: number
+    id?: string
 }
 
 function LoadableHeader({
@@ -17,10 +18,11 @@ function LoadableHeader({
     tail,
     level,
     size,
+    id,
     skeletonWidth = 140,
 }: LoadableHeaderProps & Pick<HeadingProps, 'level' | 'size'>): ReactElement {
     return (
-        <Heading level={level} size={size} spacing className="flex gap-2">
+        <Heading level={level} size={size} spacing className="flex gap-2" id={id}>
             <span>{lead}</span>
             <AnimatePresence mode="wait" initial={false}>
                 {value == null ? (

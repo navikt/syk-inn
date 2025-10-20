@@ -7,6 +7,7 @@ import { PasientDocument } from '@queries'
 import { ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { LoadablePageHeader } from '@components/layout/Page'
 
 import DumbStats from './dumb-stats/DumbStats'
 import DashboardCard from './card/DashboardCard'
@@ -26,9 +27,20 @@ function OpprettNySykmeldingCard({ className }: { className?: string }): ReactEl
     }, [dispatch])
 
     return (
-        <DashboardCard title="Opprett ny sykmelding" className={cn(className)}>
+        <DashboardCard
+            headingId="dashboard-opprett-ny-sykmelding"
+            heading={
+                <LoadablePageHeader
+                    id="dashboard-opprett-ny-sykmelding"
+                    lead="Oversikt over"
+                    value={data?.pasient?.navn ?? null}
+                    tail="sitt sykefravær"
+                />
+            }
+            className={cn(className)}
+        >
             <div className="flex gap-3">
-                <div>
+                <div className="pr-16">
                     <Heading size="small" level="3">
                         Pasientopplysninger
                     </Heading>
@@ -56,56 +68,49 @@ function OpprettNySykmeldingCard({ className }: { className?: string }): ReactEl
                     {!loading && data?.pasient && (
                         <div className="flex gap-6 mt-3">
                             <div className="min-w-32">
-                                <Detail>Navn</Detail>
+                                <Detail className="font-bold">Navn</Detail>
                                 <BodyShort spacing>{data.pasient.navn ?? 'Navn mangler'}</BodyShort>
                             </div>
                             <div>
-                                <Detail>ID-nummer</Detail>
+                                <Detail className="font-bold">ID-nummer</Detail>
                                 <BodyShort spacing>{data.pasient.ident}</BodyShort>
                             </div>
                         </div>
                     )}
 
-                    <div>
-                        <Heading size="small" level="3">
-                            Bekreftelse
-                        </Heading>
-                        <div className="flex flex-row gap-3">
-                            <div
-                                className="grow"
-                                style={
-                                    {
-                                        '--ac-confirmation-panel-checked-bg': 'transparent',
-                                        '--ac-confirmation-panel-checked-border': 'transparent',
-                                    } as CSSProperties
-                                }
+                    <div className="flex flex-col gap-3">
+                        <div
+                            className="grow"
+                            style={
+                                {
+                                    '--ac-confirmation-panel-checked-bg': 'transparent',
+                                    '--ac-confirmation-panel-checked-border': 'transparent',
+                                } as CSSProperties
+                            }
+                        >
+                            <Checkbox
+                                checked={hasLegged}
+                                onChange={() => setHasLegged((x) => !x)}
+                                size="small"
+                                className="p-4 pl-0"
                             >
-                                <Checkbox
-                                    checked={hasLegged}
-                                    onChange={() => setHasLegged((x) => !x)}
-                                    size="small"
-                                    className="p-4"
-                                >
-                                    Pasienten er kjent eller har vist legitimasjon
-                                </Checkbox>
-                            </div>
-
-                            <div className="flex items-center justify-end">
-                                <ShortcutButtonLink
-                                    href="/fhir/ny"
-                                    variant="primary"
-                                    disabled={loading || !hasLegged}
-                                    loading={loading}
-                                    size="small"
-                                    shortcut={{
-                                        modifier: 'alt',
-                                        key: 'n',
-                                    }}
-                                >
-                                    Opprett sykmelding
-                                </ShortcutButtonLink>
-                            </div>
+                                Pasienten er kjent eller har vist legitimasjon
+                            </Checkbox>
                         </div>
+
+                        <ShortcutButtonLink
+                            href="/fhir/ny"
+                            variant="primary"
+                            disabled={loading || !hasLegged}
+                            loading={loading}
+                            size="medium"
+                            shortcut={{
+                                modifier: 'alt',
+                                key: 'n',
+                            }}
+                        >
+                            Opprett sykmelding
+                        </ShortcutButtonLink>
                     </div>
                 </div>
                 <div className="w-1 -mt-2 mb-2 mx-8 bg-bg-subtle self-stretch"></div>

@@ -69,7 +69,7 @@ export function ShortcutButtonLink({
     const currentMod = useCurrentModifier()
 
     return (
-        <div className="relative">
+        <div className="relative w-fit">
             <SlowNextLinkButton type="button" href={href} {...buttonProps} suppressHydrationWarning>
                 {children}
             </SlowNextLinkButton>
