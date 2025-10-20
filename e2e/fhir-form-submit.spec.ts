@@ -272,8 +272,8 @@ test('optional - multiple perioder back to back', async ({ page }) => {
             aktivitet: [
                 {
                     type: 'GRADERT',
-                    fom: '2025-10-17',
-                    tom: '2025-10-23',
+                    fom: today(),
+                    tom: inDays(6),
                     gradert: { grad: 60, reisetilskudd: false },
                     aktivitetIkkeMulig: null,
                     avventende: null,
@@ -282,8 +282,8 @@ test('optional - multiple perioder back to back', async ({ page }) => {
                 },
                 {
                     type: 'GRADERT',
-                    fom: '2025-10-24',
-                    tom: '2025-10-30',
+                    fom: inDays(7),
+                    tom: inDays(13),
                     gradert: { grad: 80, reisetilskudd: false },
                     aktivitetIkkeMulig: null,
                     avventende: null,
