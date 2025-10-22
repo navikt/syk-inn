@@ -1,4 +1,4 @@
-import { requestAzureClientCredentialsToken } from '@navikt/oasis'
+import texas from '@navikt/texas'
 import { logger as pinoLogger } from '@navikt/next-logger'
 import * as z from 'zod'
 
@@ -148,22 +148,23 @@ export async function getApi(
     }
 
     const apiConfig = internalApis[api]
-    const scope = `api://dev-gcp.${apiConfig.namespace}.${api}/.default`
+    const target = `api://dev-gcp.${apiConfig.namespace}.${api}/.default` as const
 
-    const tokenResult = await requestAzureClientCredentialsToken(scope)
-    if (!tokenResult.ok) {
+    try {
+        const tokenResult = await texas.token({
+            identity_provider: 'azuread',
+            target: target,
+        })
+
+        return { host: api, token: tokenResult.access_token }
+    } catch (e) {
         logger.error(
-            new Error(`Unable to exchange client credentials token for ${scope}`, {
-                cause: tokenResult.error,
+            new Error(`Unable to exchange client credentials token for ${target}`, {
+                cause: e,
             }),
         )
 
         return { errorType: 'TOKEN_EXCHANGE_FAILED' }
-    }
-
-    return {
-        host: api,
-        token: tokenResult.token,
     }
 }
 
