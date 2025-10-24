@@ -43,7 +43,7 @@
         "@navikt/ds-tailwind": "^7.32.2",
         "@navikt/fhir-mock-server": "workspace:*",
         "@navikt/next-api-proxy": "^4.1.4",
-        "@navikt/next-logger": "^4.3.3",
+        "@navikt/next-logger": "^4.4.0",
         "@navikt/smart-on-fhir": "1.5.8",
         "@navikt/texas": "^4.1.0",
         "@opentelemetry/api": "^1.9.0",
