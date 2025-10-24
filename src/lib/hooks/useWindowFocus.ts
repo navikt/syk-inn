@@ -6,6 +6,8 @@ function useWindowFocus(): boolean {
     const [focused, setFocused] = useState(hasFocus)
 
     useEffect(() => {
+        // TODO: Can this be fixed?
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setFocused(hasFocus())
 
         const onFocus = (): void => setFocused(true)
