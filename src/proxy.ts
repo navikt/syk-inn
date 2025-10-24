@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { UNLEASH_COOKIE_NAME } from '@core/toggles/const'
 
-export function middleware(request: NextRequest): NextResponse {
+export function proxy(request: NextRequest): NextResponse {
     const response = NextResponse.next()
 
     if (request.cookies.get('syk-inn-session-id')?.value == null) {
@@ -24,6 +24,5 @@ export function middleware(request: NextRequest): NextResponse {
 }
 
 export const config = {
-    runtime: 'nodejs',
     matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 }
