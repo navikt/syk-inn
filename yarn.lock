@@ -2325,7 +2325,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
-    "@navikt/pino-logger": "npm:^4.3.3"
+    "@navikt/pino-logger": "npm:^4.4.0"
     "@navikt/smart-on-fhir": "npm:1.5.8"
     "@types/node": "npm:^24.7.2"
     hono: "npm:^4.9.12"
@@ -2345,11 +2345,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^4.3.3":
-  version: 4.3.3
-  resolution: "@navikt/next-logger@npm:4.3.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.3.3%2Faa1c32684f7aad80ab7614e4122dadbb02b83cdf"
+"@navikt/next-logger@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "@navikt/next-logger@npm:4.4.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.4.0%2Fc69c8e2959e11c338259fd65d47e3022c31ab161"
   dependencies:
-    "@navikt/pino-logger": "npm:^4.3.3"
+    "@navikt/pino-logger": "npm:^4.4.0"
     pino-roll: "npm:3"
   peerDependencies:
     next: 14 || 15
@@ -2357,14 +2357,15 @@ __metadata:
   dependenciesMeta:
     pino-roll:
       optional: true
-  checksum: 10c0/56d9d27390a9d00488e16fe856b43f09567ee719e509d3faa36af28953805eaeb09b2a67e3d33e7ecb6e2c79d8e7fc5e86755f81433fabc71bc45077319ddc0f
+  checksum: 10c0/e71921927504d219768898e087583247f4b6bf5247f2f3a049b694d0909363e8fba65ac0204164dd6e426f53514a13e55fb6388336b96ca9f19fd13cea466cfc
   languageName: node
   linkType: hard
 
-"@navikt/pino-logger@npm:^4.3.3":
-  version: 4.3.3
-  resolution: "@navikt/pino-logger@npm:4.3.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.3.3%2Fc67b3263e9eb9d1b4dccaf45b21bcfe3c0acb8d4"
+"@navikt/pino-logger@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "@navikt/pino-logger@npm:4.4.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.4.0%2F0aca6b6fbbab57d6d3fd608f24557fd914bca303"
   dependencies:
+    "@opentelemetry/api": "npm:^1.9.0"
     pino-roll: "npm:3"
     pino-socket: "npm:7"
   peerDependencies:
@@ -2374,7 +2375,7 @@ __metadata:
       optional: true
     pino-socket:
       optional: true
-  checksum: 10c0/59bc740ba0369891685074ea4698d53100f0e0139805ecfd21391514fee1254a202f53b05eda97f3f6ac9d38048925f11bc1b364392bae9955f86bfec2ed5fc8
+  checksum: 10c0/c766c3e40e8f345a88825d586371e0660f587de1199fac8b9db0cc8011eacda00dc493340bdab7262e36200343b7c46bf1c3e528854a8cf5e1cc553a219cf274
   languageName: node
   linkType: hard
 
@@ -10460,7 +10461,7 @@ __metadata:
     "@navikt/eslint-config-teamsykmelding": "npm:^8.1.1"
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/next-api-proxy": "npm:^4.1.4"
-    "@navikt/next-logger": "npm:^4.3.3"
+    "@navikt/next-logger": "npm:^4.4.0"
     "@navikt/smart-on-fhir": "npm:1.5.8"
     "@navikt/texas": "npm:^4.1.0"
     "@opentelemetry/api": "npm:^1.9.0"
