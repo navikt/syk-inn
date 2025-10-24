@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
     output: 'standalone',
     assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-    eslint: { ignoreDuringBuilds: true },
     transpilePackages: ['@navikt/fhir-mock-server'],
     serverExternalPackages: ['@navikt/next-logger', 'next-logger', 'pino', 'pino-socket', '@whatwg-node'],
     experimental: {
