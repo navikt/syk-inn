@@ -3,9 +3,7 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 
-import { AllSykmeldingerDocument, GetDraftDocument, PasientDocument } from '@queries'
-import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
-import { LoadablePageHeader } from '@components/layout/Page'
+import { AllSykmeldingerDocument, GetDraftDocument } from '@queries'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
 import { useAppSelector } from '@core/redux/hooks'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
@@ -15,19 +13,11 @@ import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingDraftFormErrors } from '@features/actions/common/SykmeldingFormErrors'
 import { mapSykmeldingToDateRanges } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
 
-function NySykmeldingFromDraft({ draftId }: { draftId: string }): ReactElement {
-    const pasientQuery = useQuery(PasientDocument)
-
-    return (
-        <NySykmeldingPageSteps
-            heading={<LoadablePageHeader lead="Sykmelding for" value={pasientQuery.data?.pasient?.navn ?? null} />}
-        >
-            <DraftSykmeldingFormWithDefaultValues draftId={draftId} />
-        </NySykmeldingPageSteps>
-    )
+type Props = {
+    draftId: string
 }
 
-function DraftSykmeldingFormWithDefaultValues({ draftId }: { draftId: string }): ReactElement {
+export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactElement {
     const draftQuery = useQuery(GetDraftDocument, {
         variables: { draftId },
         fetchPolicy: 'cache-first',
@@ -64,5 +54,3 @@ function DraftSykmeldingFormWithDefaultValues({ draftId }: { draftId: string }):
         />
     )
 }
-
-export default NySykmeldingFromDraft

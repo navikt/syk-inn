@@ -3,9 +3,7 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 
-import { AllSykmeldingerDocument, PasientDocument, SykmeldingByIdDocument } from '@queries'
-import { LoadablePageHeader } from '@components/layout/Page'
-import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
+import { AllSykmeldingerDocument, SykmeldingByIdDocument } from '@queries'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
@@ -17,21 +15,7 @@ interface Props {
     sykmeldingId: string
 }
 
-function ForlengSykmelding({ sykmeldingId }: Props): ReactElement {
-    const pasientQuery = useQuery(PasientDocument)
-
-    return (
-        <NySykmeldingPageSteps
-            heading={
-                <LoadablePageHeader lead="Forleng sykmelding for" value={pasientQuery.data?.pasient?.navn ?? null} />
-            }
-        >
-            <ForlengSykmeldingFormWithDefaultValues sykmeldingId={sykmeldingId} />
-        </NySykmeldingPageSteps>
-    )
-}
-
-function ForlengSykmeldingFormWithDefaultValues({ sykmeldingId }: { sykmeldingId: string }): ReactElement {
+export function ForlengSykmeldingFormWithDefaultValues({ sykmeldingId }: Props): ReactElement {
     const suggestionsQuery = useDiagnoseSuggestions()
     const sykmeldingQuery = useQuery(SykmeldingByIdDocument, {
         variables: { id: sykmeldingId },
@@ -61,5 +45,3 @@ function ForlengSykmeldingFormWithDefaultValues({ sykmeldingId }: { sykmeldingId
         />
     )
 }
-
-export default ForlengSykmelding
