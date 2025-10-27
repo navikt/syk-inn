@@ -4,10 +4,12 @@ import { Resolvers } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { commonQueryResolvers, typeResolvers } from '@data-layer/graphql/common-resolvers'
 import { raise } from '@lib/ts'
-import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
-import { validateHelseIdToken } from '@data-layer/helseid/token/validate'
 
-const helseidResolvers: Resolvers = {
+import { getHelseIdBehandler } from './helseid-service'
+import { validateHelseIdToken } from './token/validate'
+import { HelseIdGraphqlContext } from './helseid-graphql-context'
+
+const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
     Query: {
         behandler: async () => {
             const behandler = await getHelseIdBehandler()

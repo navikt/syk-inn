@@ -11,6 +11,7 @@ import DemoWarning from '@components/user-warnings/DemoWarning'
 
 import Preload from './preload'
 
+// TODO: Why is this not rendered in production when layout throws 404?
 function GlobalNotFound(): ReactElement {
     return (
         <html lang="nb" className="bg-bg-subtle">
