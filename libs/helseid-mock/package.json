@@ -1,0 +1,23 @@
+{
+    "name": "@navikt/helseid-mock-server",
+    "version": "0.0.0",
+    "type": "module",
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://npm.pkg.github.com/"
+    },
+    "scripts": {
+        "tsc": "tsc",
+        "dev": "bun run --watch buntry-point.ts | pino-pretty --messageKey=message"
+    },
+    "exports": {
+        "./router": {
+            "import": "./src/router.ts"
+        }
+    },
+    "dependencies": {
+        "@navikt/pino-logger": "^4.4.1",
+        "hono": "^4.10.3",
+        "pino": "^10.1.0"
+    }
+}
