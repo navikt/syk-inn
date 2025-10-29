@@ -13,6 +13,9 @@
     "exports": {
         "./router": {
             "import": "./src/router.ts"
+        },
+        "./next": {
+            "import": "./src/next.ts"
         }
     },
     "dependencies": {

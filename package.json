@@ -42,6 +42,7 @@
         "@navikt/ds-react": "^7.32.3",
         "@navikt/ds-tailwind": "^7.32.3",
         "@navikt/fhir-mock-server": "workspace:*",
+        "@navikt/helseid-mock-server": "workspace:*",
         "@navikt/next-api-proxy": "^4.1.5",
         "@navikt/next-logger": "^4.4.1",
         "@navikt/smart-on-fhir": "1.5.9",
