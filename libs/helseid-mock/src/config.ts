@@ -16,7 +16,7 @@ export type HelseIdMockConfig = {
      *
      * If using Nextjs or any other hot-reloading dev-server, make sure this reference is stable.
      */
-    store: HelseIdMockSession
+    store: HelseIdMockSession | (() => HelseIdMockSession)
 }
 
 let config: HelseIdMockConfig | null = null
@@ -35,4 +35,10 @@ export function getConfig(): HelseIdMockConfig {
     }
 
     return config
+}
+
+export const getServerSession = (): HelseIdMockSession => {
+    const config = getConfig()
+
+    return typeof config.store === 'function' ? config.store() : config.store
 }
