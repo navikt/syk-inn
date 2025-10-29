@@ -1,1 +1,5 @@
-export class HelseIdMockSession {}
+export class HelseIdMockSession {
+    public dump(): unknown {
+        return {}
+    }
+}
