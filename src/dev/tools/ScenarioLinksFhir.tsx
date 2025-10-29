@@ -11,7 +11,7 @@ import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 
 import { scenarios } from '../mock-engine/scenarios/scenarios'
 
-function ScenarioLinks(): ReactElement {
+function ScenarioLinksFhir(): ReactElement {
     const [isLaunching, setIsLaunching] = useState<string | null>(null)
 
     const [patient, setPatient] = useQueryState(
@@ -189,4 +189,4 @@ function buildLaunchParam(
     return `local-dev-launch:${patient}:${practitioner}:${organization}`
 }
 
-export default ScenarioLinks
+export default ScenarioLinksFhir

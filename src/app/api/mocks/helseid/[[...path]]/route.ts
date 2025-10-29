@@ -1,9 +1,12 @@
 import { createHelseIdHandler } from '@navikt/helseid-mock-server/next'
 import { getAbsoluteURL } from '@lib/url'
 
+import { getHelseIdMockStore } from './mock-storage'
+
 const handler = createHelseIdHandler({
     baseUrl: getAbsoluteURL(),
     helseIdPath: '/api/mocks/helseid',
+    store: getHelseIdMockStore,
 })
 
 export {

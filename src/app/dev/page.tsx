@@ -7,8 +7,8 @@ import { Page, PageBlock } from '@navikt/ds-react/Page'
 
 import { isLocal, isDemo, getServerEnv } from '@lib/env'
 import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
-import ScenarioLinks from '@dev/tools/ScenarioLinks'
-import StandaloneLinks from '@dev/tools/StandaloneLinks'
+import ScenarioLinksFhir from '@dev/tools/ScenarioLinksFhir'
+import ScenarioLinksStandalone from '@dev/tools/ScenarioLinksStandalone'
 import { MockLaunchType } from '@navikt/fhir-mock-server/types'
 
 import DumbDevHeader from './dumb/DumbDevHeader'
@@ -78,9 +78,9 @@ export default function Home(): ReactElement {
                             </Alert>
                         )}
 
-                        {!isSykInnApiIntegrationEnabled && <ScenarioLinks />}
+                        {!isSykInnApiIntegrationEnabled && <ScenarioLinksFhir />}
 
-                        <StandaloneLinks />
+                        <ScenarioLinksStandalone />
                     </div>
                 </div>
             </PageBlock>

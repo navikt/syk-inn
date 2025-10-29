@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import { logger } from '@navikt/next-logger'
-import { unauthorized } from 'next/navigation'
+import { redirect, unauthorized } from 'next/navigation'
+import { cookies } from 'next/headers'
 
 import HelseIdHeader from '@data-layer/helseid/components/HelseIdHeader'
 import { ToggleProvider } from '@core/toggles/context'
@@ -12,8 +13,16 @@ import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 import { LazyDevTools } from '@dev/tools/LazyDevTools'
 import { spanServerAsync } from '@lib/otel/server'
 import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
+import { MOCK_HELSEID_TOKEN_NAME } from '@navikt/helseid-mock-server/next'
+import { shouldUseMockEngine } from '@dev/mock-engine'
 
 async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise<ReactElement> {
+    if (shouldUseMockEngine()) {
+        if ((await cookies()).get(MOCK_HELSEID_TOKEN_NAME)?.value == null) {
+            redirect('/dev')
+        }
+    }
+
     const [toggles, behandler] = await spanServerAsync('OpenLayout toggles', async () => {
         const userInfo = await getHelseIdBehandler()
         if (userInfo.hpr == null) {

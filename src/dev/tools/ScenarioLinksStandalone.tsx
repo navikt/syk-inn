@@ -6,7 +6,7 @@ import { PlayIcon, ShieldLockIcon } from '@navikt/aksel-icons'
 
 import { pathWithBasePath } from '@lib/url'
 
-function StandaloneLinks(): ReactElement {
+function ScenarioLinksStandalone(): ReactElement {
     return (
         <div className="mt-4">
             <Heading level="3" size="xsmall" spacing className="flex gap-1 items-center">
@@ -18,7 +18,10 @@ function StandaloneLinks(): ReactElement {
                     <PlayIcon fontSize="2rem" />
                 </LinkCard.Icon>
                 <LinkCard.Title>
-                    <LinkCard.Anchor suppressHydrationWarning href={pathWithBasePath(`/ny`)}>
+                    <LinkCard.Anchor
+                        suppressHydrationWarning
+                        href={pathWithBasePath(`/api/mocks/helseid/dev/start-user?user=default&returnTo=/`)}
+                    >
                         Just go
                     </LinkCard.Anchor>
                 </LinkCard.Title>
@@ -28,4 +31,4 @@ function StandaloneLinks(): ReactElement {
     )
 }
 
-export default StandaloneLinks
+export default ScenarioLinksStandalone

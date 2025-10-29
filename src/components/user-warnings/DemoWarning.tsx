@@ -19,7 +19,7 @@ function DemoWarning(): ReactElement {
                     Dette er en demoside og inneholder ikke dine personlige data.
                 </BodyShort>
                 <div className="text-xs">
-                    <AkselNextLink href="/">← Back to development page</AkselNextLink>
+                    <AkselNextLink href="/dev">← Back to development page</AkselNextLink>
                 </div>
             </Alert>
         </div>
