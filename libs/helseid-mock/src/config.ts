@@ -1,3 +1,5 @@
+import { HelseIdMockSession } from './server-session'
+
 export type HelseIdMockConfig = {
     /**
      * Base URL the mock server is running on. This is used to generate the correct
@@ -8,6 +10,13 @@ export type HelseIdMockConfig = {
      * The actual path the mock routes are running on, for example /api/helseid-mock
      */
     helseIdPath: string
+    /**
+     * A session store used for persisting user sessions, this mocks the HelseID servers state,
+     * i.e. information about the user, tokens, etc.
+     *
+     * If using Nextjs or any other hot-reloading dev-server, make sure this reference is stable.
+     */
+    store: HelseIdMockSession
 }
 
 let config: HelseIdMockConfig | null = null

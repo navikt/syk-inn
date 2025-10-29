@@ -1,3 +1,5 @@
+'use client'
+
 import { Link as AkselLink } from '@navikt/ds-react'
 import React, { PropsWithChildren, ReactElement } from 'react'
 import Link from 'next/link'

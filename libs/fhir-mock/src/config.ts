@@ -25,7 +25,7 @@ export type FhirMockConfig = {
      * launch state state, their associated patients etc., especially important since every time the
      * launch session is initiated, all IDs are regenerated.
      *
-     * If using Nextjs or any other hot-reloadingi dev-server, make sure this reference is stable.
+     * If using Nextjs or any other hot-reloading dev-server, make sure this reference is stable.
      */
     store: FhirMockSession | (() => FhirMockSession)
     /**

@@ -2,12 +2,14 @@ import { logger } from '@navikt/pino-logger'
 
 import { HelseIdMockConfig, setConfig } from './src/config'
 import { createHelseIdMockApp } from './src/router'
+import { HelseIdMockSession } from './src/server-session'
 
 const port = process.env.PORT ?? 5000
 
 const config: HelseIdMockConfig = {
     helseIdPath: '',
     baseUrl: `http://localhost:${port}`,
+    store: new HelseIdMockSession(),
 }
 
 setConfig(config)
