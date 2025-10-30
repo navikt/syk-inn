@@ -4,9 +4,8 @@ import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
-import { bundledEnv, isDemo, isLocal } from '@lib/env'
+import { bundledEnv } from '@lib/env'
 import Providers from '@core/providers/Providers'
-import DemoWarning from '@components/user-warnings/DemoWarning'
 
 import Preload from '../preload'
 
@@ -32,7 +31,6 @@ export default function StandaloneLayout({ children }: LayoutProps<'/'>): ReactE
             </head>
             <Preload />
             <body>
-                {(isLocal || isDemo) && <DemoWarning />}
                 <Providers mode="HelseID">{children}</Providers>
             </body>
         </html>

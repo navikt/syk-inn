@@ -14,7 +14,7 @@
         "dev-e2e": "./scripts/pre-e2e-dev.sh && yarn dev:next",
         "dev:next": "next dev --turbo | pino-pretty --messageKey=message",
         "dev:valkey": "docker run --name syk-inn-dev-valkey -p 6379:6379 -d valkey/valkey:latest",
-        "build": "./scripts/pre-build.sh && next build --webpack",
+        "build": "./scripts/pre-build.sh && next build",
         "build:e2e": "./scripts/build-e2e.sh",
         "start": "next start",
         "start:e2e": "NEXT_PUBLIC_ASSET_PREFIX= node .next/standalone/server.js | pino-pretty --messageKey=message",

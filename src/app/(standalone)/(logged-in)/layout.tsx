@@ -14,6 +14,7 @@ import { LazyDevTools } from '@dev/tools/LazyDevTools'
 import { spanServerAsync } from '@lib/otel/server'
 import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
 import { shouldUseMockEngine } from '@dev/mock-engine'
+import DemoWarning from '@components/user-warnings/DemoWarning'
 
 import { NoBehandlerError } from './start-errors'
 
@@ -33,11 +34,21 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
     })
 
     if (behandler == null) {
-        return <NoBehandlerError />
+        return (
+            <>
+                {(isLocal || isDemo) && <DemoWarning />}
+                <NoBehandlerError />
+            </>
+        )
     }
 
     if (behandler.hpr == null) {
-        return <NoValidHPR mode="HelseID" />
+        return (
+            <>
+                {(isLocal || isDemo) && <DemoWarning />}
+                <NoValidHPR mode="HelseID" />
+            </>
+        )
     }
 
     if (!getFlag('PILOT_USER', toggles)) {
@@ -48,6 +59,7 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
     return (
         <>
             <HelseIdHeader behandler={{ navn: behandler.navn, hpr: behandler.hpr }} />
+            {(isLocal || isDemo) && <DemoWarning />}
             <ToggleProvider toggles={toToggleMap(toggles)}>
                 {children}
                 <LoggedOutWarning />
