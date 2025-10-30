@@ -1,6 +1,5 @@
 import { randomUUID } from 'node:crypto'
 
-import { logger as pinoLogger } from '@navikt/pino-logger'
 import { HonoRequest } from 'hono'
 
 import { getConfig, getServerSession } from '../config'
@@ -8,13 +7,12 @@ import { MockPatients } from '../data/patients'
 import { MockLaunchType } from '../server-launch-types'
 import { MockPractitioners } from '../data/practitioner'
 import { MockOrganizations } from '../data/organization'
-
-const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
+import { fhirLogger } from '../logger'
 
 export function authorize(request: HonoRequest): Response {
     const url = new URL(request.url)
 
-    logger.info(
+    fhirLogger.info(
         `/auth/authorize request with params: \n\t${Array.from(url.searchParams.entries())
             .map((it) => it.join(': '))
             .join('\n\t')}`,
@@ -65,6 +63,6 @@ export function authorize(request: HonoRequest): Response {
     })
 
     const redirectUrl = `${redirectUri}?code=${notATokenCode}&state=${state}`
-    logger.info(`/auth/authorize good, redirecting to ${redirectUrl}`)
+    fhirLogger.info(`/auth/authorize good, redirecting to ${redirectUrl}`)
     return Response.redirect(redirectUrl, 302)
 }

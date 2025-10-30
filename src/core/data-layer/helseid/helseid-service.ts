@@ -1,5 +1,4 @@
 import { getHelseIdIdTokenInfo } from '@data-layer/helseid/helseid-user'
-import { isDemo, isE2E, isLocal } from '@lib/env'
 
 type HelseIdBehandler = {
     /**
@@ -10,13 +9,6 @@ type HelseIdBehandler = {
 }
 
 export async function getHelseIdBehandler(): Promise<HelseIdBehandler> {
-    if (isLocal || isDemo || isE2E) {
-        return {
-            hpr: '123456',
-            navn: 'Mock Mockesson',
-        }
-    }
-
     const tokenPayload = await getHelseIdIdTokenInfo()
 
     return {

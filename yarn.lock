@@ -2322,6 +2322,8 @@ __metadata:
   dependencies:
     "@navikt/pino-logger": "npm:^4.4.1"
     hono: "npm:^4.10.3"
+    jose: "npm:^6.1.0"
+    nextleton: "npm:^0.6.1"
     pino: "npm:^10.1.0"
   languageName: unknown
   linkType: soft

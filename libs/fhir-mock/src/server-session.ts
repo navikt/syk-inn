@@ -1,5 +1,4 @@
 import { FhirOrganization, FhirPatient, FhirPractitioner } from '@navikt/smart-on-fhir/zod'
-import { logger } from '@navikt/pino-logger'
 
 import { createPatientSession, PatientSession } from './data/patient-session'
 import { createPatientEspenEksempel, createPatientKariNormann, MockPatients } from './data/patients'
@@ -14,6 +13,7 @@ import {
     createPractitionerKomanMagnar,
     MockPractitioners,
 } from './data/practitioner'
+import { fhirLogger } from './logger'
 
 type LaunchPayload = {
     patient: MockPatients
@@ -43,11 +43,11 @@ export class FhirMockSession {
     private sessions: Record<string, PatientSession> = {}
 
     constructor() {
-        logger.warn('[FhirMockSession] Initialized new FhirMockSession')
+        fhirLogger.warn('[FhirMockSession] Initialized new FhirMockSession')
     }
 
     initializeLaunch(code: string, payload: LaunchPayload): void {
-        logger.warn(
+        fhirLogger.warn(
             `Initializing launch ${code} for patient ${payload.patient} (${payload.practitioner}/${payload.organization})`,
         )
 
@@ -55,7 +55,7 @@ export class FhirMockSession {
     }
 
     completeLaunch(code: string, accessToken: string): PatientSession {
-        logger.warn(`Completing launch for ${code}, got access token (${accessToken.length})`)
+        fhirLogger.warn(`Completing launch for ${code}, got access token (${accessToken.length})`)
 
         const launchPayload = this.launches[code]
         if (!launchPayload) {

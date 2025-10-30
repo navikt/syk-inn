@@ -7,7 +7,6 @@ import HelseIdHeader from '@data-layer/helseid/components/HelseIdHeader'
 import { ToggleProvider } from '@core/toggles/context'
 import { getFlag, getUserlessToggles, getUserToggles, toToggleMap } from '@core/toggles/unleash'
 import { isDemo, isLocal } from '@lib/env'
-import DemoWarning from '@components/user-warnings/DemoWarning'
 import { NoValidHPR } from '@components/errors/NoValidHPR'
 import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 import { LazyDevTools } from '@dev/tools/LazyDevTools'
@@ -15,6 +14,7 @@ import { spanServerAsync } from '@lib/otel/server'
 import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
 import { MOCK_HELSEID_TOKEN_NAME } from '@navikt/helseid-mock-server/next'
 import { shouldUseMockEngine } from '@dev/mock-engine'
+import DemoWarning from '@components/user-warnings/DemoWarning'
 
 async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise<ReactElement> {
     if (shouldUseMockEngine()) {

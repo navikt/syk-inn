@@ -21,13 +21,21 @@ export type HelseIdMockConfig = {
 
 let config: HelseIdMockConfig | null = null
 
+declare global {
+    var __helseid_mock_config__: HelseIdMockConfig
+}
+
 export function setConfig(newConfig: HelseIdMockConfig): HelseIdMockConfig {
     config = { ...config, ...newConfig }
+
+    globalThis.__helseid_mock_config__ = config
 
     return config
 }
 
 export function getConfig(): HelseIdMockConfig {
+    if (config == null) config = globalThis.__helseid_mock_config__
+
     if (config == null) {
         throw new Error(
             '@navikt/helseid-mock-server config not set. Please configure a route with createHelseIdHandler with proper options.',

@@ -16,11 +16,16 @@
         },
         "./next": {
             "import": "./src/next.ts"
+        },
+        "./types": {
+            "import": "./src/types.ts"
         }
     },
     "dependencies": {
         "@navikt/pino-logger": "^4.4.1",
         "hono": "^4.10.3",
+        "jose": "^6.1.0",
+        "nextleton": "^0.6.1",
         "pino": "^10.1.0"
     }
 }

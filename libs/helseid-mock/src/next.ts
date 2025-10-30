@@ -19,3 +19,4 @@ export function createHelseIdHandler(config: HelseIdMockConfig): (req: Request) 
 
 export { HelseIdMockSession } from './server-session'
 export { MOCK_HELSEID_TOKEN_NAME } from './cookie'
+export { sessionToTokens } from './fakewall'
