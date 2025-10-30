@@ -1,4 +1,5 @@
 import { getHelseIdIdTokenInfo } from '@data-layer/helseid/helseid-user'
+import { failSpan, spanServerAsync } from '@lib/otel/server'
 
 type HelseIdBehandler = {
     /**
@@ -8,11 +9,19 @@ type HelseIdBehandler = {
     navn: string
 }
 
-export async function getHelseIdBehandler(): Promise<HelseIdBehandler> {
-    const tokenPayload = await getHelseIdIdTokenInfo()
+export async function getHelseIdBehandler(): Promise<HelseIdBehandler | null> {
+    return spanServerAsync('HelseID.getHelseIdBehandler', async (span) => {
+        try {
+            const tokenPayload = await getHelseIdIdTokenInfo()
 
-    return {
-        hpr: tokenPayload['helseid://claims/hpr/hpr_number'] ?? null,
-        navn: tokenPayload.name,
-    }
+            return {
+                hpr: tokenPayload['helseid://claims/hpr/hpr_number'] ?? null,
+                navn: tokenPayload.name,
+            }
+        } catch (e) {
+            failSpan(span, 'Failed to get HelseID behandler', e as Error)
+
+            return null
+        }
+    })
 }

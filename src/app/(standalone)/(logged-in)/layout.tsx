@@ -16,6 +16,8 @@ import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
 import { shouldUseMockEngine } from '@dev/mock-engine'
 import DemoWarning from '@components/user-warnings/DemoWarning'
 
+import { NoBehandlerError } from './start-errors'
+
 async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise<ReactElement> {
     if (shouldUseMockEngine()) {
         if ((await cookies()).get(MOCK_HELSEID_TOKEN_NAME)?.value == null) {
@@ -25,11 +27,19 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
 
     const [toggles, behandler] = await spanServerAsync('OpenLayout toggles', async () => {
         const userInfo = await getHelseIdBehandler()
-        if (userInfo.hpr == null) {
+        if (userInfo?.hpr == null) {
             return [await getUserlessToggles(), userInfo]
         }
         return [await getUserToggles(userInfo.hpr), userInfo]
     })
+
+    if (behandler == null) {
+        return <NoBehandlerError />
+    }
+
+    if (behandler.hpr == null) {
+        return <NoValidHPR mode="HelseID" />
+    }
 
     if (!getFlag('PILOT_USER', toggles)) {
         logger.warn(`Non-pilot user has accessed the app, HPR: ${behandler.hpr}`)
@@ -41,7 +51,7 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
             <HelseIdHeader behandler={{ navn: behandler.navn, hpr: behandler.hpr }} />
             <ToggleProvider toggles={toToggleMap(toggles)}>
                 {(isLocal || isDemo) && <DemoWarning />}
-                {behandler.hpr == null ? <NoValidHPR mode="HelseID" /> : children}
+                {children}
                 <LoggedOutWarning />
                 {(isLocal || isDemo) && <LazyDevTools />}
             </ToggleProvider>

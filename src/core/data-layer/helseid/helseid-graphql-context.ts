@@ -1,5 +1,3 @@
-import { GraphQLError } from 'graphql/error'
-
 import { validateHelseIdToken } from '@data-layer/helseid/token/validate'
 
 import { getHelseIdBehandler } from './helseid-service'
@@ -13,14 +11,11 @@ export type HelseIdGraphqlContext = {
 export const createHelseIdResolverContext = async (): Promise<HelseIdGraphqlContext> => {
     const validToken = await validateHelseIdToken()
     if (!validToken) {
-        throw new GraphQLError('Du har blitt logget ut', {
-            extensions: { code: 'HELSEID_SESSION_INVALID' },
-        })
+        throw NoHelseIdSession()
     }
 
     const behandler = await getHelseIdBehandler()
-
-    if (!behandler.hpr) throw NoHelseIdSession()
+    if (behandler?.hpr == null) throw NoHelseIdSession()
 
     return { hpr: behandler.hpr, name: behandler.navn }
 }
