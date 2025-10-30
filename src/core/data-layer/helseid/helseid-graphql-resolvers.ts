@@ -1,29 +1,16 @@
-import { GraphQLError } from 'graphql/error'
-
 import { Resolvers } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { commonQueryResolvers, typeResolvers } from '@data-layer/graphql/common-resolvers'
 import { raise } from '@lib/ts'
 
-import { getHelseIdBehandler } from './helseid-service'
-import { validateHelseIdToken } from './token/validate'
 import { HelseIdGraphqlContext } from './helseid-graphql-context'
 
 const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
     Query: {
-        behandler: async () => {
-            const behandler = await getHelseIdBehandler()
-            const validToken = await validateHelseIdToken()
-
-            if (!validToken) {
-                throw new GraphQLError('Du har blitt logget ut', {
-                    extensions: { code: 'HELSEID_SESSION_INVALID' },
-                })
-            }
-
+        behandler: async (_, _args, context) => {
             return {
-                hpr: behandler.hpr ?? raise('No HPR number in HelseID userinfo'),
-                navn: behandler.navn,
+                hpr: context.hpr,
+                navn: context.name,
                 legekontorTlf: 'TODO',
                 orgnummer: 'TODO',
             }

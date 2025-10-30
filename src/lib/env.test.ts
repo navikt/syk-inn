@@ -1,12 +1,8 @@
-import { beforeAll, beforeEach, describe, expect, test } from 'vitest'
+import { beforeEach, describe, expect, test } from 'vitest'
 
 import { getServerEnv } from './env'
 
 describe('getServerEnv', () => {
-    beforeAll(() => {
-        process.env.HELSE_ID_WELL_KNOWN_URL = 'foo'
-    })
-
     beforeEach(() => {
         delete process.env.VALKEY_HOST_SYK_INN
         delete process.env.VALKEY_USERNAME_SYK_INN

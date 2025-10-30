@@ -52,7 +52,6 @@ const ValkeyConfigSchema = z.union([
 
 type ServerEnv = z.infer<typeof ServerEnvSchema>
 const ServerEnvSchema = z.object({
-    helseIdWellKnown: z.string(),
     valkeyConfig: ValkeyConfigSchema.nullish(),
     useLocalSykInnApi: z.boolean().default(false),
     useLocalValkey: z.boolean().default(false),
@@ -85,7 +84,6 @@ export function getServerEnv(): ServerEnv {
 
     const parsedEnv = ServerEnvSchema.parse({
         valkeyConfig: valkeyConfig,
-        helseIdWellKnown: process.env.HELSE_ID_WELL_KNOWN_URL,
         useLocalSykInnApi: process.env.USE_LOCAL_SYK_INN_API === 'true',
         useLocalValkey: process.env.USE_LOCAL_VALKEY === 'true',
     } satisfies Record<keyof ServerEnv, unknown | undefined>)
