@@ -14,6 +14,10 @@ spec:
   replicas:
     min: {{replicas}}
     max: {{replicas}}
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
   liveness:
     path: /samarbeidspartner/sykmelding/api/internal/is_alive
   readiness:

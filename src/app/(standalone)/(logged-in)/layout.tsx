@@ -14,7 +14,6 @@ import { LazyDevTools } from '@dev/tools/LazyDevTools'
 import { spanServerAsync } from '@lib/otel/server'
 import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
 import { shouldUseMockEngine } from '@dev/mock-engine'
-import DemoWarning from '@components/user-warnings/DemoWarning'
 
 import { NoBehandlerError } from './start-errors'
 
@@ -50,7 +49,6 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
         <>
             <HelseIdHeader behandler={{ navn: behandler.navn, hpr: behandler.hpr }} />
             <ToggleProvider toggles={toToggleMap(toggles)}>
-                {(isLocal || isDemo) && <DemoWarning />}
                 {children}
                 <LoggedOutWarning />
                 {(isLocal || isDemo) && <LazyDevTools />}
