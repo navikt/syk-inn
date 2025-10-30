@@ -1,6 +1,6 @@
 import { MiddlewareHandler } from 'hono'
 
-import { helseIdLogger } from '../../logger'
+import { helseIdLogger } from '../logger'
 
 export const withAuthed: MiddlewareHandler = async (c, next) => {
     const authHeader = c.req.header('Authorization')

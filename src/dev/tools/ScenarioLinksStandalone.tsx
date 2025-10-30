@@ -5,8 +5,8 @@ import { Heading, LinkCard, Select } from '@navikt/ds-react'
 import { PlayIcon, ShieldLockIcon } from '@navikt/aksel-icons'
 import { parseAsString, useQueryState } from 'nuqs'
 
+import { MockBehandlere } from '@navikt/helseid-mock-server'
 import { pathWithBasePath } from '@lib/url'
-import { MockBehandlere } from '@navikt/helseid-mock-server/types'
 
 function ScenarioLinksStandalone(): ReactElement {
     const [behandler, setBehandler] = useQueryState(

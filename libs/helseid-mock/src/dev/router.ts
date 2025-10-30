@@ -3,7 +3,7 @@ import { setCookie } from 'hono/cookie'
 
 import { MOCK_HELSEID_TOKEN_NAME } from '../cookie'
 import { getServerSession } from '../config'
-import { helseIdLogger } from '../../logger'
+import { helseIdLogger } from '../logger'
 import { MockBehandlere } from '../data/behandlere'
 
 export const devRouter = new Hono().get('/start-user', async (c) => {

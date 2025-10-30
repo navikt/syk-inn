@@ -1,4 +1,4 @@
-import { createHelseIdHandler } from '@navikt/helseid-mock-server/next'
+import { createHelseIdHandler } from '@navikt/helseid-mock-server'
 import { getAbsoluteURL } from '@lib/url'
 
 import { getHelseIdMockStore } from './mock-storage'

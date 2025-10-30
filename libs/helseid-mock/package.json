@@ -11,14 +11,8 @@
         "dev": "bun run --watch buntry-point.ts | pino-pretty --messageKey=message"
     },
     "exports": {
-        "./router": {
-            "import": "./src/router.ts"
-        },
-        "./next": {
-            "import": "./src/next.ts"
-        },
-        "./types": {
-            "import": "./src/types.ts"
+        ".": {
+            "import": "./src/index.ts"
         }
     },
     "dependencies": {
