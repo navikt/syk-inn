@@ -1,15 +1,14 @@
-import { logger as pinoLogger } from '@navikt/pino-logger'
 import { HonoRequest } from 'hono'
 
-const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK] ' })
+import { fhirLogger } from '../../logger'
 
 const shouldReturn = true
 
 export async function getDocumentReference(_: HonoRequest, docRefId: string): Promise<Response> {
-    logger.info(`Incoming request: GET DocumentReference/${docRefId}`)
+    fhirLogger.info(`Incoming request: GET DocumentReference/${docRefId}`)
 
     if (!shouldReturn) {
-        logger.info("Pretending document reference doesn't exist")
+        fhirLogger.info("Pretending document reference doesn't exist")
         return new Response('Not found', { status: 404 })
     }
 

@@ -1,11 +1,9 @@
-import { logger as pinoLogger } from '@navikt/pino-logger'
 import { HonoRequest } from 'hono'
 
 import { createAccessToken, createIdToken } from '../jwt/jwt'
 import { fhirServerTestData } from '../meta/data/fhir-server'
 import { FhirClient, getConfig, getServerSession } from '../config'
-
-const logger = pinoLogger.child({}, { msgPrefix: '[FHIR-MOCK-Auth] ' })
+import { fhirLogger } from '../logger'
 
 export async function tokenExchange(request: HonoRequest): Promise<Response> {
     const body = await request.formData()
@@ -14,7 +12,7 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
     const clientId = body.get('client_id')?.toString()
     const client = getConfig().clients.find((it) => it.clientId == clientId)
     if (client == null) {
-        logger.error(`Token exchange, invalid client_id: ${clientId}`)
+        fhirLogger.error(`Token exchange, invalid client_id: ${clientId}`)
         return Response.json(
             { error: 'invalid_client', error_description: 'Client authentication failed' },
             {
@@ -30,13 +28,13 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
     try {
         await assertConfidentialClient(body, headers, client)
     } catch (error) {
-        logger.error(new Error('Confidential client assertion failed', { cause: error }))
+        fhirLogger.error(new Error('Confidential client assertion failed', { cause: error }))
         return new Response('Confidential client assertion failed', { status: 403 })
     }
 
     const code = body.get('code')
     if (code == null || typeof code !== 'string') {
-        logger.error(`Token exchange, missing code`)
+        fhirLogger.error(`Token exchange, missing code`)
         return new Response('Missing code', { status: 400 })
     }
 
@@ -50,7 +48,7 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
         },
     })
 
-    logger.warn(
+    fhirLogger.warn(
         `Launch complete! \npatient: ${session.patient.id}\nencounter: ${session.encounter.id}\npractitioner: ${session.practitioner.id}\norganization: ${session.organization.id}`,
     )
 

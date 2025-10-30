@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
-import { logger } from '@navikt/pino-logger'
 
 import { withAuthed } from '../../auth/verify-authed'
+import { fhirLogger } from '../../logger'
 
 import { getDocumentReference } from './get-document-reference'
 import { createDocumentReference, getDocumentReferencesListResponse } from './create-document-reference'
@@ -9,7 +9,7 @@ import { createDocumentReference, getDocumentReferencesListResponse } from './cr
 export const documentReferenceRouter = new Hono()
     .use('*', withAuthed)
     .get('/', (c) => {
-        logger.info(
+        fhirLogger.info(
             `Getting document reference for patient "${c.req.param('patient')}" by type token ${c.req.param('type')}`,
         )
 
