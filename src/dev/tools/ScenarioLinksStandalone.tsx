@@ -56,7 +56,7 @@ function ScenarioLinksStandalone(): ReactElement {
 }
 
 function buildInitParams(behandler: MockBehandlere): string {
-    return `?user=${behandler}&returnTo=/`
+    return `?user=${behandler}&returnTo=${pathWithBasePath('/')}`
 }
 
 export default ScenarioLinksStandalone
