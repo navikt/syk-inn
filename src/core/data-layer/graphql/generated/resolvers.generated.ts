@@ -220,7 +220,7 @@ export type MutationDeleteDraftArgs = {
 export type MutationOpprettSykmeldingArgs = {
     draftId: Scalars['String']['input']
     force: Scalars['Boolean']['input']
-    ident: Scalars['String']['input']
+    meta: OpprettSykmeldingMetaInput
     values: OpprettSykmeldingInput
 }
 
@@ -251,6 +251,12 @@ export type OpprettSykmeldingInput = {
     tilbakedatering?: InputMaybe<InputTilbakedatering>
     utdypendeSporsmal?: InputMaybe<InputUtdypendeSporsmal>
     yrkesskade?: InputMaybe<InputYrkesskade>
+}
+
+export type OpprettSykmeldingMetaInput = {
+    legekontorTlf?: InputMaybe<Scalars['String']['input']>
+    orgnummer?: InputMaybe<Scalars['String']['input']>
+    pasientIdent: Scalars['String']['input']
 }
 
 export type OpprettetSykmelding = OtherSubmitOutcomes | RuleOutcome | SykmeldingFull
@@ -568,6 +574,7 @@ export type ResolversTypes = {
     Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>
     OpprettSykmeldingDraft: ResolverTypeWrapper<OpprettSykmeldingDraft>
     OpprettSykmeldingInput: OpprettSykmeldingInput
+    OpprettSykmeldingMetaInput: OpprettSykmeldingMetaInput
     OpprettetSykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['OpprettetSykmelding']>
     OtherSubmitOutcomes: ResolverTypeWrapper<OtherSubmitOutcomes>
     OtherSubmitOutcomesEnum: OtherSubmitOutcomesEnum
@@ -635,6 +642,7 @@ export type ResolversParentTypes = {
     Mutation: Record<PropertyKey, never>
     OpprettSykmeldingDraft: OpprettSykmeldingDraft
     OpprettSykmeldingInput: OpprettSykmeldingInput
+    OpprettSykmeldingMetaInput: OpprettSykmeldingMetaInput
     OpprettetSykmelding: ResolversUnionTypes<ResolversParentTypes>['OpprettetSykmelding']
     OtherSubmitOutcomes: OtherSubmitOutcomes
     Outcome: Outcome
@@ -822,7 +830,7 @@ export type MutationResolvers<
         ResolversTypes['OpprettetSykmelding'],
         ParentType,
         ContextType,
-        RequireFields<MutationOpprettSykmeldingArgs, 'draftId' | 'force' | 'ident' | 'values'>
+        RequireFields<MutationOpprettSykmeldingArgs, 'draftId' | 'force' | 'meta' | 'values'>
     >
     saveDraft?: Resolver<
         ResolversTypes['OpprettSykmeldingDraft'],

@@ -8,6 +8,12 @@ type OtherSubmitOutcomes {
     cause: OtherSubmitOutcomesEnum!
 }
 
+input OpprettSykmeldingMetaInput {
+    pasientIdent: String!
+    orgnummer: String
+    legekontorTlf: String
+}
+
 input OpprettSykmeldingInput {
     pasientenSkalSkjermes: Boolean!
     hoveddiagnose: InputDiagnose!

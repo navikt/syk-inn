@@ -16,6 +16,7 @@ import {
     OpprettSykmeldingInput,
     OpprettSykmeldingMutation,
     OpprettSykmeldingMutationVariables,
+    OpprettSykmeldingMetaInput,
 } from '@queries'
 import { spanBrowserAsync, withSpanBrowserAsync } from '@lib/otel/browser'
 import { useAppSelector } from '@core/redux/hooks'
@@ -68,6 +69,8 @@ export function useOpprettSykmeldingMutation(
         }
 
         try {
+            // TODO: This is where we would map manually provided orgnummer/tlf
+            const meta: OpprettSykmeldingMetaInput = { pasientIdent: pasientIdent }
             const values = formStateToOpprettSykmeldingInput(formState)
 
             if (isLocal || isCloud) teamLogger.info(`(Client), mapped values: ${JSON.stringify(values)}`)
@@ -82,7 +85,7 @@ export function useOpprettSykmeldingMutation(
                 mutate({
                     variables: {
                         draftId: draftIdToUse,
-                        pasientIdent: pasientIdent,
+                        meta: meta,
                         values: values,
                         force: force ?? false,
                     },
