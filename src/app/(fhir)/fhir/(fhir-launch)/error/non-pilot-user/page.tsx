@@ -5,11 +5,11 @@ import { logger } from '@navikt/next-logger'
 import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
-import { getSessionId } from '@data-layer/fhir/smart/session'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { getOrganisasjonstelefonnummerFromFhir } from '@data-layer/fhir/mappers/organization'
+import { getSessionId } from '@core/session/session'
 
 const SYK_INN_API_DEPLOYED_IN_PROD = false
 

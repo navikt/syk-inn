@@ -15,7 +15,10 @@ export function pickHoveddiagnose({ search, select }: { search: string; select: 
             const diagnoseRegion = page.getByRole('region', { name: 'Diagnose', exact: true })
             await expect(diagnoseRegion).toBeVisible()
 
-            await page.getByRole('button', { name: 'Endre' }).click() // Diagnose is pre-filled
+            const endreButton = page.getByRole('button', { name: 'Endre' })
+            if (await endreButton.isVisible()) {
+                await endreButton.click() // Diagnose is pre-filled
+            }
             await diagnoseRegion.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
             await diagnoseRegion.getByRole('option', { name: select }).click()
 

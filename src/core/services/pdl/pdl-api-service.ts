@@ -14,7 +14,7 @@ export const pdlApiService = {
             }
 
             logger.warn('Running in local or demo environment, returning mocked PDL data')
-            return createPdlPersonMock()
+            return createPdlPersonMock(ident)
         }
 
         return fetchInternalAPI({

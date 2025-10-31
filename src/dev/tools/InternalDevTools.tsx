@@ -44,7 +44,7 @@ function ScenarioPicker(): ReactElement {
             <List as="ul">
                 {R.entries(scenarios).map(([key, scenario]) => (
                     <List.Item key={key}>
-                        <Link href={pathWithBasePath(`/set-scenario/${key}?returnTo=/fhir`)}>
+                        <Link href={pathWithBasePath(`/dev/set-scenario/${key}?returnTo=/fhir`)}>
                             {scenario.description}
                         </Link>
                     </List.Item>

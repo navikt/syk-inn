@@ -13,7 +13,7 @@ import {
     fillMeldinger,
     fillTilbakedatering,
 } from '../actions/user-actions'
-import { verifySignerendeBehandler, verifySummaryPage } from '../actions/user-verifications'
+import { verifySummaryPage } from '../actions/user-verifications'
 import { userInteractionsGroup } from '../utils/actions'
 import {
     expectAndreSporsmal,
@@ -25,6 +25,7 @@ import {
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
+import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 test('should be able to duplicate an existing sykmelding with correct values', async ({ page }) => {
     await launchWithMock('empty')(page)

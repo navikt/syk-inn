@@ -175,7 +175,7 @@ function createScenarioUrl(
     organization: MockOrganizations,
 ): string {
     return pathWithBasePath(
-        `/set-scenario/${scenario}?returnTo=${encodeURIComponent(
+        `/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(
             `${fhirLaunchUrl}&launch=${buildLaunchParam(patient as MockPatients, practitioner, organization)}`,
         )}`,
     )

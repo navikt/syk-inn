@@ -1,30 +1,30 @@
-import { test } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
 import { OpprettSykmeldingDocument } from '@queries'
 
+import { inDays, today } from '../utils/date-utils'
 import {
-    addUtdypendeSporsmal,
     fillPeriodeRelative,
-    nextStep,
     pickHoveddiagnose,
     submitSykmelding,
+    nextStep,
+    addBidiagnose,
 } from '../actions/user-actions'
-import { userInteractionsGroup } from '../utils/actions'
 import { expectGraphQLRequest } from '../utils/assertions'
-import { today, inDays } from '../utils/date-utils'
 import { getDraftId } from '../utils/request-utils'
+import { verifySummaryPage } from '../actions/user-verifications'
 
-import { launchWithMock } from './actions/fhir-actions'
-import { startNewSykmelding } from './actions/fhir-user-actions'
-import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
+import { launchWithMock } from './actions/standalone-actions'
+import { searchPerson, startNewSykmelding } from './actions/standalone-user-actions'
+import { verifySignerendeBehandler } from './actions/standalone-user-verifications'
 
-const launchAndStart = userInteractionsGroup(
-    launchWithMock('utfyllende-sporsmal'),
-    startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' }),
-)
+test('simple - 100% sykmelding', async ({ page }) => {
+    await launchWithMock('empty', {
+        behandler: 'Johan Johansson',
+    })(page)
 
-test('Submit sykmelding with utdypende spørsmål', async ({ page }) => {
-    await launchAndStart(page)
+    await searchPerson('21037712323')(page)
+    await startNewSykmelding('21037712323')(page)
 
     await fillPeriodeRelative({
         type: '100%',
@@ -32,14 +32,16 @@ test('Submit sykmelding with utdypende spørsmål', async ({ page }) => {
     })(page)
 
     await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-
-    await addUtdypendeSporsmal({
-        utfodringerMedArbeid: 'Utfordringer',
-        medisinskOppsummering: 'Oppsummering',
-    })(page)
+    await addBidiagnose({ search: 'P17', select: /Tobakkmisbruk/ })(page)
 
     await nextStep()(page)
-    await verifySignerendeBehandler()(page)
+    await verifySignerendeBehandler('123456')(page)
+    await verifySummaryPage([
+        {
+            name: 'Periode',
+            values: [/100% sykmelding/],
+        },
+    ])(page)
 
     const request = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
@@ -48,7 +50,7 @@ test('Submit sykmelding with utdypende spørsmål', async ({ page }) => {
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
-            bidiagnoser: [],
+            bidiagnoser: [{ system: 'ICPC2', code: 'P17' }],
             aktivitet: [
                 {
                     type: 'AKTIVITET_IKKE_MULIG',
@@ -75,10 +77,12 @@ test('Submit sykmelding with utdypende spørsmål', async ({ page }) => {
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
             utdypendeSporsmal: {
-                utfodringerMedArbeid: 'Utfordringer',
-                medisinskOppsummering: 'Oppsummering',
+                utfodringerMedArbeid: null,
+                medisinskOppsummering: null,
                 hensynPaArbeidsplassen: null,
             },
         },
     })
+
+    await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
 })

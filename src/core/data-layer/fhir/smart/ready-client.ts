@@ -2,10 +2,10 @@ import { ReadyClient, SmartClientReadyErrors } from '@navikt/smart-on-fhir/clien
 import { logger } from '@navikt/next-logger'
 
 import { getActivePatient } from '@data-layer/fhir/smart/active-patient'
+import { getSessionId } from '@core/session/session'
 
 import { HelseIdClaimSchema } from './helseid'
 import { getSmartClient } from './smart-client'
-import { getSessionId } from './session'
 
 export async function getReadyClient(): Promise<ReadyClient | SmartClientReadyErrors> {
     const actualSessionId = await getSessionId()

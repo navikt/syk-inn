@@ -5,11 +5,12 @@ import { OpprettSykmeldingDocument } from '@queries'
 import { fillPeriodeRelative, submitSykmelding, nextStep, previousStep, saveDraft } from '../actions/user-actions'
 import { anything, expectGraphQLRequest } from '../utils/assertions'
 import { getDraftId } from '../utils/request-utils'
-import { verifySignerendeBehandler, verifySummaryPage } from '../actions/user-verifications'
+import { verifySummaryPage } from '../actions/user-verifications'
 import { userInteractionsGroup } from '../utils/actions'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
+import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 test('aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG data', async ({ page }) => {
     await userInteractionsGroup(

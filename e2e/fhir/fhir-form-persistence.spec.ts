@@ -14,7 +14,6 @@ import {
     addBidiagnose,
 } from '../actions/user-actions'
 import { userInteractionsGroup } from '../utils/actions'
-import { verifySignerendeBehandler } from '../actions/user-verifications'
 import {
     expectAndreSporsmal,
     expectBidagnoses,
@@ -26,6 +25,7 @@ import {
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
+import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 const fillAllTheValues = userInteractionsGroup(
     launchWithMock('normal'),

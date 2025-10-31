@@ -2,6 +2,7 @@ import { NextRequest, NextResponse, ProxyConfig } from 'next/server'
 
 import { MOCK_HELSEID_TOKEN_NAME, sessionToTokens } from '@navikt/helseid-mock-server'
 import { UNLEASH_COOKIE_NAME } from '@core/toggles/const'
+import { SESSION_COOKIE_NAME } from '@core/session/cookies'
 import { shouldUseMockEngine } from '@dev/mock-engine'
 import { spanServerAsync } from '@lib/otel/server'
 
@@ -9,13 +10,13 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
     return spanServerAsync('Next Proxy', async (span) => {
         const response = NextResponse.next()
 
-        if (request.cookies.get('syk-inn-session-id')?.value == null) {
+        if (request.cookies.get(SESSION_COOKIE_NAME)?.value == null) {
             const sessionId = crypto.randomUUID()
 
             span.setAttribute('proxy.set-session-id', sessionId)
 
             response.cookies.set({
-                name: 'syk-inn-session-id',
+                name: SESSION_COOKIE_NAME,
                 value: sessionId,
                 httpOnly: true,
                 maxAge: 60 * 60 * 24 * 30,

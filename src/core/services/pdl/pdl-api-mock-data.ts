@@ -1,6 +1,6 @@
 import { PdlPerson } from '@core/services/pdl/pdl-api-schema'
 
-export function createPdlPersonMock(): PdlPerson {
+export function createPdlPersonMock(ident?: string): PdlPerson {
     return {
         navn: {
             fornavn: 'Ola',
@@ -10,7 +10,7 @@ export function createPdlPersonMock(): PdlPerson {
         foedselsdato: '1980-01-01',
         identer: [
             {
-                ident: '12345678901',
+                ident: ident ?? '12345678901',
                 historisk: false,
                 gruppe: 'FOLKEREGISTERIDENT',
             },

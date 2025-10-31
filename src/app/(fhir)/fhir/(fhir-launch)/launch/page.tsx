@@ -3,7 +3,7 @@ import { logger as pinoLogger } from '@navikt/next-logger'
 import { redirect, RedirectType, unauthorized } from 'next/navigation'
 
 import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
-import { getSessionId } from '@data-layer/fhir/smart/session'
+import { getSessionId } from '@core/session/session'
 
 import { InvalidIssuer, MissingLaunchParams } from '../launch-errors'
 

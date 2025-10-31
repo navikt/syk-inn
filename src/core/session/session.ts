@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 
-const SESSION_COOKIE_NAME = 'syk-inn-session-id'
+import { SESSION_COOKIE_NAME } from '@core/session/cookies'
 
 export async function getSessionId(): Promise<string | null> {
     const cookieStore = await cookies()

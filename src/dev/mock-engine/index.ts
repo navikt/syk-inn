@@ -1,7 +1,7 @@
 import { lazyNextleton } from 'nextleton'
 
-import { getSessionId } from '@data-layer/fhir/smart/session'
 import { getServerEnv, isE2E, isLocal, isDemo } from '@lib/env'
+import { getSessionId } from '@core/session/session'
 
 import MockSessionStore from './MockSessionStore'
 import { MockEngine } from './MockEngine'

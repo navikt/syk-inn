@@ -1,14 +1,13 @@
 import { test, Page } from '@playwright/test'
 
 import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
-import { ExpectedToggles } from '@core/toggles/toggles'
 import { Scenarios } from '@dev/mock-engine/scenarios/scenarios'
+
+import { applyToggleOverrides, ToggleOverrides } from '../../actions/toggle-overrides'
 
 export const launchPath = '/fhir/launch'
 
 const launchUrl = `${launchPath}?iss=http://localhost:3000/api/mocks/fhir`
-
-type ToggleOverrides = Partial<Record<ExpectedToggles, boolean>>
 
 type AdditionalOptions =
     | {
@@ -43,24 +42,13 @@ export function launchWithMock(
 ) {
     return async (page: Page): Promise<void> => {
         if (Object.keys(toggleOverrides).length > 0) {
-            await test.step(`Override feature toggles:\n${Object.entries(toggleOverrides)
-                .map(([toggle, state]) => ` - ${toggle}: ${state}`)
-                .join('\n')}`, async () => {
-                await page.context().addCookies(
-                    Object.entries(toggleOverrides).map(([name, value]) => ({
-                        name,
-                        value: value ? 'true' : 'false',
-                        domain: 'localhost',
-                        path: '/',
-                    })),
-                )
-            })
+            await applyToggleOverrides(page, toggleOverrides)
         }
 
         if (scenario != 'normal') {
             return test.step(`Launch scenario ${scenario} (${patient})`, async () => {
                 await page.goto(
-                    `/set-scenario/${scenario}?returnTo=${encodeURIComponent(`${launchUrl}&launch=${buildLaunchParam(patient, practitioner, organization)}`)}`,
+                    `/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(`${launchUrl}&launch=${buildLaunchParam(patient, practitioner, organization)}`)}`,
                 )
             })
         }

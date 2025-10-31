@@ -17,11 +17,12 @@ import {
 } from '../actions/user-actions'
 import { expectGraphQLRequest } from '../utils/assertions'
 import { getDraftId } from '../utils/request-utils'
-import { verifySignerendeBehandler, verifySummaryPage } from '../actions/user-verifications'
+import { verifySummaryPage } from '../actions/user-verifications'
 import { userInteractionsGroup } from '../utils/actions'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
+import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 const launchAndStart = userInteractionsGroup(
     launchWithMock('empty'),
