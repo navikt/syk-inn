@@ -1,6 +1,6 @@
 type Behandler {
     hpr: String!
     navn: String!
-    orgnummer: String!
-    legekontorTlf: String!
+    orgnummer: String
+    legekontorTlf: String
 }

@@ -24,9 +24,8 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             return {
                 hpr: context.hpr,
                 navn: context.name,
-                // TODO: These are temporary placeholders, these will not be available here at all
-                legekontorTlf: '+4712345678',
-                orgnummer: '123456789',
+                legekontorTlf: null,
+                orgnummer: null,
             }
         },
         konsultasjon: () => null,

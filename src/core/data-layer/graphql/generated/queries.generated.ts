@@ -86,9 +86,9 @@ export type AvventendeInput = {
 export type Behandler = {
     __typename: 'Behandler'
     hpr: Scalars['String']['output']
-    legekontorTlf: Scalars['String']['output']
+    legekontorTlf?: Maybe<Scalars['String']['output']>
     navn: Scalars['String']['output']
-    orgnummer: Scalars['String']['output']
+    orgnummer?: Maybe<Scalars['String']['output']>
 }
 
 export type Behandlingsdager = FomTom & {
@@ -605,7 +605,13 @@ export type BehandlerQueryVariables = Exact<{ [key: string]: never }>
 
 export type BehandlerQuery = {
     __typename: 'Query'
-    behandler?: { __typename: 'Behandler'; navn: string; hpr: string; orgnummer: string; legekontorTlf: string } | null
+    behandler?: {
+        __typename: 'Behandler'
+        navn: string
+        hpr: string
+        orgnummer?: string | null
+        legekontorTlf?: string | null
+    } | null
 }
 
 export type PasientQueryVariables = Exact<{ [key: string]: never }>
