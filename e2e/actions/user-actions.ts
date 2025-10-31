@@ -9,23 +9,6 @@ import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
 import { clickAndWait, waitForGqlRequest } from '../utils/request-utils'
 import { inputDate } from '../utils/date-utils'
 
-import { expectPatient } from './user-form-verification'
-
-export function startNewSykmelding(patient?: { name: string; fnr: string }) {
-    return async (page: Page) => {
-        await test.step(
-            patient == null ? 'Start new sykmelding' : 'Verify the patient and start new sykmelding',
-            async () => {
-                const pasientInfoRegion = page.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ })
-
-                if (patient != null) await expectPatient(patient)(pasientInfoRegion)
-
-                await pasientInfoRegion.getByRole('button', { name: 'Opprett sykmelding' }).click()
-            },
-        )
-    }
-}
-
 export function pickHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
     return async (page: Page) => {
         return await test.step('Input hoveddiagnose', async () => {

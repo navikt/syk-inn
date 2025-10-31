@@ -1,9 +1,7 @@
 import { test, expect } from '@playwright/test'
 
-import { launchWithMock } from './actions/fhir-actions'
-import { daysAgo } from './utils/date-utils'
+import { daysAgo } from '../utils/date-utils'
 import {
-    startNewSykmelding,
     pickHoveddiagnose,
     fillPeriodeRelative,
     fillTilbakedatering,
@@ -14,9 +12,9 @@ import {
     saveDraft,
     fillArbeidsforhold,
     addBidiagnose,
-} from './actions/user-actions'
-import { userInteractionsGroup } from './utils/actions'
-import { verifySignerendeBehandler } from './actions/user-verifications'
+} from '../actions/user-actions'
+import { userInteractionsGroup } from '../utils/actions'
+import { verifySignerendeBehandler } from '../actions/user-verifications'
 import {
     expectAndreSporsmal,
     expectBidagnoses,
@@ -24,7 +22,10 @@ import {
     expectMeldinger,
     expectPeriode,
     expectTilbakedatering,
-} from './actions/user-form-verification'
+} from '../actions/user-form-verification'
+
+import { launchWithMock } from './actions/fhir-actions'
+import { startNewSykmelding } from './actions/fhir-user-actions'
 
 const fillAllTheValues = userInteractionsGroup(
     launchWithMock('normal'),

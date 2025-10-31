@@ -3,10 +3,8 @@ import { test, expect } from '@playwright/test'
 import { OpprettSykmeldingDocument } from '@queries'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
 
-import { launchWithMock } from './actions/fhir-actions'
-import { daysAgo, inDays, inputDate, today } from './utils/date-utils'
+import { daysAgo, inDays, inputDate, today } from '../utils/date-utils'
 import {
-    startNewSykmelding,
     fillPeriodeRelative,
     pickHoveddiagnose,
     submitSykmelding,
@@ -16,11 +14,14 @@ import {
     fillArsakerTilAktivitetIkkeMulig,
     addBidiagnose,
     confirmRuleOutcomeSubmit,
-} from './actions/user-actions'
-import { expectGraphQLRequest } from './utils/assertions'
-import { getDraftId } from './utils/request-utils'
-import { verifySignerendeBehandler, verifySummaryPage } from './actions/user-verifications'
-import { userInteractionsGroup } from './utils/actions'
+} from '../actions/user-actions'
+import { expectGraphQLRequest } from '../utils/assertions'
+import { getDraftId } from '../utils/request-utils'
+import { verifySignerendeBehandler, verifySummaryPage } from '../actions/user-verifications'
+import { userInteractionsGroup } from '../utils/actions'
+
+import { launchWithMock } from './actions/fhir-actions'
+import { startNewSykmelding } from './actions/fhir-user-actions'
 
 const launchAndStart = userInteractionsGroup(
     launchWithMock('empty'),

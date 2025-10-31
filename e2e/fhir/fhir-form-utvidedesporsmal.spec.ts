@@ -1,21 +1,22 @@
 import { test } from '@playwright/test'
 
-import { OpprettSykmeldingDocument } from '@core/data-layer/graphql/generated/queries.generated'
+import { OpprettSykmeldingDocument } from '@queries'
 
-import { launchWithMock } from './actions/fhir-actions'
 import {
     addUtdypendeSporsmal,
     fillPeriodeRelative,
     nextStep,
     pickHoveddiagnose,
-    startNewSykmelding,
     submitSykmelding,
-} from './actions/user-actions'
-import { userInteractionsGroup } from './utils/actions'
-import { verifySignerendeBehandler } from './actions/user-verifications'
-import { expectGraphQLRequest } from './utils/assertions'
-import { today, inDays } from './utils/date-utils'
-import { getDraftId } from './utils/request-utils'
+} from '../actions/user-actions'
+import { userInteractionsGroup } from '../utils/actions'
+import { verifySignerendeBehandler } from '../actions/user-verifications'
+import { expectGraphQLRequest } from '../utils/assertions'
+import { today, inDays } from '../utils/date-utils'
+import { getDraftId } from '../utils/request-utils'
+
+import { launchWithMock } from './actions/fhir-actions'
+import { startNewSykmelding } from './actions/fhir-user-actions'
 
 const launchAndStart = userInteractionsGroup(
     launchWithMock('utfyllende-sporsmal'),

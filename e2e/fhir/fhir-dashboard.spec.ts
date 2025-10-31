@@ -2,10 +2,8 @@ import { expect, test } from '@playwright/test'
 
 import { toReadableDatePeriod } from '@lib/date'
 
-import { launchWithMock } from './actions/fhir-actions'
-import { daysAgo, inDays, inputDate } from './utils/date-utils'
+import { daysAgo, inDays, inputDate } from '../utils/date-utils'
 import {
-    startNewSykmelding,
     fillPeriodeRelative,
     pickHoveddiagnose,
     submitSykmelding,
@@ -14,16 +12,19 @@ import {
     fillAndreSporsmal,
     fillMeldinger,
     fillTilbakedatering,
-} from './actions/user-actions'
-import { verifySignerendeBehandler, verifySummaryPage } from './actions/user-verifications'
-import { userInteractionsGroup } from './utils/actions'
+} from '../actions/user-actions'
+import { verifySignerendeBehandler, verifySummaryPage } from '../actions/user-verifications'
+import { userInteractionsGroup } from '../utils/actions'
 import {
     expectAndreSporsmal,
     expectArbeidsforhold,
     expectHoveddiagnose,
     expectMeldinger,
     expectPeriode,
-} from './actions/user-form-verification'
+} from '../actions/user-form-verification'
+
+import { launchWithMock } from './actions/fhir-actions'
+import { startNewSykmelding } from './actions/fhir-user-actions'
 
 test('should be able to duplicate an existing sykmelding with correct values', async ({ page }) => {
     await launchWithMock('empty')(page)

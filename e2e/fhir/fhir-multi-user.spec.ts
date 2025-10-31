@@ -1,7 +1,8 @@
 import { test } from '@playwright/test'
 
+import { expectPatient } from '../actions/user-form-verification'
+
 import { launchWithMock } from './actions/fhir-actions'
-import { expectPatient } from './actions/user-form-verification'
 
 const Kari = { name: 'Kari Normann', fnr: '45847100951' }
 const Espen = { name: 'Espen Eksempel', fnr: '21037712323' }

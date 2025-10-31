@@ -1,16 +1,17 @@
 import { expect, test } from '@playwright/test'
 
-import { launchWithMock } from './actions/fhir-actions'
 import {
-    startNewSykmelding,
     addBidiagnose,
     deleteBidiagnose,
     editBidiagnose,
     pickHoveddiagnose,
     editHoveddiagnose,
-} from './actions/user-actions'
-import { expectBidagnoses, expectHoveddiagnose } from './actions/user-form-verification'
-import { inDays, inputDate } from './utils/date-utils'
+} from '../actions/user-actions'
+import { expectBidagnoses, expectHoveddiagnose } from '../actions/user-form-verification'
+import { inDays, inputDate } from '../utils/date-utils'
+
+import { launchWithMock } from './actions/fhir-actions'
+import { startNewSykmelding } from './actions/fhir-user-actions'
 
 test('hoveddiagnose - shall be able to edit diagnose', async ({ page }) => {
     await launchWithMock('empty')(page)

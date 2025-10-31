@@ -1,7 +1,9 @@
 import { expect, test } from '@playwright/test'
 
+import { fillPeriodeRelative, nextStep } from '../actions/user-actions'
+
 import { launchWithMock } from './actions/fhir-actions'
-import { fillPeriodeRelative, nextStep, startNewSykmelding } from './actions/user-actions'
+import { startNewSykmelding } from './actions/fhir-user-actions'
 
 /**
  * The following rules should never actually hit the backend "hard stop", and should
