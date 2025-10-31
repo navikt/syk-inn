@@ -10,11 +10,7 @@
         "tsc": "tsc",
         "dev": "bun run --watch buntry-point.ts | pino-pretty --messageKey=message"
     },
-    "exports": {
-        ".": {
-            "import": "./src/index.ts"
-        }
-    },
+    "exports": "./src/index.ts",
     "dependencies": {
         "@navikt/pino-logger": "^4.4.1",
         "hono": "^4.10.3",

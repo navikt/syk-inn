@@ -10,9 +10,11 @@ import { assertIsPilotUser } from '@data-layer/fhir/fhir-graphql-utils'
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
 import {
     resolverInputToSykInnApiPayload,
+    sykInnApiSykmeldingRedactedToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmelding,
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
+import { getFlag, getUserToggles } from '@core/toggles/unleash'
 
 import { HelseIdGraphqlContext } from './helseid-graphql-context'
 
@@ -28,7 +30,21 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         },
         konsultasjon: () => null,
         pasient: () => null,
-        sykmelding: () => null,
+        sykmelding: async (_, { id: sykmeldingId }, { hpr }) => {
+            const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
+            if ('errorType' in sykmelding) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            if (sykmelding.kind === 'redacted') {
+                const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
+                if (!showRedactedFlag) return null
+
+                return sykInnApiSykmeldingRedactedToResolverSykmelding(sykmelding)
+            }
+
+            return sykInnApiSykmeldingToResolverSykmelding(sykmelding, 'PENDING')
+        },
         sykmeldinger: () => null,
         draft: () => null,
         drafts: () => null,

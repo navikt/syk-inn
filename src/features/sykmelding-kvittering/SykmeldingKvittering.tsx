@@ -38,10 +38,30 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
     const { loading, data, error, refetch } = useQuery(SykmeldingByIdDocument, { variables: { id: sykmeldingId } })
     const sykmelding = data?.sykmelding ?? null
 
+    if (!loading && sykmelding == null) {
+        return (
+            <Alert variant="warning">
+                <Heading size="medium" level="3">
+                    Fant ikke sykmeldingen
+                </Heading>
+                <BodyShort>Kunne ikke hente sykmeldingen</BodyShort>
+                <Button size="small" variant="secondary-neutral" onClick={() => refetch()} className="mt-4">
+                    Prøv på nytt
+                </Button>
+            </Alert>
+        )
+    }
+
     return (
         <>
             <div className="mb-4">
-                <Alert variant="success">Nav har mottatt sykmeldingen og sendt den til den sykmeldte</Alert>
+                {loading && data?.sykmelding == null ? (
+                    <Skeleton variant="rounded" height={62} />
+                ) : sykmelding ? (
+                    <Alert variant="success">Nav har mottatt sykmeldingen og sendt den til den sykmeldte</Alert>
+                ) : (
+                    <Alert variant="warning">Kunne ikke hente sykmeldingen</Alert>
+                )}
             </div>
             <div className="flex justify-between mt-8 mb-4">
                 {data?.sykmelding ? (
@@ -142,13 +162,18 @@ function SykmeldingKvitteringValues({ sykmelding, loading }: SykmeldingKvitterin
     )
 }
 
-function SykmeldingKvitteringStatus({ sykmeldingId }: { sykmeldingId: string }): ReactElement {
+function SykmeldingKvitteringStatus({ sykmeldingId }: { sykmeldingId: string }): ReactElement | null {
     const { loading, data } = useQuery(SykmeldingByIdDocument, {
         variables: { id: sykmeldingId },
     })
 
     if (data?.sykmelding?.__typename === 'SykmeldingRedacted') {
         throw new Error('Tried displaying kvittering, but got SykmeldingRedacted, that should not happen')
+    }
+
+    if (!loading && data?.sykmelding == null) {
+        // Sibling component displays not found warning
+        return null
     }
 
     return (
