@@ -10,8 +10,13 @@ query AllSykmeldinger {
     }
 }
 
-mutation OpprettSykmelding($draftId: String!, $values: OpprettSykmeldingInput!, $force: Boolean! = false) {
-    opprettSykmelding(draftId: $draftId, values: $values, force: $force) {
+mutation OpprettSykmelding(
+    $draftId: String!
+    $pasientIdent: String!
+    $values: OpprettSykmeldingInput!
+    $force: Boolean! = false
+) {
+    opprettSykmelding(draftId: $draftId, ident: $pasientIdent, values: $values, force: $force) {
         ... on Sykmelding {
             ...Sykmelding
         }

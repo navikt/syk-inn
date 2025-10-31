@@ -220,6 +220,7 @@ export type MutationDeleteDraftArgs = {
 export type MutationOpprettSykmeldingArgs = {
     draftId: Scalars['String']['input']
     force: Scalars['Boolean']['input']
+    ident: Scalars['String']['input']
     values: OpprettSykmeldingInput
 }
 
@@ -821,7 +822,7 @@ export type MutationResolvers<
         ResolversTypes['OpprettetSykmelding'],
         ParentType,
         ContextType,
-        RequireFields<MutationOpprettSykmeldingArgs, 'draftId' | 'force' | 'values'>
+        RequireFields<MutationOpprettSykmeldingArgs, 'draftId' | 'force' | 'ident' | 'values'>
     >
     saveDraft?: Resolver<
         ResolversTypes['OpprettSykmeldingDraft'],

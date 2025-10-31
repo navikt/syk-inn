@@ -1,6 +1,8 @@
 import React, { ReactElement } from 'react'
-import { Search } from '@navikt/ds-react'
+import { Button, Search } from '@navikt/ds-react'
 import { useController, useForm } from 'react-hook-form'
+
+import { isLocal } from '@lib/env'
 
 type Props = {
     handleSearch: (ident: string) => void
@@ -32,7 +34,7 @@ function ManualPatientSearch({ handleSearch, defaultIdent }: Props): ReactElemen
     })
 
     return (
-        <form onSubmit={form.handleSubmit((data) => handleSearch(data.ident))}>
+        <form onSubmit={form.handleSubmit((data) => handleSearch(data.ident))} className="relative">
             <Search
                 {...controller.field}
                 label="Finn pasient"
@@ -44,6 +46,17 @@ function ManualPatientSearch({ handleSearch, defaultIdent }: Props): ReactElemen
                     form.reset({ ident: '' })
                 }}
             />
+            {isLocal && (
+                <Button
+                    onClick={() => controller.field.onChange('45847100951')}
+                    variant="secondary-neutral"
+                    size="xsmall"
+                    className="mt-4 absolute -top-4 right-0"
+                    type="button"
+                >
+                    Use test ident
+                </Button>
+            )}
         </form>
     )
 }

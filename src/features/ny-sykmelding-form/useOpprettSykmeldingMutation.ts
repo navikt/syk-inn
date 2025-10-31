@@ -62,6 +62,11 @@ export function useOpprettSykmeldingMutation(
     const opprettSykmelding = withSpanBrowserAsync('submitSykmelding', async (force?: true) => {
         if (isLocal || isCloud) teamLogger.info(`(Client) Submitting values: ${JSON.stringify(formState)}`)
 
+        const pasientIdent = formState.pasient?.ident
+        if (pasientIdent == null) {
+            raise('Unable to submit sykmelding without pasient ident')
+        }
+
         try {
             const values = formStateToOpprettSykmeldingInput(formState)
 
@@ -75,7 +80,12 @@ export function useOpprettSykmeldingMutation(
             ruleReset()
             const createResult = await spanBrowserAsync('OpprettSykmelding.mutation', async () =>
                 mutate({
-                    variables: { draftId: draftIdToUse, values: values, force: force ?? false },
+                    variables: {
+                        draftId: draftIdToUse,
+                        pasientIdent: pasientIdent,
+                        values: values,
+                        force: force ?? false,
+                    },
                     context: { headers: isLocal || isDemo || isE2E ? createBrowserRuleOverrideHeaders() : undefined },
                 }),
             )
@@ -86,10 +96,12 @@ export function useOpprettSykmeldingMutation(
                 // Don't redirect on rule hits or missing person
                 if (createResult.data.opprettSykmelding.__typename !== 'SykmeldingFull') return
 
-                // Nuke the history, so that browser back takes the user to a fresh form
-                window.history.replaceState(null, '', pathWithBasePath('/fhir'))
+                if (mode === 'FHIR') {
+                    // Nuke the history, so that browser back takes the user to a fresh form
+                    window.history.replaceState(null, '', pathWithBasePath('/fhir'))
+                }
 
-                const kvitteringUrl = `/${mode === 'FHIR' ? 'fhir' : 'ny'}/kvittering/${createResult.data.opprettSykmelding.sykmeldingId}`
+                const kvitteringUrl = `${mode === 'FHIR' ? '/fhir/' : '/'}kvittering/${createResult.data.opprettSykmelding.sykmeldingId}`
 
                 router.push(kvitteringUrl, {
                     scroll: true,

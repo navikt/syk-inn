@@ -334,11 +334,15 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             return true
         },
-        opprettSykmelding: async (_, { draftId, values, force }, { client }) => {
+        opprettSykmelding: async (_, { draftId, ident, values, force }, { client }) => {
             const { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf } =
                 await getAllSykmeldingMetaFromFhir(client)
 
             await assertIsPilotUser(sykmelderHpr)
+
+            if (ident !== pasientIdent) {
+                throw new GraphQLError('PASIENT_IDENT_MISMATCH')
+            }
 
             const meta: OpprettSykmeldingMeta = {
                 source: `${client.issuerName} (FHIR)`,

@@ -25,6 +25,7 @@ type Mutation {
     """
     opprettSykmelding(
         draftId: String!
+        ident: String!
         values: OpprettSykmeldingInput!
         """
         If the user has submitted, and has been informed that the sykmelding will incur a rule violation,

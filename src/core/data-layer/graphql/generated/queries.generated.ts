@@ -218,6 +218,7 @@ export type MutationDeleteDraftArgs = {
 export type MutationOpprettSykmeldingArgs = {
     draftId: Scalars['String']['input']
     force: Scalars['Boolean']['input']
+    ident: Scalars['String']['input']
     values: OpprettSykmeldingInput
 }
 
@@ -827,6 +828,7 @@ export type AllSykmeldingerQuery = {
 
 export type OpprettSykmeldingMutationVariables = Exact<{
     draftId: Scalars['String']['input']
+    pasientIdent: Scalars['String']['input']
     values: OpprettSykmeldingInput
     force?: Scalars['Boolean']['input']
 }>
@@ -3448,6 +3450,11 @@ export const OpprettSykmeldingDocument = {
                 },
                 {
                     kind: 'VariableDefinition',
+                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'pasientIdent' } },
+                    type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+                },
+                {
+                    kind: 'VariableDefinition',
                     variable: { kind: 'Variable', name: { kind: 'Name', value: 'values' } },
                     type: {
                         kind: 'NonNullType',
@@ -3475,6 +3482,11 @@ export const OpprettSykmeldingDocument = {
                                 kind: 'Argument',
                                 name: { kind: 'Name', value: 'draftId' },
                                 value: { kind: 'Variable', name: { kind: 'Name', value: 'draftId' } },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'ident' },
+                                value: { kind: 'Variable', name: { kind: 'Name', value: 'pasientIdent' } },
                             },
                             {
                                 kind: 'Argument',

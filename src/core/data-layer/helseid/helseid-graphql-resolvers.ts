@@ -6,6 +6,13 @@ import { commonQueryResolvers, typeResolvers } from '@data-layer/graphql/common-
 import { raise } from '@lib/ts'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { getFnrIdent, getNameFromPdl } from '@core/services/pdl/pdl-api-utils'
+import { assertIsPilotUser } from '@data-layer/fhir/fhir-graphql-utils'
+import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
+import {
+    resolverInputToSykInnApiPayload,
+    sykInnApiSykmeldingToResolverSykmelding,
+} from '@core/services/syk-inn-api/syk-inn-api-utils'
+import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 
 import { HelseIdGraphqlContext } from './helseid-graphql-context'
 
@@ -47,7 +54,47 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
     Mutation: {
         saveDraft: () => raise('Not Implemented'),
         deleteDraft: () => raise('Not Implemented'),
-        opprettSykmelding: () => raise('Not Implemented'),
+        opprettSykmelding: async (_, { ident, values, force }, { hpr }) => {
+            await assertIsPilotUser(hpr)
+
+            const meta: OpprettSykmeldingMeta = {
+                source: `syk-inn (HelseID)`,
+                sykmelderHpr: hpr,
+                pasientIdent: ident,
+                legekontorOrgnr: 'TODO',
+                legekontorTlf: 'TODO',
+            }
+
+            const payload = resolverInputToSykInnApiPayload(values, meta)
+
+            if (!force) {
+                // When not forcing, we first verify the sykmelding
+                const verifyResult = await sykInnApiService.verifySykmelding(payload)
+                if (typeof verifyResult === 'object' && 'errorType' in verifyResult) {
+                    throw new GraphQLError('API_ERROR')
+                }
+
+                if (typeof verifyResult === 'object' && 'status' in verifyResult) {
+                    // There are rule outcomes, short circuit and return them
+                    return verifyResult
+                }
+
+                if (typeof verifyResult === 'object' && verifyResult.message === 'Person does not exist') {
+                    return { cause: 'PATIENT_NOT_FOUND_IN_PDL' }
+                }
+
+                // No rule hits, proceed to create the sykmelding
+            }
+
+            const result = await sykInnApiService.opprettSykmelding(payload)
+            if ('errorType' in result) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            // TODO: Delete from draft
+
+            return sykInnApiSykmeldingToResolverSykmelding(result, 'PENDING')
+        },
         synchronizeSykmelding: () => raise('Not Implemented'),
     },
     ...typeResolvers,
