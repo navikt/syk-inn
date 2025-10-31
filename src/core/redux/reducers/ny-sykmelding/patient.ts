@@ -1,4 +1,4 @@
-type ManualPatient = {
+export type ManualPatient = {
     type: 'manual'
     ident: string
     navn: string

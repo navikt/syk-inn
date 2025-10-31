@@ -2,7 +2,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
 import { NySykmeldingFormPayload, NySykmeldingFormState } from './form'
-import { ActivePatient, AutoPatient } from './patient'
+import { ActivePatient, AutoPatient, ManualPatient } from './patient'
 import { SummarySectionValues } from './summary'
 
 export type NySykmeldingState = {
@@ -22,6 +22,9 @@ export const nySykmeldingSlice = createSlice({
     initialState,
     reducers: {
         activePatient(state, action: PayloadAction<AutoPatient>) {
+            state.pasient = action.payload
+        },
+        manualPatient(state, action: PayloadAction<ManualPatient>) {
             state.pasient = action.payload
         },
         completeForm(state, action: PayloadAction<NySykmeldingFormPayload>) {
