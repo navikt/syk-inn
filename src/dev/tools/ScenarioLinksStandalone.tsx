@@ -42,9 +42,7 @@ function ScenarioLinksStandalone(): ReactElement {
                 <LinkCard.Title>
                     <LinkCard.Anchor
                         suppressHydrationWarning
-                        href={pathWithBasePath(
-                            `/api/mocks/helseid/dev/start-user${buildInitParams(behandler as MockBehandlere)}`,
-                        )}
+                        href={createScenarioUrl('empty', behandler as MockBehandlere)}
                     >
                         Just go
                     </LinkCard.Anchor>
@@ -53,6 +51,14 @@ function ScenarioLinksStandalone(): ReactElement {
             </LinkCard>
         </div>
     )
+}
+
+function createScenarioUrl(scenario: string, behandler: MockBehandlere): string {
+    const helseIdMockUrl = pathWithBasePath(
+        `/api/mocks/helseid/dev/start-user${buildInitParams(behandler as MockBehandlere)}`,
+    )
+
+    return pathWithBasePath(`/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(helseIdMockUrl)}`)
 }
 
 function buildInitParams(behandler: MockBehandlere): string {
