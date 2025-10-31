@@ -12,11 +12,11 @@ query AllSykmeldinger {
 
 mutation OpprettSykmelding(
     $draftId: String!
-    $pasientIdent: String!
+    $meta: OpprettSykmeldingMetaInput!
     $values: OpprettSykmeldingInput!
     $force: Boolean! = false
 ) {
-    opprettSykmelding(draftId: $draftId, ident: $pasientIdent, values: $values, force: $force) {
+    opprettSykmelding(draftId: $draftId, meta: $meta, values: $values, force: $force) {
         ... on Sykmelding {
             ...Sykmelding
         }

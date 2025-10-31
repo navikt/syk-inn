@@ -24,8 +24,9 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             return {
                 hpr: context.hpr,
                 navn: context.name,
-                legekontorTlf: 'TODO',
-                orgnummer: 'TODO',
+                // TODO: These are temporary placeholders, these will not be available here at all
+                legekontorTlf: '+4712345678',
+                orgnummer: '123456789',
             }
         },
         konsultasjon: () => null,
@@ -70,18 +71,18 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
     Mutation: {
         saveDraft: () => raise('Not Implemented'),
         deleteDraft: () => raise('Not Implemented'),
-        opprettSykmelding: async (_, { ident, values, force }, { hpr }) => {
+        opprettSykmelding: async (_, { meta, values, force }, { hpr }) => {
             await assertIsPilotUser(hpr)
 
-            const meta: OpprettSykmeldingMeta = {
+            const opprettMeta: OpprettSykmeldingMeta = {
                 source: `syk-inn (HelseID)`,
                 sykmelderHpr: hpr,
-                pasientIdent: ident,
-                legekontorOrgnr: 'TODO',
-                legekontorTlf: 'TODO',
+                pasientIdent: meta.pasientIdent,
+                legekontorOrgnr: meta.orgnummer ?? raise('Unable to submit without legekontorOrgnr'),
+                legekontorTlf: meta.legekontorTlf ?? raise('Unable to submit without legekontorTlf'),
             }
 
-            const payload = resolverInputToSykInnApiPayload(values, meta)
+            const payload = resolverInputToSykInnApiPayload(values, opprettMeta)
 
             if (!force) {
                 // When not forcing, we first verify the sykmelding

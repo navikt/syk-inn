@@ -218,7 +218,7 @@ export type MutationDeleteDraftArgs = {
 export type MutationOpprettSykmeldingArgs = {
     draftId: Scalars['String']['input']
     force: Scalars['Boolean']['input']
-    ident: Scalars['String']['input']
+    meta: OpprettSykmeldingMetaInput
     values: OpprettSykmeldingInput
 }
 
@@ -249,6 +249,12 @@ export type OpprettSykmeldingInput = {
     tilbakedatering?: InputMaybe<InputTilbakedatering>
     utdypendeSporsmal?: InputMaybe<InputUtdypendeSporsmal>
     yrkesskade?: InputMaybe<InputYrkesskade>
+}
+
+export type OpprettSykmeldingMetaInput = {
+    legekontorTlf?: InputMaybe<Scalars['String']['input']>
+    orgnummer?: InputMaybe<Scalars['String']['input']>
+    pasientIdent: Scalars['String']['input']
 }
 
 export type OpprettetSykmelding = OtherSubmitOutcomes | RuleOutcome | SykmeldingFull
@@ -828,7 +834,7 @@ export type AllSykmeldingerQuery = {
 
 export type OpprettSykmeldingMutationVariables = Exact<{
     draftId: Scalars['String']['input']
-    pasientIdent: Scalars['String']['input']
+    meta: OpprettSykmeldingMetaInput
     values: OpprettSykmeldingInput
     force?: Scalars['Boolean']['input']
 }>
@@ -3450,8 +3456,11 @@ export const OpprettSykmeldingDocument = {
                 },
                 {
                     kind: 'VariableDefinition',
-                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'pasientIdent' } },
-                    type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } } },
+                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'meta' } },
+                    type: {
+                        kind: 'NonNullType',
+                        type: { kind: 'NamedType', name: { kind: 'Name', value: 'OpprettSykmeldingMetaInput' } },
+                    },
                 },
                 {
                     kind: 'VariableDefinition',
@@ -3485,8 +3494,8 @@ export const OpprettSykmeldingDocument = {
                             },
                             {
                                 kind: 'Argument',
-                                name: { kind: 'Name', value: 'ident' },
-                                value: { kind: 'Variable', name: { kind: 'Name', value: 'pasientIdent' } },
+                                name: { kind: 'Name', value: 'meta' },
+                                value: { kind: 'Variable', name: { kind: 'Name', value: 'meta' } },
                             },
                             {
                                 kind: 'Argument',
