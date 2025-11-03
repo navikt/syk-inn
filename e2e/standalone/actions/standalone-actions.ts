@@ -6,7 +6,7 @@ import { MockBehandlere } from '@navikt/helseid-mock-server'
 
 import { applyToggleOverrides } from '../../actions/toggle-overrides'
 
-export const startPath = '/api/mocks/helseid/dev/start-user'
+const startPath = '/api/mocks/helseid/dev/start-user'
 
 type ToggleOverrides = Partial<Record<ExpectedToggles, boolean>>
 

@@ -10378,7 +10378,6 @@ __metadata:
     "@ariakit/react": "npm:^0.4.19"
     "@envelop/core": "npm:^5.3.2"
     "@envelop/opentelemetry": "npm:^8.0.0"
-    "@eslint/eslintrc": "npm:^3.3.1"
     "@grafana/faro-web-sdk": "npm:^1.19.0"
     "@grafana/faro-web-tracing": "npm:^1.19.0"
     "@graphql-codegen/cli": "npm:^6.0.1"

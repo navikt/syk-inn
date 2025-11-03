@@ -6,7 +6,7 @@ export type HelseIdTokens = {
     idToken: string
 }
 
-export type UserSession = {
+type UserSession = {
     tokens: HelseIdTokens
 }
 

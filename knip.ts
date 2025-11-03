@@ -9,13 +9,14 @@ const config: KnipConfig = {
         'src/**/*.generated.ts',
         'codegen.ts',
         'libs/fhir-mock/buntry-point.ts',
+        'libs/helseid-mock/buntry-point.ts',
         'next-logger.config.cjs',
         'postcss.config.mjs',
         'scripts/**',
         // Not automatically picked up by knip nextjs plugin yet
         'src/app/global-not-found.tsx',
     ],
-    ignoreDependencies: ['@navikt/ds-css', 'pino-pretty', 'eslint-config-next', '@opentelemetry/core'],
+    ignoreDependencies: ['@navikt/ds-css', 'pino-pretty', '@opentelemetry/core'],
 }
 
 export default config
