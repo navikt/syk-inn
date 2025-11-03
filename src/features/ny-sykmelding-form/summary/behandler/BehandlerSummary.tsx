@@ -4,6 +4,8 @@ import { useQuery } from '@apollo/client/react'
 
 import { BehandlerDocument } from '@queries'
 import { SpecificErrorAlert } from '@components/help/GeneralErrors'
+import BehandlerOrganisasjonsnummerAnswer from '@features/ny-sykmelding-form/summary/behandler/BehandlerOrganisasjonsnummerAnswer'
+import BehandlerTelefonnummerAnswer from '@features/ny-sykmelding-form/summary/behandler/BehandlerTelefonnummerAnswer'
 
 type Props = {
     className?: string
@@ -61,31 +63,16 @@ function BehandlerSummary({ className }: Props): ReactElement {
                             <FormSummary.Value className="italic">Mangler</FormSummary.Value>
                         )}
                     </FormSummary.Answer>
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Organisasjonsnummer</FormSummary.Label>
-                        {loading ? (
-                            <FormValueSkeleton />
-                        ) : data?.behandler?.orgnummer ? (
-                            <FormSummary.Value>{data?.behandler.orgnummer}</FormSummary.Value>
-                        ) : (
-                            <FormSummary.Value className="italic">Mangler</FormSummary.Value>
-                        )}
-                    </FormSummary.Answer>
-                    <FormSummary.Answer>
-                        <FormSummary.Label>Kontaktinformasjon</FormSummary.Label>
-                        {loading ? (
-                            <FormValueSkeleton />
-                        ) : data?.behandler?.legekontorTlf ? (
-                            <>
-                                <FormSummary.Value className="text-sm font-bold">
-                                    Telefonnummer legekontor:
-                                </FormSummary.Value>
-                                <FormSummary.Value>{data?.behandler.legekontorTlf}</FormSummary.Value>
-                            </>
-                        ) : (
-                            <FormSummary.Value className="italic">Mangler</FormSummary.Value>
-                        )}
-                    </FormSummary.Answer>
+                    {loading ? (
+                        <AnswerSkeleton label="Organisasjonsnummer" />
+                    ) : (
+                        <BehandlerOrganisasjonsnummerAnswer contextOrganisasjonsnummer={data?.behandler?.orgnummer} />
+                    )}
+                    {loading ? (
+                        <AnswerSkeleton label="Telefonnummer legekontor" />
+                    ) : (
+                        <BehandlerTelefonnummerAnswer contextTelefonnummer={data?.behandler?.legekontorTlf} />
+                    )}
                 </FormSummary.Answers>
             </FormSummary>
             <Alert variant="info" className="mt-4" size="small">
@@ -98,6 +85,15 @@ function BehandlerSummary({ className }: Props): ReactElement {
                 </BodyShort>
             </Alert>
         </section>
+    )
+}
+
+function AnswerSkeleton({ label }: { label: string }): ReactElement {
+    return (
+        <FormSummary.Answer>
+            <FormSummary.Label>{label}</FormSummary.Label>
+            <FormValueSkeleton />
+        </FormSummary.Answer>
     )
 }
 

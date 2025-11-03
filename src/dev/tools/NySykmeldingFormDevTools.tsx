@@ -7,23 +7,31 @@ import { useFormContext } from '@features/ny-sykmelding-form/form'
 import { dateOnly } from '@lib/date'
 
 function NySykmeldingFormDevTools(): ReactElement {
-    const { control, setValue } = useFormContext()
+    const { control, setValue, getValues } = useFormContext()
 
     useSecretShortcut(['d', 'd', 'd'], () => {
-        setValue('andreSporsmal', { svangerskapsrelatert: true, yrkesskade: null })
-        setValue('arbeidsforhold.harFlereArbeidsforhold', 'NEI')
-        setValue('perioder', [
-            {
-                periode: { fom: dateOnly(new Date()), tom: dateOnly(addDays(new Date(), 7)) },
-                aktivitet: { type: 'AKTIVITET_IKKE_MULIG', grad: null },
-                medisinskArsak: { isMedisinskArsak: true },
-                arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: false,
-                    arbeidsrelaterteArsaker: null,
-                    annenArbeidsrelatertArsak: null,
+        const currentValues = getValues()
+        if (currentValues.diagnoser.hoved == null) {
+            setValue('diagnoser.hoved', { code: 'A01', system: 'ICD10', text: 'Tuberkulose' }, { shouldDirty: true })
+        }
+        setValue('andreSporsmal', { svangerskapsrelatert: true, yrkesskade: null }, { shouldDirty: true })
+        setValue('arbeidsforhold.harFlereArbeidsforhold', 'NEI', { shouldDirty: true })
+        setValue(
+            'perioder',
+            [
+                {
+                    periode: { fom: dateOnly(new Date()), tom: dateOnly(addDays(new Date(), 7)) },
+                    aktivitet: { type: 'AKTIVITET_IKKE_MULIG', grad: null },
+                    medisinskArsak: { isMedisinskArsak: true },
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
-            },
-        ])
+            ],
+            { shouldDirty: true, shouldValidate: true },
+        )
     })
 
     useSecretShortcut(['d', 'd', 't'], () => {

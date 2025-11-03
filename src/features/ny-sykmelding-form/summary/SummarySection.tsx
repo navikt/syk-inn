@@ -15,12 +15,12 @@ import { useSubmitRuleState } from '@features/ny-sykmelding-form/summary/rules/u
 import { UnknownSystemError, SpecificErrorAlert } from '@components/help/GeneralErrors'
 import { isDemo, isLocal } from '@lib/env'
 
-import BehandlerSummary from '../summary/BehandlerSummary'
 import FormValuesSummary from '../summary/FormValuesSummary'
 import ForkastDraftButton from '../draft/DraftActions'
 import { useFormStep } from '../steps/useFormStep'
 import { useOpprettSykmeldingMutation } from '../useOpprettSykmeldingMutation'
 
+import BehandlerSummary from './behandler/BehandlerSummary'
 import { HardStop } from './explanations/HardStop'
 import styles from './SummarySection.module.css'
 
