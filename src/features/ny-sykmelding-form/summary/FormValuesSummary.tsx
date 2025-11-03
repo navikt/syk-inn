@@ -50,7 +50,6 @@ function FormValuesSummary({ className }: Props): ReactElement {
                         <FormSummary.Heading id={sectionSummaryHeadingId} level="2">
                             Oppsummering sykmelding
                         </FormSummary.Heading>
-                        <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
                     </FormSummary.Header>
                     <FormSummary.Answers>
                         <FormSummaryAnswerSkeleton />
@@ -101,9 +100,6 @@ function FormValuesSummary({ className }: Props): ReactElement {
                     <FormSummary.Heading id={sectionSummaryHeadingId} level="2">
                         Oppsummering sykmelding
                     </FormSummary.Heading>
-                    <FormSummary.EditLink as="button" onClick={() => setStep('main')}>
-                        Endre
-                    </FormSummary.EditLink>
                 </FormSummary.Header>
                 <FormSummary.Answers>
                     <PatientSummaryAnswers pasient={pasient} />
@@ -115,6 +111,9 @@ function FormValuesSummary({ className }: Props): ReactElement {
                     <MeldingerSummaryAnswers meldinger={values.meldinger} />
                     <AnderSporsmalSummaryAnswers andreSporsmal={values.andreSporsmal} />
                 </FormSummary.Answers>
+                <FormSummary.Footer>
+                    <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
+                </FormSummary.Footer>
             </FormSummary>
         </section>
     )

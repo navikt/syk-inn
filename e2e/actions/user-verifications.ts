@@ -28,7 +28,7 @@ export function verifySummaryPage(sections: SummarySection[]) {
 
             await expect(oppsummeringSection).toBeVisible()
             await expect(oppsummeringSection).not.toHaveAttribute('aria-busy', 'true')
-            await expect(oppsummeringSection.getByRole('button', { name: 'Endre' })).toBeVisible()
+            await expect(oppsummeringSection.getByRole('button', { name: 'Endre svar' })).toBeVisible()
             await expect(oppsummeringSection.getByText('Sykmeldingen gjelder')).toBeVisible()
 
             await Promise.all(
