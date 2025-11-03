@@ -19,10 +19,10 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
     })
 
     return (
-        <div className="flex gap-1 mt-2 flex-wrap">
+        <div className="grid grid-cols-[30ch_1fr] gap-4 mt-2">
             <Select
                 label="Mulighet for arbeid"
-                className="w-60 flex flex-col"
+                className="flex flex-col"
                 value={aktivitetField.field.value}
                 onChange={(event) => {
                     aktivitetField.field.onChange(event.target.value)
@@ -41,7 +41,7 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
                     </SimpleReveal>
                 )}
                 {aktivitetField.field.value === 'AKTIVITET_IKKE_MULIG' && (
-                    <SimpleReveal>
+                    <SimpleReveal className="col-span-2">
                         <ArsakerPicker index={index} />
                     </SimpleReveal>
                 )}

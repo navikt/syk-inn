@@ -30,7 +30,7 @@ function GradertGradPicker({ index }: { index: number }): ReactElement {
     const coercedValue = safeGetPercentValue(gradertField.field.value)
 
     return (
-        <div className="flex flex-col gap-1 ml-7">
+        <div className="flex flex-col gap-1">
             <TextField
                 inputMode="numeric"
                 label="Sykmeldingsgrad (%)"
@@ -40,7 +40,7 @@ function GradertGradPicker({ index }: { index: number }): ReactElement {
                 error={gradertField.fieldState.error?.message}
             />
             <AnimatePresence initial={false}>
-                {coercedValue != null && (
+                {coercedValue != null && gradertField.fieldState.error?.message == null && (
                     <SimpleReveal>
                         <BodyShort size="small">{100 - coercedValue}% i arbeid</BodyShort>
                     </SimpleReveal>
