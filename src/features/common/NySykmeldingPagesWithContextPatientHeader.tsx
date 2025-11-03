@@ -15,7 +15,7 @@ type Props = {
  * Header that fetches the contextuality available patient from the GQL schema
  * and displays a header with loading state.
  */
-function NySykmeldingContextPatientHeader({ children, lead }: PropsWithChildren<Props>): ReactElement {
+function NySykmeldingPagesWithContextPatientHeader({ children, lead }: PropsWithChildren<Props>): ReactElement {
     const pasientQuery = useQuery(PasientDocument)
 
     return (
@@ -27,4 +27,4 @@ function NySykmeldingContextPatientHeader({ children, lead }: PropsWithChildren<
     )
 }
 
-export default NySykmeldingContextPatientHeader
+export default NySykmeldingPagesWithContextPatientHeader

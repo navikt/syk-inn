@@ -53,15 +53,15 @@ function AnimateSectionChanges({ step, children }: PropsWithChildren<{ step: str
     const goingLeft = direction === 1
 
     return (
-        <div className="relative">
-            <AnimatePresence initial={false} custom={goingLeft}>
+        <div>
+            <AnimatePresence initial={false} custom={goingLeft} mode="popLayout">
                 <motion.div
-                    className="absolute pb-16"
+                    className="relative pb-16"
                     key={step}
                     initial={{ opacity: 0, x: !goingLeft ? -100 : 100 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: !goingLeft ? 100 : -100 }}
-                    transition={{ duration: 0.1 }}
+                    transition={{ duration: 0.35 }}
                     layout="size"
                 >
                     {children}
