@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test'
 
+import { OpprettSykmeldingDocument } from '@queries'
+
 import {
     fillPeriodeRelative,
     pickHoveddiagnose,
@@ -8,9 +10,12 @@ import {
     addBidiagnose,
 } from '../actions/user-actions'
 import { verifySummaryPage } from '../actions/user-verifications'
+import { expectGraphQLRequest } from '../utils/assertions'
+import { getDraftId } from '../utils/request-utils'
+import { inDays, today } from '../utils/date-utils'
 
 import { launchWithMock } from './actions/standalone-actions'
-import { searchPerson, startNewSykmelding } from './actions/standalone-user-actions'
+import { fillOrgnummer, fillTelefonnummer, searchPerson, startNewSykmelding } from './actions/standalone-user-actions'
 import { verifySignerendeBehandler } from './actions/standalone-user-verifications'
 
 test('simple - 100% sykmelding', async ({ page }) => {
@@ -38,20 +43,18 @@ test('simple - 100% sykmelding', async ({ page }) => {
         },
     ])(page)
 
-    await submitSykmelding()(page)
+    await fillOrgnummer('112233445')(page)
+    await fillTelefonnummer('+47 99887766')(page)
 
-    // SUPER HYPER ULTRA ULTIMATE DELUXE PERFECT AMAZING STRONG CUTE BEAUTIFUL GALAXY BABY INFINITY SEAL
+    const request = await submitSykmelding()(page)
 
-    /**
-     * This test will fail until we implement manual input of orgnummer and tlf
-     */
-    await expect(page.getByRole('heading', { name: 'Ukjent systemfeil' })).toBeVisible()
-
-    /* TODO: Correct expect when orgnummer/tlf is implemented
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
-        // TODO: orgnummer/tlf
-        meta: { pasientIdent: '21037712323' },
+        meta: {
+            pasientIdent: '21037712323',
+            orgnummer: '112233445',
+            legekontorTlf: '+47 99887766',
+        },
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -90,5 +93,4 @@ test('simple - 100% sykmelding', async ({ page }) => {
     })
 
     await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
-    */
 })

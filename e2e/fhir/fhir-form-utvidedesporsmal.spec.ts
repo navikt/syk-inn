@@ -44,7 +44,7 @@ test('Submit sykmelding with utdypende spørsmål', async ({ page }) => {
     const request = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
-        meta: { pasientIdent: '21037712323' },
+        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },

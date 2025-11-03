@@ -12,7 +12,11 @@ function NySykmeldingFormDevTools(): ReactElement {
     useSecretShortcut(['d', 'd', 'd'], () => {
         const currentValues = getValues()
         if (currentValues.diagnoser.hoved == null) {
-            setValue('diagnoser.hoved', { code: 'A01', system: 'ICD10', text: 'Tuberkulose' }, { shouldDirty: true })
+            setValue(
+                'diagnoser.hoved',
+                { code: 'A01', system: 'ICPC2', text: 'Smerte generell/flere steder' },
+                { shouldDirty: true },
+            )
         }
         setValue('andreSporsmal', { svangerskapsrelatert: true, yrkesskade: null }, { shouldDirty: true })
         setValue('arbeidsforhold.harFlereArbeidsforhold', 'NEI', { shouldDirty: true })

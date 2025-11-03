@@ -69,8 +69,11 @@ export function useOpprettSykmeldingMutation(
         }
 
         try {
-            // TODO: This is where we would map manually provided orgnummer/tlf
-            const meta: OpprettSykmeldingMetaInput = { pasientIdent: pasientIdent }
+            const meta: OpprettSykmeldingMetaInput = {
+                pasientIdent: pasientIdent,
+                orgnummer: formState.behandler?.organisasjonsnummer ?? null,
+                legekontorTlf: formState.behandler?.legekontorTlf ?? null,
+            }
             const values = formStateToOpprettSykmeldingInput(formState)
 
             if (isLocal || isCloud) teamLogger.info(`(Client), mapped values: ${JSON.stringify(values)}`)

@@ -5,12 +5,14 @@ import { CheckmarkHeavyIcon } from '@navikt/aksel-icons'
 
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { useMode } from '@core/providers/Modes'
 
 type Props = {
     contextOrganisasjonsnummer: string | undefined | null
 }
 
 function BehandlerOrganisasjonsnummerAnswer({ contextOrganisasjonsnummer }: Props): ReactElement {
+    const mode = useMode()
     const endreRef = useRef<HTMLButtonElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const [override, setOverride] = useState(contextOrganisasjonsnummer == null)
@@ -41,20 +43,22 @@ function BehandlerOrganisasjonsnummerAnswer({ contextOrganisasjonsnummer }: Prop
             ) : (
                 <FormSummary.Value>{contextOrganisasjonsnummer}</FormSummary.Value>
             )}
-            <Button
-                ref={endreRef}
-                variant="secondary-neutral"
-                size="xsmall"
-                className="top-0 right-2 absolute"
-                onClick={() => {
-                    setOverride(true)
-                    requestAnimationFrame(() => {
-                        inputRef.current?.focus()
-                    })
-                }}
-            >
-                Endre
-            </Button>
+            {mode !== 'FHIR' && (
+                <Button
+                    ref={endreRef}
+                    variant="secondary-neutral"
+                    size="xsmall"
+                    className="top-0 right-2 absolute"
+                    onClick={() => {
+                        setOverride(true)
+                        requestAnimationFrame(() => {
+                            inputRef.current?.focus()
+                        })
+                    }}
+                >
+                    Endre
+                </Button>
+            )}
         </FormSummary.Answer>
     )
 }

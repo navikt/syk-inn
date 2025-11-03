@@ -46,7 +46,7 @@ test('aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG d
     const request = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: getDraftId(page) ?? 'missing',
-        meta: { pasientIdent: '21037712323' },
+        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             arbeidsforhold: {

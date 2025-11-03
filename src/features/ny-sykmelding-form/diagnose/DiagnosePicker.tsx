@@ -19,7 +19,7 @@ function DiagnosePicker(): ReactElement {
             <DiagnoseCombobox
                 id="diagnoser.hoved"
                 label="Hoveddiagnose"
-                description="Diagnosekoder fra både  ICPC-2 og ICD-10."
+                description="Diagnosekoder fra ICPC-2"
                 className="max-w-prose"
                 value={field.value}
                 onBlur={field.onBlur}

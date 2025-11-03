@@ -5,12 +5,14 @@ import { CheckmarkHeavyIcon } from '@navikt/aksel-icons'
 
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { useMode } from '@core/providers/Modes'
 
 type Props = {
     contextTelefonnummer: string | undefined | null
 }
 
 function BehandlerTelefonnummerAnswer({ contextTelefonnummer }: Props): ReactElement {
+    const mode = useMode()
     const endreRef = useRef<HTMLButtonElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const [override, setOverride] = useState(contextTelefonnummer == null)
@@ -33,8 +35,7 @@ function BehandlerTelefonnummerAnswer({ contextTelefonnummer }: Props): ReactEle
 
     return (
         <FormSummary.Answer className="relative">
-            <FormSummary.Label>Telefonnummer</FormSummary.Label>
-            <FormSummary.Value className="text-sm font-bold">Telefonnummer legekontor:</FormSummary.Value>
+            <FormSummary.Label>Telefonnummer legekontor</FormSummary.Label>
             {manualTelefonnummer ? (
                 <FormSummary.Value>
                     {manualTelefonnummer} <span className="italic">(manuelt)</span>
@@ -42,20 +43,22 @@ function BehandlerTelefonnummerAnswer({ contextTelefonnummer }: Props): ReactEle
             ) : (
                 <FormSummary.Value>{contextTelefonnummer}</FormSummary.Value>
             )}
-            <Button
-                ref={endreRef}
-                variant="secondary-neutral"
-                size="xsmall"
-                className="top-0 right-2 absolute"
-                onClick={() => {
-                    setOverride(true)
-                    requestAnimationFrame(() => {
-                        inputRef.current?.focus()
-                    })
-                }}
-            >
-                Endre
-            </Button>
+            {mode !== 'FHIR' && (
+                <Button
+                    ref={endreRef}
+                    variant="secondary-neutral"
+                    size="xsmall"
+                    className="top-0 right-2 absolute"
+                    onClick={() => {
+                        setOverride(true)
+                        requestAnimationFrame(() => {
+                            inputRef.current?.focus()
+                        })
+                    }}
+                >
+                    Endre
+                </Button>
+            )}
         </FormSummary.Answer>
     )
 }
