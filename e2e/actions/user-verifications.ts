@@ -1,6 +1,9 @@
 import { expect, Page, test } from '@playwright/test'
 
+import { SaveDraftDocument } from '@queries'
+
 import { expectTermToHaveDefinitions } from '../utils/assertions'
+import { waitForGqlRequest } from '../utils/request-utils'
 
 type SectionTitle =
     | 'Sykmeldingen gjelder'
@@ -25,6 +28,11 @@ export function verifySummaryPage(sections: SummarySection[]) {
     return async (page: Page) => {
         await test.step('Verify summary page', async () => {
             const oppsummeringSection = page.getByRole('region', { name: 'Oppsummering sykmelding' })
+
+            /**
+             * Hackyness part 2: See comment below
+             */
+            await waitForGqlRequest(SaveDraftDocument)(page)
 
             await expect(oppsummeringSection).toBeVisible()
             await expect(oppsummeringSection).not.toHaveAttribute('aria-busy', 'true')
