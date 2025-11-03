@@ -33,6 +33,15 @@ export function verifySummaryPage(sections: SummarySection[]) {
 
             await Promise.all(
                 sections.map(async (section) => {
+                    /*
+                        This is quite hacky, playwright is so fast that the draft query kicks off after the
+                        initial render of the summary (and URL gets a draftId), which causes the loading state
+                        to kick-in again.
+
+                        TODO: We should have a look at the draft synchronization implementation to see if we can
+                        avoid this awkward flash of loading state twice.
+                     */
+                    await expect(oppsummeringSection).not.toHaveAttribute('aria-busy', 'true')
                     await expectTermToHaveDefinitions(oppsummeringSection, section.name, section.values)
                 }),
             )
