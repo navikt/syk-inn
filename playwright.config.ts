@@ -61,6 +61,7 @@ export default defineConfig({
     use: {
         baseURL: opts.baseURL,
         trace: 'on-first-retry',
+        contextOptions: { reducedMotion: 'reduce' },
     },
     expect: {
         timeout: !process.env.CI ? 10_000 : undefined,
