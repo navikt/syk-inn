@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
 import { ApolloLink, TypedDocumentNode } from '@apollo/client'
-import { expect, Page, test } from '@playwright/test'
+import { expect, Locator, Page, test } from '@playwright/test'
 
 export function expectGraphQLRequest(request: ApolloLink.Request) {
     return {
@@ -23,7 +23,11 @@ export function expectGraphQLRequest(request: ApolloLink.Request) {
     }
 }
 
-export async function expectTermToHaveDefinitions(page: Page, term: string, definitions: (string | RegExp)[]) {
+export async function expectTermToHaveDefinitions(
+    page: Page | Locator,
+    term: string,
+    definitions: (string | RegExp)[],
+) {
     const terms = await page.getByRole('term').all()
 
     let termElement

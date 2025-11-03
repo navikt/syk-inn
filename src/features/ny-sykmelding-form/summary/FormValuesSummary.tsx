@@ -25,6 +25,8 @@ import { useFormStep } from '../steps/useFormStep'
 import { useFormValuesSummaryDraft } from './useFormValuesSummaryDraft'
 import { aktivitetDescription } from './summary-text-utils'
 
+const sectionSummaryHeadingId = 'sykmelding-summary-heading'
+
 type Props = {
     className?: string
 }
@@ -37,10 +39,17 @@ function FormValuesSummary({ className }: Props): ReactElement {
 
     if (draftLoading || pasientQuery.loading) {
         return (
-            <div className={className}>
+            <section
+                className={className}
+                aria-labelledby={sectionSummaryHeadingId}
+                aria-busy="true"
+                aria-live="polite"
+            >
                 <FormSummary>
                     <FormSummary.Header>
-                        <FormSummary.Heading level="2">Oppsummering sykmelding</FormSummary.Heading>
+                        <FormSummary.Heading id={sectionSummaryHeadingId} level="2">
+                            Oppsummering sykmelding
+                        </FormSummary.Heading>
                         <FormSummary.EditLink as="button" onClick={() => setStep('main')} />
                     </FormSummary.Header>
                     <FormSummary.Answers>
@@ -52,16 +61,18 @@ function FormValuesSummary({ className }: Props): ReactElement {
                         <FormSummaryAnswerSkeleton />
                     </FormSummary.Answers>
                 </FormSummary>
-            </div>
+            </section>
         )
     }
 
     if (values == null) {
         return (
-            <div className={className}>
+            <section className={className} aria-labelledby={sectionSummaryHeadingId}>
                 <FormSummary>
                     <FormSummary.Header>
-                        <FormSummary.Heading level="2">Oppsummering sykmelding</FormSummary.Heading>
+                        <FormSummary.Heading id={sectionSummaryHeadingId} level="2">
+                            Oppsummering sykmelding
+                        </FormSummary.Heading>
                     </FormSummary.Header>
                     <FormSummary.Answers>
                         <Alert variant="warning">
@@ -79,15 +90,17 @@ function FormValuesSummary({ className }: Props): ReactElement {
                         </Alert>
                     </FormSummary.Answers>
                 </FormSummary>
-            </div>
+            </section>
         )
     }
 
     return (
-        <div className={className}>
+        <section className={className} aria-labelledby={sectionSummaryHeadingId}>
             <FormSummary>
                 <FormSummary.Header>
-                    <FormSummary.Heading level="2">Oppsummering sykmelding</FormSummary.Heading>
+                    <FormSummary.Heading id={sectionSummaryHeadingId} level="2">
+                        Oppsummering sykmelding
+                    </FormSummary.Heading>
                     <FormSummary.EditLink as="button" onClick={() => setStep('main')}>
                         Endre
                     </FormSummary.EditLink>
@@ -103,7 +116,7 @@ function FormValuesSummary({ className }: Props): ReactElement {
                     <AnderSporsmalSummaryAnswers andreSporsmal={values.andreSporsmal} />
                 </FormSummary.Answers>
             </FormSummary>
-        </div>
+        </section>
     )
 }
 

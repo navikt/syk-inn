@@ -33,10 +33,12 @@ function BehandlerSummary({ className }: Props): ReactElement {
     }
 
     return (
-        <div className={className}>
+        <section className={className} aria-labelledby="signerende-behandler-heading">
             <FormSummary>
                 <FormSummary.Header>
-                    <FormSummary.Heading level="2">Signerende behandler</FormSummary.Heading>
+                    <FormSummary.Heading id="signerende-behandler-heading" level="2">
+                        Signerende behandler
+                    </FormSummary.Heading>
                 </FormSummary.Header>
                 <FormSummary.Answers>
                     <FormSummary.Answer>
@@ -95,7 +97,7 @@ function BehandlerSummary({ className }: Props): ReactElement {
                     feil HPR-nummer må rettes i EPJ før innsending.
                 </BodyShort>
             </Alert>
-        </div>
+        </section>
     )
 }
 
