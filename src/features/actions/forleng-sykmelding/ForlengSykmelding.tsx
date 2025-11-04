@@ -10,6 +10,7 @@ import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { forlengSykmeldingDefaultValues } from '@features/actions/forleng-sykmelding/forleng-sykmelding-mappers'
 import { SykmeldingFormErrors } from '@features/actions/common/SykmeldingFormErrors'
 import { mapSykmeldingToDateRanges } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
+import { useAppSelector } from '@core/redux/hooks'
 
 interface Props {
     sykmeldingId: string
@@ -21,6 +22,7 @@ export function ForlengSykmeldingFormWithDefaultValues({ sykmeldingId }: Props):
         variables: { id: sykmeldingId },
     })
     const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
+    const valuesInState = useAppSelector((state) => state.nySykmelding.values)
 
     if (suggestionsQuery.loading || sykmeldingQuery.loading) {
         return <NySykmeldingFormSkeleton />
@@ -30,8 +32,10 @@ export function ForlengSykmeldingFormWithDefaultValues({ sykmeldingId }: Props):
         return <SykmeldingFormErrors refetch={sykmeldingQuery.refetch} />
     }
 
-    const [derivedDefaultValues, nextFom] = forlengSykmeldingDefaultValues(sykmeldingQuery.data.sykmelding)
-
+    const [derivedDefaultValues, nextFom] = forlengSykmeldingDefaultValues(
+        sykmeldingQuery.data.sykmelding,
+        valuesInState,
+    )
     const previousSykmeldingDateRange = mapSykmeldingToDateRanges(alleSykmeldinger.data?.sykmeldinger ?? [])
 
     return (

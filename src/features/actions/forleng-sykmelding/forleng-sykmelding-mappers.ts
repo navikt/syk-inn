@@ -10,6 +10,8 @@ import {
 } from '@features/actions/common/gql-sykmelding-mappers'
 import { raise } from '@lib/ts'
 import { dateOnly } from '@lib/date'
+import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sykmelding-mappers'
+import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 
 /**
  * Creates a set of default form values specifically for 'forlenging' a sykmelding. Does NOT take
@@ -17,11 +19,27 @@ import { dateOnly } from '@lib/date'
  */
 export function forlengSykmeldingDefaultValues(
     sykmelding: SykmeldingFragment,
+    stateValues: NySykmeldingFormState | null,
 ): [values: NySykmeldingMainFormValues, nextFom: string] {
-    if (sykmelding.__typename === 'SykmeldingRedacted') {
-        return forlengRedactedSykmelding(sykmelding)
+    const [forlengetSykmeldingFormValues, nextFom] =
+        sykmelding.__typename === 'SykmeldingRedacted'
+            ? forlengRedactedSykmelding(sykmelding)
+            : forlengFullSykmelding(sykmelding)
+
+    /**
+     * If we already have values in state, we are returning to the form after having filled out
+     * a forlenged sykmelding, in this case we want to initialize the form with the state values.
+     */
+    if (stateValues != null) {
+        return [nySykmeldingDefaultValues(stateValues, null), nextFom]
     }
 
+    return [forlengetSykmeldingFormValues, nextFom]
+}
+
+function forlengFullSykmelding(
+    sykmelding: SykmeldingFullFragment,
+): [values: NySykmeldingMainFormValues, nextFom: string] {
     const [forlengetPeriode, nextFom] = toForlengelsesAktivitet(sykmelding.values.aktivitet)
 
     return [

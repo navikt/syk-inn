@@ -10,6 +10,7 @@ import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingFormErrors } from '@features/actions/common/SykmeldingFormErrors'
 import { dupliserSykmeldingDefaultValues } from '@features/actions/dupliser-sykmelding/dupliser-sykmelding-mapper'
 import { mapSykmeldingToDateRanges } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
+import { useAppSelector } from '@core/redux/hooks'
 
 interface Props {
     sykmeldingId: string
@@ -21,6 +22,7 @@ export function DupliserSykmeldingFormWithDefaultValues({ sykmeldingId }: Props)
         variables: { id: sykmeldingId },
     })
     const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
+    const valuesInState = useAppSelector((state) => state.nySykmelding.values)
 
     if (suggestionsQuery.loading || sykmeldingQuery.loading || alleSykmeldinger.loading) {
         return <NySykmeldingFormSkeleton />
@@ -30,7 +32,7 @@ export function DupliserSykmeldingFormWithDefaultValues({ sykmeldingId }: Props)
         return <SykmeldingFormErrors refetch={sykmeldingQuery.refetch} />
     }
 
-    const derivedDefaultValues = dupliserSykmeldingDefaultValues(sykmeldingQuery.data.sykmelding)
+    const derivedDefaultValues = dupliserSykmeldingDefaultValues(sykmeldingQuery.data.sykmelding, valuesInState)
 
     const previousSykmeldingDateRange = mapSykmeldingToDateRanges(alleSykmeldinger.data?.sykmeldinger ?? [])
 

@@ -23,7 +23,7 @@ import { serverDiagnoseSuggestionToFormValue } from '@features/actions/common/gq
 
 export function nySykmeldingDefaultValues(
     state: NySykmeldingFormState | null,
-    serverSuggestions: NySykmeldingSuggestions,
+    serverSuggestions: NySykmeldingSuggestions | null,
 ): NySykmeldingMainFormValues {
     return {
         arbeidsforhold: precedence([
@@ -34,12 +34,12 @@ export function nySykmeldingDefaultValues(
         diagnoser: {
             hoved: precedence([
                 stateHoveddiagnoseToFormValues(state?.diagnose?.hoved ?? null),
-                serverDiagnoseSuggestionToFormValue(serverSuggestions.diagnose.value ?? null),
+                serverDiagnoseSuggestionToFormValue(serverSuggestions?.diagnose.value ?? null),
                 null,
             ]),
             bidiagnoser: precedence([
                 stateBidiagnoserToFormValues(state?.diagnose?.bi ?? null),
-                serverSuggestions.bidiagnoser?.map(serverDiagnoseSuggestionToFormValue) ?? null,
+                serverSuggestions?.bidiagnoser?.map(serverDiagnoseSuggestionToFormValue) ?? null,
                 [],
             ]),
         },
