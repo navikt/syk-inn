@@ -1,17 +1,14 @@
 import { useMutation } from '@apollo/client/react'
 import { useCallback } from 'react'
-import { useRouter } from 'next/navigation'
 import * as R from 'remeda'
 
 import { GetAllDraftsDocument, SaveDraftDocument, SaveDraftMutation, SaveDraftMutationVariables } from '@queries'
 import { spanBrowserAsync } from '@lib/otel/browser'
 import { DraftValues } from '@data-layer/draft/draft-schema'
-import { useMode } from '@core/providers/Modes'
 
-import { NySykmeldingMainFormValues } from '../form/types'
+import { NySykmeldingMainFormValues } from '../../form/types'
 
 export function useSaveDraft(opts: {
-    returnToDash: boolean
     onCompleted?: () => void
 }): [
     (
@@ -20,17 +17,9 @@ export function useSaveDraft(opts: {
     ) => ReturnType<useMutation.MutationFunction<SaveDraftMutation, SaveDraftMutationVariables>>,
     useMutation.Result<SaveDraftMutation>,
 ] {
-    const router = useRouter()
-    const mode = useMode()
-
     const [mutation, draftResult] = useMutation(SaveDraftDocument, {
         onCompleted: () => {
             opts.onCompleted?.()
-
-            if (opts.returnToDash) {
-                const redirectPath = mode === 'FHIR' ? '/fhir' : '/ny'
-                router.replace(redirectPath)
-            }
         },
         refetchQueries: [{ query: GetAllDraftsDocument }],
         awaitRefetchQueries: true,
