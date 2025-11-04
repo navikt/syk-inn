@@ -8,18 +8,14 @@ import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
 import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { spanBrowserAsync } from '@lib/otel/browser'
 import { useMode } from '@core/providers/Modes'
+import { useFormDraftSync } from '@features/ny-sykmelding-form/draft/FormDraftSync'
 
-import { useFormContext } from '../form/types'
-
-import { useSaveDraft } from './useSaveDraft'
 import { useDraftId } from './useDraftId'
 
 export function LagreDraftButton(): ReactElement {
-    const [draftId, setDraftId] = useDraftId()
-    const { getValues } = useFormContext()
-    const [mutation, draftResult] = useSaveDraft({
-        returnToDash: true,
-    })
+    const mode = useMode()
+    const router = useRouter()
+    const draft = useFormDraftSync()
 
     return (
         <ShortcutButtons
@@ -27,13 +23,12 @@ export function LagreDraftButton(): ReactElement {
             icon={<FloppydiskIcon aria-hidden />}
             iconPosition="right"
             onClick={async () => {
-                const draftIdToUse = draftId ?? crypto.randomUUID()
-                if (draftId == null) await setDraftId(draftIdToUse)
+                await draft.saveDraft()
 
-                const values = getValues()
-                await mutation(draftIdToUse, values)
+                const redirectPath = mode === 'FHIR' ? '/fhir' : '/'
+                router.replace(redirectPath)
             }}
-            loading={draftResult.loading}
+            loading={draft.result.loading}
             shortcut={{
                 modifier: 'alt',
                 key: 's',
@@ -44,7 +39,19 @@ export function LagreDraftButton(): ReactElement {
     )
 }
 
-function ForkastDraftButton({ inactive }: { inactive?: boolean }): ReactElement {
+export function ForkastDraftButtonInFormSync(): ReactElement {
+    const draft = useFormDraftSync()
+
+    return <ForkastDraftButton onForkast={draft.cancelSync} />
+}
+
+export function ForkastDraftButton({
+    inactive,
+    onForkast,
+}: {
+    onForkast?: () => void
+    inactive?: boolean
+}): ReactElement {
     const mode = useMode()
     const [draftId] = useDraftId()
     const router = useRouter()
@@ -59,9 +66,11 @@ function ForkastDraftButton({ inactive }: { inactive?: boolean }): ReactElement 
             onClick={() =>
                 spanBrowserAsync('DeleteDraft(forkast).mutation', async () => {
                     const redirect = (): void => {
-                        const redirectPath = mode === 'FHIR' ? '/fhir' : '/ny'
+                        const redirectPath = mode === 'FHIR' ? '/fhir' : '/'
                         router.replace(redirectPath, { scroll: true })
                     }
+
+                    onForkast?.()
 
                     if (!draftId) {
                         redirect()
@@ -95,5 +104,3 @@ function ForkastDraftButton({ inactive }: { inactive?: boolean }): ReactElement 
         </ShortcutButtons>
     )
 }
-
-export default ForkastDraftButton

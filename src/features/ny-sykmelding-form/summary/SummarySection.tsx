@@ -16,7 +16,7 @@ import { UnknownSystemError, SpecificErrorAlert } from '@components/help/General
 import { isDemo, isLocal } from '@lib/env'
 
 import FormValuesSummary from '../summary/FormValuesSummary'
-import ForkastDraftButton from '../draft/DraftActions'
+import { ForkastDraftButton } from '../draft/DraftActions'
 import { useFormStep } from '../steps/useFormStep'
 import { useOpprettSykmeldingMutation } from '../useOpprettSykmeldingMutation'
 
