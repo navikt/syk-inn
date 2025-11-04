@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 
-import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form'
+import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
 import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-utils'
 
 describe('shouldShowUke7Sporsmal', () => {

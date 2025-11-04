@@ -4,7 +4,7 @@ import { differenceInDays } from 'date-fns'
 import { SykmeldingFragment } from '@queries'
 import { earliestFom, latestTom } from '@data-layer/common/sykmelding-utils'
 import { raise } from '@lib/ts'
-import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form'
+import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
 
 export interface SykmeldingDateRange {
     earliestFom: string

@@ -1,7 +1,7 @@
 import { Radio, RadioGroup, Stack, Textarea } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 
-import { useController } from '../form'
+import { useController } from '../form/types'
 
 function ArbeidsforholdPicker(): ReactElement {
     const harFlereArbeidsforhold = useController({

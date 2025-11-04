@@ -2,12 +2,12 @@ import * as R from 'remeda'
 import { addDays } from 'date-fns'
 import { logger } from '@navikt/next-logger'
 
-import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form'
+import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
 import { SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
 import {
     sykmeldingFragmentAktivitetToFormValue,
     sykmeldingFragmentToNySykmeldingFormValues,
-} from '@features/actions/common/sykmelding-mappers'
+} from '@features/actions/common/gql-sykmelding-mappers'
 import { raise } from '@lib/ts'
 import { dateOnly } from '@lib/date'
 

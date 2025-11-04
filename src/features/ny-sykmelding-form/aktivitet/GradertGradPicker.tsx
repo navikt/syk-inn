@@ -4,7 +4,7 @@ import { AnimatePresence } from 'motion/react'
 
 import { SimpleReveal } from '@components/animation/Reveal'
 
-import { useController } from '../form'
+import { useController } from '../form/types'
 
 function GradertGradPicker({ index }: { index: number }): ReactElement {
     const gradertField = useController({

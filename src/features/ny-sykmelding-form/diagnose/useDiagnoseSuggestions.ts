@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client/react'
 
 import { type DiagnoseFragment, KonsultasjonDocument } from '@queries'
 import { useFlag } from '@core/toggles/context'
-import type { NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form'
+import type { NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form/types'
 
 export function useDiagnoseSuggestions():
     | {

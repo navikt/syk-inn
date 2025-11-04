@@ -10,7 +10,7 @@ import { DraftValues, safeParseDraft } from '@data-layer/draft/draft-schema'
 import { useDraftId } from '@features/ny-sykmelding-form/draft/useDraftId'
 
 import { mapFormValuesToDraftValues, useSaveDraft } from '../draft/useSaveDraft'
-import { NySykmeldingMainFormValues, useFormContext } from '../form'
+import { NySykmeldingMainFormValues, useFormContext } from '../form/types'
 
 type Changes = {
     currentValues: NySykmeldingMainFormValues

@@ -6,7 +6,7 @@ import { SimpleReveal } from '@components/animation/Reveal'
 
 import ArsakerPicker from '../aktivitet/ArsakerPicker'
 import GradertGradPicker from '../aktivitet/GradertGradPicker'
-import { AktivitetIkkeMuligType, useController, useFormContext } from '../form'
+import { AktivitetIkkeMuligType, useController, useFormContext } from '../form/types'
 
 function AktivitetPicker({ index }: { index: number }): ReactElement {
     const form = useFormContext()

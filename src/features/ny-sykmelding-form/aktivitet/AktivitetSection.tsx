@@ -6,8 +6,8 @@ import { TrashIcon } from '@navikt/aksel-icons'
 import { dateOnly } from '@lib/date'
 import FormSection from '@components/form/form-section/FormSection'
 
-import { AktivitetsPeriode, useFieldArray, useFormContext } from '../form'
-import { getDefaultPeriode } from '../form-default-values'
+import { AktivitetsPeriode, useFieldArray, useFormContext } from '../form/types'
+import { defaultPeriode } from '../form/default-values'
 
 import AktivitetPicker from './AktivitetPicker'
 import PeriodePicker from './PeriodePicker'
@@ -66,7 +66,7 @@ function AktivitetSection({ initialFom }: Props): ReactElement {
                          * Fom should be N+1 previous period's tom.
                          */
                         const nyPeriode: AktivitetsPeriode = {
-                            ...getDefaultPeriode(),
+                            ...defaultPeriode(),
                             periode: {
                                 fom: lastPeriode.periode.tom ? dateOnly(addDays(lastPeriode.periode.tom, 1)) : null,
                                 tom: null,

@@ -9,7 +9,7 @@ import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { spanBrowserAsync } from '@lib/otel/browser'
 import { useMode } from '@core/providers/Modes'
 
-import { useFormContext } from '../form'
+import { useFormContext } from '../form/types'
 
 import { useSaveDraft } from './useSaveDraft'
 import { useDraftId } from './useDraftId'

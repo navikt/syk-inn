@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 
 import DiagnoseCombobox from '@components/form/diagnose-combobox/DiagnoseCombobox'
 
-import { useController } from '../form'
+import { useController } from '../form/types'
 
 function DiagnosePicker(): ReactElement {
     const { field, fieldState } = useController({

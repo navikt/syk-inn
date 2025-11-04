@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { parseISO } from 'date-fns'
 
-import { AktivitetsPeriode } from '../form'
+import { AktivitetsPeriode } from '../form/types'
 
 import { isTilbakedatering } from './tilbakedatering-utils'
 

@@ -5,7 +5,7 @@ import { AnimatePresence } from 'motion/react'
 import { isSameDiagnose } from '@data-layer/common/diagnose'
 import { SimpleReveal } from '@components/animation/Reveal'
 
-import { useFormContext } from '../form'
+import { useFormContext } from '../form/types'
 
 import { useDiagnoseSuggestions } from './useDiagnoseSuggestions'
 

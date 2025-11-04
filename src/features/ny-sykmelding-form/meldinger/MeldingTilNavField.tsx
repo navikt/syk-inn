@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { ReadMore, Switch, Textarea } from '@navikt/ds-react'
 
-import { useFormContext } from '../form'
+import { useFormContext } from '../form/types'
 
 function MeldingTilNavField(): ReactElement {
     const form = useFormContext()

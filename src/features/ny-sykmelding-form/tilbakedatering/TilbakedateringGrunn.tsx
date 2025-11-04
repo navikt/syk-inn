@@ -1,7 +1,7 @@
 import { Select, TextField } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 
-import { useController } from '../form'
+import { useController } from '../form/types'
 
 function TilbakedateringGrunn(): ReactElement {
     const grunn = useController({

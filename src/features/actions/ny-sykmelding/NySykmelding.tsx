@@ -6,10 +6,10 @@ import { useQuery } from '@apollo/client/react'
 import { AllSykmeldingerDocument } from '@queries'
 import { useAppSelector } from '@core/redux/hooks'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
-import { createDefaultFormValues } from '@features/ny-sykmelding-form/form-default-values'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 import { mapSykmeldingToDateRanges } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
+import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sykmelding-mappers'
 
 export function NySykmeldingFormWithDefaultValues(): ReactElement {
     const suggestionsQuery = useDiagnoseSuggestions()
@@ -20,12 +20,7 @@ export function NySykmeldingFormWithDefaultValues(): ReactElement {
         return <NySykmeldingFormSkeleton />
     }
 
-    const defaultValues = createDefaultFormValues({
-        valuesInState: valuesInState,
-        serverSuggestions: suggestionsQuery.suggestions,
-        draftValues: null,
-    })
-
+    const defaultValues = nySykmeldingDefaultValues(valuesInState, suggestionsQuery.suggestions)
     const previousSykmeldingDateRange = mapSykmeldingToDateRanges(alleSykmeldinger.data?.sykmeldinger ?? [])
 
     return (
