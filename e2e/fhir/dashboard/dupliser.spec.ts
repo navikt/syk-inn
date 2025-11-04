@@ -1,31 +1,29 @@
 import { expect, test } from '@playwright/test'
 
-import { toReadableDatePeriod } from '@lib/date'
-
-import { daysAgo, inDays, inputDate } from '../utils/date-utils'
+import { launchWithMock } from '../actions/fhir-actions'
+import { startNewSykmelding } from '../actions/fhir-user-actions'
+import { userInteractionsGroup } from '../../utils/actions'
 import {
-    fillPeriodeRelative,
-    pickHoveddiagnose,
-    submitSykmelding,
-    nextStep,
-    fillArbeidsforhold,
     fillAndreSporsmal,
+    fillArbeidsforhold,
     fillMeldinger,
+    fillPeriodeRelative,
     fillTilbakedatering,
-} from '../actions/user-actions'
-import { verifySummaryPage } from '../actions/user-verifications'
-import { userInteractionsGroup } from '../utils/actions'
+    nextStep,
+    pickHoveddiagnose,
+    previousStep,
+    submitSykmelding,
+} from '../../actions/user-actions'
+import { daysAgo } from '../../utils/date-utils'
+import { verifySignerendeBehandler } from '../actions/fhir-user-verifications'
 import {
     expectAndreSporsmal,
     expectArbeidsforhold,
     expectHoveddiagnose,
     expectMeldinger,
     expectPeriode,
-} from '../actions/user-form-verification'
-
-import { launchWithMock } from './actions/fhir-actions'
-import { startNewSykmelding } from './actions/fhir-user-actions'
-import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
+} from '../../actions/user-form-verification'
+import { verifySummaryPage } from '../../actions/user-verifications'
 
 test('should be able to duplicate an existing sykmelding with correct values', async ({ page }) => {
     await launchWithMock('empty')(page)
@@ -79,13 +77,15 @@ test('should be able to duplicate an existing sykmelding with correct values', a
     await submitSykmelding()(page)
 })
 
-test('should be able to forlenge an existing sykmelding with correct values', async ({ page }) => {
+test('should be able to duplicate an existing sykmelding, go tu summary, and return to form without losing values', async ({
+    page,
+}) => {
     await launchWithMock('empty')(page)
     await startNewSykmelding()(page)
 
     await userInteractionsGroup(
         fillArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
-        fillPeriodeRelative({ type: '100%', fromRelative: 0, days: 14 }),
+        fillPeriodeRelative({ type: '100%', fromRelative: -1, days: 14 }),
         pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
         fillAndreSporsmal({
             svangerskapsrelatert: true,
@@ -102,53 +102,31 @@ test('should be able to forlenge an existing sykmelding with correct values', as
     )(page)
 
     await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
-    await page.getByRole('button', { name: 'Forlenge' }).click()
-
-    const periodeRegion = page.getByRole('region', { name: 'Periode' })
-    // One day ahead of the previous
-    await expect(periodeRegion.getByRole('textbox', { name: 'Fra og med' })).toHaveValue(inputDate(inDays(15)))
+    await page.getByRole('button', { name: 'Dupliser' }).click()
 
     await userInteractionsGroup(
         expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
+        expectPeriode({ type: '100%', fromRelative: -1, days: 14 }),
         expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
         expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
-        // Don't copy meldinger during forlengelse
+        // Don't copy meldinger during duplication
         expectMeldinger({
             tilNav: null,
             tilArbeidsgiver: null,
         }),
     )(page)
 
-    // Leave the pre-filled value
-    await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(inDays(28)))
+    await fillArbeidsforhold({
+        harFlereArbeidsforhold: true,
+        sykmeldtFraArbeidsforhold: 'The Other One AB',
+    })(page)
 
     await userInteractionsGroup(nextStep(), verifySignerendeBehandler())(page)
 
-    await verifySummaryPage([
-        { name: 'Har pasienten flere arbeidsforhold?', values: ['Ja'] },
-        { name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?', values: ['Duplicatiore AS'] },
-        { name: 'Periode', values: [new RegExp(toReadableDatePeriod(inDays(15), inDays(28)))] },
-    ])(page)
+    await previousStep()(page)
 
-    await submitSykmelding()(page)
-})
-
-test('should be able to quickly delete a lot of drafts', async ({ page }) => {
-    await launchWithMock('plenty-of-drafts')(page)
-
-    // Verify that we have a lot of drafts
-    const drafts = page.getByRole('button', { name: 'Åpne utkast' })
-    await expect(drafts).toHaveCount(15)
-
-    await test.step('delete 15 drafts', async () => {
-        for (let i = 0; i < 15; i++) {
-            await page.getByRole('button', { name: 'Slett utkast' }).nth(0).click()
-        }
-    })
-
-    await page.waitForLoadState('networkidle')
-
-    await expect(page.getByText('Her var det ingen tidligere sykmeldinger eller utkast')).toBeVisible()
+    await expectPeriode({ type: '100%', fromRelative: -1, days: 14 })(page)
+    await expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'The Other One AB' })(page)
 })
 
 test('should not be possible to extend old sykmelding', async ({ page }) => {

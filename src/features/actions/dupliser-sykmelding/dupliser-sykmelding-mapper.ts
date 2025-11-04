@@ -1,18 +1,33 @@
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
-import { SykmeldingFragment, SykmeldingRedactedFragment } from '@queries'
+import { SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
 import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
 import {
     sykmeldingFragmentAktivitetToFormValue,
     sykmeldingFragmentToNySykmeldingFormValues,
 } from '@features/actions/common/gql-sykmelding-mappers'
+import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
+import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sykmelding-mappers'
 
-export function dupliserSykmeldingDefaultValues(sykmelding: SykmeldingFragment): NySykmeldingMainFormValues {
-    if (sykmelding.__typename === 'SykmeldingRedacted') {
-        return dupliserRedactedSykmelding(sykmelding)
+export function dupliserSykmeldingDefaultValues(
+    sykmelding: SykmeldingFragment,
+    stateValues: NySykmeldingFormState | null,
+): NySykmeldingMainFormValues {
+    /**
+     * If we already have values in state, we are returning to the form after having filled out
+     * a duplisert sykmelding, in this case we want to initialize the form with the state values.
+     */
+    if (stateValues != null) {
+        return nySykmeldingDefaultValues(stateValues, null)
     }
 
+    return sykmelding.__typename === 'SykmeldingRedacted'
+        ? dupliserRedactedSykmelding(sykmelding)
+        : dupliserFullSykmelding(sykmelding)
+}
+
+function dupliserFullSykmelding(sykmelding: SykmeldingFullFragment): NySykmeldingMainFormValues {
     return {
         ...sykmeldingFragmentToNySykmeldingFormValues(sykmelding),
         perioder: sykmelding.values.aktivitet

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Alert, BodyShort, Button, ExpansionCard, Heading, Link as AkselLink, Skeleton } from '@navikt/ds-react'
 import { ChevronDownIcon, TabsAddIcon } from '@navikt/aksel-icons'
 import Link from 'next/link'
@@ -13,6 +13,8 @@ import { AssableNextLink } from '@components/links/AssableNextLink'
 import { ValueItemSkeleton } from '@components/sykmelding/ValuesSection'
 import SykmeldingValues from '@components/sykmelding/SykmeldingValues'
 import { cn } from '@lib/tw'
+import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { useAppDispatch } from '@core/redux/hooks'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 import { SykmeldingSynchronization } from './SykmeldingSynchronization'
@@ -22,6 +24,16 @@ type Props = {
 }
 
 function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        /**
+         * Once the kvittering is displayed, we are done with the redux state. It is also cleared when returning
+         * to the dashboard, but user might dupliser the sykmelding from other actions.
+         */
+        dispatch(nySykmeldingActions.reset())
+    }, [dispatch])
+
     return (
         <div className="p-4 flex flex-row gap-8">
             <div className="max-w-prose w-[65ch]">
