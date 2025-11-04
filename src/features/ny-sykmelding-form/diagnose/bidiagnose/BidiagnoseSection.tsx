@@ -4,7 +4,7 @@ import { TrashIcon } from '@navikt/aksel-icons'
 
 import { cn } from '@lib/tw'
 
-import { useFieldArray } from '../../form'
+import { useFieldArray } from '../../form/types'
 
 import BidiagnosePicker from './BidiagnosePicker'
 

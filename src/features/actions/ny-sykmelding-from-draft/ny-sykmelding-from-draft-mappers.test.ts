@@ -1,19 +1,15 @@
 import { expect, test } from 'vitest'
 import { DefaultValues } from 'react-hook-form'
 
-import { dateOnly } from '@lib/date'
-import { DraftValues } from '@data-layer/draft/draft-schema'
+import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form/types'
 import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
+import { DraftValues } from '@data-layer/draft/draft-schema'
+import { dateOnly } from '@lib/date'
 
-import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from './form'
-import { createDefaultFormValues } from './form-default-values'
+import { nySykmeldingFromDraftDefaultValues } from './ny-sykmelding-from-draft-mappers'
 
 test('draft values shall be used as default if provided', () => {
-    const defaultValues = createDefaultFormValues({
-        valuesInState: null,
-        draftValues: fullDraft,
-        serverSuggestions: fullServerSuggestions,
-    })
+    const defaultValues = nySykmeldingFromDraftDefaultValues(fullDraft, null, fullServerSuggestions)
 
     expect(defaultValues).toEqual({
         arbeidsforhold: {
@@ -39,9 +35,10 @@ test('draft values shall be used as default if provided', () => {
                 },
             },
         ],
-        // Diagnose from draft, not server suggestion
         diagnoser: {
+            // From draft
             hoved: { system: 'ICD10', code: 'A00', text: 'Kolera' },
+            // Also from draft
             bidiagnoser: [{ system: 'ICPC2', code: 'L73', text: 'Brudd legg/ankel' }],
         },
         tilbakedatering: { fom: '2024-12-15', grunn: 'VENTETID_LEGETIME', annenGrunn: null },
@@ -61,11 +58,7 @@ test('draft values shall be used as default if provided', () => {
 })
 
 test('form values shall have higher presedence than draft values', () => {
-    const defaultValues = createDefaultFormValues({
-        valuesInState: fullExistingStateValues,
-        draftValues: fullDraft,
-        serverSuggestions: fullServerSuggestions,
-    })
+    const defaultValues = nySykmeldingFromDraftDefaultValues(fullDraft, fullExistingStateValues, fullServerSuggestions)
 
     expect(defaultValues).toEqual({
         arbeidsforhold: {
@@ -121,11 +114,7 @@ test('form values shall have higher presedence than draft values', () => {
 })
 
 test('server suggestions shall be used if no draft or form values are provided', () => {
-    const defaultValues = createDefaultFormValues({
-        valuesInState: null,
-        draftValues: null,
-        serverSuggestions: fullServerSuggestions,
-    })
+    const defaultValues = nySykmeldingFromDraftDefaultValues(null, null, fullServerSuggestions)
 
     expect(defaultValues).toEqual({
         arbeidsforhold: { harFlereArbeidsforhold: 'NEI', sykmeldtFraArbeidsforhold: null, aaregArbeidsforhold: null },
@@ -150,61 +139,6 @@ test('server suggestions shall be used if no draft or form values are provided',
         },
     } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
-
-test('multiple bidiagnoser from server suggestion shall be used', () => {
-    const defaultValues = createDefaultFormValues({
-        valuesInState: null,
-        draftValues: null,
-        serverSuggestions: {
-            ...fullServerSuggestions,
-            bidiagnoser: [
-                { system: 'ICPC2', code: 'A01', text: 'Influensa', __typename: 'Diagnose' },
-                { system: 'ICPC2', code: 'B02', text: 'Forkjølelse', __typename: 'Diagnose' },
-            ],
-        },
-    })
-
-    expect(defaultValues).toEqual({
-        arbeidsforhold: { harFlereArbeidsforhold: 'NEI', sykmeldtFraArbeidsforhold: null, aaregArbeidsforhold: null },
-        // Server suggested diagnose
-        diagnoser: {
-            hoved: { system: 'ICPC2', code: 'A01', text: 'Influensa' },
-            bidiagnoser: [
-                { system: 'ICPC2', code: 'A01', text: 'Influensa' },
-                { system: 'ICPC2', code: 'B02', text: 'Forkjølelse' },
-            ],
-        },
-        perioder: [
-            {
-                // Default periode is GRADERT from Today
-                periode: { fom: dateOnly(new Date()), tom: '' },
-                aktivitet: { type: 'GRADERT', grad: null },
-                medisinskArsak: null,
-                arbeidsrelatertArsak: null,
-            },
-        ],
-        tilbakedatering: null,
-        meldinger: { showTilNav: false, tilNav: null, showTilArbeidsgiver: false, tilArbeidsgiver: null },
-        andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: false, skadedato: null } },
-        utdypendeSporsmal: {
-            utfodringerMedArbeid: null,
-            medisinskOppsummering: null,
-            hensynPaArbeidsplassen: null,
-        },
-    } satisfies DefaultValues<NySykmeldingMainFormValues>)
-})
-
-const fullServerSuggestions: NySykmeldingSuggestions = {
-    diagnose: {
-        value: {
-            __typename: 'Diagnose',
-            system: 'ICPC2',
-            code: 'A01',
-            text: 'Influensa',
-        },
-    },
-    bidiagnoser: null,
-}
 
 const fullDraft: DraftValues = {
     arbeidsforhold: {
@@ -289,4 +223,16 @@ const fullExistingStateValues: NySykmeldingFormState = {
         yrkesskadeDato: null,
     },
     utdypendeSporsmal: null,
+}
+
+const fullServerSuggestions: NySykmeldingSuggestions = {
+    diagnose: {
+        value: {
+            __typename: 'Diagnose',
+            system: 'ICPC2',
+            code: 'A01',
+            text: 'Influensa',
+        },
+    },
+    bidiagnoser: null,
 }

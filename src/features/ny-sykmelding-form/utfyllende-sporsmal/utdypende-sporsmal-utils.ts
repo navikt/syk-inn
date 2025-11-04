@@ -8,7 +8,7 @@ import {
     calculateTotalLengthOfSykmeldinger,
     hasAnsweredUtdypendeSporsmal,
 } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
-import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form'
+import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
 
 export const currentSykmeldingIsPartOfPeriode = (
     currentPerioder: AktivitetsPeriode[],

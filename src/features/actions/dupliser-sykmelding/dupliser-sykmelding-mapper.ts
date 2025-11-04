@@ -2,11 +2,11 @@ import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
 import { SykmeldingFragment, SykmeldingRedactedFragment } from '@queries'
-import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form'
+import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
 import {
     sykmeldingFragmentAktivitetToFormValue,
     sykmeldingFragmentToNySykmeldingFormValues,
-} from '@features/actions/common/sykmelding-mappers'
+} from '@features/actions/common/gql-sykmelding-mappers'
 
 export function dupliserSykmeldingDefaultValues(sykmelding: SykmeldingFragment): NySykmeldingMainFormValues {
     if (sykmelding.__typename === 'SykmeldingRedacted') {

@@ -6,10 +6,10 @@ import { useAppDispatch } from '@core/redux/hooks'
 import { GetDraftDocument } from '@queries'
 import { nySykmeldingActions, NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
+import { nySykmeldingFromDraftDefaultValues } from '@features/actions/ny-sykmelding-from-draft/ny-sykmelding-from-draft-mappers'
 
 import { useDraftId } from '../draft/useDraftId'
-import { createDefaultFormValues } from '../form-default-values'
-import { formValuesToStatePayload } from '../form-mappers'
+import { formValuesToStatePayload } from '../form/form-to-state'
 
 type UseFormValuesSummaryDraft = {
     draftLoading: boolean
@@ -35,11 +35,11 @@ export function useFormValuesSummaryDraft(values: NySykmeldingFormState | null):
         if (!draftQuery.loading && values == null && draftQuery.data?.draft != null) {
             logger.info('Found existing draft when loading Summary page! Trying to load it into form state. :-)')
 
-            const formValuesFromDraft = createDefaultFormValues({
-                draftValues: safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values),
-                valuesInState: null,
-                serverSuggestions: { diagnose: { value: null }, bidiagnoser: null },
-            })
+            const formValuesFromDraft = nySykmeldingFromDraftDefaultValues(
+                safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values),
+                null,
+                { diagnose: { value: null }, bidiagnoser: null },
+            )
 
             try {
                 const payload = formValuesToStatePayload(formValuesFromDraft)

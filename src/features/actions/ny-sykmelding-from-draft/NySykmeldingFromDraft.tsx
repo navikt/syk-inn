@@ -7,11 +7,11 @@ import { AllSykmeldingerDocument, GetDraftDocument } from '@queries'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
 import { useAppSelector } from '@core/redux/hooks'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
-import { createDefaultFormValues } from '@features/ny-sykmelding-form/form-default-values'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingDraftFormErrors } from '@features/actions/common/SykmeldingFormErrors'
 import { mapSykmeldingToDateRanges } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
+import { nySykmeldingFromDraftDefaultValues } from '@features/actions/ny-sykmelding-from-draft/ny-sykmelding-from-draft-mappers'
 
 type Props = {
     draftId: string
@@ -36,12 +36,7 @@ export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactE
     }
 
     const parsedDraft = safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values)
-    const defaultValues = createDefaultFormValues({
-        draftValues: parsedDraft,
-        valuesInState: valuesInState,
-        serverSuggestions: suggestionsQuery.suggestions,
-    })
-
+    const defaultValues = nySykmeldingFromDraftDefaultValues(parsedDraft, valuesInState, suggestionsQuery.suggestions)
     const previousSykmeldingDateRange = mapSykmeldingToDateRanges(alleSykmeldinger.data?.sykmeldinger ?? [])
 
     return (

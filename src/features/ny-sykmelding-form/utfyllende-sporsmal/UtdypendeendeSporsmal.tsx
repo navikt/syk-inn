@@ -3,7 +3,7 @@ import { BodyShort, Textarea } from '@navikt/ds-react'
 
 import FormSection from '@components/form/form-section/FormSection'
 import { SykmeldingDateRange } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
-import { useController, useFormContext } from '@features/ny-sykmelding-form/form'
+import { useController, useFormContext } from '@features/ny-sykmelding-form/form/types'
 import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-utils'
 
 export function UtdypendeSporsmal({

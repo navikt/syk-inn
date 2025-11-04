@@ -8,7 +8,7 @@ import { dateOnly } from '@lib/date'
 import { cn } from '@lib/tw'
 import { SimpleReveal } from '@components/animation/Reveal'
 
-import { useController, useFormContext } from '../form'
+import { useController, useFormContext } from '../form/types'
 
 import { parseShorthandFom, parseShorthandTom } from './periode/periode-shorthand'
 import { getRangeDescription } from './periode/periode-utils'

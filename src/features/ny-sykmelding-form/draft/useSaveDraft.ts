@@ -8,7 +8,7 @@ import { spanBrowserAsync } from '@lib/otel/browser'
 import { DraftValues } from '@data-layer/draft/draft-schema'
 import { useMode } from '@core/providers/Modes'
 
-import { NySykmeldingMainFormValues } from '../form'
+import { NySykmeldingMainFormValues } from '../form/types'
 
 export function useSaveDraft(opts: {
     returnToDash: boolean

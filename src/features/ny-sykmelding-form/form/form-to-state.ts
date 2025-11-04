@@ -1,6 +1,6 @@
 import * as R from 'remeda'
 
-import { type AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form'
+import { type AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
 import { NySykmeldingAktivitet, NySykmeldingFormPayload } from '@core/redux/reducers/ny-sykmelding/form'
 import { raise } from '@lib/ts'
 import { Diagnose } from '@data-layer/common/diagnose'

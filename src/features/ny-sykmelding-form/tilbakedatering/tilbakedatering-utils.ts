@@ -1,7 +1,7 @@
 import * as R from 'remeda'
 import { isBefore, parseISO, subDays } from 'date-fns'
 
-import { AktivitetsPeriode } from '../form'
+import { AktivitetsPeriode } from '../form/types'
 
 export function isTilbakedatering(perioder: Pick<AktivitetsPeriode, 'periode'>[], sykmeldingsDato: Date): boolean {
     const firstFom = R.pipe(

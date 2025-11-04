@@ -8,7 +8,7 @@ import { CheckmarkCircleIcon } from '@navikt/aksel-icons'
 import { dateOnly, toReadableDate } from '@lib/date'
 import { SimpleReveal } from '@components/animation/Reveal'
 
-import { useController } from '../form'
+import { useController } from '../form/types'
 
 function AndreSporsmalField(): ReactElement {
     const andreSporsmal = useController<'andreSporsmal'>({

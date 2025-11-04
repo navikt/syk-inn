@@ -4,7 +4,7 @@ import { ReactElement } from 'react'
 
 import { ArbeidsrelatertArsakType } from '@queries'
 
-import { useController } from '../form'
+import { useController } from '../form/types'
 
 function ArsakerPicker({ index }: { index: number }): ReactElement {
     const isMedisinskArsak = useController({

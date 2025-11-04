@@ -1,9 +1,15 @@
 import { logger } from '@navikt/next-logger'
+import * as R from 'remeda'
 
-import { SykmeldingFullFragment } from '@queries'
+import { DiagnoseFragment, SykmeldingFullFragment } from '@queries'
 import { raise } from '@lib/ts'
-import { AktivitetsPeriode, NySykmeldingMainFormValues, TilbakedateringField } from '@features/ny-sykmelding-form/form'
+import {
+    AktivitetsPeriode,
+    NySykmeldingMainFormValues,
+    TilbakedateringField,
+} from '@features/ny-sykmelding-form/form/types'
 import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
+import { Diagnose } from '@data-layer/common/diagnose'
 import { dateOnly } from '@lib/date'
 
 export function sykmeldingFragmentToNySykmeldingFormValues(
@@ -109,6 +115,12 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 medisinskArsak: null,
             } satisfies AktivitetsPeriode
     }
+}
+
+export function serverDiagnoseSuggestionToFormValue(diagnose: DiagnoseFragment | null): Diagnose | null {
+    if (diagnose == null) return null
+
+    return R.omit(diagnose, ['__typename'])
 }
 
 function toTilbakedatering(
