@@ -13,6 +13,7 @@ import {
     nextStep,
     pickHoveddiagnose,
     previousStep,
+    requestAccessToSykmeldinger,
     submitSykmelding,
 } from '../../actions/user-actions'
 import { daysAgo, inDays, inputDate } from '../../utils/date-utils'
@@ -28,6 +29,7 @@ import { verifySummaryPage } from '../../actions/user-verifications'
 
 test('should be able to forlenge an existing sykmelding with correct values', async ({ page }) => {
     await launchWithMock('empty')(page)
+    await requestAccessToSykmeldinger()(page)
     await startNewSykmelding()(page)
 
     await userInteractionsGroup(
@@ -84,6 +86,7 @@ test('should be able to forleng a sykmelding, go to summary, and return to form 
     page,
 }) => {
     await launchWithMock('empty')(page)
+    await requestAccessToSykmeldinger()(page)
     await startNewSykmelding()(page)
 
     await userInteractionsGroup(

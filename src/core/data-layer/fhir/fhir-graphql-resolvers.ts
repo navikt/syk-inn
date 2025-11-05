@@ -2,6 +2,7 @@ import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 import { teamLogger } from '@navikt/next-logger/team-log'
+import { cookies } from 'next/headers'
 
 import { Behandler, QueriedPerson, Resolvers } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
@@ -28,6 +29,8 @@ import { aaregService } from '@core/services/aareg/aareg-service'
 import { raise } from '@lib/ts'
 import { assertIsPilotUser } from '@data-layer/fhir/fhir-graphql-utils'
 import { FhirGraphqlContext } from '@data-layer/fhir/fhir-graphql-context'
+import { getHasRequestedAccessToSykmeldinger } from '@core/session/session'
+import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
 
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
@@ -87,13 +90,31 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
+            const practitioner = await client.user.request()
+            if ('error' in practitioner) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const patientInContext = await client.patient.request()
+            if ('error' in patientInContext) {
+                throw new GraphQLError('PARSING_ERROR')
+            }
+
+            const hasRequestedAccessToSykmeldinger = await getHasRequestedAccessToSykmeldinger(
+                practitioner.id,
+                patientInContext.id,
+            )
+
             if (conditionsByEncounter.entry == null) {
-                return { diagnoser: [] }
+                return { diagnoser: [], hasRequestedAccessToSykmeldinger }
             }
 
             const conditionList = conditionsByEncounter.entry.map((it) => it.resource)
 
-            return { diagnoser: fhirDiagnosisToRelevantDiagnosis(conditionList) }
+            return {
+                diagnoser: fhirDiagnosisToRelevantDiagnosis(conditionList),
+                hasRequestedAccessToSykmeldinger,
+            }
         },
         sykmelding: async (_, { id: sykmeldingId }, { client }) => {
             const practitioner = await client.user.request()
@@ -152,6 +173,15 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 logger.error('Missing valid FNR/DNR in patient resource')
                 teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(patientInContext, null, 2)}`)
                 throw new GraphQLError('API_ERROR')
+            }
+
+            // TODO: Get hasRequestedAccess from session
+            const hasRequestedAccessToSykmeldinger = await getHasRequestedAccessToSykmeldinger(
+                practitioner.id,
+                patientInContext.id,
+            )
+            if (!hasRequestedAccessToSykmeldinger) {
+                return []
             }
 
             const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(ident, hpr)
@@ -405,6 +435,29 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             }
 
             throw new GraphQLError('API_ERROR')
+        },
+        requestAccessToSykmeldinger: async (_, __, { client }) => {
+            const practitioner = await client.user.request()
+            if ('error' in practitioner) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const pasient = await client.patient.request()
+            if ('error' in pasient) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            // TODO: Trigger auditlog
+
+            const cookieStore = await cookies()
+            cookieStore.set({
+                name: `${HAS_REQUESTED_ACCESS_COOKIE_NAME}_${practitioner.id}_${pasient.id}`,
+                value: 'true',
+                httpOnly: true,
+                maxAge: 3600,
+                secure: true,
+            })
+            return true
         },
     },
     Pasient: {

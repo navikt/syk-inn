@@ -184,6 +184,7 @@ export type InputYrkesskade = {
 export type Konsultasjon = {
     __typename?: 'Konsultasjon'
     diagnoser?: Maybe<Array<Diagnose>>
+    hasRequestedAccessToSykmeldinger: Scalars['Boolean']['output']
 }
 
 export type MedisinskArsak = {
@@ -209,6 +210,7 @@ export type Mutation = {
      * In the future, these checks will be done more optimistically
      */
     opprettSykmelding: OpprettetSykmelding
+    requestAccessToSykmeldinger: Scalars['Boolean']['output']
     saveDraft: OpprettSykmeldingDraft
     synchronizeSykmelding: SynchronizationStatus
 }
@@ -807,6 +809,7 @@ export type KonsultasjonResolvers<
     ParentType extends ResolversParentTypes['Konsultasjon'] = ResolversParentTypes['Konsultasjon'],
 > = {
     diagnoser?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
+    hasRequestedAccessToSykmeldinger?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
 }
 
 export type MedisinskArsakResolvers<
@@ -832,6 +835,7 @@ export type MutationResolvers<
         ContextType,
         RequireFields<MutationOpprettSykmeldingArgs, 'draftId' | 'force' | 'meta' | 'values'>
     >
+    requestAccessToSykmeldinger?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     saveDraft?: Resolver<
         ResolversTypes['OpprettSykmeldingDraft'],
         ParentType,

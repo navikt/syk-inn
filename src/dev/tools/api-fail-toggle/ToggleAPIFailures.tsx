@@ -92,6 +92,11 @@ export function ToggleAPIFailures(): ReactElement {
                 Arbeidsforhold (Aareg)
             </Checkbox>
         ),
+        RequestAccessToSykmeldinger: (
+            <Checkbox key="requestAccessToSykmeldinger" value="RequestAccessToSykmeldinger">
+                Be om tilgang til sykmeldinger
+            </Checkbox>
+        ),
     }
 
     return (

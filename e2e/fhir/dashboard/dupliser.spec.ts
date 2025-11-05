@@ -12,6 +12,7 @@ import {
     nextStep,
     pickHoveddiagnose,
     previousStep,
+    requestAccessToSykmeldinger,
     submitSykmelding,
 } from '../../actions/user-actions'
 import { daysAgo } from '../../utils/date-utils'
@@ -27,6 +28,7 @@ import { verifySummaryPage } from '../../actions/user-verifications'
 
 test('should be able to duplicate an existing sykmelding with correct values', async ({ page }) => {
     await launchWithMock('empty')(page)
+    await requestAccessToSykmeldinger()(page)
     await startNewSykmelding()(page)
 
     await userInteractionsGroup(
@@ -81,6 +83,7 @@ test('should be able to duplicate an existing sykmelding, go tu summary, and ret
     page,
 }) => {
     await launchWithMock('empty')(page)
+    await requestAccessToSykmeldinger()(page)
     await startNewSykmelding()(page)
 
     await userInteractionsGroup(

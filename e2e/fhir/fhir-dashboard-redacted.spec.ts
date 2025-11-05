@@ -1,11 +1,15 @@
 import { expect, test } from '@playwright/test'
 
+import { requestAccessToSykmeldinger } from '../actions/user-actions'
+
 import { launchWithMock } from './actions/fhir-actions'
 
 test('redacted @feature-toggle should see other users sykmeldinger as redacted versions', async ({ page }) => {
     await launchWithMock('some-redacted-sykmeldinger', {
         SYK_INN_SHOW_REDACTED: true,
     })(page)
+
+    await requestAccessToSykmeldinger()(page)
 
     await new Promise((resolve) => setTimeout(resolve, 5000))
 
@@ -24,6 +28,8 @@ test('redacted @feature-toggle toggled off - should not display any other sykmel
     await launchWithMock('some-redacted-sykmeldinger', {
         SYK_INN_SHOW_REDACTED: false,
     })(page)
+
+    await requestAccessToSykmeldinger()(page)
 
     await new Promise((resolve) => setTimeout(resolve, 5000))
 
