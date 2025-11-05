@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort, Heading } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
 
-import { isSameDiagnose } from '@data-layer/common/diagnose'
+import { Diagnose, isSameDiagnose } from '@data-layer/common/diagnose'
 import { SimpleReveal } from '@components/animation/Reveal'
 
 import { useFormContext } from '../form/types'
@@ -10,7 +10,7 @@ import { useFormContext } from '../form/types'
 import { useDiagnoseSuggestions } from './useDiagnoseSuggestions'
 
 function DiagnoseInfoAlert(): ReactElement | null {
-    const { watch } = useFormContext()
+    const { watch, setValue } = useFormContext()
     const suggestionsQuery = useDiagnoseSuggestions()
     const formDiagnose = watch('diagnoser')
 
@@ -35,6 +35,37 @@ function DiagnoseInfoAlert(): ReactElement | null {
                             De valgte diagnosene samsvarer ikke med opplysningene i EPJ. Diagnosefeltet i EPJ vil ikke
                             bli oppdatert automatisk.
                         </BodyShort>
+                        <Button
+                            variant="secondary-neutral"
+                            size="small"
+                            className="mt-4"
+                            type="button"
+                            onClick={() => {
+                                const hoved = suggestionsQuery.suggestions?.diagnose.value
+                                const bidiagnoser = suggestionsQuery.suggestions?.bidiagnoser ?? []
+
+                                if (hoved) {
+                                    setValue('diagnoser.hoved', {
+                                        code: hoved.code,
+                                        system: hoved.system,
+                                        text: hoved.text,
+                                    } satisfies Diagnose)
+                                }
+
+                                if (bidiagnoser.length > 0) {
+                                    setValue(
+                                        'diagnoser.bidiagnoser',
+                                        bidiagnoser.map((bi) => ({
+                                            code: bi.code,
+                                            system: bi.system,
+                                            text: bi.text,
+                                        })) satisfies Diagnose[],
+                                    )
+                                }
+                            }}
+                        >
+                            Bruk diagnoser fra EPJ
+                        </Button>
                     </Alert>
                 </SimpleReveal>
             )}

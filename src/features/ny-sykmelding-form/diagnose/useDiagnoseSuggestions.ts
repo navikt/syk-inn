@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client/react'
 import { type DiagnoseFragment, KonsultasjonDocument } from '@queries'
 import { useFlag } from '@core/toggles/context'
 import type { NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form/types'
+import useOnFocus from '@lib/hooks/useOnFocus'
 
 export function useDiagnoseSuggestions():
     | {
@@ -15,6 +16,8 @@ export function useDiagnoseSuggestions():
       } {
     const konsultasjonsQuery = useQuery(KonsultasjonDocument)
     const serverBidiagnoserToggle = useFlag('SYK_INN_AUTO_BIDIAGNOSER')
+
+    useOnFocus(konsultasjonsQuery.refetch)
 
     if (konsultasjonsQuery.loading) {
         return { loading: true, suggestions: null }
