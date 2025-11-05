@@ -7,8 +7,7 @@ const softRules: Record<string, string | null> = {
     PASIENT_YNGRE_ENN_13: 'Pasienten er under 13 år. Sykmelding kan ikke benyttes. Hvis pasienten trenger dokumentasjon på fravær, så kan legeerklæring benyttes.',
     INNTIL_8_DAGER: 'Sykmeldingen mangler begrunnelse for tilbakedatering.',
     MINDRE_ENN_1_MAANED: 'Sykmeldingen mangler begrunnelse for tilbakedatering.',
-    // TODO
-    MINDRE_ENN_1_MAANED_MED_BEGRUNNELSE: null,
+    MINDRE_ENN_1_MAANED_MED_BEGRUNNELSE: "Sykmeldingen er tilbakedatert mindre enn 1 måned",
     OVER_1_MND: 'Sykmeldingen er tilbakedatert over 1 måned uten at den er tilstrekkelig begrunnet. Ved lengre tilbakedatering må du gi en lang og god begrunnelse.',
     OVER_1_MND_MED_BEGRUNNELSE: 'Sykmeldingen er tilbakedatert over 1 måned uten at den er tilstrekkelig begrunnet. Ved lengre tilbakedatering må du gi en lang og god begrunnelse.',
 }
