@@ -369,7 +369,7 @@ export type SykmeldingMelding = {
 
 export type SykmeldingMeta = {
     __typename: 'SykmeldingMeta'
-    legekontorOrgnr: Scalars['String']['output']
+    legekontorOrgnr?: Maybe<Scalars['String']['output']>
     mottatt: Scalars['DateTime']['output']
     pasientIdent: Scalars['String']['output']
     sykmelderHpr: Scalars['String']['output']
@@ -455,7 +455,7 @@ export type AllDashboardQuery = {
                   __typename: 'SykmeldingMeta'
                   pasientIdent: string
                   sykmelderHpr: string
-                  legekontorOrgnr: string
+                  legekontorOrgnr?: string | null
                   mottatt: string
               }
               utfall: { __typename: 'Outcome'; result: string; message?: string | null }
@@ -524,7 +524,7 @@ export type AllDashboardQuery = {
                   __typename: 'SykmeldingMeta'
                   pasientIdent: string
                   sykmelderHpr: string
-                  legekontorOrgnr: string
+                  legekontorOrgnr?: string | null
                   mottatt: string
               }
               utfall: { __typename: 'Outcome'; result: string; message?: string | null }
@@ -663,7 +663,7 @@ export type SykmeldingByIdQuery = {
                   __typename: 'SykmeldingMeta'
                   pasientIdent: string
                   sykmelderHpr: string
-                  legekontorOrgnr: string
+                  legekontorOrgnr?: string | null
                   mottatt: string
               }
               utfall: { __typename: 'Outcome'; result: string; message?: string | null }
@@ -732,7 +732,7 @@ export type SykmeldingByIdQuery = {
                   __typename: 'SykmeldingMeta'
                   pasientIdent: string
                   sykmelderHpr: string
-                  legekontorOrgnr: string
+                  legekontorOrgnr?: string | null
                   mottatt: string
               }
               utfall: { __typename: 'Outcome'; result: string; message?: string | null }
@@ -757,7 +757,7 @@ export type AllSykmeldingerQuery = {
                   __typename: 'SykmeldingMeta'
                   pasientIdent: string
                   sykmelderHpr: string
-                  legekontorOrgnr: string
+                  legekontorOrgnr?: string | null
                   mottatt: string
               }
               utfall: { __typename: 'Outcome'; result: string; message?: string | null }
@@ -826,7 +826,7 @@ export type AllSykmeldingerQuery = {
                   __typename: 'SykmeldingMeta'
                   pasientIdent: string
                   sykmelderHpr: string
-                  legekontorOrgnr: string
+                  legekontorOrgnr?: string | null
                   mottatt: string
               }
               utfall: { __typename: 'Outcome'; result: string; message?: string | null }
@@ -858,7 +858,7 @@ export type OpprettSykmeldingMutation = {
                   __typename: 'SykmeldingMeta'
                   pasientIdent: string
                   sykmelderHpr: string
-                  legekontorOrgnr: string
+                  legekontorOrgnr?: string | null
                   mottatt: string
               }
               utfall: { __typename: 'Outcome'; result: string; message?: string | null }
@@ -937,7 +937,7 @@ export type SykmeldingRedactedFragment = {
         __typename: 'SykmeldingMeta'
         pasientIdent: string
         sykmelderHpr: string
-        legekontorOrgnr: string
+        legekontorOrgnr?: string | null
         mottatt: string
     }
     utfall: { __typename: 'Outcome'; result: string; message?: string | null }
@@ -955,7 +955,7 @@ export type SykmeldingFullFragment = {
         __typename: 'SykmeldingMeta'
         pasientIdent: string
         sykmelderHpr: string
-        legekontorOrgnr: string
+        legekontorOrgnr?: string | null
         mottatt: string
     }
     utfall: { __typename: 'Outcome'; result: string; message?: string | null }
@@ -1017,7 +1017,7 @@ type Sykmelding_SykmeldingFull_Fragment = {
         __typename: 'SykmeldingMeta'
         pasientIdent: string
         sykmelderHpr: string
-        legekontorOrgnr: string
+        legekontorOrgnr?: string | null
         mottatt: string
     }
     utfall: { __typename: 'Outcome'; result: string; message?: string | null }
@@ -1078,7 +1078,7 @@ type Sykmelding_SykmeldingRedacted_Fragment = {
         __typename: 'SykmeldingMeta'
         pasientIdent: string
         sykmelderHpr: string
-        legekontorOrgnr: string
+        legekontorOrgnr?: string | null
         mottatt: string
     }
     utfall: { __typename: 'Outcome'; result: string; message?: string | null }

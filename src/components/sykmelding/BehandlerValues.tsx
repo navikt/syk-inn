@@ -11,7 +11,7 @@ function BehandlerValues({ sykmeldingMeta }: Props): ReactElement {
     return (
         <>
             <ValueItem title="HPR">{sykmeldingMeta.sykmelderHpr}</ValueItem>
-            <ValueItem title="Organisasjonsnummer">{sykmeldingMeta.legekontorOrgnr}</ValueItem>
+            <ValueItem title="Organisasjonsnummer">{sykmeldingMeta.legekontorOrgnr ?? 'Ikke satt'}</ValueItem>
         </>
     )
 }

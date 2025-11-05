@@ -26,7 +26,7 @@ type SykmeldingMeta {
     mottatt: DateTime!
     pasientIdent: String!
     sykmelderHpr: String!
-    legekontorOrgnr: String!
+    legekontorOrgnr: String
 }
 
 type SykmeldingValues {

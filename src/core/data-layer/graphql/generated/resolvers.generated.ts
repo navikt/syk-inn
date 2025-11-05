@@ -371,7 +371,7 @@ export type SykmeldingMelding = {
 
 export type SykmeldingMeta = {
     __typename?: 'SykmeldingMeta'
-    legekontorOrgnr: Scalars['String']['output']
+    legekontorOrgnr?: Maybe<Scalars['String']['output']>
     mottatt: Scalars['DateTime']['output']
     pasientIdent: Scalars['String']['output']
     sykmelderHpr: Scalars['String']['output']
@@ -996,7 +996,7 @@ export type SykmeldingMetaResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['SykmeldingMeta'] = ResolversParentTypes['SykmeldingMeta'],
 > = {
-    legekontorOrgnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    legekontorOrgnr?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     mottatt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>
     pasientIdent?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     sykmelderHpr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
