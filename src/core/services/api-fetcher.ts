@@ -1,6 +1,7 @@
 import texas from '@navikt/texas'
 import { logger as pinoLogger } from '@navikt/next-logger'
 import * as z from 'zod'
+import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { getServerEnv } from '@lib/env'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
@@ -122,6 +123,10 @@ export async function fetchInternalAPI<
         const parsed = responseSchema.safeParse(result)
 
         if (!parsed.success) {
+            teamLogger.error(
+                `Invalid response from ${path} didn't match zod schema, response was actually: ${JSON.stringify(result, null, 2)}`,
+            )
+
             failSpan(
                 span,
                 'Invalid API response body',
