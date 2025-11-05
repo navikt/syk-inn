@@ -16,7 +16,6 @@ import {
     confirmRuleOutcomeSubmit,
 } from '../actions/user-actions'
 import { expectGraphQLRequest } from '../utils/assertions'
-import { getDraftId } from '../utils/request-utils'
 import { verifySummaryPage } from '../actions/user-verifications'
 import { userInteractionsGroup } from '../utils/actions'
 
@@ -43,9 +42,9 @@ test('simple - 100% sykmelding', async ({ page }) => {
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
@@ -100,9 +99,9 @@ test('simple - gradert sykmelding', async ({ page }) => {
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
@@ -154,9 +153,9 @@ test('simple - submit with only default values', async ({ page }) => {
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
@@ -209,9 +208,9 @@ test('optional - multiple bidiagnoser', async ({ page }) => {
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
@@ -267,9 +266,9 @@ test('optional - multiple perioder back to back', async ({ page }) => {
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
@@ -328,9 +327,9 @@ test('optional - should pre-fill bidiagnoser from FHIR @feature-toggle', async (
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
@@ -425,10 +424,10 @@ test("optional - 'tilbakedatering' is asked and required when fom is 5 days in t
         },
     ])(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
 
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
@@ -491,10 +490,10 @@ test('optional - "tilbakedatering" and "Annen årsak" input field is required an
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
 
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
@@ -556,9 +555,9 @@ test('optional - "har flere arbeidsforhold" should be part of payload if checked
 
     await verifySignerendeBehandler()(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
@@ -623,9 +622,9 @@ test('optional - when 100%, "arbeidsrelaterte og medisinske årsaker" should be 
 
     await verifySignerendeBehandler()(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
@@ -679,10 +678,10 @@ test('summary - "skal skjermes" should be part of payload if checked', async ({ 
     await verifySignerendeBehandler()(page)
 
     await page.getByRole('checkbox', { name: 'Pasienten skal skjermes for medisinske opplysninger' }).check()
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
 
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
@@ -737,9 +736,9 @@ test.describe('rule outcomes', () => {
         const confirmationModal = page.getByRole('dialog', { name: 'Vær oppmerksom' })
         await expect(confirmationModal).toBeVisible()
 
-        const request = await confirmRuleOutcomeSubmit(confirmationModal)(page)
+        const { request, draftId } = await confirmRuleOutcomeSubmit(confirmationModal)(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-            draftId: getDraftId(page) ?? 'missing',
+            draftId: draftId,
             meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
             force: true,
             values: {
@@ -780,16 +779,16 @@ test.describe('rule outcomes', () => {
         await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
     })
 
-    test('manuell behanlidng and expected: should be able to submit læll', async ({ page }) => {
+    test('manuell behandling and expected: should be able to submit læll', async ({ page }) => {
         await launchAndFillBasic(page)
         await submitSykmelding('manual')(page)
 
         const confirmationModal = page.getByRole('dialog', { name: 'Vær oppmerksom' })
         await expect(confirmationModal).toBeVisible()
 
-        const request = await confirmRuleOutcomeSubmit(confirmationModal)(page)
+        const { request, draftId } = await confirmRuleOutcomeSubmit(confirmationModal)(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-            draftId: getDraftId(page) ?? 'missing',
+            draftId: draftId,
             meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
             force: true,
             values: {

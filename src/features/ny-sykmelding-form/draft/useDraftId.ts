@@ -5,7 +5,7 @@ export function useDraftId(): [string | null, (id: string) => Promise<URLSearchP
     const params = useParams<{ draftId?: string }>()
     const [draftId, setDraftId] = useQueryState(
         'draft',
-        parseAsString.withDefault('').withOptions({ clearOnDefault: true, shallow: true }),
+        parseAsString.withDefault('').withOptions({ clearOnDefault: true, shallow: true, history: 'replace' }),
     )
 
     // When on a page with /[draftId] params use that, otherwise use the ?draft= query param

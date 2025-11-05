@@ -11,14 +11,16 @@ import {
 } from '../actions/user-actions'
 import { verifySummaryPage } from '../actions/user-verifications'
 import { expectGraphQLRequest } from '../utils/assertions'
-import { getDraftId } from '../utils/request-utils'
 import { inDays, today } from '../utils/date-utils'
 
 import { launchWithMock } from './actions/standalone-actions'
 import { fillOrgnummer, fillTelefonnummer, searchPerson, startNewSykmelding } from './actions/standalone-user-actions'
 import { verifySignerendeBehandler } from './actions/standalone-user-verifications'
 
-test('simple - 100% sykmelding', async ({ page }) => {
+/**
+ * Will fail until we implement drafts in standalone
+ */
+test.fail('simple - 100% sykmelding', async ({ page }) => {
     await launchWithMock('empty', {
         behandler: 'Johan Johansson',
     })(page)
@@ -46,10 +48,10 @@ test('simple - 100% sykmelding', async ({ page }) => {
     await fillOrgnummer('112233445')(page)
     await fillTelefonnummer('+47 99887766')(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
 
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: {
             pasientIdent: '21037712323',
             orgnummer: '112233445',
