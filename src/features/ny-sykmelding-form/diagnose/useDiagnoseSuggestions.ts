@@ -12,6 +12,7 @@ export function useDiagnoseSuggestions():
       }
     | {
           loading: false
+          refetching: boolean
           suggestions: NySykmeldingSuggestions
       } {
     const konsultasjonsQuery = useQuery(KonsultasjonDocument)
@@ -19,12 +20,13 @@ export function useDiagnoseSuggestions():
 
     useOnFocus(konsultasjonsQuery.refetch)
 
-    if (konsultasjonsQuery.loading) {
+    if (konsultasjonsQuery.loading && konsultasjonsQuery.data?.konsultasjon == null) {
         return { loading: true, suggestions: null }
     }
 
     return {
         loading: false,
+        refetching: konsultasjonsQuery.loading,
         suggestions: {
             diagnose: {
                 value: pickMostRelevantDiagnose(konsultasjonsQuery.data?.konsultasjon?.diagnoser ?? null),
