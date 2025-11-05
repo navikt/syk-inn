@@ -10,7 +10,7 @@ import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingF
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingDraftFormErrors } from '@features/actions/common/SykmeldingFormErrors'
-import { mapSykmeldingToDateRanges } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
+import { mapSykmeldingToDateRanges } from '@data-layer/common/continuous-sykefravaer-utils'
 import { nySykmeldingFromDraftDefaultValues } from '@features/actions/ny-sykmelding-from-draft/ny-sykmelding-from-draft-mappers'
 
 type Props = {

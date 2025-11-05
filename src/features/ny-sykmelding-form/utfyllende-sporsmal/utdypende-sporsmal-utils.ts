@@ -7,7 +7,7 @@ import {
     filterSykmeldingerWithinDaysGap,
     calculateTotalLengthOfSykmeldinger,
     hasAnsweredUtdypendeSporsmal,
-} from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
+} from '@data-layer/common/continuous-sykefravaer-utils'
 import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
 
 export const currentSykmeldingIsPartOfPeriode = (

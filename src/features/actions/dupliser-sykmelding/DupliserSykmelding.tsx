@@ -9,7 +9,7 @@ import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/us
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingFormErrors } from '@features/actions/common/SykmeldingFormErrors'
 import { dupliserSykmeldingDefaultValues } from '@features/actions/dupliser-sykmelding/dupliser-sykmelding-mapper'
-import { mapSykmeldingToDateRanges } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
+import { mapSykmeldingToDateRanges } from '@data-layer/common/continuous-sykefravaer-utils'
 import { useAppSelector } from '@core/redux/hooks'
 
 interface Props {

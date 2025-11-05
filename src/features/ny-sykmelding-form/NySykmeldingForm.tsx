@@ -9,7 +9,7 @@ import FormSheet from '@components/form/form-section/FormSheet'
 import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
-import { SykmeldingDateRange } from '@features/dashboard/dumb-stats/continuous-sykefravaer-utils'
+import { SykmeldingDateRange } from '@data-layer/common/continuous-sykefravaer-utils'
 
 import { formValuesToStatePayload } from './form/form-to-state'
 import { UtdypendeSporsmal } from './utfyllende-sporsmal/UtdypendeendeSporsmal'
