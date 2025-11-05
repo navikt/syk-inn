@@ -1,7 +1,27 @@
-import { vi, test, describe, expect, beforeEach, afterEach } from 'vitest'
+import { vi, test, describe, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest'
 import nock from 'nock'
 
 describe('unleash definitions', () => {
+    beforeAll(() => {
+        vi.mock('@navikt/next-logger', () => {
+            const loggerMock = {
+                info: vi.fn(),
+                warn: vi.fn(),
+                error: vi.fn(),
+                debug: vi.fn(),
+                fatal: vi.fn(),
+                trace: vi.fn(),
+                child: () => loggerMock,
+            }
+
+            return { logger: loggerMock }
+        })
+    })
+
+    afterAll(() => {
+        vi.restoreAllMocks()
+    })
+
     beforeEach(() => {
         process.env.UNLEASH_SERVER_API_URL = 'http://team-unleash'
         process.env.UNLEASH_SERVER_API_TOKEN = 'foo-bar'
