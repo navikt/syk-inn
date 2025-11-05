@@ -12,7 +12,6 @@ import {
 import { userInteractionsGroup } from '../utils/actions'
 import { expectGraphQLRequest } from '../utils/assertions'
 import { today, inDays } from '../utils/date-utils'
-import { getDraftId } from '../utils/request-utils'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
@@ -41,9 +40,9 @@ test('Submit sykmelding with utdypende spørsmål', async ({ page }) => {
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {

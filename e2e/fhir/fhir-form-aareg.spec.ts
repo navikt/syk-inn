@@ -4,7 +4,6 @@ import { OpprettSykmeldingDocument } from '@queries'
 
 import { fillPeriodeRelative, submitSykmelding, nextStep, previousStep, saveDraft } from '../actions/user-actions'
 import { anything, expectGraphQLRequest } from '../utils/assertions'
-import { getDraftId } from '../utils/request-utils'
 import { verifySummaryPage } from '../actions/user-verifications'
 import { userInteractionsGroup } from '../utils/actions'
 
@@ -43,9 +42,9 @@ test('aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG d
         ]),
     )(page)
 
-    const request = await submitSykmelding()(page)
+    const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-        draftId: getDraftId(page) ?? 'missing',
+        draftId: draftId,
         meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
         force: false,
         values: {

@@ -6,7 +6,7 @@ import { OpprettSykmeldingDocument } from '@queries'
 import { toReadableDatePeriod } from '@lib/date'
 import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
 
-import { clickAndWait, waitForGqlRequest } from '../utils/request-utils'
+import { clickAndWait, getDraftId, waitForGqlRequest } from '../utils/request-utils'
 import { inputDate } from '../utils/date-utils'
 
 export function pickHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
@@ -350,29 +350,39 @@ export function submitSykmelding(
             { paramName: MockRuleMarkers.query, outcome },
         )
     }
-    return async (page: Page): Promise<ApolloLink.Request> => {
+    return async (page: Page): Promise<{ request: ApolloLink.Request; draftId: string }> => {
         return test.step(`Submit the sykmelding (outcome: ${outcome})`, async () => {
             if (outcome !== 'succeed') {
                 await setFailParam(page, outcome)
             }
 
+            /**
+             * Get the draftId from the URL before we submit, as a successful submission will redirect
+             */
+            const draftIdInUrl = getDraftId(page) ?? 'missing'
+
             const request = await clickAndWait(
                 page.getByRole('button', { name: 'Send inn' }).click(),
                 waitForGqlRequest(OpprettSykmeldingDocument)(page),
             )
-            return request.postDataJSON()
+            return { request: request.postDataJSON(), draftId: draftIdInUrl }
         })
     }
 }
 
 export function confirmRuleOutcomeSubmit(modal: Locator) {
-    return async (page: Page): Promise<ApolloLink.Request> => {
+    return async (page: Page): Promise<{ request: ApolloLink.Request; draftId: string }> => {
         return test.step(`Confirm the sykmelding should be submit with rule outcome`, async () => {
+            /**
+             * Get the draftId from the URL before we submit, as a successful submission will redirect
+             */
+            const draftIdInUrl = getDraftId(page) ?? 'missing'
+
             const request = await clickAndWait(
                 modal.getByRole('button', { name: 'Send inn' }).click(),
                 waitForGqlRequest(OpprettSykmeldingDocument)(page),
             )
-            return request.postDataJSON()
+            return { request: request.postDataJSON(), draftId: draftIdInUrl }
         })
     }
 }
