@@ -12,10 +12,8 @@ function DumbStats(): ReactElement {
 
     if (allDrafts.loading || sykmeldinger.loading) {
         return (
-            <div className="mb-2 flex gap-12 h-full">
-                <div className="flex flex-col justify-between -mt-2">
-                    <Skeleton variant="rounded" className="w-50 h-full" />
-                </div>
+            <div className="mb-2 flex gap-12 -mt-2">
+                <Skeleton variant="rounded" className="w-50 h-full" />
             </div>
         )
     }
