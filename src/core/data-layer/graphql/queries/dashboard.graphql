@@ -5,4 +5,7 @@ query AllDashboard {
     sykmeldinger {
         ...Sykmelding
     }
+    konsultasjon {
+        hasRequestedAccessToSykmeldinger
+    }
 }

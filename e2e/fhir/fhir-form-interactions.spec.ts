@@ -6,6 +6,7 @@ import {
     editBidiagnose,
     pickHoveddiagnose,
     editHoveddiagnose,
+    requestAccessToSykmeldinger,
 } from '../actions/user-actions'
 import { expectBidagnoses, expectHoveddiagnose } from '../actions/user-form-verification'
 import { inDays, inputDate } from '../utils/date-utils'
@@ -66,6 +67,7 @@ test.describe("'shorthand' date interactions", () => {
         page,
     }) => {
         await launchWithMock('one-current-to-tomorrow')(page)
+        await requestAccessToSykmeldinger()(page)
 
         const table = page.getByRole('region', { name: 'Tidligere sykmeldinger og utkast' })
         await table.getByRole('button', { name: 'Forlenge' }).click()
@@ -88,6 +90,7 @@ test.describe("'shorthand' date interactions", () => {
         page,
     }) => {
         await launchWithMock('one-current-to-tomorrow')(page)
+        await requestAccessToSykmeldinger()(page)
 
         const table = page.getByRole('region', { name: 'Tidligere sykmeldinger og utkast' })
         await table.getByRole('button', { name: 'Forlenge' }).click()

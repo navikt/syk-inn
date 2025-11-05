@@ -7,6 +7,7 @@ import {
     fillPeriodeRelative,
     nextStep,
     pickHoveddiagnose,
+    requestAccessToSykmeldinger,
     submitSykmelding,
 } from '../actions/user-actions'
 import { userInteractionsGroup } from '../utils/actions'
@@ -19,6 +20,7 @@ import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 const launchAndStart = userInteractionsGroup(
     launchWithMock('utfyllende-sporsmal'),
+    requestAccessToSykmeldinger(),
     startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' }),
 )
 

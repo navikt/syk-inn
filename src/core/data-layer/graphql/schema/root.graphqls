@@ -37,4 +37,5 @@ type Mutation {
 
     saveDraft(draftId: String!, values: JSON!): OpprettSykmeldingDraft!
     deleteDraft(draftId: String!): Boolean!
+    requestAccessToSykmeldinger: Boolean!
 }

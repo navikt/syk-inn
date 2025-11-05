@@ -17,5 +17,5 @@ test('should be able to quickly delete a lot of drafts', async ({ page }) => {
 
     await page.waitForLoadState('networkidle')
 
-    await expect(page.getByText('Her var det ingen tidligere sykmeldinger eller utkast')).toBeVisible()
+    await expect(page.getByText('Du må be om tilgang for å kunne se sykmeldingshistorikk på pasienten.')).toBeVisible()
 })

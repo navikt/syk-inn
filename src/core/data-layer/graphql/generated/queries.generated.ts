@@ -182,6 +182,7 @@ export type InputYrkesskade = {
 export type Konsultasjon = {
     __typename: 'Konsultasjon'
     diagnoser?: Maybe<Array<Diagnose>>
+    hasRequestedAccessToSykmeldinger: Scalars['Boolean']['output']
 }
 
 export type MedisinskArsak = {
@@ -207,6 +208,7 @@ export type Mutation = {
      * In the future, these checks will be done more optimistically
      */
     opprettSykmelding: OpprettetSykmelding
+    requestAccessToSykmeldinger: Scalars['Boolean']['output']
     saveDraft: OpprettSykmeldingDraft
     synchronizeSykmelding: SynchronizationStatus
 }
@@ -534,6 +536,7 @@ export type AllDashboardQuery = {
               }
           }
     > | null
+    konsultasjon?: { __typename: 'Konsultasjon'; hasRequestedAccessToSykmeldinger: boolean } | null
 }
 
 export type DiagnoseSearchQueryVariables = Exact<{
@@ -1008,6 +1011,10 @@ export type SykmeldingFullFragment = {
         } | null
     }
 }
+
+export type RequestAccessToSykmeldingerMutationVariables = Exact<{ [key: string]: never }>
+
+export type RequestAccessToSykmeldingerMutation = { __typename: 'Mutation'; requestAccessToSykmeldinger: boolean }
 
 type Sykmelding_SykmeldingFull_Fragment = {
     __typename: 'SykmeldingFull'
@@ -1967,6 +1974,16 @@ export const AllDashboardDocument = {
                         selectionSet: {
                             kind: 'SelectionSet',
                             selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Sykmelding' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'konsultasjon' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'hasRequestedAccessToSykmeldinger' } },
+                            ],
                         },
                     },
                 ],
@@ -3881,6 +3898,20 @@ export const OpprettSykmeldingDocument = {
         },
     ],
 } as unknown as DocumentNode<OpprettSykmeldingMutation, OpprettSykmeldingMutationVariables>
+export const RequestAccessToSykmeldingerDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'mutation',
+            name: { kind: 'Name', value: 'RequestAccessToSykmeldinger' },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [{ kind: 'Field', name: { kind: 'Name', value: 'requestAccessToSykmeldinger' } }],
+            },
+        },
+    ],
+} as unknown as DocumentNode<RequestAccessToSykmeldingerMutation, RequestAccessToSykmeldingerMutationVariables>
 export const SynchronizeSykmeldingDocument = {
     kind: 'Document',
     definitions: [

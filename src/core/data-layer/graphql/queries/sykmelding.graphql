@@ -106,6 +106,10 @@ fragment SykmeldingFull on SykmeldingFull {
     documentStatus
 }
 
+mutation RequestAccessToSykmeldinger {
+    requestAccessToSykmeldinger
+}
+
 fragment Sykmelding on Sykmelding {
     ...SykmeldingRedacted
     ...SykmeldingFull

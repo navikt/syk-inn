@@ -6,6 +6,7 @@ import { FlowerPetalsIcon } from '@navikt/aksel-icons'
 
 import { AllDashboardDocument } from '@queries'
 import useOnFocus from '@lib/hooks/useOnFocus'
+import { RequestSykmeldinger } from '@features/dashboard/RequestSykmeldinger'
 
 import { ComboTable, ComboTableHeader } from './combo-table/ComboTable'
 import DashboardCard from './card/DashboardCard'
@@ -17,6 +18,7 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
 
     const hasDrafts = !!dashboardQuery.data?.drafts?.length
     const hasSykmeldinger = !!dashboardQuery.data?.sykmeldinger?.length
+    const hasRequested = dashboardQuery.data?.konsultasjon?.hasRequestedAccessToSykmeldinger
     const hasData = hasSykmeldinger || hasDrafts
 
     return (
@@ -35,7 +37,8 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
                 </ComboTable>
             )}
             {dashboardQuery.loading && !hasData && <ComboTableSkeleton />}
-            {!dashboardQuery.loading && !dashboardQuery.error && !hasData && <ComboTableEmptyState />}
+            {!dashboardQuery.error && !hasRequested && <ComboTableNotRequestedAccess />}
+            {!dashboardQuery.loading && !dashboardQuery.error && !hasData && hasRequested && <ComboTableEmptyState />}
             {!dashboardQuery.loading && dashboardQuery.error && !hasData && <EverythingError />}
         </DashboardCard>
     )
@@ -113,6 +116,21 @@ function ComboTableEmptyState(): ReactElement {
                     <ComboTableFullCell className="flex flex-col gap-6 items-center justify-center w-full h-64">
                         <FlowerPetalsIcon aria-hidden fontSize="4rem" />
                         <BodyShort>Her var det ingen tidligere sykmeldinger eller utkast</BodyShort>
+                    </ComboTableFullCell>
+                </Table.Row>
+            </Table.Body>
+        </DashboardTable>
+    )
+}
+
+function ComboTableNotRequestedAccess(): ReactElement {
+    return (
+        <DashboardTable>
+            <ComboTableHeader className="text-text-subtle" />
+            <Table.Body className="text-text-subtle">
+                <Table.Row>
+                    <ComboTableFullCell className="flex flex-col gap-6 items-center justify-center w-full h-64">
+                        <RequestSykmeldinger />
                     </ComboTableFullCell>
                 </Table.Row>
             </Table.Body>

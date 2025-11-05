@@ -1,3 +1,4 @@
 type Konsultasjon {
     diagnoser: [Diagnose!]
+    hasRequestedAccessToSykmeldinger: Boolean!
 }
