@@ -182,7 +182,7 @@ export type InputYrkesskade = {
 export type Konsultasjon = {
     __typename: 'Konsultasjon'
     diagnoser?: Maybe<Array<Diagnose>>
-    hasRequestedAccessToSykmeldinger: Scalars['Boolean']['output']
+    hasRequestedAccessToSykmeldinger?: Maybe<Scalars['Boolean']['output']>
 }
 
 export type MedisinskArsak = {
@@ -536,7 +536,7 @@ export type AllDashboardQuery = {
               }
           }
     > | null
-    konsultasjon?: { __typename: 'Konsultasjon'; hasRequestedAccessToSykmeldinger: boolean } | null
+    konsultasjon?: { __typename: 'Konsultasjon'; hasRequestedAccessToSykmeldinger?: boolean | null } | null
 }
 
 export type DiagnoseSearchQueryVariables = Exact<{

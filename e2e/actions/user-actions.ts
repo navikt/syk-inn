@@ -424,9 +424,6 @@ export function requestAccessToSykmeldinger() {
             await expect(requestAccessButton).toBeVisible()
             await requestAccessButton.click()
             await requestAccessButton.waitFor({ state: 'hidden' })
-            /*await page.waitForSelector('text=Du må be om tilgang for å kunne se sykmeldingshistorikk på pasienten.', {
-                state: 'hidden',
-            })*/
         })
     }
 }
