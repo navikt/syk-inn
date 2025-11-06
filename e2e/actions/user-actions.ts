@@ -423,6 +423,10 @@ export function requestAccessToSykmeldinger() {
             const requestAccessButton = page.getByRole('button', { name: 'Be om tilgang til sykmeldinger' })
             await expect(requestAccessButton).toBeVisible()
             await requestAccessButton.click()
+            await requestAccessButton.waitFor({ state: 'hidden' })
+            /*await page.waitForSelector('text=Du må be om tilgang for å kunne se sykmeldingshistorikk på pasienten.', {
+                state: 'hidden',
+            })*/
         })
     }
 }
