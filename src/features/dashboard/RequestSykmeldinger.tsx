@@ -3,6 +3,7 @@ import { Button, BodyShort } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 
 import {
+    AllDashboardDocument,
     AllSykmeldingerDocument,
     KonsultasjonDocument,
     RequestAccessToSykmeldingerDocument,
@@ -10,7 +11,7 @@ import {
 
 export function RequestSykmeldinger(): ReactElement {
     const [requestAccessToSykmeldinger, result] = useMutation(RequestAccessToSykmeldingerDocument, {
-        refetchQueries: [AllSykmeldingerDocument, KonsultasjonDocument],
+        refetchQueries: [AllSykmeldingerDocument, KonsultasjonDocument, AllDashboardDocument],
         awaitRefetchQueries: true,
     })
     return (
@@ -22,9 +23,9 @@ export function RequestSykmeldinger(): ReactElement {
                 }}
                 loading={result.loading}
             >
-                Be om tilgang til sykmeldinger
+                Vis tidligere sykmeldinger
             </Button>
-            <BodyShort spacing>Du må be om tilgang for å kunne se sykmeldingshistorikk på pasienten.</BodyShort>
+            <BodyShort spacing>Tilgang til sykmeldingshistorikk vil bli logget av Nav.</BodyShort>
         </div>
     )
 }

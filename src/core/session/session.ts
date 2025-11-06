@@ -8,12 +8,6 @@ export async function getSessionId(): Promise<string | null> {
     return cookieStore.get(SESSION_COOKIE_NAME)?.value ?? null
 }
 
-export async function setHasRequestedAccessToSykmeldinger(): Promise<void> {
-    const cookieStore = await cookies()
-
-    cookieStore.set(HAS_REQUESTED_ACCESS_COOKIE_NAME, 'true')
-}
-
 export async function getHasRequestedAccessToSykmeldinger(practitionerId: string, patientId: string): Promise<boolean> {
     const cookieStore = await cookies()
 

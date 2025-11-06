@@ -37,7 +37,7 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
                 </ComboTable>
             )}
             {dashboardQuery.loading && !hasData && <ComboTableSkeleton />}
-            {!dashboardQuery.error && !hasRequested && <ComboTableNotRequestedAccess />}
+            {!dashboardQuery.loading && !dashboardQuery.error && !hasRequested && <ComboTableNotRequestedAccess />}
             {!dashboardQuery.loading && !dashboardQuery.error && !hasData && hasRequested && <ComboTableEmptyState />}
             {!dashboardQuery.loading && dashboardQuery.error && !hasData && <EverythingError />}
         </DashboardCard>

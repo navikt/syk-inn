@@ -84,37 +84,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 ident: getValidPatientIdent(patient.identifier) ?? raise('Patient without valid FNR/DNR'),
             }
         },
-        konsultasjon: async (_, _args, { client }) => {
-            const conditionsByEncounter = await client.request(`Condition?encounter=${client.encounter.id}`)
-            if ('error' in conditionsByEncounter) {
-                throw new GraphQLError('PARSING_ERROR')
-            }
-
-            const practitioner = await client.user.request()
-            if ('error' in practitioner) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const patientInContext = await client.patient.request()
-            if ('error' in patientInContext) {
-                throw new GraphQLError('PARSING_ERROR')
-            }
-
-            const hasRequestedAccessToSykmeldinger = await getHasRequestedAccessToSykmeldinger(
-                practitioner.id,
-                patientInContext.id,
-            )
-
-            if (conditionsByEncounter.entry == null) {
-                return { diagnoser: [], hasRequestedAccessToSykmeldinger }
-            }
-
-            const conditionList = conditionsByEncounter.entry.map((it) => it.resource)
-
-            return {
-                diagnoser: fhirDiagnosisToRelevantDiagnosis(conditionList),
-                hasRequestedAccessToSykmeldinger,
-            }
+        konsultasjon: async () => {
+            return {}
         },
         sykmelding: async (_, { id: sykmeldingId }, { client }) => {
             const practitioner = await client.user.request()
@@ -483,6 +454,45 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             }
 
             return true
+        },
+    },
+    Konsultasjon: {
+        hasRequestedAccessToSykmeldinger: async (_, _args, { client }) => {
+            const practitioner = await client.user.request()
+            if ('error' in practitioner) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const patientInContext = await client.patient.request()
+            if ('error' in patientInContext) {
+                throw new GraphQLError('PARSING_ERROR')
+            }
+
+            return getHasRequestedAccessToSykmeldinger(practitioner.id, patientInContext.id)
+        },
+        diagnoser: async (_, _args, { client }) => {
+            const conditionsByEncounter = await client.request(`Condition?encounter=${client.encounter.id}`)
+            if ('error' in conditionsByEncounter) {
+                throw new GraphQLError('PARSING_ERROR')
+            }
+
+            const practitioner = await client.user.request()
+            if ('error' in practitioner) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const patientInContext = await client.patient.request()
+            if ('error' in patientInContext) {
+                throw new GraphQLError('PARSING_ERROR')
+            }
+
+            if (conditionsByEncounter.entry == null) {
+                return []
+            }
+
+            const conditionList = conditionsByEncounter.entry.map((it) => it.resource)
+
+            return fhirDiagnosisToRelevantDiagnosis(conditionList)
         },
     },
     ...typeResolvers,

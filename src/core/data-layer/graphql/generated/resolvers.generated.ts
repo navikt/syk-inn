@@ -184,7 +184,7 @@ export type InputYrkesskade = {
 export type Konsultasjon = {
     __typename?: 'Konsultasjon'
     diagnoser?: Maybe<Array<Diagnose>>
-    hasRequestedAccessToSykmeldinger: Scalars['Boolean']['output']
+    hasRequestedAccessToSykmeldinger?: Maybe<Scalars['Boolean']['output']>
 }
 
 export type MedisinskArsak = {
@@ -809,7 +809,7 @@ export type KonsultasjonResolvers<
     ParentType extends ResolversParentTypes['Konsultasjon'] = ResolversParentTypes['Konsultasjon'],
 > = {
     diagnoser?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
-    hasRequestedAccessToSykmeldinger?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+    hasRequestedAccessToSykmeldinger?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
 }
 
 export type MedisinskArsakResolvers<
