@@ -41,3 +41,19 @@ export function NoPractitionerSession(): ReactElement {
         </PageBlock>
     )
 }
+
+export function NoValidPatient(): ReactElement {
+    return (
+        <PageBlock as="main" width="xl" gutters className="pt-4">
+            <div className="max-w-prose">
+                <Heading size="large" spacing>
+                    Fant ingen (gyldig) pasient
+                </Heading>
+                <BodyShort spacing>
+                    Dette tyder på at pasienten ikke finnes i, eller at pasienten ikke har en gyldig norsk identifikator
+                    i ditt journalsystem (FNR eller DNR).
+                </BodyShort>
+            </div>
+        </PageBlock>
+    )
+}

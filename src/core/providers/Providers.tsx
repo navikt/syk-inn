@@ -7,13 +7,18 @@ import { Toaster } from 'sonner'
 import { ApolloProvider } from '@apollo/client/react'
 
 import { makeApolloClient } from '@data-layer/graphql/apollo/apollo-client'
+import { AutoPatient } from '@core/redux/reducers/ny-sykmelding/patient'
 
 import useStoreRef from '../redux/useStoreRef'
 
 import { ModeType, ModeProvider } from './Modes'
 
-function Providers({ children, mode }: PropsWithChildren<{ mode: ModeType }>): ReactElement {
-    const store = useStoreRef()
+function Providers({
+    children,
+    mode,
+    patient,
+}: PropsWithChildren<{ mode: ModeType; patient?: AutoPatient }>): ReactElement {
+    const store = useStoreRef(patient)
     const [client] = useState(makeApolloClient(store, mode))
 
     return (
