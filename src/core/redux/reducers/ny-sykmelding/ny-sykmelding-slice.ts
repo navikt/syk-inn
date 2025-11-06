@@ -20,13 +20,17 @@ const initialState: NySykmeldingState = {
     behandler: null,
 }
 
+export function createPreloadedPatientState(patient: AutoPatient): NySykmeldingState {
+    return {
+        ...initialState,
+        pasient: patient,
+    }
+}
+
 export const nySykmeldingSlice = createSlice({
     name: 'ny-sykmelding-multistep',
     initialState,
     reducers: {
-        activePatient(state, action: PayloadAction<AutoPatient>) {
-            state.pasient = action.payload
-        },
         manualPatient(state, action: PayloadAction<ManualPatient>) {
             state.pasient = action.payload
         },

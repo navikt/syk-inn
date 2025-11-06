@@ -1,17 +1,25 @@
 import { NextResponse } from 'next/server'
 
-import { getUserlessToggles, getUserToggles, toToggleMap } from '@core/toggles/unleash'
-import { spanServerAsync } from '@lib/otel/server'
-import { getHprFromFhirSession } from '@data-layer/fhir/fhir-service'
+import { getUserToggles, toToggleMap } from '@core/toggles/unleash'
+import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
+import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 
 export async function GET(): Promise<NextResponse> {
-    const [toggles, hpr] = await spanServerAsync('DebugToggles.user', async () => {
-        const hpr = await getHprFromFhirSession()
-        if (typeof hpr !== 'string') {
-            return [await getUserlessToggles(), hpr]
-        }
-        return [await getUserToggles(hpr), hpr]
-    })
+    const readyClient = await getReadyClient()
+    if ('error' in readyClient) {
+        return NextResponse.json({ error: readyClient.error }, { status: 401 })
+    }
 
+    const practitioner = await readyClient.user.request()
+    if ('error' in practitioner) {
+        return NextResponse.json({ error: practitioner.error }, { status: 500 })
+    }
+
+    const hpr = getHpr(practitioner.identifier)
+    if (hpr == null) {
+        return NextResponse.json({ error: `No HPR for practitioner ${hpr}` }, { status: 400 })
+    }
+
+    const toggles = await getUserToggles(hpr)
     return NextResponse.json({ hpr, toggles: toToggleMap(toggles) })
 }

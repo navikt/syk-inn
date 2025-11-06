@@ -17,7 +17,6 @@ import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett
 
 import { getHpr } from './mappers/practitioner'
 import { createNewDocumentReferencePayload } from './mappers/document-reference'
-import { getReadyClient } from './smart/ready-client'
 
 /**
  * Chonky boi. Fetches the FHIR resources: Practitioner, Patient, Encounter and Organization, and extracts the relevant
@@ -82,30 +81,6 @@ export async function getAllSykmeldingMetaFromFhir(
             legekontorOrgnr,
             legekontorTlf,
         }
-    })
-}
-
-export async function getHprFromFhirSession(): Promise<string | { error: 'NO_SESSION' | 'NO_HPR' }> {
-    return spanServerAsync('FhirService.hpr-from-fhir-session', async (span) => {
-        const readyClient = await getReadyClient()
-        if ('error' in readyClient) {
-            failSpan.silently(span, readyClient.error)
-            return { error: 'NO_SESSION' }
-        }
-
-        const practitioner = await readyClient.user.request()
-        if ('error' in practitioner) {
-            failSpan.silently(span, practitioner.error)
-            return { error: 'NO_SESSION' }
-        }
-
-        const hpr = getHpr(practitioner.identifier)
-        if (hpr == null) {
-            logger.warn(`Practitioner does not have HPR, practitioner: ${JSON.stringify(practitioner)}`)
-            return { error: 'NO_HPR' }
-        }
-
-        return hpr
     })
 }
 
