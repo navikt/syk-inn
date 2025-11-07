@@ -1,6 +1,6 @@
 'use client'
 
-import React, { MutableRefObject, ReactElement, useCallback, useEffect, useRef, useState } from 'react'
+import React, { RefObject, ReactElement, useCallback, useEffect, useRef, useState } from 'react'
 import { SandboxIcon } from '@navikt/aksel-icons'
 import { Button, Detail } from '@navikt/ds-react'
 import { useApolloClient } from '@apollo/client/react'
@@ -80,7 +80,7 @@ function useKeyboardShortcuts(closeAllDevTools: () => void, toggleInternalDevToo
 
 type UseDevToolsOverlayState = {
     refs: {
-        internalDialogRef: MutableRefObject<HTMLDialogElement | null>
+        internalDialogRef: RefObject<HTMLDialogElement | null>
     }
     internalOpen: boolean
     toggleInternalDevTools: () => void

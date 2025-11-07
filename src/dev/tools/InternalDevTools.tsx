@@ -2,6 +2,7 @@ import * as R from 'remeda'
 import React, { ReactElement, startTransition } from 'react'
 import { BodyShort, Button, Checkbox, CheckboxGroup, Heading, Link, List } from '@navikt/ds-react'
 import { XMarkIcon } from '@navikt/aksel-icons'
+import { useApolloClient } from '@apollo/client/react'
 
 import { pathWithBasePath } from '@lib/url'
 
@@ -9,7 +10,7 @@ import { scenarios } from '../mock-engine/scenarios/scenarios'
 
 import { DevToolItem } from './InternalDevToolItem'
 import { useFeatureToggleOverride } from './useFeatureToggleOverride'
-import { togglesChangedAction } from './InternalDevToolsAction'
+import { togglesChangedAction, deleteRequestAccessCookie } from './InternalDevToolsAction'
 import { ToggleAPIFailures } from './api-fail-toggle/ToggleAPIFailures'
 
 type Props = { onClose: () => void }
@@ -31,6 +32,7 @@ export function InternalDevToolsPanel({ onClose }: Props): ReactElement {
             </BodyShort>
             <div className="grid grid-cols-1 gap-6 mt-6">
                 <ScenarioPicker />
+                <OtherStuff />
                 <FeatureToggles />
                 <ToggleAPIFailures />
             </div>
@@ -50,6 +52,28 @@ function ScenarioPicker(): ReactElement {
                     </List.Item>
                 ))}
             </List>
+        </DevToolItem>
+    )
+}
+
+function OtherStuff(): ReactElement {
+    const client = useApolloClient()
+
+    return (
+        <DevToolItem title="Other stuff" description="Miscellaneous dev actions">
+            <Button
+                variant="secondary-neutral"
+                size="small"
+                onClick={async () => {
+                    await deleteRequestAccessCookie()
+
+                    await client.refetchQueries({
+                        include: 'all',
+                    })
+                }}
+            >
+                Delete access to all sykmeldinger
+            </Button>
         </DevToolItem>
     )
 }
