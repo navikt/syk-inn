@@ -26,7 +26,7 @@ const opts: OptionsType = process.env.CI
             // Uses 50% of the available CPU cores
             workers: undefined,
             server: {
-                command: 'yarn start:e2e',
+                command: 'yarn server:start',
                 url: `http://localhost:${PORT}/api/internal/is_alive`,
                 timeout: 120 * 1000,
                 reuseExistingServer: false,
@@ -41,7 +41,7 @@ const opts: OptionsType = process.env.CI
             // Multiple tests in UI mode is pointless :D
             workers: 1,
             server: {
-                command: 'NEXT_PUBLIC_RUNTIME_ENV=e2e yarn dev-e2e',
+                command: 'NEXT_PUBLIC_RUNTIME_ENV=e2e yarn server:dev',
                 url: `http://localhost:${PORT}/api/internal/is_ready`,
                 timeout: 120 * 1000,
                 reuseExistingServer: true,
@@ -51,7 +51,7 @@ const opts: OptionsType = process.env.CI
         } satisfies OptionsType)
 
 export default defineConfig({
-    testDir: './e2e',
+    testDir: './',
     fullyParallel: true,
     forbidOnly: !!process.env.CI,
     retries: process.env.CI ? 2 : 0,

@@ -194,8 +194,10 @@ jobs:
       - uses: navikt/tsm-workflows/actions/yarn@main
         with:
           READER_TOKEN: ${{ secrets.READER_TOKEN }}
+          workspace: e2e
       - uses: navikt/tsm-workflows/actions/playwright/run@main
         with:
+          workspace: e2e
           shardIndex: ${{ matrix.shardIndex }}
           shardTotal: ${{ matrix.shardTotal }}
 

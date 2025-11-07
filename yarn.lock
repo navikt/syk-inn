@@ -3119,7 +3119,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:1.56.1":
+"@playwright/test@npm:^1.56.1":
   version: 1.56.1
   resolution: "@playwright/test@npm:1.56.1"
   dependencies:
@@ -5282,6 +5282,15 @@ __metadata:
   checksum: 10c0/199f2a0c1c16593ca0a145dbf76a962f8033ce3129f01284d48c45ed4e14fea9bbacd7b3610b6cdc33486cef20385ac054948fefc6272fcce645c09468f93031
   languageName: node
   linkType: hard
+
+"e2e@workspace:e2e":
+  version: 0.0.0-use.local
+  resolution: "e2e@workspace:e2e"
+  dependencies:
+    "@playwright/test": "npm:^1.56.1"
+    date-fns: "npm:^4.1.0"
+  languageName: unknown
+  linkType: soft
 
 "eastasianwidth@npm:^0.2.0":
   version: 0.2.0
@@ -10392,7 +10401,6 @@ __metadata:
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^2.2.0"
     "@parcel/watcher": "npm:^2.5.1"
-    "@playwright/test": "npm:1.56.1"
     "@reduxjs/toolkit": "npm:^2.10.1"
     "@tailwindcss/postcss": "npm:^4.1.16"
     "@types/node": "npm:^24.10.0"
