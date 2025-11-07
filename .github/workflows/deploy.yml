@@ -59,6 +59,7 @@ jobs:
           app: ${{ env.APP }}
           env: demo
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          salsa: false
     outputs:
       image: ${{ steps.next-build.outputs.image }}
 
