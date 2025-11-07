@@ -128,5 +128,13 @@ yarn build:e2e
 Run the playwright tests using this built server:
 
 ```bash
-FAST=true yarn test:e2e --ui
+FAST=true yarn e2e
 ```
+
+or for interactive but with fast server:
+
+```bash
+FAST=true yarn e2e:dev
+```
+
+Note that this UI-mode, any code changes made to the application will not be reflected. But any changes to tests will automatically be reflected.
