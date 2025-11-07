@@ -45,8 +45,10 @@ jobs:
           app: ${{ env.APP }}
           env: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          salsa: false
     outputs:
       image: ${{ steps.next-build.outputs.image }}
+      digest: ${{ steps.next-build.outputs.digest }}
 
   build-demo:
     if: github.ref_name == 'main' || startsWith(github.ref_name, 'demo')
@@ -62,6 +64,7 @@ jobs:
           salsa: false
     outputs:
       image: ${{ steps.next-build.outputs.image }}
+      digest: ${{ steps.next-build.outputs.digest }}
 
   build-prod:
     name: Build for prod
@@ -73,8 +76,43 @@ jobs:
           app: ${{ env.APP }}
           env: prod
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          salsa: false
     outputs:
       image: ${{ steps.next-build.outputs.image }}
+      digest: ${{ steps.next-build.outputs.digest }}
+
+  sbom-dev:
+    name: Upload SBOM for dev build
+    needs: build-dev
+    runs-on: ubuntu-latest
+    steps:
+      - uses: navikt/tsm-workflows/actions/attest-sign@main
+        with:
+          image: ${{ needs.build-dev.outputs.image }}
+          digest: ${{ needs.build-dev.outputs.digest }}
+          team: tsm
+
+  sbom-demo:
+    name: Upload SBOM for demo build
+    needs: build-demo
+    runs-on: ubuntu-latest
+    steps:
+      - uses: navikt/tsm-workflows/actions/attest-sign@main
+        with:
+          image: ${{ needs.build-demo.outputs.image }}
+          digest: ${{ needs.build-demo.outputs.digest }}
+          team: tsm
+
+  sbom-prod:
+    name: Upload SBOM for prod build
+    needs: build-prod
+    runs-on: ubuntu-latest
+    steps:
+      - uses: navikt/tsm-workflows/actions/attest-sign@main
+        with:
+          image: ${{ needs.build-prod.outputs.image }}
+          digest: ${{ needs.build-prod.outputs.digest }}
+          team: tsm
 
   deploy-dev:
     name: Deploy main to dev
