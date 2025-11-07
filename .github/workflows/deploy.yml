@@ -191,10 +191,13 @@ jobs:
         shardTotal: [6]
     steps:
       - uses: actions/checkout@v5
-      - uses: navikt/tsm-workflows/actions/yarn@main
+      - run: corepack enable
+      - uses: actions/setup-node@v6
+        id: setup-node
         with:
-          READER_TOKEN: ${{ secrets.READER_TOKEN }}
-          workspace: e2e
+          node-version: 24
+      # We specifically do not use the yarn cache here, because installing the playwright e2e workspace is actually faster without cache
+      - run: yarn workspaces focus e2e
       - uses: navikt/tsm-workflows/actions/playwright/run@main
         with:
           workspace: e2e
