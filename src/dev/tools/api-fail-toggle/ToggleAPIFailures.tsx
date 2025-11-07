@@ -94,7 +94,7 @@ export function ToggleAPIFailures(): ReactElement {
         ),
         RequestAccessToSykmeldinger: (
             <Checkbox key="requestAccessToSykmeldinger" value="RequestAccessToSykmeldinger">
-                Be om tilgang til sykmeldinger
+                Vis tidligere sykmeldinger
             </Checkbox>
         ),
     }
