@@ -1,0 +1,12 @@
+{
+    "name": "e2e",
+    "dependencies": {
+        "@playwright/test": "^1.56.1",
+        "date-fns": "^4.1.0"
+    },
+    "scripts": {
+        "e2e": "playwright test",
+        "server:start": "yarn workspace syk-inn run next:e2e:start",
+        "server:dev": "yarn workspace syk-inn run next:e2e:dev"
+    }
+}
