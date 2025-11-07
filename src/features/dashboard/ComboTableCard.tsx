@@ -3,6 +3,7 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 import { Alert, BodyShort, Heading, Skeleton, Table } from '@navikt/ds-react'
 import { FlowerPetalsIcon } from '@navikt/aksel-icons'
+import { NetworkStatus } from '@apollo/client'
 
 import { AllDashboardDocument } from '@queries'
 import useOnFocus from '@lib/hooks/useOnFocus'
@@ -16,17 +17,15 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
     const dashboardQuery = useQuery(AllDashboardDocument)
     useOnFocus(dashboardQuery.refetch)
 
+    const isRefetching = dashboardQuery.networkStatus === NetworkStatus.refetch
+    const initialLoad = dashboardQuery.networkStatus === NetworkStatus.loading
     const hasDrafts = !!dashboardQuery.data?.drafts?.length
     const hasSykmeldinger = !!dashboardQuery.data?.sykmeldinger?.length
     const hasRequested = dashboardQuery.data?.konsultasjon?.hasRequestedAccessToSykmeldinger
     const hasData = hasSykmeldinger || hasDrafts
 
     return (
-        <DashboardCard
-            className={className}
-            ariaLabel="Tidligere sykmeldinger og utkast"
-            fetching={dashboardQuery.loading && dashboardQuery.dataState !== 'empty'}
-        >
+        <DashboardCard className={className} ariaLabel="Tidligere sykmeldinger og utkast" fetching={isRefetching}>
             {hasData && dashboardQuery.data && (
                 <ComboTable
                     sykmeldinger={dashboardQuery.data.sykmeldinger ?? []}
@@ -36,10 +35,10 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
                     {dashboardQuery.error && !dashboardQuery.data.sykmeldinger == null && <AllSykmeldingerError />}
                 </ComboTable>
             )}
-            {dashboardQuery.loading && !hasData && <ComboTableSkeleton />}
-            {!dashboardQuery.loading && !dashboardQuery.error && !hasRequested && <ComboTableNotRequestedAccess />}
-            {!dashboardQuery.loading && !dashboardQuery.error && !hasData && hasRequested && <ComboTableEmptyState />}
-            {!dashboardQuery.loading && dashboardQuery.error && !hasData && <EverythingError />}
+            {initialLoad && <ComboTableSkeleton />}
+            {!initialLoad && !dashboardQuery.error && !hasRequested && <ComboTableNotRequestedAccess />}
+            {!initialLoad && !dashboardQuery.error && !hasData && hasRequested && <ComboTableEmptyState />}
+            {!initialLoad && dashboardQuery.error && !hasData && <EverythingError />}
         </DashboardCard>
     )
 }

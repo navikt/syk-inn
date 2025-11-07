@@ -536,7 +536,11 @@ export type AllDashboardQuery = {
               }
           }
     > | null
-    konsultasjon?: { __typename: 'Konsultasjon'; hasRequestedAccessToSykmeldinger?: boolean | null } | null
+    konsultasjon?: {
+        __typename: 'Konsultasjon'
+        hasRequestedAccessToSykmeldinger?: boolean | null
+        diagnoser?: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+    } | null
 }
 
 export type DiagnoseSearchQueryVariables = Exact<{
@@ -594,12 +598,19 @@ export type DraftFragment = {
     lastUpdated: string
 }
 
+export type KonsultasjonFragment = {
+    __typename: 'Konsultasjon'
+    hasRequestedAccessToSykmeldinger?: boolean | null
+    diagnoser?: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+}
+
 export type KonsultasjonQueryVariables = Exact<{ [key: string]: never }>
 
 export type KonsultasjonQuery = {
     __typename: 'Query'
     konsultasjon?: {
         __typename: 'Konsultasjon'
+        hasRequestedAccessToSykmeldinger?: boolean | null
         diagnoser?: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
     } | null
 }
@@ -1186,6 +1197,61 @@ export const DraftFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<DraftFragment, unknown>
+export const DiagnoseFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Diagnose' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Diagnose' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'system' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<DiagnoseFragment, unknown>
+export const KonsultasjonFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Konsultasjon' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Konsultasjon' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'diagnoser' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } }],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'hasRequestedAccessToSykmeldinger' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Diagnose' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Diagnose' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'system' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<KonsultasjonFragment, unknown>
 export const RuleOutcomeFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -1266,24 +1332,6 @@ export const SykmeldingRedactedFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<SykmeldingRedactedFragment, unknown>
-export const DiagnoseFragmentDoc = {
-    kind: 'Document',
-    definitions: [
-        {
-            kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'Diagnose' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Diagnose' } },
-            selectionSet: {
-                kind: 'SelectionSet',
-                selections: [
-                    { kind: 'Field', name: { kind: 'Name', value: 'system' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'code' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'text' } },
-                ],
-            },
-        },
-    ],
-} as unknown as DocumentNode<DiagnoseFragment, unknown>
 export const AktivitetFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -1981,9 +2029,7 @@ export const AllDashboardDocument = {
                         name: { kind: 'Name', value: 'konsultasjon' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'hasRequestedAccessToSykmeldinger' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Konsultasjon' } }],
                         },
                     },
                 ],
@@ -2313,6 +2359,25 @@ export const AllDashboardDocument = {
                 ],
             },
         },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Konsultasjon' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Konsultasjon' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'diagnoser' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } }],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'hasRequestedAccessToSykmeldinger' } },
+                ],
+            },
+        },
     ],
 } as unknown as DocumentNode<AllDashboardQuery, AllDashboardQueryVariables>
 export const DiagnoseSearchDocument = {
@@ -2564,18 +2629,7 @@ export const KonsultasjonDocument = {
                         name: { kind: 'Name', value: 'konsultasjon' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'diagnoser' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } },
-                                        ],
-                                    },
-                                },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Konsultasjon' } }],
                         },
                     },
                 ],
@@ -2591,6 +2645,25 @@ export const KonsultasjonDocument = {
                     { kind: 'Field', name: { kind: 'Name', value: 'system' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'code' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Konsultasjon' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Konsultasjon' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'diagnoser' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } }],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'hasRequestedAccessToSykmeldinger' } },
                 ],
             },
         },

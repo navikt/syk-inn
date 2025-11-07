@@ -6,6 +6,6 @@ query AllDashboard {
         ...Sykmelding
     }
     konsultasjon {
-        hasRequestedAccessToSykmeldinger
+        ...Konsultasjon
     }
 }

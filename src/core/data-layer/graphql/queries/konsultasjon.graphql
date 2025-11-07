@@ -1,8 +1,13 @@
+fragment Konsultasjon on Konsultasjon {
+    diagnoser {
+        ...Diagnose
+    }
+    hasRequestedAccessToSykmeldinger
+}
+
 query Konsultasjon {
     konsultasjon {
-        diagnoser {
-            ...Diagnose
-        }
+        ...Konsultasjon
     }
 }
 
