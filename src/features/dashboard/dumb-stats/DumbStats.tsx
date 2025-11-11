@@ -1,11 +1,9 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 import { BodyShort, Skeleton } from '@navikt/ds-react'
-import * as R from 'remeda'
 import { PieChart } from 'react-minimal-pie-chart'
 
-import { AllSykmeldingerDocument, GetAllDraftsDocument, SykmeldingFragment } from '@queries'
-import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
+import { AllSykmeldingerDocument, GetAllDraftsDocument } from '@queries'
 import { useFlag } from '@core/toggles/context'
 
 import { continiousSykefravaer } from './sykefravaer-utils'
@@ -29,12 +27,9 @@ function DumbStats(): ReactElement {
         )
     }
 
-    const [current, previous] = R.partition<SykmeldingFragment>(
-        sykmeldinger.data?.sykmeldinger ?? [],
-        byActiveOrFutureSykmelding,
-    )
-
-    const days = continiousSykefravaer(sykmeldinger.data?.sykmeldinger ?? [])
+    const current = sykmeldinger.data?.sykmeldinger?.current ?? []
+    const previous = sykmeldinger.data?.sykmeldinger?.historical ?? []
+    const days = continiousSykefravaer([...current, ...previous])
 
     return (
         <div className="-mt-2 mb-2 flex gap-12">

@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "react-jsx",
+        "incremental": true,
+        "paths": {
+            "@lib/*": ["../src/lib/*"],
+            "@core/*": ["../src/core/*"],
+            "@data-layer/*": ["../src/core/data-layer/*"],
+            "@queries": ["../src/core/data-layer/graphql/generated/queries.generated.ts"],
+            "@resolvers": ["../src/core/data-layer/graphql/generated/resolvers.generated.ts"],
+            "@features/*": ["../src/features/*"],
+            "@components/*": ["../src/components/*"],
+            "@dev/*": ["../src/dev/*"]
+        },
+        "target": "ES2017"
+    },
+    "include": ["**/*.ts", "**/*.tsx"],
+    "exclude": ["node_modules"]
+}

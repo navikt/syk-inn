@@ -10,7 +10,10 @@ import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingF
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingDraftFormErrors } from '@features/actions/common/SykmeldingFormErrors'
-import { mapSykmeldingToDateRanges } from '@data-layer/common/continuous-sykefravaer-utils'
+import {
+    mapSykmeldingToDateRanges,
+    mergeCurrentAndPreviousSykmeldinger,
+} from '@data-layer/common/continuous-sykefravaer-utils'
 import { nySykmeldingFromDraftDefaultValues } from '@features/actions/ny-sykmelding-from-draft/ny-sykmelding-from-draft-mappers'
 
 type Props = {
@@ -37,7 +40,12 @@ export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactE
 
     const parsedDraft = safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values)
     const defaultValues = nySykmeldingFromDraftDefaultValues(parsedDraft, valuesInState, suggestionsQuery.suggestions)
-    const previousSykmeldingDateRange = mapSykmeldingToDateRanges(alleSykmeldinger.data?.sykmeldinger ?? [])
+    const previousSykmeldingDateRange = mapSykmeldingToDateRanges(
+        mergeCurrentAndPreviousSykmeldinger(
+            alleSykmeldinger.data?.sykmeldinger?.current,
+            alleSykmeldinger.data?.sykmeldinger?.historical,
+        ),
+    )
 
     return (
         <NySykmeldingForm

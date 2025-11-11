@@ -8,7 +8,10 @@ import { useAppSelector } from '@core/redux/hooks'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
-import { mapSykmeldingToDateRanges } from '@data-layer/common/continuous-sykefravaer-utils'
+import {
+    mapSykmeldingToDateRanges,
+    mergeCurrentAndPreviousSykmeldinger,
+} from '@data-layer/common/continuous-sykefravaer-utils'
 import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sykmelding-mappers'
 
 export function NySykmeldingFormWithDefaultValues(): ReactElement {
@@ -21,7 +24,12 @@ export function NySykmeldingFormWithDefaultValues(): ReactElement {
     }
 
     const defaultValues = nySykmeldingDefaultValues(valuesInState, suggestionsQuery.suggestions)
-    const previousSykmeldingDateRange = mapSykmeldingToDateRanges(alleSykmeldinger.data?.sykmeldinger ?? [])
+    const previousSykmeldingDateRange = mapSykmeldingToDateRanges(
+        mergeCurrentAndPreviousSykmeldinger(
+            alleSykmeldinger.data?.sykmeldinger?.current,
+            alleSykmeldinger.data?.sykmeldinger?.historical,
+        ),
+    )
 
     return (
         <NySykmeldingForm

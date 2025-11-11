@@ -1,10 +1,9 @@
 import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { BodyShort, Table, Tag, TagProps } from '@navikt/ds-react'
-import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
 import { DraftFragment, SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
-import { byActiveOrFutureSykmelding, isWithinWeeksOldSykmelding, latestTom } from '@data-layer/common/sykmelding-utils'
+import { byActiveOrFutureSykmelding, isWithinWeeksOldSykmelding } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import Redaction from '@components/misc/Redaction'
 
@@ -29,12 +28,6 @@ export function ComboTable({
     sykmeldinger: SykmeldingFragment[]
     drafts: DraftFragment[]
 }>): ReactElement {
-    const [current, previous] = R.pipe(
-        sykmeldinger,
-        R.sortBy([latestTom, 'desc']),
-        R.partition<SykmeldingFragment>(byActiveOrFutureSykmelding),
-    )
-
     return (
         <DashboardTable>
             <ComboTableHeader />
@@ -43,35 +36,26 @@ export function ComboTable({
                 {drafts.map((draft) => (
                     <DraftTableRow draft={draft} key={draft.draftId} />
                 ))}
-                {current.map((sykmelding) =>
-                    sykmelding.__typename === 'SykmeldingFull' ? (
+                {sykmeldinger.map((sykmelding) => {
+                    const status = byActiveOrFutureSykmelding(sykmelding) ? 'current' : 'previous'
+                    const forlengable = isWithinWeeksOldSykmelding(sykmelding, 4) ? true : undefined
+
+                    return sykmelding.__typename === 'SykmeldingFull' ? (
                         <FullTableRow
                             key={sykmelding.sykmeldingId}
                             sykmelding={sykmelding}
-                            status="current"
-                            forlengable
+                            status={status}
+                            forlengable={forlengable}
                         />
                     ) : (
                         <RedactedTableRow
                             key={sykmelding.sykmeldingId}
                             sykmelding={sykmelding}
-                            status="current"
-                            forlengable
+                            status={status}
+                            forlengable={forlengable}
                         />
-                    ),
-                )}
-                {previous.map((sykmelding) =>
-                    sykmelding.__typename === 'SykmeldingFull' ? (
-                        <FullTableRow
-                            key={sykmelding.sykmeldingId}
-                            sykmelding={sykmelding}
-                            forlengable={isWithinWeeksOldSykmelding(sykmelding, 4) ? true : undefined}
-                            status="previous"
-                        />
-                    ) : (
-                        <RedactedTableRow key={sykmelding.sykmeldingId} sykmelding={sykmelding} status="previous" />
-                    ),
-                )}
+                    )
+                })}
             </Table.Body>
         </DashboardTable>
     )
@@ -93,6 +77,14 @@ export function ComboTableHeader({ className }: { className?: string }): ReactEl
                 <Table.HeaderCell scope="col" className="w-44 max-w-44" />
             </Table.Row>
         </Table.Header>
+    )
+}
+
+export function ComboTableFullCell({ className, children }: PropsWithChildren<{ className?: string }>): ReactElement {
+    return (
+        <Table.DataCell colSpan={8}>
+            <div className={className}>{children}</div>
+        </Table.DataCell>
     )
 }
 

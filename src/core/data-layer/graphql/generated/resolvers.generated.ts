@@ -306,7 +306,7 @@ export type Query = {
     pasient?: Maybe<Pasient>
     person?: Maybe<QueriedPerson>
     sykmelding?: Maybe<Sykmelding>
-    sykmeldinger?: Maybe<Array<Sykmelding>>
+    sykmeldinger?: Maybe<Sykmeldinger>
 }
 
 export type QueryDiagnoseArgs = {
@@ -407,6 +407,12 @@ export type SykmeldingValues = {
     tilbakedatering?: Maybe<Tilbakedatering>
     utdypendeSporsmal?: Maybe<UtdypendeSporsmal>
     yrkesskade?: Maybe<Yrkesskade>
+}
+
+export type Sykmeldinger = {
+    __typename?: 'Sykmeldinger'
+    current: Array<Sykmelding>
+    historical: Array<Sykmelding>
 }
 
 export type SynchronizationStatus = {
@@ -601,6 +607,12 @@ export type ResolversTypes = {
     SykmeldingValues: ResolverTypeWrapper<
         Omit<SykmeldingValues, 'aktivitet'> & { aktivitet: Array<ResolversTypes['Aktivitet']> }
     >
+    Sykmeldinger: ResolverTypeWrapper<
+        Omit<Sykmeldinger, 'current' | 'historical'> & {
+            current: Array<ResolversTypes['Sykmelding']>
+            historical: Array<ResolversTypes['Sykmelding']>
+        }
+    >
     SynchronizationStatus: ResolverTypeWrapper<SynchronizationStatus>
     Tilbakedatering: ResolverTypeWrapper<Tilbakedatering>
     UtdypendeSporsmal: ResolverTypeWrapper<UtdypendeSporsmal>
@@ -665,6 +677,10 @@ export type ResolversParentTypes = {
     SykmeldingRedactedValues: SykmeldingRedactedValues
     SykmeldingValidering: ResolversUnionTypes<ResolversParentTypes>['SykmeldingValidering']
     SykmeldingValues: Omit<SykmeldingValues, 'aktivitet'> & { aktivitet: Array<ResolversParentTypes['Aktivitet']> }
+    Sykmeldinger: Omit<Sykmeldinger, 'current' | 'historical'> & {
+        current: Array<ResolversParentTypes['Sykmelding']>
+        historical: Array<ResolversParentTypes['Sykmelding']>
+    }
     SynchronizationStatus: SynchronizationStatus
     Tilbakedatering: Tilbakedatering
     UtdypendeSporsmal: UtdypendeSporsmal
@@ -936,7 +952,7 @@ export type QueryResolvers<
         ContextType,
         RequireFields<QuerySykmeldingArgs, 'id'>
     >
-    sykmeldinger?: Resolver<Maybe<Array<ResolversTypes['Sykmelding']>>, ParentType, ContextType>
+    sykmeldinger?: Resolver<Maybe<ResolversTypes['Sykmeldinger']>, ParentType, ContextType>
 }
 
 export type ReisetilskuddResolvers<
@@ -1049,6 +1065,14 @@ export type SykmeldingValuesResolvers<
     yrkesskade?: Resolver<Maybe<ResolversTypes['Yrkesskade']>, ParentType, ContextType>
 }
 
+export type SykmeldingerResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['Sykmeldinger'] = ResolversParentTypes['Sykmeldinger'],
+> = {
+    current?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>
+    historical?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>
+}
+
 export type SynchronizationStatusResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['SynchronizationStatus'] = ResolversParentTypes['SynchronizationStatus'],
@@ -1120,6 +1144,7 @@ export type Resolvers<ContextType = any> = {
     SykmeldingRedactedValues?: SykmeldingRedactedValuesResolvers<ContextType>
     SykmeldingValidering?: SykmeldingValideringResolvers<ContextType>
     SykmeldingValues?: SykmeldingValuesResolvers<ContextType>
+    Sykmeldinger?: SykmeldingerResolvers<ContextType>
     SynchronizationStatus?: SynchronizationStatusResolvers<ContextType>
     Tilbakedatering?: TilbakedateringResolvers<ContextType>
     UtdypendeSporsmal?: UtdypendeSporsmalResolvers<ContextType>

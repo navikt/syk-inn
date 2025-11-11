@@ -31,6 +31,7 @@ import { assertIsPilotUser } from '@data-layer/fhir/fhir-graphql-utils'
 import { FhirGraphqlContext } from '@data-layer/fhir/fhir-graphql-context'
 import { getHasRequestedAccessToSykmeldinger } from '@core/session/session'
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
+import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
 
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
@@ -146,15 +147,6 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            // TODO: Get hasRequestedAccess from session
-            const hasRequestedAccessToSykmeldinger = await getHasRequestedAccessToSykmeldinger(
-                practitioner.id,
-                patientInContext.id,
-            )
-            if (!hasRequestedAccessToSykmeldinger) {
-                return []
-            }
-
             const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(ident, hpr)
             if ('errorType' in sykInnSykmeldinger) {
                 throw new GraphQLError('API_ERROR')
@@ -168,11 +160,21 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 ? sykInnSykmeldinger
                 : sykInnSykmeldinger.filter((it) => it.kind !== 'redacted')
 
-            return sykmeldinger.map((it) => {
+            const mappedSykmeldinger = sykmeldinger.map((it) => {
                 return it.kind === 'redacted'
                     ? sykInnApiSykmeldingRedactedToResolverSykmelding(it)
                     : sykInnApiSykmeldingToResolverSykmelding(it)
             })
+
+            const [current, historical] = R.partition(mappedSykmeldinger, byActiveOrFutureSykmelding)
+
+            // TODO: Get hasRequestedAccess from session
+            const hasRequestedAccessToSykmeldinger = await getHasRequestedAccessToSykmeldinger(
+                practitioner.id,
+                patientInContext.id,
+            )
+
+            return { current, historical: hasRequestedAccessToSykmeldinger ? historical : [] }
         },
         person: async (_, { ident }) => {
             if (!ident) throw new GraphQLError('MISSING_IDENT')

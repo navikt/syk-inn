@@ -7,6 +7,7 @@
     "scripts": {
         "e2e": "playwright test",
         "server:start": "yarn workspace syk-inn run next:e2e:start",
-        "server:dev": "yarn workspace syk-inn run next:e2e:dev"
+        "server:dev": "yarn workspace syk-inn run next:e2e:dev",
+        "tsc": "tsc"
     }
 }

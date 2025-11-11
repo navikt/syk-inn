@@ -90,3 +90,10 @@ export function calculateTotalLengthOfSykmeldinger(ranges: SykmeldingDateRange[]
     const days = differenceInDays(tom.latestTom, fom.earliestFom) + 1
     return days
 }
+
+export function mergeCurrentAndPreviousSykmeldinger(
+    current: SykmeldingFragment[] | undefined,
+    previous: SykmeldingFragment[] | undefined,
+): SykmeldingFragment[] {
+    return R.pipe([current ?? [], previous ?? []], R.flat(), R.sortBy([(it) => latestTom(it), 'desc']))
+}
