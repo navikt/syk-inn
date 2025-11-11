@@ -7,13 +7,14 @@ import {
     AllSykmeldingerDocument,
     KonsultasjonDocument,
     RequestAccessToSykmeldingerDocument,
-} from '@data-layer/graphql/generated/queries.generated'
+} from '@queries'
 
-export function RequestSykmeldinger(): ReactElement {
+export function RequestSykmeldinger({ loading }: { loading: boolean }): ReactElement {
     const [requestAccessToSykmeldinger, result] = useMutation(RequestAccessToSykmeldingerDocument, {
         refetchQueries: [AllSykmeldingerDocument, KonsultasjonDocument, AllDashboardDocument],
         awaitRefetchQueries: true,
     })
+
     return (
         <div className="flex flex-col items-center justify-center gap-3 p-8">
             <Button
@@ -21,7 +22,8 @@ export function RequestSykmeldinger(): ReactElement {
                 onClick={() => {
                     requestAccessToSykmeldinger()
                 }}
-                loading={result.loading}
+                loading={loading || result.loading}
+                disabled={loading}
             >
                 Vis tidligere sykmeldinger
             </Button>

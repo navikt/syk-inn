@@ -3,7 +3,12 @@ query AllDashboard {
         ...Draft
     }
     sykmeldinger {
-        ...Sykmelding
+        current {
+            ...Sykmelding
+        }
+        historical {
+            ...Sykmelding
+        }
     }
     konsultasjon {
         ...Konsultasjon

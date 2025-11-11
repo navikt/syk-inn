@@ -9,7 +9,10 @@ import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/us
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingFormErrors } from '@features/actions/common/SykmeldingFormErrors'
 import { dupliserSykmeldingDefaultValues } from '@features/actions/dupliser-sykmelding/dupliser-sykmelding-mapper'
-import { mapSykmeldingToDateRanges } from '@data-layer/common/continuous-sykefravaer-utils'
+import {
+    mapSykmeldingToDateRanges,
+    mergeCurrentAndPreviousSykmeldinger,
+} from '@data-layer/common/continuous-sykefravaer-utils'
 import { useAppSelector } from '@core/redux/hooks'
 
 interface Props {
@@ -33,8 +36,12 @@ export function DupliserSykmeldingFormWithDefaultValues({ sykmeldingId }: Props)
     }
 
     const derivedDefaultValues = dupliserSykmeldingDefaultValues(sykmeldingQuery.data.sykmelding, valuesInState)
-
-    const previousSykmeldingDateRange = mapSykmeldingToDateRanges(alleSykmeldinger.data?.sykmeldinger ?? [])
+    const previousSykmeldingDateRange = mapSykmeldingToDateRanges(
+        mergeCurrentAndPreviousSykmeldinger(
+            alleSykmeldinger.data?.sykmeldinger?.current,
+            alleSykmeldinger.data?.sykmeldinger?.historical,
+        ),
+    )
 
     return (
         <NySykmeldingForm

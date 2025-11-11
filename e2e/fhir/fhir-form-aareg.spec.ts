@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-
 import { OpprettSykmeldingDocument } from '@queries'
 
 import { fillPeriodeRelative, submitSykmelding, nextStep, previousStep, saveDraft } from '../actions/user-actions'
@@ -129,13 +128,13 @@ test('aareg @feature-toggle - saving a draft and returning should keep arbeidsgi
     })
 
     await userInteractionsGroup(fillPeriodeRelative({ type: '100%', days: 3 }), saveDraft())(page)
-    await expect(page.getByRole('region', { name: 'Tidligere sykmeldinger og utkast' })).toBeVisible()
+    await expect(page.getByRole('region', { name: 'Pågående sykmeldinger og utkast' })).toBeVisible()
 
     // Make sure the cache/store is clean
     await page.reload()
 
     await page
-        .getByRole('region', { name: 'Tidligere sykmeldinger og utkast' })
+        .getByRole('region', { name: 'Pågående sykmeldinger og utkast' })
         .getByRole('button', { name: 'Åpne utkast' })
         .first()
         .click()

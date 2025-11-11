@@ -18,7 +18,7 @@
         "build:e2e": "./scripts/build-e2e.sh",
         "test": "vitest",
         "lint": "eslint src",
-        "e2e": "./scripts/pre-e2e.sh && yarn workspace e2e run test",
+        "e2e": "./scripts/pre-e2e.sh && yarn workspace e2e run e2e",
         "e2e:dev": "yarn e2e --ui",
         "e2e:fast": "echo 'Did you run yarn build:e2e? before this?' && FAST=true yarn e2e",
         "next:e2e:start": "NEXT_PUBLIC_ASSET_PREFIX= node .next/standalone/server.js | pino-pretty --messageKey=message",

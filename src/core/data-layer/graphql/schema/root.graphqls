@@ -3,7 +3,7 @@ type Query {
     pasient: Pasient
     konsultasjon: Konsultasjon
     sykmelding(id: String!): Sykmelding
-    sykmeldinger: [Sykmelding!]
+    sykmeldinger: Sykmeldinger
 
     diagnose(query: String!, system: DiagnoseSystem!): [Diagnose!]
     person(ident: String): QueriedPerson

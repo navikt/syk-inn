@@ -1,5 +1,5 @@
 import * as R from 'remeda'
-import React, { PropsWithChildren, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 import { Alert, BodyShort, Heading, Skeleton, Table } from '@navikt/ds-react'
 import { FlowerPetalsIcon } from '@navikt/aksel-icons'
@@ -7,9 +7,8 @@ import { NetworkStatus } from '@apollo/client'
 
 import { AllDashboardDocument } from '@queries'
 import useOnFocus from '@lib/hooks/useOnFocus'
-import { RequestSykmeldinger } from '@features/dashboard/RequestSykmeldinger'
 
-import { ComboTable, ComboTableHeader } from './combo-table/ComboTable'
+import { ComboTable, ComboTableFullCell, ComboTableHeader } from './combo-table/ComboTable'
 import DashboardCard from './card/DashboardCard'
 import DashboardTable from './table/DashboardTable'
 
@@ -20,15 +19,14 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
     const isRefetching = dashboardQuery.networkStatus === NetworkStatus.refetch
     const initialLoad = dashboardQuery.networkStatus === NetworkStatus.loading
     const hasDrafts = !!dashboardQuery.data?.drafts?.length
-    const hasSykmeldinger = !!dashboardQuery.data?.sykmeldinger?.length
-    const hasRequested = dashboardQuery.data?.konsultasjon?.hasRequestedAccessToSykmeldinger
+    const hasSykmeldinger = !!dashboardQuery.data?.sykmeldinger?.current.length
     const hasData = hasSykmeldinger || hasDrafts
 
     return (
-        <DashboardCard className={className} ariaLabel="Tidligere sykmeldinger og utkast" fetching={isRefetching}>
+        <DashboardCard className={className} ariaLabel="Pågående sykmeldinger og utkast" fetching={isRefetching}>
             {hasData && dashboardQuery.data && (
                 <ComboTable
-                    sykmeldinger={dashboardQuery.data.sykmeldinger ?? []}
+                    sykmeldinger={dashboardQuery.data.sykmeldinger?.current ?? []}
                     drafts={dashboardQuery.data.drafts ?? []}
                 >
                     {dashboardQuery.error && !dashboardQuery.data.drafts == null && <AllDraftsError />}
@@ -36,18 +34,9 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
                 </ComboTable>
             )}
             {initialLoad && <ComboTableSkeleton />}
-            {!initialLoad && !dashboardQuery.error && !hasRequested && <ComboTableNotRequestedAccess />}
-            {!initialLoad && !dashboardQuery.error && !hasData && hasRequested && <ComboTableEmptyState />}
+            {!initialLoad && !dashboardQuery.error && !hasData && <ComboTableEmptyState />}
             {!initialLoad && dashboardQuery.error && !hasData && <EverythingError />}
         </DashboardCard>
-    )
-}
-
-function ComboTableFullCell({ className, children }: PropsWithChildren<{ className?: string }>): ReactElement {
-    return (
-        <Table.DataCell colSpan={8}>
-            <div className={className}>{children}</div>
-        </Table.DataCell>
     )
 }
 
@@ -108,32 +97,10 @@ function EverythingError(): ReactElement {
 
 function ComboTableEmptyState(): ReactElement {
     return (
-        <DashboardTable>
-            <ComboTableHeader className="text-text-subtle" />
-            <Table.Body className="text-text-subtle">
-                <Table.Row>
-                    <ComboTableFullCell className="flex flex-col gap-6 items-center justify-center w-full h-64">
-                        <FlowerPetalsIcon aria-hidden fontSize="4rem" />
-                        <BodyShort>Her var det ingen tidligere sykmeldinger eller utkast</BodyShort>
-                    </ComboTableFullCell>
-                </Table.Row>
-            </Table.Body>
-        </DashboardTable>
-    )
-}
-
-function ComboTableNotRequestedAccess(): ReactElement {
-    return (
-        <DashboardTable>
-            <ComboTableHeader className="text-text-subtle" />
-            <Table.Body className="text-text-subtle">
-                <Table.Row>
-                    <ComboTableFullCell className="flex flex-col gap-6 items-center justify-center w-full h-64">
-                        <RequestSykmeldinger />
-                    </ComboTableFullCell>
-                </Table.Row>
-            </Table.Body>
-        </DashboardTable>
+        <div className="flex flex-col gap-6 items-center justify-center w-full h-64 text-text-subtle">
+            <FlowerPetalsIcon aria-hidden fontSize="4rem" className="opacity-75" />
+            <BodyShort>Pasienten har ingen utkast eller pågående sykmeldinger</BodyShort>
+        </div>
     )
 }
 
@@ -142,7 +109,7 @@ export function ComboTableSkeleton(): ReactElement {
         <DashboardTable>
             <ComboTableHeader />
             <Table.Body>
-                {R.range(0, 10).map((index) => (
+                {R.range(0, 4).map((index) => (
                     <Table.Row key={index}>
                         <Table.DataCell>
                             <Skeleton />

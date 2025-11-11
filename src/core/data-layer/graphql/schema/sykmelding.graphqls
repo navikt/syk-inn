@@ -1,3 +1,8 @@
+type Sykmeldinger {
+    current: [Sykmelding!]!
+    historical: [Sykmelding!]!
+}
+
 union SykmeldingValidering = RuleOutcome | RuleOK
 
 union Sykmelding = SykmeldingRedacted | SykmeldingFull

@@ -6,7 +6,12 @@ query SykmeldingById($id: String!) {
 
 query AllSykmeldinger {
     sykmeldinger {
-        ...Sykmelding
+        current {
+            ...Sykmelding
+        }
+        historical {
+            ...Sykmelding
+        }
     }
 }
 

@@ -37,6 +37,10 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
         name: 'SYK_INN_AUTO_BIDIAGNOSER',
         ...on,
     },
+    SYK_INN_REQUEST_HISTORISKE: {
+        name: 'SYK_INN_REQUEST_HISTORISKE',
+        ...on,
+    },
 }
 
 export const localDevelopmentToggles: IToggle[] = Object.values(devToggles)

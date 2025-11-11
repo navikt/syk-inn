@@ -36,6 +36,12 @@ const eslintConfig = defineConfig([
             ],
         },
     },
+    {
+        files: ['e2e/**/*.ts'],
+        rules: {
+            'import/no-extraneous-dependencies': 'off',
+        },
+    },
 ])
 
 export default eslintConfig
