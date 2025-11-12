@@ -3,6 +3,8 @@ import '../globals.css'
 import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
 
+import { bundledEnv } from '@lib/env'
+
 import Preload from '../preload'
 
 export const metadata: Metadata = {
@@ -21,7 +23,12 @@ export default function FhirLayout({ children }: LayoutProps<'/fhir'>): ReactEle
                 />
             </head>
             <Preload />
-            <body>{children}</body>
+            <body>
+                {children}
+                <div className="fixed bottom-2 left-2 text-text-subtle text-sm">
+                    Versjon: {bundledEnv.NEXT_PUBLIC_VERSION}
+                </div>
+            </body>
         </html>
     )
 }
