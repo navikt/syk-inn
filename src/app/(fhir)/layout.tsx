@@ -3,7 +3,7 @@ import '../globals.css'
 import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
 
-import { bundledEnv } from '@lib/env'
+import BuildInfo from '@components/misc/BuildInfo'
 
 import Preload from '../preload'
 
@@ -25,20 +25,7 @@ export default function FhirLayout({ children }: LayoutProps<'/fhir'>): ReactEle
             <Preload />
             <body>
                 {children}
-                <div className="fixed bottom-2 left-2 text-text-subtle text-sm">
-                    Versjon:{' '}
-                    {bundledEnv.NEXT_PUBLIC_VERSION !== 'development' ? (
-                        <a
-                            href={`https://github.com/navikt/syk-inn/commit/${bundledEnv.NEXT_PUBLIC_VERSION}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {bundledEnv.NEXT_PUBLIC_VERSION?.slice(0, 7)}
-                        </a>
-                    ) : (
-                        'development'
-                    )}
-                </div>
+                <BuildInfo />
             </body>
         </html>
     )

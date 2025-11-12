@@ -15,6 +15,7 @@ const BundledEnvSchema = z.object({
     NEXT_PUBLIC_ASSET_PREFIX: z.string().nullish(),
     NEXT_PUBLIC_TELEMETRY_URL: z.string().nullish(),
     NEXT_PUBLIC_VERSION: z.string().nullish(),
+    NEXT_PUBLIC_BUILD_TIME: z.string().nullish(),
 })
 
 /**
@@ -27,6 +28,7 @@ export const bundledEnv = BundledEnvSchema.parse({
     NEXT_PUBLIC_ASSET_PREFIX: process.env.NEXT_PUBLIC_ASSET_PREFIX,
     NEXT_PUBLIC_TELEMETRY_URL: process.env.NEXT_PUBLIC_TELEMETRY_URL,
     NEXT_PUBLIC_VERSION: process.env.NEXT_PUBLIC_VERSION,
+    NEXT_PUBLIC_BUILD_TIME: process.env.NEXT_PUBLIC_BUILD_TIME,
 } satisfies Record<keyof BundledEnv, unknown>)
 
 type ValkeyConfig = z.infer<typeof ValkeyConfigSchema>
