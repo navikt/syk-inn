@@ -27,7 +27,6 @@ import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett
 import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
 import { aaregService } from '@core/services/aareg/aareg-service'
 import { raise } from '@lib/ts'
-import { assertIsPilotUser } from '@data-layer/fhir/fhir-graphql-utils'
 import { FhirGraphqlContext } from '@data-layer/fhir/fhir-graphql-context'
 import { getHasRequestedAccessToSykmeldinger } from '@core/session/session'
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
@@ -340,8 +339,6 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
         opprettSykmelding: async (_, { draftId, meta, values, force }, { client }) => {
             const { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf } =
                 await getAllSykmeldingMetaFromFhir(client)
-
-            await assertIsPilotUser(sykmelderHpr)
 
             if (meta.pasientIdent !== pasientIdent) {
                 throw new GraphQLError('PASIENT_IDENT_MISMATCH')

@@ -6,7 +6,6 @@ import { commonQueryResolvers, typeResolvers } from '@data-layer/graphql/common-
 import { raise } from '@lib/ts'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { getFnrIdent, getNameFromPdl } from '@core/services/pdl/pdl-api-utils'
-import { assertIsPilotUser } from '@data-layer/fhir/fhir-graphql-utils'
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
 import {
     resolverInputToSykInnApiPayload,
@@ -71,8 +70,6 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         saveDraft: () => raise('Not Implemented'),
         deleteDraft: () => raise('Not Implemented'),
         opprettSykmelding: async (_, { meta, values, force }, { hpr }) => {
-            await assertIsPilotUser(hpr)
-
             const opprettMeta: OpprettSykmeldingMeta = {
                 source: `syk-inn (HelseID)`,
                 sykmelderHpr: hpr,
