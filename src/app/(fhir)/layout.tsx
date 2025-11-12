@@ -26,7 +26,18 @@ export default function FhirLayout({ children }: LayoutProps<'/fhir'>): ReactEle
             <body>
                 {children}
                 <div className="fixed bottom-2 left-2 text-text-subtle text-sm">
-                    Versjon: {bundledEnv.NEXT_PUBLIC_VERSION}
+                    Versjon:{' '}
+                    {bundledEnv.NEXT_PUBLIC_VERSION !== 'development' ? (
+                        <a
+                            href={`https://github.com/navikt/syk-inn/commit/${bundledEnv.NEXT_PUBLIC_VERSION}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {bundledEnv.NEXT_PUBLIC_VERSION?.slice(0, 7)}
+                        </a>
+                    ) : (
+                        'development'
+                    )}
                 </div>
             </body>
         </html>
