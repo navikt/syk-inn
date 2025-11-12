@@ -11,8 +11,6 @@ test('redacted @feature-toggle should see other users sykmeldinger as redacted v
 
     await requestAccessToSykmeldinger()(page)
 
-    await new Promise((resolve) => setTimeout(resolve, 5000))
-
     const table = page.getByRole('region', { name: 'Pågående sykmeldinger og utkast' })
     const rows = table.getByRole('row')
 
@@ -36,8 +34,6 @@ test('redacted @feature-toggle toggled off - should not display any other sykmel
     })(page)
 
     await requestAccessToSykmeldinger()(page)
-
-    await new Promise((resolve) => setTimeout(resolve, 5000))
 
     const table = page.getByRole('region', { name: 'Pågående sykmeldinger og utkast' })
     const rows = table.getByRole('row')
