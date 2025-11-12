@@ -1,12 +1,9 @@
 import texas from '@navikt/texas'
-import { logger as pinoLogger } from '@navikt/next-logger'
 import * as z from 'zod'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
-import { getServerEnv } from '@lib/env'
+import { bundledEnv, getServerEnv } from '@lib/env'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
-
-const logger = pinoLogger.child({}, { msgPrefix: '[API FETCHER]: ' })
 
 type ValidAPI = 'syk-inn-api' | 'tsm-pdl-cache'
 
@@ -152,25 +149,37 @@ export async function getApi(
         return { host: 'localhost:8080', token: 'foo-bar-baz' }
     }
 
-    const apiConfig = internalApis[api]
-    const target = `api://dev-gcp.${apiConfig.namespace}.${api}/.default` as const
+    return spanServerAsync('InternalAPIs.tokenExchange', async (span) => {
+        const apiConfig = internalApis[api]
+        const cluster = bundledEnv.runtimeEnv === 'prod-gcp' ? 'prod-gcp' : 'dev-gcp'
+        const target = `api://${cluster}.${apiConfig.namespace}.${api}/.default` as const
 
-    try {
-        const tokenResult = await texas.token({
-            identity_provider: 'azuread',
-            target: target,
+        span.setAttributes({
+            'InternalApi.api': api,
+            'InternalApi.cluster': cluster,
+            'InternalApi.namespace': apiConfig.namespace,
+            'InternalApi.identity_provider': 'azuread',
         })
 
-        return { host: api, token: tokenResult.access_token }
-    } catch (e) {
-        logger.error(
-            new Error(`Unable to exchange client credentials token for ${target}`, {
-                cause: e,
-            }),
-        )
+        try {
+            const tokenResult = await texas.token({
+                identity_provider: 'azuread',
+                target: target,
+            })
 
-        return { errorType: 'TOKEN_EXCHANGE_FAILED' }
-    }
+            return { host: api, token: tokenResult.access_token }
+        } catch (e) {
+            failSpan(
+                span,
+                'Token exchange failed',
+                new Error(`Unable to exchange client credentials token for ${target}`, {
+                    cause: e,
+                }),
+            )
+
+            return { errorType: 'TOKEN_EXCHANGE_FAILED' }
+        }
+    })
 }
 
 async function getFailedResponseBody(response: Response): Promise<string> {
