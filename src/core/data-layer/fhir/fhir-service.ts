@@ -24,22 +24,14 @@ import { createNewDocumentReferencePayload } from './mappers/document-reference'
  */
 export async function getAllSykmeldingMetaFromFhir(
     client: ReadyClient,
-): Promise<Omit<OpprettSykmeldingMeta, 'source'>> {
+): Promise<Omit<OpprettSykmeldingMeta, 'source' | 'sykmelderHpr'>> {
     return spanServerAsync('FhirService.all-meta-resources', async (span) => {
-        const [practitioner, encounter] = await Promise.all([client.user.request(), client.encounter.request()])
+        const encounter = await client.encounter.request()
 
-        if ('error' in practitioner || 'error' in encounter) {
-            if ('error' in practitioner) failSpan(span, practitioner.error)
-            if ('error' in encounter) failSpan(span, encounter.error)
+        if ('error' in encounter) {
+            failSpan(span, encounter.error)
 
             throw new GraphQLError('API_ERROR')
-        }
-
-        const sykmelderHpr = getHpr(practitioner.identifier)
-        if (sykmelderHpr == null) {
-            failSpan(span, 'Missing HPR identifier in practitioner resource')
-            teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
-            throw new GraphQLError('PARSING_ERROR')
         }
 
         const [patient, organization] = await Promise.all([
@@ -76,7 +68,6 @@ export async function getAllSykmeldingMetaFromFhir(
         }
 
         return {
-            sykmelderHpr,
             pasientIdent,
             legekontorOrgnr,
             legekontorTlf,

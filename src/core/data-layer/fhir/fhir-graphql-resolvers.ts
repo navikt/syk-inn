@@ -8,7 +8,7 @@ import { Behandler, QueriedPerson, Resolvers } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
-import { getHpr, practitionerToBehandler } from '@data-layer/fhir/mappers/practitioner'
+import { practitionerToBehandler } from '@data-layer/fhir/mappers/practitioner'
 import { createDocumentReference, getAllSykmeldingMetaFromFhir } from '@data-layer/fhir/fhir-service'
 import {
     getOrganisasjonsnummerFromFhir,
@@ -38,12 +38,7 @@ import { DraftValuesSchema } from '../draft/draft-schema'
 
 const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     Query: {
-        behandler: async (_, _args, { client }) => {
-            const practitioner = await client.user.request()
-            if ('error' in practitioner) {
-                throw new GraphQLError('API_ERROR')
-            }
-
+        behandler: async (_, _args, { client, practitioner }) => {
             const encounter = await client.encounter.request()
             if ('error' in encounter) {
                 throw new GraphQLError('API_ERROR')
@@ -88,19 +83,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
         konsultasjon: async () => {
             return {}
         },
-        sykmelding: async (_, { id: sykmeldingId }, { client }) => {
-            const practitioner = await client.user.request()
-            if ('error' in practitioner) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const hpr = getHpr(practitioner.identifier)
-            if (hpr == null) {
-                logger.error('Missing HPR identifier in practitioner resource')
-                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
-                throw new GraphQLError('PARSING_ERROR')
-            }
-
+        sykmelding: async (_, { id: sykmeldingId }, { client, hpr }) => {
             const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
             if ('errorType' in sykmelding) {
                 throw new GraphQLError('API_ERROR')
@@ -122,19 +105,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 'resourceType' in existingDocumentReference ? 'COMPLETE' : 'PENDING',
             )
         },
-        sykmeldinger: async (_, _args, { client }) => {
-            const practitioner = await client.user.request()
-            if ('error' in practitioner) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const hpr = getHpr(practitioner.identifier)
-            if (hpr == null) {
-                logger.error('Missing HPR identifier in practitioner resource')
-                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
-                throw new GraphQLError('PARSING_ERROR')
-            }
-
+        sykmeldinger: async (_, _args, { client, hpr, practitioner }) => {
             const patientInContext = await client.patient.request()
             if ('error' in patientInContext) {
                 throw new GraphQLError('PARSING_ERROR')
@@ -189,19 +160,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 navn: getNameFromPdl(person.navn),
             } satisfies QueriedPerson
         },
-        draft: async (_, { draftId }, { client }) => {
-            const practitioner = await client.user.request()
-            if ('error' in practitioner) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const hpr = getHpr(practitioner.identifier)
-            if (hpr == null) {
-                logger.error('Missing HPR identifier in practitioner resource')
-                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
-                throw new GraphQLError('PARSING_ERROR')
-            }
-
+        draft: async (_, { draftId }, { client, hpr }) => {
             const pasient = await client.patient.request()
             if ('error' in pasient) {
                 throw new GraphQLError('API_ERROR')
@@ -225,19 +184,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 lastUpdated: draft.lastUpdated,
             }
         },
-        drafts: async (_, _args, { client }) => {
-            const practitioner = await client.user.request()
-            if ('error' in practitioner) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const hpr = getHpr(practitioner.identifier)
-            if (hpr == null) {
-                logger.error('Missing HPR identifier in practitioner resource')
-                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
-                throw new GraphQLError('PARSING_ERROR')
-            }
-
+        drafts: async (_, _args, { client, hpr }) => {
             const pasient = await client.patient.request()
             if ('error' in pasient) {
                 throw new GraphQLError('API_ERROR')
@@ -259,19 +206,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
         ...commonQueryResolvers,
     },
     Mutation: {
-        saveDraft: async (_, { draftId, values }, { client }) => {
-            const practitioner = await client.user.request()
-            if ('error' in practitioner) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const hpr = getHpr(practitioner.identifier)
-            if (hpr == null) {
-                logger.error('Missing HPR identifier in practitioner resource')
-                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
-                throw new GraphQLError('PARSING_ERROR')
-            }
-
+        saveDraft: async (_, { draftId, values }, { client, hpr }) => {
             const pasient = await client.patient.request()
             if ('error' in pasient) {
                 throw new GraphQLError('API_ERROR')
@@ -305,19 +240,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 lastUpdated: new Date().toISOString(),
             }
         },
-        deleteDraft: async (_, { draftId }, { client }) => {
-            const practitioner = await client.user.request()
-            if ('error' in practitioner) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const hpr = getHpr(practitioner.identifier)
-            if (hpr == null) {
-                logger.error('Missing HPR identifier in practitioner resource')
-                teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
-                throw new GraphQLError('PARSING_ERROR')
-            }
-
+        deleteDraft: async (_, { draftId }, { client, hpr }) => {
             const pasient = await client.patient.request()
             if ('error' in pasient) {
                 throw new GraphQLError('API_ERROR')
@@ -337,9 +260,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             return true
         },
-        opprettSykmelding: async (_, { draftId, meta, values, force }, { client }) => {
-            const { sykmelderHpr, pasientIdent, legekontorOrgnr, legekontorTlf } =
-                await getAllSykmeldingMetaFromFhir(client)
+        opprettSykmelding: async (_, { draftId, meta, values, force }, { client, hpr }) => {
+            const { pasientIdent, legekontorOrgnr, legekontorTlf } = await getAllSykmeldingMetaFromFhir(client)
 
             if (meta.pasientIdent !== pasientIdent) {
                 throw new GraphQLError('PASIENT_IDENT_MISMATCH')
@@ -347,7 +269,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const opprettMeta: OpprettSykmeldingMeta = {
                 source: `${client.issuerName} (FHIR)`,
-                sykmelderHpr,
+                sykmelderHpr: hpr,
                 pasientIdent,
                 legekontorOrgnr,
                 legekontorTlf,
@@ -380,7 +302,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             // Delete the draft after successful creation
             const draftClient = await getDraftClient()
-            await draftClient.deleteDraft(draftId, { hpr: sykmelderHpr, ident: pasientIdent })
+            await draftClient.deleteDraft(draftId, { hpr: hpr, ident: pasientIdent })
 
             return sykInnApiSykmeldingToResolverSykmeldingFull(result, 'PENDING')
         },
@@ -407,12 +329,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             throw new GraphQLError('API_ERROR')
         },
-        requestAccessToSykmeldinger: async (_, __, { client }) => {
-            const practitioner = await client.user.request()
-            if ('error' in practitioner) {
-                throw new GraphQLError('API_ERROR')
-            }
-
+        requestAccessToSykmeldinger: async (_, __, { client, practitioner }) => {
             const pasient = await client.patient.request()
             if ('error' in pasient) {
                 throw new GraphQLError('API_ERROR')
@@ -457,12 +374,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
         },
     },
     Konsultasjon: {
-        hasRequestedAccessToSykmeldinger: async (_, _args, { client }) => {
-            const practitioner = await client.user.request()
-            if ('error' in practitioner) {
-                throw new GraphQLError('API_ERROR')
-            }
-
+        hasRequestedAccessToSykmeldinger: async (_, _args, { client, practitioner }) => {
             const patientInContext = await client.patient.request()
             if ('error' in patientInContext) {
                 throw new GraphQLError('PARSING_ERROR')
@@ -474,11 +386,6 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             const conditionsByEncounter = await client.request(`Condition?encounter=${client.encounter.id}`)
             if ('error' in conditionsByEncounter) {
                 throw new GraphQLError('PARSING_ERROR')
-            }
-
-            const practitioner = await client.user.request()
-            if ('error' in practitioner) {
-                throw new GraphQLError('API_ERROR')
             }
 
             const patientInContext = await client.patient.request()

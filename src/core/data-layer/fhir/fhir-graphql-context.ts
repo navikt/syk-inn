@@ -1,5 +1,6 @@
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { logger } from '@navikt/next-logger'
+import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
 
 import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { NoSmartSession } from '@data-layer/fhir/error/Errors'
@@ -9,6 +10,8 @@ import { assertIsPilotUser } from '@data-layer/fhir/fhir-graphql-utils'
 
 export type FhirGraphqlContext = {
     client: ReadyClient
+    practitioner: FhirPractitioner
+    hpr: string
 }
 
 export const createFhirResolverContext = async (): Promise<FhirGraphqlContext> => {
@@ -40,6 +43,6 @@ export const createFhirResolverContext = async (): Promise<FhirGraphqlContext> =
             throw NoSmartSession()
         }
 
-        return { client }
+        return { client, practitioner, hpr }
     })
 }
