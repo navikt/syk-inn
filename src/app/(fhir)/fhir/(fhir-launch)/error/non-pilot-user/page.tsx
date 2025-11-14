@@ -81,11 +81,11 @@ async function Page(): Promise<ReactElement> {
                     const sykmeldinger = await sykInnApiService.getSykmeldinger(ident, hpr)
                     if ('errorType' in sykmeldinger) {
                         failSpan(innerSpan, `Non-pilot-user failed to fetch sykmeldinger: ${sykmeldinger.errorType}`)
-                        span.setAttribute('non-pilot-user.dry-run.sykmeldinger', 'fail')
+                        innerSpan.setAttribute('non-pilot-user.dry-run.sykmeldinger', 'fail')
                         return
                     }
 
-                    span.setAttribute('non-pilot-user.dry-run.sykmeldinger', `${sykmeldinger.length}`)
+                    innerSpan.setAttribute('non-pilot-user.dry-run.sykmeldinger', `${sykmeldinger.length}`)
                 })
             })
         })
