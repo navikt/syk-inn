@@ -1,3 +1,4 @@
+import * as R from 'remeda'
 import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { BodyShort, Table, Tag, TagProps } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
@@ -9,7 +10,7 @@ import {
     SykmeldingLightFragment,
     SykmeldingRedactedFragment,
 } from '@queries'
-import { byActiveOrFutureSykmelding, isWithinWeeksOldSykmelding } from '@data-layer/common/sykmelding-utils'
+import { byActiveOrFutureSykmelding, isWithinWeeksOldSykmelding, latestTom } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import Redaction from '@components/misc/Redaction'
 
@@ -42,7 +43,7 @@ export function ComboTable({
                 {drafts.map((draft) => (
                     <DraftTableRow draft={draft} key={draft.draftId} />
                 ))}
-                {sykmeldinger.map((sykmelding) => {
+                {R.sortBy(sykmeldinger, [latestTom, 'asc']).map((sykmelding) => {
                     const status = byActiveOrFutureSykmelding(sykmelding) ? 'current' : 'previous'
                     const forlengable = isWithinWeeksOldSykmelding(sykmelding, 4) ? true : undefined
 
