@@ -5,11 +5,17 @@ import { BodyShort, Box, Heading, Link, List, VStack } from '@navikt/ds-react'
 import { ListItem } from '@navikt/ds-react/List'
 import { BugIcon } from '@navikt/aksel-icons'
 import { PageBlock } from '@navikt/ds-react/Page'
+import { Metadata } from 'next'
 
 import { isDemo, isLocal } from '@lib/env'
 import DemoWarning from '@components/user-warnings/DemoWarning'
 
 import Preload from './preload'
+
+export const metadata: Metadata = {
+    title: 'Siden ble ikke funnet - Innsending av sykmeldinger',
+    description: 'Denne siden kan være slettet eller flyttet, eller det er en feil i lenken.',
+}
 
 // TODO: Why is this not rendered in production when layout throws 404?
 function GlobalNotFound(): ReactElement {
