@@ -43,7 +43,7 @@ export function ComboTable({
                 {drafts.map((draft) => (
                     <DraftTableRow draft={draft} key={draft.draftId} />
                 ))}
-                {R.sortBy(sykmeldinger, [latestTom, 'asc']).map((sykmelding) => {
+                {R.sortBy(sykmeldinger, [latestTom, 'desc']).map((sykmelding) => {
                     const status = byActiveOrFutureSykmelding(sykmelding) ? 'current' : 'previous'
                     const forlengable = isWithinWeeksOldSykmelding(sykmelding, 4) ? true : undefined
 
