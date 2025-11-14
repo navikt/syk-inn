@@ -1,3 +1,4 @@
+import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { after } from 'next/server'
 import { logger } from '@navikt/next-logger'
@@ -85,7 +86,10 @@ async function Page(): Promise<ReactElement> {
                         return
                     }
 
-                    innerSpan.setAttribute('non-pilot-user.dry-run.sykmeldinger', `${sykmeldinger.length}`)
+                    const [own, others] = R.partition(sykmeldinger, (it) => it.kind !== 'redacted')
+
+                    innerSpan.setAttribute('non-pilot-user.dry-run.sykmeldinger-own', `${own.length}`)
+                    innerSpan.setAttribute('non-pilot-user.dry-run.sykmeldinger-redacted', `${others.length}`)
                 })
             })
         })
