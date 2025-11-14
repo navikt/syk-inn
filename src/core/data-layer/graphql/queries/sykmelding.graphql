@@ -111,6 +111,32 @@ fragment SykmeldingFull on SykmeldingFull {
     documentStatus
 }
 
+fragment SykmeldingLight on SykmeldingLight {
+    sykmeldingId
+    meta {
+        pasientIdent
+        sykmelderHpr
+        legekontorOrgnr
+        mottatt
+    }
+    utfall {
+        result
+        message
+    }
+    values {
+        hoveddiagnose {
+            ...Diagnose
+        }
+        bidiagnoser {
+            ...Diagnose
+        }
+        aktivitet {
+            ...Aktivitet
+        }
+    }
+    documentStatus
+}
+
 mutation RequestAccessToSykmeldinger {
     requestAccessToSykmeldinger
 }
@@ -118,6 +144,7 @@ mutation RequestAccessToSykmeldinger {
 fragment Sykmelding on Sykmelding {
     ...SykmeldingRedacted
     ...SykmeldingFull
+    ...SykmeldingLight
 }
 
 fragment Aktivitet on Aktivitet {

@@ -2,7 +2,6 @@ import * as R from 'remeda'
 import { isAfter, isSameDay, sub } from 'date-fns'
 
 import { raise } from '@lib/ts'
-import { SykmeldingFragment } from '@queries'
 
 export function byActiveOrFutureSykmelding(sykmelding: { values: { aktivitet: { tom: string }[] } }): boolean {
     const latestPeriode = R.firstBy(sykmelding.values.aktivitet, [(it) => it.tom, 'desc'])
@@ -29,7 +28,7 @@ export function isWithinWeeksOldSykmelding(
     return isSameDay(latestPeriode.tom, dateWeeksAgo) || isAfter(latestPeriode.tom, dateWeeksAgo)
 }
 
-export function earliestFom(sykmelding: SykmeldingFragment): string {
+export function earliestFom(sykmelding: { values: { aktivitet: { fom: string }[] } }): string {
     const firstFom = R.firstBy(sykmelding.values.aktivitet, [(it) => it.fom, 'asc'])
     if (!firstFom) {
         raise('Sykmelding without aktivitetsperioder, this should not happen')
@@ -37,7 +36,7 @@ export function earliestFom(sykmelding: SykmeldingFragment): string {
     return firstFom.fom
 }
 
-export function latestTom(sykmelding: SykmeldingFragment): string {
+export function latestTom(sykmelding: { values: { aktivitet: { tom: string }[] } }): string {
     const latestTom = R.firstBy(sykmelding.values.aktivitet, [(it) => it.tom, 'desc'])
     if (!latestTom) {
         raise('Sykmelding without aktivitetsperioder, this should not happen')

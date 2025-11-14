@@ -1,0 +1,16 @@
+"""
+A completely redacted sykmelding, only containing the absolute bare minimum of information.
+
+To be potentially shared between different practitioners treating the same patient.
+"""
+type SykmeldingRedacted {
+    kind: String!
+    sykmeldingId: String!
+    meta: SykmeldingMeta!
+    values: SykmeldingRedactedValues!
+    utfall: Outcome!
+}
+
+type SykmeldingRedactedValues {
+    aktivitet: [AktivitetRedacted!]!
+}

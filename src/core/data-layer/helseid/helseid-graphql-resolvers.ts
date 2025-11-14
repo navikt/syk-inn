@@ -11,6 +11,7 @@ import {
     resolverInputToSykInnApiPayload,
     sykInnApiSykmeldingRedactedToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmelding,
+    sykInnApiSykmeldingToResolverSykmeldingFull,
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { getFlag, getUserToggles } from '@core/toggles/unleash'
@@ -106,7 +107,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
 
             // TODO: Delete from draft
 
-            return sykInnApiSykmeldingToResolverSykmelding(result, 'PENDING')
+            return sykInnApiSykmeldingToResolverSykmeldingFull(result, 'PENDING')
         },
         synchronizeSykmelding: () => raise('Not Implemented'),
     },

@@ -25,7 +25,7 @@ export function mapSykmeldingToDateRanges(sykmeldinger: SykmeldingFragment[]): S
         R.map((it) => ({
             earliestFom: earliestFom(it),
             latestTom: latestTom(it),
-            utdypendeSporsmal: it.values.__typename === 'SykmeldingValues' ? it.values.utdypendeSporsmal : null,
+            utdypendeSporsmal: it.values.__typename === 'SykmeldingFullValues' ? it.values.utdypendeSporsmal : null,
         })),
     )
 }

@@ -1,0 +1,32 @@
+type Sykmeldinger {
+    current: [Sykmelding!]!
+    historical: [Sykmelding!]!
+}
+
+interface SykmeldingBase {
+    kind: String!
+    sykmeldingId: String!
+    utfall: Outcome!
+    meta: SykmeldingMeta!
+}
+
+union Sykmelding = SykmeldingRedacted | SykmeldingFull | SykmeldingLight
+
+type SykmeldingMeta {
+    mottatt: DateTime!
+    pasientIdent: String!
+    sykmelderHpr: String!
+    legekontorOrgnr: String
+}
+
+type Outcome {
+    result: String!
+    message: String
+}
+
+union SykmeldingValidering = RuleOutcome | RuleOK
+enum DocumentStatus {
+    PENDING
+    ERRORED
+    COMPLETE
+}

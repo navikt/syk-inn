@@ -1,14 +1,27 @@
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
-import { SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
+import {
+    SykmeldingFragment,
+    SykmeldingFullFragment,
+    SykmeldingLightFragment,
+    SykmeldingRedactedFragment,
+} from '@queries'
 import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
 import {
     sykmeldingFragmentAktivitetToFormValue,
-    sykmeldingFragmentToNySykmeldingFormValues,
+    fullSykmeldingFragmentToNySykmeldingFormValues,
+    sykmeldingDiagnoserFragmentToSykmeldingFormValues,
 } from '@features/actions/common/gql-sykmelding-mappers'
 import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sykmelding-mappers'
+import {
+    defaultAndreSporsmal,
+    defaultArbeidsforhold,
+    defaultMeldinger,
+    defaultTilbakedatering,
+    defaultUtdypendeSporsmal,
+} from '@features/ny-sykmelding-form/form/default-values'
 
 export function dupliserSykmeldingDefaultValues(
     sykmelding: SykmeldingFragment,
@@ -24,22 +37,33 @@ export function dupliserSykmeldingDefaultValues(
 
     return sykmelding.__typename === 'SykmeldingRedacted'
         ? dupliserRedactedSykmelding(sykmelding)
-        : dupliserFullSykmelding(sykmelding)
+        : sykmelding.__typename === 'SykmeldingLight'
+          ? dupliserLightSykmelding(sykmelding)
+          : dupliserFullSykmelding(sykmelding)
 }
 
 function dupliserFullSykmelding(sykmelding: SykmeldingFullFragment): NySykmeldingMainFormValues {
     return {
-        ...sykmeldingFragmentToNySykmeldingFormValues(sykmelding),
+        ...fullSykmeldingFragmentToNySykmeldingFormValues(sykmelding),
         perioder: sykmelding.values.aktivitet
             .map((it) => sykmeldingFragmentAktivitetToFormValue({ fom: it.fom, tom: it.tom }, it))
             .filter(R.isNonNull),
         // Meldinger are specifically not part of the duplisering
-        meldinger: {
-            showTilNav: false,
-            tilNav: null,
-            showTilArbeidsgiver: false,
-            tilArbeidsgiver: null,
-        },
+        meldinger: defaultMeldinger(),
+    }
+}
+
+function dupliserLightSykmelding(sykmelding: SykmeldingLightFragment): NySykmeldingMainFormValues {
+    return {
+        diagnoser: sykmeldingDiagnoserFragmentToSykmeldingFormValues(sykmelding.values),
+        perioder: sykmelding.values.aktivitet
+            .map((it) => sykmeldingFragmentAktivitetToFormValue({ fom: it.fom, tom: it.tom }, it))
+            .filter(R.isNonNull),
+        meldinger: defaultMeldinger(),
+        andreSporsmal: defaultAndreSporsmal(),
+        arbeidsforhold: defaultArbeidsforhold(),
+        utdypendeSporsmal: defaultUtdypendeSporsmal(),
+        tilbakedatering: defaultTilbakedatering(),
     }
 }
 

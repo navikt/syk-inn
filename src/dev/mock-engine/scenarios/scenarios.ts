@@ -46,6 +46,20 @@ const simpleScenarios = {
             drafts: [],
         }),
     },
+    'plenty-of-previous': {
+        description: 'User with many sykmeldinger, some of them in the past, some very in the past',
+        scenario: () => ({
+            sykmeldinger: [
+                new SykmeldingBuilder({ offset: 0 }).enkelAktivitet({ offset: 3, days: 14 }).build(),
+                new SykmeldingBuilder({ offset: -7 }).enkelAktivitet({ offset: 0, days: 7 }).build(),
+                new SykmeldingBuilder({ offset: -90 }).enkelAktivitet({ offset: 0, days: 8 }).build(),
+                new SykmeldingBuilder({ offset: -120 }).enkelAktivitet({ offset: 0, days: 14 }).build(),
+                new SykmeldingBuilder({ offset: -350 }).enkelAktivitet({ offset: 0, days: 30 }).build(),
+            ],
+            arbeidsforhold: simpleAaregArbeidsforhold,
+            drafts: [],
+        }),
+    },
     'multiple-arbeidsforhold': {
         description: 'Multiple arbeidsforhold, no sykmeldinger',
         scenario: () => ({
