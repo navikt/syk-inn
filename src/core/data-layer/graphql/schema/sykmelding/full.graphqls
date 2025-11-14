@@ -1,25 +1,11 @@
-type Sykmeldinger {
-    current: [Sykmelding!]!
-    historical: [Sykmelding!]!
-}
-
-union SykmeldingValidering = RuleOutcome | RuleOK
-
-union Sykmelding = SykmeldingRedacted | SykmeldingFull
-
-type SykmeldingRedacted {
+"""
+A complete sykmelding, containing every value.
+"""
+type SykmeldingFull implements SykmeldingBase {
     kind: String!
     sykmeldingId: String!
     meta: SykmeldingMeta!
-    values: SykmeldingRedactedValues!
-    utfall: Outcome!
-}
-
-type SykmeldingFull {
-    kind: String!
-    sykmeldingId: String!
-    meta: SykmeldingMeta!
-    values: SykmeldingValues!
+    values: SykmeldingFullValues!
     utfall: Outcome!
     """
     Status on the document in the EHR system.
@@ -27,14 +13,7 @@ type SykmeldingFull {
     documentStatus: DocumentStatus
 }
 
-type SykmeldingMeta {
-    mottatt: DateTime!
-    pasientIdent: String!
-    sykmelderHpr: String!
-    legekontorOrgnr: String
-}
-
-type SykmeldingValues {
+type SykmeldingFullValues {
     hoveddiagnose: Diagnose
     bidiagnoser: [Diagnose!]
     aktivitet: [Aktivitet!]!
@@ -45,10 +24,6 @@ type SykmeldingValues {
     arbeidsgiver: Arbeidsgiver
     tilbakedatering: Tilbakedatering
     utdypendeSporsmal: UtdypendeSporsmal
-}
-
-type SykmeldingRedactedValues {
-    aktivitet: [AktivitetRedacted!]!
 }
 
 type SykmeldingMelding {
@@ -75,15 +50,4 @@ type UtdypendeSporsmal {
     utfodringerMedArbeid: String
     medisinskOppsummering: String
     hensynPaArbeidsplassen: String
-}
-
-type Outcome {
-    result: String!
-    message: String
-}
-
-enum DocumentStatus {
-    PENDING
-    ERRORED
-    COMPLETE
 }

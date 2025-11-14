@@ -16,7 +16,8 @@ const result: PossibleTypesResultData = {
         ],
         OpprettetSykmelding: ['OtherSubmitOutcomes', 'RuleOutcome', 'SykmeldingFull'],
         Person: ['Pasient', 'QueriedPerson'],
-        Sykmelding: ['SykmeldingFull', 'SykmeldingRedacted'],
+        Sykmelding: ['SykmeldingFull', 'SykmeldingLight', 'SykmeldingRedacted'],
+        SykmeldingBase: ['SykmeldingFull', 'SykmeldingLight'],
         SykmeldingValidering: ['RuleOK', 'RuleOutcome'],
     },
 }

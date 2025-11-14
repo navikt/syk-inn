@@ -2,7 +2,13 @@ import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { BodyShort, Table, Tag, TagProps } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
 
-import { DraftFragment, SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
+import {
+    DraftFragment,
+    SykmeldingFragment,
+    SykmeldingFullFragment,
+    SykmeldingLightFragment,
+    SykmeldingRedactedFragment,
+} from '@queries'
 import { byActiveOrFutureSykmelding, isWithinWeeksOldSykmelding } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import Redaction from '@components/misc/Redaction'
@@ -40,21 +46,35 @@ export function ComboTable({
                     const status = byActiveOrFutureSykmelding(sykmelding) ? 'current' : 'previous'
                     const forlengable = isWithinWeeksOldSykmelding(sykmelding, 4) ? true : undefined
 
-                    return sykmelding.__typename === 'SykmeldingFull' ? (
-                        <FullTableRow
-                            key={sykmelding.sykmeldingId}
-                            sykmelding={sykmelding}
-                            status={status}
-                            forlengable={forlengable}
-                        />
-                    ) : (
-                        <RedactedTableRow
-                            key={sykmelding.sykmeldingId}
-                            sykmelding={sykmelding}
-                            status={status}
-                            forlengable={forlengable}
-                        />
-                    )
+                    switch (sykmelding.__typename) {
+                        case 'SykmeldingFull':
+                            return (
+                                <FullTableRow
+                                    key={sykmelding.sykmeldingId}
+                                    sykmelding={sykmelding}
+                                    status={status}
+                                    forlengable={forlengable}
+                                />
+                            )
+                        case 'SykmeldingLight':
+                            return (
+                                <LightTableRow
+                                    key={sykmelding.sykmeldingId}
+                                    sykmelding={sykmelding}
+                                    status={status}
+                                    forlengable={forlengable}
+                                />
+                            )
+                        case 'SykmeldingRedacted':
+                            return (
+                                <RedactedTableRow
+                                    key={sykmelding.sykmeldingId}
+                                    sykmelding={sykmelding}
+                                    status={status}
+                                    forlengable={forlengable}
+                                />
+                            )
+                    }
                 })}
             </Table.Body>
         </DashboardTable>
@@ -123,6 +143,36 @@ function FullTableRow({
             diagnose={sykmeldingDiagnoseText(sykmelding.values.hoveddiagnose)}
             grad={sykmeldingGradText(sykmelding.values.aktivitet)}
             arbeidsgiver={sykmeldingArbeidsgiverText(sykmelding.values.arbeidsgiver)}
+            utfall={<Utfall utfall={sykmelding.utfall} />}
+            status={status}
+            actions={
+                <SykmeldingActions
+                    sykmeldingId={sykmelding.sykmeldingId}
+                    sykmelding={sykmelding}
+                    forlengable={forlengable}
+                />
+            }
+        />
+    )
+}
+
+function LightTableRow({
+    sykmelding,
+    status,
+    forlengable,
+}: {
+    sykmelding: SykmeldingLightFragment
+    status: 'draft' | 'previous' | 'current'
+    forlengable?: true
+}): ReactElement {
+    return (
+        <TableRow
+            periode={
+                <SykmeldingPeriodeLink sykmeldingId={sykmelding.sykmeldingId} aktivitet={sykmelding.values.aktivitet} />
+            }
+            diagnose={sykmeldingDiagnoseText(sykmelding.values.hoveddiagnose)}
+            grad={sykmeldingGradText(sykmelding.values.aktivitet)}
+            arbeidsgiver={null}
             utfall={<Utfall utfall={sykmelding.utfall} />}
             status={status}
             actions={

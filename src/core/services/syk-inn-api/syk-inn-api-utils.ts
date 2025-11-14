@@ -1,9 +1,12 @@
+import { isBefore, subDays } from 'date-fns'
+
 import {
     AktivitetType,
     DocumentStatus,
     InputAktivitet,
     OpprettSykmeldingInput,
     SykmeldingFull,
+    SykmeldingLight,
     SykmeldingRedacted,
 } from '@resolvers'
 import {
@@ -36,6 +39,36 @@ export function sykInnApiSykmeldingRedactedToResolverSykmelding(
 }
 
 export function sykInnApiSykmeldingToResolverSykmelding(
+    sykmelding: SykInnApiSykmelding,
+    documentStatus?: DocumentStatus,
+): SykmeldingFull | SykmeldingLight {
+    /**
+     * If the sykmelding is received today, return a light version.
+     */
+    if (isBefore(sykmelding.meta.mottatt, subDays(new Date(), 1))) {
+        return {
+            kind: 'light',
+            sykmeldingId: sykmelding.sykmeldingId,
+            meta: {
+                pasientIdent: sykmelding.meta.pasientIdent,
+                legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
+                mottatt: sykmelding.meta.mottatt,
+                sykmelderHpr: sykmelding.meta.sykmelder.hprNummer,
+            },
+            values: {
+                aktivitet: sykmelding.values.aktivitet,
+                hoveddiagnose: sykmelding.values.hoveddiagnose,
+                bidiagnoser: sykmelding.values.bidiagnoser,
+            },
+            utfall: sykmelding.utfall,
+            documentStatus,
+        } satisfies SykmeldingLight
+    }
+
+    return sykInnApiSykmeldingToResolverSykmeldingFull(sykmelding, documentStatus)
+}
+
+export function sykInnApiSykmeldingToResolverSykmeldingFull(
     sykmelding: SykInnApiSykmelding,
     documentStatus?: DocumentStatus,
 ): SykmeldingFull {

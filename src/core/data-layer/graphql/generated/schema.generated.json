@@ -2227,13 +2227,77 @@
                 "enumValues": null,
                 "possibleTypes": [
                     { "kind": "OBJECT", "name": "SykmeldingFull", "ofType": null },
+                    { "kind": "OBJECT", "name": "SykmeldingLight", "ofType": null },
                     { "kind": "OBJECT", "name": "SykmeldingRedacted", "ofType": null }
+                ]
+            },
+            {
+                "kind": "INTERFACE",
+                "name": "SykmeldingBase",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "kind",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "meta",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "OBJECT", "name": "SykmeldingMeta", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "sykmeldingId",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "utfall",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "OBJECT", "name": "Outcome", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": [
+                    { "kind": "OBJECT", "name": "SykmeldingFull", "ofType": null },
+                    { "kind": "OBJECT", "name": "SykmeldingLight", "ofType": null }
                 ]
             },
             {
                 "kind": "OBJECT",
                 "name": "SykmeldingFull",
-                "description": null,
+                "description": "A complete sykmelding, containing every value.",
                 "isOneOf": null,
                 "fields": [
                     {
@@ -2299,222 +2363,20 @@
                         "type": {
                             "kind": "NON_NULL",
                             "name": null,
-                            "ofType": { "kind": "OBJECT", "name": "SykmeldingValues", "ofType": null }
+                            "ofType": { "kind": "OBJECT", "name": "SykmeldingFullValues", "ofType": null }
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
                     }
                 ],
                 "inputFields": null,
-                "interfaces": [],
+                "interfaces": [{ "kind": "INTERFACE", "name": "SykmeldingBase", "ofType": null }],
                 "enumValues": null,
                 "possibleTypes": null
             },
             {
                 "kind": "OBJECT",
-                "name": "SykmeldingMelding",
-                "description": null,
-                "isOneOf": null,
-                "fields": [
-                    {
-                        "name": "tilArbeidsgiver",
-                        "description": null,
-                        "args": [],
-                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "tilNav",
-                        "description": null,
-                        "args": [],
-                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
-                ],
-                "inputFields": null,
-                "interfaces": [],
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "OBJECT",
-                "name": "SykmeldingMeta",
-                "description": null,
-                "isOneOf": null,
-                "fields": [
-                    {
-                        "name": "legekontorOrgnr",
-                        "description": null,
-                        "args": [],
-                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "mottatt",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "SCALAR", "name": "DateTime", "ofType": null }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "pasientIdent",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "sykmelderHpr",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
-                ],
-                "inputFields": null,
-                "interfaces": [],
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "OBJECT",
-                "name": "SykmeldingRedacted",
-                "description": null,
-                "isOneOf": null,
-                "fields": [
-                    {
-                        "name": "kind",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "meta",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "OBJECT", "name": "SykmeldingMeta", "ofType": null }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "sykmeldingId",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "utfall",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "OBJECT", "name": "Outcome", "ofType": null }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "values",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "OBJECT", "name": "SykmeldingRedactedValues", "ofType": null }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
-                ],
-                "inputFields": null,
-                "interfaces": [],
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "OBJECT",
-                "name": "SykmeldingRedactedValues",
-                "description": null,
-                "isOneOf": null,
-                "fields": [
-                    {
-                        "name": "aktivitet",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "LIST",
-                                "name": null,
-                                "ofType": {
-                                    "kind": "NON_NULL",
-                                    "name": null,
-                                    "ofType": { "kind": "OBJECT", "name": "AktivitetRedacted", "ofType": null }
-                                }
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
-                ],
-                "inputFields": null,
-                "interfaces": [],
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "UNION",
-                "name": "SykmeldingValidering",
-                "description": null,
-                "isOneOf": null,
-                "fields": null,
-                "inputFields": null,
-                "interfaces": null,
-                "enumValues": null,
-                "possibleTypes": [
-                    { "kind": "OBJECT", "name": "RuleOK", "ofType": null },
-                    { "kind": "OBJECT", "name": "RuleOutcome", "ofType": null }
-                ]
-            },
-            {
-                "kind": "OBJECT",
-                "name": "SykmeldingValues",
+                "name": "SykmeldingFullValues",
                 "description": null,
                 "isOneOf": null,
                 "fields": [
@@ -2635,6 +2497,344 @@
                 "interfaces": [],
                 "enumValues": null,
                 "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "SykmeldingLight",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "documentStatus",
+                        "description": "Status on the document in the EHR system.",
+                        "args": [],
+                        "type": { "kind": "ENUM", "name": "DocumentStatus", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "kind",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "meta",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "OBJECT", "name": "SykmeldingMeta", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "sykmeldingId",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "utfall",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "OBJECT", "name": "Outcome", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "values",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "OBJECT", "name": "SykmeldingLightValues", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [{ "kind": "INTERFACE", "name": "SykmeldingBase", "ofType": null }],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "SykmeldingLightValues",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "aktivitet",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "LIST",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": { "kind": "UNION", "name": "Aktivitet", "ofType": null }
+                                }
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "bidiagnoser",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "LIST",
+                            "name": null,
+                            "ofType": {
+                                "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": { "kind": "OBJECT", "name": "Diagnose", "ofType": null }
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "hoveddiagnose",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "OBJECT", "name": "Diagnose", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "SykmeldingMelding",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "tilArbeidsgiver",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "tilNav",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "SykmeldingMeta",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "legekontorOrgnr",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "mottatt",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "SCALAR", "name": "DateTime", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "pasientIdent",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "sykmelderHpr",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "SykmeldingRedacted",
+                "description": "A completely redacted sykmelding, only containing the absolute bare minimum of information.\n\nTo be potentially shared between different practitioners treating the same patient.",
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "kind",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "meta",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "OBJECT", "name": "SykmeldingMeta", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "sykmeldingId",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "utfall",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "OBJECT", "name": "Outcome", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "values",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "OBJECT", "name": "SykmeldingRedactedValues", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "SykmeldingRedactedValues",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "aktivitet",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "LIST",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": { "kind": "OBJECT", "name": "AktivitetRedacted", "ofType": null }
+                                }
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "UNION",
+                "name": "SykmeldingValidering",
+                "description": null,
+                "isOneOf": null,
+                "fields": null,
+                "inputFields": null,
+                "interfaces": null,
+                "enumValues": null,
+                "possibleTypes": [
+                    { "kind": "OBJECT", "name": "RuleOK", "ofType": null },
+                    { "kind": "OBJECT", "name": "RuleOutcome", "ofType": null }
+                ]
             },
             {
                 "kind": "OBJECT",

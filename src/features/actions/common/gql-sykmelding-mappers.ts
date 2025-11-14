@@ -11,8 +11,9 @@ import {
 import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
 import { Diagnose } from '@data-layer/common/diagnose'
 import { dateOnly } from '@lib/date'
+import { defaultArbeidsforhold } from '@features/ny-sykmelding-form/form/default-values'
 
-export function sykmeldingFragmentToNySykmeldingFormValues(
+export function fullSykmeldingFragmentToNySykmeldingFormValues(
     sykmelding: SykmeldingFullFragment,
 ): Omit<NySykmeldingMainFormValues, 'perioder' | 'meldinger'> {
     return {
@@ -23,11 +24,7 @@ export function sykmeldingFragmentToNySykmeldingFormValues(
                   sykmeldtFraArbeidsforhold: sykmelding.values.arbeidsgiver.arbeidsgivernavn,
                   aaregArbeidsforhold: sykmelding.values.arbeidsgiver.arbeidsgivernavn,
               }
-            : {
-                  harFlereArbeidsforhold: 'NEI',
-                  sykmeldtFraArbeidsforhold: null,
-                  aaregArbeidsforhold: null,
-              },
+            : defaultArbeidsforhold(),
         andreSporsmal: {
             yrkesskade: sykmelding.values.yrkesskade
                 ? {
@@ -37,23 +34,29 @@ export function sykmeldingFragmentToNySykmeldingFormValues(
                 : null,
             svangerskapsrelatert: sykmelding.values.svangerskapsrelatert ?? false,
         },
-        diagnoser: {
-            hoved: sykmelding.values.hoveddiagnose
-                ? {
-                      code: sykmelding.values.hoveddiagnose.code,
-                      system: sykmelding.values.hoveddiagnose.system,
-                      text: sykmelding.values.hoveddiagnose.text,
-                  }
-                : raise('Form does not support sykmeldinger without hoveddiagnose yet'),
-            bidiagnoser: sykmelding.values.bidiagnoser
-                ? sykmelding.values.bidiagnoser.map((it) => ({
-                      code: it.code,
-                      system: it.system,
-                      text: it.text,
-                  }))
-                : [],
-        },
+        diagnoser: sykmeldingDiagnoserFragmentToSykmeldingFormValues(sykmelding.values),
         utdypendeSporsmal: null,
+    }
+}
+
+export function sykmeldingDiagnoserFragmentToSykmeldingFormValues(
+    diagnoser: Pick<SykmeldingFullFragment['values'], 'hoveddiagnose' | 'bidiagnoser'>,
+): NySykmeldingMainFormValues['diagnoser'] {
+    return {
+        hoved: diagnoser.hoveddiagnose
+            ? {
+                  code: diagnoser.hoveddiagnose.code,
+                  system: diagnoser.hoveddiagnose.system,
+                  text: diagnoser.hoveddiagnose.text,
+              }
+            : raise('Form does not support sykmeldinger without hoveddiagnose yet'),
+        bidiagnoser: diagnoser.bidiagnoser
+            ? diagnoser.bidiagnoser.map((it) => ({
+                  code: it.code,
+                  system: it.system,
+                  text: it.text,
+              }))
+            : [],
     }
 }
 

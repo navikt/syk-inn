@@ -3,15 +3,28 @@ import { addDays } from 'date-fns'
 import { logger } from '@navikt/next-logger'
 
 import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
-import { SykmeldingFragment, SykmeldingFullFragment, SykmeldingRedactedFragment } from '@queries'
+import {
+    SykmeldingFragment,
+    SykmeldingFullFragment,
+    SykmeldingLightFragment,
+    SykmeldingRedactedFragment,
+} from '@queries'
 import {
     sykmeldingFragmentAktivitetToFormValue,
-    sykmeldingFragmentToNySykmeldingFormValues,
+    fullSykmeldingFragmentToNySykmeldingFormValues,
+    sykmeldingDiagnoserFragmentToSykmeldingFormValues,
 } from '@features/actions/common/gql-sykmelding-mappers'
 import { raise } from '@lib/ts'
 import { dateOnly } from '@lib/date'
 import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sykmelding-mappers'
 import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
+import {
+    defaultAndreSporsmal,
+    defaultArbeidsforhold,
+    defaultMeldinger,
+    defaultTilbakedatering,
+    defaultUtdypendeSporsmal,
+} from '@features/ny-sykmelding-form/form/default-values'
 
 /**
  * Creates a set of default form values specifically for 'forlenging' a sykmelding. Does NOT take
@@ -24,7 +37,9 @@ export function forlengSykmeldingDefaultValues(
     const [forlengetSykmeldingFormValues, nextFom] =
         sykmelding.__typename === 'SykmeldingRedacted'
             ? forlengRedactedSykmelding(sykmelding)
-            : forlengFullSykmelding(sykmelding)
+            : sykmelding.__typename === 'SykmeldingLight'
+              ? forlengLightSykmelding(sykmelding)
+              : forlengFullSykmelding(sykmelding)
 
     /**
      * If we already have values in state, we are returning to the form after having filled out
@@ -44,7 +59,7 @@ function forlengFullSykmelding(
 
     return [
         {
-            ...sykmeldingFragmentToNySykmeldingFormValues(sykmelding),
+            ...fullSykmeldingFragmentToNySykmeldingFormValues(sykmelding),
             perioder: [forlengetPeriode],
             // Meldinger are specifically not part of the forlenging
             meldinger: {
@@ -53,6 +68,25 @@ function forlengFullSykmelding(
                 showTilArbeidsgiver: false,
                 tilArbeidsgiver: null,
             },
+        },
+        nextFom,
+    ]
+}
+
+function forlengLightSykmelding(
+    sykmelding: SykmeldingLightFragment,
+): [values: NySykmeldingMainFormValues, nextFom: string] {
+    const [forlengetPeriode, nextFom] = toForlengelsesAktivitet(sykmelding.values.aktivitet)
+
+    return [
+        {
+            diagnoser: sykmeldingDiagnoserFragmentToSykmeldingFormValues(sykmelding.values),
+            perioder: [forlengetPeriode],
+            meldinger: defaultMeldinger(),
+            andreSporsmal: defaultAndreSporsmal(),
+            arbeidsforhold: defaultArbeidsforhold(),
+            utdypendeSporsmal: defaultUtdypendeSporsmal(),
+            tilbakedatering: defaultTilbakedatering(),
         },
         nextFom,
     ]

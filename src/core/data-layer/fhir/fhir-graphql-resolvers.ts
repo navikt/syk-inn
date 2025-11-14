@@ -22,6 +22,7 @@ import {
     resolverInputToSykInnApiPayload,
     sykInnApiSykmeldingRedactedToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmelding,
+    sykInnApiSykmeldingToResolverSykmeldingFull,
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
 import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
@@ -381,7 +382,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             const draftClient = await getDraftClient()
             await draftClient.deleteDraft(draftId, { hpr: sykmelderHpr, ident: pasientIdent })
 
-            return sykInnApiSykmeldingToResolverSykmelding(result, 'PENDING')
+            return sykInnApiSykmeldingToResolverSykmeldingFull(result, 'PENDING')
         },
         synchronizeSykmelding: async (_, { id: sykmeldingId }, { client }) => {
             const existingDocument = await client.request(`DocumentReference/${sykmeldingId}`, { expectNotFound: true })

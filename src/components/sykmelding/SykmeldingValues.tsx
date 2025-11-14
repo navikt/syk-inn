@@ -1,11 +1,12 @@
 import * as R from 'remeda'
-import { BodyShort, Detail, List } from '@navikt/ds-react'
+import { Alert, BodyShort, Detail, List } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 
-import { SykmeldingFragment } from '@queries'
+import { AktivitetFragment, SykmeldingFragment } from '@queries'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
 import { ValueItem } from '@components/sykmelding/ValuesSection'
 import { ArbeidsrelaterteArsaker } from '@features/ny-sykmelding-form/aktivitet/ArsakerPicker'
+import { Diagnose } from '@data-layer/common/diagnose'
 
 type Props = {
     sykmelding: SykmeldingFragment
@@ -24,45 +25,24 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
         )
     }
 
+    if (sykmelding.__typename === 'SykmeldingLight') {
+        return (
+            <>
+                <SykmeldingAktivitetValues aktivitet={sykmelding.values.aktivitet} />
+                <SykmeldingDiagnoseValues
+                    hoveddiagnose={sykmelding.values.hoveddiagnose}
+                    bidiagnoser={sykmelding.values.bidiagnoser}
+                />
+                <Alert variant="info">
+                    Denne sykmeldingen er eldre enn 1 dag, og viser derfor ikke alle innsendte verdier.
+                </Alert>
+            </>
+        )
+    }
+
     return (
         <>
-            {sykmelding.values.aktivitet.map((it, index) => (
-                <ValueItem key={index} title="Periode">
-                    <BodyShort>{toReadableDatePeriod(it.fom, it.tom)}</BodyShort>
-                    {it.__typename === 'AktivitetIkkeMulig' && (
-                        <>
-                            <BodyShort>100% sykmelding</BodyShort>
-                            <ul className="list-disc pl-6">
-                                {it.medisinskArsak?.isMedisinskArsak && (
-                                    <li>Det er medisinske årsaker som forhindrer arbeidsrelatert aktivitet</li>
-                                )}
-                                {it.arbeidsrelatertArsak?.isArbeidsrelatertArsak && (
-                                    <li>
-                                        Det er arbeidsrelaterte årsaker som forhindrer arbeidsrelatert aktivitet
-                                        <ul className="list-disc pl-6">
-                                            {it.arbeidsrelatertArsak?.arbeidsrelaterteArsaker.map(
-                                                (arsak, arsakIndex) => (
-                                                    <li key={arsakIndex}>
-                                                        {ArbeidsrelaterteArsaker[arsak]}
-                                                        {arsak === 'ANNET' && (
-                                                            <ul className="list-disc pl-6">
-                                                                <li>
-                                                                    {it.arbeidsrelatertArsak?.annenArbeidsrelatertArsak}
-                                                                </li>
-                                                            </ul>
-                                                        )}
-                                                    </li>
-                                                ),
-                                            )}
-                                        </ul>
-                                    </li>
-                                )}
-                            </ul>
-                        </>
-                    )}
-                    {it.__typename === 'Gradert' && <BodyShort>{it.grad}% gradert sykmelding</BodyShort>}
-                </ValueItem>
-            ))}
+            <SykmeldingAktivitetValues aktivitet={sykmelding.values.aktivitet} />
             <ValueItem title="Har pasienten flere arbeidsforhold?">
                 {sykmelding.values.arbeidsgiver?.harFlere ? 'Ja' : 'Nei'}
             </ValueItem>
@@ -82,26 +62,10 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                 </>
             )}
 
-            <ValueItem title="Hoveddiagnose">
-                <BodyShort>
-                    {sykmelding.values.hoveddiagnose?.text} ({sykmelding.values.hoveddiagnose?.code})
-                </BodyShort>
-                <Detail>{sykmelding.values.hoveddiagnose?.system}</Detail>
-            </ValueItem>
-            {sykmelding.values.bidiagnoser && sykmelding.values.bidiagnoser.length > 0 && (
-                <ValueItem title="Bidiagnoser">
-                    <ul className="list-disc pl-6">
-                        {sykmelding.values.bidiagnoser?.map((bidiagnose, index) => (
-                            <li key={index}>
-                                <BodyShort>
-                                    {bidiagnose.text} ({bidiagnose.code})
-                                </BodyShort>
-                                <Detail>{bidiagnose.system}</Detail>
-                            </li>
-                        ))}
-                    </ul>
-                </ValueItem>
-            )}
+            <SykmeldingDiagnoseValues
+                hoveddiagnose={sykmelding.values.hoveddiagnose}
+                bidiagnoser={sykmelding.values.bidiagnoser}
+            />
             {sykmelding.values.utdypendeSporsmal?.utfodringerMedArbeid && (
                 <ValueItem title="Hvilke utfordringer har pasienten med å utføre gradert arbeid?">
                     {sykmelding.values.utdypendeSporsmal?.utfodringerMedArbeid}
@@ -144,6 +108,83 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
             )}
             {sykmelding.values.meldinger.tilArbeidsgiver && (
                 <ValueItem title="Meldinger til arbeidsgiver">{sykmelding.values.meldinger.tilArbeidsgiver}</ValueItem>
+            )}
+        </>
+    )
+}
+
+function SykmeldingAktivitetValues({ aktivitet }: { aktivitet: AktivitetFragment[] }): ReactElement {
+    return (
+        <>
+            {aktivitet.map((it, index) => (
+                <ValueItem key={index} title="Periode">
+                    <BodyShort>{toReadableDatePeriod(it.fom, it.tom)}</BodyShort>
+                    {it.__typename === 'AktivitetIkkeMulig' && (
+                        <>
+                            <BodyShort>100% sykmelding</BodyShort>
+                            <ul className="list-disc pl-6">
+                                {it.medisinskArsak?.isMedisinskArsak && (
+                                    <li>Det er medisinske årsaker som forhindrer arbeidsrelatert aktivitet</li>
+                                )}
+                                {it.arbeidsrelatertArsak?.isArbeidsrelatertArsak && (
+                                    <li>
+                                        Det er arbeidsrelaterte årsaker som forhindrer arbeidsrelatert aktivitet
+                                        <ul className="list-disc pl-6">
+                                            {it.arbeidsrelatertArsak?.arbeidsrelaterteArsaker.map(
+                                                (arsak, arsakIndex) => (
+                                                    <li key={arsakIndex}>
+                                                        {ArbeidsrelaterteArsaker[arsak]}
+                                                        {arsak === 'ANNET' && (
+                                                            <ul className="list-disc pl-6">
+                                                                <li>
+                                                                    {it.arbeidsrelatertArsak?.annenArbeidsrelatertArsak}
+                                                                </li>
+                                                            </ul>
+                                                        )}
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </li>
+                                )}
+                            </ul>
+                        </>
+                    )}
+                    {it.__typename === 'Gradert' && <BodyShort>{it.grad}% gradert sykmelding</BodyShort>}
+                </ValueItem>
+            ))}
+        </>
+    )
+}
+
+function SykmeldingDiagnoseValues({
+    hoveddiagnose,
+    bidiagnoser,
+}: {
+    hoveddiagnose: Diagnose | null | undefined
+    bidiagnoser: Diagnose[] | null | undefined
+}): ReactElement {
+    return (
+        <>
+            <ValueItem title="Hoveddiagnose">
+                <BodyShort>
+                    {hoveddiagnose?.text} ({hoveddiagnose?.code})
+                </BodyShort>
+                <Detail>{hoveddiagnose?.system}</Detail>
+            </ValueItem>
+            {bidiagnoser && bidiagnoser.length > 0 && (
+                <ValueItem title="Bidiagnoser">
+                    <ul className="list-disc pl-6">
+                        {bidiagnoser.map((bidiagnose, index) => (
+                            <li key={index}>
+                                <BodyShort>
+                                    {bidiagnose.text} ({bidiagnose.code})
+                                </BodyShort>
+                                <Detail>{bidiagnose.system}</Detail>
+                            </li>
+                        ))}
+                    </ul>
+                </ValueItem>
             )}
         </>
     )

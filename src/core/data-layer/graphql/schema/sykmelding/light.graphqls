@@ -1,0 +1,17 @@
+type SykmeldingLight implements SykmeldingBase {
+    kind: String!
+    sykmeldingId: String!
+    meta: SykmeldingMeta!
+    values: SykmeldingLightValues!
+    utfall: Outcome!
+    """
+    Status on the document in the EHR system.
+    """
+    documentStatus: DocumentStatus
+}
+
+type SykmeldingLightValues {
+    hoveddiagnose: Diagnose
+    bidiagnoser: [Diagnose!]
+    aktivitet: [Aktivitet!]!
+}
