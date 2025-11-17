@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 
 import { DraftSykmeldingFormWithDefaultValues } from '@features/actions/ny-sykmelding-from-draft/NySykmeldingFromDraft'
-import NySykmeldingPagesWithContextPatientHeader from '@features/common/NySykmeldingPagesWithContextPatientHeader'
+import NySykmeldingPagesWithContextPatientHeader from '@features/fhir/common/NySykmeldingPagesWithContextPatientHeader'
 
 async function Page({ params }: PageProps<'/fhir/draft/[draftId]'>): Promise<ReactElement> {
     const draftId = (await params).draftId

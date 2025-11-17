@@ -2,9 +2,9 @@
 
 import React, { ReactElement, useEffect } from 'react'
 
-import OpprettNySykmeldingCard from '@features/dashboard/OpprettNySykmeldingCard'
-import HistoricalCard from '@features/dashboard/historical/HistoricalCard'
-import ComboTableCard from '@features/dashboard/ComboTableCard'
+import OpprettNySykmeldingCard from '@features/fhir/dashboard/OpprettNySykmeldingCard'
+import HistoricalCard from '@features/fhir/dashboard/historical/HistoricalCard'
+import ComboTableCard from '@features/fhir/dashboard/ComboTableCard'
 import { PageLayout } from '@components/layout/Page'
 import { useFlag } from '@core/toggles/context'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'

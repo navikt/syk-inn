@@ -15,15 +15,11 @@ import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import Redaction from '@components/misc/Redaction'
 
 import DashboardTable from '../table/DashboardTable'
-import {
-    sykmeldingArbeidsgiverText,
-    sykmeldingDiagnoseText,
-    sykmeldingGradText,
-} from '../combo-table/sykmelding/sykmelding-utils'
-import { SykmeldingActions } from '../combo-table/sykmelding/SykmeldingActions'
-import DraftPeriodeLink from '../combo-table/draft/DraftPeriodeLink'
-import SykmeldingPeriodeLink from '../combo-table/sykmelding/SykmeldingPeriodeLink'
 
+import { sykmeldingArbeidsgiverText, sykmeldingDiagnoseText, sykmeldingGradText } from './sykmelding/sykmelding-utils'
+import { SykmeldingActions } from './sykmelding/SykmeldingActions'
+import DraftPeriodeLink from './draft/DraftPeriodeLink'
+import SykmeldingPeriodeLink from './sykmelding/SykmeldingPeriodeLink'
 import { DraftActions } from './draft/DraftActions'
 import { draftAktivitetText, draftArbeidsforholdText, draftDiagnoseText } from './draft/draft-utils'
 

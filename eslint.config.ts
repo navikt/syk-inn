@@ -29,6 +29,7 @@ const eslintConfig = defineConfig([
                     relativeImportOverrides: [
                         { depth: 1, path: '.' },
                         { pattern: '^src/features/ny-sykmelding-form/.+', depth: 2 },
+                        { pattern: '^src/features/fhir/dashboard/.+', depth: 2 },
                     ],
                 },
             ],

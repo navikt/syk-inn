@@ -9,8 +9,8 @@ import {
     draftAktivitetText,
     draftArbeidsforholdText,
     draftDiagnoseText,
-} from '@features/dashboard/combo-table/draft/draft-utils'
-import { AutoUpdatingDistance } from '@features/dashboard/combo-table/draft/AutoUpdatingDistance'
+} from '@features/fhir/dashboard/combo-table/draft/draft-utils'
+import { AutoUpdatingDistance } from '@features/fhir/dashboard/combo-table/draft/AutoUpdatingDistance'
 
 type Props = {
     ident: string

@@ -4,8 +4,8 @@ import React, { ReactElement } from 'react'
 import { BodyLong, Modal, Link as AkselLink, Skeleton, Heading } from '@navikt/ds-react'
 import { TestFlaskIcon } from '@navikt/aksel-icons'
 
-import { ComboTableSkeleton } from '@features/dashboard/ComboTableCard'
-import DashboardCard from '@features/dashboard/card/DashboardCard'
+import { ComboTableSkeleton } from '@features/fhir/dashboard/ComboTableCard'
+import DashboardCard from '@features/fhir/dashboard/card/DashboardCard'
 import { PageLayout } from '@components/layout/Page'
 
 function NonPilotUserWarning(): ReactElement | null {

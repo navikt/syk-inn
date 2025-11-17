@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 
 import { DupliserSykmeldingFormWithDefaultValues } from '@features/actions/dupliser-sykmelding/DupliserSykmelding'
-import NySykmeldingPagesWithContextPatientHeader from '@features/common/NySykmeldingPagesWithContextPatientHeader'
+import NySykmeldingPagesWithContextPatientHeader from '@features/fhir/common/NySykmeldingPagesWithContextPatientHeader'
 
 async function Page({ params }: PageProps<'/fhir/dupliser/[sykmeldingId]'>): Promise<ReactElement> {
     const sykmeldingId = (await params).sykmeldingId

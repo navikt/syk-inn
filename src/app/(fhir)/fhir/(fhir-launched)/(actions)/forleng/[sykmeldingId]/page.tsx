@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 
 import { ForlengSykmeldingFormWithDefaultValues } from '@features/actions/forleng-sykmelding/ForlengSykmelding'
-import NySykmeldingPagesWithContextPatientHeader from '@features/common/NySykmeldingPagesWithContextPatientHeader'
+import NySykmeldingPagesWithContextPatientHeader from '@features/fhir/common/NySykmeldingPagesWithContextPatientHeader'
 
 async function Page({ params }: PageProps<'/fhir/forleng/[sykmeldingId]'>): Promise<ReactElement> {
     const sykmeldingId = (await params).sykmeldingId

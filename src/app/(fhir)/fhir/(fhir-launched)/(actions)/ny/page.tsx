@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { redirect } from 'next/navigation'
 
 import { NySykmeldingFormWithDefaultValues } from '@features/actions/ny-sykmelding/NySykmelding'
-import NySykmeldingPagesWithContextPatientHeader from '@features/common/NySykmeldingPagesWithContextPatientHeader'
+import NySykmeldingPagesWithContextPatientHeader from '@features/fhir/common/NySykmeldingPagesWithContextPatientHeader'
 
 async function NySykmeldingPage({ searchParams }: PageProps<'/fhir/ny'>): Promise<ReactElement> {
     const search = await searchParams
