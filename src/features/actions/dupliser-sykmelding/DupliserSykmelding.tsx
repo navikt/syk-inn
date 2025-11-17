@@ -3,7 +3,7 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 
-import { AllSykmeldingerDocument, SykmeldingByIdDocument } from '@queries'
+import { AllSykmeldingerDocument, PasientDocument, SykmeldingByIdDocument } from '@queries'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
@@ -25,9 +25,10 @@ export function DupliserSykmeldingFormWithDefaultValues({ sykmeldingId }: Props)
         variables: { id: sykmeldingId },
     })
     const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
+    const pasient = useQuery(PasientDocument)
     const valuesInState = useAppSelector((state) => state.nySykmelding.values)
 
-    if (suggestionsQuery.loading || sykmeldingQuery.loading || alleSykmeldinger.loading) {
+    if (suggestionsQuery.loading || sykmeldingQuery.loading || alleSykmeldinger.loading || pasient.loading) {
         return <NySykmeldingFormSkeleton />
     }
 
@@ -47,6 +48,7 @@ export function DupliserSykmeldingFormWithDefaultValues({ sykmeldingId }: Props)
         <NySykmeldingForm
             defaultValues={derivedDefaultValues}
             context={{
+                utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,
                 previousSykmeldingDateRange,
             }}
             contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}

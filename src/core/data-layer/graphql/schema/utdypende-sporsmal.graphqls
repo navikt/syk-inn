@@ -1,0 +1,6 @@
+type UtdypendeOpplysningerHint {
+    days: Int!
+    latestTom: String
+    # currentSporsmal: 'Uke7' | 'Uke16' | 'Uke39'
+    # previouslyAnsweredSporsmal: [ENUMS]!
+}

@@ -282,6 +282,7 @@ export type Pasient = Person & {
     navn: Scalars['String']['output']
     /** Does the user exist outside of FHIR? In other words, is this a real person? */
     userExists?: Maybe<Scalars['Boolean']['output']>
+    utdypendeSporsmal?: Maybe<UtdypendeOpplysningerHint>
 }
 
 export type Person = {
@@ -455,6 +456,12 @@ export type Tilbakedatering = {
     __typename?: 'Tilbakedatering'
     begrunnelse: Scalars['String']['output']
     startdato: Scalars['DateOnly']['output']
+}
+
+export type UtdypendeOpplysningerHint = {
+    __typename?: 'UtdypendeOpplysningerHint'
+    days: Scalars['Int']['output']
+    latestTom?: Maybe<Scalars['String']['output']>
 }
 
 export type UtdypendeSporsmal = {
@@ -660,6 +667,7 @@ export type ResolversTypes = {
     >
     SynchronizationStatus: ResolverTypeWrapper<SynchronizationStatus>
     Tilbakedatering: ResolverTypeWrapper<Tilbakedatering>
+    UtdypendeOpplysningerHint: ResolverTypeWrapper<UtdypendeOpplysningerHint>
     UtdypendeSporsmal: ResolverTypeWrapper<UtdypendeSporsmal>
     Yrkesskade: ResolverTypeWrapper<Yrkesskade>
 }
@@ -735,6 +743,7 @@ export type ResolversParentTypes = {
     }
     SynchronizationStatus: SynchronizationStatus
     Tilbakedatering: Tilbakedatering
+    UtdypendeOpplysningerHint: UtdypendeOpplysningerHint
     UtdypendeSporsmal: UtdypendeSporsmal
     Yrkesskade: Yrkesskade
 }
@@ -958,6 +967,7 @@ export type PasientResolvers<
     ident?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     userExists?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
+    utdypendeSporsmal?: Resolver<Maybe<ResolversTypes['UtdypendeOpplysningerHint']>, ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -1170,6 +1180,15 @@ export type TilbakedateringResolvers<
     startdato?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
 }
 
+export type UtdypendeOpplysningerHintResolvers<
+    ContextType = any,
+    ParentType extends
+        ResolversParentTypes['UtdypendeOpplysningerHint'] = ResolversParentTypes['UtdypendeOpplysningerHint'],
+> = {
+    days?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+    latestTom?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+}
+
 export type UtdypendeSporsmalResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['UtdypendeSporsmal'] = ResolversParentTypes['UtdypendeSporsmal'],
@@ -1231,6 +1250,7 @@ export type Resolvers<ContextType = any> = {
     Sykmeldinger?: SykmeldingerResolvers<ContextType>
     SynchronizationStatus?: SynchronizationStatusResolvers<ContextType>
     Tilbakedatering?: TilbakedateringResolvers<ContextType>
+    UtdypendeOpplysningerHint?: UtdypendeOpplysningerHintResolvers<ContextType>
     UtdypendeSporsmal?: UtdypendeSporsmalResolvers<ContextType>
     Yrkesskade?: YrkesskadeResolvers<ContextType>
 }

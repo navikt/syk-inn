@@ -3,7 +3,7 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 
-import { AllSykmeldingerDocument } from '@queries'
+import { AllSykmeldingerDocument, PasientDocument } from '@queries'
 import { useAppSelector } from '@core/redux/hooks'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
@@ -18,8 +18,9 @@ export function NySykmeldingFormWithDefaultValues(): ReactElement {
     const suggestionsQuery = useDiagnoseSuggestions()
     const valuesInState = useAppSelector((state) => state.nySykmelding.values)
     const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
+    const pasient = useQuery(PasientDocument)
 
-    if (suggestionsQuery.loading || alleSykmeldinger.loading) {
+    if (suggestionsQuery.loading || alleSykmeldinger.loading || pasient.loading) {
         return <NySykmeldingFormSkeleton />
     }
 
@@ -35,6 +36,7 @@ export function NySykmeldingFormWithDefaultValues(): ReactElement {
         <NySykmeldingForm
             defaultValues={defaultValues}
             context={{
+                utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,
                 previousSykmeldingDateRange,
             }}
             contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}

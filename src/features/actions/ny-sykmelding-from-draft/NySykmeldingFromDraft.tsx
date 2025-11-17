@@ -3,7 +3,7 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 
-import { AllSykmeldingerDocument, GetDraftDocument } from '@queries'
+import { AllSykmeldingerDocument, GetDraftDocument, PasientDocument } from '@queries'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
 import { useAppSelector } from '@core/redux/hooks'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
@@ -26,11 +26,12 @@ export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactE
         fetchPolicy: 'cache-first',
     })
     const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
+    const pasient = useQuery(PasientDocument)
 
     const valuesInState = useAppSelector((state) => state.nySykmelding.values)
     const suggestionsQuery = useDiagnoseSuggestions()
 
-    if (suggestionsQuery.loading || draftQuery.loading) {
+    if (suggestionsQuery.loading || draftQuery.loading || pasient.loading) {
         return <NySykmeldingFormSkeleton />
     }
 
@@ -51,6 +52,7 @@ export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactE
         <NySykmeldingForm
             defaultValues={defaultValues}
             context={{
+                utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,
                 previousSykmeldingDateRange,
             }}
             contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}

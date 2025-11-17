@@ -1,5 +1,9 @@
 query Pasient {
     pasient {
+        utdypendeSporsmal {
+            days
+            latestTom
+        }
         ...Person
     }
 }

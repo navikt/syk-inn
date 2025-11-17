@@ -280,6 +280,7 @@ export type Pasient = Person & {
     navn: Scalars['String']['output']
     /** Does the user exist outside of FHIR? In other words, is this a real person? */
     userExists?: Maybe<Scalars['Boolean']['output']>
+    utdypendeSporsmal?: Maybe<UtdypendeOpplysningerHint>
 }
 
 export type Person = {
@@ -453,6 +454,12 @@ export type Tilbakedatering = {
     __typename: 'Tilbakedatering'
     begrunnelse: Scalars['String']['output']
     startdato: Scalars['DateOnly']['output']
+}
+
+export type UtdypendeOpplysningerHint = {
+    __typename: 'UtdypendeOpplysningerHint'
+    days: Scalars['Int']['output']
+    latestTom?: Maybe<Scalars['String']['output']>
 }
 
 export type UtdypendeSporsmal = {
@@ -897,7 +904,12 @@ export type PasientQueryVariables = Exact<{ [key: string]: never }>
 
 export type PasientQuery = {
     __typename: 'Query'
-    pasient?: { __typename: 'Pasient'; ident: string; navn: string } | null
+    pasient?: {
+        __typename: 'Pasient'
+        ident: string
+        navn: string
+        utdypendeSporsmal?: { __typename: 'UtdypendeOpplysningerHint'; days: number; latestTom?: string | null } | null
+    } | null
 }
 
 export type PasientWithExistsQueryVariables = Exact<{ [key: string]: never }>
@@ -3726,7 +3738,20 @@ export const PasientDocument = {
                         name: { kind: 'Name', value: 'pasient' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Person' } }],
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'utdypendeSporsmal' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'days' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'latestTom' } },
+                                        ],
+                                    },
+                                },
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Person' } },
+                            ],
                         },
                     },
                 ],

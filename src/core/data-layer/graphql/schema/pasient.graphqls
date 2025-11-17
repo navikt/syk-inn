@@ -6,6 +6,7 @@ type Arbeidsforhold {
 type Pasient implements Person {
     ident: String!
     navn: String!
+    utdypendeSporsmal: UtdypendeOpplysningerHint
     arbeidsforhold: [Arbeidsforhold!]
     """
     Does the user exist outside of FHIR? In other words, is this a real person?

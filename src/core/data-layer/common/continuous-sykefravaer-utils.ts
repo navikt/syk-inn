@@ -30,6 +30,19 @@ export function mapSykmeldingToDateRanges(sykmeldinger: SykmeldingFragment[]): S
     )
 }
 
+export function mapSykInnApiSykmeldingerToDateRanges(
+    sykmeldinger: { utfall?: { result: string }; values: { aktivitet: { fom: string; tom: string }[] } }[],
+): SykmeldingDateRange[] {
+    return R.pipe(
+        sykmeldinger,
+        R.filter((it) => it.utfall?.result === 'OK'),
+        R.map((it) => ({
+            earliestFom: earliestFom(it),
+            latestTom: latestTom(it),
+        })),
+    )
+}
+
 // Only applies to 'uke 7'. There will be other questions for the other special weeks.
 export function hasAnsweredUtdypendeSporsmal(sykmeldinger: SykmeldingDateRange[]): boolean {
     return (
