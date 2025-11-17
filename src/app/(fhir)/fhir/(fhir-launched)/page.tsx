@@ -1,15 +1,25 @@
 'use client'
 
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 
 import OpprettNySykmeldingCard from '@features/dashboard/OpprettNySykmeldingCard'
 import HistoricalCard from '@features/dashboard/historical/HistoricalCard'
 import ComboTableCard from '@features/dashboard/ComboTableCard'
 import { PageLayout } from '@components/layout/Page'
 import { useFlag } from '@core/toggles/context'
+import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { useAppDispatch } from '@core/redux/hooks'
 
 function DashboardPage(): ReactElement {
+    const dispatch = useAppDispatch()
     const historiskeToggle = useFlag('SYK_INN_REQUEST_HISTORISKE')
+
+    useEffect(() => {
+        /**
+         * Make sure form is clear of any draft or submitted sykmeldinger when returning to dashboard.
+         */
+        dispatch(nySykmeldingActions.reset())
+    }, [dispatch])
 
     return (
         <PageLayout heading="none" size="full" bg="transparent">

@@ -15,6 +15,8 @@ import { spanServerAsync } from '@lib/otel/server'
 import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
 import { shouldUseMockEngine } from '@dev/mock-engine'
 import DemoWarning from '@components/user-warnings/DemoWarning'
+import Providers from '@core/providers/Providers'
+import HydratePersistedUserFromSession from '@data-layer/helseid/persistent-user/HydratePersistedUserFromSession'
 
 import { NoBehandlerError } from './start-errors'
 
@@ -57,7 +59,8 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
     }
 
     return (
-        <>
+        <Providers mode="HelseID">
+            <HydratePersistedUserFromSession />
             <HelseIdHeader behandler={{ navn: behandler.navn, hpr: behandler.hpr }} />
             {(isLocal || isDemo) && <DemoWarning />}
             <ToggleProvider toggles={toToggleMap(toggles)}>
@@ -65,7 +68,7 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
                 <LoggedOutWarning />
                 {(isLocal || isDemo) && <LazyDevTools />}
             </ToggleProvider>
-        </>
+        </Providers>
     )
 }
 
