@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { Alert, BodyShort, Heading, LinkCard, Skeleton } from '@navikt/ds-react'
 import { useLazyQuery } from '@apollo/client/react'
 import Link from 'next/link'
@@ -9,6 +9,7 @@ import { PersonByIdentDocument } from '@queries'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import ManualPatientSearch from '@features/manual-patient-picker/ManualPatientSearch'
+import { setPersistentUser } from '@data-layer/helseid/persistent-user/persistent-user'
 
 function ManualPatientPicker(): ReactElement {
     const dispatch = useAppDispatch()
@@ -24,15 +25,23 @@ function ManualPatientPicker(): ReactElement {
         })
 
         if (pdlPerson.data?.person) {
-            dispatch(
-                nySykmeldingActions.manualPatient({
-                    type: 'manual',
-                    ident: pdlPerson.data.person.ident,
-                    navn: pdlPerson.data.person.navn,
-                }),
-            )
+            const patient = {
+                type: 'manual' as const,
+                ident: pdlPerson.data.person.ident,
+                navn: pdlPerson.data.person.navn,
+            }
+            dispatch(nySykmeldingActions.manualPatient(patient))
+            setPersistentUser(patient)
         }
     }
+
+    useEffect(() => {
+        /**
+         * Make sure form is clear of any draft or submitted sykmeldinger when returning to the
+         * patient picker.
+         */
+        dispatch(nySykmeldingActions.reset())
+    }, [dispatch])
 
     return (
         <div className="p-4 w-[65ch]">

@@ -5,7 +5,6 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { bundledEnv } from '@lib/env'
-import Providers from '@core/providers/Providers'
 
 import Preload from '../preload'
 
@@ -30,9 +29,7 @@ export default function StandaloneLayout({ children }: LayoutProps<'/'>): ReactE
                 />
             </head>
             <Preload />
-            <body>
-                <Providers mode="HelseID">{children}</Providers>
-            </body>
+            <body>{children}</body>
         </html>
     )
 }
