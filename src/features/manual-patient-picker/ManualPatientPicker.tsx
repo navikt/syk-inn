@@ -8,8 +8,10 @@ import Link from 'next/link'
 import { PersonByIdentDocument } from '@queries'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
-import ManualPatientSearch from '@features/manual-patient-picker/ManualPatientSearch'
 import { setPersistentUser } from '@data-layer/helseid/persistent-user/persistent-user'
+
+import ManualPatientSearch from './ManualPatientSearch'
+import ManualPatientDrafts from './ManualPatientDrafts'
 
 function ManualPatientPicker(): ReactElement {
     const dispatch = useAppDispatch()
@@ -52,14 +54,17 @@ function ManualPatientPicker(): ReactElement {
                 </div>
             )}
             {!loading && data?.person != null && (
-                <LinkCard className="mt-4">
-                    <LinkCard.Title>
-                        <LinkCard.Anchor asChild>
-                            <Link href="/ny">Opprett sykmelding for {data.person.navn}</Link>
-                        </LinkCard.Anchor>
-                        <LinkCard.Description>{data.person.ident}</LinkCard.Description>
-                    </LinkCard.Title>
-                </LinkCard>
+                <>
+                    <LinkCard className="mt-4">
+                        <LinkCard.Title>
+                            <LinkCard.Anchor asChild>
+                                <Link href="/ny">Opprett sykmelding for {data.person.navn}</Link>
+                            </LinkCard.Anchor>
+                            <LinkCard.Description>{data.person.ident}</LinkCard.Description>
+                        </LinkCard.Title>
+                    </LinkCard>
+                    <ManualPatientDrafts ident={data.person.ident} />
+                </>
             )}
             {!loading && !error && data != null && data.person == null && (
                 <Alert variant="warning" className="mt-4">
