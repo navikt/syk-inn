@@ -19,6 +19,7 @@ import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/
 import { AutoPatient } from '@core/redux/reducers/ny-sykmelding/patient'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { ModeProvider } from '@core/providers/Modes'
+import { incrementNonPilotUserLaunch } from '@lib/otel/metrics'
 
 import { NoPractitionerSession, NoValidPatient } from './launched-errors'
 
@@ -103,6 +104,7 @@ async function getRootFhirData(): Promise<RootFhirData> {
 
         if (!getFlag('PILOT_USER', toggles)) {
             metrics.smartLaunchesTotal.inc({ hpr: hpr })
+            incrementNonPilotUserLaunch(hpr)
             logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
 
             redirect('/fhir/error/non-pilot-user')

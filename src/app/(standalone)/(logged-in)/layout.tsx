@@ -19,6 +19,7 @@ import Providers from '@core/providers/Providers'
 import HydratePersistedUserFromSession from '@data-layer/helseid/persistent-user/HydratePersistedUserFromSession'
 import { ModeProvider } from '@core/providers/Modes'
 import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
+import { incrementFhirLaunch } from '@lib/otel/metrics'
 
 import { NoBehandlerError } from './start-errors'
 
@@ -30,6 +31,8 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
     }
 
     const [toggles, behandler] = await spanServerAsync('OpenLayout toggles', async () => {
+        incrementFhirLaunch()
+
         const userInfo = await getHelseIdBehandler()
         if (userInfo?.hpr == null) {
             return [await getUserlessToggles(), userInfo]
