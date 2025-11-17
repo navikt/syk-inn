@@ -18,6 +18,7 @@ import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
 import { toReadableDate, toReadableDatePeriod, toReadablePeriodLength } from '@lib/date'
 import { PasientDocument } from '@queries'
 import { NySykmeldingUtdypendeSporsmal } from '@core/redux/reducers/ny-sykmelding/form'
+import { useMode } from '@core/providers/Modes'
 
 import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
 import { useFormStep } from '../steps/useFormStep'
@@ -32,6 +33,7 @@ type Props = {
 }
 
 function FormValuesSummary({ className }: Props): ReactElement {
+    const mode = useMode()
     const [, setStep] = useFormStep()
     const { pasient, values } = useAppSelector((state) => state.nySykmelding)
     const { draftLoading } = useFormValuesSummaryDraft(values)
@@ -84,7 +86,8 @@ function FormValuesSummary({ className }: Props): ReactElement {
                             </BodyShort>
                             <BodyShort>
                                 Du kan begynne utfyllingen på nytt ved å gå tilbake til{' '}
-                                <AkselNextLink href="/fhir">pasientens oversikt</AkselNextLink> og begynne på nytt.
+                                <AkselNextLink href={mode.paths.root}>pasientens oversikt</AkselNextLink> og begynne på
+                                nytt.
                             </BodyShort>
                         </Alert>
                     </FormSummary.Answers>

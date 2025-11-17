@@ -21,6 +21,8 @@ export function useMode(): { type: ModeType; paths: ModePaths } {
 type ModePaths = {
     graphql: `/${string}`
     root: `/${string}` | '/'
+    dupliser: (id: string) => `/${string}`
+    forleng: (id: string) => `/${string}`
     kvittering: (id: string) => `/${string}`
     pdf: (id: string) => `/${string}`
 }
@@ -31,6 +33,8 @@ export function createModePaths(mode: ModeType): ModePaths {
             return {
                 root: '/fhir',
                 graphql: '/fhir/graphql',
+                dupliser: (id) => `/fhir/dupliser/${id}`,
+                forleng: (id) => `/fhir/forleng/${id}`,
                 kvittering: (id) => `/fhir/kvittering/${id}`,
                 pdf: (id) => `/fhir/pdf/${id}`,
             }
@@ -38,6 +42,8 @@ export function createModePaths(mode: ModeType): ModePaths {
             return {
                 root: '/',
                 graphql: '/graphql',
+                dupliser: (id) => `/dupliser/${id}`,
+                forleng: (id) => `/forleng/${id}`,
                 kvittering: (id) => `/kvittering/${id}`,
                 pdf: (id) => `/pdf/${id}`,
             }

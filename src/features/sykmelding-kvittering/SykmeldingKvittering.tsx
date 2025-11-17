@@ -89,7 +89,7 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
                     <Skeleton variant="rounded" width={102} height={32} />
                 ) : sykmelding ? (
                     <SlowNextLinkButton
-                        href={`/fhir/dupliser/${sykmelding.sykmeldingId}`}
+                        href={mode.paths.dupliser(sykmelding.sykmeldingId)}
                         icon={<TabsAddIcon aria-hidden />}
                         variant="tertiary"
                         size="small"
