@@ -1,6 +1,4 @@
-// @ts-expect-error Why no work
 import nextVitals from 'eslint-config-next/core-web-vitals'
-// @ts-expect-error Why no work
 import nextTs from 'eslint-config-next/typescript'
 import importAlias from '@limegrass/eslint-plugin-import-alias'
 import { defineConfig } from 'eslint/config'
