@@ -15,8 +15,8 @@ function BehandlerOrganisasjonsnummerAnswer({ contextOrganisasjonsnummer }: Prop
     const mode = useMode()
     const endreRef = useRef<HTMLButtonElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
-    const [override, setOverride] = useState(contextOrganisasjonsnummer == null)
     const manualOrgnummer = useAppSelector((state) => state.nySykmelding.behandler?.organisasjonsnummer ?? null)
+    const [override, setOverride] = useState(contextOrganisasjonsnummer == null && manualOrgnummer == null)
 
     if (override) {
         return (
@@ -110,7 +110,7 @@ function ManualOrganisasjonsnummerForm({
                 <Button
                     className="h-fit mt-8"
                     icon={<CheckmarkHeavyIcon title="Bruk organisasjonsnummer" />}
-                    type="button"
+                    type="submit"
                     variant="secondary-neutral"
                 />
             </form>

@@ -15,8 +15,8 @@ function BehandlerTelefonnummerAnswer({ contextTelefonnummer }: Props): ReactEle
     const mode = useMode()
     const endreRef = useRef<HTMLButtonElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
-    const [override, setOverride] = useState(contextTelefonnummer == null)
     const manualTelefonnummer = useAppSelector((state) => state.nySykmelding.behandler?.legekontorTlf ?? null)
+    const [override, setOverride] = useState(contextTelefonnummer == null && manualTelefonnummer == null)
 
     if (override) {
         return (
@@ -108,7 +108,7 @@ function ManualTelefonnummerForm({
                 <Button
                     className="h-fit mt-8"
                     icon={<CheckmarkHeavyIcon title="Bruk telefonnummer" />}
-                    type="button"
+                    type="submit"
                     variant="secondary-neutral"
                 />
             </form>
