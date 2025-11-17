@@ -32,6 +32,11 @@ import { FhirGraphqlContext } from '@data-layer/fhir/fhir-graphql-context'
 import { getHasRequestedAccessToSykmeldinger } from '@core/session/session'
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
 import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
+import {
+    calculateTotalLengthOfSykmeldinger,
+    filterSykmeldingerWithinDaysGap,
+    mapSykInnApiSykmeldingerToDateRanges,
+} from '@data-layer/common/continuous-sykefravaer-utils'
 
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
@@ -375,6 +380,29 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             }
 
             return true
+        },
+        utdypendeSporsmal: async (pasient, _args, { hpr }) => {
+            const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(pasient.ident, hpr)
+            if ('errorType' in sykInnSykmeldinger) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
+
+            const sykmeldinger = R.pipe(
+                sykInnSykmeldinger,
+                R.filter((it) => showRedactedFlag ?? it.kind !== 'redacted'),
+            )
+
+            const sykmeldingDateRanges = mapSykInnApiSykmeldingerToDateRanges(sykmeldinger)
+            const totalDays = R.pipe(
+                sykmeldingDateRanges,
+                filterSykmeldingerWithinDaysGap,
+                calculateTotalLengthOfSykmeldinger,
+            )
+            const latestTom = R.sortBy(sykmeldingDateRanges, [(it) => it.latestTom, 'desc'])[0]?.latestTom ?? null
+
+            return { days: totalDays, latestTom }
         },
     },
     Konsultasjon: {

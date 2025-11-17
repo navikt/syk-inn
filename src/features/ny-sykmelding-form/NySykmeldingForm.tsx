@@ -43,6 +43,7 @@ type NySykmeldingFormProps = {
      */
     initialFom?: string
     context: {
+        utdypendeSporsmal: { days: number; latestTom?: string | null } | null | undefined
         initialFom?: string
         previousSykmeldingDateRange?: SykmeldingDateRange[]
     }
