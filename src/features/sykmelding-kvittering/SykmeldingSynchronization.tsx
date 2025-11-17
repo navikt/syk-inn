@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react'
-import { Alert, Button, Heading, Skeleton } from '@navikt/ds-react'
+import { Alert, BodyShort, Button, Skeleton } from '@navikt/ds-react'
 import { useMutation } from '@apollo/client/react'
 
 import { DocumentStatusSuccess } from '@features/sykmelding-kvittering/DocumentStatus'
@@ -28,18 +28,11 @@ export function SykmeldingSynchronization({ sykmeldingId }: Props): ReactElement
     if (error || data?.synchronizeSykmelding.documentStatus === 'ERRORED') {
         return (
             <div className="max-w-prose">
-                <div className="my-4">
-                    <Heading size="small" level="3">
-                        Kunne ikke skrive sykmeldingen til EPJ-systemet.
-                    </Heading>
-                </div>
+                <Alert variant="error">Kunne ikke lagre sykmeldingen til EPJ-systemet ditt</Alert>
 
-                <div className="mt-4">
-                    <Alert variant="error">Ukjent feil. Dersom problemet vedvarer, ta kontakt.</Alert>
-                </div>
-
-                <div className="mt-2">
-                    <Button variant="secondary-neutral" onClick={() => mutation()}>
+                <div className="mt-2 flex justify-between items-center px-4">
+                    <BodyShort>Ukjent feil. Dersom problemet vedvarer, ta kontakt.</BodyShort>
+                    <Button variant="secondary-neutral" onClick={() => mutation()} size="small">
                         Prøv igjen
                     </Button>
                 </div>
