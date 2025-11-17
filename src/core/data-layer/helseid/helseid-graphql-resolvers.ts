@@ -1,4 +1,6 @@
 import { GraphQLError } from 'graphql/error'
+import { logger } from '@navikt/next-logger'
+import * as R from 'remeda'
 
 import { QueriedPerson, Resolvers } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
@@ -15,6 +17,9 @@ import {
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { getFlag, getUserToggles } from '@core/toggles/unleash'
+import { DraftValuesSchema } from '@data-layer/draft/draft-schema'
+import { getDraftClient } from '@data-layer/draft/draft-client'
+import { NoHelseIdCurrentPatient } from '@data-layer/helseid/error/Errors'
 
 import { HelseIdGraphqlContext } from './helseid-graphql-context'
 
@@ -28,7 +33,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
                 orgnummer: null,
             }
         },
-        konsultasjon: () => null,
+        konsultasjon: () => ({ diagnoser: [] }),
         pasient: () => null,
         sykmelding: async (_, { id: sykmeldingId }, { hpr }) => {
             const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
@@ -46,8 +51,29 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             return sykInnApiSykmeldingToResolverSykmelding(sykmelding, 'PENDING')
         },
         sykmeldinger: () => null,
-        draft: () => null,
-        drafts: () => null,
+        draft: async (_, { draftId }, { patientIdent, hpr }) => {
+            if (patientIdent == null) throw NoHelseIdCurrentPatient()
+
+            const draftClient = await getDraftClient()
+            const draft = await draftClient.getDraft(draftId, { hpr, ident: patientIdent })
+
+            if (draft == null) return null
+
+            return {
+                draftId,
+                values: draft.values,
+                lastUpdated: draft.lastUpdated,
+            }
+        },
+        drafts: async (_, _args, { patientIdent, hpr }) => {
+            if (patientIdent == null) throw NoHelseIdCurrentPatient()
+
+            const draftClient = await getDraftClient()
+
+            const allDrafts = await draftClient.getDrafts({ hpr, ident: patientIdent })
+
+            return R.sortBy(allDrafts, [(it) => it.lastUpdated, 'desc'])
+        },
         person: async (_, { ident }) => {
             if (!ident) throw new GraphQLError('MISSING_IDENT')
 
@@ -68,8 +94,40 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         ...commonQueryResolvers,
     },
     Mutation: {
-        saveDraft: () => raise('Not Implemented'),
-        deleteDraft: () => raise('Not Implemented'),
+        saveDraft: async (_, { draftId, values }, { patientIdent, hpr }) => {
+            if (patientIdent == null) throw NoHelseIdCurrentPatient()
+
+            const parsedValues = DraftValuesSchema.safeParse(values)
+            if (!parsedValues.success) {
+                logger.error(
+                    new Error('Parsed values are not valid according to DraftValuesSchema', {
+                        cause: parsedValues.error,
+                    }),
+                )
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const draftClient = await getDraftClient()
+            await draftClient.saveDraft(draftId, { hpr, ident: patientIdent }, parsedValues.data)
+
+            logger.info(`Saved draft ${draftId} to draft client`)
+
+            return {
+                draftId,
+                values,
+                lastUpdated: new Date().toISOString(),
+            }
+        },
+        deleteDraft: async (_, { draftId }, { patientIdent, hpr }) => {
+            if (patientIdent == null) throw NoHelseIdCurrentPatient()
+
+            const draftClient = await getDraftClient()
+            await draftClient.deleteDraft(draftId, { hpr, ident: patientIdent })
+
+            logger.info(`Deleted draft ${draftId} from draft client`)
+
+            return true
+        },
         opprettSykmelding: async (_, { meta, values, force }, { hpr, patientIdent }) => {
             const opprettMeta: OpprettSykmeldingMeta = {
                 source: `syk-inn (HelseID)`,

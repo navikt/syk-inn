@@ -16,10 +16,7 @@ import { launchWithMock } from './actions/standalone-actions'
 import { fillOrgnummer, fillTelefonnummer, searchPerson, startNewSykmelding } from './actions/standalone-user-actions'
 import { verifySignerendeBehandler } from './actions/standalone-user-verifications'
 
-/**
- * Will fail until we implement drafts in standalone
- */
-test.fail('simple - 100% sykmelding', async ({ page }) => {
+test('simple - 100% sykmelding', async ({ page }) => {
     await launchWithMock('empty', {
         behandler: 'Johan Johansson',
     })(page)
