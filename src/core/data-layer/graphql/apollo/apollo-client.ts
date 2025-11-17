@@ -38,10 +38,10 @@ const inferOperationName = (body: string | undefined): string => {
     }
 }
 
-export function makeApolloClient(store: AppStore, mode: ModeType) {
+export function makeApolloClient(store: AppStore, mode: ModeType, path: `/${string}`) {
     return (): ApolloClient => {
         const httpLink = new HttpLink({
-            uri: pathWithBasePath(mode === 'FHIR' ? '/fhir/graphql' : '/graphql'),
+            uri: pathWithBasePath(path),
             fetch: (input, options) => {
                 const operationName = inferOperationName(options?.body as string | undefined)
 

@@ -18,6 +18,7 @@ import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { AutoPatient } from '@core/redux/reducers/ny-sykmelding/patient'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
+import { ModeProvider } from '@core/providers/Modes'
 
 import { NoPractitionerSession, NoValidPatient } from './launched-errors'
 
@@ -49,15 +50,17 @@ async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<React
     }
 
     return (
-        <Providers mode="FHIR" patient={rootFhirData.pasient}>
-            <ToggleProvider toggles={toToggleMap(rootFhirData.toggles)}>
-                {(isLocal || isDemo) && <DemoWarning />}
-                <MultiUserQueryStateToSessionStorageOnInit />
-                {children}
-                <LoggedOutWarning />
-                {(isLocal || isDemo) && <LazyDevTools />}
-            </ToggleProvider>
-        </Providers>
+        <ModeProvider mode="FHIR">
+            <Providers patient={rootFhirData.pasient}>
+                <ToggleProvider toggles={toToggleMap(rootFhirData.toggles)}>
+                    {(isLocal || isDemo) && <DemoWarning />}
+                    <MultiUserQueryStateToSessionStorageOnInit />
+                    {children}
+                    <LoggedOutWarning />
+                    {(isLocal || isDemo) && <LazyDevTools />}
+                </ToggleProvider>
+            </Providers>
+        </ModeProvider>
     )
 }
 

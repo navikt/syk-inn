@@ -96,14 +96,13 @@ export function useOpprettSykmeldingMutation(
                 // Don't redirect on rule hits or missing person
                 if (createResult.data.opprettSykmelding.__typename !== 'SykmeldingFull') return
 
-                if (mode === 'FHIR') {
+                // TODO: Should we fix history for standalone also?
+                if (mode.type === 'FHIR') {
                     // Nuke the history, so that browser back takes the user to a fresh form
                     window.history.replaceState(null, '', pathWithBasePath('/fhir'))
                 }
 
-                const kvitteringUrl = `${mode === 'FHIR' ? '/fhir/' : '/'}kvittering/${createResult.data.opprettSykmelding.sykmeldingId}`
-
-                router.push(kvitteringUrl, {
+                router.push(mode.paths.kvittering(createResult.data.opprettSykmelding.sykmeldingId), {
                     scroll: true,
                 })
             })

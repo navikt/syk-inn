@@ -43,7 +43,7 @@ function BehandlerOrganisasjonsnummerAnswer({ contextOrganisasjonsnummer }: Prop
             ) : (
                 <FormSummary.Value>{contextOrganisasjonsnummer}</FormSummary.Value>
             )}
-            {mode !== 'FHIR' && (
+            {mode.type !== 'FHIR' && (
                 <Button
                     ref={endreRef}
                     variant="secondary-neutral"

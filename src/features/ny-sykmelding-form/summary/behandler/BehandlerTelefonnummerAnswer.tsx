@@ -43,7 +43,7 @@ function BehandlerTelefonnummerAnswer({ contextTelefonnummer }: Props): ReactEle
             ) : (
                 <FormSummary.Value>{contextTelefonnummer}</FormSummary.Value>
             )}
-            {mode !== 'FHIR' && (
+            {mode.type !== 'FHIR' && (
                 <Button
                     ref={endreRef}
                     variant="secondary-neutral"

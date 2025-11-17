@@ -29,21 +29,21 @@ function LoggedOutWarning(): ReactElement | null {
         >
             <Modal.Body>
                 <BodyLong spacing>
-                    {mode === 'FHIR'
+                    {mode.type === 'FHIR'
                         ? 'Du har blitt logget ut av sykmeldingsløsningen for denne pasienten.'
                         : 'Du har blitt logget ut av sykmeldingsløsningen.'}
                 </BodyLong>
                 <BodyLong>
-                    {mode === 'FHIR'
+                    {mode.type === 'FHIR'
                         ? 'Du kan prøve å laste siden på nytt, dersom dette ikke fungerer, må du må gjenåpne applikasjonen fra ditt journalsystem.'
                         : 'Du kan laste siden på nytt for å logge inn igjen.'}
                 </BodyLong>
             </Modal.Body>
             <Modal.Footer>
                 <Button type="button" variant="secondary-neutral" onClick={() => window.location.reload()}>
-                    {mode === 'FHIR' ? 'Last siden på nytt' : 'Logg inn igjen'}
+                    {mode.type === 'FHIR' ? 'Last siden på nytt' : 'Logg inn igjen'}
                 </Button>
-                {(isLocal || isDemo) && mode === 'FHIR' && (
+                {(isLocal || isDemo) && mode.type === 'FHIR' && (
                     <Button
                         type="button"
                         as="a"

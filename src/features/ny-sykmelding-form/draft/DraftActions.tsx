@@ -25,8 +25,7 @@ export function LagreDraftButton(): ReactElement {
             onClick={async () => {
                 await draft.saveDraft()
 
-                const redirectPath = mode === 'FHIR' ? '/fhir' : '/'
-                router.replace(redirectPath)
+                router.replace(mode.paths.root)
             }}
             loading={draft.result.loading}
             shortcut={{
@@ -66,8 +65,7 @@ export function ForkastDraftButton({
             onClick={() =>
                 spanBrowserAsync('DeleteDraft(forkast).mutation', async () => {
                     const redirect = (): void => {
-                        const redirectPath = mode === 'FHIR' ? '/fhir' : '/'
-                        router.replace(redirectPath, { scroll: true })
+                        router.replace(mode.paths.root, { scroll: true })
                     }
 
                     onForkast?.()
