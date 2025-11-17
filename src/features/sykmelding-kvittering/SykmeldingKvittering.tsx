@@ -79,7 +79,10 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
             </div>
             <div className="flex justify-between mt-8 mb-4">
                 {data?.sykmelding ? (
-                    <AkselLink href={pathWithBasePath(`/fhir/pdf/${data.sykmelding.sykmeldingId}`)} target="_blank">
+                    <AkselLink
+                        href={pathWithBasePath(`${mode === 'FHIR' ? '/fhir' : ''}/pdf/${data.sykmelding.sykmeldingId}`)}
+                        target="_blank"
+                    >
                         Se innsendt dokument
                     </AkselLink>
                 ) : (

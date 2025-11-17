@@ -13,7 +13,7 @@ import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
  */
 export async function GET(
     request: NextRequest,
-    { params }: { params: Promise<{ sykmeldingId: string }> },
+    { params }: RouteContext<'/fhir/pdf/[sykmeldingId]'>,
 ): Promise<Response> {
     const client = await getReadyClient()
     if ('error' in client) {
