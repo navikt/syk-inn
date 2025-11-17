@@ -15,6 +15,7 @@ import SykmeldingValues from '@components/sykmelding/SykmeldingValues'
 import { cn } from '@lib/tw'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { useAppDispatch } from '@core/redux/hooks'
+import { useMode } from '@core/providers/Modes'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 import { SykmeldingSynchronization } from './SykmeldingSynchronization'
@@ -47,6 +48,7 @@ function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
 }
 
 function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string }): ReactElement {
+    const mode = useMode()
     const { loading, data, error, refetch } = useQuery(SykmeldingByIdDocument, { variables: { id: sykmeldingId } })
     const sykmelding = data?.sykmelding ?? null
 
@@ -99,9 +101,15 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
             {error && <SykmeldingKvitteringError error={error ?? { message: 'Test' }} refetch={refetch} />}
             {!error && <SykmeldingKvitteringValues loading={loading} sykmelding={sykmelding} />}
             <div className="mt-8 flex justify-end">
-                <Button variant="primary" size="small" as={AssableNextLink} href="/fhir" className="underline">
-                    Tilbake til pasientoversikt
-                </Button>
+                {mode === 'FHIR' ? (
+                    <Button variant="primary" size="small" as={AssableNextLink} href="/fhir" className="underline">
+                        Tilbake til pasientoversikt
+                    </Button>
+                ) : (
+                    <Button variant="primary" size="small" as={AssableNextLink} href="/" className="underline">
+                        Tilbake til pasientsøk
+                    </Button>
+                )}
             </div>
         </>
     )

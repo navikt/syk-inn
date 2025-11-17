@@ -128,11 +128,13 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
 
             return true
         },
-        opprettSykmelding: async (_, { meta, values, force }, { hpr, patientIdent }) => {
+        opprettSykmelding: async (_, { draftId, meta, values, force }, { hpr, patientIdent }) => {
+            if (patientIdent == null) throw NoHelseIdCurrentPatient()
+
             const opprettMeta: OpprettSykmeldingMeta = {
                 source: `syk-inn (HelseID)`,
                 sykmelderHpr: hpr,
-                pasientIdent: patientIdent ?? raise('Unable to submit without active patient'),
+                pasientIdent: patientIdent,
                 legekontorOrgnr: meta.orgnummer ?? raise('Unable to submit without legekontorOrgnr'),
                 legekontorTlf: meta.legekontorTlf ?? raise('Unable to submit without legekontorTlf'),
             }
@@ -163,7 +165,9 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            // TODO: Delete from draft
+            // Delete the draft after successful creation
+            const draftClient = await getDraftClient()
+            await draftClient.deleteDraft(draftId, { hpr: hpr, ident: patientIdent })
 
             return sykInnApiSykmeldingToResolverSykmeldingFull(result, 'PENDING')
         },

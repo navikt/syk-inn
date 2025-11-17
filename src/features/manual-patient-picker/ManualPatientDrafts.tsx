@@ -24,10 +24,10 @@ function ManualPatientDrafts({ ident }: Props): ReactElement {
 
     return (
         <section className="mt-4" aria-labelledby="utkast-heading">
-            <Heading level="3" size="medium" id="utkast-heading">
+            <Heading level="3" size="medium" id="utkast-heading" spacing>
                 Utkast
             </Heading>
-            {draftsQuery.loading && <Skeleton className="mt-4" width="100%" height={90} variant="rounded" />}
+            {draftsQuery.loading && <Skeleton width="100%" height={90} variant="rounded" />}
             {!draftsQuery.loading && hasDrafts
                 ? drafts.map((draft) => <ContinueDraftCard key={draft.draftId} draft={draft} ident={ident} />)
                 : null}
@@ -40,7 +40,7 @@ function ContinueDraftCard({ draft, ident }: { draft: DraftFragment; ident: stri
     const values = safeParseDraft(draft.draftId, draft.values)
 
     return (
-        <LinkCard className="mt-4" size="small">
+        <LinkCard size="small">
             <LinkCard.Title>
                 <LinkCard.Anchor asChild>
                     <Link href={`/draft/${draft.draftId}`}>Fortsett utkast for {ident}</Link>
@@ -49,9 +49,11 @@ function ContinueDraftCard({ draft, ident }: { draft: DraftFragment; ident: stri
                     <Tag size="small" variant="neutral">
                         {draftDiagnoseText(values?.hoveddiagnose)}
                     </Tag>
-                    <Tag size="small" variant="neutral">
-                        {draftAktivitetText(values?.perioder)}
-                    </Tag>
+                    {draftAktivitetText(values?.perioder) != null && (
+                        <Tag size="small" variant="neutral">
+                            {draftAktivitetText(values?.perioder)}
+                        </Tag>
+                    )}
                     {draftArbeidsforholdText(values?.arbeidsforhold) != null && (
                         <Tag size="small" variant="neutral">
                             {draftArbeidsforholdText(values?.arbeidsforhold)}
