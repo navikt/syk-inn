@@ -260,10 +260,14 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             return true
         },
-        opprettSykmelding: async (_, { draftId, meta, values, force }, { client, hpr }) => {
+        opprettSykmelding: async (
+            _,
+            { draftId, values, force },
+            { client, hpr, patientIdent: contextPatientIdent },
+        ) => {
             const { pasientIdent, legekontorOrgnr, legekontorTlf } = await getAllSykmeldingMetaFromFhir(client)
 
-            if (meta.pasientIdent !== pasientIdent) {
+            if (contextPatientIdent !== pasientIdent) {
                 throw new GraphQLError('PASIENT_IDENT_MISMATCH')
             }
 

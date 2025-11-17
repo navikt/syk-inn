@@ -70,11 +70,11 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
     Mutation: {
         saveDraft: () => raise('Not Implemented'),
         deleteDraft: () => raise('Not Implemented'),
-        opprettSykmelding: async (_, { meta, values, force }, { hpr }) => {
+        opprettSykmelding: async (_, { meta, values, force }, { hpr, patientIdent }) => {
             const opprettMeta: OpprettSykmeldingMeta = {
                 source: `syk-inn (HelseID)`,
                 sykmelderHpr: hpr,
-                pasientIdent: meta.pasientIdent,
+                pasientIdent: patientIdent ?? raise('Unable to submit without active patient'),
                 legekontorOrgnr: meta.orgnummer ?? raise('Unable to submit without legekontorOrgnr'),
                 legekontorTlf: meta.legekontorTlf ?? raise('Unable to submit without legekontorTlf'),
             }

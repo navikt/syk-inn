@@ -14,6 +14,7 @@ import { ModeType } from '@core/providers/Modes'
 import { multiUserLink } from '@data-layer/fhir/multi-user/multi-user-apollo-link'
 
 import { createInMemoryCache } from './apollo-client-cache'
+import { createCurrentPatientLink } from './current-patient-link'
 
 const createErrorLink = (store: AppStore): ApolloLink =>
     new ErrorLink(({ error }) => {
@@ -58,11 +59,14 @@ export function makeApolloClient(store: AppStore, mode: ModeType) {
             delay: { initial: 300, jitter: true },
             attempts: { max: 3 },
         })
+        const currentPatientLink = createCurrentPatientLink(store)
 
         return new ApolloClient({
             cache: createInMemoryCache(),
             link: ApolloLink.from(
-                [errorLink, failingDevLink, retryLink, fhirMultiUserLink, httpLink].filter(R.isNonNull),
+                [errorLink, failingDevLink, retryLink, currentPatientLink, fhirMultiUserLink, httpLink].filter(
+                    R.isNonNull,
+                ),
             ),
         })
     }

@@ -1,5 +1,4 @@
 import { test } from '@playwright/test'
-
 import { OpprettSykmeldingDocument } from '@queries'
 
 import {
@@ -45,7 +44,7 @@ test('Submit sykmelding with utdypende spørsmål', async ({ page }) => {
     const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },

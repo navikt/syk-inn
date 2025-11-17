@@ -63,14 +63,8 @@ export function useOpprettSykmeldingMutation(
     const opprettSykmelding = withSpanBrowserAsync('submitSykmelding', async (force?: true) => {
         if (isLocal || isCloud) teamLogger.info(`(Client) Submitting values: ${JSON.stringify(formState)}`)
 
-        const pasientIdent = formState.pasient?.ident
-        if (pasientIdent == null) {
-            raise('Unable to submit sykmelding without pasient ident')
-        }
-
         try {
             const meta: OpprettSykmeldingMetaInput = {
-                pasientIdent: pasientIdent,
                 orgnummer: formState.behandler?.organisasjonsnummer ?? null,
                 legekontorTlf: formState.behandler?.legekontorTlf ?? null,
             }

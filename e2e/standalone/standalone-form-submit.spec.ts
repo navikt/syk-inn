@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-
 import { OpprettSykmeldingDocument } from '@queries'
 
 import {
@@ -53,7 +52,6 @@ test.fail('simple - 100% sykmelding', async ({ page }) => {
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
         meta: {
-            pasientIdent: '21037712323',
             orgnummer: '112233445',
             legekontorTlf: '+47 99887766',
         },
