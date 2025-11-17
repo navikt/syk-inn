@@ -21,6 +21,17 @@ export function startNewSykmelding(ident: string) {
     }
 }
 
+export function continueDraft(ident: string, nth: number = 0) {
+    return async (page: Page) => {
+        await test.step(`Continue draft for ${ident}`, async () => {
+            const link = page.getByRole('link', { name: new RegExp(`Fortsett utkast for ${ident}`) })
+
+            await expect(link).toBeVisible()
+            await link.nth(nth).click()
+        })
+    }
+}
+
 export function fillOrgnummer(orgnummer: string) {
     return async (page: Page) => {
         await test.step('Fill orgnummer', async () => {

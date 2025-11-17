@@ -13,8 +13,9 @@ type SectionTitle =
     | 'Hoveddiagnose'
     | 'Til NAV'
     | 'Til arbeidsgiver'
-    | 'Svangerskapsrelatert'
-    | 'Yrkesskade'
+    | 'Annen info'
+    | 'Kan skyldes yrkesskade'
+    | 'Dato for yrkesskade'
 
 interface SummarySection {
     name: SectionTitle

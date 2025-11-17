@@ -28,43 +28,45 @@ export async function expectTermToHaveDefinitions(
     term: string,
     definitions: (string | RegExp)[],
 ) {
-    const terms = await page.getByRole('term').all()
+    await test.step(`Verify ${term}`, async () => {
+        const terms = await page.getByRole('term').all()
 
-    let termElement
-    for (const t of terms) {
-        const textContent = await t.textContent()
-        if (term === textContent) {
-            termElement = t
-            break
-        }
-    }
-
-    if (!termElement) {
-        fail(`Term "${term}" not found in the document.`)
-    }
-
-    const definitionElements = await termElement.locator('~ dd').all()
-
-    expect(
-        definitionElements.length,
-        `Found ${definitionElements.length} definitions, expected ${definitions.length} for term "${term}"`,
-    ).toEqual(definitions.length)
-
-    for (const dd of definitionElements) {
-        const definitionText = await dd.textContent()
-        const match = definitions.find((expectedDefinition) => {
-            if (typeof expectedDefinition === 'string') {
-                return definitionText?.includes(expectedDefinition)
-            } else {
-                return definitionText?.match(expectedDefinition)
+        let termElement
+        for (const t of terms) {
+            const textContent = await t.textContent()
+            if (term === textContent) {
+                termElement = t
+                break
             }
-        })
-        if (!match) {
-            fail(
-                `Definition "${definitionText}" for term "${term}" does not match any of the expected definitions: ${definitions}`,
-            )
         }
-    }
+
+        if (!termElement) {
+            fail(`Term "${term}" not found in the document.`)
+        }
+
+        const definitionElements = await termElement.locator('~ dd').all()
+
+        expect(
+            definitionElements.length,
+            `Found ${definitionElements.length} definitions, expected ${definitions.length} for term "${term}"`,
+        ).toEqual(definitions.length)
+
+        for (const dd of definitionElements) {
+            const definitionText = await dd.textContent()
+            const match = definitions.find((expectedDefinition) => {
+                if (typeof expectedDefinition === 'string') {
+                    return definitionText?.includes(expectedDefinition)
+                } else {
+                    return definitionText?.match(expectedDefinition)
+                }
+            })
+            if (!match) {
+                fail(
+                    `Definition "${definitionText}" for term "${term}" does not match any of the expected definitions: ${definitions}`,
+                )
+            }
+        }
+    })
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
