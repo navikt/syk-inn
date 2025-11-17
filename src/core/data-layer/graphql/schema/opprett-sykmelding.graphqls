@@ -9,7 +9,6 @@ type OtherSubmitOutcomes {
 }
 
 input OpprettSykmeldingMetaInput {
-    pasientIdent: String!
     orgnummer: String
     legekontorTlf: String
 }

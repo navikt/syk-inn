@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-
 import { OpprettSykmeldingDocument } from '@queries'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
 
@@ -45,7 +44,7 @@ test('simple - 100% sykmelding', async ({ page }) => {
     const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -102,7 +101,7 @@ test('simple - gradert sykmelding', async ({ page }) => {
     const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -156,7 +155,7 @@ test('simple - submit with only default values', async ({ page }) => {
     const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'L73' },
@@ -211,7 +210,7 @@ test('optional - multiple bidiagnoser', async ({ page }) => {
     const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             hoveddiagnose: { code: 'P74', system: 'ICPC2' },
@@ -269,7 +268,7 @@ test('optional - multiple perioder back to back', async ({ page }) => {
     const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             arbeidsforhold: null,
@@ -330,7 +329,7 @@ test('optional - should pre-fill bidiagnoser from FHIR @feature-toggle', async (
     const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             // Pre filled from FHIR
@@ -428,7 +427,7 @@ test("optional - 'tilbakedatering' is asked and required when fom is 5 days in t
 
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -494,7 +493,7 @@ test('optional - "tilbakedatering" and "Annen årsak" input field is required an
 
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -558,7 +557,7 @@ test('optional - "har flere arbeidsforhold" should be part of payload if checked
     const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -625,7 +624,7 @@ test('optional - when 100%, "arbeidsrelaterte og medisinske årsaker" should be 
     const { request, draftId } = await submitSykmelding()(page)
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -682,7 +681,7 @@ test('summary - "skal skjermes" should be part of payload if checked', async ({ 
 
     await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
         draftId: draftId,
-        meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+        meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
             hoveddiagnose: { system: 'ICPC2', code: 'P74' },
@@ -739,7 +738,7 @@ test.describe('rule outcomes', () => {
         const { request, draftId } = await confirmRuleOutcomeSubmit(confirmationModal)(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
             draftId: draftId,
-            meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+            meta: { orgnummer: null, legekontorTlf: null },
             force: true,
             values: {
                 hoveddiagnose: { system: 'ICPC2', code: 'L73' },
@@ -789,7 +788,7 @@ test.describe('rule outcomes', () => {
         const { request, draftId } = await confirmRuleOutcomeSubmit(confirmationModal)(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
             draftId: draftId,
-            meta: { pasientIdent: '21037712323', orgnummer: null, legekontorTlf: null },
+            meta: { orgnummer: null, legekontorTlf: null },
             force: true,
             values: {
                 hoveddiagnose: { system: 'ICPC2', code: 'L73' },

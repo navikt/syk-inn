@@ -2,16 +2,14 @@
 
 import { logger as pinoLogger } from '@navikt/next-logger'
 import { GraphQLSchema } from 'graphql/type'
-import { createYoga, Plugin, YogaServerOptions } from 'graphql-yoga'
+import { createYoga, Plugin } from 'graphql-yoga'
 import { useOpenTelemetry } from '@envelop/opentelemetry'
 import { trace } from '@opentelemetry/api'
 
 import { bundledEnv, isDemo, isLocal } from '@lib/env'
 import { wait } from '@lib/wait'
 
-interface NextContext {
-    params: Promise<Record<string, string>>
-}
+import { NextContext, YogaContext } from './yoga-utils'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[GraphQL-Yoga]: ' })
 
@@ -19,7 +17,7 @@ export function createGraphQLHandler<UserContext extends Record<string, unknown>
     schema: GraphQLSchema,
     path: '/fhir/graphql' | '/graphql',
     options?: {
-        context?: YogaServerOptions<NextContext, UserContext>['context']
+        context?: YogaContext<UserContext>
         plugins?: Plugin[]
     },
 ): (request: Request, ctx: NextContext) => Response | Promise<Response> {

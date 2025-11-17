@@ -256,7 +256,6 @@ export type OpprettSykmeldingInput = {
 export type OpprettSykmeldingMetaInput = {
     legekontorTlf?: InputMaybe<Scalars['String']['input']>
     orgnummer?: InputMaybe<Scalars['String']['input']>
-    pasientIdent: Scalars['String']['input']
 }
 
 export type OpprettetSykmelding = OtherSubmitOutcomes | RuleOutcome | SykmeldingFull

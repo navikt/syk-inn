@@ -12,6 +12,8 @@ import {
  *  - If there is an active user ID in session storage, it is added as a header to the outgoing request.
  *  - After the request (see: pipe(tap(...))), it will check for any patient ID from the server and put
  *    it in the session storage if there is none already.
+ *
+ *  This is specifically for FHIR multi launch support.
  */
 export const multiUserLink = new ApolloLink((operation, forward) => {
     const activeUser = sessionStorage.getItem(MULTI_USER_SESSION_STORAGE_KEY) ?? null

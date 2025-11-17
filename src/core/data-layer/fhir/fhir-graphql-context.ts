@@ -1,21 +1,27 @@
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { logger } from '@navikt/next-logger'
 import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
+import { YogaInitialContext } from 'graphql-yoga'
 
 import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { NoSmartSession } from '@data-layer/fhir/error/Errors'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
-import { assertIsPilotUser } from '@data-layer/fhir/fhir-graphql-utils'
+import { getCurrentPatientFromExtension } from '@data-layer/graphql/yoga-utils'
+
+import { assertIsPilotUser } from '../common/pilot-user-utils'
+
+const OtelNamespace = 'GraphQL(FHIR).context'
 
 export type FhirGraphqlContext = {
     client: ReadyClient
     practitioner: FhirPractitioner
     hpr: string
+    patientIdent: string | null
 }
 
-export const createFhirResolverContext = async (): Promise<FhirGraphqlContext> => {
-    return spanServerAsync('GraphQL(FHIR).context', async (span) => {
+export const createFhirResolverContext = async (context: YogaInitialContext): Promise<FhirGraphqlContext> => {
+    return spanServerAsync(OtelNamespace, async (span) => {
         const client = await getReadyClient()
 
         if ('error' in client) {
@@ -43,6 +49,9 @@ export const createFhirResolverContext = async (): Promise<FhirGraphqlContext> =
             throw NoSmartSession()
         }
 
-        return { client, practitioner, hpr }
+        const currentPatientIdent = getCurrentPatientFromExtension(context.params.extensions)
+        span.setAttribute(`${OtelNamespace}.hasPatientIdent`, currentPatientIdent != null)
+
+        return { client, practitioner, hpr, patientIdent: currentPatientIdent }
     })
 }

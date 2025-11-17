@@ -1,24 +1,45 @@
-import { validateHelseIdToken } from '@data-layer/helseid/token/validate'
-import { assertIsPilotUser } from '@data-layer/fhir/fhir-graphql-utils'
+import { YogaInitialContext } from 'graphql-yoga'
+
+import { assertIsPilotUser } from '@data-layer/common/pilot-user-utils'
+import { getCurrentPatientFromExtension } from '@data-layer/graphql/yoga-utils'
+import { failSpan, spanServerAsync } from '@lib/otel/server'
 
 import { getHelseIdBehandler } from './helseid-service'
 import { NoHelseIdSession } from './error/Errors'
+import { validateHelseIdToken } from './token/validate'
+
+const OtelNamespace = 'GraphQL(HelseID).context'
 
 export type HelseIdGraphqlContext = {
     hpr: string
     name: string
+    patientIdent: string | null
 }
 
-export const createHelseIdResolverContext = async (): Promise<HelseIdGraphqlContext> => {
-    const validToken = await validateHelseIdToken()
-    if (!validToken) {
-        throw NoHelseIdSession()
-    }
+export const createHelseIdResolverContext = async (context: YogaInitialContext): Promise<HelseIdGraphqlContext> => {
+    return spanServerAsync(OtelNamespace, async (span) => {
+        const validToken = await validateHelseIdToken()
+        if (!validToken) {
+            failSpan(span, 'Invalid or missing HelseID token')
+            throw NoHelseIdSession()
+        }
 
-    const behandler = await getHelseIdBehandler()
-    if (behandler?.hpr == null) throw NoHelseIdSession()
+        const behandler = await getHelseIdBehandler()
+        if (behandler?.hpr == null) {
+            failSpan(span, 'Behandler without HPR (HelseID)')
+            throw NoHelseIdSession()
+        }
 
-    await assertIsPilotUser(behandler.hpr)
+        try {
+            await assertIsPilotUser(behandler.hpr)
+        } catch {
+            failSpan(span, 'Non pilot user in GQL')
+            throw NoHelseIdSession()
+        }
 
-    return { hpr: behandler.hpr, name: behandler.navn }
+        const currentPatientIdent = getCurrentPatientFromExtension(context.params.extensions)
+        span.setAttribute(`${OtelNamespace}.hasPatientIdent`, currentPatientIdent != null)
+
+        return { hpr: behandler.hpr, name: behandler.navn, patientIdent: currentPatientIdent }
+    })
 }
