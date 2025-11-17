@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { logger } from '@navikt/next-logger'
-import { redirect, unauthorized } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 
 import { MOCK_HELSEID_TOKEN_NAME } from '@navikt/helseid-mock-server'
@@ -18,6 +18,7 @@ import DemoWarning from '@components/user-warnings/DemoWarning'
 import Providers from '@core/providers/Providers'
 import HydratePersistedUserFromSession from '@data-layer/helseid/persistent-user/HydratePersistedUserFromSession'
 import { ModeProvider } from '@core/providers/Modes'
+import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
 
 import { NoBehandlerError } from './start-errors'
 
@@ -56,7 +57,7 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
 
     if (!getFlag('PILOT_USER', toggles)) {
         logger.warn(`Non-pilot user has accessed the app, HPR: ${behandler.hpr}`)
-        unauthorized()
+        return <NonPilotUserWarning />
     }
 
     return (
