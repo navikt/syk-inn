@@ -2,6 +2,7 @@ union OpprettetSykmelding = SykmeldingFull | RuleOutcome | OtherSubmitOutcomes
 
 enum OtherSubmitOutcomesEnum {
     PATIENT_NOT_FOUND_IN_PDL
+    MISSING_PRACTITIONER_INFO
 }
 
 type OtherSubmitOutcomes {

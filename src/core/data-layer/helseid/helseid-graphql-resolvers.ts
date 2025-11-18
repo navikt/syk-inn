@@ -131,12 +131,16 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         opprettSykmelding: async (_, { draftId, meta, values, force }, { hpr, patientIdent }) => {
             if (patientIdent == null) throw NoHelseIdCurrentPatient()
 
+            if (meta.orgnummer == null || meta.legekontorTlf == null) {
+                return { cause: 'MISSING_PRACTITIONER_INFO' }
+            }
+
             const opprettMeta: OpprettSykmeldingMeta = {
                 source: `syk-inn (HelseID)`,
                 sykmelderHpr: hpr,
                 pasientIdent: patientIdent,
-                legekontorOrgnr: meta.orgnummer ?? raise('Unable to submit without legekontorOrgnr'),
-                legekontorTlf: meta.legekontorTlf ?? raise('Unable to submit without legekontorTlf'),
+                legekontorOrgnr: meta.orgnummer,
+                legekontorTlf: meta.legekontorTlf,
             }
 
             const payload = resolverInputToSykInnApiPayload(values, opprettMeta)

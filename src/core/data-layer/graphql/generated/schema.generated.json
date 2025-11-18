@@ -1683,6 +1683,12 @@
                 "interfaces": null,
                 "enumValues": [
                     {
+                        "name": "MISSING_PRACTITIONER_INFO",
+                        "description": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "PATIENT_NOT_FOUND_IN_PDL",
                         "description": null,
                         "isDeprecated": false,

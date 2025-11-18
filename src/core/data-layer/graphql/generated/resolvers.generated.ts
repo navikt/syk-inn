@@ -267,7 +267,7 @@ export type OtherSubmitOutcomes = {
     cause: OtherSubmitOutcomesEnum
 }
 
-export type OtherSubmitOutcomesEnum = 'PATIENT_NOT_FOUND_IN_PDL'
+export type OtherSubmitOutcomesEnum = 'MISSING_PRACTITIONER_INFO' | 'PATIENT_NOT_FOUND_IN_PDL'
 
 export type Outcome = {
     __typename?: 'Outcome'
