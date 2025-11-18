@@ -10,6 +10,7 @@ import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { SykmeldingDateRange } from '@data-layer/common/continuous-sykefravaer-utils'
+import { useMode } from '@core/providers/Modes'
 
 import { formValuesToStatePayload } from './form/form-to-state'
 import { UtdypendeSporsmal } from './utfyllende-sporsmal/UtdypendeendeSporsmal'
@@ -82,6 +83,7 @@ function NySykmeldingInnerForm({
     context,
     contextualErrors,
 }: Omit<NySykmeldingFormProps, 'defaultValues'>): ReactElement {
+    const mode = useMode()
     const form = useFormContext()
     const selectedPasient = useAppSelector((state) => state.nySykmelding.pasient)
     const onSubmit = useHandleFormSubmit()
@@ -101,7 +103,7 @@ function NySykmeldingInnerForm({
                 <FormSection title="Diagnose">
                     <DiagnoseSection diagnosePrefillError={contextualErrors.diagnose} />
                     <BidiagnoseSection />
-                    <DiagnoseInfoAlert />
+                    {mode.type === 'FHIR' && <DiagnoseInfoAlert />}
                 </FormSection>
                 <UtdypendeSporsmal previousSykmeldingDateRange={context.previousSykmeldingDateRange} />
                 <FormSection title="Andre spørsmål" hideTitle>
