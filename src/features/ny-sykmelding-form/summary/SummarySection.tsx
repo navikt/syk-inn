@@ -82,7 +82,7 @@ function SummarySection(): ReactElement {
                         value={formState.summary?.skalSkjermes ?? false}
                         onChange={(e) => dispatch(nySykmeldingActions.setSkalSkjermes(e.target.checked))}
                     >
-                        <option>Pasienten skal skjermes for medisinske opplysninger</option>
+                        Pasienten skal skjermes for medisinske opplysninger
                     </Checkbox>
 
                     <div className="flex gap-3">
