@@ -54,9 +54,7 @@ function ScenarioLinksStandalone(): ReactElement {
 }
 
 function createScenarioUrl(scenario: string, behandler: MockBehandlere): string {
-    const helseIdMockUrl = pathWithBasePath(
-        `/api/mocks/helseid/dev/start-user${buildInitParams(behandler as MockBehandlere)}`,
-    )
+    const helseIdMockUrl = `/api/mocks/helseid/dev/start-user${buildInitParams(behandler as MockBehandlere)}`
 
     return pathWithBasePath(`/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(helseIdMockUrl)}`)
 }
