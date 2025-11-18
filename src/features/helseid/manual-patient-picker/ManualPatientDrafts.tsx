@@ -27,11 +27,13 @@ function ManualPatientDrafts({ ident }: Props): ReactElement {
             <Heading level="3" size="medium" id="utkast-heading" spacing>
                 Utkast
             </Heading>
-            {draftsQuery.loading && <Skeleton width="100%" height={90} variant="rounded" />}
-            {!draftsQuery.loading && hasDrafts
-                ? drafts.map((draft) => <ContinueDraftCard key={draft.draftId} draft={draft} ident={ident} />)
-                : null}
-            {!draftsQuery.loading && !hasDrafts && <p>Du har ingen pågående utkast for denne pasienten.</p>}
+            <div className="flex flex-col gap-3">
+                {draftsQuery.loading && <Skeleton width="100%" height={90} variant="rounded" />}
+                {!draftsQuery.loading && hasDrafts
+                    ? drafts.map((draft) => <ContinueDraftCard key={draft.draftId} draft={draft} ident={ident} />)
+                    : null}
+                {!draftsQuery.loading && !hasDrafts && <p>Du har ingen pågående utkast for denne pasienten.</p>}
+            </div>
         </section>
     )
 }
