@@ -9,12 +9,19 @@ class AppMetrics {
     public smartLaunchesTotal = new Counter({
         name: 'syk_inn_smart_launches_total',
         help: 'Total number of smart launches by HPR',
-        labelNames: ['hpr'],
+        labelNames: ['hpr'] as const,
     })
 
-    public smartLaunchesNoHprTotal = new Counter({
-        name: 'syk_inn_smart_launches_no_hpr_total',
-        help: 'Total number of smart launches by users without HPR',
+    public appLoadsTotal = new Counter({
+        name: 'syk_inn_app_load_total',
+        help: 'Total number of smart launches by HPR',
+        labelNames: ['hpr', 'mode'] as const,
+    })
+
+    public appLoadErrorsTotal = new Counter({
+        name: 'syk_inn_app_load_errors_total',
+        help: 'Total number of smart launch errors by HPR',
+        labelNames: ['mode', 'error_type'] as const,
     })
 }
 

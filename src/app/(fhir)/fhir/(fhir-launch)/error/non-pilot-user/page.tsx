@@ -11,11 +11,14 @@ import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { getOrganisasjonstelefonnummerFromFhir } from '@data-layer/fhir/mappers/organization'
 import { getSessionId } from '@core/session/session'
+import metrics from '@lib/prometheus/metrics'
 
 async function Page(): Promise<ReactElement> {
     const sessionId = await getSessionId()
 
     after(async () => {
+        metrics.appLoadErrorsTotal.inc({ mode: 'FHIR', error_type: 'NON_PILOT_USER' })
+
         /**
          * We use this page to dry-run a couple of resources to verify that FHIR is configured and backend is reachable,
          * without exposing any data to the end-user.

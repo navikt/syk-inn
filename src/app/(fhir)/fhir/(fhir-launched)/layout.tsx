@@ -38,9 +38,10 @@ async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<React
             return <NonPilotUserWarning />
         }
 
+        metrics.appLoadErrorsTotal.inc({ mode: 'FHIR', error_type: rootFhirData.error })
+
         switch (rootFhirData.error) {
             case 'NO_HPR':
-                metrics.smartLaunchesNoHprTotal.inc()
                 return <NoValidHPR mode="FHIR" />
             case 'NO_SESSION':
                 return <NoPractitionerSession />
@@ -102,6 +103,7 @@ async function getRootFhirData(): Promise<RootFhirData> {
         const toggles = await spanServerAsync('FHIR.getRootFhirData.toggles', async () => await getUserToggles(hpr))
 
         if (!getFlag('PILOT_USER', toggles)) {
+            // Old deprecated metric
             metrics.smartLaunchesTotal.inc({ hpr: hpr })
             logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
 
@@ -115,6 +117,8 @@ async function getRootFhirData(): Promise<RootFhirData> {
             failSpan(span, 'Patient without valid FNR/DNR')
             return { error: 'NO_PATIENT' }
         }
+
+        metrics.appLoadsTotal.inc({ hpr: hpr, mode: 'FHIR' })
 
         return { pasient: { type: 'auto', navn, ident }, toggles } satisfies RootFhirData
     })

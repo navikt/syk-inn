@@ -3,6 +3,7 @@ import { logger } from '@navikt/next-logger'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 
+import metrics from '@lib/prometheus/metrics'
 import { MOCK_HELSEID_TOKEN_NAME } from '@navikt/helseid-mock-server'
 import HelseIdHeader from '@data-layer/helseid/components/HelseIdHeader'
 import { ToggleProvider } from '@core/toggles/context'
@@ -38,6 +39,8 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
     })
 
     if (behandler == null) {
+        metrics.appLoadErrorsTotal.inc({ mode: 'HelseID', error_type: 'NO_BEHANDLER' })
+
         return (
             <>
                 {(isLocal || isDemo) && <DemoWarning />}
@@ -47,6 +50,8 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
     }
 
     if (behandler.hpr == null) {
+        metrics.appLoadErrorsTotal.inc({ mode: 'HelseID', error_type: 'NO_HPR' })
+
         return (
             <>
                 {(isLocal || isDemo) && <DemoWarning />}
@@ -56,9 +61,13 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
     }
 
     if (!getFlag('PILOT_USER', toggles)) {
+        metrics.appLoadErrorsTotal.inc({ mode: 'HelseID', error_type: 'NON_PILOT_USER' })
+
         logger.warn(`Non-pilot user has accessed the app, HPR: ${behandler.hpr}`)
         return <NonPilotUserWarning />
     }
+
+    metrics.appLoadsTotal.inc({ hpr: behandler.hpr, mode: 'HelseID' })
 
     return (
         <ModeProvider mode="HelseID">
