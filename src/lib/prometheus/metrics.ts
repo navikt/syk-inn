@@ -6,12 +6,6 @@ class AppMetrics {
         collectDefaultMetrics()
     }
 
-    public smartLaunchesTotal = new Counter({
-        name: 'syk_inn_smart_launches_total',
-        help: 'Total number of smart launches by HPR',
-        labelNames: ['hpr'] as const,
-    })
-
     public appLoadsTotal = new Counter({
         name: 'syk_inn_app_load_total',
         help: 'Total number of smart launches by HPR',

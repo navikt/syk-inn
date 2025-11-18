@@ -103,8 +103,6 @@ async function getRootFhirData(): Promise<RootFhirData> {
         const toggles = await spanServerAsync('FHIR.getRootFhirData.toggles', async () => await getUserToggles(hpr))
 
         if (!getFlag('PILOT_USER', toggles)) {
-            // Old deprecated metric
-            metrics.smartLaunchesTotal.inc({ hpr: hpr })
             logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
 
             redirect('/fhir/error/non-pilot-user')
