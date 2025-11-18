@@ -8,7 +8,14 @@ const nextConfig: NextConfig = {
     assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
     transpilePackages: ['@navikt/fhir-mock-server', '@navikt/helseid-mock-server'],
-    serverExternalPackages: ['@navikt/next-logger', 'next-logger', 'pino', 'pino-socket', '@whatwg-node'],
+    serverExternalPackages: [
+        '@navikt/next-logger',
+        'next-logger',
+        'pino',
+        'pino-socket',
+        '@whatwg-node',
+        'prom-client',
+    ],
     // NextJS module tracer weridly doesn't include this direct dependency of Pino
     outputFileTracingIncludes: {
         '/': ['real-require'],
