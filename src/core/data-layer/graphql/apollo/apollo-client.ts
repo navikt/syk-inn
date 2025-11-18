@@ -49,7 +49,7 @@ export function makeApolloClient(store: AppStore, mode: ModeType, path: `/${stri
                     options.signal = undefined
                 }
 
-                return spanBrowserAsync(`GQL Fetch: ${operationName}`, async () => fetch(input, options))
+                return spanBrowserAsync(`GQL Fetch (${mode}): ${operationName}`, async () => fetch(input, options))
             },
         })
 
