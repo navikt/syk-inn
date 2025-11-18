@@ -60,7 +60,7 @@ export function useOpprettSykmeldingMutation(
         },
     })
 
-    const opprettSykmelding = withSpanBrowserAsync('submitSykmelding', async (force?: true) => {
+    const opprettSykmelding = withSpanBrowserAsync('OpprettSykmelding.submitSykmelding', async (force?: true) => {
         if (isLocal || isCloud) teamLogger.info(`(Client) Submitting values: ${JSON.stringify(formState)}`)
 
         try {

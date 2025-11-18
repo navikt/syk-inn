@@ -7,6 +7,7 @@ import { AnimatePresence } from 'motion/react'
 import { useMode } from '@core/providers/Modes'
 import { pathWithBasePath } from '@lib/url'
 import { SimpleReveal } from '@components/animation/Reveal'
+import { spanBrowserAsync } from '@lib/otel/browser'
 
 type Props = {
     sykmeldingId: string
@@ -59,21 +60,23 @@ export function DownloadPdfButton({ sykmeldingId }: Props): ReactElement {
 }
 
 async function downloadPdf(url: string, fileName: string): Promise<'ok' | { error: string }> {
-    const res = await fetch(url)
+    return spanBrowserAsync('DownloadPdfButton.download', async () => {
+        const res = await fetch(url)
 
-    if (!res.ok) return { error: `Kunne ikke laste ned sykmelding som PDF: ${res.status}` }
+        if (!res.ok) return { error: `Kunne ikke laste ned sykmelding som PDF: ${res.status}` }
 
-    const blob = await res.blob()
-    const objectUrl = URL.createObjectURL(blob)
+        const blob = await res.blob()
+        const objectUrl = URL.createObjectURL(blob)
 
-    const a = document.createElement('a')
-    a.href = objectUrl
-    a.download = fileName
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
+        const a = document.createElement('a')
+        a.href = objectUrl
+        a.download = fileName
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
 
-    URL.revokeObjectURL(objectUrl)
+        URL.revokeObjectURL(objectUrl)
 
-    return 'ok'
+        return 'ok'
+    })
 }
