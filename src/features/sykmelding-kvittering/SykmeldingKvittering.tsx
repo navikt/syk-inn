@@ -19,6 +19,7 @@ import { useMode } from '@core/providers/Modes'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 import { SykmeldingSynchronization } from './SykmeldingSynchronization'
+import { DownloadPdfButton } from './DownloadPdf'
 
 type Props = {
     sykmeldingId: string
@@ -183,6 +184,7 @@ function SykmeldingKvitteringValues({ sykmelding, loading }: SykmeldingKvitterin
 }
 
 function SykmeldingKvitteringStatus({ sykmeldingId }: { sykmeldingId: string }): ReactElement | null {
+    const mode = useMode()
     const { loading, data } = useQuery(SykmeldingByIdDocument, {
         variables: { id: sykmeldingId },
     })
@@ -198,16 +200,20 @@ function SykmeldingKvitteringStatus({ sykmeldingId }: { sykmeldingId: string }):
 
     return (
         <div>
-            {loading ? (
-                <Skeleton variant="rounded" height={62} />
-            ) : data?.sykmelding ? (
-                data.sykmelding.documentStatus === 'COMPLETE' ? (
-                    <DocumentStatusSuccess />
-                ) : (
-                    <SykmeldingSynchronization sykmeldingId={sykmeldingId} />
-                )
-            ) : null}
-
+            {mode.type === 'FHIR' && (
+                <>
+                    {loading ? (
+                        <Skeleton variant="rounded" height={62} />
+                    ) : data?.sykmelding ? (
+                        data.sykmelding.documentStatus === 'COMPLETE' ? (
+                            <DocumentStatusSuccess />
+                        ) : (
+                            <SykmeldingSynchronization sykmeldingId={sykmeldingId} />
+                        )
+                    ) : null}
+                </>
+            )}
+            {mode.type === 'HelseID' && <DownloadPdfButton sykmeldingId={sykmeldingId} />}
             <Heading level="3" size="small" className="mt-8" spacing>
                 Dette gjør Nav videre
             </Heading>
