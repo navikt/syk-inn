@@ -135,11 +135,19 @@ test('"Periode"-rules', async ({ page }) => {
 /**
  * TODO: Currently unimplemented validation
  */
-test.fail('"Time in relation to now"-rules', async () => {
+test('"Time in relation to now"-rules', async ({ page }) => {
+    await launchWithMock('normal', { patient: 'Kari Normann' })(page)
+    await startNewSykmelding()(page)
+
     await test.step('FREMDATERT', async () => {
-        // TODO: Currently unimplemented validation
-        expect(true).toBeFalsy()
+        const [fom] = await fillPeriodeRelative({ nth: 0, type: '100%', fromRelative: 31, days: 30 })(page)
+
+        await nextStep()(page)
+        await expect(fom).toHaveAccessibleDescription('Starttidspunktet kan ikke være mer enn 30 dager fram i tid')
     })
+})
+
+test.fail('"Time in relation to now"-rules (unimplemented)', async () => {
     await test.step('TILBAKEDATERT_MER_ENN_3_AR', async () => {
         // TODO: Currently unimplemented validation
         expect(true).toBeFalsy()

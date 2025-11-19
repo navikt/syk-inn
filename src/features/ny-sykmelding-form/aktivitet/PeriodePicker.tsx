@@ -42,6 +42,10 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
                 if (previousTomPlusOne && differenceInDays(value, previousTomPlusOne) > 0) {
                     return 'Det kan ikke være opphold mellom perioder'
                 }
+
+                if (index === 0 && differenceInDays(value, new Date()) >= 30) {
+                    return 'Starttidspunktet kan ikke være mer enn 30 dager fram i tid'
+                }
             },
         },
     })
