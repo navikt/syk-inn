@@ -3,16 +3,12 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 
-import { AllSykmeldingerDocument, PasientDocument, SykmeldingByIdDocument } from '@queries'
+import { PasientDocument, SykmeldingByIdDocument } from '@queries'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingFormErrors } from '@features/actions/common/SykmeldingFormErrors'
 import { dupliserSykmeldingDefaultValues } from '@features/actions/dupliser-sykmelding/dupliser-sykmelding-mapper'
-import {
-    mapSykmeldingToDateRanges,
-    mergeCurrentAndPreviousSykmeldinger,
-} from '@data-layer/common/continuous-sykefravaer-utils'
 import { useAppSelector } from '@core/redux/hooks'
 
 interface Props {
@@ -24,11 +20,10 @@ export function DupliserSykmeldingFormWithDefaultValues({ sykmeldingId }: Props)
     const sykmeldingQuery = useQuery(SykmeldingByIdDocument, {
         variables: { id: sykmeldingId },
     })
-    const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
     const pasient = useQuery(PasientDocument)
     const valuesInState = useAppSelector((state) => state.nySykmelding.values)
 
-    if (suggestionsQuery.loading || sykmeldingQuery.loading || alleSykmeldinger.loading || pasient.loading) {
+    if (suggestionsQuery.loading || sykmeldingQuery.loading || pasient.loading) {
         return <NySykmeldingFormSkeleton />
     }
 
@@ -37,19 +32,12 @@ export function DupliserSykmeldingFormWithDefaultValues({ sykmeldingId }: Props)
     }
 
     const derivedDefaultValues = dupliserSykmeldingDefaultValues(sykmeldingQuery.data.sykmelding, valuesInState)
-    const previousSykmeldingDateRange = mapSykmeldingToDateRanges(
-        mergeCurrentAndPreviousSykmeldinger(
-            alleSykmeldinger.data?.sykmeldinger?.current,
-            alleSykmeldinger.data?.sykmeldinger?.historical,
-        ),
-    )
 
     return (
         <NySykmeldingForm
             defaultValues={derivedDefaultValues}
             context={{
                 utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,
-                previousSykmeldingDateRange,
             }}
             contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
         />

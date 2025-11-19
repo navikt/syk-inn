@@ -4,51 +4,59 @@ import { differenceInDays } from 'date-fns'
 import {
     SykmeldingDateRange,
     currentSykmeldingIsAktivitetIkkeMulig,
-    filterSykmeldingerWithinDaysGap,
-    calculateTotalLengthOfSykmeldinger,
-    hasAnsweredUtdypendeSporsmal,
 } from '@data-layer/common/continuous-sykefravaer-utils'
 import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
+import { raise } from '@lib/ts'
 
-export const currentSykmeldingIsPartOfPeriode = (
+const currentSykmeldingIsPartOfPeriode = (
     currentPerioder: AktivitetsPeriode[],
-    previousSykmeldingDateRange?: SykmeldingDateRange[],
+    utdypendeSporsmal?: { days: number; latestTom?: string | null } | null,
 ): boolean => {
-    if (!previousSykmeldingDateRange || previousSykmeldingDateRange.length === 0) {
+    if (!utdypendeSporsmal || utdypendeSporsmal.days <= 0) {
         // This is the first sykmelding, return true so we can check total length later on
         return true
     }
 
     const currentFom = R.firstBy(currentPerioder, [(it) => it.periode.fom ?? '', 'desc'])?.periode.fom ?? ''
-    const previousLatestTom =
-        R.firstBy(previousSykmeldingDateRange ?? [], [(it) => it.latestTom, 'desc'])?.latestTom ?? ''
 
-    if (!currentFom || !previousLatestTom) return false
+    if (!currentFom || !utdypendeSporsmal?.latestTom) return false
 
-    const diff = differenceInDays(new Date(currentFom), new Date(previousLatestTom))
+    const diff = differenceInDays(new Date(currentFom), new Date(utdypendeSporsmal.latestTom))
     return diff < 16 && diff >= 0
 }
 
-export const totalDaysIsMoreThanDays = (sykmeldinger: SykmeldingDateRange[], days: number): boolean => {
-    const totalDays = R.pipe(sykmeldinger, filterSykmeldingerWithinDaysGap, calculateTotalLengthOfSykmeldinger)
+export const totalDaysIsMoreThanDays = (
+    utdypendeSporsmal: { days: number; latestTom?: string | null },
+    currentSykmeldingRange: SykmeldingDateRange[],
+    days: number,
+): boolean => {
+    // Calculate diff between latestTom and currentSykmeldingRaange.latestTom
+    const currentLatestTom =
+        R.firstBy(currentSykmeldingRange, [(it) => it.latestTom, 'desc'])?.latestTom ?? raise('No latestTom found')
+    const currentFom =
+        R.firstBy(currentSykmeldingRange, [(it) => it.earliestFom, 'asc'])?.earliestFom ?? raise('No earliestFom found')
+
+    const previousDate = utdypendeSporsmal.latestTom ?? currentFom
+
+    const totalDays = differenceInDays(currentLatestTom, previousDate) + 1 + utdypendeSporsmal.days
 
     return totalDays > days
 }
 
 export const shouldShowUke7Sporsmal = (
     perioder: AktivitetsPeriode[],
-    previousSykmeldingDateRange?: SykmeldingDateRange[],
+    utdypendeSporsmal: { days: number; latestTom?: string | null },
 ): boolean => {
     const DAYS_IN_7_WEEKS = 7 * 7
 
-    const havePreviouslyAnswered = hasAnsweredUtdypendeSporsmal(previousSykmeldingDateRange ?? [])
-    if (havePreviouslyAnswered) return false
+    // const havePreviouslyAnswered = hasAnsweredUtdypendeSporsmal(previousSykmeldingDateRange ?? []) // TODO add previously answered questions to graphql data
+    // if (havePreviouslyAnswered) return false
 
     if (!currentSykmeldingIsAktivitetIkkeMulig(perioder)) return false
 
-    if (!currentSykmeldingIsPartOfPeriode(perioder, previousSykmeldingDateRange)) return false
+    if (!currentSykmeldingIsPartOfPeriode(perioder, utdypendeSporsmal)) return false
     // First check if we're above 7 weeks already
-    if (totalDaysIsMoreThanDays(previousSykmeldingDateRange ?? [], DAYS_IN_7_WEEKS)) return true
+    if (utdypendeSporsmal && utdypendeSporsmal.days > DAYS_IN_7_WEEKS) return true
 
     // Check if adding current sykmelding will push above 8 weeks
     const currentPeriode: SykmeldingDateRange[] =
@@ -60,7 +68,6 @@ export const shouldShowUke7Sporsmal = (
                   },
               ]
             : []
-    const sykmeldingerIncludingCurrent = [...(previousSykmeldingDateRange ?? []), ...currentPeriode]
 
-    return totalDaysIsMoreThanDays(sykmeldingerIncludingCurrent, DAYS_IN_7_WEEKS + 7)
+    return totalDaysIsMoreThanDays(utdypendeSporsmal, currentPeriode, DAYS_IN_7_WEEKS + 7)
 }

@@ -9,7 +9,6 @@ import FormSheet from '@components/form/form-section/FormSheet'
 import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
-import { SykmeldingDateRange } from '@data-layer/common/continuous-sykefravaer-utils'
 import { useMode } from '@core/providers/Modes'
 
 import { formValuesToStatePayload } from './form/form-to-state'
@@ -43,9 +42,8 @@ type NySykmeldingFormProps = {
      */
     initialFom?: string
     context: {
-        utdypendeSporsmal: { days: number; latestTom?: string | null } | null | undefined
+        utdypendeSporsmal?: { days: number; latestTom?: string | null } | null
         initialFom?: string
-        previousSykmeldingDateRange?: SykmeldingDateRange[]
     }
     /**
      * Used for contexctually relevant error messages
@@ -106,7 +104,7 @@ function NySykmeldingInnerForm({
                     <BidiagnoseSection />
                     {mode.type === 'FHIR' && <DiagnoseInfoAlert />}
                 </FormSection>
-                <UtdypendeSporsmal previousSykmeldingDateRange={context.previousSykmeldingDateRange} />
+                <UtdypendeSporsmal utdypendeSporsmal={context.utdypendeSporsmal} />
                 <FormSection title="Andre spørsmål" hideTitle>
                     <AndreSporsmalSection />
                 </FormSection>
