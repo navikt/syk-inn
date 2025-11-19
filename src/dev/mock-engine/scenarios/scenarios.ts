@@ -108,6 +108,18 @@ const simpleScenarios = {
             drafts: [],
         }),
     },
+    'utdypende-sporsmal-redacted': {
+        description: 'Long history of sykmeldinger, all redacted except current',
+        scenario: () => ({
+            sykmeldinger: [
+                new SykmeldingBuilder({ offset: -10 }).enkelAktivitet({ offset: 0, days: 10 }).build(),
+                new SykmeldingBuilder({ offset: -50 }).enkelAktivitet({ offset: 0, days: 25 }).buildRedacted(),
+                new SykmeldingBuilder({ offset: -100 }).enkelAktivitet({ offset: 0, days: 20 }).buildRedacted(),
+            ],
+            arbeidsforhold: simpleAaregArbeidsforhold,
+            drafts: [],
+        }),
+    },
 } satisfies Record<string, { description: string; scenario: ScenarioCreator }>
 
 export const scenarios = { ...simpleScenarios }

@@ -391,7 +391,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const sykmeldinger = R.pipe(
                 sykInnSykmeldinger,
-                R.filter((it) => showRedactedFlag ?? it.kind !== 'redacted'),
+                R.filter((it) => showRedactedFlag || it.kind !== 'redacted'),
             )
 
             const sykmeldingDateRanges = mapSykInnApiSykmeldingerToDateRanges(sykmeldinger)
