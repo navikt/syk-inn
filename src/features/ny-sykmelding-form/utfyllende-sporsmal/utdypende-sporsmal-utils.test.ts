@@ -5,7 +5,7 @@ import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-
 
 describe('shouldShowUke7Sporsmal', () => {
     // TODO Need to add previously answered questions to graphql data to properly test this case
-    test.skip('should return false if hasAnsweredUtdypendeSporsmal is true', () => {
+    test('should return false if questions has been answered previously', () => {
         const result = shouldShowUke7Sporsmal(
             [
                 {
@@ -13,7 +13,11 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
                 } as unknown as AktivitetsPeriode,
             ],
-            { days: 60, latestTom: '2023-01-01' },
+            {
+                days: 60,
+                latestTom: '2023-01-01',
+                previouslyAnsweredSporsmal: ['UTFORDRINGER_MED_ARBEID', 'MEDISINSK_OPPSUMMERING'],
+            },
         )
         expect(result).toBe(false)
     })
@@ -25,7 +29,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'GRADERT', grad: '50' },
                 } as unknown as AktivitetsPeriode,
             ],
-            { days: 60, latestTom: '2022-12-31' },
+            { days: 60, latestTom: '2022-12-31', previouslyAnsweredSporsmal: [] },
         )
         expect(result).toBe(false)
     })
@@ -37,7 +41,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
                 } as unknown as AktivitetsPeriode,
             ],
-            { days: 10, latestTom: '2023-01-10' },
+            { days: 10, latestTom: '2023-01-10', previouslyAnsweredSporsmal: [] },
         )
         expect(result).toBe(false)
     })
@@ -49,7 +53,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
                 } as unknown as AktivitetsPeriode,
             ],
-            { days: 10, latestTom: '2023-01-10' },
+            { days: 10, latestTom: '2023-01-10', previouslyAnsweredSporsmal: [] },
         )
         expect(result).toBe(false)
     })
@@ -61,7 +65,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
                 } as unknown as AktivitetsPeriode,
             ],
-            { days: 50, latestTom: '2025-02-19' },
+            { days: 50, latestTom: '2025-02-19', previouslyAnsweredSporsmal: [] },
         )
         expect(result).toBe(true)
     })
@@ -73,7 +77,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
                 } as unknown as AktivitetsPeriode,
             ],
-            { days: 49, latestTom: '2025-02-18' },
+            { days: 49, latestTom: '2025-02-18', previouslyAnsweredSporsmal: [] },
         )
         expect(result).toBe(true)
     })
@@ -85,7 +89,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
                 } as unknown as AktivitetsPeriode,
             ],
-            { days: 0, latestTom: null },
+            { days: 0, latestTom: null, previouslyAnsweredSporsmal: [] },
         )
         expect(result).toBe(true)
     })

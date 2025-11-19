@@ -7,6 +7,7 @@ import {
 } from '@data-layer/common/continuous-sykefravaer-utils'
 import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
 import { raise } from '@lib/ts'
+import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolvers.generated'
 
 const currentSykmeldingIsPartOfPeriode = (
     currentPerioder: AktivitetsPeriode[],
@@ -45,12 +46,16 @@ export const totalDaysIsMoreThanDays = (
 
 export const shouldShowUke7Sporsmal = (
     perioder: AktivitetsPeriode[],
-    utdypendeSporsmal: { days: number; latestTom?: string | null },
+    utdypendeSporsmal: UtdypendeOpplysningerHint,
 ): boolean => {
     const DAYS_IN_7_WEEKS = 7 * 7
 
-    // const havePreviouslyAnswered = hasAnsweredUtdypendeSporsmal(previousSykmeldingDateRange ?? []) // TODO add previously answered questions to graphql data
-    // if (havePreviouslyAnswered) return false
+    if (
+        utdypendeSporsmal.previouslyAnsweredSporsmal.includes('UTFORDRINGER_MED_ARBEID') &&
+        utdypendeSporsmal.previouslyAnsweredSporsmal.includes('MEDISINSK_OPPSUMMERING')
+    ) {
+        return false
+    }
 
     if (!currentSykmeldingIsAktivitetIkkeMulig(perioder)) return false
 

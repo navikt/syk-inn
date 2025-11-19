@@ -3,6 +3,7 @@ query Pasient {
         utdypendeSporsmal {
             days
             latestTom
+            previouslyAnsweredSporsmal
         }
         ...Person
     }

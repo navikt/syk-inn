@@ -4,11 +4,12 @@ import { BodyShort, Textarea } from '@navikt/ds-react'
 import FormSection from '@components/form/form-section/FormSection'
 import { useController, useFormContext } from '@features/ny-sykmelding-form/form/types'
 import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-utils'
+import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolvers.generated'
 
 export function UtdypendeSporsmal({
     utdypendeSporsmal,
 }: {
-    utdypendeSporsmal?: { days: number; latestTom?: string | null } | null
+    utdypendeSporsmal?: UtdypendeOpplysningerHint | null
 }): ReactElement | null {
     const perioder = useFormContext().watch('perioder')
 

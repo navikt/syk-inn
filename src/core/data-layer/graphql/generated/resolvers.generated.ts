@@ -462,6 +462,7 @@ export type UtdypendeOpplysningerHint = {
     __typename?: 'UtdypendeOpplysningerHint'
     days: Scalars['Int']['output']
     latestTom?: Maybe<Scalars['String']['output']>
+    previouslyAnsweredSporsmal: Array<UtdypendeSporsmalOptions>
 }
 
 export type UtdypendeSporsmal = {
@@ -470,6 +471,8 @@ export type UtdypendeSporsmal = {
     medisinskOppsummering?: Maybe<Scalars['String']['output']>
     utfodringerMedArbeid?: Maybe<Scalars['String']['output']>
 }
+
+export type UtdypendeSporsmalOptions = 'HENSYN_PA_ARBEIDSPLASSEN' | 'MEDISINSK_OPPSUMMERING' | 'UTFORDRINGER_MED_ARBEID'
 
 export type Yrkesskade = {
     __typename?: 'Yrkesskade'
@@ -669,6 +672,7 @@ export type ResolversTypes = {
     Tilbakedatering: ResolverTypeWrapper<Tilbakedatering>
     UtdypendeOpplysningerHint: ResolverTypeWrapper<UtdypendeOpplysningerHint>
     UtdypendeSporsmal: ResolverTypeWrapper<UtdypendeSporsmal>
+    UtdypendeSporsmalOptions: UtdypendeSporsmalOptions
     Yrkesskade: ResolverTypeWrapper<Yrkesskade>
 }
 
@@ -1187,6 +1191,7 @@ export type UtdypendeOpplysningerHintResolvers<
 > = {
     days?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
     latestTom?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    previouslyAnsweredSporsmal?: Resolver<Array<ResolversTypes['UtdypendeSporsmalOptions']>, ParentType, ContextType>
 }
 
 export type UtdypendeSporsmalResolvers<
