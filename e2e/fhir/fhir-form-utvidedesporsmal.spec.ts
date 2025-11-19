@@ -1,14 +1,7 @@
 import { test } from '@playwright/test'
 import { OpprettSykmeldingDocument } from '@queries'
 
-import {
-    addUtdypendeSporsmal,
-    fillPeriodeRelative,
-    nextStep,
-    pickHoveddiagnose,
-    requestAccessToSykmeldinger,
-    submitSykmelding,
-} from '../actions/user-actions'
+import { addUtdypendeSporsmal, fillPeriodeRelative, nextStep, submitSykmelding } from '../actions/user-actions'
 import { userInteractionsGroup } from '../utils/actions'
 import { expectGraphQLRequest } from '../utils/assertions'
 import { today, inDays } from '../utils/date-utils'
@@ -18,8 +11,9 @@ import { startNewSykmelding } from './actions/fhir-user-actions'
 import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 const launchAndStart = userInteractionsGroup(
-    launchWithMock('utfyllende-sporsmal'),
-    requestAccessToSykmeldinger(),
+    launchWithMock('utfyllende-sporsmal', {
+        SYK_INN_SHOW_REDACTED: true,
+    }),
     startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' }),
 )
 
@@ -31,7 +25,7 @@ test('Submit sykmelding with utdypende spørsmål', async ({ page }) => {
         days: 3,
     })(page)
 
-    await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+    //await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
     await addUtdypendeSporsmal({
         utfodringerMedArbeid: 'Utfordringer',
@@ -47,8 +41,17 @@ test('Submit sykmelding with utdypende spørsmål', async ({ page }) => {
         meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
-            hoveddiagnose: { system: 'ICPC2', code: 'P74' },
-            bidiagnoser: [],
+            hoveddiagnose: { system: 'ICPC2', code: 'L73' },
+            bidiagnoser: [
+                {
+                    system: 'ICPC2',
+                    code: 'P74',
+                },
+                {
+                    system: 'ICD10',
+                    code: 'A051',
+                },
+            ],
             aktivitet: [
                 {
                     type: 'AKTIVITET_IKKE_MULIG',
