@@ -2392,10 +2392,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/aksel-icons@npm:^7.33.3":
-  version: 7.33.3
-  resolution: "@navikt/aksel-icons@npm:7.33.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.33.3%2F702ea09e26d2ebae292821d211e14add76b83b54"
-  checksum: 10c0/952b281e4a6801cb6cce5d6d7a4c59425ba67d78af928e83f9f95ac1ecef0071628fd85fb0aff4cd0b89a52cab065144cfb0e96f4f21f2abe707e5860bb778bb
+"@navikt/aksel-icons@npm:^7.33.4":
+  version: 7.33.4
+  resolution: "@navikt/aksel-icons@npm:7.33.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.33.4%2F7c39a67a20f1e006ea5c14b07093a0162147c38f"
+  checksum: 10c0/576bf8903dd7adab7eeafbed9728d3d5bc7d75018f71dde7deac549c2d8eb53438f5d632c54b6d884b593d35058044631e520ce6956f403e6bdac07ed01e801f
   languageName: node
   linkType: hard
 
@@ -2406,21 +2406,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^7.33.3":
-  version: 7.33.3
-  resolution: "@navikt/ds-css@npm:7.33.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.33.3%2Fe5f297f6394c3106fa5943593f33e9e237393fba"
-  checksum: 10c0/362c4b2f8035c5374d7ef66d60621907762ea0aeee8c7711d908b3ce290a17255904d2fb10983ed416b7b25b0107627ba9e83bfbaa0bc616073500d0a9124936
+"@navikt/ds-css@npm:^7.33.4":
+  version: 7.33.4
+  resolution: "@navikt/ds-css@npm:7.33.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.33.4%2F58abe298b8dfaa96db850ee41d0c6eb003e95503"
+  checksum: 10c0/a01368446e7693c3baae56456f4b2f972408819dfe8470308c6b4a7ef771477cb9624fd5309396c9193bb8d200a60e2b933b37a59994800bea10546dc0863bd0
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^7.33.3":
-  version: 7.33.3
-  resolution: "@navikt/ds-react@npm:7.33.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.33.3%2F5603b60803373525d039260b17445cc4b56da72f"
+"@navikt/ds-react@npm:^7.33.4":
+  version: 7.33.4
+  resolution: "@navikt/ds-react@npm:7.33.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.33.4%2F7ce5a7b70cf3870bc73f1cf851c4ec3ba3b63683"
   dependencies:
     "@floating-ui/react": "npm:0.27.8"
     "@floating-ui/react-dom": "npm:^2.1.6"
-    "@navikt/aksel-icons": "npm:^7.33.3"
-    "@navikt/ds-tokens": "npm:^7.33.3"
+    "@navikt/aksel-icons": "npm:^7.33.4"
+    "@navikt/ds-tokens": "npm:^7.33.4"
     clsx: "npm:^2.1.0"
     date-fns: "npm:^4.0.0"
     react-day-picker: "npm:9.7.0"
@@ -2428,21 +2428,21 @@ __metadata:
     "@types/react": ^17.0.30 || ^18 || ^19
     react: ^17 || ^18 || ^19
     react-dom: ^17 || ^18 || ^19
-  checksum: 10c0/cc2ba95daf7ef9b78c27a665c657f323ab66023d6444eef0fc8290ae80b5cbc1709b07d174423b87c7ec8c80bdb1041d921cf184e8cf05477a60a0c42f247dfa
+  checksum: 10c0/fbbe8a576543df4effefa9fb08ba8fef8cf45c4096f8377971c171baf6f901a37c2579347db8c57ced670c40c649e32a482138170779d114a835bea05b75ae42
   languageName: node
   linkType: hard
 
-"@navikt/ds-tailwind@npm:^7.33.3":
-  version: 7.33.3
-  resolution: "@navikt/ds-tailwind@npm:7.33.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.33.3%2F2eea4ab187afc1af7cb3d983f3038618e68475ef"
-  checksum: 10c0/7e0e0b62dbc40dd7e5725414762103ae8a121e256142bb787f6ddaee44b77ed1078e71ea901bf8913fd8f817619a146ef600eae431f49e90ef0969ae1df09d73
+"@navikt/ds-tailwind@npm:^7.33.4":
+  version: 7.33.4
+  resolution: "@navikt/ds-tailwind@npm:7.33.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.33.4%2Fd0351273ff6a21d71b3682b17f0397ea199221c5"
+  checksum: 10c0/4a4d35739229bb968598f44a6bfaf0f67880407dcf4a452318544691bae474667fcb9174ffb4a39aee53e4b596daae041d3260ac850c107847f9defb6e40a9a0
   languageName: node
   linkType: hard
 
-"@navikt/ds-tokens@npm:^7.33.3":
-  version: 7.33.3
-  resolution: "@navikt/ds-tokens@npm:7.33.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.33.3%2F55763bf08f7a0574fef52981c43778079b82df7e"
-  checksum: 10c0/b8865e693c49250a881cee8e7cfa7f3cc7bb601677756782cbe78365ec6bd83a47c5e59bd3d5b053d05190327814717043342cd4f496459f5ea524a019f9ac1b
+"@navikt/ds-tokens@npm:^7.33.4":
+  version: 7.33.4
+  resolution: "@navikt/ds-tokens@npm:7.33.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.33.4%2F7f81b355125978bd93ed0015a3c25864b6210d7a"
+  checksum: 10c0/51dd4d4c0dce9dfd4131d5f3ebd888b8da6d73e399bd35e6e59adb27347b6f9bea627b736ccd3dcd92793c6236cb5cd677f32ff9cc93c8aadaa2a68ff66f4037
   languageName: node
   linkType: hard
 
@@ -2454,7 +2454,7 @@ __metadata:
     "@navikt/smart-on-fhir": "npm:1.5.13"
     "@types/node": "npm:^24.10.1"
     hono: "npm:^4.10.6"
-    jose: "npm:^6.1.1"
+    jose: "npm:^6.1.2"
     nextleton: "npm:^0.6.1"
     pino: "npm:^10.1.0"
     pino-pretty: "npm:^13.1.2"
@@ -2468,7 +2468,7 @@ __metadata:
   dependencies:
     "@navikt/pino-logger": "npm:^4.4.1"
     hono: "npm:^4.10.6"
-    jose: "npm:^6.1.1"
+    jose: "npm:^6.1.2"
     nextleton: "npm:^0.6.1"
     pino: "npm:^10.1.0"
   languageName: unknown
@@ -2534,10 +2534,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/texas@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "@navikt/texas@npm:4.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftexas%2F4.1.0%2F36e6f1a056838a6777e4e0680cb45e1a568c15d1"
-  checksum: 10c0/6031f25561c6ea9f97a6af8276ad08299a599e79e437d620b6672ccda605eeb08924f61d6ebc586af2f73c0209e19bbf95d88765f7f384370dafe4221b6cf7b5
+"@navikt/texas@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "@navikt/texas@npm:4.1.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftexas%2F4.1.1%2Fa4875c9cc658d6cebf4185bb2c89a17c54f15827"
+  checksum: 10c0/656334257044382dc9de693538f23740a77ea2529e9e6c3e6ad98470dd34da87d5344e995d5f334812e11ef03c8ac07e0dbc9519e3659d23bf31efe5deacb114
   languageName: node
   linkType: hard
 
@@ -4839,9 +4839,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001579, caniuse-lite@npm:^1.0.30001754":
-  version: 1.0.30001754
-  resolution: "caniuse-lite@npm:1.0.30001754"
-  checksum: 10c0/d38709ab11abc36eea28068d241434eba925c4d3462916ccaa17a34a6227dfdeb58ab0e1eb614bab12fb393c7d527db392a0f477b48c33d70d8e466954f381ba
+  version: 1.0.30001755
+  resolution: "caniuse-lite@npm:1.0.30001755"
+  checksum: 10c0/7b8e32a4ec307b50f557d30176651cf69f20a0ea4de6f5f34149ea65a1f0cfcc0677b403484aea3661c7469ab11f2df6528027b9ec2d0265635ede9d5b517380
   languageName: node
   linkType: hard
 
@@ -5174,9 +5174,9 @@ __metadata:
   linkType: hard
 
 "csstype@npm:^3.0.2":
-  version: 3.2.0
-  resolution: "csstype@npm:3.2.0"
-  checksum: 10c0/119715d732d05db0da3b71f602448135b007127073cdda47b69e9d5599475e4aa0f6a15c5f0cdd3f3b1f17251c54adc3c8a516e7358f7fb4cfc51cc6eaf89ded
+  version: 3.2.2
+  resolution: "csstype@npm:3.2.2"
+  checksum: 10c0/ec45114093760c9944c84514615fe4080189276ee4980f52359426a4db5e4fdf0a60affac2c033b978d6c0fed275f37820952682aefa85aeec041d00fecff64d
   languageName: node
   linkType: hard
 
@@ -5455,9 +5455,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.249":
-  version: 1.5.253
-  resolution: "electron-to-chromium@npm:1.5.253"
-  checksum: 10c0/d6cebe289030992bd7a9d31bfab571f1cfe30405e988ce451de78fc788aa171e8fa2c4122ef30d9c35edc06781a28d6c1c0faa738a1a918d305773305f3020eb
+  version: 1.5.254
+  resolution: "electron-to-chromium@npm:1.5.254"
+  checksum: 10c0/a4db4124f7d1a44d13db14ea5b1137a50f21074694ca9463b4f541a0e8540ba8b619fdad1846b3ab4e53031bcfdea07618df8fe357c121a68d60fd44ffddd2ec
   languageName: node
   linkType: hard
 
@@ -7506,10 +7506,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^6.1.0, jose@npm:^6.1.1":
-  version: 6.1.1
-  resolution: "jose@npm:6.1.1"
-  checksum: 10c0/57f215328b6b34618036a99c386b5828f9c225e5070082f4abab31ab11520279311a04f92a1a0f8b4e8258bdc38614e2ad66d58eef984b911a1b553d4148bb47
+"jose@npm:^6.1.0, jose@npm:^6.1.1, jose@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "jose@npm:6.1.2"
+  checksum: 10c0/55f79426f43e652ed6d5de938d50f66bb0a10dcae078db81a23f8d3303e889ce226f000e815f3211f9956bb84badce10da892d130d40fe2eca658045a6f1778e
   languageName: node
   linkType: hard
 
@@ -10615,17 +10615,17 @@ __metadata:
     "@graphql-tools/schema": "npm:^10.0.29"
     "@hookform/devtools": "npm:^4.4.0"
     "@limegrass/eslint-plugin-import-alias": "npm:^1.6.0"
-    "@navikt/aksel-icons": "npm:^7.33.3"
+    "@navikt/aksel-icons": "npm:^7.33.4"
     "@navikt/diagnosekoder": "npm:^1.2025.0"
-    "@navikt/ds-css": "npm:^7.33.3"
-    "@navikt/ds-react": "npm:^7.33.3"
-    "@navikt/ds-tailwind": "npm:^7.33.3"
+    "@navikt/ds-css": "npm:^7.33.4"
+    "@navikt/ds-react": "npm:^7.33.4"
+    "@navikt/ds-tailwind": "npm:^7.33.4"
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/helseid-mock-server": "workspace:*"
     "@navikt/next-api-proxy": "npm:^5.0.0"
     "@navikt/next-logger": "npm:^4.4.1"
     "@navikt/smart-on-fhir": "npm:1.5.13"
-    "@navikt/texas": "npm:^4.1.0"
+    "@navikt/texas": "npm:^4.1.1"
     "@navikt/tsm-eslint-react": "npm:^1.0.0"
     "@navikt/tsm-prettier": "npm:^2.0.0"
     "@opentelemetry/api": "npm:^1.9.0"
@@ -10649,7 +10649,7 @@ __metadata:
     graphql-yoga: "npm:^5.16.2"
     husky: "npm:^9.1.7"
     iovalkey: "npm:^0.3.3"
-    jose: "npm:^6.1.1"
+    jose: "npm:^6.1.2"
     knip: "npm:^5.69.1"
     lint-staged: "npm:^16.2.6"
     motion: "npm:^12.23.24"
