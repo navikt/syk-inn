@@ -133,9 +133,6 @@ test('"Periode"-rules', async ({ page }) => {
     })
 })
 
-/**
- * TODO: Currently unimplemented validation
- */
 test('"Time in relation to now"-rules', async ({ page }) => {
     await launchWithMock('normal', { patient: 'Kari Normann' })(page)
     await startNewSykmelding()(page)
