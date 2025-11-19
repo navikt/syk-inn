@@ -10,6 +10,7 @@ import { ShortcutSubmitButton } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { useMode } from '@core/providers/Modes'
+import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolvers.generated'
 
 import { formValuesToStatePayload } from './form/form-to-state'
 import { UtdypendeSporsmal } from './utfyllende-sporsmal/UtdypendeendeSporsmal'
@@ -42,7 +43,7 @@ type NySykmeldingFormProps = {
      */
     initialFom?: string
     context: {
-        utdypendeSporsmal?: { days: number; latestTom?: string | null } | null
+        utdypendeSporsmal?: UtdypendeOpplysningerHint | null
         initialFom?: string
     }
     /**

@@ -4,7 +4,7 @@ import * as R from 'remeda'
 import { teamLogger } from '@navikt/next-logger/team-log'
 import { cookies } from 'next/headers'
 
-import { Behandler, QueriedPerson, Resolvers } from '@resolvers'
+import { Behandler, QueriedPerson, Resolvers, UtdypendeSporsmalOptions } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
@@ -402,7 +402,19 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             )
             const latestTom = R.sortBy(sykmeldingDateRanges, [(it) => it.latestTom, 'desc'])[0]?.latestTom ?? null
 
-            return { days: totalDays, latestTom }
+            const previouslyAnsweredSporsmal: UtdypendeSporsmalOptions[] = []
+            sykmeldinger.forEach((sykmelding) => {
+                if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmal) {
+                    if (sykmelding.values.utdypendeSporsmal.utfodringerMedArbeid) {
+                        previouslyAnsweredSporsmal.push('UTFORDRINGER_MED_ARBEID')
+                    }
+                    if (sykmelding.values.utdypendeSporsmal.medisinskOppsummering) {
+                        previouslyAnsweredSporsmal.push('MEDISINSK_OPPSUMMERING')
+                    }
+                }
+            })
+
+            return { days: totalDays, latestTom, previouslyAnsweredSporsmal }
         },
     },
     Konsultasjon: {

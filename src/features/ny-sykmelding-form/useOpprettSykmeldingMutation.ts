@@ -17,6 +17,7 @@ import {
     OpprettSykmeldingMutation,
     OpprettSykmeldingMutationVariables,
     OpprettSykmeldingMetaInput,
+    PasientDocument,
 } from '@queries'
 import { spanBrowserAsync, withSpanBrowserAsync } from '@lib/otel/browser'
 import { useAppSelector } from '@core/redux/hooks'
@@ -47,7 +48,7 @@ export function useOpprettSykmeldingMutation(
     const formState = useAppSelector((state) => state.nySykmelding)
     const [mutate, result] = useMutation(OpprettSykmeldingDocument, {
         // In case user navigates back to the dashboard
-        refetchQueries: [{ query: AllSykmeldingerDocument }, { query: GetAllDraftsDocument }],
+        refetchQueries: [{ query: AllSykmeldingerDocument }, { query: GetAllDraftsDocument }, PasientDocument],
         onCompleted: (data) => {
             if (data.opprettSykmelding.__typename === 'SykmeldingFull') {
                 logger.info(`Sykmelding created successfully: ${data.opprettSykmelding.sykmeldingId}`)

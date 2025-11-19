@@ -43,22 +43,6 @@ export function mapSykInnApiSykmeldingerToDateRanges(
     )
 }
 
-// Only applies to 'uke 7'. There will be other questions for the other special weeks.
-export function hasAnsweredUtdypendeSporsmal(sykmeldinger: SykmeldingDateRange[]): boolean {
-    return (
-        R.pipe(
-            sykmeldinger,
-            filterSykmeldingerWithinDaysGap,
-            R.filter((it) => {
-                if (!!it.utdypendeSporsmal?.utfodringerMedArbeid && !!it.utdypendeSporsmal?.medisinskOppsummering) {
-                    return true
-                }
-                return false
-            }),
-        ).length > 0
-    )
-}
-
 export function currentSykmeldingIsAktivitetIkkeMulig(perioder: AktivitetsPeriode[]): boolean {
     if (perioder.length === 0) return false
 

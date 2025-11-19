@@ -5,7 +5,6 @@ import { SykmeldingFragment } from '@queries'
 import {
     calculateTotalLengthOfSykmeldinger,
     filterSykmeldingerWithinDaysGap,
-    hasAnsweredUtdypendeSporsmal,
     mapSykmeldingToDateRanges,
 } from './continuous-sykefravaer-utils'
 
@@ -100,43 +99,5 @@ describe('calculateTotalLengthOfSykmeldinger', () => {
             { earliestFom: '2023-01-01', latestTom: '2023-01-10' },
         ])
         expect(result).toBe(31)
-    })
-})
-
-describe('hasAnsweredUtdypendeSporsmal', () => {
-    test('should return false when input is empty', () => {
-        const result = hasAnsweredUtdypendeSporsmal([])
-        expect(result).toBe(false)
-    })
-    test('should return false when no sykmelding has answered utdypende sporsmal', () => {
-        const result = hasAnsweredUtdypendeSporsmal([
-            {
-                earliestFom: '2023-01-01',
-                latestTom: '2023-01-05',
-                utdypendeSporsmal: null,
-            },
-        ])
-        expect(result).toBe(false)
-    })
-    test('should return true when at least one sykmelding has answered utdypende sporsmal', () => {
-        const result = hasAnsweredUtdypendeSporsmal([
-            {
-                earliestFom: '2023-01-01',
-                latestTom: '2023-01-05',
-                utdypendeSporsmal: { utfodringerMedArbeid: 'Arbeid', medisinskOppsummering: 'Medisinsk' },
-            },
-        ])
-        expect(result).toBe(true)
-    })
-    test('should return false if questions are answered for a previous period', () => {
-        const result = hasAnsweredUtdypendeSporsmal([
-            {
-                earliestFom: '2023-01-01',
-                latestTom: '2023-01-05',
-                utdypendeSporsmal: { utfodringerMedArbeid: 'Arbeid', medisinskOppsummering: 'Medisinsk' },
-            },
-            { earliestFom: '2023-10-01', latestTom: '2023-10-31', utdypendeSporsmal: null },
-        ])
-        expect(result).toBe(false)
     })
 })

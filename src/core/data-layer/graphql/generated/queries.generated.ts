@@ -460,6 +460,7 @@ export type UtdypendeOpplysningerHint = {
     __typename: 'UtdypendeOpplysningerHint'
     days: Scalars['Int']['output']
     latestTom?: Maybe<Scalars['String']['output']>
+    previouslyAnsweredSporsmal: Array<UtdypendeSporsmalOptions>
 }
 
 export type UtdypendeSporsmal = {
@@ -468,6 +469,8 @@ export type UtdypendeSporsmal = {
     medisinskOppsummering?: Maybe<Scalars['String']['output']>
     utfodringerMedArbeid?: Maybe<Scalars['String']['output']>
 }
+
+export type UtdypendeSporsmalOptions = 'HENSYN_PA_ARBEIDSPLASSEN' | 'MEDISINSK_OPPSUMMERING' | 'UTFORDRINGER_MED_ARBEID'
 
 export type Yrkesskade = {
     __typename: 'Yrkesskade'
@@ -908,7 +911,12 @@ export type PasientQuery = {
         __typename: 'Pasient'
         ident: string
         navn: string
-        utdypendeSporsmal?: { __typename: 'UtdypendeOpplysningerHint'; days: number; latestTom?: string | null } | null
+        utdypendeSporsmal?: {
+            __typename: 'UtdypendeOpplysningerHint'
+            days: number
+            latestTom?: string | null
+            previouslyAnsweredSporsmal: Array<UtdypendeSporsmalOptions>
+        } | null
     } | null
 }
 
@@ -3747,6 +3755,10 @@ export const PasientDocument = {
                                         selections: [
                                             { kind: 'Field', name: { kind: 'Name', value: 'days' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'latestTom' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'previouslyAnsweredSporsmal' },
+                                            },
                                         ],
                                     },
                                 },
