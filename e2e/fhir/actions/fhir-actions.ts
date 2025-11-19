@@ -1,5 +1,4 @@
 import { test, Page } from '@playwright/test'
-
 import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
 import { Scenarios } from '@dev/mock-engine/scenarios/scenarios'
 
@@ -35,14 +34,17 @@ export function launchWithMock(
         ...toggleOverrides
     }: ToggleOverrides & AdditionalOptions = {
         patient: 'Espen Eksempel',
+    },
+) {
+    const actualToggleOverrides = {
         SYK_INN_AAREG: false,
         SYK_INN_SHOW_REDACTED: false,
         SYK_INN_AUTO_BIDIAGNOSER: false,
-    },
-) {
+        ...toggleOverrides,
+    }
     return async (page: Page): Promise<void> => {
-        if (Object.keys(toggleOverrides).length > 0) {
-            await applyToggleOverrides(page, toggleOverrides)
+        if (Object.keys(actualToggleOverrides).length > 0) {
+            await applyToggleOverrides(page, actualToggleOverrides)
         }
 
         if (scenario != 'normal') {
