@@ -1,6 +1,6 @@
 import React, { ReactElement, RefObject, useImperativeHandle, useRef, useState } from 'react'
 import { BodyShort, DatePicker, Detail, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
-import { addDays, differenceInDays, parseISO, isBefore, toDate } from 'date-fns'
+import { addDays, differenceInDays, parseISO, isBefore, toDate, subYears } from 'date-fns'
 import { AnimatePresence } from 'motion/react'
 import { RefCallBack } from 'react-hook-form'
 
@@ -17,13 +17,19 @@ import styles from './PeriodePicker.module.css'
 
 type Props = {
     index: number
+    isLast: boolean
+    /**
+     * This fom is only relevant for the first periode, and used to infer the starting date
+     * and for special shorthand parsing.
+     */
     initialFom: string | null
 }
 
-function PeriodePicker({ index, initialFom }: Props): ReactElement {
+function PeriodePicker({ index, isLast, initialFom }: Props): ReactElement {
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
     const { clearErrors } = useFormContext()
     const previousTomPlusOne = useNextFomFromPreviousPeriode(initialFom, index)
+    const firstPeriodeFom = useFirstPeriodeFom()
 
     const fomField = useController({
         name: `perioder.${index}.periode.fom` as const,
@@ -46,6 +52,10 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
                 if (index === 0 && differenceInDays(value, new Date()) >= 30) {
                     return 'Starttidspunktet kan ikke være mer enn 30 dager fram i tid'
                 }
+
+                if (index === 0 && isBefore(value, subYears(new Date(), 3))) {
+                    return 'Sykmeldingen kan ikke være tilbakedatert mer enn 3 år'
+                }
             },
         },
     })
@@ -60,6 +70,10 @@ function PeriodePicker({ index, initialFom }: Props): ReactElement {
 
                 if (!value) {
                     return 'Du må fylle inn til og med dato'
+                }
+
+                if (isLast && firstPeriodeFom && differenceInDays(value, firstPeriodeFom) + 1 > 365) {
+                    return 'Sykmeldingen kan ikke ha en total varighet over ett år'
                 }
             },
         },
@@ -243,6 +257,12 @@ function useNextFomFromPreviousPeriode(initialFom: string | null, index: number)
     } else {
         return previousPlusOne ?? null
     }
+}
+
+function useFirstPeriodeFom(): string | null {
+    const { watch } = useFormContext()
+
+    return watch('perioder.0.periode.fom' as const)
 }
 
 export default PeriodePicker

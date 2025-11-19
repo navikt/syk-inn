@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { differenceInDays, subYears } from 'date-fns'
 
 import { fillPeriodeRelative, nextStep } from '../actions/user-actions'
 
@@ -140,21 +141,28 @@ test('"Time in relation to now"-rules', async ({ page }) => {
     await startNewSykmelding()(page)
 
     await test.step('FREMDATERT', async () => {
-        const [fom] = await fillPeriodeRelative({ nth: 0, type: '100%', fromRelative: 31, days: 30 })(page)
+        const [fom] = await fillPeriodeRelative({ nth: 0, type: '100%', fromRelative: 31, days: 14 })(page)
 
         await nextStep()(page)
         await expect(fom).toHaveAccessibleDescription('Starttidspunktet kan ikke være mer enn 30 dager fram i tid')
     })
-})
 
-test.fail('"Time in relation to now"-rules (unimplemented)', async () => {
     await test.step('TILBAKEDATERT_MER_ENN_3_AR', async () => {
-        // TODO: Currently unimplemented validation
-        expect(true).toBeFalsy()
+        const diffSince3Years = differenceInDays(subYears(new Date(), 3), new Date())
+        const [fom] = await fillPeriodeRelative({ nth: 0, type: '100%', fromRelative: diffSince3Years, days: 14 })(page)
+
+        await nextStep()(page)
+        await expect(fom).toHaveAccessibleDescription('Sykmeldingen kan ikke være tilbakedatert mer enn 3 år')
     })
+
     await test.step('TOTAL_VARIGHET_OVER_ETT_AAR', async () => {
-        // TODO: Currently unimplemented validation
-        expect(true).toBeFalsy()
+        // 183 days + 183 days = 366 days (> 1 year)
+        await fillPeriodeRelative({ nth: 0, type: '100%', fromRelative: 0, days: 183 })(page)
+        await page.getByRole('button', { name: 'Legg til ny periode' }).click()
+        const [, tom] = await fillPeriodeRelative({ nth: 1, type: '100%', fromRelative: 184, days: 183 })(page)
+
+        await nextStep()(page)
+        await expect(tom).toHaveAccessibleDescription('Sykmeldingen kan ikke ha en total varighet over ett år')
     })
 })
 

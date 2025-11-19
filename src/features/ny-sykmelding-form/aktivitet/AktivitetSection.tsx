@@ -34,7 +34,11 @@ function AktivitetSection({ initialFom }: Props): ReactElement {
             {fields.map((periode, index) => (
                 <FormSection title="Periode" key={periode.id}>
                     <div className="relative mb-4">
-                        <PeriodePicker index={index} initialFom={index === 0 ? initialFom : null} />
+                        <PeriodePicker
+                            index={index}
+                            isLast={index === fields.length - 1}
+                            initialFom={index === 0 ? initialFom : null}
+                        />
                         <AktivitetPicker index={index} />
 
                         {index > 0 && (
