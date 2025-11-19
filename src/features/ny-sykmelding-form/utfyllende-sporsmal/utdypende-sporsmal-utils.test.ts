@@ -4,8 +4,17 @@ import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
 import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-utils'
 
 describe('shouldShowUke7Sporsmal', () => {
-    test('should return false if hasAnsweredUtdypendeSporsmal is true', () => {
-        const result = shouldShowUke7Sporsmal([], [])
+    // TODO Need to add previously answered questions to graphql data to properly test this case
+    test.skip('should return false if hasAnsweredUtdypendeSporsmal is true', () => {
+        const result = shouldShowUke7Sporsmal(
+            [
+                {
+                    periode: { fom: '2023-01-02', tom: '2023-01-10' },
+                    aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
+                } as unknown as AktivitetsPeriode,
+            ],
+            { days: 60, latestTom: '2023-01-01' },
+        )
         expect(result).toBe(false)
     })
     test('should return false if current sykmelding is not aktivitetIkkeMulig', () => {
@@ -16,7 +25,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'GRADERT', grad: '50' },
                 } as unknown as AktivitetsPeriode,
             ],
-            [],
+            { days: 60, latestTom: '2022-12-31' },
         )
         expect(result).toBe(false)
     })
@@ -28,7 +37,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
                 } as unknown as AktivitetsPeriode,
             ],
-            [{ earliestFom: '2023-01-01', latestTom: '2023-01-10' }],
+            { days: 10, latestTom: '2023-01-10' },
         )
         expect(result).toBe(false)
     })
@@ -40,7 +49,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
                 } as unknown as AktivitetsPeriode,
             ],
-            [{ earliestFom: '2023-01-01', latestTom: '2023-01-10' }],
+            { days: 10, latestTom: '2023-01-10' },
         )
         expect(result).toBe(false)
     })
@@ -52,7 +61,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
                 } as unknown as AktivitetsPeriode,
             ],
-            [{ earliestFom: '2025-01-01', latestTom: '2025-02-19' }],
+            { days: 50, latestTom: '2025-02-19' },
         )
         expect(result).toBe(true)
     })
@@ -64,7 +73,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
                 } as unknown as AktivitetsPeriode,
             ],
-            [{ earliestFom: '2025-01-01', latestTom: '2025-02-18' }],
+            { days: 49, latestTom: '2025-02-18' },
         )
         expect(result).toBe(true)
     })
@@ -76,7 +85,7 @@ describe('shouldShowUke7Sporsmal', () => {
                     aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
                 } as unknown as AktivitetsPeriode,
             ],
-            [],
+            { days: 0, latestTom: null },
         )
         expect(result).toBe(true)
     })

@@ -2,18 +2,19 @@ import { ReactElement } from 'react'
 import { BodyShort, Textarea } from '@navikt/ds-react'
 
 import FormSection from '@components/form/form-section/FormSection'
-import { SykmeldingDateRange } from '@data-layer/common/continuous-sykefravaer-utils'
 import { useController, useFormContext } from '@features/ny-sykmelding-form/form/types'
 import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-utils'
 
 export function UtdypendeSporsmal({
-    previousSykmeldingDateRange,
+    utdypendeSporsmal,
 }: {
-    previousSykmeldingDateRange?: SykmeldingDateRange[]
+    utdypendeSporsmal?: { days: number; latestTom?: string | null } | null
 }): ReactElement | null {
     const perioder = useFormContext().watch('perioder')
 
-    if (shouldShowUke7Sporsmal(perioder, previousSykmeldingDateRange)) {
+    if (!utdypendeSporsmal) return null
+
+    if (shouldShowUke7Sporsmal(perioder, utdypendeSporsmal)) {
         return <Uke7 />
     }
 

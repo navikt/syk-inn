@@ -3,17 +3,13 @@
 import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 
-import { AllSykmeldingerDocument, GetDraftDocument, PasientDocument } from '@queries'
+import { GetDraftDocument, PasientDocument } from '@queries'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
 import { useAppSelector } from '@core/redux/hooks'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import { SykmeldingDraftFormErrors } from '@features/actions/common/SykmeldingFormErrors'
-import {
-    mapSykmeldingToDateRanges,
-    mergeCurrentAndPreviousSykmeldinger,
-} from '@data-layer/common/continuous-sykefravaer-utils'
 import { nySykmeldingFromDraftDefaultValues } from '@features/actions/ny-sykmelding-from-draft/ny-sykmelding-from-draft-mappers'
 
 type Props = {
@@ -25,7 +21,6 @@ export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactE
         variables: { draftId },
         fetchPolicy: 'cache-first',
     })
-    const alleSykmeldinger = useQuery(AllSykmeldingerDocument)
     const pasient = useQuery(PasientDocument)
 
     const valuesInState = useAppSelector((state) => state.nySykmelding.values)
@@ -41,19 +36,12 @@ export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactE
 
     const parsedDraft = safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values)
     const defaultValues = nySykmeldingFromDraftDefaultValues(parsedDraft, valuesInState, suggestionsQuery.suggestions)
-    const previousSykmeldingDateRange = mapSykmeldingToDateRanges(
-        mergeCurrentAndPreviousSykmeldinger(
-            alleSykmeldinger.data?.sykmeldinger?.current,
-            alleSykmeldinger.data?.sykmeldinger?.historical,
-        ),
-    )
 
     return (
         <NySykmeldingForm
             defaultValues={defaultValues}
             context={{
                 utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,
-                previousSykmeldingDateRange,
             }}
             contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
         />
