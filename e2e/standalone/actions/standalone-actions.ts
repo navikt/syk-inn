@@ -1,5 +1,4 @@
 import { Page, test } from '@playwright/test'
-
 import { ExpectedToggles } from '@core/toggles/toggles'
 import { Scenarios } from '@dev/mock-engine/scenarios/scenarios'
 import { MockBehandlere } from '@navikt/helseid-mock-server'
@@ -18,9 +17,16 @@ export function launchWithMock(
     scenario: Scenarios = 'empty',
     { behandler = 'Johan Johansson', ...toggleOverrides }: ToggleOverrides & AdditionalOptions,
 ) {
+    const actualToggleOverrides = {
+        SYK_INN_AAREG: false,
+        SYK_INN_SHOW_REDACTED: false,
+        SYK_INN_AUTO_BIDIAGNOSER: false,
+        ...toggleOverrides,
+    }
+
     return async (page: Page): Promise<void> => {
-        if (Object.keys(toggleOverrides).length > 0) {
-            await applyToggleOverrides(page, toggleOverrides)
+        if (Object.keys(actualToggleOverrides).length > 0) {
+            await applyToggleOverrides(page, actualToggleOverrides)
         }
 
         const startUrlWithBehandler = `${startPath}?user=${encodeURIComponent(behandler)}&returnTo=/`
