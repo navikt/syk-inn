@@ -4,11 +4,13 @@ import React, { ReactElement, useEffect } from 'react'
 import { Alert, BodyShort, Heading, LinkCard, Skeleton } from '@navikt/ds-react'
 import { useLazyQuery } from '@apollo/client/react'
 import Link from 'next/link'
+import { AnimatePresence } from 'motion/react'
 
 import { PersonByIdentDocument } from '@queries'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { setPersistentUser } from '@data-layer/helseid/persistent-user/persistent-user'
+import { SimpleReveal } from '@components/animation/Reveal'
 
 import ManualPatientSearch from './ManualPatientSearch'
 import ManualPatientDrafts from './ManualPatientDrafts'
@@ -54,18 +56,16 @@ function ManualPatientPicker(): ReactElement {
                 </div>
             )}
             {!loading && data?.person != null && (
-                <>
-                    <LinkCard className="mt-4">
-                        <LinkCard.Title>
-                            <LinkCard.Anchor asChild>
-                                <Link href="/ny">Opprett sykmelding for {data.person.navn}</Link>
-                            </LinkCard.Anchor>
-                            <LinkCard.Description>{data.person.ident}</LinkCard.Description>
-                        </LinkCard.Title>
-                    </LinkCard>
-                    <ManualPatientDrafts ident={data.person.ident} />
-                </>
+                <LinkCard className="mt-4">
+                    <LinkCard.Title>
+                        <LinkCard.Anchor asChild>
+                            <Link href="/ny">Opprett sykmelding for {data.person.navn}</Link>
+                        </LinkCard.Anchor>
+                        <LinkCard.Description>{data.person.ident}</LinkCard.Description>
+                    </LinkCard.Title>
+                </LinkCard>
             )}
+
             {!loading && !error && data != null && data.person == null && (
                 <Alert variant="warning" className="mt-4">
                     <Heading size="small" level="3">
@@ -82,6 +82,14 @@ function ManualPatientPicker(): ReactElement {
                     <BodyShort>Det oppstod en feil ved henting av pasient. Prøv igjen senere.</BodyShort>
                 </Alert>
             )}
+
+            <AnimatePresence initial={false}>
+                {!loading && data?.person != null && (
+                    <SimpleReveal>
+                        <ManualPatientDrafts ident={data.person.ident} />
+                    </SimpleReveal>
+                )}
+            </AnimatePresence>
         </div>
     )
 }

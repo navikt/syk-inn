@@ -17,7 +17,9 @@ type Props = {
 }
 
 function ManualPatientDrafts({ ident }: Props): ReactElement {
-    const draftsQuery = useQuery(GetAllDraftsDocument)
+    const draftsQuery = useQuery(GetAllDraftsDocument, {
+        fetchPolicy: 'cache-and-network',
+    })
 
     const hasDrafts = draftsQuery.data?.drafts != null && draftsQuery.data.drafts.length > 0
     const drafts = draftsQuery.data?.drafts ?? []
@@ -32,7 +34,11 @@ function ManualPatientDrafts({ ident }: Props): ReactElement {
                 {!draftsQuery.loading && hasDrafts
                     ? drafts.map((draft) => <ContinueDraftCard key={draft.draftId} draft={draft} ident={ident} />)
                     : null}
-                {!draftsQuery.loading && !hasDrafts && <p>Du har ingen pågående utkast for denne pasienten.</p>}
+                {!draftsQuery.loading && !hasDrafts && (
+                    <div className="h-[90px] border border-border-subtle rounded-md flex items-center justify-center">
+                        Du har ingen pågående utkast for denne pasienten.
+                    </div>
+                )}
             </div>
         </section>
     )
