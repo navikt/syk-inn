@@ -21,9 +21,11 @@ const HprDetailsSchema = z.object({
 })
 
 type UserInfo = z.infer<typeof UserInfoSchema>
-const UserInfoSchema = z.object({
-    'helseid://claims/hpr/hpr_details': HprDetailsSchema,
-})
+const UserInfoSchema = z
+    .object({
+        'helseid://claims/hpr/hpr_details': HprDetailsSchema,
+    })
+    .loose()
 
 export async function getHelseIdUserInfo(): Promise<UserInfo | null> {
     return spanServerAsync('HelseID.getHelseIdUserInfo', async () => {

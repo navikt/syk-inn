@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { getUserlessToggles, getUserToggles, toToggleMap } from '@core/toggles/unleash'
 import { spanServerAsync } from '@lib/otel/server'
 import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
-import { getHelseIdIdTokenInfo } from '@data-layer/helseid/helseid-user'
+import { getHelseIdIdTokenInfo, getHelseIdUserInfo } from '@data-layer/helseid/helseid-user'
 import { validateHelseIdToken } from '@data-layer/helseid/token/validate'
 
 export async function GET(): Promise<NextResponse> {
@@ -20,5 +20,6 @@ export async function GET(): Promise<NextResponse> {
         toggles: toToggleMap(toggles),
         validToken: await validateHelseIdToken(),
         idToken: await getHelseIdIdTokenInfo(),
+        userInfo: await getHelseIdUserInfo(),
     })
 }
