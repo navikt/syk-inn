@@ -1,12 +1,11 @@
 import { Page } from '@playwright/test'
 import { Scenarios } from '@dev/mock-engine/scenarios/scenarios'
 
-import * as fhirActions from '../fhir/actions/fhir-user-actions'
-import { userInteractionsGroup } from '../utils/actions'
-import * as standaloneActions from '../standalone/actions/standalone-user-actions'
-import { ToggleOverrides } from '../actions/toggle-overrides'
-
-import { launchMode, Modes } from './modes'
+import * as fhirActions from '../../fhir/actions/fhir-user-actions'
+import * as standaloneActions from '../../standalone/actions/standalone-user-actions'
+import { userInteractionsGroup } from '../../utils/actions'
+import { ToggleOverrides } from '../../actions/toggle-overrides'
+import { launchMode, Modes } from '../modes'
 
 export function launchAndStart(
     mode: Modes,

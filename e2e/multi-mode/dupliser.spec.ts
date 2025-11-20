@@ -10,9 +10,9 @@ import {
 import { verifySummaryPage } from '../actions/user-verifications'
 import { expectBidagnoses, expectHoveddiagnose, expectPeriode } from '../actions/user-form-verification'
 
-import { launchAndStart } from './mode-actions'
+import { launchAndStart } from './actions/mode-user-actions'
 import { modes } from './modes'
-import { verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
+import { verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 
 modes.forEach(({ mode }) => {
     test(`${mode}: should be able to duplicate from kvittering`, async ({ page }) => {

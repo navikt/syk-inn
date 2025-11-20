@@ -11,8 +11,8 @@ import {
 import { expectGraphQLRequest } from '../utils/assertions'
 import { today, inDays } from '../utils/date-utils'
 
-import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
-import { launchAndStart } from './mode-actions'
+import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
+import { launchAndStart } from './actions/mode-user-actions'
 import { modes } from './modes'
 
 modes.forEach(({ mode }) => {

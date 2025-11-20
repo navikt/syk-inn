@@ -1,11 +1,10 @@
 import { Page } from '@playwright/test'
 import { OpprettSykmeldingMetaInput } from '@queries'
 
-import * as fhirUserVerification from '../fhir/actions/fhir-user-verifications'
-import * as standaloneUserVerification from '../standalone/actions/standalone-user-verifications'
-import * as standaloneActions from '../standalone/actions/standalone-user-actions'
-
-import { Modes, onMode } from './modes'
+import * as fhirUserVerification from '../../fhir/actions/fhir-user-verifications'
+import * as standaloneUserVerification from '../../standalone/actions/standalone-user-verifications'
+import * as standaloneActions from '../../standalone/actions/standalone-user-actions'
+import { Modes, onMode } from '../modes'
 
 export function verifySignerendeBehandlerFillIfNeeded(mode: Modes): (page: Page) => Promise<void> {
     return onMode(mode, {

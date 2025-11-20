@@ -15,8 +15,8 @@ import { userInteractionsGroup } from '../utils/actions'
 import * as standaloneActions from '../standalone/actions/standalone-user-actions'
 
 import { modes, onMode } from './modes'
-import { launchAndStart } from './mode-actions'
-import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
+import { launchAndStart } from './actions/mode-user-actions'
+import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 
 modes.forEach(({ mode }) => {
     test(`${mode}: aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG data`, async ({ page }) => {

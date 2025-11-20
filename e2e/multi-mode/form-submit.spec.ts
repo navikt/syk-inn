@@ -18,8 +18,8 @@ import { daysAgo, inDays, today } from '../utils/date-utils'
 import { userInteractionsGroup } from '../utils/actions'
 import { verifySummaryPage } from '../actions/user-verifications'
 
-import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
-import { launchAndStart } from './mode-actions'
+import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
+import { launchAndStart } from './actions/mode-user-actions'
 import { modes } from './modes'
 
 modes.forEach(({ mode }) => {

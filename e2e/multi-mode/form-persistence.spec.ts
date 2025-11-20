@@ -27,8 +27,8 @@ import { verifySummaryPage } from '../actions/user-verifications'
 import * as standaloneActions from '../standalone/actions/standalone-user-actions'
 
 import { modes, Modes, onMode } from './modes'
-import { launchAndStart } from './mode-actions'
-import { verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
+import { launchAndStart } from './actions/mode-user-actions'
+import { verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 
 const fillAllTheValues = (mode: Modes): ((page: Page) => Promise<void>) =>
     userInteractionsGroup(
