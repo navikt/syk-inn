@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { OpprettSykmeldingDocument, OpprettSykmeldingMetaInput } from '@queries'
+import { OpprettSykmeldingDocument } from '@queries'
 
 import {
     fillPeriodeRelative,
@@ -14,9 +14,9 @@ import { verifySummaryPage } from '../actions/user-verifications'
 import { userInteractionsGroup } from '../utils/actions'
 import * as standaloneActions from '../standalone/actions/standalone-user-actions'
 
-import { Modes, modes, onMode } from './modes'
+import { modes, onMode } from './modes'
 import { launchAndStart } from './mode-actions'
-import { verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
+import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
 
 modes.forEach(({ mode }) => {
     test(`${mode}: aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG data`, async ({ page }) => {
@@ -176,11 +176,3 @@ modes.forEach(({ mode }) => {
         })
     })
 })
-
-const expectedSykmeldingMeta = (mode: Modes): OpprettSykmeldingMetaInput =>
-    mode === 'FHIR'
-        ? { orgnummer: null, legekontorTlf: null }
-        : {
-              orgnummer: '112233445',
-              legekontorTlf: '+47 99887766',
-          }

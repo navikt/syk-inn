@@ -2,7 +2,7 @@ import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 
-import { QueriedPerson, Resolvers } from '@resolvers'
+import { QueriedPerson, Resolvers, UtdypendeSporsmalOptions } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { commonQueryResolvers, typeResolvers } from '@data-layer/graphql/common-resolvers'
 import { raise } from '@lib/ts'
@@ -21,6 +21,11 @@ import { DraftValuesSchema } from '@data-layer/draft/draft-schema'
 import { getDraftClient } from '@data-layer/draft/draft-client'
 import { NoHelseIdCurrentPatient } from '@data-layer/helseid/error/Errors'
 import { aaregService } from '@core/services/aareg/aareg-service'
+import {
+    calculateTotalLengthOfSykmeldinger,
+    filterSykmeldingerWithinDaysGap,
+    mapSykInnApiSykmeldingerToDateRanges,
+} from '@data-layer/common/continuous-sykefravaer-utils'
 
 import { HelseIdGraphqlContext } from './helseid-graphql-context'
 
@@ -205,6 +210,41 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             }
 
             return await aaregService.getArbeidsforhold(parent.ident)
+        },
+        utdypendeSporsmal: async (pasient, _args, { hpr }) => {
+            const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(pasient.ident, hpr)
+            if ('errorType' in sykInnSykmeldinger) {
+                throw new GraphQLError('API_ERROR')
+            }
+
+            const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
+
+            const sykmeldinger = R.pipe(
+                sykInnSykmeldinger,
+                R.filter((it) => showRedactedFlag || it.kind !== 'redacted'),
+            )
+
+            const sykmeldingDateRanges = mapSykInnApiSykmeldingerToDateRanges(sykmeldinger)
+            const totalDays = R.pipe(
+                sykmeldingDateRanges,
+                filterSykmeldingerWithinDaysGap,
+                calculateTotalLengthOfSykmeldinger,
+            )
+            const latestTom = R.sortBy(sykmeldingDateRanges, [(it) => it.latestTom, 'desc'])[0]?.latestTom ?? null
+
+            const previouslyAnsweredSporsmal: UtdypendeSporsmalOptions[] = []
+            sykmeldinger.forEach((sykmelding) => {
+                if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmal) {
+                    if (sykmelding.values.utdypendeSporsmal.utfodringerMedArbeid) {
+                        previouslyAnsweredSporsmal.push('UTFORDRINGER_MED_ARBEID')
+                    }
+                    if (sykmelding.values.utdypendeSporsmal.medisinskOppsummering) {
+                        previouslyAnsweredSporsmal.push('MEDISINSK_OPPSUMMERING')
+                    }
+                }
+            })
+
+            return { days: totalDays, latestTom, previouslyAnsweredSporsmal }
         },
     },
     ...typeResolvers,

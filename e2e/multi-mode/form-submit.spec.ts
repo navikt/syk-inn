@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { OpprettSykmeldingDocument, OpprettSykmeldingMetaInput } from '@queries'
+import { OpprettSykmeldingDocument } from '@queries'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
 
 import {
@@ -18,9 +18,9 @@ import { daysAgo, inDays, today } from '../utils/date-utils'
 import { userInteractionsGroup } from '../utils/actions'
 import { verifySummaryPage } from '../actions/user-verifications'
 
-import { verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
+import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
 import { launchAndStart } from './mode-actions'
-import { Modes, modes } from './modes'
+import { modes } from './modes'
 
 modes.forEach(({ mode }) => {
     test(`${mode}: simple - 100% sykmelding`, async ({ page }) => {
@@ -732,11 +732,3 @@ modes.forEach(({ mode }) => {
         })
     })
 })
-
-const expectedSykmeldingMeta = (mode: Modes): OpprettSykmeldingMetaInput =>
-    mode === 'FHIR'
-        ? { orgnummer: null, legekontorTlf: null }
-        : {
-              orgnummer: '112233445',
-              legekontorTlf: '+47 99887766',
-          }

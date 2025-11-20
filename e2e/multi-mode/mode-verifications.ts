@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test'
+import { OpprettSykmeldingMetaInput } from '@queries'
 
 import * as fhirUserVerification from '../fhir/actions/fhir-user-verifications'
 import * as standaloneUserVerification from '../standalone/actions/standalone-user-verifications'
@@ -18,3 +19,10 @@ export function verifySignerendeBehandlerFillIfNeeded(mode: Modes): (page: Page)
         },
     })
 }
+export const expectedSykmeldingMeta = (mode: Modes): OpprettSykmeldingMetaInput =>
+    mode === 'FHIR'
+        ? { orgnummer: null, legekontorTlf: null }
+        : {
+              orgnummer: '112233445',
+              legekontorTlf: '+47 99887766',
+          }
