@@ -763,7 +763,7 @@ function expectSignerendeBehandler(mode: Modes): (page: Page) => Promise<void> {
         fhir: async (page) => {
             await fhirUserVerification.verifySignerendeBehandler()(page)
         },
-        stanalone: async (page) => {
+        standalone: async (page) => {
             await standaloneUserVerification.verifySignerendeBehandler('123456')(page)
             await standaloneActions.fillOrgnummer('112233445')(page)
             await standaloneActions.fillTelefonnummer('+47 99887766')(page)

@@ -38,7 +38,7 @@ export function launchMode(
 
 export function onMode(
     mode: Modes,
-    on: { fhir: (page: Page) => Promise<void>; stanalone: (page: Page) => Promise<void> },
+    on: { fhir: (page: Page) => Promise<void>; standalone: (page: Page) => Promise<void> },
 ) {
     return async (page: Page): Promise<void> => {
         switch (mode) {
@@ -46,7 +46,7 @@ export function onMode(
                 await on.fhir(page)
                 break
             case 'Standalone':
-                await on.stanalone(page)
+                await on.standalone(page)
                 break
         }
     }
