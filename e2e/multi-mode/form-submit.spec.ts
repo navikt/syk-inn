@@ -13,13 +13,14 @@ import {
     pickHoveddiagnose,
     submitSykmelding,
 } from '../actions/user-actions'
-import { verifySignerendeBehandler } from '../fhir/actions/fhir-user-verifications'
 import { expectGraphQLRequest } from '../utils/assertions'
 import { daysAgo, inDays, today } from '../utils/date-utils'
 import { userInteractionsGroup } from '../utils/actions'
 import { verifySummaryPage } from '../actions/user-verifications'
 import * as fhirActions from '../fhir/actions/fhir-user-actions'
+import * as fhirUserVerification from '../fhir/actions/fhir-user-verifications'
 import * as standaloneActions from '../standalone/actions/standalone-user-actions'
+import * as standaloneUserVerification from '../standalone/actions/standalone-user-verifications'
 
 import { Modes, modes, launchMode, onMode } from './modes'
 
@@ -760,9 +761,10 @@ function launchAndStart(mode: Modes): (page: Page) => Promise<void> {
 function expectSignerendeBehandler(mode: Modes): (page: Page) => Promise<void> {
     return onMode(mode, {
         fhir: async (page) => {
-            await verifySignerendeBehandler()(page)
+            await fhirUserVerification.verifySignerendeBehandler()(page)
         },
         stanalone: async (page) => {
+            await standaloneUserVerification.verifySignerendeBehandler('123456')(page)
             await standaloneActions.fillOrgnummer('112233445')(page)
             await standaloneActions.fillTelefonnummer('+47 99887766')(page)
         },

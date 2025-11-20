@@ -26,7 +26,7 @@ import {
 } from '../../actions/user-form-verification'
 import { verifySummaryPage } from '../../actions/user-verifications'
 
-test('should be able to duplicate an existing sykmelding with correct values', async ({ page }) => {
+test('should be able to dupliser (from dashboard) an existing sykmelding with correct values', async ({ page }) => {
     await launchWithMock('empty')(page)
     await requestAccessToSykmeldinger()(page)
     await startNewSykmelding()(page)
@@ -79,7 +79,7 @@ test('should be able to duplicate an existing sykmelding with correct values', a
     await submitSykmelding()(page)
 })
 
-test('should be able to duplicate an existing sykmelding, go tu summary, and return to form without losing values', async ({
+test('should be able to dupliser (from dashboard) an existing sykmelding, go to summary, and return to form without losing values', async ({
     page,
 }) => {
     await launchWithMock('empty')(page)
@@ -132,7 +132,7 @@ test('should be able to duplicate an existing sykmelding, go tu summary, and ret
     await expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'The Other One AB' })(page)
 })
 
-test('should not be possible to extend old sykmelding', async ({ page }) => {
+test('should not be possible to dupliser (from dashboard) old sykmelding', async ({ page }) => {
     await launchWithMock('empty')(page)
 
     await startNewSykmelding()(page)
