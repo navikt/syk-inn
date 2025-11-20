@@ -4,7 +4,7 @@ import * as R from 'remeda'
 import { teamLogger } from '@navikt/next-logger/team-log'
 import { cookies } from 'next/headers'
 
-import { Behandler, QueriedPerson, Resolvers, UtdypendeSporsmalOptions } from '@resolvers'
+import { Behandler, QueriedPerson, Resolvers } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
@@ -14,7 +14,7 @@ import {
     getOrganisasjonsnummerFromFhir,
     getOrganisasjonstelefonnummerFromFhir,
 } from '@data-layer/fhir/mappers/organization'
-import { commonQueryResolvers, typeResolvers } from '@data-layer/graphql/common-resolvers'
+import { commonTypeResolvers } from '@data-layer/graphql/common-type-resolvers'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { getFnrIdent, getNameFromPdl } from '@core/services/pdl/pdl-api-utils'
@@ -25,18 +25,13 @@ import {
     sykInnApiSykmeldingToResolverSykmeldingFull,
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
-import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
-import { aaregService } from '@core/services/aareg/aareg-service'
+import { getFlag, getUserToggles } from '@core/toggles/unleash'
 import { raise } from '@lib/ts'
+import { commonObjectResolvers, commonQueryResolvers } from '@data-layer/graphql/common-resolvers'
 import { FhirGraphqlContext } from '@data-layer/fhir/fhir-graphql-context'
 import { getHasRequestedAccessToSykmeldinger } from '@core/session/session'
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
 import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
-import {
-    calculateTotalLengthOfSykmeldinger,
-    filterSykmeldingerWithinDaysGap,
-    mapSykInnApiSykmeldingerToDateRanges,
-} from '@data-layer/common/continuous-sykefravaer-utils'
 
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
@@ -85,9 +80,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 ident: getValidPatientIdent(patient.identifier) ?? raise('Patient without valid FNR/DNR'),
             }
         },
-        konsultasjon: async () => {
-            return {}
-        },
+        konsultasjon: async () => ({}),
         sykmelding: async (_, { id: sykmeldingId }, { client, hpr }) => {
             const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
             if ('errorType' in sykmelding) {
@@ -357,54 +350,6 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             return true
         },
     },
-    Pasient: {
-        arbeidsforhold: async (parent) => {
-            const aaregToggle = getFlag('SYK_INN_AAREG', await getUserlessToggles())
-            if (!aaregToggle) {
-                logger.error(
-                    'SYK_INN_AAREG flag is not enabled, why are you calling this? Remember to feature toggle your frontend as well.',
-                )
-                return []
-            }
-
-            return await aaregService.getArbeidsforhold(parent.ident)
-        },
-        utdypendeSporsmal: async (pasient, _args, { hpr }) => {
-            const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(pasient.ident, hpr)
-            if ('errorType' in sykInnSykmeldinger) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
-
-            const sykmeldinger = R.pipe(
-                sykInnSykmeldinger,
-                R.filter((it) => showRedactedFlag || it.kind !== 'redacted'),
-            )
-
-            const sykmeldingDateRanges = mapSykInnApiSykmeldingerToDateRanges(sykmeldinger)
-            const totalDays = R.pipe(
-                sykmeldingDateRanges,
-                filterSykmeldingerWithinDaysGap,
-                calculateTotalLengthOfSykmeldinger,
-            )
-            const latestTom = R.sortBy(sykmeldingDateRanges, [(it) => it.latestTom, 'desc'])[0]?.latestTom ?? null
-
-            const previouslyAnsweredSporsmal: UtdypendeSporsmalOptions[] = []
-            sykmeldinger.forEach((sykmelding) => {
-                if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmal) {
-                    if (sykmelding.values.utdypendeSporsmal.utfodringerMedArbeid) {
-                        previouslyAnsweredSporsmal.push('UTFORDRINGER_MED_ARBEID')
-                    }
-                    if (sykmelding.values.utdypendeSporsmal.medisinskOppsummering) {
-                        previouslyAnsweredSporsmal.push('MEDISINSK_OPPSUMMERING')
-                    }
-                }
-            })
-
-            return { days: totalDays, latestTom, previouslyAnsweredSporsmal }
-        },
-    },
     Konsultasjon: {
         hasRequestedAccessToSykmeldinger: async (_, _args, { client, practitioner }) => {
             const patientInContext = await client.patient.request()
@@ -434,7 +379,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             return fhirDiagnosisToRelevantDiagnosis(conditionList)
         },
     },
-    ...typeResolvers,
+    ...commonObjectResolvers,
+    ...commonTypeResolvers,
 }
 
 export const fhirSchema = createSchema(fhirResolvers)

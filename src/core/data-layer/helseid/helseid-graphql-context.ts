@@ -2,6 +2,7 @@ import { YogaInitialContext } from 'graphql-yoga'
 
 import { assertIsPilotUser } from '@data-layer/common/pilot-user-utils'
 import { getCurrentPatientFromExtension } from '@data-layer/graphql/yoga-utils'
+import { CommonGraphqlContext } from '@data-layer/graphql/common-context'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 
 import { getHelseIdBehandler } from './helseid-service'
@@ -10,10 +11,8 @@ import { validateHelseIdToken } from './token/validate'
 
 const OtelNamespace = 'GraphQL(HelseID).context'
 
-export type HelseIdGraphqlContext = {
-    hpr: string
+export type HelseIdGraphqlContext = CommonGraphqlContext & {
     name: string
-    patientIdent: string | null
 }
 
 export const createHelseIdResolverContext = async (context: YogaInitialContext): Promise<HelseIdGraphqlContext> => {

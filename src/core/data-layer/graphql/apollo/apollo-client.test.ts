@@ -20,7 +20,7 @@ import {
     sykInnApiSykmeldingToResolverSykmelding,
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { createSchema } from '@data-layer/graphql/create-schema'
-import { typeResolvers } from '@data-layer/graphql/common-resolvers'
+import { commonTypeResolvers } from '@data-layer/graphql/common-type-resolvers'
 import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 
 describe('apollo cache normalization - draft', () => {
@@ -94,7 +94,7 @@ describe('apollo cache normalization - sykmelding', async () => {
                     historical: [],
                 }),
             },
-            ...typeResolvers,
+            ...commonTypeResolvers,
         }),
         document: addTypenameToDocument(AllSykmeldingerDocument),
     })

@@ -2,9 +2,10 @@ import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 
-import { QueriedPerson, Resolvers, UtdypendeSporsmalOptions } from '@resolvers'
+import { QueriedPerson, Resolvers } from '@resolvers'
+import { commonObjectResolvers, commonQueryResolvers } from '@data-layer/graphql/common-resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
-import { commonQueryResolvers, typeResolvers } from '@data-layer/graphql/common-resolvers'
+import { commonTypeResolvers } from '@data-layer/graphql/common-type-resolvers'
 import { raise } from '@lib/ts'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { getFnrIdent, getNameFromPdl } from '@core/services/pdl/pdl-api-utils'
@@ -16,16 +17,10 @@ import {
     sykInnApiSykmeldingToResolverSykmeldingFull,
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
+import { getFlag, getUserToggles } from '@core/toggles/unleash'
 import { DraftValuesSchema } from '@data-layer/draft/draft-schema'
 import { getDraftClient } from '@data-layer/draft/draft-client'
 import { NoHelseIdCurrentPatient } from '@data-layer/helseid/error/Errors'
-import { aaregService } from '@core/services/aareg/aareg-service'
-import {
-    calculateTotalLengthOfSykmeldinger,
-    filterSykmeldingerWithinDaysGap,
-    mapSykInnApiSykmeldingerToDateRanges,
-} from '@data-layer/common/continuous-sykefravaer-utils'
 
 import { HelseIdGraphqlContext } from './helseid-graphql-context'
 
@@ -39,7 +34,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
                 orgnummer: null,
             }
         },
-        konsultasjon: () => ({ diagnoser: [] }),
+        konsultasjon: async () => ({}),
         pasient: async (_, _args, { patientIdent }) => {
             if (!patientIdent) throw new GraphQLError('MISSING_IDENT')
 
@@ -199,55 +194,12 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         },
         synchronizeSykmelding: () => raise('Not Implemented'),
     },
-    Pasient: {
-        arbeidsforhold: async (parent) => {
-            const aaregToggle = getFlag('SYK_INN_AAREG', await getUserlessToggles())
-            if (!aaregToggle) {
-                logger.error(
-                    'SYK_INN_AAREG flag is not enabled, why are you calling this? Remember to feature toggle your frontend as well.',
-                )
-                return []
-            }
-
-            return await aaregService.getArbeidsforhold(parent.ident)
-        },
-        utdypendeSporsmal: async (pasient, _args, { hpr }) => {
-            const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(pasient.ident, hpr)
-            if ('errorType' in sykInnSykmeldinger) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
-
-            const sykmeldinger = R.pipe(
-                sykInnSykmeldinger,
-                R.filter((it) => showRedactedFlag || it.kind !== 'redacted'),
-            )
-
-            const sykmeldingDateRanges = mapSykInnApiSykmeldingerToDateRanges(sykmeldinger)
-            const totalDays = R.pipe(
-                sykmeldingDateRanges,
-                filterSykmeldingerWithinDaysGap,
-                calculateTotalLengthOfSykmeldinger,
-            )
-            const latestTom = R.sortBy(sykmeldingDateRanges, [(it) => it.latestTom, 'desc'])[0]?.latestTom ?? null
-
-            const previouslyAnsweredSporsmal: UtdypendeSporsmalOptions[] = []
-            sykmeldinger.forEach((sykmelding) => {
-                if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmal) {
-                    if (sykmelding.values.utdypendeSporsmal.utfodringerMedArbeid) {
-                        previouslyAnsweredSporsmal.push('UTFORDRINGER_MED_ARBEID')
-                    }
-                    if (sykmelding.values.utdypendeSporsmal.medisinskOppsummering) {
-                        previouslyAnsweredSporsmal.push('MEDISINSK_OPPSUMMERING')
-                    }
-                }
-            })
-
-            return { days: totalDays, latestTom, previouslyAnsweredSporsmal }
-        },
+    Konsultasjon: {
+        hasRequestedAccessToSykmeldinger: async () => null,
+        diagnoser: async () => null,
     },
-    ...typeResolvers,
+    ...commonObjectResolvers,
+    ...commonTypeResolvers,
 }
 
 export const helseIdSchema = createSchema(helseidResolvers)
