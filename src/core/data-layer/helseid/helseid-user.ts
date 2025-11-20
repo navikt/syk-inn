@@ -68,11 +68,13 @@ export async function getHelseIdUserInfo(): Promise<UserInfo | null> {
 }
 
 type HelseIdIdToken = z.infer<typeof HelseIdIdTokenSchema>
-const HelseIdIdTokenSchema = z.object({
-    'helseid://claims/identity/pid': z.string(),
-    'helseid://claims/hpr/hpr_number': z.string().nullable().optional(),
-    name: z.string(),
-})
+const HelseIdIdTokenSchema = z
+    .object({
+        'helseid://claims/identity/pid': z.string(),
+        'helseid://claims/hpr/hpr_number': z.string().nullable().optional(),
+        name: z.string(),
+    })
+    .loose()
 
 export async function getHelseIdIdTokenInfo(): Promise<HelseIdIdToken> {
     return spanServerAsync('HelseID.getHelseIdIdTokenInfo', async () => {
