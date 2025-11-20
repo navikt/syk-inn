@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Alert, BodyShort, Heading, LinkCard, Skeleton } from '@navikt/ds-react'
 import { useLazyQuery } from '@apollo/client/react'
 import Link from 'next/link'
@@ -18,12 +18,14 @@ import ManualPatientDrafts from './ManualPatientDrafts'
 function ManualPatientPicker(): ReactElement {
     const dispatch = useAppDispatch()
     const existingPatient = useAppSelector((state) => state.nySykmelding.pasient)
+    const [currentPatient, setCurrentPatient] = useState<string | null>(null)
     const [searchPerson, { loading, data, error }] = useLazyQuery(PersonByIdentDocument, {
         fetchPolicy: 'network-only',
     })
     const handleSearch = async (ident: string): Promise<void> => {
         if (!ident) return
 
+        setCurrentPatient(null)
         const pdlPerson = await searchPerson({
             variables: { ident: ident },
         })
@@ -36,6 +38,7 @@ function ManualPatientPicker(): ReactElement {
             }
             dispatch(nySykmeldingActions.manualPatient(patient))
             setPersistentUser(patient)
+            setCurrentPatient(patient.ident)
         }
     }
 
@@ -84,7 +87,7 @@ function ManualPatientPicker(): ReactElement {
             )}
 
             <AnimatePresence initial={false}>
-                {!loading && data?.person != null && (
+                {!loading && data?.person != null && currentPatient != null && (
                     <SimpleReveal>
                         <ManualPatientDrafts ident={data.person.ident} />
                     </SimpleReveal>
