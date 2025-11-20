@@ -60,7 +60,7 @@ export default defineConfig({
     timeout: opts.timeout,
     use: {
         baseURL: opts.baseURL,
-        trace: 'on-first-retry',
+        trace: 'on',
         contextOptions: { reducedMotion: 'reduce' },
     },
     expect: {
