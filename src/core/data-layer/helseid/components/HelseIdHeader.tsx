@@ -1,7 +1,9 @@
 import React, { ReactElement } from 'react'
-import { BodyShort, Detail, Heading } from '@navikt/ds-react'
+import { BodyShort, Detail, Heading, Link } from '@navikt/ds-react'
 
 import { NavLogo } from '@components/misc/NavLogo'
+import { pathWithBasePath } from '@lib/url'
+import { isCloud } from '@lib/env'
 
 type Props = {
     behandler: {
@@ -29,7 +31,17 @@ function HelseIdHeader({ behandler }: Props): ReactElement {
                 <div className="flex gap-3 items-center">
                     <div>
                         <BodyShort>{behandler.navn}</BodyShort>
-                        {behandler.hpr && <Detail>{behandler.hpr}</Detail>}
+                        <div className="flex justify-between items-center gap-3">
+                            <div>{behandler.hpr && <Detail>{behandler.hpr}</Detail>}</div>
+                            {isCloud && (
+                                <Link
+                                    className="text-sm -mt-0.5"
+                                    href={pathWithBasePath(`/oauth2/logout?redirect=${pathWithBasePath('/')}`)}
+                                >
+                                    Logg ut
+                                </Link>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
