@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { BodyShort, Detail, Heading, Link } from '@navikt/ds-react'
 
 import { NavLogo } from '@components/misc/NavLogo'
-import { pathWithBasePath } from '@lib/url'
+import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 import { isCloud } from '@lib/env'
 
 type Props = {
@@ -36,7 +36,7 @@ function HelseIdHeader({ behandler }: Props): ReactElement {
                             {isCloud && (
                                 <Link
                                     className="text-sm -mt-0.5"
-                                    href={pathWithBasePath(`/oauth2/logout?redirect=${pathWithBasePath('/')}`)}
+                                    href={pathWithBasePath(`/oauth2/logout?redirect=${getAbsoluteURL()}`)}
                                 >
                                     Logg ut
                                 </Link>
