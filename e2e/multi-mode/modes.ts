@@ -20,7 +20,7 @@ export function launchMode(
     mode: Modes,
     pre: { onFhir: (page: Page) => Promise<void>; onStandalone: (page: Page) => Promise<void> } | 'noop',
     scenario: Scenarios,
-    toggleOverrides: ToggleOverrides,
+    toggleOverrides: ToggleOverrides = {},
 ) {
     return async (page: Page): Promise<void> => {
         switch (mode) {

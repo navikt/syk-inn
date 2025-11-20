@@ -9,28 +9,14 @@ import {
 } from '../actions/user-actions'
 import { verifySummaryPage } from '../actions/user-verifications'
 import { expectBidagnoses, expectHoveddiagnose, expectPeriode } from '../actions/user-form-verification'
-import { userInteractionsGroup } from '../utils/actions'
-import * as fhirActions from '../fhir/actions/fhir-user-actions'
-import * as fhirUserVerification from '../fhir/actions/fhir-user-verifications'
-import * as standaloneActions from '../standalone/actions/standalone-user-actions'
-import * as standaloneUserVerification from '../standalone/actions/standalone-user-verifications'
 
-import { launchMode, modes, onMode } from './modes'
+import { launchAndStart } from './mode-actions'
+import { modes } from './modes'
+import { verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
 
 modes.forEach(({ mode }) => {
     test(`${mode}: should be able to duplicate from kvittering`, async ({ page }) => {
-        await launchMode(
-            mode,
-            {
-                onFhir: fhirActions.startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' }),
-                onStandalone: userInteractionsGroup(
-                    standaloneActions.searchPerson('21037712323'),
-                    standaloneActions.startNewSykmelding('21037712323'),
-                ),
-            },
-            'normal',
-            { PILOT_USER: true },
-        )(page)
+        await launchAndStart(mode)(page)
 
         await fillPeriodeRelative({
             type: '100%',
@@ -41,16 +27,7 @@ modes.forEach(({ mode }) => {
         await addBidiagnose({ search: 'P17', select: /Tobakkmisbruk/ })(page)
 
         await nextStep()(page)
-        await onMode(mode, {
-            fhir: async (page) => {
-                await fhirUserVerification.verifySignerendeBehandler()(page)
-            },
-            standalone: async (page) => {
-                await standaloneUserVerification.verifySignerendeBehandler('123456')(page)
-                await standaloneActions.fillOrgnummer('112233445')(page)
-                await standaloneActions.fillTelefonnummer('+47 99887766')(page)
-            },
-        })(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
         await verifySummaryPage([
             {
                 name: 'Periode',

@@ -1,4 +1,4 @@
-import { expect, Page, test } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { OpprettSykmeldingDocument, OpprettSykmeldingMetaInput } from '@queries'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
 
@@ -17,12 +17,10 @@ import { expectGraphQLRequest } from '../utils/assertions'
 import { daysAgo, inDays, today } from '../utils/date-utils'
 import { userInteractionsGroup } from '../utils/actions'
 import { verifySummaryPage } from '../actions/user-verifications'
-import * as fhirActions from '../fhir/actions/fhir-user-actions'
-import * as fhirUserVerification from '../fhir/actions/fhir-user-verifications'
-import * as standaloneActions from '../standalone/actions/standalone-user-actions'
-import * as standaloneUserVerification from '../standalone/actions/standalone-user-verifications'
 
-import { Modes, modes, launchMode, onMode } from './modes'
+import { verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
+import { launchAndStart } from './mode-actions'
+import { Modes, modes } from './modes'
 
 modes.forEach(({ mode }) => {
     test(`${mode}: simple - 100% sykmelding`, async ({ page }) => {
@@ -37,7 +35,7 @@ modes.forEach(({ mode }) => {
         await addBidiagnose({ search: 'P17', select: /Tobakkmisbruk/ })(page)
 
         await nextStep()(page)
-        await expectSignerendeBehandler(mode)(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
         const { request, draftId } = await submitSykmelding()(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
@@ -94,7 +92,7 @@ modes.forEach(({ mode }) => {
         await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
         await nextStep()(page)
-        await expectSignerendeBehandler(mode)(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
         const { request, draftId } = await submitSykmelding()(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
@@ -149,7 +147,7 @@ modes.forEach(({ mode }) => {
         await addBidiagnose({ search: 'B80', select: /Jernmangelanemi/ })(page)
 
         await nextStep()(page)
-        await expectSignerendeBehandler(mode)(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
         const { request, draftId } = await submitSykmelding()(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
@@ -207,7 +205,7 @@ modes.forEach(({ mode }) => {
         await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
         await nextStep()(page)
-        await expectSignerendeBehandler(mode)(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
         const { request, draftId } = await submitSykmelding()(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
@@ -273,7 +271,7 @@ modes.forEach(({ mode }) => {
         await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
         await nextStep()(page)
-        await expectSignerendeBehandler(mode)(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
         await verifySummaryPage([
             mode === 'FHIR'
@@ -375,7 +373,7 @@ modes.forEach(({ mode }) => {
         await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
         await nextStep()(page)
-        await expectSignerendeBehandler(mode)(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
         const { request, draftId } = await submitSykmelding()(page)
 
@@ -440,7 +438,7 @@ modes.forEach(({ mode }) => {
 
         await nextStep()(page)
 
-        await expectSignerendeBehandler(mode)(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
         const { request, draftId } = await submitSykmelding()(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
@@ -507,7 +505,7 @@ modes.forEach(({ mode }) => {
 
         await nextStep()(page)
 
-        await expectSignerendeBehandler(mode)(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
         const { request, draftId } = await submitSykmelding()(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
@@ -562,7 +560,7 @@ modes.forEach(({ mode }) => {
         await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
         await nextStep()(page)
-        await expectSignerendeBehandler(mode)(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
         await page.getByRole('checkbox', { name: 'Pasienten skal skjermes for medisinske opplysninger' }).check()
         const { request, draftId } = await submitSykmelding()(page)
@@ -614,7 +612,7 @@ modes.forEach(({ mode }) => {
             pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ }),
             fillPeriodeRelative({ type: '100%', days: 3 }),
             nextStep(),
-            expectSignerendeBehandler(mode),
+            verifySignerendeBehandlerFillIfNeeded(mode),
         )
 
         test(`${mode}: invalid but functionally expected: should be able to submit læll`, async ({ page }) => {
@@ -742,31 +740,3 @@ const expectedSykmeldingMeta = (mode: Modes): OpprettSykmeldingMetaInput =>
               orgnummer: '112233445',
               legekontorTlf: '+47 99887766',
           }
-
-function launchAndStart(mode: Modes): (page: Page) => Promise<void> {
-    return launchMode(
-        mode,
-        {
-            onFhir: fhirActions.startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' }),
-            onStandalone: userInteractionsGroup(
-                standaloneActions.searchPerson('21037712323'),
-                standaloneActions.startNewSykmelding('21037712323'),
-            ),
-        },
-        'normal',
-        { PILOT_USER: true },
-    )
-}
-
-function expectSignerendeBehandler(mode: Modes): (page: Page) => Promise<void> {
-    return onMode(mode, {
-        fhir: async (page) => {
-            await fhirUserVerification.verifySignerendeBehandler()(page)
-        },
-        standalone: async (page) => {
-            await standaloneUserVerification.verifySignerendeBehandler('123456')(page)
-            await standaloneActions.fillOrgnummer('112233445')(page)
-            await standaloneActions.fillTelefonnummer('+47 99887766')(page)
-        },
-    })
-}

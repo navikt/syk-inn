@@ -24,27 +24,15 @@ import {
     expectTilbakedatering,
 } from '../actions/user-form-verification'
 import { verifySummaryPage } from '../actions/user-verifications'
-import * as fhirActions from '../fhir/actions/fhir-user-actions'
-import * as fhirUserVerification from '../fhir/actions/fhir-user-verifications'
 import * as standaloneActions from '../standalone/actions/standalone-user-actions'
-import * as standaloneUserVerification from '../standalone/actions/standalone-user-verifications'
 
-import { launchMode, modes, Modes, onMode } from './modes'
+import { modes, Modes, onMode } from './modes'
+import { launchAndStart } from './mode-actions'
+import { verifySignerendeBehandlerFillIfNeeded } from './mode-verifications'
 
 const fillAllTheValues = (mode: Modes): ((page: Page) => Promise<void>) =>
     userInteractionsGroup(
-        launchMode(
-            mode,
-            {
-                onFhir: fhirActions.startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' }),
-                onStandalone: userInteractionsGroup(
-                    standaloneActions.searchPerson('21037712323'),
-                    standaloneActions.startNewSykmelding('21037712323'),
-                ),
-            },
-            'normal',
-            { PILOT_USER: true },
-        ),
+        launchAndStart(mode),
         fillArbeidsforhold({
             harFlereArbeidsforhold: false,
         }),
@@ -97,7 +85,7 @@ modes.forEach(({ mode }) => {
 
         await expect(page.getByRole('heading', { name: 'Oppsummering sykmelding' })).toBeVisible()
 
-        await expectSignerendeBehandler(mode)(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
         await previousStep()(page)
 
@@ -145,7 +133,7 @@ modes.forEach(({ mode }) => {
 
         await nextStep()(page)
 
-        await expectSignerendeBehandler(mode)(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
         await page.reload()
 
@@ -173,16 +161,3 @@ modes.forEach(({ mode }) => {
         ])(page)
     })
 })
-
-function expectSignerendeBehandler(mode: Modes): (page: Page) => Promise<void> {
-    return onMode(mode, {
-        fhir: async (page) => {
-            await fhirUserVerification.verifySignerendeBehandler()(page)
-        },
-        standalone: async (page) => {
-            await standaloneUserVerification.verifySignerendeBehandler('123456')(page)
-            await standaloneActions.fillOrgnummer('112233445')(page)
-            await standaloneActions.fillTelefonnummer('+47 99887766')(page)
-        },
-    })
-}

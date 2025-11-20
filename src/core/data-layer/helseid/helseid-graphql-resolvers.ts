@@ -16,10 +16,11 @@ import {
     sykInnApiSykmeldingToResolverSykmeldingFull,
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { getFlag, getUserToggles } from '@core/toggles/unleash'
+import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
 import { DraftValuesSchema } from '@data-layer/draft/draft-schema'
 import { getDraftClient } from '@data-layer/draft/draft-client'
 import { NoHelseIdCurrentPatient } from '@data-layer/helseid/error/Errors'
+import { aaregService } from '@core/services/aareg/aareg-service'
 
 import { HelseIdGraphqlContext } from './helseid-graphql-context'
 
@@ -34,7 +35,23 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             }
         },
         konsultasjon: () => ({ diagnoser: [] }),
-        pasient: () => null,
+        pasient: async (_, _args, { patientIdent }) => {
+            if (!patientIdent) throw new GraphQLError('MISSING_IDENT')
+
+            const person = await pdlApiService.getPdlPerson(patientIdent)
+            if ('errorType' in person) {
+                if (person.errorType === 'PERSON_NOT_FOUND') {
+                    return null
+                }
+
+                throw new GraphQLError('API_ERROR')
+            }
+
+            return {
+                navn: getNameFromPdl(person.navn),
+                ident: patientIdent,
+            }
+        },
         sykmelding: async (_, { id: sykmeldingId }, { hpr }) => {
             const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
             if ('errorType' in sykmelding) {
@@ -176,6 +193,19 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             return sykInnApiSykmeldingToResolverSykmeldingFull(result, 'PENDING')
         },
         synchronizeSykmelding: () => raise('Not Implemented'),
+    },
+    Pasient: {
+        arbeidsforhold: async (parent) => {
+            const aaregToggle = getFlag('SYK_INN_AAREG', await getUserlessToggles())
+            if (!aaregToggle) {
+                logger.error(
+                    'SYK_INN_AAREG flag is not enabled, why are you calling this? Remember to feature toggle your frontend as well.',
+                )
+                return []
+            }
+
+            return await aaregService.getArbeidsforhold(parent.ident)
+        },
     },
     ...typeResolvers,
 }

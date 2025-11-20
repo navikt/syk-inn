@@ -1,8 +1,7 @@
 import { expect, test } from '@playwright/test'
 
-import { requestAccessToSykmeldinger } from '../actions/user-actions'
-
-import { launchWithMock } from './actions/fhir-actions'
+import { requestAccessToSykmeldinger } from '../../actions/user-actions'
+import { launchWithMock } from '../actions/fhir-actions'
 
 test('redacted @feature-toggle should see other users sykmeldinger as redacted versions', async ({ page }) => {
     await launchWithMock('some-redacted-sykmeldinger', {

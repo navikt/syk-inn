@@ -369,18 +369,6 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             return await aaregService.getArbeidsforhold(parent.ident)
         },
-        userExists: async (parent) => {
-            const pdlPerson = await pdlApiService.getPdlPerson(parent.ident)
-
-            if ('errorType' in pdlPerson && pdlPerson.errorType === 'PERSON_NOT_FOUND') return false
-            if ('errorType' in pdlPerson) {
-                teamLogger.info(`Unable to fetch person ${parent.ident} in PDL cache, PDL says: pdlPerson.errorType`)
-                logger.error(`Unable to fetch person from PDL cache, PDL says: ${pdlPerson.errorType} (see team logs)`)
-                throw new GraphQLError(`Kunne ikke sjekke om person finnes akkurat nå`)
-            }
-
-            return true
-        },
         utdypendeSporsmal: async (pasient, _args, { hpr }) => {
             const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(pasient.ident, hpr)
             if ('errorType' in sykInnSykmeldinger) {
