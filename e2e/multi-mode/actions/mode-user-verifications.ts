@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import { expect, Page } from '@playwright/test'
 import { OpprettSykmeldingMetaInput } from '@queries'
 
 import * as fhirUserVerification from '../../fhir/actions/fhir-user-verifications'
@@ -15,6 +15,11 @@ export function verifySignerendeBehandlerFillIfNeeded(mode: Modes): (page: Page)
             await standaloneUserVerification.verifySignerendeBehandler('123456')(page)
             await standaloneActions.fillOrgnummer('112233445')(page)
             await standaloneActions.fillTelefonnummer('+47 99887766')(page)
+
+            /**
+             * Unflake: Make sure the phone interaction is good before continuing
+             */
+            await expect(page.getByText('+47 99887766 (manuelt)')).toBeVisible()
         },
     })
 }
