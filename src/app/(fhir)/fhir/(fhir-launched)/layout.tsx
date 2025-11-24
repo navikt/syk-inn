@@ -102,6 +102,8 @@ async function getRootFhirData(): Promise<RootFhirData> {
 
         const toggles = await spanServerAsync('FHIR.getRootFhirData.toggles', async () => await getUserToggles(hpr))
 
+        metrics.appLoadsTotal.inc({ hpr: hpr, mode: 'FHIR' })
+
         if (!getFlag('PILOT_USER', toggles)) {
             logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
 
@@ -115,8 +117,6 @@ async function getRootFhirData(): Promise<RootFhirData> {
             failSpan(span, 'Patient without valid FNR/DNR')
             return { error: 'NO_PATIENT' }
         }
-
-        metrics.appLoadsTotal.inc({ hpr: hpr, mode: 'FHIR' })
 
         return { pasient: { type: 'auto', navn, ident }, toggles } satisfies RootFhirData
     })

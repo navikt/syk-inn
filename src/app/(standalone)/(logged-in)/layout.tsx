@@ -60,14 +60,14 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
         )
     }
 
+    metrics.appLoadsTotal.inc({ hpr: behandler.hpr, mode: 'HelseID' })
+
     if (!getFlag('PILOT_USER', toggles)) {
         metrics.appLoadErrorsTotal.inc({ mode: 'HelseID', error_type: 'NON_PILOT_USER' })
 
         logger.warn(`Non-pilot user has accessed the app, HPR: ${behandler.hpr}`)
         return <NonPilotUserWarning />
     }
-
-    metrics.appLoadsTotal.inc({ hpr: behandler.hpr, mode: 'HelseID' })
 
     return (
         <ModeProvider mode="HelseID">
