@@ -1,7 +1,8 @@
 'use client'
 
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort } from '@navikt/ds-react'
+import { BodyShort, InfoCard } from '@navikt/ds-react'
+import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 
 import { isLocal, isDemo } from '@lib/env'
 import { raise } from '@lib/ts'
@@ -14,14 +15,17 @@ function DemoWarning(): ReactElement {
 
     return (
         <div className="p-4  flex items-center justify-center w-full">
-            <Alert variant="warning" className="max-w-prose" size="small">
-                <BodyShort className="font-bold mb-0.5" size="small">
-                    Dette er en demoside og inneholder ikke dine personlige data.
-                </BodyShort>
-                <div className="text-xs">
-                    <AkselNextLink href="/dev">← Back to development page</AkselNextLink>
-                </div>
-            </Alert>
+            <InfoCard data-color="warning">
+                <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+                    <InfoCard.Title>Dette er en demoside og inneholder ikke dine personlige data</InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
+                    <BodyShort>Denne siden skal kun brukest til øving eller demoer av applikasjonen.</BodyShort>
+                    <AkselNextLink href="/dev" className="text-xs">
+                        ← Back to development page
+                    </AkselNextLink>
+                </InfoCard.Content>
+            </InfoCard>
         </div>
     )
 }
