@@ -2,13 +2,13 @@ import React, { ReactElement } from 'react'
 import { ChevronRightDoubleCircleIcon, TabsAddIcon } from '@navikt/aksel-icons'
 
 import { SykmeldingFragment } from '@queries'
-import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
+import { isTodayOrInTheFuture } from '@data-layer/common/sykmelding-utils'
 import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { useMode } from '@core/providers/Modes'
 
 export function TidligereSykmeldingActions({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
     const mode = useMode()
-    const isActiveOrFuture = byActiveOrFutureSykmelding(sykmelding)
+    const isActiveOrFuture = isTodayOrInTheFuture(sykmelding)
 
     return (
         <div className="flex gap-2">

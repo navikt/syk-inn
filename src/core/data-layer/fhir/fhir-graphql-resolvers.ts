@@ -31,7 +31,7 @@ import { commonObjectResolvers, commonQueryResolvers } from '@data-layer/graphql
 import { FhirGraphqlContext } from '@data-layer/fhir/fhir-graphql-context'
 import { getHasRequestedAccessToSykmeldinger } from '@core/session/session'
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
-import { byActiveOrFutureSykmelding } from '@data-layer/common/sykmelding-utils'
+import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
 
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
@@ -135,7 +135,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                     : sykInnApiSykmeldingToResolverSykmelding(it)
             })
 
-            const [current, historical] = R.partition(mappedSykmeldinger, byActiveOrFutureSykmelding)
+            const [current, historical] = R.partition(mappedSykmeldinger, byCurrentOrPreviousWithOffset)
 
             // TODO: Get hasRequestedAccess from session
             const hasRequestedAccessToSykmeldinger = await getHasRequestedAccessToSykmeldinger(
