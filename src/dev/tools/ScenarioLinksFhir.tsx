@@ -36,24 +36,17 @@ function ScenarioLinksFhir(): ReactElement {
 
     return (
         <div className="mt-2">
-            <div className="flex justify-between">
-                <Heading level="3" size="large" spacing className="flex gap-1 items-center">
+            <div className="flex flex-col md:flex-row justify-between">
+                <Heading level="3" size="medium" spacing className="flex gap-1 items-center">
                     <Image src="https://cdn.nav.no/tsm/syk-inn/dass.gif" alt="" width="48" height="48" unoptimized />
                     FHIR scenarioer
                 </Heading>
-                <div className="flex gap-2 mb-4 relative">
-                    <Select
-                        className="max-w-32"
-                        label="Pasient"
-                        size="small"
-                        onChange={(e) => setPatient(e.target.value)}
-                        value={patient}
-                    >
+                <div className="grid grid-cols-3 gap-2 mb-4 relative md:max-w-2/3">
+                    <Select label="Pasient" size="small" onChange={(e) => setPatient(e.target.value)} value={patient}>
                         <option value={'Espen Eksempel' satisfies MockPatients}>Espen Eksempel</option>
                         <option value={'Kari Normann' satisfies MockPatients}>Kari Normann</option>
                     </Select>
                     <Select
-                        className="max-w-32"
                         label="Practitioner"
                         size="small"
                         onChange={(e) => setPractitioner(e.target.value)}
@@ -66,7 +59,6 @@ function ScenarioLinksFhir(): ReactElement {
                         <option value={'Badette Organitto' satisfies MockPractitioners}>Badette</option>
                     </Select>
                     <Select
-                        className="max-w-32"
                         label="Organization"
                         size="small"
                         onChange={(e) => setOrganization(e.target.value)}
@@ -115,7 +107,9 @@ function ScenarioLinksFhir(): ReactElement {
                             Keep scenario
                         </LinkCard.Anchor>
                     </LinkCard.Title>
-                    <LinkCard.Description>Just re-launches FHIR, does not change your scenario</LinkCard.Description>
+                    <LinkCard.Description className="text-sm sm:text-base">
+                        Just re-launches FHIR, does not change your scenario
+                    </LinkCard.Description>
                 </LinkCard>
                 {Object.entries(scenarios).map(([scenarioKey, scenario]) => (
                     <LinkCard key={scenarioKey}>
@@ -135,7 +129,9 @@ function ScenarioLinksFhir(): ReactElement {
                                 {scenarioKey}
                             </LinkCard.Anchor>
                         </LinkCard.Title>
-                        <LinkCard.Description>{scenario.description}</LinkCard.Description>
+                        <LinkCard.Description className="text-sm sm:text-base">
+                            {scenario.description}
+                        </LinkCard.Description>
                     </LinkCard>
                 ))}
             </div>

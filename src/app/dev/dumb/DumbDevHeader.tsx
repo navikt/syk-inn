@@ -1,13 +1,12 @@
 'use client'
 
 import React, { ReactElement, useEffect, useRef } from 'react'
-import { Detail } from '@navikt/ds-react'
 import { AnimatePresence, stagger } from 'motion/react'
 import { animate } from 'motion'
 
 import { FastFadeReveal } from '@components/animation/Reveal'
 
-function DumbDevHeader(): ReactElement {
+function DumbDevHeader({ className }: { className?: string }): ReactElement {
     const containerRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -34,14 +33,11 @@ function DumbDevHeader(): ReactElement {
 
     return (
         <AnimatePresence>
-            <FastFadeReveal>
-                <div ref={containerRef}>
-                    <span>
+            <FastFadeReveal className="!overflow-visible">
+                <div ref={containerRef} className={className}>
+                    <span className="mb-2">
                         Utviklingsside for <span className="wavy">syk-inn</span>
                     </span>
-                    <Detail className="-mt-2">
-                        Denne siden er ikke synlig i dev-gcp eller prod-gcp, kun lokal utvikling og demo
-                    </Detail>
                 </div>
             </FastFadeReveal>
         </AnimatePresence>

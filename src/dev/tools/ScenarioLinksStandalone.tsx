@@ -16,14 +16,14 @@ function ScenarioLinksStandalone(): ReactElement {
 
     return (
         <div className="mt-4">
-            <div className="flex justify-between">
+            <div className="flex flex-col sm:flex-row justify-between">
                 <Heading level="3" size="xsmall" spacing className="flex gap-1 items-center">
                     <ShieldLockIcon height="32" width="32" aria-hidden />
                     HelseID scenarioer
                 </Heading>
-                <div className="flex gap-2 mb-4 relative">
+                <div className="flex gap-2 mb-4 relative w-full sm:w-fit">
                     <Select
-                        className="max-w-42"
+                        className="grow"
                         label="Practitioner"
                         size="small"
                         onChange={(e) => setBehandler(e.target.value)}
@@ -47,7 +47,9 @@ function ScenarioLinksStandalone(): ReactElement {
                         Just go
                     </LinkCard.Anchor>
                 </LinkCard.Title>
-                <LinkCard.Description>Starts a basic standalone sykmelding</LinkCard.Description>
+                <LinkCard.Description className="text-sm sm:text-base">
+                    Starts a basic standalone sykmelding
+                </LinkCard.Description>
             </LinkCard>
         </div>
     )

@@ -1,4 +1,4 @@
-import { BodyShort, Heading, InfoCard } from '@navikt/ds-react'
+import { BodyShort, Detail, Heading, InfoCard } from '@navikt/ds-react'
 import { LinkCard, LinkCardAnchor, LinkCardIcon, LinkCardTitle } from '@navikt/ds-react/LinkCard'
 import { InformationSquareIcon, TerminalIcon, VirusIcon } from '@navikt/aksel-icons'
 import React, { ReactElement } from 'react'
@@ -23,11 +23,15 @@ export default function Home(): ReactElement {
     return (
         <Page className="bg-transparent">
             <PageBlock as="main" width="xl" gutters>
-                <div className="flex gap-6 p-8 flex-col bg-white rounded-xl">
+                <div className="flex gap-6 p-4 sm:p-6 md:p-8 flex-col bg-white rounded-xl">
                     <Heading level="1" size="xlarge" className="flex gap-2 items-center">
-                        <VirusIcon className="animate-bounce" />
-                        <DumbDevHeader />
+                        <VirusIcon className="animate-bounce hidden md:block" />
+                        <DumbDevHeader className="text-2xl sm:text-4xl md:text-5xl" />
                     </Heading>
+
+                    <Detail className="-mt-4">
+                        Denne siden er ikke synlig i dev-gcp eller prod-gcp, kun lokal utvikling og demo
+                    </Detail>
 
                     <div className="border border-border-subtle p-3 rounded-sm mt-2 bg-white">
                         <Heading level="2" size="small" className="-mt-7 bg-white w-fit px-2 py-0">
