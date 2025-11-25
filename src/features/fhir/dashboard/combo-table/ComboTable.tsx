@@ -9,7 +9,7 @@ import {
     SykmeldingLightFragment,
     SykmeldingRedactedFragment,
 } from '@queries'
-import { byActiveOrFutureSykmelding, isWithinWeeksOldSykmelding, latestTom } from '@data-layer/common/sykmelding-utils'
+import { isTodayOrInTheFuture, isWithinWeeksOldSykmelding, latestTom } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import Redaction from '@components/misc/Redaction'
 import { Utfall } from '@components/sykmelding/Utfall'
@@ -40,7 +40,7 @@ export function ComboTable({
                     <DraftTableRow draft={draft} key={draft.draftId} />
                 ))}
                 {R.sortBy(sykmeldinger, [latestTom, 'desc']).map((sykmelding) => {
-                    const status = byActiveOrFutureSykmelding(sykmelding) ? 'current' : 'previous'
+                    const status = isTodayOrInTheFuture(sykmelding) ? 'current' : 'previous'
                     const forlengable = isWithinWeeksOldSykmelding(sykmelding, 4) ? true : undefined
 
                     switch (sykmelding.__typename) {
