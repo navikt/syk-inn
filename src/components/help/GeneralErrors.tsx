@@ -1,24 +1,26 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
-import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react'
+import { BodyShort, Button, LocalAlert } from '@navikt/ds-react'
 
 import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
 
 export function UnknownSystemError({ className, retry }: { className?: string; retry?: () => void }): ReactElement {
     return (
-        <Alert variant="error" className={className}>
-            <Heading level="3" size="small" spacing>
-                Ukjent systemfeil
-            </Heading>
-            <BodyShort spacing>
-                Vi opplever litt problemer akkurat nå, og våre systemer klarte ikke å gjøre jobben sin.
-            </BodyShort>
-            {retry && (
-                <Button size="small" variant="secondary-neutral" onClick={() => retry()} className="mb-2">
-                    Prøv på nytt
-                </Button>
-            )}
-            <LegeOgBehandlerTelefonen />
-        </Alert>
+        <LocalAlert status="error" className={className}>
+            <LocalAlert.Header>
+                <LocalAlert.Title>Ukjent systemfeil</LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
+                <BodyShort spacing>
+                    Vi opplever litt problemer akkurat nå, og våre systemer klarte ikke å gjøre jobben sin.
+                </BodyShort>
+                {retry && (
+                    <Button size="small" variant="secondary-neutral" onClick={() => retry()} className="mb-2">
+                        Prøv på nytt
+                    </Button>
+                )}
+                <LegeOgBehandlerTelefonen />
+            </LocalAlert.Content>
+        </LocalAlert>
     )
 }
 
@@ -37,17 +39,19 @@ export function SpecificErrorAlert({
     noCallToAction?: true
 }>): ReactElement {
     return (
-        <Alert variant={level} className={className}>
-            <Heading level="3" size="small" spacing>
-                {title}
-            </Heading>
-            <BodyShort spacing>{children}</BodyShort>
-            {retry && (
-                <Button size="small" variant="secondary-neutral" onClick={() => retry()} className="mb-2">
-                    Prøv på nytt
-                </Button>
-            )}
-            {noCallToAction !== true && <LegeOgBehandlerTelefonen />}
-        </Alert>
+        <LocalAlert status={level} className={className}>
+            <LocalAlert.Header>
+                <LocalAlert.Title>{title}</LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
+                <BodyShort spacing>{children}</BodyShort>
+                {retry && (
+                    <Button size="small" variant="secondary-neutral" onClick={() => retry()} className="mb-2">
+                        Prøv på nytt
+                    </Button>
+                )}
+                {noCallToAction !== true && <LegeOgBehandlerTelefonen />}
+            </LocalAlert.Content>
+        </LocalAlert>
     )
 }

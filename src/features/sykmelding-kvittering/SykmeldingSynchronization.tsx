@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react'
-import { Alert, BodyShort, Button, Skeleton } from '@navikt/ds-react'
+import { BodyShort, Button, LocalAlert, Skeleton } from '@navikt/ds-react'
 import { useMutation } from '@apollo/client/react'
 
 import { DocumentStatusSuccess } from '@features/sykmelding-kvittering/DocumentStatus'
@@ -11,7 +11,7 @@ type Props = {
 }
 
 export function SykmeldingSynchronization({ sykmeldingId }: Props): ReactElement {
-    const [mutation, { loading, data, error }] = useMutation(SynchronizeSykmeldingDocument, {
+    const [mutation, { loading, data, error, called }] = useMutation(SynchronizeSykmeldingDocument, {
         variables: { id: sykmeldingId },
     })
 
@@ -21,35 +21,42 @@ export function SykmeldingSynchronization({ sykmeldingId }: Props): ReactElement
         })
     }, [mutation])
 
-    if (loading) {
-        return <Skeleton variant="rounded" height={62} />
+    if (loading || !called) {
+        return <Skeleton variant="rounded" height={48} />
     }
 
     if (error || data?.synchronizeSykmelding.documentStatus === 'ERRORED') {
         return (
-            <div className="max-w-prose">
-                <Alert variant="error">Kunne ikke lagre sykmeldingen til EPJ-systemet ditt</Alert>
-
-                <div className="mt-2 flex justify-between items-center px-4">
-                    <BodyShort>Ukjent feil. Dersom problemet vedvarer, ta kontakt.</BodyShort>
+            <LocalAlert status="error">
+                <LocalAlert.Header>
+                    <LocalAlert.Title>Kunne ikke lagre sykmeldingen til EPJ-systemet ditt</LocalAlert.Title>
+                </LocalAlert.Header>
+                <LocalAlert.Content>
+                    <BodyShort spacing>Ukjent feil. Dersom problemet vedvarer, ta kontakt.</BodyShort>
                     <Button variant="secondary-neutral" onClick={() => mutation()} size="small">
                         Prøv igjen
                     </Button>
-                </div>
-            </div>
+                </LocalAlert.Content>
+            </LocalAlert>
         )
     }
 
     if (!data || data.synchronizeSykmelding.documentStatus !== 'COMPLETE') {
         return (
-            <div className="mt-4">
-                <Alert variant="warning">Data er ikke tilgjengelig ennå. Vennligst prøv igjen senere.</Alert>
-                <div className="mt-4">
-                    <Button variant="secondary-neutral" onClick={() => mutation()}>
+            <LocalAlert status="error">
+                <LocalAlert.Header>
+                    <LocalAlert.Title>Data er ikke tilgjengelig enda</LocalAlert.Title>
+                </LocalAlert.Header>
+                <LocalAlert.Content>
+                    <BodyShort spacing>
+                        Vi har forsøkt å lagre dokumentet i ditt EPJ-system. Det ser ikke ut som baksystemene er
+                        synkroniserte enda.
+                    </BodyShort>
+                    <Button variant="secondary-neutral" onClick={() => mutation()} size="small">
                         Prøv igjen
                     </Button>
-                </div>
-            </div>
+                </LocalAlert.Content>
+            </LocalAlert>
         )
     }
 

@@ -1,6 +1,6 @@
-import { Alert, BodyShort, Heading } from '@navikt/ds-react'
+import { BodyShort, Heading, InfoCard } from '@navikt/ds-react'
 import { LinkCard, LinkCardAnchor, LinkCardIcon, LinkCardTitle } from '@navikt/ds-react/LinkCard'
-import { TerminalIcon, VirusIcon } from '@navikt/aksel-icons'
+import { InformationSquareIcon, TerminalIcon, VirusIcon } from '@navikt/aksel-icons'
 import React, { ReactElement } from 'react'
 import { notFound } from 'next/navigation'
 import { Page, PageBlock } from '@navikt/ds-react/Page'
@@ -64,18 +64,19 @@ export default function Home(): ReactElement {
                         )}
 
                         {isLocalValkeyEnabled && (
-                            <Alert variant="info" className="m-4">
-                                <BodyShort>
-                                    You have enabled local Valkey! Any scenarios that include drafts will not be a part
-                                    of the scenario you launch.
-                                </BodyShort>
-
-                                <BodyShort size="small" className="mt-2 mb-4">
+                            <InfoCard data-color="info" className="mt-4" size="small">
+                                <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                                    <InfoCard.Title>
+                                        You have enabled local Valkey! Any scenarios that include drafts will not be a
+                                        part of the scenario you launch.
+                                    </InfoCard.Title>
+                                </InfoCard.Header>
+                                <InfoCard.Content>
                                     Set{' '}
                                     <code className="text-sm bg-bg-subtle p-1 rounded-md">USE_LOCAL_VALKEY=false</code>{' '}
                                     in your .env.development file to re-enable drafts in scenarios.
-                                </BodyShort>
-                            </Alert>
+                                </InfoCard.Content>
+                            </InfoCard>
                         )}
 
                         {!isSykInnApiIntegrationEnabled && <ScenarioLinksFhir />}

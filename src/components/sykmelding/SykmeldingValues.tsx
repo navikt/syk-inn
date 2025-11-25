@@ -1,6 +1,7 @@
 import * as R from 'remeda'
-import { Alert, BodyShort, Detail, List } from '@navikt/ds-react'
+import { BodyShort, Detail, InfoCard, List } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { AktivitetFragment, SykmeldingFragment } from '@queries'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
@@ -33,9 +34,13 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                     hoveddiagnose={sykmelding.values.hoveddiagnose}
                     bidiagnoser={sykmelding.values.bidiagnoser}
                 />
-                <Alert variant="info">
-                    Denne sykmeldingen er eldre enn 1 dag, og viser derfor ikke alle innsendte verdier.
-                </Alert>
+                <InfoCard data-color="info" className="mt-4" size="small">
+                    <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                        <InfoCard.Title>
+                            Denne sykmeldingen er eldre enn 1 dag, og viser derfor ikke alle innsendte verdier.
+                        </InfoCard.Title>
+                    </InfoCard.Header>
+                </InfoCard>
             </>
         )
     }

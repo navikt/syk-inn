@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ReactElement, useEffect, useState } from 'react'
-import { Alert, BodyShort, Heading, LinkCard, Skeleton } from '@navikt/ds-react'
+import { LinkCard, LocalAlert, Skeleton } from '@navikt/ds-react'
 import { useLazyQuery } from '@apollo/client/react'
 import Link from 'next/link'
 import { AnimatePresence } from 'motion/react'
@@ -70,20 +70,22 @@ function ManualPatientPicker(): ReactElement {
             )}
 
             {!loading && !error && data != null && data.person == null && (
-                <Alert variant="warning" className="mt-4">
-                    <Heading size="small" level="3">
-                        Fant ikke pasient
-                    </Heading>
-                    <BodyShort>Det angitte fødselsnummeret eller d-nummeret finnes ikke.</BodyShort>
-                </Alert>
+                <LocalAlert status="warning" className="mt-4">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>Fant ikke pasient</LocalAlert.Title>
+                    </LocalAlert.Header>
+                    <LocalAlert.Content>Det angitte fødselsnummeret eller d-nummeret finnes ikke.</LocalAlert.Content>
+                </LocalAlert>
             )}
             {!loading && error && (
-                <Alert variant="error" className="mt-4">
-                    <Heading size="small" level="3">
-                        Kunne ikke hente pasient
-                    </Heading>
-                    <BodyShort>Det oppstod en feil ved henting av pasient. Prøv igjen senere.</BodyShort>
-                </Alert>
+                <LocalAlert status="error" className="mt-4">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>Kunne ikke hente pasient</LocalAlert.Title>
+                    </LocalAlert.Header>
+                    <LocalAlert.Content>
+                        Det oppstod en feil ved henting av pasient. Prøv igjen senere.
+                    </LocalAlert.Content>
+                </LocalAlert>
             )}
 
             <AnimatePresence initial={false}>

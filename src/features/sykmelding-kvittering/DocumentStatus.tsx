@@ -1,6 +1,13 @@
 import React, { ReactElement } from 'react'
-import { Alert } from '@navikt/ds-react'
+import { InfoCard } from '@navikt/ds-react'
+import { CheckmarkCircleFillIcon } from '@navikt/aksel-icons'
 
 export function DocumentStatusSuccess(): ReactElement {
-    return <Alert variant="info">Sykmeldingdokument er lagret i EPJ-systemet</Alert>
+    return (
+        <InfoCard data-color="info" size="small">
+            <InfoCard.Header icon={<CheckmarkCircleFillIcon aria-hidden />}>
+                <InfoCard.Title>Sykmeldingdokument er lagret i EPJ-systemet</InfoCard.Title>
+            </InfoCard.Header>
+        </InfoCard>
+    )
 }

@@ -1,7 +1,7 @@
 import { Table } from '@navikt/ds-react'
 import React, { CSSProperties, PropsWithChildren, ReactElement } from 'react'
 
-function DashboardTable({ children }: PropsWithChildren): ReactElement {
+function DashboardTable({ children, className }: PropsWithChildren<{ className?: string }>): ReactElement {
     return (
         <Table
             style={
@@ -9,6 +9,7 @@ function DashboardTable({ children }: PropsWithChildren): ReactElement {
                     '--ac-table-row-border': 'var(--a-border-subtle)',
                 } as CSSProperties
             }
+            className={className}
         >
             {children}
         </Table>

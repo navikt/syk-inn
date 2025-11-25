@@ -1,12 +1,13 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
-import { Alert, BodyShort, Heading, Skeleton, Table } from '@navikt/ds-react'
+import { BodyShort, Button, GlobalAlert, Skeleton, Table } from '@navikt/ds-react'
 import { FlowerPetalsIcon } from '@navikt/aksel-icons'
 import { NetworkStatus } from '@apollo/client'
 
 import { AllDashboardDocument } from '@queries'
 import useOnFocus from '@lib/hooks/useOnFocus'
+import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
 
 import { ComboTable, ComboTableFullCell, ComboTableHeader } from './combo-table/ComboTable'
 import DashboardCard from './card/DashboardCard'
@@ -29,69 +30,92 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
                     sykmeldinger={dashboardQuery.data.sykmeldinger?.current ?? []}
                     drafts={dashboardQuery.data.drafts ?? []}
                 >
-                    {dashboardQuery.error && !dashboardQuery.data.drafts == null && <AllDraftsError />}
-                    {dashboardQuery.error && !dashboardQuery.data.sykmeldinger == null && <AllSykmeldingerError />}
+                    {dashboardQuery.error && !dashboardQuery.data.drafts == null && (
+                        <AllDraftsError refetch={dashboardQuery.refetch} />
+                    )}
+                    {dashboardQuery.error && !dashboardQuery.data.sykmeldinger == null && (
+                        <AllSykmeldingerError refetch={dashboardQuery.refetch} />
+                    )}
                 </ComboTable>
             )}
             {initialLoad && <ComboTableSkeleton />}
             {!initialLoad && !dashboardQuery.error && !hasData && <ComboTableEmptyState />}
-            {!initialLoad && dashboardQuery.error && !hasData && <EverythingError />}
+            {!initialLoad && dashboardQuery.error && !hasData && <EverythingError refetch={dashboardQuery.refetch} />}
         </DashboardCard>
     )
 }
 
-function AllDraftsError(): ReactElement {
+function AllDraftsError({ refetch }: { refetch: () => void }): ReactElement {
     return (
-        <ComboTableFullCell>
-            <Alert variant="error" className="max-w-prose">
-                <Heading size="medium" level="3" spacing>
-                    Ukjent feil ved henting av utkast
-                </Heading>
-                <BodyShort spacing>
-                    Det skjedde en ukjent feil under henting av dine utkast. Du kan prøve å laste siden på nytt, eller
-                    prøve på nytt senere.
-                </BodyShort>
-            </Alert>
-        </ComboTableFullCell>
+        <Table.Row>
+            <ComboTableFullCell className="p-0">
+                <GlobalAlert status="error">
+                    <GlobalAlert.Header>
+                        <GlobalAlert.Title>Ukjent feil ved henting av utkast</GlobalAlert.Title>
+                    </GlobalAlert.Header>
+                    <GlobalAlert.Content>
+                        <BodyShort spacing>
+                            Det skjedde en ukjent feil under henting av dine utkast. Du kan prøve å laste siden på nytt,
+                            eller prøve på nytt senere.
+                        </BodyShort>
+                        <Button type="button" size="small" variant="secondary-neutral" onClick={() => refetch()}>
+                            Prøv på nytt
+                        </Button>
+                    </GlobalAlert.Content>
+                </GlobalAlert>
+            </ComboTableFullCell>
+        </Table.Row>
     )
 }
 
-function AllSykmeldingerError(): ReactElement {
+function AllSykmeldingerError({ refetch }: { refetch: () => void }): ReactElement {
     return (
-        <ComboTableFullCell>
-            <Alert variant="error" className="max-w-prose">
-                <Heading size="medium" level="3" spacing>
-                    Ukjent feil ved henting av sykmeldinger
-                </Heading>
-                <BodyShort spacing>
-                    Det skjedde en ukjent feil under henting av sykmeldinger. Du kan prøve å laste siden på nytt, eller
-                    prøve på nytt senere.
-                </BodyShort>
-            </Alert>
-        </ComboTableFullCell>
+        <Table.Row>
+            <ComboTableFullCell className="p-0">
+                <GlobalAlert status="error">
+                    <GlobalAlert.Header>
+                        <GlobalAlert.Title>Ukjent feil ved henting av sykmeldinger</GlobalAlert.Title>
+                    </GlobalAlert.Header>
+                    <GlobalAlert.Content>
+                        <BodyShort spacing>
+                            Det skjedde en ukjent feil under henting av sykmeldinger. Du kan prøve å laste siden på
+                            nytt, eller prøve på nytt senere.
+                        </BodyShort>
+                        <Button type="button" size="small" variant="secondary-neutral" onClick={() => refetch()}>
+                            Prøv på nytt
+                        </Button>
+                    </GlobalAlert.Content>
+                </GlobalAlert>
+            </ComboTableFullCell>
+        </Table.Row>
     )
 }
 
-function EverythingError(): ReactElement {
+function EverythingError({ refetch }: { refetch: () => void }): ReactElement {
     return (
-        <DashboardTable>
-            <ComboTableHeader className="text-text-subtle" />
-            <Table.Body className="text-text-subtle">
-                <Table.Row>
-                    <ComboTableFullCell className="flex flex-col gap-6 items-center justify-center w-full h-64">
-                        <Alert variant="error" className="max-w-prose">
-                            <Heading size="medium" level="3" spacing>
-                                Ukjent feil ved henting av sykmeldinger og utkast
-                            </Heading>
-                            <BodyShort spacing>
-                                Det skjedde en ukjent feil under henting av dine utkast. Du kan prøve å laste siden på
-                                nytt, eller prøve på nytt senere.
-                            </BodyShort>
-                        </Alert>
-                    </ComboTableFullCell>
-                </Table.Row>
-            </Table.Body>
-        </DashboardTable>
+        <div className="flex justify-center items-center h-full">
+            <GlobalAlert status="error">
+                <GlobalAlert.Header>
+                    <GlobalAlert.Title>Ukjent feil ved henting av sykmeldinger og utkast</GlobalAlert.Title>
+                </GlobalAlert.Header>
+                <GlobalAlert.Content>
+                    <BodyShort>
+                        Det skjedde en ukjent feil under henting av dine utkast. Du kan prøve å laste siden på nytt,
+                        eller prøve på nytt senere.
+                    </BodyShort>
+                    <Button
+                        type="button"
+                        size="small"
+                        className="my-4"
+                        variant="secondary-neutral"
+                        onClick={() => refetch()}
+                    >
+                        Prøv på nytt
+                    </Button>
+                    <LegeOgBehandlerTelefonen />
+                </GlobalAlert.Content>
+            </GlobalAlert>
+        </div>
     )
 }
 

@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort, FormSummary, Label, Skeleton } from '@navikt/ds-react'
+import { FormSummary, InfoCard, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { BehandlerDocument } from '@queries'
 import { SpecificErrorAlert } from '@components/help/GeneralErrors'
@@ -75,15 +76,15 @@ function BehandlerSummary({ className }: Props): ReactElement {
                     )}
                 </FormSummary.Answers>
             </FormSummary>
-            <Alert variant="info" className="mt-4" size="small">
-                <Label as="p" size="small">
-                    Er opplysningene om behandler feil?
-                </Label>
-                <BodyShort spacing size="small">
+            <InfoCard data-color="info" className="mt-4" size="small">
+                <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                    <InfoCard.Title>Er opplysningene om behandler feil?</InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
                     Logg ut av EPJ og inn med din egen profil hvis navnet på behandler ikke stemmer. Manglende eller
                     feil HPR-nummer må rettes i EPJ før innsending.
-                </BodyShort>
-            </Alert>
+                </InfoCard.Content>
+            </InfoCard>
         </section>
     )
 }

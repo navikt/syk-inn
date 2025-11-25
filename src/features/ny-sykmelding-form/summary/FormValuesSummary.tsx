@@ -1,4 +1,4 @@
-import { Alert, BodyShort, Detail, FormSummary, Heading, List, Skeleton } from '@navikt/ds-react'
+import { BodyShort, Detail, FormSummary, List, LocalAlert, Skeleton } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 import { useQuery } from '@apollo/client/react'
@@ -76,20 +76,22 @@ function FormValuesSummary({ className }: Props): ReactElement {
                         </FormSummary.Heading>
                     </FormSummary.Header>
                     <FormSummary.Answers>
-                        <Alert variant="warning">
-                            <Heading size="small" level="2" spacing>
-                                Ingen pågående sykmelding
-                            </Heading>
-                            <BodyShort spacing>
-                                Det ser ikke ut som dette er en pågående sykmelding. Dersom du har hatt nettleseren oppe
-                                siden sist du jobbet, så kan utkastet ha blitt slettet.
-                            </BodyShort>
-                            <BodyShort>
-                                Du kan begynne utfyllingen på nytt ved å gå tilbake til{' '}
-                                <AkselNextLink href={mode.paths.root}>pasientens oversikt</AkselNextLink> og begynne på
-                                nytt.
-                            </BodyShort>
-                        </Alert>
+                        <LocalAlert status="warning" className="rounded-none">
+                            <LocalAlert.Header>
+                                <LocalAlert.Title>Ingen pågående sykmelding</LocalAlert.Title>
+                            </LocalAlert.Header>
+                            <LocalAlert.Content>
+                                <BodyShort spacing>
+                                    Det ser ikke ut som dette er en pågående sykmelding. Dersom du har hatt nettleseren
+                                    oppe siden sist du jobbet, så kan utkastet ha blitt slettet.
+                                </BodyShort>
+                                <BodyShort>
+                                    Du kan begynne utfyllingen på nytt ved å gå tilbake til{' '}
+                                    <AkselNextLink href={mode.paths.root}>pasientens oversikt</AkselNextLink> og begynne
+                                    på nytt.
+                                </BodyShort>
+                            </LocalAlert.Content>
+                        </LocalAlert>
                     </FormSummary.Answers>
                 </FormSummary>
             </section>
@@ -128,9 +130,12 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: NySykmeldingAkt
             <FormSummary.Answer>
                 <FormSummary.Label>Periode</FormSummary.Label>
                 <FormSummary.Value>
-                    <Alert variant="warning">
-                        Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
-                    </Alert>
+                    <LocalAlert status="warning">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>Denne delen av sykmeldingen er ikke utfylt.</LocalAlert.Title>
+                        </LocalAlert.Header>
+                        <LocalAlert.Content>Gå tilbake og fyll ut for å sende inn.</LocalAlert.Content>
+                    </LocalAlert>
                 </FormSummary.Value>
             </FormSummary.Answer>
         )
@@ -173,7 +178,11 @@ function AktivitetSummaryAnswer({
                     </BodyShort>
                 ) : (
                     <BodyShort>
-                        <Alert variant="warning">Periode mangler datoer.</Alert>
+                        <LocalAlert status="warning" size="small">
+                            <LocalAlert.Header>
+                                <LocalAlert.Title>Periode mangler datoer</LocalAlert.Title>
+                            </LocalAlert.Header>
+                        </LocalAlert>
                     </BodyShort>
                 )}
                 <BodyShort>{aktivitetDescription(aktivitet)}</BodyShort>
@@ -258,9 +267,12 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: NySykmeldingDiagnoser 
             <FormSummary.Answer>
                 <FormSummary.Label>Hoveddiagnose</FormSummary.Label>
                 <FormSummary.Value>
-                    <Alert variant="warning">
-                        Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
-                    </Alert>
+                    <LocalAlert status="warning">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>Denne delen av sykmeldingen er ikke utfylt.</LocalAlert.Title>
+                        </LocalAlert.Header>
+                        <LocalAlert.Content>Gå tilbake og fyll ut for å sende inn.</LocalAlert.Content>
+                    </LocalAlert>
                 </FormSummary.Value>
             </FormSummary.Answer>
         )
@@ -393,9 +405,17 @@ function PatientSummaryAnswers({ pasient }: { pasient: ActivePatient | null }): 
             <FormSummary.Answer>
                 <FormSummary.Label>Sykmeldingen gjelder</FormSummary.Label>
                 <FormSummary.Value>
-                    <Alert variant="warning">
-                        Denne delen av sykmeldingen er ikke utfylt. Gå tilbake og fyll ut for å sende inn.
-                    </Alert>
+                    <LocalAlert status="warning">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>Ingen pasient er valgt</LocalAlert.Title>
+                        </LocalAlert.Header>
+                        <LocalAlert.Content>
+                            <BodyShort spacing>Det har skjedd en feil under oppstart av sykmeldingsskjemaet.</BodyShort>
+                            <BodyShort>
+                                Prøv å start skjemaet på nytt, eller kontakt support dersom feilen vedvarer.
+                            </BodyShort>
+                        </LocalAlert.Content>
+                    </LocalAlert>
                 </FormSummary.Value>
             </FormSummary.Answer>
         )

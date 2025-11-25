@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort, Heading } from '@navikt/ds-react'
+import { BodyShort, LocalAlert } from '@navikt/ds-react'
 
 import { OtherSubmitOutcomesEnum } from '@queries'
 
@@ -23,35 +23,33 @@ type PatientDoesNotExistAlertProps = {
 
 function PatientDoesNotExistAlert({ navn, ident }: PatientDoesNotExistAlertProps): ReactElement {
     return (
-        <Alert variant="warning">
-            {navn && ident ? (
-                <Heading size="small" level="3" spacing>
-                    Fant ikke {navn} ({ident}) i folkeregisteret.
-                </Heading>
-            ) : (
-                <Heading size="small" level="3" spacing>
-                    Kunne ikke bekrefte pasientens identitet.
-                </Heading>
-            )}
-            <BodyShort spacing>
-                Det ser ut som pasienten du prøver å sende inn sykmeldingen for ikke finnes i Navs systemer.
-            </BodyShort>
-            <BodyShort spacing>
-                Dersom du mener dette er en feil, vennligst kontakt lege- og behandlertelefon.
-            </BodyShort>
-        </Alert>
+        <LocalAlert status="warning">
+            <LocalAlert.Header>
+                <LocalAlert.Title>
+                    {navn && ident
+                        ? `Fant ikke ${navn} (${ident}) i folkeregisteret.`
+                        : 'Kunne ikke bekrefte pasientens identitet.'}
+                </LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
+                <BodyShort spacing>
+                    Det ser ut som pasienten du prøver å sende inn sykmeldingen for ikke finnes i Navs systemer.
+                </BodyShort>
+                <BodyShort>Dersom du mener dette er en feil, vennligst kontakt lege- og behandlertelefon.</BodyShort>
+            </LocalAlert.Content>
+        </LocalAlert>
     )
 }
 
 function MissingPractitionerInfo(): ReactElement {
     return (
-        <Alert variant="warning">
-            <Heading size="small" level="3" spacing>
-                Vi mangler mer informasjon om deg
-            </Heading>
-            <BodyShort spacing>
+        <LocalAlert status="warning">
+            <LocalAlert.Header>
+                <LocalAlert.Title>Vi mangler mer informasjon om deg</LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
                 For å kunne sende inn en sykmelding må du registrere organisasjonsnummer og telefonnummer.
-            </BodyShort>
-        </Alert>
+            </LocalAlert.Content>
+        </LocalAlert>
     )
 }
