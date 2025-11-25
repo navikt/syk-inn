@@ -15,12 +15,14 @@ function DemoWarning(): ReactElement {
 
     return (
         <div className="p-4  flex items-center justify-center w-full">
-            <InfoCard data-color="warning">
+            <InfoCard data-color="warning" size="small">
                 <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
-                    <InfoCard.Title>Dette er en demoside og inneholder ikke dine personlige data</InfoCard.Title>
+                    <InfoCard.Title>Demoside for test</InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
-                    <BodyShort>Denne siden skal kun brukest til øving eller demoer av applikasjonen.</BodyShort>
+                    <BodyShort>
+                        Dette er en demo-applikasjon med falsk data, og skal kun brukes til demo og test.
+                    </BodyShort>
                     <AkselNextLink href="/dev" className="text-xs">
                         ← Back to development page
                     </AkselNextLink>
