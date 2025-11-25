@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort, Button, Heading } from '@navikt/ds-react'
+import { Button, InfoCard } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { Diagnose, isSameDiagnose } from '@data-layer/common/diagnose'
 import { SimpleReveal } from '@components/animation/Reveal'
@@ -27,46 +28,46 @@ function DiagnoseInfoAlert(): ReactElement | null {
         <AnimatePresence>
             {!(sameHovedDiagnose && allBiSame) && (
                 <SimpleReveal>
-                    <Alert variant="info" className="mt-4">
-                        <Heading size="small" level="4">
-                            Diagnosen oppdateres ikke i EPJ
-                        </Heading>
-                        <BodyShort>
+                    <InfoCard data-color="info" className="mt-4" size="small">
+                        <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                            <InfoCard.Title>Diagnosen oppdateres ikke i EPJ</InfoCard.Title>
+                        </InfoCard.Header>
+                        <InfoCard.Content>
                             De valgte diagnosene samsvarer ikke med opplysningene i EPJ. Diagnosefeltet i EPJ vil ikke
                             bli oppdatert automatisk.
-                        </BodyShort>
-                        <Button
-                            variant="secondary-neutral"
-                            size="small"
-                            className="mt-4"
-                            type="button"
-                            onClick={() => {
-                                const hoved = suggestionsQuery.suggestions?.diagnose.value
-                                const bidiagnoser = suggestionsQuery.suggestions?.bidiagnoser ?? []
+                            <Button
+                                variant="secondary-neutral"
+                                size="small"
+                                className="mt-4"
+                                type="button"
+                                onClick={() => {
+                                    const hoved = suggestionsQuery.suggestions?.diagnose.value
+                                    const bidiagnoser = suggestionsQuery.suggestions?.bidiagnoser ?? []
 
-                                if (hoved) {
-                                    setValue('diagnoser.hoved', {
-                                        code: hoved.code,
-                                        system: hoved.system,
-                                        text: hoved.text,
-                                    } satisfies Diagnose)
-                                }
+                                    if (hoved) {
+                                        setValue('diagnoser.hoved', {
+                                            code: hoved.code,
+                                            system: hoved.system,
+                                            text: hoved.text,
+                                        } satisfies Diagnose)
+                                    }
 
-                                if (bidiagnoser.length > 0) {
-                                    setValue(
-                                        'diagnoser.bidiagnoser',
-                                        bidiagnoser.map((bi) => ({
-                                            code: bi.code,
-                                            system: bi.system,
-                                            text: bi.text,
-                                        })) satisfies Diagnose[],
-                                    )
-                                }
-                            }}
-                        >
-                            Bruk diagnoser fra EPJ
-                        </Button>
-                    </Alert>
+                                    if (bidiagnoser.length > 0) {
+                                        setValue(
+                                            'diagnoser.bidiagnoser',
+                                            bidiagnoser.map((bi) => ({
+                                                code: bi.code,
+                                                system: bi.system,
+                                                text: bi.text,
+                                            })) satisfies Diagnose[],
+                                        )
+                                    }
+                                }}
+                            >
+                                Bruk diagnoser fra EPJ
+                            </Button>
+                        </InfoCard.Content>
+                    </InfoCard>
                 </SimpleReveal>
             )}
         </AnimatePresence>

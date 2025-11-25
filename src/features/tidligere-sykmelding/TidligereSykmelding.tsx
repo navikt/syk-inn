@@ -1,13 +1,15 @@
 import React, { ReactElement } from 'react'
 import { useParams } from 'next/navigation'
 import { useQuery } from '@apollo/client/react'
-import { Alert, BodyShort, Button, Heading, Skeleton } from '@navikt/ds-react'
+import { BodyShort, Button, LocalAlert, Skeleton } from '@navikt/ds-react'
 
 import { SykmeldingByIdDocument } from '@queries'
 import { toReadableDate } from '@lib/date'
 import { ValuesSection } from '@components/sykmelding/ValuesSection'
 import SykmeldingValues from '@components/sykmelding/SykmeldingValues'
 import BehandlerValues from '@components/sykmelding/BehandlerValues'
+import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
+import { Utfall } from '@components/sykmelding/Utfall'
 
 import { TidligereSykmeldingActions } from './TidligereSykmeldingActions'
 
@@ -47,12 +49,12 @@ export function TidligereSykmelding(): ReactElement {
     if (data?.sykmelding == null) {
         return (
             <div className="p-4 max-w-prose w-[65ch]">
-                <Alert variant="error">
-                    <Heading size="small" level="3" spacing>
-                        Sykmelding ikke funnet
-                    </Heading>
-                    <BodyShort spacing>Fant ingen sykmelding med denne ID-en.</BodyShort>
-                </Alert>
+                <LocalAlert status="error">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>Sykmelding ikke funnet</LocalAlert.Title>
+                    </LocalAlert.Header>
+                    <LocalAlert.Content>Fant ingen sykmelding med denne ID-en.</LocalAlert.Content>
+                </LocalAlert>
             </div>
         )
     }
@@ -60,13 +62,23 @@ export function TidligereSykmelding(): ReactElement {
     return (
         <div className="p-4">
             <div className="flex justify-between items-center mb-4">
-                <div className="flex flex-row gap-2 ml-4">
-                    <span>Mottatt:</span>
-                    {loading ? (
-                        <Skeleton className="inline-flex" width={96} />
-                    ) : data?.sykmelding ? (
-                        <span>{toReadableDate(data.sykmelding.meta.mottatt)}</span>
-                    ) : null}
+                <div className="flex flex-row gap-10 ml-4">
+                    <div className="flex gap-1">
+                        <span>Mottatt:</span>
+                        {loading ? (
+                            <Skeleton className="inline-flex" width={96} />
+                        ) : data?.sykmelding ? (
+                            <span>{toReadableDate(data.sykmelding.meta.mottatt)}</span>
+                        ) : null}
+                    </div>
+                    <div className="flex gap-1">
+                        <span>Status:</span>
+                        {loading ? (
+                            <Skeleton className="inline-flex" width={96} />
+                        ) : data?.sykmelding ? (
+                            <Utfall utfall={data.sykmelding.utfall} size="medium" />
+                        ) : null}
+                    </div>
                 </div>
                 {data?.sykmelding && <TidligereSykmeldingActions sykmelding={data?.sykmelding} />}
             </div>
@@ -88,14 +100,19 @@ export function TidligereSykmelding(): ReactElement {
 
 function TidligereSykmeldingError({ refetch }: { refetch: () => void }): ReactElement {
     return (
-        <Alert variant="error">
-            <Heading size="small" level="3" spacing>
-                Kunne ikke hente sykmelding
-            </Heading>
-            <BodyShort spacing>Det oppstod en feil under henting av sykmeldingen.</BodyShort>
-            <Button size="small" variant="secondary-neutral" onClick={() => refetch()}>
-                Prøv på nytt
-            </Button>
-        </Alert>
+        <LocalAlert status="error" className="max-w-[65ch]">
+            <LocalAlert.Header>
+                <LocalAlert.Title>Kunne ikke hente sykmelding</LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
+                <BodyShort spacing>
+                    Det oppstod en feil under henting av sykmeldingen. Dette kan være et midlertidig problem.
+                </BodyShort>
+                <LegeOgBehandlerTelefonen />
+                <Button size="small" className="mt-4" variant="secondary-neutral" onClick={() => refetch()}>
+                    Prøv på nytt
+                </Button>
+            </LocalAlert.Content>
+        </LocalAlert>
     )
 }

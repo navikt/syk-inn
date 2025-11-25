@@ -1,8 +1,17 @@
 'use client'
 
 import React, { ReactElement, useEffect, useState } from 'react'
-import { Alert, BodyShort, Button, ExpansionCard, Heading, Link as AkselLink, Skeleton } from '@navikt/ds-react'
-import { ChevronDownIcon, TabsAddIcon } from '@navikt/aksel-icons'
+import {
+    BodyShort,
+    Button,
+    ExpansionCard,
+    Heading,
+    Link as AkselLink,
+    Skeleton,
+    InfoCard,
+    LocalAlert,
+} from '@navikt/ds-react'
+import { CheckmarkCircleFillIcon, ChevronDownIcon, TabsAddIcon } from '@navikt/aksel-icons'
 import Link from 'next/link'
 import { useQuery } from '@apollo/client/react'
 
@@ -55,38 +64,43 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
 
     if (!loading && sykmelding == null) {
         return (
-            <Alert variant="warning">
-                <Heading size="medium" level="3">
-                    Fant ikke sykmeldingen
-                </Heading>
-                <BodyShort>Kunne ikke hente sykmeldingen</BodyShort>
-                <Button size="small" variant="secondary-neutral" onClick={() => refetch()} className="mt-4">
-                    Prøv på nytt
-                </Button>
-            </Alert>
+            <LocalAlert status="warning">
+                <LocalAlert.Header>
+                    <LocalAlert.Title>Fant ikke sykmeldingen</LocalAlert.Title>
+                </LocalAlert.Header>
+
+                <LocalAlert.Content>
+                    <BodyShort spacing>Av ukjente årsaker klarte vi ikke å hente sykmeldingen akkurat nå.</BodyShort>
+                    <Button size="small" variant="secondary-neutral" onClick={() => refetch()} className="mt-4">
+                        Prøv på nytt
+                    </Button>
+                </LocalAlert.Content>
+            </LocalAlert>
         )
     }
 
     return (
         <>
             <div className="mb-4">
-                {loading && data?.sykmelding == null ? (
-                    <Skeleton variant="rounded" height={62} />
-                ) : sykmelding ? (
-                    <Alert variant="success">Nav har mottatt sykmeldingen og sendt den til den sykmeldte</Alert>
+                {loading && sykmelding == null ? (
+                    <Skeleton variant="rounded" height={48} />
                 ) : (
-                    <Alert variant="warning">Kunne ikke hente sykmeldingen</Alert>
+                    <InfoCard data-color="success" size="small">
+                        <InfoCard.Header icon={<CheckmarkCircleFillIcon aria-hidden />}>
+                            <InfoCard.Title>Nav har mottatt sykmeldingen og sendt den til den sykmeldte</InfoCard.Title>
+                        </InfoCard.Header>
+                    </InfoCard>
                 )}
             </div>
             <div className="flex justify-between mt-8 mb-4">
-                {data?.sykmelding ? (
-                    <AkselLink href={pathWithBasePath(mode.paths.pdf(data.sykmelding.sykmeldingId))} target="_blank">
+                {sykmelding ? (
+                    <AkselLink href={pathWithBasePath(mode.paths.pdf(sykmelding.sykmeldingId))} target="_blank">
                         Se innsendt dokument
                     </AkselLink>
                 ) : (
                     <Skeleton width={240} />
                 )}
-                {loading && data?.sykmelding == null ? (
+                {loading && sykmelding == null ? (
                     <Skeleton variant="rounded" width={102} height={32} />
                 ) : sykmelding ? (
                     <SlowNextLinkButton
@@ -99,7 +113,7 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
                     </SlowNextLinkButton>
                 ) : null}
             </div>
-            {error && <SykmeldingKvitteringError error={error ?? { message: 'Test' }} refetch={refetch} />}
+            {error && <SykmeldingKvitteringError error={error ?? { message: 'Ukjent feil' }} refetch={refetch} />}
             {!error && <SykmeldingKvitteringValues loading={loading} sykmelding={sykmelding} />}
             <div className="mt-8 flex justify-end">
                 {mode.type === 'FHIR' ? (
@@ -203,7 +217,7 @@ function SykmeldingKvitteringStatus({ sykmeldingId }: { sykmeldingId: string }):
             {mode.type === 'FHIR' && (
                 <>
                     {loading ? (
-                        <Skeleton variant="rounded" height={62} />
+                        <Skeleton variant="rounded" height={48} />
                     ) : data?.sykmelding ? (
                         data.sykmelding.documentStatus === 'COMPLETE' ? (
                             <DocumentStatusSuccess />
@@ -233,18 +247,18 @@ function SykmeldingKvitteringStatus({ sykmeldingId }: { sykmeldingId: string }):
 
 function SykmeldingKvitteringError({ error, refetch }: { error: Error; refetch: () => void }): ReactElement {
     return (
-        <div className="max-w-prose">
-            <div className="mt-4">
-                <Alert variant="error">
-                    <Heading size="small" level="3" spacing>
-                        Kunne ikke hente sykmeldingen
-                    </Heading>
+        <div className="max-w-prose mb-4">
+            <LocalAlert status="error">
+                <LocalAlert.Header>
+                    <LocalAlert.Title>Kunne ikke hente sykmeldingen</LocalAlert.Title>
+                </LocalAlert.Header>
+                <LocalAlert.Content>
                     <BodyShort spacing>Teknisk feilmelding: {error.message}</BodyShort>
                     <Button variant="secondary-neutral" onClick={() => refetch()} size="small">
                         Prøv å hente på nytt
                     </Button>
-                </Alert>
-            </div>
+                </LocalAlert.Content>
+            </LocalAlert>
         </div>
     )
 }

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { ArrowRightIcon } from '@navikt/aksel-icons'
 import dynamic from 'next/dynamic'
-import { Alert, BodyShort, Heading } from '@navikt/ds-react'
+import { BodyShort, LocalAlert } from '@navikt/ds-react'
 
 import FormSection from '@components/form/form-section/FormSection'
 import FormSheet from '@components/form/form-section/FormSheet'
@@ -150,19 +150,19 @@ function useHandleFormSubmit() {
 
 function NoActivePasientWarning(): ReactElement {
     return (
-        <div>
-            <Alert variant="warning">
-                <Heading level="2" size="small" spacing>
-                    Ingen pasient er valgt
-                </Heading>
+        <LocalAlert status="warning">
+            <LocalAlert.Header>
+                <LocalAlert.Title>Ingen pasient er valgt</LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
                 <BodyShort spacing>
                     Det har skjedd en feil under oppstart av sykmeldingsskjemaet. Dette skal ikke skje.
                 </BodyShort>
                 <BodyShort spacing>
                     Prøv å start skjemaet på nytt, eller kontakt support dersom feilen vedvarer.
                 </BodyShort>
-            </Alert>
-        </div>
+            </LocalAlert.Content>
+        </LocalAlert>
     )
 }
 

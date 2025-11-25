@@ -1,7 +1,8 @@
 import React, { ReactElement, useState } from 'react'
-import { Alert, BodyShort, ProgressBar, Radio, RadioGroup, Select, Stack, TextField } from '@navikt/ds-react'
+import { BodyShort, InfoCard, ProgressBar, Radio, RadioGroup, Select, Stack, TextField } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 import { AnimatePresence } from 'motion/react'
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { Arbeidsforhold, ArbeidsforholdDocument } from '@queries'
 import { SimpleReveal } from '@components/animation/Reveal'
@@ -106,16 +107,20 @@ function ArbeidsforholdFromAaregPicker({
                     <option value="annet">Annet arbeidsforhold</option>
                 </Select>
             ) : (
-                <Alert variant="info" className="mt-2">
-                    <BodyShort spacing>
-                        Vi fant ingene arbeidsforhold i arbeidsgiverregisteret. Du kan manuelt skrive inn navnet på
-                        arbeidsgiveren.
-                    </BodyShort>
-                    <BodyShort>
-                        Pasienten må du be arbeidsgiveren sin om å registrere ansettelsesforholdet i A-meldingen som
-                        sendes til Altinn.
-                    </BodyShort>
-                </Alert>
+                <InfoCard data-color="info" className="mt-4" size="small">
+                    <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                        <InfoCard.Title>Fant ingen arbeidsforhold</InfoCard.Title>
+                    </InfoCard.Header>
+                    <InfoCard.Content>
+                        <BodyShort spacing>
+                            Arbeidsgiverregisteret har ingen registrerte arbeidsforhold for pasienten.
+                        </BodyShort>
+                        <BodyShort>
+                            Pasienten må du be arbeidsgiveren sin om å registrere ansettelsesforholdet i A-meldingen som
+                            sendes til Altinn.
+                        </BodyShort>
+                    </InfoCard.Content>
+                </InfoCard>
             )}
             <AnimatePresence>
                 {(sykmeldtFraArbeidsforhold.field.value === 'annet' || arbeidsforhold.length === 0) && (

@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactElement, useEffect, useState } from 'react'
-import { Alert, BodyShort, Button, Checkbox, Detail, Heading, Skeleton } from '@navikt/ds-react'
+import { BodyShort, Button, Checkbox, Detail, Heading, LocalAlert, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 
 import { cn } from '@lib/tw'
@@ -58,12 +58,19 @@ function OpprettNySykmeldingCard({ className }: { className?: string }): ReactEl
                         </div>
                     )}
                     {error && (
-                        <Alert variant="error">
-                            <BodyShort>Kunne ikke hente pasientopplysninger</BodyShort>
-                            <Button size="xsmall" onClick={() => refetch()}>
-                                Prøv på nytt
-                            </Button>
-                        </Alert>
+                        <LocalAlert status="error" className="max-w-sm mt-2 -mr-20" size="small">
+                            <LocalAlert.Header>
+                                <LocalAlert.Title>Kunne ikke hente pasient</LocalAlert.Title>
+                            </LocalAlert.Header>
+                            <LocalAlert.Content>
+                                <BodyShort spacing>
+                                    Et midlertidig problem oppstod når vi hentet informasjon om pasienten.
+                                </BodyShort>
+                                <Button size="xsmall" variant="secondary-neutral" onClick={() => refetch()}>
+                                    Prøv på nytt
+                                </Button>
+                            </LocalAlert.Content>
+                        </LocalAlert>
                     )}
                     {!loading && data?.pasient && (
                         <div className="flex gap-6 mt-3">
@@ -101,7 +108,7 @@ function OpprettNySykmeldingCard({ className }: { className?: string }): ReactEl
                         <ShortcutButtonLink
                             href="/fhir/ny"
                             variant="primary"
-                            disabled={loading || !hasLegged}
+                            disabled={loading || !hasLegged || data?.pasient == null}
                             loading={loading}
                             size="medium"
                             shortcut={{

@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react'
 import { logger } from '@navikt/next-logger'
-import { Alert, BodyShort, Heading } from '@navikt/ds-react'
+import { BodyShort, Heading, LocalAlert } from '@navikt/ds-react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { RuleOutcomeFragment } from '@queries'
@@ -19,11 +19,11 @@ export function HardStop({ outcome }: Props): ReactElement {
     const ruleText = getRuleText(outcome.rule)
 
     return (
-        <>
-            <Alert variant="warning" className="mb-2">
-                <Heading size="small" level="3" spacing>
-                    Sykmelding kan ikke sendes inn
-                </Heading>
+        <LocalAlert status="warning" className="mb-2">
+            <LocalAlert.Header>
+                <LocalAlert.Title>Sykmelding kan ikke sendes inn</LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
                 <BodyShort spacing>
                     Sykmeldingen du forsøker å sende inn har en feil eller mangel som gjør at Nav ikke kan motta den.
                 </BodyShort>
@@ -39,7 +39,7 @@ export function HardStop({ outcome }: Props): ReactElement {
                     kontakt med oss.
                 </BodyShort>
                 <LegeOgBehandlerTelefonen short />
-            </Alert>
-        </>
+            </LocalAlert.Content>
+        </LocalAlert>
     )
 }

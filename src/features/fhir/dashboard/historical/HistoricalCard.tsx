@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort, Heading } from '@navikt/ds-react'
+import { BodyShort, Button, GlobalAlert, Heading } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 import { NetworkStatus } from '@apollo/client'
 import { FlowerPetalsIcon } from '@navikt/aksel-icons'
 
 import DashboardCard from '@features/fhir/dashboard/card/DashboardCard'
 import { AllDashboardDocument, KonsultasjonDocument } from '@queries'
-import { ComboTable, ComboTableFullCell } from '@features/fhir/dashboard/combo-table/ComboTable'
+import { ComboTable } from '@features/fhir/dashboard/combo-table/ComboTable'
 import { RequestSykmeldinger } from '@features/fhir/dashboard/historical/RequestSykmeldinger'
 
 function HistoricalCard({ className }: { className?: string }): ReactElement {
@@ -31,34 +31,36 @@ function HistoricalCard({ className }: { className?: string }): ReactElement {
             className={className}
             fetching={isRefetching}
         >
-            {hasSykmeldinger && hasRequested && dashboardQuery.data && (
-                <ComboTable sykmeldinger={dashboardQuery.data.sykmeldinger?.historical ?? []} drafts={[]}>
-                    {dashboardQuery.error && !dashboardQuery.data.sykmeldinger == null && (
-                        <HistoricalSykmeldingerError />
-                    )}
-                </ComboTable>
+            {hasSykmeldinger && hasRequested && (
+                <ComboTable sykmeldinger={dashboardQuery.data?.sykmeldinger?.historical ?? []} drafts={[]} />
             )}
-            {!konsultasjon.error && !hasRequested && <RequestSykmeldinger loading={initialLoad} />}
-            {!konsultasjon.error && hasRequested && !hasSykmeldinger && !initialLoad && (
+            {dashboardQuery.error && <HistoricalSykmeldingerError refetch={dashboardQuery.refetch} />}
+            {!dashboardQuery.error && !hasRequested && <RequestSykmeldinger loading={initialLoad} />}
+            {!dashboardQuery.error && hasRequested && !hasSykmeldinger && !initialLoad && (
                 <HistoricalSykmeldingerEmptyState />
             )}
         </DashboardCard>
     )
 }
 
-function HistoricalSykmeldingerError(): ReactElement {
+function HistoricalSykmeldingerError({ refetch }: { refetch: () => void }): ReactElement {
     return (
-        <ComboTableFullCell>
-            <Alert variant="error" className="max-w-prose">
-                <Heading size="medium" level="3" spacing>
-                    Ukjent feil ved henting av historiske sykmeldinger
-                </Heading>
-                <BodyShort spacing>
-                    Det skjedde en ukjent feil under henting av sykmeldinger. Du kan prøve å laste siden på nytt, eller
-                    prøve på nytt senere.
-                </BodyShort>
-            </Alert>
-        </ComboTableFullCell>
+        <div className="flex justify-center items-center h-full pb-8">
+            <GlobalAlert status="error">
+                <GlobalAlert.Header>
+                    <GlobalAlert.Title>Ukjent feil ved henting av historiske sykmeldinger</GlobalAlert.Title>
+                </GlobalAlert.Header>
+                <GlobalAlert.Content>
+                    <BodyShort spacing>
+                        Det skjedde en ukjent feil under henting av sykmeldinger. Du kan prøve å laste siden på nytt,
+                        eller prøve på nytt senere.
+                    </BodyShort>
+                    <Button type="button" size="small" variant="secondary-neutral" onClick={() => refetch()}>
+                        Prøv på nytt
+                    </Button>
+                </GlobalAlert.Content>
+            </GlobalAlert>
+        </div>
     )
 }
 

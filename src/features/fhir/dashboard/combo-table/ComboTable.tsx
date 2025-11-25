@@ -1,7 +1,6 @@
 import * as R from 'remeda'
 import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
-import { BodyShort, Table, Tag, TagProps } from '@navikt/ds-react'
-import { logger } from '@navikt/next-logger'
+import { Table, Tag, TagProps } from '@navikt/ds-react'
 
 import {
     DraftFragment,
@@ -13,6 +12,7 @@ import {
 import { byActiveOrFutureSykmelding, isWithinWeeksOldSykmelding, latestTom } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import Redaction from '@components/misc/Redaction'
+import { Utfall } from '@components/sykmelding/Utfall'
 
 import DashboardTable from '../table/DashboardTable'
 
@@ -99,8 +99,8 @@ export function ComboTableHeader({ className }: { className?: string }): ReactEl
 
 export function ComboTableFullCell({ className, children }: PropsWithChildren<{ className?: string }>): ReactElement {
     return (
-        <Table.DataCell colSpan={8}>
-            <div className={className}>{children}</div>
+        <Table.DataCell colSpan={8} className={className}>
+            {children}
         </Table.DataCell>
     )
 }
@@ -255,18 +255,4 @@ function StatusTag({ status }: { status: 'draft' | 'previous' | 'current' }): Re
     }
 
     return <Tag variant={variant}>{text}</Tag>
-}
-
-function Utfall({ utfall }: { utfall: SykmeldingFragment['utfall'] }): React.ReactElement | null {
-    if (utfall.result === 'OK') {
-        return <BodyShort size="small">Godkjent</BodyShort>
-    } else if (utfall.result === 'PENDING') {
-        return <BodyShort size="small">Til behandling</BodyShort>
-    } else if (utfall.result === 'INVALID') {
-        return <BodyShort size="small">Avvist</BodyShort>
-    }
-
-    logger.error(`Unknown utfall for sykmelding: ${utfall.result}`)
-
-    return null
 }
