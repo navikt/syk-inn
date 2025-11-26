@@ -103,7 +103,7 @@ fragment SykmeldingFull on SykmeldingFull {
             begrunnelse
         }
         utdypendeSporsmal {
-            utfodringerMedArbeid
+            utfordringerMedArbeid
             medisinskOppsummering
             hensynPaArbeidsplassen
         }

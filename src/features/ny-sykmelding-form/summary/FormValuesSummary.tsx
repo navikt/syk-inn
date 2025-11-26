@@ -304,6 +304,7 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: NySykmeldingDiagnoser 
                     </FormSummary.Value>
                 </FormSummary.Answer>
             )}
+            utfordringerMedArbeid
         </>
     )
 }
@@ -315,12 +316,12 @@ function UtdypendeSporsmalSummaryAnswers({
 }): ReactElement | null {
     return (
         <>
-            {utdypendeSporsmal?.utfodringerMedArbeid && (
+            {utdypendeSporsmal?.utfordringerMedArbeid && (
                 <FormSummary.Answer>
                     <FormSummary.Label>
                         Hvilke utfordringer har pasienten med å utføre gradert arbeid?
                     </FormSummary.Label>
-                    <FormSummary.Value>{utdypendeSporsmal.utfodringerMedArbeid}</FormSummary.Value>
+                    <FormSummary.Value>{utdypendeSporsmal.utfordringerMedArbeid}</FormSummary.Value>
                 </FormSummary.Answer>
             )}
             {utdypendeSporsmal?.medisinskOppsummering && (

@@ -80,7 +80,7 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
             skadedato: values.andreSporsmal.yrkesskade?.skadedato ?? null,
         },
         utdypendeSporsmal: {
-            utfodringerMedArbeid: values.utdypendeSporsmal?.utfodringerMedArbeid ?? null,
+            utfordringerMedArbeid: values.utdypendeSporsmal?.utfordringerMedArbeid ?? null,
             medisinskOppsummering: values.utdypendeSporsmal?.medisinskOppsummering ?? null,
             hensynPaArbeidsplassen: values.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
         },

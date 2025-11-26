@@ -79,7 +79,7 @@ type AndreSporsmalFields = {
 }
 
 type UtdypendeSporsmalFields = {
-    utfodringerMedArbeid: string | null
+    utfordringerMedArbeid: string | null
     medisinskOppsummering: string | null
     hensynPaArbeidsplassen: string | null
 }

@@ -55,7 +55,7 @@ export const commonObjectResolvers: Resolvers<CommonGraphqlContext> = {
             const previouslyAnsweredSporsmal: UtdypendeSporsmalOptions[] = []
             sykmeldinger.forEach((sykmelding) => {
                 if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmal) {
-                    if (sykmelding.values.utdypendeSporsmal.utfodringerMedArbeid) {
+                    if (sykmelding.values.utdypendeSporsmal.utfordringerMedArbeid) {
                         previouslyAnsweredSporsmal.push('UTFORDRINGER_MED_ARBEID')
                     }
                     if (sykmelding.values.utdypendeSporsmal.medisinskOppsummering) {

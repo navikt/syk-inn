@@ -13,7 +13,7 @@ export interface SykmeldingDateRange {
 }
 
 interface UtdypendeSporsmal {
-    utfodringerMedArbeid?: string | null
+    utfordringerMedArbeid?: string | null
     medisinskOppsummering?: string | null
 }
 

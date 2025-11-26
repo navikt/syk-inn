@@ -22,7 +22,7 @@ export function defaultAndreSporsmal(): NySykmeldingMainFormValues['andreSporsma
 
 export function defaultUtdypendeSporsmal(): NySykmeldingMainFormValues['utdypendeSporsmal'] {
     return {
-        utfodringerMedArbeid: null,
+        utfordringerMedArbeid: null,
         medisinskOppsummering: null,
         hensynPaArbeidsplassen: null,
     }

@@ -212,7 +212,7 @@ function draftUtdypendeSporsmalToFormValues(
     if (draftUtdypendeSporsmal == null) return null
 
     return {
-        utfodringerMedArbeid: draftUtdypendeSporsmal.utfodringerMedArbeid ?? null,
+        utfordringerMedArbeid: draftUtdypendeSporsmal.utfordringerMedArbeid ?? null,
         medisinskOppsummering: draftUtdypendeSporsmal.medisinskOppsummering ?? null,
         hensynPaArbeidsplassen: draftUtdypendeSporsmal.hensynPaArbeidsplassen ?? null,
     }

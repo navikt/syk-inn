@@ -27,7 +27,7 @@ modes.forEach(({ mode }) => {
         await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
         await addUtdypendeSporsmal({
-            utfodringerMedArbeid: 'Utfordringer',
+            utfordringerMedArbeid: 'Utfordringer',
             medisinskOppsummering: 'Oppsummering',
         })(page)
 
@@ -69,7 +69,7 @@ modes.forEach(({ mode }) => {
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: 'Utfordringer',
+                    utfordringerMedArbeid: 'Utfordringer',
                     medisinskOppsummering: 'Oppsummering',
                     hensynPaArbeidsplassen: null,
                 },
@@ -92,7 +92,7 @@ modes.forEach(({ mode }) => {
         await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
 
         await addUtdypendeSporsmal({
-            utfodringerMedArbeid: 'Utfordringer',
+            utfordringerMedArbeid: 'Utfordringer',
             medisinskOppsummering: 'Oppsummering',
         })(page)
 
@@ -133,7 +133,7 @@ modes.forEach(({ mode }) => {
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: 'Utfordringer',
+                    utfordringerMedArbeid: 'Utfordringer',
                     medisinskOppsummering: 'Oppsummering',
                     hensynPaArbeidsplassen: null,
                 },
@@ -192,7 +192,7 @@ modes.forEach(({ mode }) => {
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
+                    utfordringerMedArbeid: null,
                     medisinskOppsummering: null,
                     hensynPaArbeidsplassen: null,
                 },

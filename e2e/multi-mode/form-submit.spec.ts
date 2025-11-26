@@ -71,7 +71,7 @@ modes.forEach(({ mode }) => {
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
+                    utfordringerMedArbeid: null,
                     medisinskOppsummering: null,
                     hensynPaArbeidsplassen: null,
                 },
@@ -124,7 +124,7 @@ modes.forEach(({ mode }) => {
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
+                    utfordringerMedArbeid: null,
                     medisinskOppsummering: null,
                     hensynPaArbeidsplassen: null,
                 },
@@ -186,7 +186,7 @@ modes.forEach(({ mode }) => {
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
+                    utfordringerMedArbeid: null,
                     medisinskOppsummering: null,
                     hensynPaArbeidsplassen: null,
                 },
@@ -244,7 +244,7 @@ modes.forEach(({ mode }) => {
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
+                    utfordringerMedArbeid: null,
                     medisinskOppsummering: null,
                     hensynPaArbeidsplassen: null,
                 },
@@ -347,7 +347,7 @@ modes.forEach(({ mode }) => {
                 arbeidsforhold: null,
                 pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
+                    utfordringerMedArbeid: null,
                     medisinskOppsummering: null,
                     hensynPaArbeidsplassen: null,
                 },
@@ -413,7 +413,7 @@ modes.forEach(({ mode }) => {
                 arbeidsforhold: null,
                 pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
+                    utfordringerMedArbeid: null,
                     medisinskOppsummering: null,
                     hensynPaArbeidsplassen: null,
                 },
@@ -476,7 +476,7 @@ modes.forEach(({ mode }) => {
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
+                    utfordringerMedArbeid: null,
                     medisinskOppsummering: null,
                     hensynPaArbeidsplassen: null,
                 },
@@ -541,7 +541,7 @@ modes.forEach(({ mode }) => {
                 tilbakedatering: null,
                 pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
+                    utfordringerMedArbeid: null,
                     medisinskOppsummering: null,
                     hensynPaArbeidsplassen: null,
                 },
@@ -598,7 +598,7 @@ modes.forEach(({ mode }) => {
                 tilbakedatering: null,
                 pasientenSkalSkjermes: true,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
+                    utfordringerMedArbeid: null,
                     medisinskOppsummering: null,
                     hensynPaArbeidsplassen: null,
                 },
@@ -656,7 +656,7 @@ modes.forEach(({ mode }) => {
                     tilbakedatering: null,
                     pasientenSkalSkjermes: false,
                     utdypendeSporsmal: {
-                        utfodringerMedArbeid: null,
+                        utfordringerMedArbeid: null,
                         medisinskOppsummering: null,
                         hensynPaArbeidsplassen: null,
                     },
@@ -706,7 +706,7 @@ modes.forEach(({ mode }) => {
                     tilbakedatering: null,
                     pasientenSkalSkjermes: false,
                     utdypendeSporsmal: {
-                        utfodringerMedArbeid: null,
+                        utfordringerMedArbeid: null,
                         medisinskOppsummering: null,
                         hensynPaArbeidsplassen: null,
                     },

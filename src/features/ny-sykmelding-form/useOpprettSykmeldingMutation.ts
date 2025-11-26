@@ -163,7 +163,7 @@ function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingState): O
         tilbakedatering: tilbakedateringStepToInputTilbakedatering(formState.tilbakedatering),
         pasientenSkalSkjermes: multiStepState.summary?.skalSkjermes ?? false,
         utdypendeSporsmal: {
-            utfodringerMedArbeid: formState.utdypendeSporsmal?.utfodringerMedArbeid ?? null,
+            utfordringerMedArbeid: formState.utdypendeSporsmal?.utfordringerMedArbeid ?? null,
             medisinskOppsummering: formState.utdypendeSporsmal?.medisinskOppsummering ?? null,
             hensynPaArbeidsplassen: formState.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
         },

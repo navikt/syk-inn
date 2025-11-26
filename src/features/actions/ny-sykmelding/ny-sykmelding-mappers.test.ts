@@ -39,7 +39,7 @@ test('multiple bidiagnoser from server suggestion shall be used', () => {
         meldinger: { showTilNav: false, tilNav: null, showTilArbeidsgiver: false, tilArbeidsgiver: null },
         andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: false, skadedato: null } },
         utdypendeSporsmal: {
-            utfodringerMedArbeid: null,
+            utfordringerMedArbeid: null,
             medisinskOppsummering: null,
             hensynPaArbeidsplassen: null,
         },

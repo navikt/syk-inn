@@ -23,8 +23,8 @@ export function UtdypendeSporsmal({
 }
 
 function Uke7(): ReactElement {
-    const utfodringerMedArbeid = useController({
-        name: 'utdypendeSporsmal.utfodringerMedArbeid',
+    const utfordringerMedArbeid = useController({
+        name: 'utdypendeSporsmal.utfordringerMedArbeid',
         rules: { required: 'Du må fylle ut dette feltet' },
     })
 
@@ -41,9 +41,9 @@ function Uke7(): ReactElement {
             <BodyShort spacing>Helseopplysninger i Navs vurdering av aktivitetskrav og oppfølging</BodyShort>
             <Textarea
                 label="Hvilke utfordringer har pasienten med å utføre gradert arbeid?"
-                onChange={utfodringerMedArbeid.field.onChange}
-                value={utfodringerMedArbeid.field.value ?? ''}
-                error={utfodringerMedArbeid.fieldState.error?.message}
+                onChange={utfordringerMedArbeid.field.onChange}
+                value={utfordringerMedArbeid.field.value ?? ''}
+                error={utfordringerMedArbeid.fieldState.error?.message}
             />
             <Textarea
                 label="Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt behandling)"

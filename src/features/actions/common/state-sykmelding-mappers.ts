@@ -134,7 +134,7 @@ export function stateUtdypendeSporsmalToFormValues(
     if (stateUtdypendeSporsmal == null) return null
 
     return {
-        utfodringerMedArbeid: stateUtdypendeSporsmal.utfodringerMedArbeid ?? null,
+        utfordringerMedArbeid: stateUtdypendeSporsmal.utfordringerMedArbeid ?? null,
         medisinskOppsummering: stateUtdypendeSporsmal.medisinskOppsummering ?? null,
         hensynPaArbeidsplassen: stateUtdypendeSporsmal.hensynPaArbeidsplassen ?? null,
     }

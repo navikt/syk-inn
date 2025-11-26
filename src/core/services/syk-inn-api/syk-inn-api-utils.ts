@@ -129,7 +129,7 @@ export function resolverInputToSykInnApiPayload(
                 : null,
             utdypendeSporsmal: values.utdypendeSporsmal
                 ? {
-                      utfodringerMedArbeid: values.utdypendeSporsmal.utfodringerMedArbeid ?? null,
+                      utfordringerMedArbeid: values.utdypendeSporsmal.utfordringerMedArbeid ?? null,
                       medisinskOppsummering: values.utdypendeSporsmal.medisinskOppsummering ?? null,
                       hensynPaArbeidsplassen: values.utdypendeSporsmal.hensynPaArbeidsplassen ?? null,
                   }

@@ -1,7 +1,6 @@
 import { expect, Locator, Page, test } from '@playwright/test'
 import { add } from 'date-fns'
 import { ApolloLink } from '@apollo/client'
-
 import { OpprettSykmeldingDocument } from '@queries'
 import { toReadableDatePeriod } from '@lib/date'
 import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
@@ -109,11 +108,11 @@ export function editBidiagnose({
 }
 
 export function addUtdypendeSporsmal({
-    utfodringerMedArbeid,
+    utfordringerMedArbeid,
     medisinskOppsummering,
     hensynPaArbeidsplassen,
 }: {
-    utfodringerMedArbeid: string
+    utfordringerMedArbeid: string
     medisinskOppsummering: string
     hensynPaArbeidsplassen?: string
 }) {
@@ -124,7 +123,7 @@ export function addUtdypendeSporsmal({
 
             await utdypendeSporsmalRegion
                 .getByRole('textbox', { name: 'Hvilke utfordringer har pasienten med å utføre gradert arbeid?' })
-                .fill(utfodringerMedArbeid)
+                .fill(utfordringerMedArbeid)
             await utdypendeSporsmalRegion
                 .getByRole('textbox', {
                     name: 'Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt behandling)',

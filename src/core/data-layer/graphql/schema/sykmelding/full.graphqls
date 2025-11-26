@@ -47,7 +47,7 @@ type Tilbakedatering {
 }
 
 type UtdypendeSporsmal {
-    utfodringerMedArbeid: String
+    utfordringerMedArbeid: String
     medisinskOppsummering: String
     hensynPaArbeidsplassen: String
 }

@@ -66,7 +66,7 @@ modes.forEach(({ mode }) => {
                 pasientenSkalSkjermes: false,
                 tilbakedatering: null,
                 utdypendeSporsmal: {
-                    utfodringerMedArbeid: null,
+                    utfordringerMedArbeid: null,
                     medisinskOppsummering: null,
                     hensynPaArbeidsplassen: null,
                 },

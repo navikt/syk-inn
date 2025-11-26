@@ -66,14 +66,13 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                     </ValueItem>
                 </>
             )}
-
             <SykmeldingDiagnoseValues
                 hoveddiagnose={sykmelding.values.hoveddiagnose}
                 bidiagnoser={sykmelding.values.bidiagnoser}
             />
-            {sykmelding.values.utdypendeSporsmal?.utfodringerMedArbeid && (
+            {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid && (
                 <ValueItem title="Hvilke utfordringer har pasienten med å utføre gradert arbeid?">
-                    {sykmelding.values.utdypendeSporsmal?.utfodringerMedArbeid}
+                    {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid}
                 </ValueItem>
             )}
             {sykmelding.values.utdypendeSporsmal?.medisinskOppsummering && (

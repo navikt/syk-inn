@@ -54,7 +54,7 @@ test('submit with only default values and prefilled FHIR values', async ({ page 
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
             utdypendeSporsmal: {
-                utfodringerMedArbeid: null,
+                utfordringerMedArbeid: null,
                 medisinskOppsummering: null,
                 hensynPaArbeidsplassen: null,
             },
@@ -117,7 +117,7 @@ test('should pre-fill bidiagnoser from FHIR @feature-toggle', async ({ page }) =
             tilbakedatering: null,
             pasientenSkalSkjermes: false,
             utdypendeSporsmal: {
-                utfodringerMedArbeid: null,
+                utfordringerMedArbeid: null,
                 medisinskOppsummering: null,
                 hensynPaArbeidsplassen: null,
             },

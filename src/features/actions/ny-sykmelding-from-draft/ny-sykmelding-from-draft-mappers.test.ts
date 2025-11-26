@@ -50,7 +50,7 @@ test('draft values shall be used as default if provided', () => {
         },
         andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: true, skadedato: '2024-11-20' } },
         utdypendeSporsmal: {
-            utfodringerMedArbeid: null,
+            utfordringerMedArbeid: null,
             medisinskOppsummering: null,
             hensynPaArbeidsplassen: null,
         },
@@ -106,7 +106,7 @@ test('form values shall have higher presedence than draft values', () => {
         },
         andreSporsmal: { svangerskapsrelatert: true, yrkesskade: { yrkesskade: false, skadedato: null } },
         utdypendeSporsmal: {
-            utfodringerMedArbeid: null,
+            utfordringerMedArbeid: null,
             medisinskOppsummering: null,
             hensynPaArbeidsplassen: null,
         },
@@ -133,7 +133,7 @@ test('server suggestions shall be used if no draft or form values are provided',
         meldinger: { showTilNav: false, tilNav: null, showTilArbeidsgiver: false, tilArbeidsgiver: null },
         andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: false, skadedato: null } },
         utdypendeSporsmal: {
-            utfodringerMedArbeid: null,
+            utfordringerMedArbeid: null,
             medisinskOppsummering: null,
             hensynPaArbeidsplassen: null,
         },

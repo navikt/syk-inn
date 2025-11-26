@@ -1096,7 +1096,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "utfodringerMedArbeid",
+                        "name": "utfordringerMedArbeid",
                         "description": null,
                         "type": { "kind": "SCALAR", "name": "String", "ofType": null },
                         "defaultValue": null,
@@ -3037,7 +3037,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "utfodringerMedArbeid",
+                        "name": "utfordringerMedArbeid",
                         "description": null,
                         "args": [],
                         "type": { "kind": "SCALAR", "name": "String", "ofType": null },

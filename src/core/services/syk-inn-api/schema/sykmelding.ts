@@ -67,7 +67,7 @@ const TilbakedateringSchema = z.object({
 })
 
 const UtdypendeSporsmalSchema = z.object({
-    utfodringerMedArbeid: z.string().nullable(),
+    utfordringerMedArbeid: z.string().nullable(),
     medisinskOppsummering: z.string().nullable(),
     hensynPaArbeidsplassen: z.string().nullable(),
 })

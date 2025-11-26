@@ -52,7 +52,7 @@ input InputTilbakedatering {
 }
 
 input InputUtdypendeSporsmal {
-    utfodringerMedArbeid: String
+    utfordringerMedArbeid: String
     medisinskOppsummering: String
     hensynPaArbeidsplassen: String
 }

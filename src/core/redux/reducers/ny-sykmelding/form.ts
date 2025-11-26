@@ -57,7 +57,7 @@ export type NySykmeldingAndreSporsmal = {
 }
 
 export type NySykmeldingUtdypendeSporsmal = {
-    utfodringerMedArbeid: string | null
+    utfordringerMedArbeid: string | null
     medisinskOppsummering: string | null
     hensynPaArbeidsplassen: string | null
 }

@@ -173,7 +173,7 @@ export type InputTilbakedatering = {
 export type InputUtdypendeSporsmal = {
     hensynPaArbeidsplassen?: InputMaybe<Scalars['String']['input']>
     medisinskOppsummering?: InputMaybe<Scalars['String']['input']>
-    utfodringerMedArbeid?: InputMaybe<Scalars['String']['input']>
+    utfordringerMedArbeid?: InputMaybe<Scalars['String']['input']>
 }
 
 export type InputYrkesskade = {
@@ -469,7 +469,7 @@ export type UtdypendeSporsmal = {
     __typename?: 'UtdypendeSporsmal'
     hensynPaArbeidsplassen?: Maybe<Scalars['String']['output']>
     medisinskOppsummering?: Maybe<Scalars['String']['output']>
-    utfodringerMedArbeid?: Maybe<Scalars['String']['output']>
+    utfordringerMedArbeid?: Maybe<Scalars['String']['output']>
 }
 
 export type UtdypendeSporsmalOptions = 'HENSYN_PA_ARBEIDSPLASSEN' | 'MEDISINSK_OPPSUMMERING' | 'UTFORDRINGER_MED_ARBEID'
@@ -1200,7 +1200,7 @@ export type UtdypendeSporsmalResolvers<
 > = {
     hensynPaArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     medisinskOppsummering?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-    utfodringerMedArbeid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    utfordringerMedArbeid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
 }
 
 export type YrkesskadeResolvers<
