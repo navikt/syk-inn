@@ -4,15 +4,27 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
     plugins: [tsconfigPaths()],
     test: {
-        setupFiles: ['./vitest.setup.mts'],
-        include: ['src/**/*.test.ts'],
-        alias: {
-            '@utils/**': './src/utils',
-        },
+        alias: { '@utils/**': './src/utils' },
         reporters: ['default', 'json'],
-        outputFile: {
-            json: 'test-results/vitest-report.json',
-        },
+        outputFile: { json: 'test-results/vitest-report.json' },
+        projects: [
+            {
+                test: {
+                    name: 'unit',
+                    setupFiles: ['./vitest.setup.mts'],
+                    include: ['src/**/*.test.ts'],
+                    exclude: ['src/**/*.integration.ts'],
+                },
+                extends: true,
+            },
+            {
+                test: {
+                    name: 'integration',
+                    include: ['src/**/*.integration.ts'],
+                },
+                extends: true,
+            },
+        ],
     },
     resolve: {
         alias: {
