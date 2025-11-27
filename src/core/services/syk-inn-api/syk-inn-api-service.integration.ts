@@ -1,19 +1,24 @@
 import { beforeAll, describe, it, expect } from 'vitest'
 import { StartedTestContainer } from 'testcontainers'
+import { Kafka } from 'kafkajs'
 
 import { getSykInnApiPath, initializeSykInnApi } from '@lib/test/syk-inn-api'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { OpprettSykmeldingMeta, OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
 import { initializeValkey } from '@lib/test/valkey'
 import { daysAgo, inDays, today } from '@lib/test/date-utils'
+import { consumeUntil, initializeConsumer, initializeKafka } from '@lib/test/syk-inn-kafka'
 
 describe('SykInnApi integration', () => {
     let sykInnApi: StartedTestContainer
     let valkey: StartedTestContainer
+    let kafka: Kafka
 
     beforeAll(async () => {
+        const sykInnContainers = await initializeSykInnApi()
+        sykInnApi = sykInnContainers.sykInnApi
         valkey = await initializeValkey()
-        sykInnApi = await initializeSykInnApi()
+        kafka = await initializeKafka(sykInnContainers.kafka)
 
         process.env.LOCAL_SYK_INN_API_HOST = `${sykInnApi.getHost()}:${sykInnApi.getMappedPort(8080)}`
         process.env.VALKEY_HOST_SYK_INN = `${valkey.getHost()}:${valkey.getMappedPort(6379)}`
@@ -94,6 +99,28 @@ describe('SykInnApi integration', () => {
         expect(opprettResult.values.utdypendeSporsmal).toBeNull()
         expect(opprettResult.values.tilbakedatering).toBeNull()
     })
+
+    it('/sykmelding should be published to kafka from syk-inn-api', async () => {
+        const payload = createFullOpprettSykmeldingPayload()
+        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
+
+        if ('errorType' in opprettResult) {
+            throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
+        }
+
+        expect(opprettResult.sykmeldingId).toBeDefined()
+
+        const consumer = await initializeConsumer(kafka)
+        const kafkaMessage = await consumeUntil(consumer, opprettResult.sykmeldingId)
+
+        expect(kafkaMessage.metadata.type).toEqual('DIGITAL')
+        expect(kafkaMessage.metadata.orgnummer).toEqual('987654321')
+
+        expect(kafkaMessage.sykmelding.metadata.avsenderSystem.navn).toEqual('syk-inn test')
+        expect(kafkaMessage.sykmelding.pasient.fnr).toEqual('01010112345')
+        expect(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.kode).toEqual('P74')
+        expect(kafkaMessage.sykmelding.medisinskVurdering.biDiagnoser).toHaveLength(1)
+    }, 10_000)
 
     it('/sykmelding/<id> should fetch correctly', async () => {
         const payload = createFullOpprettSykmeldingPayload()
@@ -217,7 +244,7 @@ describe('SykInnApi integration', () => {
         }
 
         expect(pdf.byteLength).toBeGreaterThan(1000)
-    })
+    }, 10_000)
 
     it('/sykmelding/<id>/pdf not get PDF that does not belong to HPR', async () => {
         const payload = createFullOpprettSykmeldingPayload()

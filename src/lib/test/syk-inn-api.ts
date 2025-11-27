@@ -1,12 +1,15 @@
 import { GenericContainer, StartedTestContainer, Network, Wait } from 'testcontainers'
 import { logger } from '@navikt/next-logger'
 import { PostgreSqlContainer } from '@testcontainers/postgresql'
-import { KafkaContainer } from '@testcontainers/kafka'
+import { KafkaContainer, StartedKafkaContainer } from '@testcontainers/kafka'
 
 const POSTGRES_ALIAS = 'db'
 const KAFKA_ALIAS = 'kafka'
 
-export async function initializeSykInnApi(): Promise<StartedTestContainer> {
+export async function initializeSykInnApi(): Promise<{
+    sykInnApi: StartedTestContainer
+    kafka: StartedKafkaContainer
+}> {
     /**
      * Configure a shared networks, that allows containers to communicate with each other
      * on their NATIVE PORTS, not the mapped ones.
@@ -16,7 +19,7 @@ export async function initializeSykInnApi(): Promise<StartedTestContainer> {
         return it
     })
 
-    const [postgres] = await Promise.all([
+    const [postgres, kafka] = await Promise.all([
         new PostgreSqlContainer('postgres:16-alpine')
             .withNetwork(network)
             .withNetworkAliases(POSTGRES_ALIAS)
@@ -30,10 +33,7 @@ export async function initializeSykInnApi(): Promise<StartedTestContainer> {
             .withNetwork(network)
             .withNetworkAliases(KAFKA_ALIAS)
             .withEnvironment({
-                KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:9092,BROKER://0.0.0.0:9093',
-                KAFKA_ADVERTISED_LISTENERS: `PLAINTEXT://${KAFKA_ALIAS}:9092,BROKER://${KAFKA_ALIAS}:9093`,
-                KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'PLAINTEXT:PLAINTEXT,BROKER:PLAINTEXT',
-                KAFKA_INTER_BROKER_LISTENER_NAME: 'BROKER',
+                AUTO_CREATE_TOPICS_ENABLE: 'true',
             })
             .start()
             .then((it) => {
@@ -53,14 +53,14 @@ export async function initializeSykInnApi(): Promise<StartedTestContainer> {
         })
         .withExposedPorts(8080)
         .withWaitStrategy(Wait.forHttp('/internal/health', 8080))
-        .withStartupTimeout(15_000)
+        .withStartupTimeout(30_000)
         .start()
         .then((it) => {
             logger.info(`syk-inn-api ready!`)
             return it
         })
 
-    return sykInnApi
+    return { sykInnApi, kafka }
 }
 
 function getBaseUrl(container: StartedTestContainer, port: number = 8080): `http://${string}` {
