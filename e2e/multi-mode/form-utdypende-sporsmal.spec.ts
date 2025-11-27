@@ -1,5 +1,6 @@
 import { test } from '@playwright/test'
 import { OpprettSykmeldingDocument } from '@queries'
+import { today, inDays } from '@lib/test/date-utils'
 
 import {
     addUtdypendeSporsmal,
@@ -9,7 +10,6 @@ import {
     submitSykmelding,
 } from '../actions/user-actions'
 import { expectGraphQLRequest } from '../utils/assertions'
-import { today, inDays } from '../utils/date-utils'
 
 import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 import { launchAndStart } from './actions/mode-user-actions'

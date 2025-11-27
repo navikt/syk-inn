@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
-
 import { toReadableDatePeriod } from '@lib/date'
+import { daysAgo, inDays, inputDate } from '@lib/test/date-utils'
 
 import { launchWithMock } from '../actions/fhir-actions'
 import { startNewSykmelding } from '../actions/fhir-user-actions'
@@ -16,7 +16,6 @@ import {
     requestAccessToSykmeldinger,
     submitSykmelding,
 } from '../../actions/user-actions'
-import { daysAgo, inDays, inputDate } from '../../utils/date-utils'
 import { verifySignerendeBehandler } from '../actions/fhir-user-verifications'
 import {
     expectAndreSporsmal,

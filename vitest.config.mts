@@ -20,6 +20,7 @@ export default defineConfig({
             {
                 test: {
                     name: 'integration',
+                    setupFiles: ['./vitest.integration.setup.mts'],
                     include: ['src/**/*.integration.ts'],
                 },
                 extends: true,

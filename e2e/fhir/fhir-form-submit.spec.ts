@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { OpprettSykmeldingDocument } from '@queries'
+import { inDays, inputDate, today } from '@lib/test/date-utils'
 
-import { inDays, inputDate, today } from '../utils/date-utils'
 import { fillPeriodeRelative, submitSykmelding, nextStep } from '../actions/user-actions'
 import { expectGraphQLRequest } from '../utils/assertions'
 
