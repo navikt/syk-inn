@@ -8,7 +8,7 @@ import { useFlag } from '@core/toggles/context'
 
 import { continiousSykefravaer } from './sykefravaer-utils'
 
-function DumbStats(): ReactElement {
+function PatientStats(): ReactElement {
     const allDrafts = useQuery(GetAllDraftsDocument)
     const sykmeldinger = useQuery(AllSykmeldingerDocument)
 
@@ -32,11 +32,11 @@ function DumbStats(): ReactElement {
     const days = continiousSykefravaer([...current, ...previous])
 
     return (
-        <div className="-mt-2 mb-2 flex gap-12">
+        <div className="mb-2 flex gap-3 sm:gap-12 mt-4 border-t-2 border-t-border-subtle pt-4 md:border-none md:pt-0">
             {sykefravaerInfoToggle && (
                 <div className="flex items-center relative">
                     <PieChart
-                        className="size-48"
+                        className="size-36 lg:size-48"
                         lineWidth={26}
                         startAngle={270}
                         data={[
@@ -45,10 +45,10 @@ function DumbStats(): ReactElement {
                         ]}
                     />
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-                        <BodyShort size="small" className="text-nowrap">
+                        <BodyShort size="small" className="text-nowrap text-xs lg:text-base">
                             Påløpt sykefravær
                         </BodyShort>
-                        <BodyShort>{(days / 7).toFixed(0)} av 52 uker</BodyShort>
+                        <BodyShort className="text-xs lg:text-base">{(days / 7).toFixed(0)} av 52 uker</BodyShort>
                     </div>
                 </div>
             )}
@@ -70,4 +70,4 @@ function DumbStats(): ReactElement {
     )
 }
 
-export default DumbStats
+export default PatientStats
