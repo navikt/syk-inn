@@ -5,10 +5,16 @@
 import fs from 'fs'
 import path from 'path'
 
-const [, , inputPath] = process.argv
+const [, , title, inputPath] = process.argv
+
+if (title.includes('/')) {
+    console.error('Title contains / and seems like a path, please provide a valid title')
+    console.error('Usage: test-report.mjs <title> <test-results-json>')
+    process.exit(1)
+}
 
 if (!inputPath) {
-    console.error('Usage: test-report.mjs <test-results-json>')
+    console.error('Usage: test-report.mjs <title> <test-results-json>')
     process.exit(1)
 }
 
@@ -19,7 +25,7 @@ const total = results.numTotalTests ?? 0
 const passed = results.numPassedTests ?? 0
 const failed = results.numFailedTests ?? 0
 
-console.info(`## Vitest Test Report Summary`)
+console.info(`## Vitest Test Report Summary: ${title}`)
 console.info(`Total tests: ${total}${failed === 0 && total > 0 ? ' ✅' : ''}`)
 console.info(`Passed tests: ${passed}${passed > 0 ? ' ✅' : ''}`)
 console.info(`Failed tests: ${failed}${failed > 0 ? ' ❌' : ''}\n`)
