@@ -112,7 +112,10 @@ export const sykInnApiService = {
             responseSchema: z.array(z.union([SykInnApiSykmeldingSchema, SykInnApiSykmeldingRedactedSchema])),
         })
     },
-    getSykmeldingPdf: async (sykmeldingId: string, hpr: string): Promise<ArrayBuffer | ApiFetchErrors> => {
+    getSykmeldingPdf: async (
+        sykmeldingId: string,
+        hpr: string,
+    ): Promise<ArrayBuffer | ApiFetchErrors<'SYKMELDING_PDF_FORBIDDEN'>> => {
         if (shouldUseMockEngine()) {
             logger.warn(`Running in ${bundledEnv.runtimeEnv}, returning mocked PDF`)
 
@@ -129,6 +132,11 @@ export const sykInnApiService = {
                 HPR: hpr,
             },
             responseSchema: 'ArrayBuffer',
+            onApiError: (response) => {
+                if (response.status === 403) {
+                    return 'SYKMELDING_PDF_FORBIDDEN'
+                }
+            },
         })
     },
 }
