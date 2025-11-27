@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
+import { inDays, inputDate } from '@lib/test/date-utils'
 
 import { requestAccessToSykmeldinger } from '../actions/user-actions'
-import { inDays, inputDate } from '../utils/date-utils'
 
 import { launchWithMock } from './actions/fhir-actions'
 

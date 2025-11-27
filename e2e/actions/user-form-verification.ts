@@ -1,9 +1,7 @@
 import { expect, Locator, Page, test } from '@playwright/test'
 import { add } from 'date-fns'
-
 import { toReadableDatePeriod } from '@lib/date'
-
-import { daysAgo, inputDate } from '../utils/date-utils'
+import { daysAgo, inputDate } from '@lib/test/date-utils'
 
 export function expectPatient(patient: { name: string; fnr: string }) {
     return async (region: Locator) => {

@@ -145,8 +145,9 @@ export async function fetchInternalAPI<
 export async function getApi(
     api: ValidAPI,
 ): Promise<{ host: string; token: string } | { errorType: 'TOKEN_EXCHANGE_FAILED' }> {
-    if (getServerEnv().useLocalSykInnApi) {
-        return { host: 'localhost:8080', token: 'foo-bar-baz' }
+    const serverEnv = getServerEnv()
+    if (serverEnv.useLocalSykInnApi) {
+        return { host: serverEnv.localSykInnApiHost, token: 'foo-bar-baz' }
     }
 
     return spanServerAsync('InternalAPIs.tokenExchange', async (span) => {

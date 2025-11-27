@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { inDays, inputDate } from '@lib/test/date-utils'
 
 import {
     addBidiagnose,
@@ -8,7 +9,6 @@ import {
     editHoveddiagnose,
 } from '../actions/user-actions'
 import { expectBidagnoses, expectHoveddiagnose } from '../actions/user-form-verification'
-import { inDays, inputDate } from '../utils/date-utils'
 
 import { modes, onMode } from './modes'
 import { launchAndStart } from './actions/mode-user-actions'

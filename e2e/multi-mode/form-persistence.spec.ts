@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
+import { daysAgo } from '@lib/test/date-utils'
 
-import { daysAgo } from '../utils/date-utils'
 import {
     pickHoveddiagnose,
     fillPeriodeRelative,

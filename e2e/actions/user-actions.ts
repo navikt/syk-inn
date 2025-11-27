@@ -4,9 +4,9 @@ import { ApolloLink } from '@apollo/client'
 import { OpprettSykmeldingDocument } from '@queries'
 import { toReadableDatePeriod } from '@lib/date'
 import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
+import { inputDate } from '@lib/test/date-utils'
 
 import { clickAndWait, getDraftId, waitForGqlRequest } from '../utils/request-utils'
-import { inputDate } from '../utils/date-utils'
 
 export function pickHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
     return async (page: Page) => {

@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { OpprettSykmeldingDocument } from '@queries'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
+import { daysAgo, inDays, today } from '@lib/test/date-utils'
 
 import {
     addBidiagnose,
@@ -14,7 +15,6 @@ import {
     submitSykmelding,
 } from '../actions/user-actions'
 import { expectGraphQLRequest } from '../utils/assertions'
-import { daysAgo, inDays, today } from '../utils/date-utils'
 import { userInteractionsGroup } from '../utils/actions'
 import { verifySummaryPage } from '../actions/user-verifications'
 
