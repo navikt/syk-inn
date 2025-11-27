@@ -304,7 +304,6 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: NySykmeldingDiagnoser 
                     </FormSummary.Value>
                 </FormSummary.Answer>
             )}
-            utfordringerMedArbeid
         </>
     )
 }
