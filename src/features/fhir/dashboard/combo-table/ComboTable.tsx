@@ -82,8 +82,12 @@ export function ComboTableHeader({ className }: { className?: string }): ReactEl
     return (
         <Table.Header className={className}>
             <Table.Row>
-                <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
-                <Table.HeaderCell scope="col">Diagnose</Table.HeaderCell>
+                <Table.HeaderCell scope="col" className="min-w-38">
+                    Periode
+                </Table.HeaderCell>
+                <Table.HeaderCell scope="col" className="min-w-46">
+                    Diagnose
+                </Table.HeaderCell>
                 <Table.HeaderCell scope="col">Grad</Table.HeaderCell>
                 <Table.HeaderCell scope="col">Arbeidsgiver</Table.HeaderCell>
                 <Table.HeaderCell scope="col">Utfall</Table.HeaderCell>

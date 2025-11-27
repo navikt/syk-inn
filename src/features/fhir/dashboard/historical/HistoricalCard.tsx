@@ -8,6 +8,7 @@ import DashboardCard from '@features/fhir/dashboard/card/DashboardCard'
 import { AllDashboardDocument, KonsultasjonDocument } from '@queries'
 import { ComboTable } from '@features/fhir/dashboard/combo-table/ComboTable'
 import { RequestSykmeldinger } from '@features/fhir/dashboard/historical/RequestSykmeldinger'
+import { cn } from '@lib/tw'
 
 function HistoricalCard({ className }: { className?: string }): ReactElement {
     const konsultasjon = useQuery(KonsultasjonDocument)
@@ -28,7 +29,7 @@ function HistoricalCard({ className }: { className?: string }): ReactElement {
                 </Heading>
             }
             headingId="historical-card-heading"
-            className={className}
+            className={cn('overflow-auto', className)}
             fetching={isRefetching}
         >
             {hasSykmeldinger && hasRequested && (

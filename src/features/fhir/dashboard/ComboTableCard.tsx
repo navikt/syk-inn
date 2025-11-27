@@ -8,6 +8,7 @@ import { NetworkStatus } from '@apollo/client'
 import { AllDashboardDocument } from '@queries'
 import useOnFocus from '@lib/hooks/useOnFocus'
 import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
+import { cn } from '@lib/tw'
 
 import { ComboTable, ComboTableFullCell, ComboTableHeader } from './combo-table/ComboTable'
 import DashboardCard from './card/DashboardCard'
@@ -24,7 +25,11 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
     const hasData = hasSykmeldinger || hasDrafts
 
     return (
-        <DashboardCard className={className} ariaLabel="Pågående sykmeldinger og utkast" fetching={isRefetching}>
+        <DashboardCard
+            className={cn('overflow-auto', className)}
+            ariaLabel="Pågående sykmeldinger og utkast"
+            fetching={isRefetching}
+        >
             {hasData && dashboardQuery.data && (
                 <ComboTable
                     sykmeldinger={dashboardQuery.data.sykmeldinger?.current ?? []}
