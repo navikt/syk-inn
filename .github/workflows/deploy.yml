@@ -15,7 +15,7 @@ permissions:
   packages: write
 
 jobs:
-  test-and-verify:
+  test-lint-knip:
     name: Test, lint and verify
     runs-on: ubuntu-latest
     steps:
@@ -33,7 +33,22 @@ jobs:
         run: yarn knip --no-exit-code --reporter=markdown >> "$GITHUB_STEP_SUMMARY"
       - name: Test report
         if: always()
-        run: ./scripts/test-reporter.mjs ./test-results/vitest-report.json >> "$GITHUB_STEP_SUMMARY"
+        run: ./scripts/test-reporter.mjs Unit ./test-results/vitest-report.json >> "$GITHUB_STEP_SUMMARY"
+
+  integration-tests:
+    name: Integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: navikt/tsm-workflows/actions/yarn@main
+        with:
+          READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      - run: yarn next typegen
+      - name: Integration tests
+        run: yarn test:integration
+      - name: Test report
+        if: always()
+        run: ./scripts/test-reporter.mjs Integration ./test-results/vitest-report.json >> "$GITHUB_STEP_SUMMARY"
 
   build-dev:
     name: Build for dev
@@ -121,7 +136,7 @@ jobs:
       name: dev
       url: https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding
     runs-on: ubuntu-latest
-    needs: [build-dev, test-and-verify]
+    needs: [build-dev, test-lint-knip, integration-tests]
     steps:
       - uses: actions/checkout@v5
       - uses: nais/deploy/actions/deploy@v2
@@ -138,7 +153,7 @@ jobs:
       name: demo-main
       url: https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }}
     runs-on: ubuntu-latest
-    needs: [build-demo, test-and-verify]
+    needs: [build-demo, test-lint-knip, integration-tests]
     steps:
       - uses: actions/checkout@v5
       - uses: nais/deploy/actions/deploy@v2
