@@ -85,6 +85,7 @@ export function AkselifiedComboboxPopover({
             gutter={8}
             sameWidth
             className="navds-combobox__list"
+            fitViewport
             render={<div className="z-popover" />}
             {...props}
         >
