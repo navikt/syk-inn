@@ -2,12 +2,11 @@ import React, { ReactElement } from 'react'
 import { Skeleton } from '@navikt/ds-react'
 
 import FormSheet from '@components/form/form-section/FormSheet'
-
-import styles from './NySykmeldingForm.module.css'
+import TwoPaneGrid from '@components/layout/TwoPaneGrid'
 
 function NySykmeldingFormSkeleton(): ReactElement {
     return (
-        <form className={styles.formGrid}>
+        <TwoPaneGrid tag="div">
             <FormSheet className="relative">
                 <Skeleton className="w-full" height={600} variant="rounded" />
                 <div className="bg-surface-subtle w-4 h-[calc(100%-2rem)] absolute -right-6 rounded hidden lg:block" />
@@ -15,7 +14,7 @@ function NySykmeldingFormSkeleton(): ReactElement {
             <FormSheet>
                 <Skeleton className="w-full" height={600} variant="rounded" />
             </FormSheet>
-        </form>
+        </TwoPaneGrid>
     )
 }
 

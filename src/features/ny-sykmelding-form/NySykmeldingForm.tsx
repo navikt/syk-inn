@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { useMode } from '@core/providers/Modes'
 import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolvers.generated'
+import TwoPaneGrid from '@components/layout/TwoPaneGrid'
 
 import { formValuesToStatePayload } from './form/form-to-state'
 import { UtdypendeSporsmal } from './utfyllende-sporsmal/UtdypendeendeSporsmal'
@@ -26,7 +27,6 @@ import AktivitetSection from './aktivitet/AktivitetSection'
 import MeldingerSection from './meldinger/MeldingerSection'
 import { ForkastDraftButtonInFormSync, LagreDraftButton } from './draft/DraftActions'
 import { FormDraftSync, useFormDraftSync } from './draft/FormDraftSync'
-import styles from './NySykmeldingForm.module.css'
 
 const FormDevTools = dynamic(() => import('@dev/tools/NySykmeldingFormDevTools'), { ssr: false })
 
@@ -89,7 +89,7 @@ function NySykmeldingInnerForm({
     const onSubmit = useHandleFormSubmit()
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)} className={styles.formGrid}>
+        <TwoPaneGrid tag="form" onSubmit={form.handleSubmit(onSubmit)}>
             <FormSheet className="relative">
                 {selectedPasient == null && <NoActivePasientWarning />}
                 <FormSection title="Arbeidsgiver">
@@ -131,7 +131,7 @@ function NySykmeldingInnerForm({
                     </ShortcutSubmitButton>
                 </div>
             </FormSheet>
-        </form>
+        </TwoPaneGrid>
     )
 }
 

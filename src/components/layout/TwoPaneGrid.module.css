@@ -1,4 +1,4 @@
-.formGrid {
+.twoPaneGrid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 65ch));
     gap: 2rem;
@@ -6,7 +6,7 @@
 }
 
 @media (max-width: 1024px) {
-    .formGrid {
+    .twoPaneGrid {
         grid-template-columns: 1fr;
         gap: 0;
     }
