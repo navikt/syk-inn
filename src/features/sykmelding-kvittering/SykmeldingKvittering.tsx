@@ -25,6 +25,7 @@ import { cn } from '@lib/tw'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { useAppDispatch } from '@core/redux/hooks'
 import { useMode } from '@core/providers/Modes'
+import TwoPaneGrid from '@components/layout/TwoPaneGrid'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 import { SykmeldingSynchronization } from './SykmeldingSynchronization'
@@ -36,6 +37,7 @@ type Props = {
 
 function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
     const dispatch = useAppDispatch()
+    const mode = useMode()
 
     useEffect(() => {
         /**
@@ -46,13 +48,26 @@ function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
     }, [dispatch])
 
     return (
-        <div className="p-4 flex flex-row gap-8">
-            <div className="max-w-prose w-[65ch]">
-                <SykmeldingKvitteringSummary sykmeldingId={sykmeldingId} />
-            </div>
-            <div className="max-w-prose w-[65ch]">
-                <SykmeldingKvitteringStatus sykmeldingId={sykmeldingId} />
-            </div>
+        <div className="p-4">
+            <TwoPaneGrid tag="div">
+                <div className="">
+                    <SykmeldingKvitteringSummary sykmeldingId={sykmeldingId} />
+                </div>
+                <div className="mt-4 lg:mt-0">
+                    <SykmeldingKvitteringStatus sykmeldingId={sykmeldingId} />
+                </div>
+                <div className="flex justify-end">
+                    {mode.type === 'FHIR' ? (
+                        <Button variant="primary" size="small" as={AssableNextLink} href="/fhir" className="underline">
+                            Tilbake til pasientoversikt
+                        </Button>
+                    ) : (
+                        <Button variant="primary" size="small" as={AssableNextLink} href="/" className="underline">
+                            Tilbake til pasientsøk
+                        </Button>
+                    )}
+                </div>
+            </TwoPaneGrid>
         </div>
     )
 }
@@ -115,17 +130,6 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
             </div>
             {error && <SykmeldingKvitteringError error={error ?? { message: 'Ukjent feil' }} refetch={refetch} />}
             {!error && <SykmeldingKvitteringValues loading={loading} sykmelding={sykmelding} />}
-            <div className="mt-8 flex justify-end">
-                {mode.type === 'FHIR' ? (
-                    <Button variant="primary" size="small" as={AssableNextLink} href="/fhir" className="underline">
-                        Tilbake til pasientoversikt
-                    </Button>
-                ) : (
-                    <Button variant="primary" size="small" as={AssableNextLink} href="/" className="underline">
-                        Tilbake til pasientsøk
-                    </Button>
-                )}
-            </div>
         </>
     )
 }
