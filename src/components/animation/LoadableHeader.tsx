@@ -22,32 +22,34 @@ function LoadableHeader({
     skeletonWidth = 140,
 }: LoadableHeaderProps & Pick<HeadingProps, 'level' | 'size'>): ReactElement {
     return (
-        <Heading level={level} size={size} spacing className="inline flex gap-2" id={id}>
-            <span>{lead} </span>
-            <AnimatePresence mode="wait" initial={false}>
-                {value == null ? (
-                    <motion.span
-                        className="inline"
-                        key="skeleton"
-                        initial={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        <Skeleton className="inline-block" width={skeletonWidth} />
-                    </motion.span>
-                ) : (
-                    <motion.span
-                        key="value"
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2, delay: 0.1 }}
-                    >
-                        {value}
-                    </motion.span>
-                )}
-            </AnimatePresence>
-            {tail && <span> {tail}</span>}
-        </Heading>
+        <div className="mb-2">
+            <Heading level={level} size={size} className="inline" id={id}>
+                <span>{lead} </span>
+                <AnimatePresence mode="wait" initial={false}>
+                    {value == null ? (
+                        <motion.span
+                            className="inline"
+                            key="skeleton"
+                            initial={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 20 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <Skeleton className="inline-block" width={skeletonWidth} />
+                        </motion.span>
+                    ) : (
+                        <motion.span
+                            key="value"
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.2, delay: 0.1 }}
+                        >
+                            {value}
+                        </motion.span>
+                    )}
+                </AnimatePresence>
+                {tail && <span> {tail}</span>}
+            </Heading>
+        </div>
     )
 }
 export default LoadableHeader

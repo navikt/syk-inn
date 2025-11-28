@@ -90,17 +90,17 @@ function NySykmeldingInnerForm({
 
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className={styles.formGrid}>
-            <FormSheet className="row-span-3 relative">
+            <FormSheet className="relative">
                 {selectedPasient == null && <NoActivePasientWarning />}
                 <FormSection title="Arbeidsgiver">
                     <ArbeidsforholdSection />
                 </FormSection>
                 <AktivitetSection initialFom={initialFom ?? null} />
                 <DynamicTilbakedateringSection />
-                <div className="bg-surface-subtle w-4 h-[calc(100%-2rem)] absolute -right-4 rounded" />
+                <div className="bg-surface-subtle w-4 h-[calc(100%-2rem)] absolute -right-6 rounded hidden lg:block" />
             </FormSheet>
-            <FormSheet className="row-span-2">
-                <FormSection title="Diagnose">
+            <FormSheet>
+                <FormSection title="Diagnose" className="border-t border-t-border-subtle pt-3 lg:pt-0 lg:border-none">
                     <DiagnoseSection diagnosePrefillError={contextualErrors.diagnose} />
                     <BidiagnoseSection />
                     {mode.type === 'FHIR' && <DiagnoseInfoAlert />}

@@ -1,8 +1,13 @@
 .formGrid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, auto);
+    grid-template-columns: repeat(2, minmax(0, 65ch));
     gap: 2rem;
+    width: 100%;
+}
 
-    width: fit-content;
+@media (max-width: 1024px) {
+    .formGrid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
 }

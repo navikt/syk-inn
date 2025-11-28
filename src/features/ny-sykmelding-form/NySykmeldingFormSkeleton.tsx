@@ -1,13 +1,21 @@
 import React, { ReactElement } from 'react'
 import { Skeleton } from '@navikt/ds-react'
 
+import FormSheet from '@components/form/form-section/FormSheet'
+
+import styles from './NySykmeldingForm.module.css'
+
 function NySykmeldingFormSkeleton(): ReactElement {
     return (
-        // Needs a much better skeleton
-        <div className="grid grid-cols-2 gap-4 p-4">
-            <Skeleton width="65ch" height={600} variant="rounded" />
-            <Skeleton width="65ch" height={600} variant="rounded" />
-        </div>
+        <form className={styles.formGrid}>
+            <FormSheet className="relative">
+                <Skeleton className="w-full" height={600} variant="rounded" />
+                <div className="bg-surface-subtle w-4 h-[calc(100%-2rem)] absolute -right-6 rounded hidden lg:block" />
+            </FormSheet>
+            <FormSheet>
+                <Skeleton className="w-full" height={600} variant="rounded" />
+            </FormSheet>
+        </form>
     )
 }
 
