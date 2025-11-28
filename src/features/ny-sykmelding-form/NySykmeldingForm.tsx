@@ -112,10 +112,11 @@ function NySykmeldingInnerForm({
                 <FormSection title="Meldinger" hideBorder>
                     <MeldingerSection />
                 </FormSection>
-                <div className="flex gap-3 p-2">
-                    <ForkastDraftButtonInFormSync />
-                    <LagreDraftButton />
+                <div className="flex flex-row flex-wrap md:grid-cols-3 gap-3 p-2 lg:justify-end">
+                    <ForkastDraftButtonInFormSync className="flex-grow md:max-w-46" />
+                    <LagreDraftButton className="flex-grow md:max-w-46" />
                     <ShortcutSubmitButton
+                        className="flex-grow md:max-w-46"
                         id="step-navigation-next"
                         variant="primary"
                         icon={<ArrowRightIcon aria-hidden />}

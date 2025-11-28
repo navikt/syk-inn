@@ -7,9 +7,11 @@ import { FastFadeReveal } from '@components/animation/Reveal'
 import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { Shortcut, useShortcut } from '@lib/hooks/shortcuts/useShortcut'
 import { useCurrentModifier } from '@lib/hooks/shortcuts/useCurrentModifier'
+import { cn } from '@lib/tw'
 
 type BaseShortcutButtonProps = {
     shortcut: Shortcut
+    className?: string
     /**
      * Can be used when shortcut buttons are rendered behind for example a Modal, to avoid
      * showing the shortcut hint when the button is not interactable.
@@ -22,6 +24,7 @@ export function ShortcutButtons({
     children,
     shortcut,
     inactive,
+    className,
     ...buttonProps
 }: PropsWithChildren<BaseShortcutButtonProps & { onClick: () => void }>): ReactElement {
     const registeredShortcut = useShortcut(shortcut, () => {
@@ -31,8 +34,8 @@ export function ShortcutButtons({
     const currentMod = useCurrentModifier()
 
     return (
-        <div className="relative">
-            <Button type="button" onClick={() => onClick()} {...buttonProps}>
+        <div className={cn('relative', className)}>
+            <Button type="button" className="w-full" onClick={() => onClick()} {...buttonProps}>
                 {children}
             </Button>
             <div className="absolute -bottom-5 right-2 text-text-action">
@@ -53,6 +56,7 @@ export function ShortcutButtonLink({
     children,
     shortcut,
     inactive,
+    className,
     ...buttonProps
 }: PropsWithChildren<
     BaseShortcutButtonProps & {
@@ -69,7 +73,7 @@ export function ShortcutButtonLink({
     const currentMod = useCurrentModifier()
 
     return (
-        <div className="relative w-fit">
+        <div className={cn('relative w-fit', className)}>
             <SlowNextLinkButton type="button" href={href} {...buttonProps} suppressHydrationWarning>
                 {children}
             </SlowNextLinkButton>
@@ -90,6 +94,7 @@ export function ShortcutSubmitButton({
     shortcut,
     children,
     inactive,
+    className,
     ...buttonProps
 }: PropsWithChildren<BaseShortcutButtonProps>): ReactElement {
     const buttonRef = useRef<HTMLButtonElement>(null)
@@ -102,8 +107,8 @@ export function ShortcutSubmitButton({
     const currentMod = useCurrentModifier()
 
     return (
-        <div className="relative">
-            <Button ref={buttonRef} type="submit" {...buttonProps}>
+        <div className={cn('relative', className)}>
+            <Button ref={buttonRef} className="w-full" type="submit" {...buttonProps}>
                 {children}
             </Button>
             <div className="absolute -bottom-5 right-2 text-text-action">

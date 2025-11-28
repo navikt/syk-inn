@@ -18,3 +18,14 @@
     display: flex;
     justify-content: space-between;
 }
+
+@media screen and (max-width: 600px) {
+    .dateRangePicker {
+        width: 100%;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .dateRangePicker :global(.navds-text-field__input[size]) {
+        width: 100%;
+    }
+}

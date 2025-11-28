@@ -19,10 +19,10 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
     })
 
     return (
-        <div className="grid grid-cols-[30ch_1fr] gap-4 mt-2">
+        <div className="grid grid-cols-1 md:grid-cols-[30ch_1fr] gap-4 mt-2">
             <Select
                 label="Mulighet for arbeid"
-                className="flex flex-col"
+                className="max-w-sm flex flex-col"
                 value={aktivitetField.field.value}
                 onChange={(event) => {
                     aktivitetField.field.onChange(event.target.value)

@@ -12,13 +12,14 @@ import { useFormDraftSync } from '@features/ny-sykmelding-form/draft/FormDraftSy
 
 import { useDraftId } from './useDraftId'
 
-export function LagreDraftButton(): ReactElement {
+export function LagreDraftButton({ className }: { className?: string }): ReactElement {
     const mode = useMode()
     const router = useRouter()
     const draft = useFormDraftSync()
 
     return (
         <ShortcutButtons
+            className={className}
             variant="secondary"
             icon={<FloppydiskIcon aria-hidden />}
             iconPosition="right"
@@ -38,18 +39,20 @@ export function LagreDraftButton(): ReactElement {
     )
 }
 
-export function ForkastDraftButtonInFormSync(): ReactElement {
+export function ForkastDraftButtonInFormSync({ className }: { className?: string }): ReactElement {
     const draft = useFormDraftSync()
 
-    return <ForkastDraftButton onForkast={draft.cancelSync} />
+    return <ForkastDraftButton className={className} onForkast={draft.cancelSync} />
 }
 
 export function ForkastDraftButton({
     inactive,
     onForkast,
+    className,
 }: {
     onForkast?: () => void
     inactive?: boolean
+    className?: string
 }): ReactElement {
     const mode = useMode()
     const [draftId] = useDraftId()
@@ -61,6 +64,7 @@ export function ForkastDraftButton({
 
     return (
         <ShortcutButtons
+            className={className}
             variant="tertiary"
             onClick={() =>
                 spanBrowserAsync('DeleteDraft(forkast).mutation', async () => {
