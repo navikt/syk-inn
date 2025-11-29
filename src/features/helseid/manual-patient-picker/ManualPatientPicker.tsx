@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { setPersistentUser } from '@data-layer/helseid/persistent-user/persistent-user'
 import { SimpleReveal } from '@components/animation/Reveal'
+import TwoPaneGrid from '@components/layout/TwoPaneGrid'
 
 import ManualPatientSearch from './ManualPatientSearch'
 import ManualPatientDrafts from './ManualPatientDrafts'
@@ -51,51 +52,55 @@ function ManualPatientPicker(): ReactElement {
     }, [dispatch])
 
     return (
-        <div className="p-4 w-[65ch]">
-            <ManualPatientSearch handleSearch={handleSearch} defaultIdent={existingPatient?.ident} />
-            {loading && (
-                <div className="mt-4">
-                    <Skeleton height={94} variant="rounded" />
-                </div>
-            )}
-            {!loading && data?.person != null && (
-                <LinkCard className="mt-4">
-                    <LinkCard.Title>
-                        <LinkCard.Anchor asChild>
-                            <Link href="/ny">Opprett sykmelding for {data.person.navn}</Link>
-                        </LinkCard.Anchor>
-                        <LinkCard.Description>{data.person.ident}</LinkCard.Description>
-                    </LinkCard.Title>
-                </LinkCard>
-            )}
-
-            {!loading && !error && data != null && data.person == null && (
-                <LocalAlert status="warning" className="mt-4">
-                    <LocalAlert.Header>
-                        <LocalAlert.Title>Fant ikke pasient</LocalAlert.Title>
-                    </LocalAlert.Header>
-                    <LocalAlert.Content>Det angitte fødselsnummeret eller d-nummeret finnes ikke.</LocalAlert.Content>
-                </LocalAlert>
-            )}
-            {!loading && error && (
-                <LocalAlert status="error" className="mt-4">
-                    <LocalAlert.Header>
-                        <LocalAlert.Title>Kunne ikke hente pasient</LocalAlert.Title>
-                    </LocalAlert.Header>
-                    <LocalAlert.Content>
-                        Det oppstod en feil ved henting av pasient. Prøv igjen senere.
-                    </LocalAlert.Content>
-                </LocalAlert>
-            )}
-
-            <AnimatePresence initial={false}>
-                {!loading && data?.person != null && currentPatient != null && (
-                    <SimpleReveal>
-                        <ManualPatientDrafts ident={data.person.ident} />
-                    </SimpleReveal>
+        <TwoPaneGrid tag="div">
+            <div className="p-4 bg-white">
+                <ManualPatientSearch handleSearch={handleSearch} defaultIdent={existingPatient?.ident} />
+                {loading && (
+                    <div className="mt-4">
+                        <Skeleton height={94} variant="rounded" />
+                    </div>
                 )}
-            </AnimatePresence>
-        </div>
+                {!loading && data?.person != null && (
+                    <LinkCard className="mt-4">
+                        <LinkCard.Title>
+                            <LinkCard.Anchor asChild>
+                                <Link href="/ny">Opprett sykmelding for {data.person.navn}</Link>
+                            </LinkCard.Anchor>
+                            <LinkCard.Description>{data.person.ident}</LinkCard.Description>
+                        </LinkCard.Title>
+                    </LinkCard>
+                )}
+
+                {!loading && !error && data != null && data.person == null && (
+                    <LocalAlert status="warning" className="mt-4">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>Fant ikke pasient</LocalAlert.Title>
+                        </LocalAlert.Header>
+                        <LocalAlert.Content>
+                            Det angitte fødselsnummeret eller d-nummeret finnes ikke.
+                        </LocalAlert.Content>
+                    </LocalAlert>
+                )}
+                {!loading && error && (
+                    <LocalAlert status="error" className="mt-4">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>Kunne ikke hente pasient</LocalAlert.Title>
+                        </LocalAlert.Header>
+                        <LocalAlert.Content>
+                            Det oppstod en feil ved henting av pasient. Prøv igjen senere.
+                        </LocalAlert.Content>
+                    </LocalAlert>
+                )}
+
+                <AnimatePresence initial={false}>
+                    {!loading && data?.person != null && currentPatient != null && (
+                        <SimpleReveal>
+                            <ManualPatientDrafts ident={data.person.ident} />
+                        </SimpleReveal>
+                    )}
+                </AnimatePresence>
+            </div>
+        </TwoPaneGrid>
     )
 }
 

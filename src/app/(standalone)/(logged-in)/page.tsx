@@ -5,7 +5,7 @@ import ManualPatientPicker from '@features/helseid/manual-patient-picker/ManualP
 
 function Page(): ReactElement {
     return (
-        <PageLayout heading={<StaticPageHeading>Velg pasient</StaticPageHeading>} bg="white" size="fit">
+        <PageLayout heading={<StaticPageHeading>Velg pasient</StaticPageHeading>} bg="transparent" size="fit">
             <ManualPatientPicker />
         </PageLayout>
     )
