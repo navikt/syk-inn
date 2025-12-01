@@ -8,6 +8,7 @@ import { toReadableDate, toReadableDatePeriod } from '@lib/date'
 import { ValueItem } from '@components/sykmelding/ValuesSection'
 import { ArbeidsrelaterteArsaker } from '@features/ny-sykmelding-form/aktivitet/ArsakerPicker'
 import { Diagnose } from '@data-layer/common/diagnose'
+import { PREVIOUS_OFFSET_DAYS } from '@data-layer/common/sykmelding-utils'
 
 type Props = {
     sykmelding: SykmeldingFragment
@@ -37,7 +38,8 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                 <InfoCard data-color="info" className="mt-4" size="small">
                     <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
                         <InfoCard.Title>
-                            Denne sykmeldingen er eldre enn 1 dag, og viser derfor ikke alle innsendte verdier.
+                            Denne sykmeldingen er eldre enn {PREVIOUS_OFFSET_DAYS} dager, og viser derfor ikke alle
+                            innsendte verdier.
                         </InfoCard.Title>
                     </InfoCard.Header>
                 </InfoCard>

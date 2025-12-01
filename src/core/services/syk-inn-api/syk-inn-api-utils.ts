@@ -1,5 +1,3 @@
-import { isBefore, subDays } from 'date-fns'
-
 import {
     AktivitetType,
     DocumentStatus,
@@ -15,6 +13,7 @@ import {
     OpprettSykmeldingPayload,
 } from '@core/services/syk-inn-api/schema/opprett'
 import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '@core/services/syk-inn-api/schema/sykmelding'
+import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
 
 export function sykInnApiSykmeldingRedactedToResolverSykmelding(
     sykmelding: SykInnApiSykmeldingRedacted,
@@ -42,10 +41,12 @@ export function sykInnApiSykmeldingToResolverSykmelding(
     sykmelding: SykInnApiSykmelding,
     documentStatus?: DocumentStatus,
 ): SykmeldingFull | SykmeldingLight {
+    const isWithinOffset = byCurrentOrPreviousWithOffset(sykmelding)
+
     /**
-     * If the sykmelding is received today, return a light version.
+     * If the sykmelding is outside of offset, return a light version.
      */
-    if (isBefore(sykmelding.meta.mottatt, subDays(new Date(), 1))) {
+    if (!isWithinOffset) {
         return {
             kind: 'light',
             sykmeldingId: sykmelding.sykmeldingId,
