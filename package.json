@@ -19,6 +19,7 @@
         "test": "vitest --project unit --run | pino-pretty --messageKey=message",
         "test:integration": "vitest --project integration --run | pino-pretty --messageKey=message",
         "lint": "eslint src",
+        "playwright": "yarn workspace e2e run playwright",
         "e2e": "./scripts/pre-e2e.sh && yarn workspace e2e run e2e",
         "e2e:dev": "yarn e2e --ui",
         "e2e:fast": "echo 'Did you run yarn build:e2e? before this?' && FAST=true yarn e2e",
