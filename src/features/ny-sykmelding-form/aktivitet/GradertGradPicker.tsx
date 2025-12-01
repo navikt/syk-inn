@@ -27,7 +27,7 @@ function GradertGradPicker({ index }: { index: number }): ReactElement {
         },
     })
 
-    const coercedValue = safeGetPercentValue(gradertField.field.value)
+    const coercedValue = safeGetPercentValue(gradertField.field.value ?? null)
 
     return (
         <div className="flex flex-col gap-1">

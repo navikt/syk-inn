@@ -105,7 +105,7 @@ function PeriodePicker({ index, isLast, initialFom }: Props): ReactElement {
             const shorthand =
                 side === 'fom'
                     ? parseShorthandFom(previousTomPlusOne, event.currentTarget.value)
-                    : parseShorthandTom(previousTomPlusOne, fomField.field.value, event.currentTarget.value)
+                    : parseShorthandTom(previousTomPlusOne, fomField.field.value ?? null, event.currentTarget.value)
 
             if (shorthand) {
                 event.preventDefault()
@@ -184,7 +184,7 @@ function PeriodePicker({ index, isLast, initialFom }: Props): ReactElement {
                         focused={focusState === 'tom'}
                         suggestion={parseShorthandTom(
                             previousTomPlusOne,
-                            fomField.field.value,
+                            fomField.field.value ?? null,
                             typeof toInputProps.value === 'string' ? toInputProps.value : null,
                         )}
                     />

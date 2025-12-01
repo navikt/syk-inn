@@ -11,13 +11,13 @@ import { SimpleReveal } from '@components/animation/Reveal'
 import { useController } from '../form/types'
 
 function AndreSporsmalField(): ReactElement {
-    const andreSporsmal = useController<'andreSporsmal'>({
+    const andreSporsmal = useController({
         name: 'andreSporsmal',
     })
 
     const fieldValue = [
-        andreSporsmal.field.value.yrkesskade?.yrkesskade ? 'yrkesskade' : null,
-        andreSporsmal.field.value.svangerskapsrelatert ? 'svangerskapsrelatert' : null,
+        andreSporsmal.field.value?.yrkesskade?.yrkesskade ? 'yrkesskade' : null,
+        andreSporsmal.field.value?.svangerskapsrelatert ? 'svangerskapsrelatert' : null,
     ].filter(R.isNonNull)
 
     return (
@@ -30,7 +30,7 @@ function AndreSporsmalField(): ReactElement {
                         svangerskapsrelatert: value.includes('svangerskapsrelatert'),
                         yrkesskade: {
                             yrkesskade: value.includes('yrkesskade'),
-                            skadedato: andreSporsmal.field.value.yrkesskade?.skadedato ?? null,
+                            skadedato: andreSporsmal.field.value?.yrkesskade?.skadedato ?? null,
                         },
                     })
                 }}
@@ -39,7 +39,7 @@ function AndreSporsmalField(): ReactElement {
                 <Checkbox value="svangerskapsrelatert">Sykdommen er svangerskapsrelatert</Checkbox>
                 <Checkbox value="yrkesskade">Sykmeldingen kan skyldes en yrkesskade/yrkessykdom</Checkbox>
             </CheckboxGroup>
-            {andreSporsmal.field.value.yrkesskade?.yrkesskade && <YrkesskadeDatoPicker />}
+            {andreSporsmal.field.value?.yrkesskade?.yrkesskade && <YrkesskadeDatoPicker />}
         </>
     )
 }

@@ -21,7 +21,7 @@ function DiagnosePicker(): ReactElement {
                 label="Hoveddiagnose"
                 description="Diagnosekoder fra ICPC-2"
                 className="max-w-prose"
-                value={field.value}
+                value={field.value ?? null}
                 onBlur={field.onBlur}
                 error={fieldState.error?.message}
                 onSelect={(suggestion) => {

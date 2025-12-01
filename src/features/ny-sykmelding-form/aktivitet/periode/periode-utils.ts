@@ -4,8 +4,8 @@ import { nb } from 'date-fns/locale/nb'
 import { toReadablePeriodLength } from '@lib/date'
 
 export function getRangeDescription(
-    fom: Date | string | null,
-    tom: Date | string | null,
+    fom: Date | string | null | undefined,
+    tom: Date | string | null | undefined,
 ): { top: string; bottom: string } | null {
     if (fom == null || tom == null || fom === '' || tom === '') {
         return null
