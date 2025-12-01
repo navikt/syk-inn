@@ -1,9 +1,10 @@
 import React, { ReactElement, useState } from 'react'
-import { BodyShort, Button, Checkbox, Detail, Heading, LocalAlert, Skeleton } from '@navikt/ds-react'
+import { BodyShort, Checkbox, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 
 import { ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
 import { PasientDocument } from '@queries'
+import { SimpleAlert } from '@components/help/GeneralErrors'
 
 function StartSykmelding(): ReactElement {
     const { data, loading, error, refetch } = useQuery(PasientDocument)
@@ -28,19 +29,16 @@ function StartSykmelding(): ReactElement {
                 </div>
             )}
             {error && (
-                <LocalAlert status="error" className="max-w-sm mt-2 -mr-20" size="small">
-                    <LocalAlert.Header>
-                        <LocalAlert.Title>Kunne ikke hente pasient</LocalAlert.Title>
-                    </LocalAlert.Header>
-                    <LocalAlert.Content>
-                        <BodyShort spacing>
-                            Et midlertidig problem oppstod når vi hentet informasjon om pasienten.
-                        </BodyShort>
-                        <Button size="xsmall" variant="secondary-neutral" onClick={() => refetch()}>
-                            Prøv på nytt
-                        </Button>
-                    </LocalAlert.Content>
-                </LocalAlert>
+                <SimpleAlert
+                    level="error"
+                    className="max-w-sm mt-2 -mr-20"
+                    size="small"
+                    title="Kunne ikke hente pasient"
+                    retry={() => refetch()}
+                    noCallToAction
+                >
+                    Et midlertidig problem oppstod når vi hentet informasjon om pasienten.
+                </SimpleAlert>
             )}
             {!loading && data?.pasient && (
                 <div className="flex gap-6 mt-3">

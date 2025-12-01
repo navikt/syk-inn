@@ -21,7 +21,7 @@ const getFaro = lazyNextleton('faro-a', (): Faro | null => {
             ...getWebInstrumentations({
                 captureConsole: false,
             }),
-            new TracingInstrumentation(),
+            new TracingInstrumentation({}),
         ],
     })
 })
@@ -31,4 +31,8 @@ export function getBrowserOTEL(): OTELApi | null {
     if (faro == null) return null
 
     return faro.api.getOTEL() ?? null
+}
+
+export function getBrowserSessionId(): string | null {
+    return getFaro()?.api.getSession()?.id ?? null
 }

@@ -1,16 +1,7 @@
 'use client'
 
 import React, { ReactElement, useEffect, useState } from 'react'
-import {
-    BodyShort,
-    Button,
-    ExpansionCard,
-    Heading,
-    Link as AkselLink,
-    Skeleton,
-    InfoCard,
-    LocalAlert,
-} from '@navikt/ds-react'
+import { BodyShort, Button, ExpansionCard, Heading, Link as AkselLink, Skeleton, InfoCard } from '@navikt/ds-react'
 import { CheckmarkCircleFillIcon, ChevronDownIcon, TabsAddIcon } from '@navikt/aksel-icons'
 import Link from 'next/link'
 import { useQuery } from '@apollo/client/react'
@@ -26,6 +17,7 @@ import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { useAppDispatch } from '@core/redux/hooks'
 import { useMode } from '@core/providers/Modes'
 import TwoPaneGrid from '@components/layout/TwoPaneGrid'
+import { SimpleAlert } from '@components/help/GeneralErrors'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 import { SykmeldingSynchronization } from './SykmeldingSynchronization'
@@ -79,18 +71,9 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
 
     if (!loading && sykmelding == null) {
         return (
-            <LocalAlert status="warning">
-                <LocalAlert.Header>
-                    <LocalAlert.Title>Fant ikke sykmeldingen</LocalAlert.Title>
-                </LocalAlert.Header>
-
-                <LocalAlert.Content>
-                    <BodyShort spacing>Av ukjente årsaker klarte vi ikke å hente sykmeldingen akkurat nå.</BodyShort>
-                    <Button size="small" variant="secondary-neutral" onClick={() => refetch()} className="mt-4">
-                        Prøv på nytt
-                    </Button>
-                </LocalAlert.Content>
-            </LocalAlert>
+            <SimpleAlert level="warning" title="Fant ikke sykmeldingen" retry={refetch}>
+                Av ukjente årsaker klarte vi ikke å hente sykmeldingen akkurat nå.
+            </SimpleAlert>
         )
     }
 
@@ -252,17 +235,9 @@ function SykmeldingKvitteringStatus({ sykmeldingId }: { sykmeldingId: string }):
 function SykmeldingKvitteringError({ error, refetch }: { error: Error; refetch: () => void }): ReactElement {
     return (
         <div className="max-w-prose mb-4">
-            <LocalAlert status="error">
-                <LocalAlert.Header>
-                    <LocalAlert.Title>Kunne ikke hente sykmeldingen</LocalAlert.Title>
-                </LocalAlert.Header>
-                <LocalAlert.Content>
-                    <BodyShort spacing>Teknisk feilmelding: {error.message}</BodyShort>
-                    <Button variant="secondary-neutral" onClick={() => refetch()} size="small">
-                        Prøv å hente på nytt
-                    </Button>
-                </LocalAlert.Content>
-            </LocalAlert>
+            <SimpleAlert level="error" title="Kunne ikke hente sykmeldingen" retry={refetch}>
+                {`Teknisk feilmelding: ${error.message}`}
+            </SimpleAlert>
         </div>
     )
 }

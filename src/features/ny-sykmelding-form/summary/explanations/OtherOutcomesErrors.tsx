@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react'
-import { BodyShort, LocalAlert } from '@navikt/ds-react'
+import { BodyShort } from '@navikt/ds-react'
 
 import { OtherSubmitOutcomesEnum } from '@queries'
+import { DetailedAlert, SimpleAlert } from '@components/help/GeneralErrors'
 
 export function OtherOutcomesAlert({
     cause,
@@ -23,33 +24,25 @@ type PatientDoesNotExistAlertProps = {
 
 function PatientDoesNotExistAlert({ navn, ident }: PatientDoesNotExistAlertProps): ReactElement {
     return (
-        <LocalAlert status="warning">
-            <LocalAlert.Header>
-                <LocalAlert.Title>
-                    {navn && ident
-                        ? `Fant ikke ${navn} (${ident}) i folkeregisteret.`
-                        : 'Kunne ikke bekrefte pasientens identitet.'}
-                </LocalAlert.Title>
-            </LocalAlert.Header>
-            <LocalAlert.Content>
-                <BodyShort spacing>
-                    Det ser ut som pasienten du prøver å sende inn sykmeldingen for ikke finnes i Navs systemer.
-                </BodyShort>
-                <BodyShort>Dersom du mener dette er en feil, vennligst kontakt lege- og behandlertelefon.</BodyShort>
-            </LocalAlert.Content>
-        </LocalAlert>
+        <DetailedAlert
+            level="warning"
+            title={
+                navn && ident
+                    ? `Fant ikke ${navn} (${ident}) i folkeregisteret.`
+                    : 'Kunne ikke bekrefte pasientens identitet.'
+            }
+        >
+            <BodyShort spacing>
+                Det ser ut som pasienten du prøver å sende inn sykmeldingen for ikke finnes i Navs systemer.
+            </BodyShort>
+        </DetailedAlert>
     )
 }
 
 function MissingPractitionerInfo(): ReactElement {
     return (
-        <LocalAlert status="warning">
-            <LocalAlert.Header>
-                <LocalAlert.Title>Vi mangler mer informasjon om deg</LocalAlert.Title>
-            </LocalAlert.Header>
-            <LocalAlert.Content>
-                For å kunne sende inn en sykmelding må du registrere organisasjonsnummer og telefonnummer.
-            </LocalAlert.Content>
-        </LocalAlert>
+        <SimpleAlert level="warning" title="Vi mangler mer informasjon om deg">
+            For å kunne sende inn en sykmelding må du registrere organisasjonsnummer og telefonnummer.
+        </SimpleAlert>
     )
 }
