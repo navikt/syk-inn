@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 65ch));
     gap: 2rem;
+    row-gap: 1rem;
     width: 100%;
 }
 
@@ -9,5 +10,6 @@
     .twoPaneGrid {
         grid-template-columns: 1fr;
         gap: 0;
+        row-gap: 1rem;
     }
 }

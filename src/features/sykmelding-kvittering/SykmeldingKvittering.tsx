@@ -45,7 +45,7 @@ function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
                 <div className="">
                     <SykmeldingKvitteringSummary sykmeldingId={sykmeldingId} />
                 </div>
-                <div className="mt-4 lg:mt-0">
+                <div>
                     <SykmeldingKvitteringStatus sykmeldingId={sykmeldingId} />
                 </div>
                 <div className="flex justify-end">
@@ -90,7 +90,7 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
                     </InfoCard>
                 )}
             </div>
-            <div className="flex justify-between mt-8 mb-4">
+            <div className="flex justify-between mt-4 mb-4">
                 {sykmelding ? (
                     <AkselLink href={pathWithBasePath(mode.paths.pdf(sykmelding.sykmeldingId))} target="_blank">
                         Se innsendt dokument

@@ -37,7 +37,7 @@ function SummarySection(): ReactElement {
         <TwoPaneGrid tag="div">
             <FormValuesSummary />
             <div className="flex flex-col justify-between gap-4">
-                <BehandlerSummary className="mt-4 lg:mt-0" />
+                <BehandlerSummary />
                 <div className="flex flex-col gap-3 justify-end">
                     <AnimatePresence>
                         {ruleOutcomeState.type === 'modal-closed' && (

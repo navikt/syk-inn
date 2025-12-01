@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Button, InfoCard } from '@navikt/ds-react'
+import { BodyShort, Button, InfoCard } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 
@@ -33,8 +33,10 @@ function DiagnoseInfoAlert(): ReactElement | null {
                             <InfoCard.Title>Diagnosen oppdateres ikke i EPJ</InfoCard.Title>
                         </InfoCard.Header>
                         <InfoCard.Content>
-                            De valgte diagnosene samsvarer ikke med opplysningene i EPJ. Diagnosefeltet i EPJ vil ikke
-                            bli oppdatert automatisk.
+                            <BodyShort>
+                                De valgte diagnosene samsvarer ikke med opplysningene i EPJ. Diagnosefeltet i EPJ vil
+                                ikke bli oppdatert automatisk.
+                            </BodyShort>
                             <Button
                                 variant="secondary-neutral"
                                 size="small"
