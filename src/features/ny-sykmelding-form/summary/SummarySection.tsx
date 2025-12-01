@@ -12,7 +12,7 @@ import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { LocalAndDemoBonusActionMenu } from '@dev/tools/LocalAndDemoBonusActionMenu'
 import { RuleHitSendAnywayModal } from '@features/ny-sykmelding-form/summary/rules/RuleHitSendAnywayModal'
 import { useSubmitRuleState } from '@features/ny-sykmelding-form/summary/rules/useSubmitRuleState'
-import { SpecificErrorAlert, UnknownSystemError } from '@components/help/GeneralErrors'
+import { SimpleAlert, UnknownSystemError } from '@components/help/GeneralErrors'
 import { isDemo, isLocal } from '@lib/env'
 import { OtherOutcomesAlert } from '@features/ny-sykmelding-form/summary/explanations/OtherOutcomesErrors'
 import TwoPaneGrid from '@components/layout/TwoPaneGrid'
@@ -137,14 +137,10 @@ function SummarySection(): ReactElement {
 
 function RuleOutcomeWarning(): ReactElement {
     return (
-        <SpecificErrorAlert
-            title="Sykmeldingen ble ikke sendt inn på grunn av regelsjekk"
-            level="warning"
-            noCallToAction
-        >
+        <SimpleAlert title="Sykmeldingen ble ikke sendt inn på grunn av regelsjekk" level="warning" noCallToAction>
             For å sende inn sykmeldingen, så kan du gå videre, og bekrefte at du ønsker å sende inn sykmeldingen til
             tross for regelutfallet.
-        </SpecificErrorAlert>
+        </SimpleAlert>
     )
 }
 

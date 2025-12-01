@@ -9,6 +9,7 @@ import { AllDashboardDocument } from '@queries'
 import useOnFocus from '@lib/hooks/useOnFocus'
 import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
 import { cn } from '@lib/tw'
+import SessionIdInfo from '@components/help/SessionIdInfo'
 
 import { ComboTable, ComboTableFullCell, ComboTableHeader } from './combo-table/ComboTable'
 import DashboardCard from './card/DashboardCard'
@@ -66,6 +67,7 @@ function AllDraftsError({ refetch }: { refetch: () => void }): ReactElement {
                         <Button type="button" size="small" variant="secondary-neutral" onClick={() => refetch()}>
                             Prøv på nytt
                         </Button>
+                        <SessionIdInfo />
                     </GlobalAlert.Content>
                 </GlobalAlert>
             </ComboTableFullCell>
@@ -89,6 +91,7 @@ function AllSykmeldingerError({ refetch }: { refetch: () => void }): ReactElemen
                         <Button type="button" size="small" variant="secondary-neutral" onClick={() => refetch()}>
                             Prøv på nytt
                         </Button>
+                        <SessionIdInfo />
                     </GlobalAlert.Content>
                 </GlobalAlert>
             </ComboTableFullCell>
@@ -118,6 +121,7 @@ function EverythingError({ refetch }: { refetch: () => void }): ReactElement {
                         Prøv på nytt
                     </Button>
                     <LegeOgBehandlerTelefonen />
+                    <SessionIdInfo />
                 </GlobalAlert.Content>
             </GlobalAlert>
         </div>

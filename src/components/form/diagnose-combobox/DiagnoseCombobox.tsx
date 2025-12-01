@@ -1,12 +1,13 @@
 import * as R from 'remeda'
 import React, { ReactElement, ReactNode, startTransition } from 'react'
-import { BodyShort, Button, Detail, ErrorMessage, Label, LocalAlert } from '@navikt/ds-react'
+import { BodyShort, Button, Detail, ErrorMessage, Label } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 
 import { cn } from '@lib/tw'
 import { raise } from '@lib/ts'
 import { DiagnoseFragment, DiagnoseSearchDocument } from '@queries'
 import { Diagnose, DiagnoseSystem } from '@data-layer/common/diagnose'
+import { SimpleAlert } from '@components/help/GeneralErrors'
 
 import {
     AkselifiedCombobox,
@@ -108,12 +109,14 @@ function DiagnoseCombobox({
                                 </AkselifiedComboboxNonInteractiveFeedbackItem>
                             )}
                             {hasError && (
-                                <LocalAlert status="error" className="rounded-none">
-                                    <LocalAlert.Header>
-                                        <LocalAlert.Title>{`En feil skjedde ved søk etter diagnoser på "${state.value}"`}</LocalAlert.Title>
-                                    </LocalAlert.Header>
-                                    <LocalAlert.Content>Vennligst prøv igjen senere.</LocalAlert.Content>
-                                </LocalAlert>
+                                <SimpleAlert
+                                    level="error"
+                                    title={`En feil skjedde ved søk etter diagnoser på "${state.value}"`}
+                                    noSessionId
+                                    noCallToAction
+                                >
+                                    Vennligst prøv igjen senere.
+                                </SimpleAlert>
                             )}
                         </AkselifiedComboboxNonSelectables>
                         {state.value &&

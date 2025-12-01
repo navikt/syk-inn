@@ -1,11 +1,11 @@
 import React, { ReactElement, useEffect } from 'react'
 import { logger } from '@navikt/next-logger'
-import { BodyShort, Heading, LocalAlert } from '@navikt/ds-react'
+import { BodyShort, Heading } from '@navikt/ds-react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { RuleOutcomeFragment } from '@queries'
-import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
 import { getRuleText } from '@features/ny-sykmelding-form/summary/rules/rule-texts'
+import { DetailedAlert } from '@components/help/GeneralErrors'
 
 type Props = {
     outcome: RuleOutcomeFragment
@@ -19,27 +19,21 @@ export function HardStop({ outcome }: Props): ReactElement {
     const ruleText = getRuleText(outcome.rule)
 
     return (
-        <LocalAlert status="warning" className="mb-2">
-            <LocalAlert.Header>
-                <LocalAlert.Title>Sykmelding kan ikke sendes inn</LocalAlert.Title>
-            </LocalAlert.Header>
-            <LocalAlert.Content>
-                <BodyShort spacing>
-                    Sykmeldingen du forsøker å sende inn har en feil eller mangel som gjør at Nav ikke kan motta den.
-                </BodyShort>
-                <Heading size="xsmall" level="4" className="flex items-center gap-1">
-                    <InformationSquareIcon aria-hidden className="-mt-0.5" />
-                    Forklaring
-                </Heading>
-                <BodyShort spacing className="italic">
-                    {ruleText ?? `Ukjent årsak, teknisk navn: ${outcome.rule}`}
-                </BodyShort>
-                <BodyShort spacing>
-                    Dersom du mener at dette er en feil og at sykmeldingen skal kunne sendes inn, ønsker vi at du tar
-                    kontakt med oss.
-                </BodyShort>
-                <LegeOgBehandlerTelefonen short />
-            </LocalAlert.Content>
-        </LocalAlert>
+        <DetailedAlert level="warning" className="mb-2" title="Sykmelding kan ikke sendes inn">
+            <BodyShort spacing>
+                Sykmeldingen du forsøker å sende inn har en feil eller mangel som gjør at Nav ikke kan motta den.
+            </BodyShort>
+            <Heading size="xsmall" level="4" className="flex items-center gap-1">
+                <InformationSquareIcon aria-hidden className="-mt-0.5" />
+                Forklaring
+            </Heading>
+            <BodyShort spacing className="italic">
+                {ruleText ?? `Ukjent årsak, teknisk navn: ${outcome.rule}`}
+            </BodyShort>
+            <BodyShort spacing>
+                Dersom du mener at dette er en feil og at sykmeldingen skal kunne sendes inn, ønsker vi at du tar
+                kontakt med oss.
+            </BodyShort>
+        </DetailedAlert>
     )
 }

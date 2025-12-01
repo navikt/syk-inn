@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ReactElement, useEffect, useState } from 'react'
-import { LinkCard, LocalAlert, Skeleton } from '@navikt/ds-react'
+import { LinkCard, Skeleton } from '@navikt/ds-react'
 import { useLazyQuery } from '@apollo/client/react'
 import Link from 'next/link'
 import { AnimatePresence } from 'motion/react'
@@ -12,6 +12,7 @@ import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { setPersistentUser } from '@data-layer/helseid/persistent-user/persistent-user'
 import { SimpleReveal } from '@components/animation/Reveal'
 import TwoPaneGrid from '@components/layout/TwoPaneGrid'
+import { SimpleAlert } from '@components/help/GeneralErrors'
 
 import ManualPatientSearch from './ManualPatientSearch'
 import ManualPatientDrafts from './ManualPatientDrafts'
@@ -72,24 +73,14 @@ function ManualPatientPicker(): ReactElement {
                 )}
 
                 {!loading && !error && data != null && data.person == null && (
-                    <LocalAlert status="warning" className="mt-4">
-                        <LocalAlert.Header>
-                            <LocalAlert.Title>Fant ikke pasient</LocalAlert.Title>
-                        </LocalAlert.Header>
-                        <LocalAlert.Content>
-                            Det angitte fødselsnummeret eller d-nummeret finnes ikke.
-                        </LocalAlert.Content>
-                    </LocalAlert>
+                    <SimpleAlert level="warning" className="mt-4" title="Fant ikke pasient" noCallToAction>
+                        Det angitte fødselsnummeret eller d-nummeret finnes ikke.
+                    </SimpleAlert>
                 )}
                 {!loading && error && (
-                    <LocalAlert status="error" className="mt-4">
-                        <LocalAlert.Header>
-                            <LocalAlert.Title>Kunne ikke hente pasient</LocalAlert.Title>
-                        </LocalAlert.Header>
-                        <LocalAlert.Content>
-                            Det oppstod en feil ved henting av pasient. Prøv igjen senere.
-                        </LocalAlert.Content>
-                    </LocalAlert>
+                    <SimpleAlert level="error" className="mt-4" title="Kunne ikke hente pasient">
+                        Det oppstod en feil ved henting av pasient. Prøv igjen senere.
+                    </SimpleAlert>
                 )}
 
                 <AnimatePresence initial={false}>

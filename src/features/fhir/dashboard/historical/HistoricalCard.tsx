@@ -9,6 +9,7 @@ import { AllDashboardDocument, KonsultasjonDocument } from '@queries'
 import { ComboTable } from '@features/fhir/dashboard/combo-table/ComboTable'
 import { RequestSykmeldinger } from '@features/fhir/dashboard/historical/RequestSykmeldinger'
 import { cn } from '@lib/tw'
+import SessionIdInfo from '@components/help/SessionIdInfo'
 
 function HistoricalCard({ className }: { className?: string }): ReactElement {
     const konsultasjon = useQuery(KonsultasjonDocument)
@@ -59,6 +60,7 @@ function HistoricalSykmeldingerError({ refetch }: { refetch: () => void }): Reac
                     <Button type="button" size="small" variant="secondary-neutral" onClick={() => refetch()}>
                         Prøv på nytt
                     </Button>
+                    <SessionIdInfo />
                 </GlobalAlert.Content>
             </GlobalAlert>
         </div>

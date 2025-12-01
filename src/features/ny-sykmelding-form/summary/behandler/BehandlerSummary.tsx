@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client/react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { BehandlerDocument } from '@queries'
-import { SpecificErrorAlert } from '@components/help/GeneralErrors'
+import { SimpleAlert } from '@components/help/GeneralErrors'
 import BehandlerOrganisasjonsnummerAnswer from '@features/ny-sykmelding-form/summary/behandler/BehandlerOrganisasjonsnummerAnswer'
 import BehandlerTelefonnummerAnswer from '@features/ny-sykmelding-form/summary/behandler/BehandlerTelefonnummerAnswer'
 
@@ -25,10 +25,14 @@ function BehandlerSummary({ className }: Props): ReactElement {
                         <FormSummary.Heading level="2">Signerende behandler</FormSummary.Heading>
                     </FormSummary.Header>
                     <div className="p-6">
-                        <SpecificErrorAlert title="Kunne ikke hente signerende behandler." retry={() => refetch()}>
+                        <SimpleAlert
+                            level="error"
+                            title="Kunne ikke hente signerende behandler."
+                            retry={() => refetch()}
+                        >
                             Dette hindrer deg i å sende inn sykmeldingen. Du kan lagre utkastet og prøve å sende inn
                             sykmeldingen senere.
-                        </SpecificErrorAlert>
+                        </SimpleAlert>
                     </div>
                 </FormSummary>
             </div>

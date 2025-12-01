@@ -1,15 +1,15 @@
 import React, { ReactElement } from 'react'
 import { useParams } from 'next/navigation'
 import { useQuery } from '@apollo/client/react'
-import { BodyShort, Button, LocalAlert, Skeleton } from '@navikt/ds-react'
+import { Skeleton } from '@navikt/ds-react'
 
 import { SykmeldingByIdDocument } from '@queries'
 import { toReadableDate } from '@lib/date'
 import { ValuesSection } from '@components/sykmelding/ValuesSection'
 import SykmeldingValues from '@components/sykmelding/SykmeldingValues'
 import BehandlerValues from '@components/sykmelding/BehandlerValues'
-import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
 import { Utfall } from '@components/sykmelding/Utfall'
+import { SimpleAlert } from '@components/help/GeneralErrors'
 
 import { TidligereSykmeldingActions } from './TidligereSykmeldingActions'
 
@@ -49,12 +49,9 @@ export function TidligereSykmelding(): ReactElement {
     if (data?.sykmelding == null) {
         return (
             <div className="p-4 max-w-prose w-[65ch]">
-                <LocalAlert status="error">
-                    <LocalAlert.Header>
-                        <LocalAlert.Title>Sykmelding ikke funnet</LocalAlert.Title>
-                    </LocalAlert.Header>
-                    <LocalAlert.Content>Fant ingen sykmelding med denne ID-en.</LocalAlert.Content>
-                </LocalAlert>
+                <SimpleAlert level="error" title="Sykmelding ikke funnet">
+                    Fant ingen sykmelding med denne ID-en.
+                </SimpleAlert>
             </div>
         )
     }
@@ -100,19 +97,8 @@ export function TidligereSykmelding(): ReactElement {
 
 function TidligereSykmeldingError({ refetch }: { refetch: () => void }): ReactElement {
     return (
-        <LocalAlert status="error" className="max-w-[65ch]">
-            <LocalAlert.Header>
-                <LocalAlert.Title>Kunne ikke hente sykmelding</LocalAlert.Title>
-            </LocalAlert.Header>
-            <LocalAlert.Content>
-                <BodyShort spacing>
-                    Det oppstod en feil under henting av sykmeldingen. Dette kan være et midlertidig problem.
-                </BodyShort>
-                <LegeOgBehandlerTelefonen />
-                <Button size="small" className="mt-4" variant="secondary-neutral" onClick={() => refetch()}>
-                    Prøv på nytt
-                </Button>
-            </LocalAlert.Content>
-        </LocalAlert>
+        <SimpleAlert level="error" className="max-w-[65ch]" title="Kunne ikke hente sykmelding" retry={() => refetch()}>
+            Det oppstod en feil under henting av sykmeldingen. Dette kan være et midlertidig problem.
+        </SimpleAlert>
     )
 }

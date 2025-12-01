@@ -1,4 +1,4 @@
-import { BodyShort, Detail, FormSummary, List, LocalAlert, Skeleton } from '@navikt/ds-react'
+import { BodyShort, Detail, FormSummary, List, Skeleton } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 import { useQuery } from '@apollo/client/react'
@@ -19,6 +19,7 @@ import { toReadableDate, toReadableDatePeriod, toReadablePeriodLength } from '@l
 import { PasientDocument } from '@queries'
 import { NySykmeldingUtdypendeSporsmal } from '@core/redux/reducers/ny-sykmelding/form'
 import { useMode } from '@core/providers/Modes'
+import { DetailedAlert, InlineWarning, SimpleAlert } from '@components/help/GeneralErrors'
 
 import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
 import { useFormStep } from '../steps/useFormStep'
@@ -76,22 +77,22 @@ function FormValuesSummary({ className }: Props): ReactElement {
                         </FormSummary.Heading>
                     </FormSummary.Header>
                     <FormSummary.Answers>
-                        <LocalAlert status="warning" className="rounded-none">
-                            <LocalAlert.Header>
-                                <LocalAlert.Title>Ingen pågående sykmelding</LocalAlert.Title>
-                            </LocalAlert.Header>
-                            <LocalAlert.Content>
-                                <BodyShort spacing>
-                                    Det ser ikke ut som dette er en pågående sykmelding. Dersom du har hatt nettleseren
-                                    oppe siden sist du jobbet, så kan utkastet ha blitt slettet.
-                                </BodyShort>
-                                <BodyShort>
-                                    Du kan begynne utfyllingen på nytt ved å gå tilbake til{' '}
-                                    <AkselNextLink href={mode.paths.root}>pasientens oversikt</AkselNextLink> og begynne
-                                    på nytt.
-                                </BodyShort>
-                            </LocalAlert.Content>
-                        </LocalAlert>
+                        <DetailedAlert
+                            level="warning"
+                            className="rounded-none"
+                            title="Ingen pågående sykmelding"
+                            noCallToAction
+                        >
+                            <BodyShort spacing>
+                                Det ser ikke ut som dette er en pågående sykmelding. Dersom du har hatt nettleseren oppe
+                                siden sist du jobbet, så kan utkastet ha blitt slettet.
+                            </BodyShort>
+                            <BodyShort>
+                                Du kan begynne utfyllingen på nytt ved å gå tilbake til{' '}
+                                <AkselNextLink href={mode.paths.root}>pasientens oversikt</AkselNextLink> og begynne på
+                                nytt.
+                            </BodyShort>
+                        </DetailedAlert>
                     </FormSummary.Answers>
                 </FormSummary>
             </section>
@@ -130,12 +131,9 @@ function AktivitetSummaryAnswers({ aktiviteter }: { aktiviteter: NySykmeldingAkt
             <FormSummary.Answer>
                 <FormSummary.Label>Periode</FormSummary.Label>
                 <FormSummary.Value>
-                    <LocalAlert status="warning">
-                        <LocalAlert.Header>
-                            <LocalAlert.Title>Denne delen av sykmeldingen er ikke utfylt.</LocalAlert.Title>
-                        </LocalAlert.Header>
-                        <LocalAlert.Content>Gå tilbake og fyll ut for å sende inn.</LocalAlert.Content>
-                    </LocalAlert>
+                    <SimpleAlert level="warning" title="Denne delen av sykmeldingen er ikke utfylt.">
+                        Gå tilbake og fyll ut for å sende inn.
+                    </SimpleAlert>
                 </FormSummary.Value>
             </FormSummary.Answer>
         )
@@ -177,13 +175,7 @@ function AktivitetSummaryAnswer({
                         {toReadablePeriodLength(aktivitet.fom, aktivitet.tom)}
                     </BodyShort>
                 ) : (
-                    <BodyShort>
-                        <LocalAlert status="warning" size="small">
-                            <LocalAlert.Header>
-                                <LocalAlert.Title>Periode mangler datoer</LocalAlert.Title>
-                            </LocalAlert.Header>
-                        </LocalAlert>
-                    </BodyShort>
+                    <InlineWarning title="Periode mangler datoer" size="small" />
                 )}
                 <BodyShort>{aktivitetDescription(aktivitet)}</BodyShort>
                 {aktivitet.type === 'AKTIVITET_IKKE_MULIG' && (
@@ -267,12 +259,9 @@ function DiagnoseSummaryAnswers({ diagnose }: { diagnose: NySykmeldingDiagnoser 
             <FormSummary.Answer>
                 <FormSummary.Label>Hoveddiagnose</FormSummary.Label>
                 <FormSummary.Value>
-                    <LocalAlert status="warning">
-                        <LocalAlert.Header>
-                            <LocalAlert.Title>Denne delen av sykmeldingen er ikke utfylt.</LocalAlert.Title>
-                        </LocalAlert.Header>
-                        <LocalAlert.Content>Gå tilbake og fyll ut for å sende inn.</LocalAlert.Content>
-                    </LocalAlert>
+                    <SimpleAlert level="warning" title="Denne delen av sykmeldingen er ikke utfylt." noCallToAction>
+                        Gå tilbake og fyll ut for å sende inn.
+                    </SimpleAlert>
                 </FormSummary.Value>
             </FormSummary.Answer>
         )
@@ -405,17 +394,12 @@ function PatientSummaryAnswers({ pasient }: { pasient: ActivePatient | null }): 
             <FormSummary.Answer>
                 <FormSummary.Label>Sykmeldingen gjelder</FormSummary.Label>
                 <FormSummary.Value>
-                    <LocalAlert status="warning">
-                        <LocalAlert.Header>
-                            <LocalAlert.Title>Ingen pasient er valgt</LocalAlert.Title>
-                        </LocalAlert.Header>
-                        <LocalAlert.Content>
-                            <BodyShort spacing>Det har skjedd en feil under oppstart av sykmeldingsskjemaet.</BodyShort>
-                            <BodyShort>
-                                Prøv å start skjemaet på nytt, eller kontakt support dersom feilen vedvarer.
-                            </BodyShort>
-                        </LocalAlert.Content>
-                    </LocalAlert>
+                    <DetailedAlert level="warning" title="Ingen pasient er valgt" noCallToAction>
+                        <BodyShort spacing>Det har skjedd en feil under oppstart av sykmeldingsskjemaet.</BodyShort>
+                        <BodyShort>
+                            Prøv å start skjemaet på nytt, eller kontakt support dersom feilen vedvarer.
+                        </BodyShort>
+                    </DetailedAlert>
                 </FormSummary.Value>
             </FormSummary.Answer>
         )
