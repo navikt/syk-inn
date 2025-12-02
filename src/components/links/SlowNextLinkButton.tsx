@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, Ref, useEffect, useState } from 'react'
 import { Button, ButtonProps } from '@navikt/ds-react'
 import { useLinkStatus } from 'next/link'
 
@@ -16,7 +16,7 @@ export function SlowNextLinkButton({
     loading,
     icon,
     ...buttonProps
-}: { href: string } & ButtonProps): ReactElement {
+}: { href: string } & ButtonProps & { ref?: Ref<HTMLAnchorElement> }): ReactElement {
     const [isLinkPending, setLinkPending] = useState(false)
 
     if (icon != null && children == null) {

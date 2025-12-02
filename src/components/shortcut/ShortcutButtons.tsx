@@ -1,9 +1,7 @@
 import React, { PropsWithChildren, ReactElement, useCallback, useRef } from 'react'
-import { Button, ButtonProps, Detail } from '@navikt/ds-react'
+import { Button, ButtonProps, Popover } from '@navikt/ds-react'
 import { useRouter } from 'next/navigation'
-import { AnimatePresence } from 'motion/react'
 
-import { FastFadeReveal } from '@components/animation/Reveal'
 import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { Shortcut, useShortcut } from '@lib/hooks/shortcuts/useShortcut'
 import { useCurrentModifier } from '@lib/hooks/shortcuts/useCurrentModifier'
@@ -27,6 +25,7 @@ export function ShortcutButtons({
     className,
     ...buttonProps
 }: PropsWithChildren<BaseShortcutButtonProps & { onClick: () => void }>): ReactElement {
+    const buttonRef = useRef<HTMLButtonElement>(null)
     const registeredShortcut = useShortcut(
         shortcut,
         () => {
@@ -38,18 +37,21 @@ export function ShortcutButtons({
 
     return (
         <div className={cn('relative', className)}>
-            <Button type="button" className="w-full" onClick={() => onClick()} {...buttonProps}>
+            <Button ref={buttonRef} type="button" className="w-full" onClick={() => onClick()} {...buttonProps}>
                 {children}
             </Button>
-            <div className="absolute -bottom-5 right-2 text-text-action">
-                <AnimatePresence>
-                    {currentMod === shortcut.modifier && inactive !== true && (
-                        <FastFadeReveal>
-                            <Detail className="font-bold">Hurtigtast: {registeredShortcut.label}</Detail>
-                        </FastFadeReveal>
-                    )}
-                </AnimatePresence>
-            </div>
+            <Popover
+                open={currentMod === shortcut.modifier && inactive !== true}
+                onClose={() => void 0}
+                anchorEl={buttonRef.current}
+                arrow={false}
+                offset={4}
+                placement="bottom-end"
+            >
+                <Popover.Content className="whitespace-nowrap text-sm py-1 px-2 border-border-subtle text-text-subtle font-bold">
+                    Hurtigtast: {registeredShortcut.label}
+                </Popover.Content>
+            </Popover>
         </div>
     )
 }
@@ -66,6 +68,7 @@ export function ShortcutButtonLink({
         href: string
     }
 >): ReactElement {
+    const buttonRef = useRef<HTMLAnchorElement>(null)
     const router = useRouter()
     const registeredShortcut = useShortcut(
         shortcut,
@@ -78,18 +81,21 @@ export function ShortcutButtonLink({
 
     return (
         <div className={cn('relative w-fit', className)}>
-            <SlowNextLinkButton type="button" href={href} {...buttonProps} suppressHydrationWarning>
+            <SlowNextLinkButton ref={buttonRef} type="button" href={href} {...buttonProps} suppressHydrationWarning>
                 {children}
             </SlowNextLinkButton>
-            <div className="absolute -bottom-5 right-2 text-text-action">
-                <AnimatePresence>
-                    {currentMod === shortcut.modifier && inactive !== true && (
-                        <FastFadeReveal>
-                            <Detail className="font-bold">Hurtigtast: {registeredShortcut.label}</Detail>
-                        </FastFadeReveal>
-                    )}
-                </AnimatePresence>
-            </div>
+            <Popover
+                open={currentMod === shortcut.modifier && inactive !== true}
+                onClose={() => void 0}
+                anchorEl={buttonRef.current}
+                arrow={false}
+                offset={4}
+                placement="bottom-end"
+            >
+                <Popover.Content className="whitespace-nowrap text-sm py-1 px-2 border-border-subtle text-text-subtle font-bold">
+                    Hurtigtast: {registeredShortcut.label}
+                </Popover.Content>
+            </Popover>
         </div>
     )
 }
@@ -116,15 +122,18 @@ export function ShortcutSubmitButton({
             <Button ref={buttonRef} className="w-full" type="submit" {...buttonProps}>
                 {children}
             </Button>
-            <div className="absolute -bottom-5 right-2 text-text-action">
-                <AnimatePresence>
-                    {currentMod === shortcut.modifier && inactive !== true && (
-                        <FastFadeReveal>
-                            <Detail className="font-bold">Hurtigtast: {registeredShortcut.label}</Detail>
-                        </FastFadeReveal>
-                    )}
-                </AnimatePresence>
-            </div>
+            <Popover
+                open={currentMod === shortcut.modifier && inactive !== true}
+                onClose={() => void 0}
+                anchorEl={buttonRef.current}
+                arrow={false}
+                offset={4}
+                placement="bottom-end"
+            >
+                <Popover.Content className="whitespace-nowrap text-sm py-1 px-2 border-border-subtle text-text-subtle font-bold">
+                    Hurtigtast: {registeredShortcut.label}
+                </Popover.Content>
+            </Popover>
         </div>
     )
 }
