@@ -67,6 +67,7 @@ export function makeApolloClient(store: AppStore, mode: ModeType, path: `/${stri
             link: ApolloLink.from(
                 [errorLink, failingDevLink, retryLink, currentPatientLink, patientLink, httpLink].filter(R.isNonNull),
             ),
+            devtools: { enabled: process.env.NODE_ENV === 'development' || isLocal || isDemo },
         })
     }
 }
