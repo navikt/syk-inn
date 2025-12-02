@@ -124,7 +124,7 @@ function NySykmeldingInnerForm({
                         iconPosition="right"
                         shortcut={{
                             modifier: 'alt',
-                            key: 'n',
+                            code: 'KeyN',
                         }}
                         disabled={selectedPasient == null}
                         loading={form.formState.isSubmitting}

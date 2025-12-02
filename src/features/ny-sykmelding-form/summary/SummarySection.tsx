@@ -97,7 +97,7 @@ function SummarySection(): ReactElement {
                                 disabled={nySykmelding.mutation.result.loading}
                                 shortcut={{
                                     modifier: 'alt',
-                                    key: 'arrowleft',
+                                    code: 'ArrowLeft',
                                 }}
                                 inactive={ruleOutcomeState.type === 'rule-outcome'}
                             >
@@ -116,7 +116,7 @@ function SummarySection(): ReactElement {
                                 onClick={() => nySykmelding.mutation.opprettSykmelding()}
                                 shortcut={{
                                     modifier: 'alt',
-                                    key: 'n',
+                                    code: 'KeyN',
                                 }}
                                 inactive={ruleOutcomeState.type === 'rule-outcome'}
                             >

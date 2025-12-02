@@ -73,7 +73,7 @@ function StartSykmelding(): ReactElement {
                     size="medium"
                     shortcut={{
                         modifier: 'alt',
-                        key: 'n',
+                        code: 'KeyN',
                     }}
                 >
                     Opprett sykmelding

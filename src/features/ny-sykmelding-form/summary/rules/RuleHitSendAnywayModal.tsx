@@ -87,7 +87,7 @@ export function RuleHitSendAnywayModal({
                     }}
                     shortcut={{
                         modifier: 'alt',
-                        key: 'n',
+                        code: 'KeyN',
                     }}
                 >
                     Send inn
@@ -99,7 +99,7 @@ export function RuleHitSendAnywayModal({
                     onClick={() => setStep('main')}
                     shortcut={{
                         modifier: 'alt',
-                        key: 'n',
+                        code: 'ArrowLeft',
                     }}
                 >
                     Endre opplysninger

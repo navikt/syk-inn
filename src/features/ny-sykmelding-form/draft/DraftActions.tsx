@@ -30,7 +30,7 @@ export function LagreDraftButton({ className }: { className?: string }): ReactEl
             loading={draft.result.loading}
             shortcut={{
                 modifier: 'alt',
-                key: 's',
+                code: 'KeyS',
             }}
         >
             Lagre (utkast)
@@ -88,7 +88,7 @@ export function ForkastDraftButton({
             loading={deleteResult.loading}
             shortcut={{
                 modifier: 'alt',
-                key: 'd',
+                code: 'KeyD',
             }}
             inactive={inactive}
         >

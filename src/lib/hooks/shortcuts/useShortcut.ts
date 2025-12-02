@@ -3,25 +3,27 @@ import { toast } from 'sonner'
 
 export type Shortcut = {
     modifier: 'alt' | 'shift'
-    key: string
+    code: 'KeyN' | 'KeyS' | 'KeyD' | 'ArrowLeft' | 'ArrowRight'
 }
 
 type RegisteredShortcut = {
     label: string
 }
 
-export function useShortcut(key: Shortcut, onShortcut: () => void): RegisteredShortcut {
+export function useShortcut(key: Shortcut, onShortcut: () => void, inactive?: boolean): RegisteredShortcut {
     const { current: stableKey } = useRef(key)
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent): void => {
+            if (inactive === true) return
+
             const modifier = stableKey.modifier === 'alt' ? event.altKey : event.shiftKey
 
-            if (modifier && event.key.toLowerCase() === stableKey.key.toLowerCase()) {
+            if (modifier && event.code === stableKey.code) {
                 event.preventDefault()
 
                 toast(
-                    `Snarvei ${getOsAgnosticModifierLabel(stableKey.modifier)} + ${getKeyLabel(stableKey.key)} aktivert`,
+                    `Snarvei ${getOsAgnosticModifierLabel(stableKey.modifier)} + ${getKeyLabel(stableKey.code)} aktivert`,
                     { duration: 1000, position: 'top-right' },
                 )
                 onShortcut()
@@ -33,10 +35,10 @@ export function useShortcut(key: Shortcut, onShortcut: () => void): RegisteredSh
         return () => {
             window.removeEventListener('keydown', handleKeyDown)
         }
-    }, [onShortcut, stableKey.key, stableKey.modifier])
+    }, [inactive, onShortcut, stableKey.code, stableKey.modifier])
 
     return {
-        label: `${getOsAgnosticModifierLabel(stableKey.modifier)} + ${getKeyLabel(stableKey.key)}`,
+        label: `${getOsAgnosticModifierLabel(stableKey.modifier)} + ${getKeyLabel(stableKey.code)}`,
     }
 }
 
@@ -51,15 +53,17 @@ function getOsAgnosticModifierLabel(key: Shortcut['modifier']): string {
     }
 }
 
-function getKeyLabel(key: string): string {
-    switch (key) {
-        case 'arrowleft': {
+function getKeyLabel(code: Shortcut['code']): string {
+    switch (code) {
+        case 'KeyN':
+            return 'N'
+        case 'KeyS':
+            return 'S'
+        case 'KeyD':
+            return 'D'
+        case 'ArrowLeft':
             return '←'
-        }
-        case 'arrowright': {
+        case 'ArrowRight':
             return '→'
-        }
-        default:
-            return key.toUpperCase()
     }
 }

@@ -27,10 +27,13 @@ export function ShortcutButtons({
     className,
     ...buttonProps
 }: PropsWithChildren<BaseShortcutButtonProps & { onClick: () => void }>): ReactElement {
-    const registeredShortcut = useShortcut(shortcut, () => {
-        if (buttonProps.disabled) return
-        onClick()
-    })
+    const registeredShortcut = useShortcut(
+        shortcut,
+        () => {
+            onClick()
+        },
+        buttonProps.disabled || inactive === true,
+    )
     const currentMod = useCurrentModifier()
 
     return (
@@ -69,6 +72,7 @@ export function ShortcutButtonLink({
         useCallback(() => {
             router.push(href)
         }, [router, href]),
+        buttonProps.disabled || inactive === true,
     )
     const currentMod = useCurrentModifier()
 
@@ -103,6 +107,7 @@ export function ShortcutSubmitButton({
         useCallback(() => {
             buttonRef.current?.click()
         }, []),
+        buttonProps.disabled || inactive === true,
     )
     const currentMod = useCurrentModifier()
 
