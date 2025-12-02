@@ -9,7 +9,6 @@ import { useQuery } from '@apollo/client/react'
 import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
 import { pathWithBasePath } from '@lib/url'
 import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
-import { AssableNextLink } from '@components/links/AssableNextLink'
 import { ValueItemSkeleton } from '@components/sykmelding/ValuesSection'
 import SykmeldingValues from '@components/sykmelding/SykmeldingValues'
 import { cn } from '@lib/tw'
@@ -18,6 +17,7 @@ import { useAppDispatch } from '@core/redux/hooks'
 import { useMode } from '@core/providers/Modes'
 import TwoPaneGrid from '@components/layout/TwoPaneGrid'
 import { SimpleAlert } from '@components/help/GeneralErrors'
+import { ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 import { SykmeldingSynchronization } from './SykmeldingSynchronization'
@@ -50,13 +50,31 @@ function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
                 </div>
                 <div className="flex justify-end">
                     {mode.type === 'FHIR' ? (
-                        <Button variant="primary" size="small" as={AssableNextLink} href="/fhir" className="underline">
+                        <ShortcutButtonLink
+                            variant="primary"
+                            size="small"
+                            href="/fhir"
+                            className="underline"
+                            shortcut={{
+                                modifier: 'alt',
+                                code: 'ArrowLeft',
+                            }}
+                        >
                             Tilbake til pasientoversikt
-                        </Button>
+                        </ShortcutButtonLink>
                     ) : (
-                        <Button variant="primary" size="small" as={AssableNextLink} href="/" className="underline">
+                        <ShortcutButtonLink
+                            variant="primary"
+                            size="small"
+                            href="/"
+                            className="underline"
+                            shortcut={{
+                                modifier: 'alt',
+                                code: 'ArrowLeft',
+                            }}
+                        >
                             Tilbake til pasientsøk
-                        </Button>
+                        </ShortcutButtonLink>
                     )}
                 </div>
             </TwoPaneGrid>

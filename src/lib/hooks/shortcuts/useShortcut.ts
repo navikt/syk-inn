@@ -26,6 +26,7 @@ export function useShortcut(key: Shortcut, onShortcut: () => void, inactive?: bo
                     `Snarvei ${getOsAgnosticModifierLabel(stableKey.modifier)} + ${getKeyLabel(stableKey.code)} aktivert`,
                     { duration: 1000, position: 'top-right' },
                 )
+
                 onShortcut()
             }
         }
