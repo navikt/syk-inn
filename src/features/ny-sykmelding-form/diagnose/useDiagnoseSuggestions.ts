@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client/react'
+import { useRef } from 'react'
 
 import { type DiagnoseFragment, KonsultasjonDocument } from '@queries'
 import { useFlag } from '@core/toggles/context'
@@ -15,7 +16,11 @@ export function useDiagnoseSuggestions():
           refetching: boolean
           suggestions: NySykmeldingSuggestions
       } {
-    const konsultasjonsQuery = useQuery(KonsultasjonDocument)
+    const neverAbortSignal = useRef(new AbortController())
+    const konsultasjonsQuery = useQuery(KonsultasjonDocument, {
+        /* This lets the consultasjon query finish even when the parent component unmounts */
+        context: { signal: neverAbortSignal.current.signal },
+    })
     const serverBidiagnoserToggle = useFlag('SYK_INN_AUTO_BIDIAGNOSER')
 
     useOnFocus(konsultasjonsQuery.refetch)
