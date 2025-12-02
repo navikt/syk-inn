@@ -42,11 +42,6 @@ export function ToggleAPIFailures(): ReactElement {
                 Alle sykmeldinger og utkast på dashboardet
             </Checkbox>
         ),
-        AllSykmeldinger: (
-            <Checkbox key="allSykmeldinger" value="AllSykmeldinger">
-                Alle sykmeldinger (både pågående og tidligere)
-            </Checkbox>
-        ),
         PersonByIdent: (
             <Checkbox key="person" value="PersonByIdent">
                 Pasient by OID (fnr/dnr)

@@ -1147,8 +1147,8 @@ export type SykmeldingRedactedResolvers<
 
 export type SykmeldingRedactedValuesResolvers<
     ContextType = any,
-    ParentType extends
-        ResolversParentTypes['SykmeldingRedactedValues'] = ResolversParentTypes['SykmeldingRedactedValues'],
+    ParentType extends ResolversParentTypes['SykmeldingRedactedValues'] =
+        ResolversParentTypes['SykmeldingRedactedValues'],
 > = {
     aktivitet?: Resolver<Array<ResolversTypes['AktivitetRedacted']>, ParentType, ContextType>
 }
@@ -1186,8 +1186,8 @@ export type TilbakedateringResolvers<
 
 export type UtdypendeOpplysningerHintResolvers<
     ContextType = any,
-    ParentType extends
-        ResolversParentTypes['UtdypendeOpplysningerHint'] = ResolversParentTypes['UtdypendeOpplysningerHint'],
+    ParentType extends ResolversParentTypes['UtdypendeOpplysningerHint'] =
+        ResolversParentTypes['UtdypendeOpplysningerHint'],
 > = {
     days?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
     latestTom?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>

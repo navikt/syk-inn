@@ -7,8 +7,7 @@ import { teamLogger } from '@navikt/next-logger/team-log'
 import { raise } from '@lib/ts'
 import { pathWithBasePath } from '@lib/url'
 import {
-    AllSykmeldingerDocument,
-    GetAllDraftsDocument,
+    AllDashboardDocument,
     InputAktivitet,
     InputTilbakedatering,
     OpprettSykmeldingDocument,
@@ -47,8 +46,8 @@ export function useOpprettSykmeldingMutation(
     const router = useRouter()
     const formState = useAppSelector((state) => state.nySykmelding)
     const [mutate, result] = useMutation(OpprettSykmeldingDocument, {
-        // In case user navigates back to the dashboard
-        refetchQueries: [{ query: AllSykmeldingerDocument }, { query: GetAllDraftsDocument }, PasientDocument],
+        // In case user navigates back to the dashboard, refetches both new sykmeldinger and drafts
+        refetchQueries: [{ query: AllDashboardDocument }, { query: PasientDocument }],
         onCompleted: (data) => {
             if (data.opprettSykmelding.__typename === 'SykmeldingFull') {
                 logger.info(`Sykmelding created successfully: ${data.opprettSykmelding.sykmeldingId}`)

@@ -3,14 +3,14 @@ import { useQuery } from '@apollo/client/react'
 import { BodyShort, Skeleton } from '@navikt/ds-react'
 import { PieChart } from 'react-minimal-pie-chart'
 
-import { AllSykmeldingerDocument, GetAllDraftsDocument } from '@queries'
+import { AllDashboardDocument, GetAllDraftsDocument } from '@queries'
 import { useFlag } from '@core/toggles/context'
 
 import { continiousSykefravaer } from './sykefravaer-utils'
 
 function PatientStats(): ReactElement {
     const allDrafts = useQuery(GetAllDraftsDocument)
-    const sykmeldinger = useQuery(AllSykmeldingerDocument)
+    const sykmeldinger = useQuery(AllDashboardDocument)
 
     const sykefravaerInfoToggle = useFlag('SYK_INN_SYKEFRAVAER_INFO')
 

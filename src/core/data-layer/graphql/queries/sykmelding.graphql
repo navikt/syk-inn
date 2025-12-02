@@ -4,17 +4,6 @@ query SykmeldingById($id: String!) {
     }
 }
 
-query AllSykmeldinger {
-    sykmeldinger {
-        current {
-            ...Sykmelding
-        }
-        historical {
-            ...Sykmelding
-        }
-    }
-}
-
 mutation OpprettSykmelding(
     $draftId: String!
     $meta: OpprettSykmeldingMetaInput!

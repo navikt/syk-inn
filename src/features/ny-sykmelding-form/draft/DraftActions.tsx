@@ -60,6 +60,7 @@ export function ForkastDraftButton({
 
     const [mutation, deleteResult] = useMutation(DeleteDraftDocument, {
         refetchQueries: [{ query: GetAllDraftsDocument }],
+        awaitRefetchQueries: true,
     })
 
     return (

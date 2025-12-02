@@ -6,8 +6,8 @@ import { addTypenameToDocument } from '@apollo/client/utilities'
 
 import { createInMemoryCache } from '@data-layer/graphql/apollo/apollo-client-cache'
 import {
-    AllSykmeldingerDocument,
-    AllSykmeldingerQuery,
+    AllDashboardDocument,
+    AllDashboardQuery,
     DraftFragment,
     GetAllDraftsDocument,
     GetDraftDocument,
@@ -77,7 +77,7 @@ describe('apollo cache normalization - sykmelding', async () => {
      * This seems crazy, but this lets us re-use the data-builder from the mock-engine, the mapper
      * from the resolvers, and applies __typenames the same way an apollo-client/sever combo would.
      */
-    const executionResult: ExecutionResult<Omit<AllSykmeldingerQuery, '__typename'>, unknown> = await execute({
+    const executionResult: ExecutionResult<Omit<AllDashboardQuery, '__typename'>, unknown> = await execute({
         schema: createSchema({
             Query: {
                 sykmeldinger: () => ({
@@ -96,7 +96,7 @@ describe('apollo cache normalization - sykmelding', async () => {
             },
             ...commonTypeResolvers,
         }),
-        document: addTypenameToDocument(AllSykmeldingerDocument),
+        document: addTypenameToDocument(AllDashboardDocument),
     })
     const sykmeldinger = executionResult.data!.sykmeldinger!
 
@@ -104,8 +104,8 @@ describe('apollo cache normalization - sykmelding', async () => {
         const [client, cache] = createTestApollo()
 
         cache.writeQuery({
-            query: AllSykmeldingerDocument,
-            data: { __typename: 'Query', sykmeldinger: sykmeldinger },
+            query: AllDashboardDocument,
+            data: { __typename: 'Query', sykmeldinger: sykmeldinger, drafts: null, konsultasjon: null },
         })
 
         const { data } = await client.query<SykmeldingByIdQuery>({
@@ -120,8 +120,8 @@ describe('apollo cache normalization - sykmelding', async () => {
         const [client, cache] = createTestApollo()
 
         cache.writeQuery({
-            query: AllSykmeldingerDocument,
-            data: { __typename: 'Query', sykmeldinger: sykmeldinger },
+            query: AllDashboardDocument,
+            data: { __typename: 'Query', sykmeldinger: sykmeldinger, drafts: null, konsultasjon: null },
         })
 
         const { data } = await client.query<SykmeldingByIdQuery>({
@@ -136,8 +136,8 @@ describe('apollo cache normalization - sykmelding', async () => {
         const [client, cache] = createTestApollo(true)
 
         cache.writeQuery({
-            query: AllSykmeldingerDocument,
-            data: { __typename: 'Query', sykmeldinger: sykmeldinger },
+            query: AllDashboardDocument,
+            data: { __typename: 'Query', sykmeldinger: sykmeldinger, drafts: null, konsultasjon: null },
         })
 
         await expect(
