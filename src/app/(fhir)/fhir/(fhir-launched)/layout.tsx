@@ -42,11 +42,26 @@ async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<React
 
         switch (rootFhirData.error) {
             case 'NO_HPR':
-                return <NoValidHPR mode="FHIR" />
+                return (
+                    <>
+                        {(isLocal || isDemo) && <DemoWarning />}
+                        <NoValidHPR mode="FHIR" />
+                    </>
+                )
             case 'NO_SESSION':
-                return <NoPractitionerSession />
+                return (
+                    <>
+                        {(isLocal || isDemo) && <DemoWarning />}
+                        <NoPractitionerSession />
+                    </>
+                )
             case 'NO_PATIENT':
-                return <NoValidPatient />
+                return (
+                    <>
+                        {(isLocal || isDemo) && <DemoWarning />}
+                        <NoValidPatient />
+                    </>
+                )
         }
     }
 
