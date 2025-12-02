@@ -3,7 +3,6 @@ import { useMutation } from '@apollo/client/react'
 import { useRouter } from 'next/navigation'
 import { FloppydiskIcon } from '@navikt/aksel-icons'
 
-import { CacheIds } from '@data-layer/graphql/apollo/apollo-client-cache'
 import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
 import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { spanBrowserAsync } from '@lib/otel/browser'
@@ -83,16 +82,6 @@ export function ForkastDraftButton({
                     return mutation({
                         variables: { draftId: draftId },
                         onCompleted: redirect,
-                        update: (cache, result) => {
-                            if (result.data?.deleteDraft == true) {
-                                cache.evict({
-                                    id: cache.identify({
-                                        __typename: 'OpprettSykmeldingDraft',
-                                        draftId,
-                                    } satisfies CacheIds['draft']),
-                                })
-                            }
-                        },
                     })
                 })
             }
