@@ -1,4 +1,4 @@
-import { collectDefaultMetrics, Counter } from 'prom-client'
+import { collectDefaultMetrics, Counter, Histogram } from 'prom-client'
 import { nextleton } from 'nextleton'
 
 class AppMetrics {
@@ -16,6 +16,12 @@ class AppMetrics {
         name: 'syk_inn_app_load_errors_total',
         help: 'Total number of smart launch errors by HPR',
         labelNames: ['mode', 'error_type'] as const,
+    })
+
+    public numberOfDiagnosesFetched = new Histogram({
+        name: 'syk_inn_number_of_diagnoses_fetched',
+        help: 'Histogram of number of diagnoses fetched from FHIR server',
+        buckets: [0, 1, 2, 3, 5],
     })
 }
 

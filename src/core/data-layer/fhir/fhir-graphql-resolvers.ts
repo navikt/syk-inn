@@ -32,6 +32,7 @@ import { FhirGraphqlContext } from '@data-layer/fhir/fhir-graphql-context'
 import { getHasRequestedAccessToSykmeldinger } from '@core/session/session'
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
 import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
+import metrics from '@lib/prometheus/metrics'
 
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
@@ -371,10 +372,12 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             }
 
             if (conditionsByEncounter.entry == null) {
+                metrics.numberOfDiagnosesFetched.observe(0)
                 return []
             }
 
             const conditionList = conditionsByEncounter.entry.map((it) => it.resource)
+            metrics.numberOfDiagnosesFetched.observe(conditionList.length)
 
             return fhirDiagnosisToRelevantDiagnosis(conditionList)
         },
