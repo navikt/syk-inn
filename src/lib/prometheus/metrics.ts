@@ -21,7 +21,7 @@ class AppMetrics {
     public numberOfDiagnosesFetched = new Histogram({
         name: 'syk_inn_number_of_diagnoses_fetched',
         help: 'Histogram of number of diagnoses fetched from FHIR server',
-        buckets: [0, 1, 2, 3, 5],
+        buckets: [0, 1, 2, 3, 4, 5],
     })
 }
 
