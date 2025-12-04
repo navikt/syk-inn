@@ -4,10 +4,10 @@ import React, { ReactElement } from 'react'
 import { PageBlock } from '@navikt/ds-react/Page'
 import { BodyShort, Button, Heading } from '@navikt/ds-react'
 
-import { ModeType } from '@core/providers/Modes'
 import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 import { isDemo, isLocal } from '@lib/env'
 import { MockLaunchType } from '@navikt/fhir-mock-server/types'
+import { ModeType } from '@core/providers/ModePaths'
 
 export function NoValidHPR({ mode }: { mode: ModeType }): ReactElement {
     return (

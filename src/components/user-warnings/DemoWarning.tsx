@@ -1,12 +1,11 @@
 'use client'
 
 import React, { ReactElement } from 'react'
-import { BodyShort, InfoCard } from '@navikt/ds-react'
+import { BodyShort, InfoCard, Link as AkselLink } from '@navikt/ds-react'
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 
 import { isLocal, isDemo } from '@lib/env'
 import { raise } from '@lib/ts'
-import { AkselNextLink } from '@components/links/AkselNextLink'
 
 function DemoWarning(): ReactElement {
     if (!(isLocal || isDemo)) {
@@ -23,9 +22,9 @@ function DemoWarning(): ReactElement {
                     <BodyShort>
                         Dette er en demo-applikasjon med falsk data, og skal kun brukes til demo og test.
                     </BodyShort>
-                    <AkselNextLink href="/dev" className="text-xs">
+                    <AkselLink href="/dev" className="text-xs">
                         ← Back to development page
-                    </AkselNextLink>
+                    </AkselLink>
                 </InfoCard.Content>
             </InfoCard>
         </div>

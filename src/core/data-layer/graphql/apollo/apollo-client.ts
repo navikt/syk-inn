@@ -10,9 +10,8 @@ import { metadataActions } from '@core/redux/reducers/metadata'
 import { pathWithBasePath } from '@lib/url'
 import { isDemo, isLocal } from '@lib/env'
 import { FailingLinkDev } from '@dev/tools/api-fail-toggle/apollo-dev-tools-link'
-import { multiUserLink } from '@data-layer/fhir/multi-user/multi-user-apollo-link'
-import { ModeType } from '@core/providers/Modes'
 import { persistentUserLink } from '@data-layer/helseid/persistent-user/persistent-user-apollo-link'
+import { ModeType } from '@core/providers/ModePaths'
 
 import { createInMemoryCache } from './apollo-client-cache'
 import { createCurrentPatientLink } from './current-patient-link'
@@ -54,7 +53,7 @@ export function makeApolloClient(store: AppStore, mode: ModeType, path: `/${stri
         })
 
         const failingDevLink = isLocal || isDemo ? FailingLinkDev() : null
-        const patientLink = mode === 'FHIR' ? multiUserLink : persistentUserLink
+        const patientLink = mode === 'FHIR' ? null : persistentUserLink
         const errorLink = createErrorLink(store)
         const retryLink = new RetryLink({
             delay: { initial: 300, jitter: true },

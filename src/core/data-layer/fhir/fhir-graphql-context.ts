@@ -21,7 +21,8 @@ export type FhirGraphqlContext = CommonGraphqlContext & {
 
 export const createFhirResolverContext = async (context: YogaInitialContext): Promise<FhirGraphqlContext> => {
     return spanServerAsync(OtelNamespace, async (span) => {
-        const client = await getReadyClient()
+        const [, , activePatientId] = new URL(context.request.url).pathname.split('/')
+        const client = await getReadyClient(activePatientId)
 
         if ('error' in client) {
             failSpan(span, client.error)

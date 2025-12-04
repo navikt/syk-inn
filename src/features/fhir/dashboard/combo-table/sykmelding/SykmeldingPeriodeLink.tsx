@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 
 import { SykmeldingFragment } from '@queries'
 import { AkselNextLink } from '@components/links/AkselNextLink'
+import { useMode } from '@core/providers/Modes'
 
 import { sykmeldingPeriodeText } from './sykmelding-utils'
 
@@ -11,9 +12,11 @@ type Props = {
 }
 
 function SykmeldingPeriodeLink({ sykmeldingId, aktivitet }: Props): ReactElement {
+    const mode = useMode()
+
     return (
         <>
-            <AkselNextLink href={`/fhir/sykmelding/${sykmeldingId}`}>{sykmeldingPeriodeText(aktivitet)}</AkselNextLink>
+            <AkselNextLink href={mode.paths.sykmelding(sykmeldingId)}>{sykmeldingPeriodeText(aktivitet)}</AkselNextLink>
         </>
     )
 }

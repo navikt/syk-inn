@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 import { getUserToggles, toToggleMap } from '@core/toggles/unleash'
 import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 
-export async function GET(): Promise<NextResponse> {
-    const readyClient = await getReadyClient()
+export async function GET(_: NextRequest, { params }: RouteContext<'/fhir/[patientId]/debug-user'>): Promise<Response> {
+    const readyClient = await getReadyClient((await params).patientId)
     if ('error' in readyClient) {
         return NextResponse.json({ error: readyClient.error }, { status: 401 })
     }

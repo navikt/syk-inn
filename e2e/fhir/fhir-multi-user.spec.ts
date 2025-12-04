@@ -73,46 +73,45 @@ test('launching and opening a link in a new tab, should persist context and work
     await fillAndSubmitMinimalSykmelding(Espen)(secondTab)
 })
 
-test.fail(
-    'edge case: launching a second sessiond, returning to first one and opening a link in a new tab fails',
-    async ({ browser }) => {
-        const baseContext = await browser.newContext()
+test('edge case: launching a second sessiond, returning to first one and opening a link in a new tab fails', async ({
+    browser,
+}) => {
+    const baseContext = await browser.newContext()
 
-        // Launch and verify Kari (tab 1)
-        const firstTab = await baseContext.newPage()
-        await launchWithMock('empty', { patient: 'Kari Normann' })(firstTab)
-        await expectPatient(Kari)(firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+    // Launch and verify Kari (tab 1)
+    const firstTab = await baseContext.newPage()
+    await launchWithMock('empty', { patient: 'Kari Normann' })(firstTab)
+    await expectPatient(Kari)(firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
-        // Launch and verify Espen (tab 2)
-        const secondTab = await baseContext.newPage()
-        await launchWithMock('one-current-to-tomorrow', { patient: 'Espen Eksempel' })(secondTab)
-        await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+    // Launch and verify Espen (tab 2)
+    const secondTab = await baseContext.newPage()
+    await launchWithMock('one-current-to-tomorrow', { patient: 'Espen Eksempel' })(secondTab)
+    await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
-        // Back to first tab and open a new tab from there
-        const [thirdTab] = await Promise.all([
-            firstTab.context().waitForEvent('page'),
-            firstTab
-                .getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ })
-                .getByRole('button', { name: 'Opprett sykmelding' })
-                .click({ modifiers: ['ControlOrMeta'] }),
-        ])
-        await thirdTab.getByRole('button', { name: 'Avbryt og forkast' }).click()
-        // This fails, because Espen's tab was the last to launch, so the server will default to that session
-        await expectPatient(Kari)(thirdTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+    // Back to first tab and open a new tab from there
+    const [thirdTab] = await Promise.all([
+        firstTab.context().waitForEvent('page'),
+        firstTab
+            .getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ })
+            .getByRole('button', { name: 'Opprett sykmelding' })
+            .click({ modifiers: ['ControlOrMeta'] }),
+    ])
+    await thirdTab.getByRole('button', { name: 'Avbryt og forkast' }).click()
+    // This fails, because Espen's tab was the last to launch, so the server will default to that session
+    await expectPatient(Kari)(thirdTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
-        await Promise.all([firstTab.reload(), thirdTab.reload(), secondTab.reload()])
+    await Promise.all([firstTab.reload(), thirdTab.reload(), secondTab.reload()])
 
-        // This should be work:
-        await expectPatient(Kari)(firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
-        await expectPatient(Kari)(thirdTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
-        await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+    // This should be work:
+    await expectPatient(Kari)(firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+    await expectPatient(Kari)(thirdTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+    await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
 
-        // Complete all forms to make sure no multi-user errors occur
-        await fillAndSubmitMinimalSykmelding(Kari)(firstTab)
-        await fillAndSubmitMinimalSykmelding(Kari)(thirdTab)
-        await fillAndSubmitMinimalSykmelding(Espen)(secondTab)
-    },
-)
+    // Complete all forms to make sure no multi-user errors occur
+    await fillAndSubmitMinimalSykmelding(Kari)(firstTab)
+    await fillAndSubmitMinimalSykmelding(Kari)(thirdTab)
+    await fillAndSubmitMinimalSykmelding(Espen)(secondTab)
+})
 
 const fillAndSubmitMinimalSykmelding =
     (whomst: typeof Kari) =>

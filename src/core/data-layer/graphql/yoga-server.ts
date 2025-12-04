@@ -8,6 +8,7 @@ import { trace } from '@opentelemetry/api'
 
 import { bundledEnv, isDemo, isLocal } from '@lib/env'
 import { wait } from '@lib/wait'
+import { ModeType } from '@core/providers/ModePaths'
 
 import { NextContext, YogaContext } from './yoga-utils'
 
@@ -15,9 +16,9 @@ const logger = pinoLogger.child({}, { msgPrefix: '[GraphQL-Yoga]: ' })
 
 export function createGraphQLHandler<UserContext extends Record<string, unknown>>(
     schema: GraphQLSchema,
-    path: '/fhir/graphql' | '/graphql',
-    options?: {
-        context?: YogaContext<UserContext>
+    mode: ModeType,
+    options: {
+        context: YogaContext<UserContext>
         plugins?: Plugin[]
     },
 ): (request: Request, ctx: NextContext) => Response | Promise<Response> {
@@ -35,7 +36,7 @@ export function createGraphQLHandler<UserContext extends Record<string, unknown>
 
     const runtimeSpecificPlugins: Plugin[] = []
     if (isLocal || isDemo) {
-        runtimeSpecificPlugins.push(slowdownPlugin(path))
+        runtimeSpecificPlugins.push(slowdownPlugin(mode))
     }
     if (options?.plugins) {
         runtimeSpecificPlugins.push(...options.plugins)
@@ -45,7 +46,6 @@ export function createGraphQLHandler<UserContext extends Record<string, unknown>
         schema,
         logging: logger,
         plugins: [...defaultPlugins, ...runtimeSpecificPlugins],
-        graphqlEndpoint: path,
         fetchAPI: { Response },
         context: options?.context,
     })
@@ -53,12 +53,12 @@ export function createGraphQLHandler<UserContext extends Record<string, unknown>
     return handleRequest
 }
 
-function slowdownPlugin(path: '/fhir/graphql' | '/graphql'): Plugin {
+function slowdownPlugin(mode: ModeType): Plugin {
     if (!(isLocal || isDemo)) {
         throw new Error(`Trying to use slowdown plugin in ${bundledEnv.runtimeEnv}, that's illegal!`)
     }
 
-    const loggerPrefix = path === '/fhir/graphql' ? '[GraphQL - FHIR]' : '[GraphQL - HelseID]'
+    const loggerPrefix = mode === 'FHIR' ? '[GraphQL - FHIR]' : '[GraphQL - HelseID]'
 
     return {
         async onExecute({ args }) {

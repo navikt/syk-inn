@@ -53,7 +53,7 @@ function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
                         <ShortcutButtonLink
                             variant="primary"
                             size="small"
-                            href="/fhir"
+                            href={mode.paths.root}
                             className="underline"
                             shortcut={{
                                 modifier: 'alt',
@@ -66,7 +66,7 @@ function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
                         <ShortcutButtonLink
                             variant="primary"
                             size="small"
-                            href="/"
+                            href={mode.paths.root}
                             className="underline"
                             shortcut={{
                                 modifier: 'alt',

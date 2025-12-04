@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react'
 import { logger } from '@navikt/next-logger'
 import { redirect } from 'next/navigation'
 
-import MultiUserQueryStateToSessionStorageOnInit from '@data-layer/fhir/multi-user/MultiUserQueryStateToSessionStorageOnInit'
 import LoggedOutWarning from '@components/user-warnings/LoggedOutWarning'
 import { NoValidHPR } from '@components/errors/NoValidHPR'
 import { getFlag, getUserToggles, toToggleMap } from '@core/toggles/unleash'
@@ -18,7 +17,8 @@ import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { AutoPatient } from '@core/redux/reducers/ny-sykmelding/patient'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
-import { ModeProvider } from '@core/providers/Modes'
+import { FhirModeProvider } from '@core/providers/Modes'
+import { createFhirPaths } from '@core/providers/ModePaths'
 
 import { NoPractitionerSession, NoValidPatient } from './launched-errors'
 
@@ -29,8 +29,9 @@ import { NoPractitionerSession, NoValidPatient } from './launched-errors'
  * with the fetched patient and feature toggles. In FHIR mode the patient can never be changed without launching
  * again, so the redux state will never be updated.
  */
-async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<ReactElement> {
-    const rootFhirData = await getRootFhirData()
+async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientId]'>): Promise<ReactElement> {
+    const patientId = (await params).patientId
+    const rootFhirData = await getRootFhirData(patientId)
 
     if ('error' in rootFhirData) {
         if (bundledEnv.runtimeEnv === 'prod-gcp') {
@@ -66,17 +67,16 @@ async function LaunchedLayout({ children }: LayoutProps<'/fhir'>): Promise<React
     }
 
     return (
-        <ModeProvider mode="FHIR">
-            <Providers patient={rootFhirData.pasient}>
+        <FhirModeProvider activePatientId={patientId}>
+            <Providers patient={rootFhirData.pasient} graphqlPath={createFhirPaths(patientId).graphql}>
                 <ToggleProvider toggles={toToggleMap(rootFhirData.toggles)}>
                     {(isLocal || isDemo) && <DemoWarning />}
-                    <MultiUserQueryStateToSessionStorageOnInit />
                     {children}
                     <LoggedOutWarning />
                     {(isLocal || isDemo) && <LazyDevTools />}
                 </ToggleProvider>
             </Providers>
-        </ModeProvider>
+        </FhirModeProvider>
     )
 }
 
@@ -89,9 +89,9 @@ type RootFhirData =
           toggles: Awaited<ReturnType<typeof getUserToggles>>
       }
 
-async function getRootFhirData(): Promise<RootFhirData> {
+async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> {
     return await spanServerAsync('FHIR.getRootFhirData', async (span) => {
-        const readyClient = await getReadyClient()
+        const readyClient = await getReadyClient(currentPatientId)
         if ('error' in readyClient) {
             failSpan.silently(span, readyClient.error)
             return { error: 'NO_SESSION' }

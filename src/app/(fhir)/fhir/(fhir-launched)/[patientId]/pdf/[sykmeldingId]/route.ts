@@ -13,9 +13,10 @@ import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
  */
 export async function GET(
     request: NextRequest,
-    { params }: RouteContext<'/fhir/pdf/[sykmeldingId]'>,
+    { params }: RouteContext<'/fhir/[patientId]/pdf/[sykmeldingId]'>,
 ): Promise<Response> {
-    const client = await getReadyClient()
+    const { patientId, sykmeldingId } = await params
+    const client = await getReadyClient(patientId)
     if ('error' in client) {
         return new Response('Internal server error', { status: 500 })
     }
@@ -59,7 +60,7 @@ export async function GET(
 
     const response = await proxyRouteHandler(request, {
         ...proxyOptions,
-        path: `/api/sykmelding/${(await params).sykmeldingId}/pdf`,
+        path: `/api/sykmelding/${sykmeldingId}/pdf`,
         bearerToken: api.token,
         https: false,
     })

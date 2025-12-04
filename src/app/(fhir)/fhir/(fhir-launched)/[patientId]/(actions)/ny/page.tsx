@@ -3,8 +3,9 @@ import { redirect } from 'next/navigation'
 
 import { NySykmeldingFormWithDefaultValues } from '@features/actions/ny-sykmelding/NySykmelding'
 import NySykmeldingPagesWithContextPatientHeader from '@features/fhir/common/NySykmeldingPagesWithContextPatientHeader'
+import { createFhirPaths } from '@core/providers/ModePaths'
 
-async function NySykmeldingPage({ searchParams }: PageProps<'/fhir/ny'>): Promise<ReactElement> {
+async function NySykmeldingPage({ params, searchParams }: PageProps<'/fhir/[patientId]/ny'>): Promise<ReactElement> {
     const search = await searchParams
     if (search['draft']) {
         /**
@@ -14,7 +15,11 @@ async function NySykmeldingPage({ searchParams }: PageProps<'/fhir/ny'>): Promis
          *
          * This should never run during normal client side navigation in the browser.
          */
-        redirect(`/fhir/draft/${search['draft']}?step=${search['step'] ?? 'main'}`)
+        const patientId = (await params).patientId
+        const draftId = search['draft'] as string
+        const currentStep = search['step'] ?? 'main'
+
+        redirect(`${createFhirPaths(patientId).utkast(draftId)}?step=${currentStep}`)
     }
 
     return (

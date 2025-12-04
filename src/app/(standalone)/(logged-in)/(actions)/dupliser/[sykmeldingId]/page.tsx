@@ -4,7 +4,7 @@ import { DupliserSykmeldingFormWithDefaultValues } from '@features/actions/dupli
 import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
 import { StaticPageHeading } from '@components/layout/Page'
 
-async function Page({ params }: PageProps<'/fhir/dupliser/[sykmeldingId]'>): Promise<ReactElement> {
+async function Page({ params }: PageProps<'/dupliser/[sykmeldingId]'>): Promise<ReactElement> {
     const sykmeldingId = (await params).sykmeldingId
 
     return (

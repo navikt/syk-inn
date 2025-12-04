@@ -4,7 +4,7 @@ import { ForlengSykmeldingFormWithDefaultValues } from '@features/actions/forlen
 import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
 import { StaticPageHeading } from '@components/layout/Page'
 
-async function Page({ params }: PageProps<'/fhir/forleng/[sykmeldingId]'>): Promise<ReactElement> {
+async function Page({ params }: PageProps<'/forleng/[sykmeldingId]'>): Promise<ReactElement> {
     const sykmeldingId = (await params).sykmeldingId
 
     return (
