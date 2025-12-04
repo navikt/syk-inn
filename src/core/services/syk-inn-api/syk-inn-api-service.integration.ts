@@ -120,6 +120,19 @@ describe('SykInnApi integration', () => {
         expect(kafkaMessage.sykmelding.pasient.fnr).toEqual('01010112345')
         expect(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.kode).toEqual('P74')
         expect(kafkaMessage.sykmelding.medisinskVurdering.biDiagnoser).toHaveLength(1)
+
+        // Assert that utdypende spørsmål are part of the kafka message
+        const utdypendeSporsmal: KafkaUtdypendeSporsmal[] = kafkaMessage.sykmelding.utdypendeSporsmal
+        expect(utdypendeSporsmal).toBeDefined()
+        expect(utdypendeSporsmal?.find((it) => it.type === 'MEDISINSK_OPPSUMMERING')?.svar).toEqual(
+            'Pasienten har influensa',
+        )
+        expect(utdypendeSporsmal?.find((it) => it.type === 'UTFORDRINGER_MED_GRADERT_ARBEID')?.svar).toEqual(
+            'Kan ikke sitte lenge',
+        )
+        expect(utdypendeSporsmal?.find((it) => it.type === 'HENSYN_PA_ARBEIDSPLASSEN')?.svar).toEqual(
+            'Trenger ro og hvile',
+        )
     }, 10_000)
 
     it('/sykmelding/<id> should fetch correctly', async () => {
@@ -307,3 +320,9 @@ const createFullOpprettSykmeldingPayload = (
         ...valueOverrides,
     },
 })
+
+export type KafkaUtdypendeSporsmal = {
+    svar: string
+    type: string
+    skjermetForArbeidsgiver: boolean
+}
