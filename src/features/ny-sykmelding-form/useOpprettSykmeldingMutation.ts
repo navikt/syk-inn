@@ -5,7 +5,6 @@ import { useMutation } from '@apollo/client/react'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { raise } from '@lib/ts'
-import { pathWithBasePath } from '@lib/url'
 import {
     AllDashboardDocument,
     InputAktivitet,
@@ -96,13 +95,7 @@ export function useOpprettSykmeldingMutation(
                 // Don't redirect on rule hits or missing person
                 if (createResult.data.opprettSykmelding.__typename !== 'SykmeldingFull') return
 
-                // TODO: Should we fix history for standalone also?
-                if (mode.type === 'FHIR') {
-                    // Nuke the history, so that browser back takes the user to a fresh form
-                    window.history.replaceState(null, '', pathWithBasePath('/fhir'))
-                }
-
-                router.push(mode.paths.kvittering(createResult.data.opprettSykmelding.sykmeldingId), {
+                router.replace(mode.paths.kvittering(createResult.data.opprettSykmelding.sykmeldingId), {
                     scroll: true,
                 })
             })

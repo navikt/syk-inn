@@ -5,7 +5,7 @@ const formSteps = ['main', 'summary'] as const
 export type StepSection = (typeof formSteps)[number]
 
 const stepsParser = parseAsStringLiteral(formSteps).withDefault('main').withOptions({
-    history: 'push',
+    history: 'replace',
     scroll: true,
 })
 
