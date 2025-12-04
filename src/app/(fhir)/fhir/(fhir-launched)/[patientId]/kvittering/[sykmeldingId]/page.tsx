@@ -3,13 +3,9 @@ import React, { ReactElement } from 'react'
 import { PageLayout } from '@components/layout/Page'
 import SykmeldingKvittering from '@features/sykmelding-kvittering/SykmeldingKvittering'
 
-type Props = {
-    params: Promise<{
-        sykmeldingId: string
-    }>
-}
-
-async function KvitteringPage({ params }: Props): Promise<ReactElement> {
+async function KvitteringPage({
+    params,
+}: PageProps<'/fhir/[patientId]/kvittering/[sykmeldingId]'>): Promise<ReactElement> {
     const { sykmeldingId } = await params
 
     return (

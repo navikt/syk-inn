@@ -18,8 +18,9 @@ import { shouldUseMockEngine } from '@dev/mock-engine'
 import DemoWarning from '@components/user-warnings/DemoWarning'
 import Providers from '@core/providers/Providers'
 import HydratePersistedUserFromSession from '@data-layer/helseid/persistent-user/HydratePersistedUserFromSession'
-import { ModeProvider } from '@core/providers/Modes'
+import { HelseIdModeProvider } from '@core/providers/Modes'
 import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
+import { HelseIdPaths } from '@core/providers/ModePaths'
 
 import { NoBehandlerError } from './start-errors'
 
@@ -70,8 +71,8 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
     }
 
     return (
-        <ModeProvider mode="HelseID">
-            <Providers>
+        <HelseIdModeProvider>
+            <Providers graphqlPath={HelseIdPaths.graphql}>
                 <HydratePersistedUserFromSession />
                 <HelseIdHeader behandler={{ navn: behandler.navn, hpr: behandler.hpr }} />
                 {(isLocal || isDemo) && <DemoWarning />}
@@ -81,7 +82,7 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
                     {(isLocal || isDemo) && <LazyDevTools />}
                 </ToggleProvider>
             </Providers>
-        </ModeProvider>
+        </HelseIdModeProvider>
     )
 }
 

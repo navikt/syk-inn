@@ -12,10 +12,14 @@ import { useMode } from '@core/providers/Modes'
 
 import useStoreRef from '../redux/useStoreRef'
 
-function Providers({ children, patient }: PropsWithChildren<{ patient?: AutoPatient }>): ReactElement {
+function Providers({
+    children,
+    patient,
+    graphqlPath,
+}: PropsWithChildren<{ patient?: AutoPatient; graphqlPath: `/${string}` }>): ReactElement {
     const mode = useMode()
     const store = useStoreRef(patient)
-    const [client] = useState(makeApolloClient(store, mode.type, mode.paths.graphql))
+    const [client] = useState(makeApolloClient(store, mode.type, graphqlPath))
 
     return (
         <ApolloProvider client={client}>

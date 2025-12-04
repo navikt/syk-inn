@@ -8,7 +8,7 @@ import { getSessionId } from '@core/session/session'
 const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
 
 /**
- * Third step in launch process, after the user followed the authorizanion_url and is redirected here with a code and
+ * Third step in launch process, after the user followed the authorization_url and is redirected here with a code and
  * our state param. We exchange this together with PKCE for tokens and update the users session.
  */
 export async function GET(request: Request): Promise<Response> {
@@ -39,5 +39,18 @@ export async function GET(request: Request): Promise<Response> {
         redirect(pathWithBasePath('/fhir/error?reason=callback-failed'))
     }
 
-    redirect(callback.redirectUrl)
+    /**
+     * With multiLaunch enabled, @navikt/smart-on-fhir gives us the patient id as a query param.
+     *
+     * Let's rebuild the final redirect URL to be /fhir/<patientId>.
+     */
+    const redirectUrl = new URL(callback.redirectUrl)
+    const patientId = redirectUrl.searchParams.get('patient')
+    if (patientId == null) {
+        logger.error('Seems like we launched without multiLaunch=true')
+        redirect(pathWithBasePath('/fhir/error?reason=callback-failed'))
+    }
+    const patientRedirectUrl = `${redirectUrl.origin}${redirectUrl.pathname}/${patientId}`
+
+    redirect(patientRedirectUrl)
 }

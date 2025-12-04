@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: '(FHIR) Innsending av Sykmeldinger',
 }
 
-export default function FhirLayout({ children }: LayoutProps<'/fhir'>): ReactElement {
+export default function FhirLayout({ children }: LayoutProps<'/'>): ReactElement {
     return (
         <html lang="nb" className="bg-bg-subtle">
             <head>

@@ -5,8 +5,11 @@ import { useQuery } from '@apollo/client/react'
 import { ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
 import { PasientDocument } from '@queries'
 import { SimpleAlert } from '@components/help/GeneralErrors'
+import { useActivePatient } from '@features/fhir/common/useActivePatient'
+import { createFhirPaths } from '@core/providers/ModePaths'
 
 function StartSykmelding(): ReactElement {
+    const activePatient = useActivePatient()
     const { data, loading, error, refetch } = useQuery(PasientDocument)
     const [hasLegged, setHasLegged] = useState(true)
 
@@ -66,7 +69,7 @@ function StartSykmelding(): ReactElement {
                 </div>
 
                 <ShortcutButtonLink
-                    href="/fhir/ny"
+                    href={createFhirPaths(activePatient).ny}
                     variant="primary"
                     disabled={loading || !hasLegged || data?.pasient == null}
                     loading={loading}

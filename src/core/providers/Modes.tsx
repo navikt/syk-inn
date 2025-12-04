@@ -2,12 +2,23 @@
 
 import React, { PropsWithChildren, ReactElement } from 'react'
 
-export type ModeType = 'FHIR' | 'HelseID'
+import { createFhirPaths, HelseIdPaths, ModePaths, ModeType } from '@core/providers/ModePaths'
 
-const ModeContext = React.createContext<ModeType>('FHIR')
+const ModeContext = React.createContext<{ type: ModeType; paths: ModePaths } | null>(null)
 
-export function ModeProvider({ mode, children }: PropsWithChildren<{ mode: ModeType }>): ReactElement {
-    return <ModeContext.Provider value={mode}>{children}</ModeContext.Provider>
+export function FhirModeProvider({
+    activePatientId,
+    children,
+}: PropsWithChildren<{ activePatientId: string }>): ReactElement {
+    return (
+        <ModeContext.Provider value={{ type: 'FHIR', paths: createFhirPaths(activePatientId) }}>
+            {children}
+        </ModeContext.Provider>
+    )
+}
+
+export function HelseIdModeProvider({ children }: PropsWithChildren): ReactElement {
+    return <ModeContext.Provider value={{ type: 'HelseID', paths: HelseIdPaths }}>{children}</ModeContext.Provider>
 }
 
 export function useMode(): { type: ModeType; paths: ModePaths } {
@@ -15,37 +26,5 @@ export function useMode(): { type: ModeType; paths: ModePaths } {
     if (!mode) {
         throw new Error('useMode must be used within a ModeProvider')
     }
-    return { type: mode, paths: createModePaths(mode) }
-}
-
-type ModePaths = {
-    graphql: `/${string}`
-    root: `/${string}` | '/'
-    dupliser: (id: string) => `/${string}`
-    forleng: (id: string) => `/${string}`
-    kvittering: (id: string) => `/${string}`
-    pdf: (id: string) => `/${string}`
-}
-
-export function createModePaths(mode: ModeType): ModePaths {
-    switch (mode) {
-        case 'FHIR':
-            return {
-                root: '/fhir',
-                graphql: '/fhir/graphql',
-                dupliser: (id) => `/fhir/dupliser/${id}`,
-                forleng: (id) => `/fhir/forleng/${id}`,
-                kvittering: (id) => `/fhir/kvittering/${id}`,
-                pdf: (id) => `/fhir/pdf/${id}`,
-            }
-        case 'HelseID':
-            return {
-                root: '/',
-                graphql: '/graphql',
-                dupliser: (id) => `/dupliser/${id}`,
-                forleng: (id) => `/forleng/${id}`,
-                kvittering: (id) => `/kvittering/${id}`,
-                pdf: (id) => `/pdf/${id}`,
-            }
-    }
+    return mode
 }
