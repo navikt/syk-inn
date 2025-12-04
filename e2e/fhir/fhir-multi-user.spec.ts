@@ -1,7 +1,11 @@
-import { test } from '@playwright/test'
+import { expect, Page, test } from '@playwright/test'
 
 import { expectPatient } from '../actions/user-form-verification'
+import { userInteractionsGroup } from '../utils/actions'
+import { fillPeriodeRelative, nextStep, submitSykmelding } from '../actions/user-actions'
+import { verifySummaryPage } from '../actions/user-verifications'
 
+import { startNewSykmelding } from './actions/fhir-user-actions'
 import { launchWithMock } from './actions/fhir-actions'
 
 const Kari = { name: 'Kari Normann', fnr: '45847100951' }
@@ -27,6 +31,12 @@ test('launching twice independently in same browser, but different tabs, should 
     // Reload tab 2 and verify Espen again
     await secondTab.reload()
     await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+
+    // Fill tab 1 and ensure submit doesn't hit multi user error
+    await fillAndSubmitMinimalSykmelding(Kari)(firstTab)
+
+    // Fill tab 2 and ensure submit doesn't hit multi user error
+    await fillAndSubmitMinimalSykmelding(Espen)(secondTab)
 })
 
 test('launching and opening a link in a new tab, should persist context and work with future launches', async ({
@@ -56,6 +66,11 @@ test('launching and opening a link in a new tab, should persist context and work
     await expectPatient(Kari)(firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
     await expectPatient(Kari)(newTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
     await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+
+    // Complete all forms to make sure no multi-user errors occur
+    await fillAndSubmitMinimalSykmelding(Kari)(firstTab)
+    await fillAndSubmitMinimalSykmelding(Kari)(newTab)
+    await fillAndSubmitMinimalSykmelding(Espen)(secondTab)
 })
 
 test.fail(
@@ -91,5 +106,27 @@ test.fail(
         await expectPatient(Kari)(firstTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
         await expectPatient(Kari)(thirdTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
         await expectPatient(Espen)(secondTab.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ }))
+
+        // Complete all forms to make sure no multi-user errors occur
+        await fillAndSubmitMinimalSykmelding(Kari)(firstTab)
+        await fillAndSubmitMinimalSykmelding(Kari)(thirdTab)
+        await fillAndSubmitMinimalSykmelding(Espen)(secondTab)
     },
 )
+
+const fillAndSubmitMinimalSykmelding =
+    (whomst: typeof Kari) =>
+    (page: Page): Promise<void> =>
+        userInteractionsGroup(
+            startNewSykmelding(whomst),
+            fillPeriodeRelative({ type: { grad: 79 }, fromRelative: 0, days: 7 }),
+            nextStep(),
+            verifySummaryPage([
+                {
+                    name: 'Sykmeldingen gjelder',
+                    values: [whomst.name, whomst.fnr],
+                },
+            ]),
+            submitSykmelding(),
+            (page) => expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible(),
+        )(page)
