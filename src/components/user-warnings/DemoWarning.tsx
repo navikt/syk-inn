@@ -6,6 +6,7 @@ import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 
 import { isLocal, isDemo } from '@lib/env'
 import { raise } from '@lib/ts'
+import { pathWithBasePath } from '@lib/url'
 
 function DemoWarning(): ReactElement {
     if (!(isLocal || isDemo)) {
@@ -22,8 +23,8 @@ function DemoWarning(): ReactElement {
                     <BodyShort>
                         Dette er en demo-applikasjon med falsk data, og skal kun brukes til demo og test.
                     </BodyShort>
-                    <AkselLink href="/dev" className="text-xs">
-                        ← Back to development page
+                    <AkselLink href={pathWithBasePath('/dev')} className="text-xs">
+                        ← Tilbake til utviklingssiden
                     </AkselLink>
                 </InfoCard.Content>
             </InfoCard>
