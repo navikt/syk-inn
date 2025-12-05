@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test } from '@playwright/test'
 import { OpprettSykmeldingDocument } from '@queries'
 import { inDays, inputDate, today } from '@lib/test/date-utils'
 
@@ -7,7 +7,7 @@ import { expectGraphQLRequest } from '../utils/assertions'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
-import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
+import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 test('submit with only default values and prefilled FHIR values', async ({ page }) => {
     await launchWithMock('empty')(page)
@@ -61,7 +61,7 @@ test('submit with only default values and prefilled FHIR values', async ({ page 
         },
     })
 
-    await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+    await verifyIsOnKvitteringPage()(page)
 })
 
 test('should pre-fill bidiagnoser from FHIR @feature-toggle', async ({ page }) => {
@@ -124,5 +124,5 @@ test('should pre-fill bidiagnoser from FHIR @feature-toggle', async ({ page }) =
         },
     })
 
-    await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+    await verifyIsOnKvitteringPage()(page)
 })

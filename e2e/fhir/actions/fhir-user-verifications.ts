@@ -10,3 +10,11 @@ export function verifySignerendeBehandler() {
         })
     }
 }
+
+export function verifyIsOnKvitteringPage() {
+    return async (page: Page) => {
+        await test.step('Verify is on kvittering page', async () => {
+            await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+        })
+    }
+}

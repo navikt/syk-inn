@@ -1,4 +1,4 @@
-import { expect, Page, test } from '@playwright/test'
+import { Page, test } from '@playwright/test'
 
 import { expectPatient } from '../actions/user-form-verification'
 import { userInteractionsGroup } from '../utils/actions'
@@ -7,6 +7,7 @@ import { verifySummaryPage } from '../actions/user-verifications'
 
 import { startNewSykmelding } from './actions/fhir-user-actions'
 import { launchWithMock } from './actions/fhir-actions'
+import { verifyIsOnKvitteringPage } from './actions/fhir-user-verifications'
 
 const Kari = { name: 'Kari Normann', fnr: '45847100951' }
 const Espen = { name: 'Espen Eksempel', fnr: '21037712323' }
@@ -127,5 +128,5 @@ const fillAndSubmitMinimalSykmelding =
                 },
             ]),
             submitSykmelding(),
-            (page) => expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible(),
+            verifyIsOnKvitteringPage(),
         )(page)

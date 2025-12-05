@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { test } from '@playwright/test'
 
 import {
     addBidiagnose,
@@ -9,6 +9,7 @@ import {
 } from '../actions/user-actions'
 import { verifySummaryPage } from '../actions/user-verifications'
 import { expectBidagnoses, expectHoveddiagnose, expectPeriode } from '../actions/user-form-verification'
+import { verifyIsOnKvitteringPage } from '../fhir/actions/fhir-user-verifications'
 
 import { launchAndStart } from './actions/mode-user-actions'
 import { modes } from './modes'
@@ -36,8 +37,7 @@ modes.forEach(({ mode }) => {
         ])(page)
 
         await submitSykmelding()(page)
-
-        await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+        await verifyIsOnKvitteringPage()(page)
 
         await page.getByRole('button', { name: 'Dupliser' }).click()
 

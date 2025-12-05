@@ -17,6 +17,7 @@ import {
 import { expectGraphQLRequest } from '../utils/assertions'
 import { userInteractionsGroup } from '../utils/actions'
 import { verifySummaryPage } from '../actions/user-verifications'
+import { verifyIsOnKvitteringPage } from '../fhir/actions/fhir-user-verifications'
 
 import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 import { launchAndStart } from './actions/mode-user-actions'
@@ -78,7 +79,7 @@ modes.forEach(({ mode }) => {
             },
         })
 
-        await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+        await verifyIsOnKvitteringPage()(page)
     })
 
     test(`${mode}: simple - gradert sykmelding`, async ({ page }) => {
@@ -131,7 +132,7 @@ modes.forEach(({ mode }) => {
             },
         })
 
-        await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+        await verifyIsOnKvitteringPage()(page)
     })
 
     test(`${mode}: optional - multiple bidiagnoser`, async ({ page }) => {
@@ -193,7 +194,7 @@ modes.forEach(({ mode }) => {
             },
         })
 
-        await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+        await verifyIsOnKvitteringPage()(page)
     })
 
     test(`${mode}: optional - multiple perioder back to back`, async ({ page }) => {
@@ -251,7 +252,7 @@ modes.forEach(({ mode }) => {
             },
         })
 
-        await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+        await verifyIsOnKvitteringPage()(page)
     })
 
     test(`${mode}: optional - 'tilbakedatering' is asked and required when fom is 5 days in the past`, async ({
@@ -662,7 +663,7 @@ modes.forEach(({ mode }) => {
                     },
                 },
             })
-            await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+            await verifyIsOnKvitteringPage()(page)
         })
 
         test(`${mode}: manuell behandling and expected: should be able to submit læll`, async ({ page }) => {
@@ -712,7 +713,7 @@ modes.forEach(({ mode }) => {
                     },
                 },
             })
-            await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+            await verifyIsOnKvitteringPage()(page)
         })
 
         test(`${mode}: invalid but unexpected: should NOT be able to submit`, async ({ page }) => {

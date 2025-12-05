@@ -5,6 +5,11 @@ import { unleashLogger } from '@core/toggles/unleash'
 import { bundledEnv } from '@lib/env'
 import { localDevelopmentToggles } from '@core/toggles/dev/local'
 
+/**
+ * Will reset each hot-reload, but thats fine.
+ */
+let hasLoggedDevTogglesWarning = false
+
 export async function developmentTogglesWithCookieOverrides(): Promise<IToggle[]> {
     const cookieStore = await cookies()
     const localDevelopmentCookiesWithOverrides = localDevelopmentToggles.map((it) => {
@@ -21,7 +26,12 @@ export async function developmentTogglesWithCookieOverrides(): Promise<IToggle[]
         .map((it) => `\t${it.name}: ${it.enabled} (${it.status})`)
         .join('\n')
 
-    unleashLogger.warn(`Runtime env is ${bundledEnv.runtimeEnv}, using dev toggles, current toggles: \n${toggleStatus}`)
+    if (!hasLoggedDevTogglesWarning) {
+        unleashLogger.warn(
+            `Runtime env is ${bundledEnv.runtimeEnv}, using dev toggles, current toggles: \n${toggleStatus}`,
+        )
+        hasLoggedDevTogglesWarning = true
+    }
 
     return localDevelopmentCookiesWithOverrides
 }
