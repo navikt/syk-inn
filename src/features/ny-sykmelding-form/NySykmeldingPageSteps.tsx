@@ -53,7 +53,7 @@ function AnimateSectionChanges({ step, children }: PropsWithChildren<{ step: str
     const goingLeft = direction === 1
 
     return (
-        <div>
+        <div className="overflow-hidden">
             <AnimatePresence initial={false} custom={goingLeft} mode="popLayout">
                 <motion.div
                     className="relative"
@@ -62,7 +62,6 @@ function AnimateSectionChanges({ step, children }: PropsWithChildren<{ step: str
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: !goingLeft ? 100 : -100 }}
                     transition={{ duration: 0.35 }}
-                    layout="size"
                 >
                     {children}
                 </motion.div>

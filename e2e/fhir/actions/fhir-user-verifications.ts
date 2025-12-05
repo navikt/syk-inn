@@ -1,5 +1,7 @@
 import { expect, Page, test } from '@playwright/test'
 
+import { verifyNoHorizontalScroll } from '../../utils/assertions'
+
 export function verifySignerendeBehandler() {
     return async (page: Page) => {
         await test.step('Verify signerende behandler', async () => {
@@ -15,6 +17,7 @@ export function verifyIsOnKvitteringPage() {
     return async (page: Page) => {
         await test.step('Verify is on kvittering page', async () => {
             await expect(page.getByRole('heading', { name: 'Kvittering på innsendt sykmelding' })).toBeVisible()
+            await verifyNoHorizontalScroll()(page)
         })
     }
 }

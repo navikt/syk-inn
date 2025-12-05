@@ -25,6 +25,7 @@ import {
     expectPeriode,
 } from '../../actions/user-form-verification'
 import { verifySummaryPage } from '../../actions/user-verifications'
+import { verifyNoHorizontalScroll } from '../../utils/assertions'
 
 test('should be able to forlenge an existing sykmelding with correct values', async ({ page }) => {
     await launchWithMock('empty')(page)
@@ -44,8 +45,10 @@ test('should be able to forlenge an existing sykmelding with correct values', as
             tilNav: 'Trenger definitivt to sykmeldinger',
             tilArbeidsgiver: 'Dobbelt så mange sykmeldinger!',
         }),
+        verifyNoHorizontalScroll(),
         nextStep(),
         verifySignerendeBehandler(),
+        verifyNoHorizontalScroll(),
         submitSykmelding(),
     )(page)
 

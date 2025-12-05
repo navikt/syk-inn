@@ -1,6 +1,7 @@
 import { expect, Page, test } from '@playwright/test'
 
 import { expectPatient } from '../../actions/user-form-verification'
+import { verifyNoHorizontalScroll } from '../../utils/assertions'
 
 export function startNewSykmelding(patient?: { name: string; fnr: string }) {
     return async (page: Page) => {
@@ -10,6 +11,8 @@ export function startNewSykmelding(patient?: { name: string; fnr: string }) {
                 const pasientInfoRegion = page.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ })
 
                 if (patient != null) await expectPatient(patient)(pasientInfoRegion)
+
+                await verifyNoHorizontalScroll()(page)
 
                 await pasientInfoRegion.getByRole('button', { name: 'Opprett sykmelding' }).click()
             },
@@ -26,6 +29,8 @@ export function gotoExistingSykmelding(when: 'current' | 'previous', nth: number
 
             await expect(region).toBeVisible()
             await expect(region).not.toHaveAttribute('aria-busy', 'true')
+
+            await verifyNoHorizontalScroll()(page)
 
             const rows = region.getByRole('row')
             await rows.nth(nth).getByRole('link').click()
