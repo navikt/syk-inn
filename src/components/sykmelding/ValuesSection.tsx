@@ -1,6 +1,8 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { BodyLong, Heading, Label, Skeleton } from '@navikt/ds-react'
 
+import { cleanId } from '@lib/string'
+
 type ValueSectionProps = {
     title: string
 }
@@ -9,15 +11,20 @@ type ValueSectionProps = {
  * Simulates the look and feel of aksel's FormSummary component
  */
 export function ValuesSection({ title, children }: PropsWithChildren<ValueSectionProps>): ReactElement {
+    const id = cleanId(title)
+
     return (
-        <div className="bg-surface-default border border-border-subtle rounded-large overflow-hidden">
+        <section
+            aria-labelledby={id}
+            className="bg-surface-default border border-border-subtle rounded-large overflow-hidden"
+        >
             <header className="bg-surface-subtle py-4 px-6">
-                <Heading size="medium" level="3">
+                <Heading id={id} size="medium" level="3">
                     {title}
                 </Heading>
             </header>
             <div className="p-6 pt-5">{children}</div>
-        </div>
+        </section>
     )
 }
 

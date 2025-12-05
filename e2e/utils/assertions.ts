@@ -69,6 +69,30 @@ export async function expectTermToHaveDefinitions(
     })
 }
 
+export function verifyNoHorizontalScroll() {
+    return async (page: Page) => {
+        return test.step('Assert that there is no horizontal scrolling', async () => {
+            const { scrollWidth, clientWidth, overflowX } = await page.evaluate(() => {
+                const el = document.scrollingElement || document.documentElement
+                const style = window.getComputedStyle(el)
+                return {
+                    scrollWidth: el.scrollWidth,
+                    clientWidth: el.clientWidth,
+                    overflowX: style.overflowX,
+                }
+            })
+
+            const epsilon = 1
+
+            expect(
+                scrollWidth,
+                `Expected no horizontal scrolling, but scrollWidth (${scrollWidth}) > clientWidth (${clientWidth})`,
+            ).toBeLessThanOrEqual(clientWidth + epsilon)
+            expect(overflowX, `Expected overflow-x not to allow scrolling, but was "${overflowX}"`).not.toBe('scroll')
+        })
+    }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function anything<T>(): any {
     return expect.anything() as T

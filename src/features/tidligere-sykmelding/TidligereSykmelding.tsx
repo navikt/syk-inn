@@ -82,8 +82,8 @@ function TidligereSykmeldingTopBar(
     props: { loading: true } | { loading: false; sykmelding: SykmeldingFragment },
 ): ReactElement {
     return (
-        <div className="flex justify-between items-center lg:col-span-2 h-8">
-            <div className="flex flex-row gap-10 ml-4">
+        <div className="flex flex-col gap-2 md:gap-0 md:flex-row justify-between items-center lg:col-span-2 h-auto md:h-8 ">
+            <div className="flex flex-col sm:flex-row gap-0 sm:gap-10 justify-around ml-4 w-full md:w-auto">
                 <div className="flex gap-1">
                     <span>Mottatt:</span>
                     {props.loading ? (

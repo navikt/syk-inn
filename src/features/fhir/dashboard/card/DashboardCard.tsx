@@ -4,7 +4,7 @@ import { Heading, Loader } from '@navikt/ds-react'
 import { cn } from '@lib/tw'
 import { cleanId } from '@lib/string'
 
-type BaseProps = { className?: string; fetching?: boolean }
+type BaseProps = { className?: string; fetching?: boolean; ariaBusy?: boolean }
 type StringTitle = { title: string }
 type NodeTitle = { title: ReactNode; id: string }
 type HeadingTitle = { heading: ReactNode; headingId: string }
@@ -14,6 +14,7 @@ function DashboardCard({
     className,
     children,
     fetching,
+    ariaBusy,
     ...rest
 }: (StringTitle | NodeTitle | HeadingTitle | NoTitle) & PropsWithChildren<BaseProps>): ReactElement {
     const id: string | undefined =
@@ -30,6 +31,7 @@ function DashboardCard({
             className={cn(className, 'bg-bg-default rounded-xl py-5 px-6 relative')}
             aria-labelledby={id}
             aria-label={'ariaLabel' in rest ? rest.ariaLabel : undefined}
+            aria-busy={ariaBusy}
         >
             {fetching && <Loader size="small" className="absolute top-4 right-4 opacity-50" />}
             {'title' in rest && !('heading' in rest) && (

@@ -419,7 +419,10 @@ export function previousStep() {
 export function requestAccessToSykmeldinger() {
     return async (page: Page) => {
         await test.step('Request access to sykmeldinger', async () => {
-            const requestAccessButton = page.getByRole('button', { name: 'Vis tidligere sykmeldinger' })
+            const region = page.getByRole('region', { name: 'Historiske sykmeldinger' })
+            await expect(region).toBeVisible()
+
+            const requestAccessButton = region.getByRole('button', { name: 'Vis tidligere sykmeldinger' })
             await expect(requestAccessButton).toBeVisible()
             await requestAccessButton.click()
             await requestAccessButton.waitFor({ state: 'hidden' })

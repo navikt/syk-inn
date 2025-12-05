@@ -29,6 +29,7 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
         <DashboardCard
             className={cn('overflow-auto', className)}
             ariaLabel="Pågående sykmeldinger og utkast"
+            ariaBusy={initialLoad || isRefetching}
             fetching={isRefetching}
         >
             {hasData && dashboardQuery.data && (

@@ -32,6 +32,7 @@ function HistoricalCard({ className }: { className?: string }): ReactElement {
             headingId="historical-card-heading"
             className={cn('overflow-auto', className)}
             fetching={isRefetching}
+            ariaBusy={isRefetching || initialLoad}
         >
             {hasSykmeldinger && hasRequested && (
                 <ComboTable sykmeldinger={dashboardQuery.data?.sykmeldinger?.historical ?? []} drafts={[]} />
