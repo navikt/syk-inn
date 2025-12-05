@@ -54,7 +54,9 @@ function DiagnoseInfoAlert(): ReactElement | null {
                                         } satisfies Diagnose)
                                     }
 
-                                    if (bidiagnoser.length > 0) {
+                                    if (bidiagnoser.length === 0) {
+                                        setValue('diagnoser.bidiagnoser', [])
+                                    } else {
                                         setValue(
                                             'diagnoser.bidiagnoser',
                                             bidiagnoser.map((bi) => ({

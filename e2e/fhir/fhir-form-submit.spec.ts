@@ -2,8 +2,15 @@ import { test } from '@playwright/test'
 import { OpprettSykmeldingDocument } from '@queries'
 import { inDays, inputDate, today } from '@lib/test/date-utils'
 
-import { fillPeriodeRelative, submitSykmelding, nextStep } from '../actions/user-actions'
-import { expectGraphQLRequest } from '../utils/assertions'
+import {
+    fillPeriodeRelative,
+    submitSykmelding,
+    nextStep,
+    addBidiagnose,
+    deleteBidiagnose,
+} from '../actions/user-actions'
+import { anything, expectGraphQLRequest } from '../utils/assertions'
+import { expectBidagnoses } from '../actions/user-form-verification'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
@@ -125,4 +132,97 @@ test('should pre-fill bidiagnoser from FHIR @feature-toggle', async ({ page }) =
     })
 
     await verifyIsOnKvitteringPage()(page)
+})
+
+test.describe('Resetting diagnoser when prefilled from FHIR @feature-toggle', () => {
+    test('adding extra diagnose and resetting them should remove them @feature-toggle', async ({ page }) => {
+        await launchWithMock('empty', {
+            // Kari only has one diagnose in FHIR
+            patient: 'Kari Normann',
+            SYK_INN_AUTO_BIDIAGNOSER: true,
+        })(page)
+        await startNewSykmelding()(page)
+        await fillPeriodeRelative({ type: '100%', days: 3 })(page)
+        await addBidiagnose({ search: 'A03', select: /Feber/ })(page)
+
+        await test.step('Reset diagnoser', async () => {
+            await expectBidagnoses(['Feber'])(page)
+            await page.getByRole('button', { name: 'Bruk diagnoser fra EPJ' }).click()
+            await expectBidagnoses([])(page)
+        })
+
+        await nextStep()(page)
+        await verifySignerendeBehandler()(page)
+
+        const { request, draftId } = await submitSykmelding()(page)
+        await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+            draftId: draftId,
+            force: false,
+            meta: anything(),
+            values: {
+                hoveddiagnose: { code: 'A051', system: 'ICD10' },
+                bidiagnoser: [],
+                aktivitet: anything(),
+                meldinger: anything(),
+                svangerskapsrelatert: anything(),
+                yrkesskade: anything(),
+                arbeidsforhold: null,
+                tilbakedatering: null,
+                pasientenSkalSkjermes: anything(),
+                utdypendeSporsmal: anything(),
+            },
+        })
+
+        await verifyIsOnKvitteringPage()(page)
+    })
+
+    test('removing diagonses from FHIR prefill and reseetting them should add them back @feature-toggle', async ({
+        page,
+    }) => {
+        await launchWithMock('empty', {
+            // Espen has 3 diagnoser in FHIR
+            patient: 'Espen Eksempel',
+            SYK_INN_AUTO_BIDIAGNOSER: true,
+        })(page)
+        await startNewSykmelding()(page)
+        await fillPeriodeRelative({ type: '100%', days: 3 })(page)
+        await expectBidagnoses(['Angstlidelse', 'Botulisme'])(page)
+        await deleteBidiagnose(2)(page)
+        await deleteBidiagnose(1)(page)
+        await expectBidagnoses([])(page)
+
+        await test.step('Reset diagnoser', async () => {
+            await page.getByRole('button', { name: 'Bruk diagnoser fra EPJ' }).click()
+            await expectBidagnoses(['Angstlidelse', 'Botulisme'])(page)
+        })
+
+        await nextStep()(page)
+        await verifySignerendeBehandler()(page)
+
+        const { request, draftId } = await submitSykmelding()(page)
+        await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+            draftId: draftId,
+            force: false,
+            meta: anything(),
+            values: {
+                // Pre filled from FHIR
+                hoveddiagnose: { code: 'L73', system: 'ICPC2' },
+                // Pre filled from FHIR
+                bidiagnoser: [
+                    { system: 'ICPC2', code: 'P74' },
+                    { system: 'ICD10', code: 'A051' },
+                ],
+                aktivitet: anything(),
+                meldinger: anything(),
+                svangerskapsrelatert: anything(),
+                yrkesskade: anything(),
+                arbeidsforhold: null,
+                tilbakedatering: null,
+                pasientenSkalSkjermes: anything(),
+                utdypendeSporsmal: anything(),
+            },
+        })
+
+        await verifyIsOnKvitteringPage()(page)
+    })
 })
