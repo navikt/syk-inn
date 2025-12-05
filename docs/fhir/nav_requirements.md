@@ -56,18 +56,17 @@ denne pilloten. Det kan også komme endringer i kravene til selvstendig webappli
 
 Følgende kodeverk benyttes av Nav i den nye sykmeldingsløsningen:
 
-| Betegnelse          | Detaljer            | OID                      | Gyldige verdier                               |
-| ------------------- | ------------------- | ------------------------ | --------------------------------------------- |
-| Helsedirektoratet   |                     | 2.16.578.1.12.4.1        |                                               |
-| Kodeverk            |                     | 2.16.578.1.12.4.1.1      |                                               |
-| Kodeverk            | Kontakttype         | 2.16.578.1.12.4.1.1.8432 | 1 - Utredning<br>6 - Videokonsultasjon<br>7 - |
-| Telefonkonsultasjon |                     |                          |                                               |
-| Kodeverk            | ICD10               | 2.16.578.1.12.4.1.1.7110 |                                               |
-| Kodeverk            | ICPC-2              | 2.16.578.1.12.4.1.1.7170 |                                               |
-| Kodeverk            | Dokumenttyper       | 2.16.578.1.12.4.1.1.9602 | J01-2 - Sykmeldinger og trygdesaker           |
-| HER-id              |                     | 2.16.578.1.12.4.1.2      |                                               |
-| Identifikator       |                     | 2.16.578.1.12.4.1.4      |                                               |
-| Identifikator       | Fødselsnummer       | 2.16.578.1.12.4.1.4.1    |                                               |
-| Identifikator       | D-nummer            | 2.16.578.1.12.4.1.4.2    |                                               |
-| Identifikator       | HPR-nummer          | 2.16.578.1.12.4.1.4.4    |                                               |
-| Identifikator       | Organisasjonsnummer | 2.16.578.1.12.4.1.4.101  |                                               |
+| Betegnelse        | Detaljer            | OID                      | Gyldige verdier                                                   |
+| ----------------- | ------------------- | ------------------------ | ----------------------------------------------------------------- |
+| Helsedirektoratet |                     | 2.16.578.1.12.4.1        |                                                                   |
+| Kodeverk          |                     | 2.16.578.1.12.4.1.1      |                                                                   |
+| Kodeverk          | Kontakttype         | 2.16.578.1.12.4.1.1.8432 | 1 - Utredning<br>6 - Videokonsultasjon<br>7 - Telefonkonsultasjon |
+| Kodeverk          | ICD10               | 2.16.578.1.12.4.1.1.7110 |                                                                   |
+| Kodeverk          | ICPC-2              | 2.16.578.1.12.4.1.1.7170 |                                                                   |
+| Kodeverk          | Dokumenttyper       | 2.16.578.1.12.4.1.1.9602 | J01-2 - Sykmeldinger og trygdesaker                               |
+| HER-id            |                     | 2.16.578.1.12.4.1.2      |                                                                   |
+| Identifikator     |                     | 2.16.578.1.12.4.1.4      |                                                                   |
+| Identifikator     | Fødselsnummer       | 2.16.578.1.12.4.1.4.1    |                                                                   |
+| Identifikator     | D-nummer            | 2.16.578.1.12.4.1.4.2    |                                                                   |
+| Identifikator     | HPR-nummer          | 2.16.578.1.12.4.1.4.4    |                                                                   |
+| Identifikator     | Organisasjonsnummer | 2.16.578.1.12.4.1.4.101  |                                                                   |
