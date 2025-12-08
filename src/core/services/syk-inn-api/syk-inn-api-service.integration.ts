@@ -281,6 +281,7 @@ const createFullOpprettSykmeldingPayload = (
     metaOverrides?: Partial<OpprettSykmeldingMeta>,
     valueOverrides?: Partial<OpprettSykmeldingPayload['values']>,
 ): OpprettSykmeldingPayload => ({
+    submitId: crypto.randomUUID(),
     meta: {
         source: `syk-inn test`,
         sykmelderHpr: '123456',

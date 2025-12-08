@@ -277,7 +277,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 legekontorOrgnr,
                 legekontorTlf,
             }
-            const payload = resolverInputToSykInnApiPayload(values, opprettMeta)
+            const payload = resolverInputToSykInnApiPayload(draftId, values, opprettMeta)
 
             if (!force) {
                 // When not forcing, we first verify the sykmelding
