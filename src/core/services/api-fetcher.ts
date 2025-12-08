@@ -59,13 +59,14 @@ export async function fetchInternalAPI<
 }: FetchInternalAPIOptionsWithSchema<Schema, AdditionalErrors>): Promise<
     InferredReturnValue | ApiFetchErrors<AdditionalErrors>
 > {
-    const apiConfig = await getApi(api)
-    if ('errorType' in apiConfig) {
-        return apiConfig
-    }
-
     const pathWithoutIds = path.replace(/[a-f0-9\-]{36}/g, '<uuid>')
+
     return spanServerAsync(`InternalAPIs.${api}${pathWithoutIds}`, async (span) => {
+        const apiConfig = await getApi(api)
+        if ('errorType' in apiConfig) {
+            return apiConfig
+        }
+
         span.setAttributes({
             'InternalApi.server': apiConfig.host,
             'InternalApi.path': pathWithoutIds,
@@ -150,7 +151,7 @@ export async function getApi(
         return { host: serverEnv.localSykInnApiHost, token: 'foo-bar-baz' }
     }
 
-    return spanServerAsync('InternalAPIs.tokenExchange', async (span) => {
+    return spanServerAsync(`InternalAPIs.${api}.tokenExchange`, async (span) => {
         const apiConfig = internalApis[api]
         const cluster = bundledEnv.runtimeEnv === 'prod-gcp' ? 'prod-gcp' : 'dev-gcp'
         const target = `api://${cluster}.${apiConfig.namespace}.${api}/.default` as const
