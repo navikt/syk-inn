@@ -25,7 +25,7 @@
         }
     },
     "dependencies": {
-        "@navikt/pino-logger": "^4.4.2",
+        "@navikt/pino-logger": "^4.4.4",
         "@navikt/smart-on-fhir": "1.5.14",
         "hono": "^4.10.7",
         "jose": "^6.1.3",
