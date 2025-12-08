@@ -9,3 +9,9 @@ export function userInteractionsGroup(...actions: CurriedAction[]) {
         }
     }
 }
+
+export async function wait(ms = 100, jitter = 30): Promise<number> {
+    const time = ms + Math.floor(Math.random() * jitter * 2 - jitter)
+    await new Promise((resolve) => setTimeout(resolve, time))
+    return time
+}
