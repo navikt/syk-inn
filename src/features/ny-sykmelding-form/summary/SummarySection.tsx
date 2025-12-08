@@ -27,11 +27,17 @@ import { HardStop } from './explanations/HardStop'
 
 function SummarySection(): ReactElement {
     const [, setStep] = useFormStep()
+
+    const behandlerQuery = useQuery(BehandlerDocument)
+    const dispatch = useAppDispatch()
     const formState = useAppSelector((state) => state.nySykmelding)
+
     const [ruleOutcomeState, { ruled, close, reset }] = useSubmitRuleState()
     const nySykmelding = useOpprettSykmeldingMutation(ruled, reset)
-    const dispatch = useAppDispatch()
-    const behandlerQuery = useQuery(BehandlerDocument)
+    const submitHasOtherOutcome =
+        nySykmelding.mutation.result.data?.opprettSykmelding.__typename === 'OtherSubmitOutcomes'
+            ? nySykmelding.mutation.result.data.opprettSykmelding
+            : null
 
     return (
         <TwoPaneGrid tag="div">
@@ -50,10 +56,10 @@ function SummarySection(): ReactElement {
                                 <HardStop outcome={ruleOutcomeState.outcome} />
                             </SimpleReveal>
                         )}
-                        {nySykmelding.mutation.result?.data?.opprettSykmelding.__typename === 'OtherSubmitOutcomes' && (
+                        {submitHasOtherOutcome && (
                             <SimpleReveal>
                                 <OtherOutcomesAlert
-                                    cause={nySykmelding.mutation.result.data.opprettSykmelding.cause}
+                                    cause={submitHasOtherOutcome.cause}
                                     ident={formState.pasient?.ident}
                                     navn={formState.pasient?.navn}
                                 />
@@ -109,8 +115,9 @@ function SummarySection(): ReactElement {
                                 icon={<PaperplaneIcon aria-hidden />}
                                 iconPosition="right"
                                 disabled={
-                                    nySykmelding.mutation.result.data?.opprettSykmelding.__typename ===
-                                    'OtherSubmitOutcomes'
+                                    nySykmelding.mutation.result.loading ||
+                                    behandlerQuery.loading ||
+                                    submitHasOtherOutcome != null
                                 }
                                 loading={nySykmelding.mutation.result.loading || behandlerQuery.loading}
                                 onClick={() => nySykmelding.mutation.opprettSykmelding()}

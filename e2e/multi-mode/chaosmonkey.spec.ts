@@ -47,7 +47,7 @@ async function attemptButtonSpam(button: Locator, count = 10): Promise<[ok: numb
         for (let i = 0; i < 10; i++) {
             clickPromises.push(
                 button
-                    .click()
+                    .click({ timeout: 1000 })
                     .then(() => successfulClicks++)
                     .catch(() => failedClicks++),
             )
