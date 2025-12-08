@@ -7,7 +7,7 @@ import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/f
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
 
-test.fail(`spamming 'Send'-button repeatedly should only submit 1 sykmelding`, async ({ page }) => {
+test(`spamming 'Send'-button repeatedly should only submit 1 sykmelding`, async ({ page }) => {
     await launchWithMock('empty')(page)
     await startNewSykmelding()(page)
 

@@ -100,10 +100,12 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
 }
 
 export function resolverInputToSykInnApiPayload(
+    draftId: string,
     values: OpprettSykmeldingInput,
     meta: OpprettSykmeldingMeta,
 ): OpprettSykmeldingPayload {
     return {
+        submitId: draftId,
         meta,
         values: {
             pasientenSkalSkjermes: values.pasientenSkalSkjermes,

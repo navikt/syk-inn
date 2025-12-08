@@ -1,4 +1,5 @@
 import { headers } from 'next/headers'
+import { logger } from '@navikt/next-logger'
 
 import {
     RuleResult,
@@ -13,6 +14,11 @@ import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
 import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
 
 export class SykInnApiMock {
+    /**
+     * Used to simulate idempotency that syk-inn-api has
+     */
+    private readonly _alreadySubmittedSubmitIds: Record<string, string> = {}
+
     private readonly _sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[]
 
     constructor(sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[]) {
@@ -34,6 +40,11 @@ export class SykInnApiMock {
     }
 
     async opprettSykmelding(payload: OpprettSykmeldingPayload): Promise<SykInnApiSykmelding> {
+        if (this._alreadySubmittedSubmitIds[payload.submitId] != null) {
+            logger.warn('Hit idempotent syk-inn-api submission, returning previous sykmelding')
+            return this.sykmeldingById(this._alreadySubmittedSubmitIds[payload.submitId]) as SykInnApiSykmelding
+        }
+
         const headersStore = await headers()
         const rule = headersStore.get(MockRuleMarkers.header)
 
@@ -46,6 +57,7 @@ export class SykInnApiMock {
 
         const newSykmelding: SykInnApiSykmelding = sykInnApiPayloadToResponse(crypto.randomUUID(), utfall, payload)
         this._sykmeldinger.push(newSykmelding)
+        this._alreadySubmittedSubmitIds[payload.submitId] = newSykmelding.sykmeldingId
         return newSykmelding
     }
 

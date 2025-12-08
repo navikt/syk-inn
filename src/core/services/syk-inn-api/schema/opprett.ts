@@ -59,6 +59,7 @@ const OpprettSykmeldingAktivitetSchema = z.discriminatedUnion('type', [
 ])
 export type OpprettSykmeldingPayload = z.infer<typeof OpprettSykmeldingPayloadSchema>
 export const OpprettSykmeldingPayloadSchema = z.object({
+    submitId: z.uuid(),
     meta: OpprettSykmeldingMetaSchema,
     values: z.object({
         pasientenSkalSkjermes: z.boolean(),
