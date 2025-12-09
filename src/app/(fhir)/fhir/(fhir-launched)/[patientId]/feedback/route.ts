@@ -60,32 +60,33 @@ export async function POST(
         })}`
 
         try {
-            const response = await context.with(suppressTracing(context.active()), async () => {
-                const webhookResponse = await fetch(webhook, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        text: 'Ny tilbakemelding fra pilotbruker',
-                        blocks: [
-                            {
-                                type: 'header',
-                                text: { type: 'plain_text', text: header, emoji: true },
-                            },
-                            {
-                                type: 'section',
-                                text: { type: 'mrkdwn', text: body.data.message },
-                            },
-                            {
-                                type: 'context',
-                                elements: [{ type: 'plain_text', text: author, emoji: true }],
-                            },
-                        ],
-                    }),
-                })
+            const response = await spanServerAsync('Slack webhook (fetch)', () =>
+                context.with(suppressTracing(context.active()), async () => {
+                    const webhookResponse = await fetch(webhook, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            text: 'Ny tilbakemelding fra pilotbruker',
+                            blocks: [
+                                {
+                                    type: 'header',
+                                    text: { type: 'plain_text', text: header, emoji: true },
+                                },
+                                {
+                                    type: 'section',
+                                    text: { type: 'mrkdwn', text: body.data.message },
+                                },
+                                {
+                                    type: 'context',
+                                    elements: [{ type: 'plain_text', text: author, emoji: true }],
+                                },
+                            ],
+                        }),
+                    })
 
-                return webhookResponse
-            })
-
+                    return webhookResponse
+                }),
+            )
             if (response.ok) {
                 return Response.json({ ok: 'ok' }, { status: 200 })
             }
