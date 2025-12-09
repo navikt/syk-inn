@@ -54,6 +54,7 @@ spec:
         - host: 'tsm-unleash-api.nav.cloud.nais.io'
         - host: 'fhir-api-auth.public.webmedepj.no'
         - host: 'helseid-sts.test.nhn.no'
+        - host: 'slack.com'
       rules:
         - application: syk-inn-api
         - application: tsm-pdl-cache

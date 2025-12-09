@@ -46,6 +46,7 @@ spec:
       external:
         - host: 'tsm-unleash-api.nav.cloud.nais.io'
         - host: 'fhirapi.public.webmed.no'
+        - host: 'slack.com'
       rules:
         - application: syk-inn-api
         - application: tsm-pdl-cache
