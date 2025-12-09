@@ -116,7 +116,7 @@ function ArbeidsforholdFromAaregPicker({
                             Arbeidsgiverregisteret har ingen registrerte arbeidsforhold for pasienten.
                         </BodyShort>
                         <BodyShort>
-                            Pasienten må du be arbeidsgiveren sin om å registrere ansettelsesforholdet i A-meldingen som
+                            Pasienten må be arbeidsgiveren sin om å registrere ansettelsesforholdet i A-meldingen som
                             sendes til Altinn.
                         </BodyShort>
                     </InfoCard.Content>
