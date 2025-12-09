@@ -15,9 +15,9 @@ function SykmeldingPeriodeLink({ sykmeldingId, aktivitet }: Props): ReactElement
     const mode = useMode()
 
     return (
-        <>
-            <AkselNextLink href={mode.paths.sykmelding(sykmeldingId)}>{sykmeldingPeriodeText(aktivitet)}</AkselNextLink>
-        </>
+        <AkselNextLink href={mode.paths.sykmelding(sykmeldingId)} prefetch={false}>
+            {sykmeldingPeriodeText(aktivitet)}
+        </AkselNextLink>
     )
 }
 

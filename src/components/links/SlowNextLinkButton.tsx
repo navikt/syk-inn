@@ -16,7 +16,7 @@ export function SlowNextLinkButton({
     loading,
     icon,
     ...buttonProps
-}: { href: string } & ButtonProps & { ref?: Ref<HTMLAnchorElement> }): ReactElement {
+}: { href: string } & ButtonProps & { ref?: Ref<HTMLAnchorElement>; prefetch?: boolean }): ReactElement {
     const [isLinkPending, setLinkPending] = useState(false)
 
     if (icon != null && children == null) {

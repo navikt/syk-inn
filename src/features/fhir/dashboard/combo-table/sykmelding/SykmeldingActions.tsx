@@ -23,6 +23,7 @@ export function SykmeldingActions({ sykmeldingId, sykmelding, forlengable }: Syk
                     icon={<ChevronRightIcon aria-hidden />}
                     variant="tertiary"
                     size="small"
+                    prefetch={false}
                 />
             </Tooltip>
             <DupliserSykmeldingButton sykmelding={sykmelding} />
@@ -41,6 +42,7 @@ function DupliserSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragme
                 icon={<TabsAddIcon aria-hidden />}
                 variant="tertiary"
                 size="small"
+                prefetch={false}
             />
         </Tooltip>
     )
@@ -50,7 +52,12 @@ function ForlengSykmeldingButton({ sykmelding }: { sykmelding: SykmeldingFragmen
     const mode = useMode()
 
     return (
-        <SlowNextLinkButton href={mode.paths.forleng(sykmelding.sykmeldingId)} variant="secondary" size="small">
+        <SlowNextLinkButton
+            href={mode.paths.forleng(sykmelding.sykmeldingId)}
+            variant="secondary"
+            size="small"
+            prefetch={false}
+        >
             Forlenge
         </SlowNextLinkButton>
     )

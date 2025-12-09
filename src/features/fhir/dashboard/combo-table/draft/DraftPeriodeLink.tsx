@@ -19,7 +19,9 @@ function DraftPeriodeLink({ draftId, lastChanged, perioder }: Props): ReactEleme
 
     return (
         <div className="flex gap-3 items-start lg:items-center italic flex-col lg:flex-row">
-            <AkselNextLink href={mode.paths.utkast(draftId)}>{draftPeriodeText(perioder)}</AkselNextLink>
+            <AkselNextLink href={mode.paths.utkast(draftId)} prefetch={false}>
+                {draftPeriodeText(perioder)}
+            </AkselNextLink>
             <Detail className="text-xs">
                 Sist endret <AutoUpdatingDistance time={lastChanged} />
             </Detail>
