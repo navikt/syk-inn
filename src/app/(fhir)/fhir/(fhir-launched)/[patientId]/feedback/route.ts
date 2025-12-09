@@ -32,14 +32,18 @@ export async function POST(
         return Response.json({ message: 'Vi fant ikke et gyldig HPR nummer' }, { status: 500 })
     }
 
-    const body = feedbackSchema.parse(await request.json())
+    const body = feedbackSchema.safeParse(await request.json())
+    if (!body.success) {
+        logger.error(new Error('Invalid pilot feedback format', { cause: body.error }))
+        return Response.json({ message: 'Feil format på tilbakemeldingen' }, { status: 400 })
+    }
 
     const webhook = getServerEnv().pilotFeedbackSlackWebhook
     if (!webhook) {
         return Response.json({ message: 'Pilot-feedback er ikke konfigurert' }, { status: 500 })
     }
 
-    const header = `Tilbakemelding fra pilotbruker (${body.type.toLowerCase()} ${typeEmoji(body.type)})`
+    const header = `Tilbakemelding fra pilotbruker (${body.data.type.toLowerCase()} ${typeEmoji(body.data.type)})`
     const author = `Fra ${getNameFromFhir(practitioner.name)}, kl ${new Date().toLocaleTimeString('nb-NO')}`
 
     const webhookResponse = await fetch(webhook, {
@@ -54,7 +58,7 @@ export async function POST(
                 },
                 {
                     type: 'section',
-                    text: { type: 'mrkdwn', text: body.message },
+                    text: { type: 'mrkdwn', text: body.data.message },
                 },
                 {
                     type: 'context',

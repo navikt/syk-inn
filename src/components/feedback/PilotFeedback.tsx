@@ -57,8 +57,13 @@ function PilotFeedback(): ReactElement {
     }
 
     return (
-        <div className="fixed -bottom-1 right-16 w-fit">
-            <Button variant="secondary-neutral" size="small" onClick={() => modalRef.current?.showModal()}>
+        <div className="fixed -bottom-1 right-32 w-fit">
+            <Button
+                variant="secondary-neutral"
+                size="small"
+                className="bg-white"
+                onClick={() => modalRef.current?.showModal()}
+            >
                 Tilbakemelding
             </Button>
             <Modal
