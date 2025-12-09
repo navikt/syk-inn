@@ -55,7 +55,9 @@ export async function POST(
         }
 
         const header = `Tilbakemelding fra pilotbruker (${body.data.type.toLowerCase()} ${typeEmoji(body.data.type)})`
-        const author = `Fra ${getNameFromFhir(practitioner.name)}, kl ${new Date().toLocaleTimeString('nb-NO')}`
+        const author = `Fra ${getNameFromFhir(practitioner.name)}, kl ${new Date().toLocaleTimeString('nb-NO', {
+            timeZone: 'Europe/Oslo',
+        })}`
 
         try {
             const response = await context.with(suppressTracing(context.active()), async () => {
