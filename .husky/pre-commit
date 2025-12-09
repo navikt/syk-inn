@@ -1,2 +1,2 @@
-./scripts/document-e2e.sh && git add e2e/README.md
+./scripts/document-e2e.sh && yarn prettier --write e2e/README.md && git add e2e/README.md
 yarn lint-staged
