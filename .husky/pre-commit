@@ -1,1 +1,2 @@
+./scripts/document-e2e.sh && git add e2e/README.md
 yarn lint-staged
