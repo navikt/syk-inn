@@ -70,6 +70,50 @@ describe('SykInnApi integration', () => {
         expect(opprettResult.values.hoveddiagnose?.code).toEqual(payload.values.hoveddiagnose.code)
     })
 
+    it('/sykmelding should handle idempotentness correctly', async () => {
+        const submitId = crypto.randomUUID()
+
+        // Create first
+        const payload = createFullOpprettSykmeldingPayload(undefined, undefined, submitId)
+        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
+
+        if ('errorType' in opprettResult) {
+            throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
+        }
+
+        expect(opprettResult.sykmeldingId).toBeDefined()
+
+        // Same submit ID, should return same sykmelding
+        const secondPayload = createFullOpprettSykmeldingPayload(undefined, undefined, submitId)
+        const secondResult = await sykInnApiService.opprettSykmelding(secondPayload)
+
+        if ('errorType' in secondResult) {
+            throw Error(`Opprett failed, expected OK but had error: ${secondResult.errorType}`)
+        }
+
+        expect(opprettResult.sykmeldingId).toBeDefined()
+        expect(secondResult.sykmeldingId).toEqual(opprettResult.sykmeldingId)
+    })
+
+    it('/sykmelding should handle idempotentness correctly even with simultaneous requests', async () => {
+        const payload = createFullOpprettSykmeldingPayload()
+        const [result1, result2] = await Promise.all([
+            sykInnApiService.opprettSykmelding(payload),
+            sykInnApiService.opprettSykmelding(payload),
+        ])
+
+        if ('errorType' in result1) {
+            throw Error(`Opprett failed, expected OK but had error: ${result1.errorType}`)
+        }
+        if ('errorType' in result2) {
+            throw Error(`Opprett failed, expected OK but had error: ${result2.errorType}`)
+        }
+
+        expect(result1.sykmeldingId).toBeDefined()
+        expect(result2.sykmeldingId).toBeDefined()
+        expect(result2.sykmeldingId).toEqual(result1.sykmeldingId)
+    })
+
     it('/sykmelding should be able to opprettSykmelding with bare minimum values', async () => {
         const payload = createFullOpprettSykmeldingPayload(undefined, {
             bidiagnoser: [],
@@ -280,8 +324,9 @@ describe('SykInnApi integration', () => {
 const createFullOpprettSykmeldingPayload = (
     metaOverrides?: Partial<OpprettSykmeldingMeta>,
     valueOverrides?: Partial<OpprettSykmeldingPayload['values']>,
+    submitId: string = crypto.randomUUID(),
 ): OpprettSykmeldingPayload => ({
-    submitId: crypto.randomUUID(),
+    submitId: submitId,
     meta: {
         source: `syk-inn test`,
         sykmelderHpr: '123456',
