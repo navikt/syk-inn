@@ -3,6 +3,7 @@ import { BodyShort } from '@navikt/ds-react'
 
 import { AkselNextLink } from '@components/links/AkselNextLink'
 import { DetailedAlert, SimpleAlert } from '@components/help/GeneralErrors'
+import { useMode } from '@core/providers/Modes'
 
 export function SykmeldingFormErrors({ refetch }: { refetch: () => void }): ReactElement {
     return (
@@ -18,6 +19,8 @@ export function SykmeldingFormErrors({ refetch }: { refetch: () => void }): Reac
 }
 
 export function SykmeldingDraftFormErrors({ refetch }: { refetch: () => void }): ReactElement {
+    const mode = useMode()
+
     return (
         <div className="grid grid-cols-2 gap-4 p-4">
             <div className="max-w-prose">
@@ -28,8 +31,8 @@ export function SykmeldingDraftFormErrors({ refetch }: { refetch: () => void }):
                     noCallToAction
                 >
                     <BodyShort spacing>
-                        Gå tilbake til <AkselNextLink href="/fhir">oversikten</AkselNextLink> for å se alle dine
-                        tilgjengelige utkast.
+                        Gå tilbake til <AkselNextLink href={mode.paths.root}>oversikten</AkselNextLink> for å se alle
+                        dine tilgjengelige utkast.
                     </BodyShort>
                     <BodyShort>
                         Noe gikk galt ved lasting av skjema. Prøv å laste siden på nytt, eller kontakt support hvis

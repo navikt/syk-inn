@@ -13,6 +13,7 @@ import { Utfall } from '@components/sykmelding/Utfall'
 import { SimpleAlert } from '@components/help/GeneralErrors'
 import TwoPaneGrid from '@components/layout/TwoPaneGrid'
 import { cn } from '@lib/tw'
+import { useMode } from '@core/providers/Modes'
 
 import { TidligereSykmeldingActions } from './TidligereSykmeldingActions'
 
@@ -68,11 +69,13 @@ export function TidligereSykmelding(): ReactElement {
 }
 
 function TidligereSykmeldingShell({ children, className }: PropsWithChildren<{ className?: string }>): ReactElement {
+    const mode = useMode()
+
     return (
         <div className={cn('p-4 bg-white', className)}>
             <TwoPaneGrid tag="div">{children}</TwoPaneGrid>
             <div className="mx-4 flex justify-end p-4 pb-0">
-                <Link href="/fhir">Lukk</Link>
+                <Link href={mode.paths.root}>Lukk</Link>
             </div>
         </div>
     )
