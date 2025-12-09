@@ -19,6 +19,7 @@ import { AutoPatient } from '@core/redux/reducers/ny-sykmelding/patient'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { FhirModeProvider } from '@core/providers/Modes'
 import { createFhirPaths } from '@core/providers/ModePaths'
+import PilotFeedback from '@components/feedback/PilotFeedback'
 
 import { NoPractitionerSession, NoValidPatient } from './launched-errors'
 
@@ -74,6 +75,7 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
                     {children}
                     <LoggedOutWarning />
                     {(isLocal || isDemo) && <LazyDevTools />}
+                    {getFlag('PILOT_FEEDBACK', rootFhirData.toggles) && <PilotFeedback />}
                 </ToggleProvider>
             </Providers>
         </FhirModeProvider>

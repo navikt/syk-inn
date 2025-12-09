@@ -57,4 +57,5 @@ spec:
       memory: 200Mi
   envFrom:
     - secret: tsm-syk-inn-epj-secrets
+    - secret: tsm-syk-inn-slack-secrets
     - secret: tsm-unleash-api-token

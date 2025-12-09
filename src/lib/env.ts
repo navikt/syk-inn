@@ -58,6 +58,7 @@ const ServerEnvSchema = z.object({
     useLocalSykInnApi: z.boolean().default(false),
     localSykInnApiHost: z.string().default('localhost:8080'),
     useLocalValkey: z.boolean().default(false),
+    pilotFeedbackSlackWebhook: z.string().nullish(),
 })
 
 /**
@@ -90,6 +91,7 @@ export function getServerEnv(): ServerEnv {
         useLocalSykInnApi: process.env.USE_LOCAL_SYK_INN_API === 'true',
         localSykInnApiHost: process.env.LOCAL_SYK_INN_API_HOST,
         useLocalValkey: process.env.USE_LOCAL_VALKEY === 'true',
+        pilotFeedbackSlackWebhook: process.env.PILOT_FEEDBACK_SLACK_WEBHOOK,
     } satisfies Record<keyof ServerEnv, unknown | undefined>)
 
     if (bundledEnv.runtimeEnv !== 'local' && parsedEnv.useLocalSykInnApi) {

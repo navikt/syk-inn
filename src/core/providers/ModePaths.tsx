@@ -10,6 +10,7 @@ export type ModePaths = {
     forleng: (id: string) => `/${string}`
     kvittering: (id: string) => `/${string}`
     pdf: (id: string) => `/${string}`
+    feedback: `/${string}`
 }
 
 export const createFhirPaths = (patientId: string): ModePaths => ({
@@ -22,6 +23,7 @@ export const createFhirPaths = (patientId: string): ModePaths => ({
     forleng: (id) => `/fhir/${patientId}/forleng/${id}`,
     kvittering: (id) => `/fhir/${patientId}/kvittering/${id}`,
     pdf: (id) => `/fhir/${patientId}/pdf/${id}`,
+    feedback: `/fhir/${patientId}/feedback`,
 })
 
 export const HelseIdPaths: ModePaths = {
@@ -34,4 +36,5 @@ export const HelseIdPaths: ModePaths = {
     forleng: (id) => `/forleng/${id}`,
     kvittering: (id) => `/kvittering/${id}`,
     pdf: (id) => `/pdf/${id}`,
+    feedback: '/feedback',
 }
