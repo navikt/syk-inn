@@ -8,6 +8,7 @@ import { logger } from '@navikt/next-logger'
 import { pathWithBasePath } from '@lib/url'
 import { useMode } from '@core/providers/Modes'
 import SessionIdInfo from '@components/help/SessionIdInfo'
+import { spanBrowserAsync } from '@lib/otel/browser'
 
 type TilbakemeldingForm = {
     type: 'FEIL' | 'FORSLAG' | 'ANNET'
@@ -27,21 +28,23 @@ function PilotFeedback(): ReactElement {
     const onSubmit = async (values: TilbakemeldingForm): Promise<void> => {
         setLoading(true)
         try {
-            const response = await fetch(pathWithBasePath(mode.paths.feedback), {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(values),
+            await spanBrowserAsync('PilotFeedback.onSubmit', async () => {
+                const response = await fetch(pathWithBasePath(mode.paths.feedback), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(values),
+                })
+
+                if (response.ok) {
+                    setSubmitOk(true)
+                    setLoading(false)
+                    reset()
+                    clearErrors()
+                }
+
+                const data = await response.json()
+                setError('root', { message: data.message })
             })
-
-            if (response.ok) {
-                setSubmitOk(true)
-                setLoading(false)
-                reset()
-                clearErrors()
-            }
-
-            const data = await response.json()
-            setError('root', { message: data.message })
         } catch (e) {
             logger.error(e)
             setError('root', { message: 'Ukjent systemfeil' })
