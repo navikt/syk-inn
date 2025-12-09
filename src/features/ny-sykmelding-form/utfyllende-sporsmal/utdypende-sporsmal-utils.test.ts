@@ -45,6 +45,18 @@ describe('shouldShowUke7Sporsmal', () => {
         )
         expect(result).toBe(false)
     })
+    test('should return true for overlap between current and previous sykmeldinger', () => {
+        const result = shouldShowUke7Sporsmal(
+            [
+                {
+                    periode: { fom: '2022-12-25', tom: '2023-01-05' },
+                    aktivitet: { type: 'AKTIVITET_IKKE_MULIG' },
+                } as unknown as AktivitetsPeriode,
+            ],
+            { days: 50, latestTom: '2023-01-01', previouslyAnsweredSporsmal: [] },
+        )
+        expect(result).toBe(true)
+    })
     test('should not return true on negative gap between current and previous sykmeldinger', () => {
         const result = shouldShowUke7Sporsmal(
             [

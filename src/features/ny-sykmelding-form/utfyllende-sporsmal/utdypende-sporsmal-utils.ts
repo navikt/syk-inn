@@ -9,6 +9,8 @@ import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
 import { raise } from '@lib/ts'
 import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolvers.generated'
 
+const ISYFO_MAX_DAYS_GAP = 16
+
 const currentSykmeldingIsPartOfPeriode = (
     currentPerioder: AktivitetsPeriode[],
     utdypendeSporsmal?: { days: number; latestTom?: string | null } | null,
@@ -23,7 +25,7 @@ const currentSykmeldingIsPartOfPeriode = (
     if (!currentFom || !utdypendeSporsmal?.latestTom) return false
 
     const diff = differenceInDays(new Date(currentFom), new Date(utdypendeSporsmal.latestTom))
-    return diff < 16 && diff >= 0
+    return diff < ISYFO_MAX_DAYS_GAP
 }
 
 export const totalDaysIsMoreThanDays = (
