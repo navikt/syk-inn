@@ -1,20 +1,25 @@
+import { notFound } from 'next/navigation'
+
 import { getAbsoluteURL } from '@lib/url'
 import { createFhirHandler } from '@navikt/fhir-mock-server/next'
+import { isCloud } from '@lib/env'
 
 import { getMockStore } from './mock-storage'
 
-const handler = createFhirHandler({
-    baseUrl: getAbsoluteURL(),
-    fhirPath: '/api/mocks/fhir',
-    store: getMockStore,
-    clients: [
-        {
-            clientId: 'syk-inn',
-            method: 'client_secret_basic',
-            clientSecret: 'dev-mode-client-secret',
-        },
-    ],
-})
+const handler = !isCloud
+    ? createFhirHandler({
+          baseUrl: getAbsoluteURL(),
+          fhirPath: '/api/mocks/fhir',
+          store: getMockStore,
+          clients: [
+              {
+                  clientId: 'syk-inn',
+                  method: 'client_secret_basic',
+                  clientSecret: 'dev-mode-client-secret',
+              },
+          ],
+      })
+    : () => notFound()
 
 export {
     handler as GET,
