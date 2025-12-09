@@ -1,6 +1,7 @@
 import { beforeAll, describe, it, expect } from 'vitest'
 import { StartedTestContainer } from 'testcontainers'
 import { Kafka } from 'kafkajs'
+import * as R from 'remeda'
 
 import { getSykInnApiPath, initializeSykInnApi } from '@lib/test/syk-inn-api'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
@@ -15,7 +16,7 @@ describe('SykInnApi integration', () => {
     let kafka: Kafka
 
     beforeAll(async () => {
-        const sykInnContainers = await initializeSykInnApi()
+        const sykInnContainers = await initializeSykInnApi(false)
         sykInnApi = sykInnContainers.sykInnApi
         valkey = await initializeValkey()
         kafka = await initializeKafka(sykInnContainers.kafka)
@@ -68,6 +69,50 @@ describe('SykInnApi integration', () => {
         expect(opprettResult.sykmeldingId).toBeDefined()
         expect(opprettResult.values.hoveddiagnose?.system).toEqual(payload.values.hoveddiagnose.system)
         expect(opprettResult.values.hoveddiagnose?.code).toEqual(payload.values.hoveddiagnose.code)
+    })
+
+    it('POST /sykmelding should handle idempotentness correctly', async () => {
+        const submitId = crypto.randomUUID()
+
+        // Create first
+        const payload = createFullOpprettSykmeldingPayload(undefined, undefined, submitId)
+        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
+
+        if ('errorType' in opprettResult) {
+            throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
+        }
+
+        expect(opprettResult.sykmeldingId).toBeDefined()
+
+        // Same submit ID, should return same sykmelding
+        const secondPayload = createFullOpprettSykmeldingPayload(undefined, undefined, submitId)
+        const secondResult = await sykInnApiService.opprettSykmelding(secondPayload)
+
+        if ('errorType' in secondResult) {
+            throw Error(`Opprett failed, expected OK but had error: ${secondResult.errorType}`)
+        }
+
+        expect(opprettResult.sykmeldingId).toBeDefined()
+        expect(secondResult.sykmeldingId).toEqual(opprettResult.sykmeldingId)
+    })
+
+    it.only('POST /sykmelding should handle idempotentness correctly even with simultaneous requests', async () => {
+        const payload = createFullOpprettSykmeldingPayload()
+        const [result1, result2] = await Promise.all([
+            sykInnApiService.opprettSykmelding(payload),
+            sykInnApiService.opprettSykmelding(payload),
+        ])
+
+        if ('errorType' in result1) {
+            throw Error(`Opprett failed, expected OK but had error: ${result1.errorType}`)
+        }
+        if ('errorType' in result2) {
+            throw Error(`Opprett failed, expected OK but had error: ${result2.errorType}`)
+        }
+
+        expect(result1.sykmeldingId).toBeDefined()
+        expect(result2.sykmeldingId).toBeDefined()
+        expect(result2.sykmeldingId).toEqual(result1.sykmeldingId)
     })
 
     it('POST /sykmelding should be able to opprettSykmelding with bare minimum values', async () => {
@@ -185,10 +230,11 @@ describe('SykInnApi integration', () => {
     })
 
     it('GET /sykmelding should return list of sykmeldinger', async () => {
-        const payload = createFullOpprettSykmeldingPayload()
+        const payload1 = createFullOpprettSykmeldingPayload()
+        const payload2 = createFullOpprettSykmeldingPayload()
         const [opprettet1, opprettet2] = await Promise.all([
-            sykInnApiService.opprettSykmelding({ ...payload, submitId: crypto.randomUUID() }),
-            sykInnApiService.opprettSykmelding({ ...payload, submitId: crypto.randomUUID() }),
+            sykInnApiService.opprettSykmelding(payload1),
+            sykInnApiService.opprettSykmelding(payload2),
         ])
 
         if ('errorType' in opprettet1 || 'errorType' in opprettet2) {
@@ -197,8 +243,8 @@ describe('SykInnApi integration', () => {
         }
 
         const sykmeldinger = await sykInnApiService.getSykmeldinger(
-            payload.meta.pasientIdent,
-            payload.meta.sykmelderHpr,
+            payload1.meta.pasientIdent,
+            payload1.meta.sykmelderHpr,
         )
 
         if ('errorType' in sykmeldinger) {
@@ -233,8 +279,12 @@ describe('SykInnApi integration', () => {
             throw Error(`Fetch all sykmeldinger failed, expected OK but had error: ${sykmeldinger.errorType}`)
         }
 
-        const onlyNew = sykmeldinger.filter(
-            (it) => it.sykmeldingId === opprettet1.sykmeldingId || it.sykmeldingId === opprettet2.sykmeldingId,
+        const onlyNew = R.pipe(
+            sykmeldinger,
+            R.filter(
+                (it) => it.sykmeldingId === opprettet1.sykmeldingId || it.sykmeldingId === opprettet2.sykmeldingId,
+            ),
+            R.sortBy((it) => it.meta.mottatt),
         )
 
         expect(onlyNew).toHaveLength(2)
@@ -280,8 +330,9 @@ describe('SykInnApi integration', () => {
 const createFullOpprettSykmeldingPayload = (
     metaOverrides?: Partial<OpprettSykmeldingMeta>,
     valueOverrides?: Partial<OpprettSykmeldingPayload['values']>,
+    submitId: string = crypto.randomUUID(),
 ): OpprettSykmeldingPayload => ({
-    submitId: crypto.randomUUID(),
+    submitId: submitId,
     meta: {
         source: `syk-inn test`,
         sykmelderHpr: '123456',

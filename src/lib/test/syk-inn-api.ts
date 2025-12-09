@@ -3,10 +3,12 @@ import { logger } from '@navikt/next-logger'
 import { PostgreSqlContainer } from '@testcontainers/postgresql'
 import { KafkaContainer, StartedKafkaContainer } from '@testcontainers/kafka'
 
+import { streamToStdout } from '@lib/test/testcontainers-utils'
+
 const POSTGRES_ALIAS = 'db'
 const KAFKA_ALIAS = 'kafka'
 
-export async function initializeSykInnApi(): Promise<{
+export async function initializeSykInnApi(applog: boolean = false): Promise<{
     sykInnApi: StartedTestContainer
     kafka: StartedKafkaContainer
 }> {
@@ -54,6 +56,7 @@ export async function initializeSykInnApi(): Promise<{
         .withExposedPorts(8080)
         .withWaitStrategy(Wait.forHttp('/internal/health', 8080))
         .withStartupTimeout(30_000)
+        .withLogConsumer(applog ? streamToStdout : () => void 0)
         .start()
         .then((it) => {
             logger.info(`syk-inn-api ready!`)
