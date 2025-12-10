@@ -25,7 +25,7 @@ class AppMetrics {
     })
 
     public createdSykmelding = new Counter({
-        name: 'syk_inn_number_of_created_sykmeldinger_count',
+        name: 'syk_inn_number_of_created_sykmeldinger_total',
         help: 'Histogram of number of created fetched sykmeldinger from FHIR server',
         labelNames: ['hpr', 'outcome'] as const,
     })
