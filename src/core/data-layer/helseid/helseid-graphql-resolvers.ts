@@ -21,6 +21,7 @@ import { getFlag, getUserToggles } from '@core/toggles/unleash'
 import { DraftValuesSchema } from '@data-layer/draft/draft-schema'
 import { getDraftClient } from '@data-layer/draft/draft-client'
 import { NoHelseIdCurrentPatient } from '@data-layer/helseid/error/Errors'
+import metrics from '@lib/prometheus/metrics'
 
 import { HelseIdGraphqlContext } from './helseid-graphql-context'
 
@@ -185,6 +186,14 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             if ('errorType' in result) {
                 throw new GraphQLError('API_ERROR')
             }
+
+            metrics.createdSykmelding.inc(
+                {
+                    hpr: hpr,
+                    outcome: result.utfall.result,
+                },
+                1,
+            )
 
             // Delete the draft after successful creation
             const draftClient = await getDraftClient()

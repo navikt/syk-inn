@@ -303,6 +303,14 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('API_ERROR')
             }
 
+            metrics.createdSykmelding.inc(
+                {
+                    hpr: hpr,
+                    outcome: result.utfall.result,
+                },
+                1,
+            )
+
             // Delete the draft after successful creation
             const draftClient = await getDraftClient()
             await draftClient.deleteDraft(draftId, { hpr: hpr, ident: pasientIdent })
