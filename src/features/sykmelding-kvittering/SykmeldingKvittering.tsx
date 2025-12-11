@@ -3,7 +3,6 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { BodyShort, Button, ExpansionCard, Heading, Link as AkselLink, Skeleton, InfoCard } from '@navikt/ds-react'
 import { CheckmarkCircleFillIcon, ChevronDownIcon, TabsAddIcon } from '@navikt/aksel-icons'
-import Link from 'next/link'
 import { useQuery } from '@apollo/client/react'
 
 import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
@@ -240,11 +239,11 @@ function SykmeldingKvitteringStatus({ sykmeldingId }: { sykmeldingId: string }):
                 Når sykmeldingen er sendt, får den som er sykmeldt en SMS fra Nav som bekrefter at vi har mottatt den.
             </BodyShort>
             <BodyShort spacing>
-                Deretter kan den sykmeldte logge inn på{' '}
-                <Link href="https://www.nav.no/syk/sykefravaer" target="_blank">
-                    Ditt Sykefravær
-                </Link>{' '}
-                for å sende sykmeldingen videre til arbeidsgiveren eller til Nav, hvis det er nødvendig.
+                Deretter kan den sykmeldte besøke{' '}
+                <AkselLink href="https://www.nav.no/syk/sykefravaer" target="_blank">
+                    Ditt Sykefravær (krever innlogging)
+                </AkselLink>{' '}
+                for å sende sykmeldingen videre til arbeidsgiveren eller til Nav, dersom det er nødvendig.
             </BodyShort>
         </div>
     )
