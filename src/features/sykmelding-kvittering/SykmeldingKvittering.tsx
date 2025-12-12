@@ -2,7 +2,7 @@
 
 import React, { ReactElement, useEffect, useState } from 'react'
 import { BodyShort, Button, ExpansionCard, Heading, Link as AkselLink, Skeleton, InfoCard } from '@navikt/ds-react'
-import { CheckmarkCircleFillIcon, ChevronDownIcon, TabsAddIcon } from '@navikt/aksel-icons'
+import { CheckmarkCircleFillIcon, ChevronDownIcon, ExclamationmarkTriangleIcon, TabsAddIcon } from '@navikt/aksel-icons'
 import { useQuery } from '@apollo/client/react'
 
 import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
@@ -106,6 +106,11 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
                         </InfoCard.Header>
                     </InfoCard>
                 )}
+                <InfoCard data-color="warning" size="small" className="mt-2">
+                    <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+                        <InfoCard.Title>Husk at L-takster må legges inn manuelt</InfoCard.Title>
+                    </InfoCard.Header>
+                </InfoCard>
             </div>
             <div className="flex justify-between mt-4 mb-4">
                 {sykmelding ? (
