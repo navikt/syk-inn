@@ -111,7 +111,7 @@ export async function fetchInternalAPI<
         const isJsonResponse: boolean = response.headers.get('Content-Type')?.includes('application/json') ?? false
         if (!isJsonResponse) {
             const error = new Error(
-                `Did not get JSON payload (got: ${response.headers.get('Content-Type') ?? 'nothing'}) was provided for ${api}${path}`,
+                `Did not get JSON payload (got: ${response.headers.get('Content-Type') ?? 'nothing'}) was provided for ${api}${path} (${method})`,
             )
             failSpan(span, 'Invalid Content-Type', error)
             throw error

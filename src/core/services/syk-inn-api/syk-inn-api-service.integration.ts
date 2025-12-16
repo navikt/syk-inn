@@ -30,14 +30,14 @@ describe('SykInnApi integration', () => {
         expect(healthResult.status).toEqual('UP')
     })
 
-    it('/sykmelding/verify should be able to verify with all values', async () => {
+    it('POST /sykmelding/verify should be able to verify with all values', async () => {
         const opprettResult = await sykInnApiService.verifySykmelding(createFullOpprettSykmeldingPayload())
 
         // If verify is OK, it returns true
         expect(opprettResult).toBe(true)
     })
 
-    it('/sykmelding/verify should inform that patient does not exist', async () => {
+    it('POST /sykmelding/verify should inform that patient does not exist', async () => {
         const opprettResult = await sykInnApiService.verifySykmelding(
             createFullOpprettSykmeldingPayload({
                 pasientIdent: 'does-not-exist',
@@ -57,7 +57,7 @@ describe('SykInnApi integration', () => {
         expect(opprettResult.message).toEqual('Person does not exist')
     })
 
-    it('/sykmelding should be able to opprettSykmelding with all values', async () => {
+    it('POST /sykmelding should be able to opprettSykmelding with all values', async () => {
         const payload = createFullOpprettSykmeldingPayload()
         const opprettResult = await sykInnApiService.opprettSykmelding(payload)
 
@@ -70,7 +70,7 @@ describe('SykInnApi integration', () => {
         expect(opprettResult.values.hoveddiagnose?.code).toEqual(payload.values.hoveddiagnose.code)
     })
 
-    it('/sykmelding should be able to opprettSykmelding with bare minimum values', async () => {
+    it('POST /sykmelding should be able to opprettSykmelding with bare minimum values', async () => {
         const payload = createFullOpprettSykmeldingPayload(undefined, {
             bidiagnoser: [],
             meldinger: {
@@ -100,7 +100,7 @@ describe('SykInnApi integration', () => {
         expect(opprettResult.values.tilbakedatering).toBeNull()
     })
 
-    it('/sykmelding should be published to kafka from syk-inn-api', async () => {
+    it('POST /sykmelding should be published to kafka from syk-inn-api', async () => {
         const payload = createFullOpprettSykmeldingPayload()
         const opprettResult = await sykInnApiService.opprettSykmelding(payload)
 
@@ -135,7 +135,7 @@ describe('SykInnApi integration', () => {
         )
     }, 10_000)
 
-    it('/sykmelding/<id> should fetch correctly', async () => {
+    it('GET /sykmelding/<id> should fetch correctly', async () => {
         const payload = createFullOpprettSykmeldingPayload()
         const opprettResult = await sykInnApiService.opprettSykmelding(payload)
 
@@ -161,7 +161,7 @@ describe('SykInnApi integration', () => {
         expect(singleSykmelding.values.hoveddiagnose?.system).toEqual(payload.values.hoveddiagnose.system)
     })
 
-    it('/sykmelding/<id> should get redacted sykmelding when HPR differs', async () => {
+    it('GET /sykmelding/<id> should get redacted sykmelding when HPR differs', async () => {
         const payload = createFullOpprettSykmeldingPayload()
         const opprettResult = await sykInnApiService.opprettSykmelding(payload)
 
@@ -184,11 +184,11 @@ describe('SykInnApi integration', () => {
         expect(Object.keys(singleSykmelding.values)).toHaveLength(1)
     })
 
-    it('/sykmeldinger should return list of sykmeldinger', async () => {
+    it('GET /sykmelding should return list of sykmeldinger', async () => {
         const payload = createFullOpprettSykmeldingPayload()
         const [opprettet1, opprettet2] = await Promise.all([
-            sykInnApiService.opprettSykmelding(payload),
-            sykInnApiService.opprettSykmelding(payload),
+            sykInnApiService.opprettSykmelding({ ...payload, submitId: crypto.randomUUID() }),
+            sykInnApiService.opprettSykmelding({ ...payload, submitId: crypto.randomUUID() }),
         ])
 
         if ('errorType' in opprettet1 || 'errorType' in opprettet2) {
@@ -214,7 +214,7 @@ describe('SykInnApi integration', () => {
         expect(onlyNew[1].kind).toEqual('full')
     })
 
-    it('/sykmeldinger should return list of sykmeldinger mixed with full and redacted', async () => {
+    it('GET /sykmelding should return list of sykmeldinger mixed with full and redacted', async () => {
         const opprettet1 = await sykInnApiService.opprettSykmelding(
             createFullOpprettSykmeldingPayload({ pasientIdent: '02020221155', sykmelderHpr: 'oneth' }),
         )
@@ -242,7 +242,7 @@ describe('SykInnApi integration', () => {
         expect(onlyNew[1].kind).toEqual('redacted')
     })
 
-    it('/sykmelding/<id>/pdf should get PDF', async () => {
+    it('GET /sykmelding/<id>/pdf should get PDF', async () => {
         const payload = createFullOpprettSykmeldingPayload()
         const opprettResult = await sykInnApiService.opprettSykmelding(payload)
 
