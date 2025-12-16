@@ -37,7 +37,9 @@ export function expectPeriode({
                 await expect(periodeRegion.getByRole('combobox', { name: 'Mulighet for arbeid' })).toHaveValue(
                     'GRADERT',
                 )
-                await expect(periodeRegion.getByRole('textbox', { name: 'Sykmeldingsgrad (%)\n' })).toHaveValue('65')
+                await expect(periodeRegion.getByRole('textbox', { name: 'Sykmeldingsgrad (%)\n' })).toHaveValue(
+                    `${type.grad}`,
+                )
             }
         })
     }

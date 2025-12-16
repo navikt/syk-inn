@@ -1,4 +1,4 @@
-import { test } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import { OpprettSykmeldingDocument } from '@queries'
 import { inDays, inputDate, today } from '@lib/test/date-utils'
 
@@ -10,7 +10,8 @@ import {
     deleteBidiagnose,
 } from '../actions/user-actions'
 import { anything, expectGraphQLRequest } from '../utils/assertions'
-import { expectBidagnoses } from '../actions/user-form-verification'
+import { expectBidagnoses, expectPeriode } from '../actions/user-form-verification'
+import { wait } from '../utils/actions'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
@@ -67,6 +68,41 @@ test('submit with only default values and prefilled FHIR values', async ({ page 
             },
         },
     })
+
+    await verifyIsOnKvitteringPage()(page)
+})
+
+test('should be able to submit purely with shortcuts', async ({ page }) => {
+    await launchWithMock('empty')(page)
+
+    // Wait for dashboard to load completely
+    await expect(page.getByRole('region', { name: 'Oversikt over Espen Eksempel sitt sykefravær' })).toBeVisible()
+
+    // Start new sykmelding with shortcut Alt+N
+    await page.keyboard.press('Alt+KeyN')
+
+    await test.step('fill only values that are not prefilled (tom, grad)', async () => {
+        await page.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(inDays(3)))
+        await page.getByRole('textbox', { name: 'Sykmeldingsgrad (%)' }).fill(`60`)
+    })
+
+    // Go to summary with shortcut Alt+N
+    await page.keyboard.press('Alt+KeyN')
+    await verifySignerendeBehandler()(page)
+
+    // Should be able to return with shortcut Alt+LeftArrow
+    await page.keyboard.press('Alt+ArrowLeft')
+    await expectPeriode({ type: { grad: 60 }, days: 3, fromRelative: 0 })(page)
+
+    // Go to summary with shortcut Alt+N again
+    await page.keyboard.press('Alt+KeyN')
+    await verifySignerendeBehandler()(page)
+
+    // Animations AAAAAAAAAAAAaaaaaaaaaaaa
+    await wait(500, 0)
+
+    // Submit sykmelding
+    await page.keyboard.press('Alt+KeyN')
 
     await verifyIsOnKvitteringPage()(page)
 })

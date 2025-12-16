@@ -52,11 +52,12 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [fhir/fhir-form-submit.spec.ts](./fhir/fhir-form-submit.spec.ts)
 
-- [submit with only default values and prefilled FHIR values](./fhir/fhir-form-submit.spec.ts#L19)
-- [should pre-fill bidiagnoser from FHIR @feature-toggle](./fhir/fhir-form-submit.spec.ts#L74)
+- [submit with only default values and prefilled FHIR values](./fhir/fhir-form-submit.spec.ts#L20)
+- [should be able to submit purely with shortcuts](./fhir/fhir-form-submit.spec.ts#L75)
+- [should pre-fill bidiagnoser from FHIR @feature-toggle](./fhir/fhir-form-submit.spec.ts#L110)
     ## [Resetting diagnoser when prefilled from FHIR @feature-toggle](./fhir/fhir-form-submit.spec.ts)
-    - [adding extra diagnose and resetting them should remove them @feature-toggle](./fhir/fhir-form-submit.spec.ts#L138)
-    - [removing diagonses from FHIR prefill and reseetting them should add them back @feature-toggle](./fhir/fhir-form-submit.spec.ts#L179)
+    - [adding extra diagnose and resetting them should remove them @feature-toggle](./fhir/fhir-form-submit.spec.ts#L174)
+    - [removing diagonses from FHIR prefill and reseetting them should add them back @feature-toggle](./fhir/fhir-form-submit.spec.ts#L215)
 
 ## [fhir/fhir-launch.spec.ts](./fhir/fhir-launch.spec.ts)
 
@@ -165,4 +166,4 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 - [FHIR: successful launch but is not a PILOT_USER should see no graphql requests @feature-toggle](./multi-mode/launch.spec.ts#L6)
 - [Standalone: successful launch but is not a PILOT_USER should see no graphql requests @feature-toggle](./multi-mode/launch.spec.ts#L6)
-    <!-- TESTS:END -->
+  <!-- TESTS:END -->
