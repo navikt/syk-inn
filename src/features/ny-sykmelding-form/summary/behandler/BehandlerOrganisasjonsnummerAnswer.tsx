@@ -1,11 +1,12 @@
 import React, { ReactElement, RefObject, useImperativeHandle, useRef, useState } from 'react'
-import { Button, FormSummary, TextField } from '@navikt/ds-react'
+import { BodyShort, Button, FormSummary, TextField } from '@navikt/ds-react'
 import { useForm } from 'react-hook-form'
 import { CheckmarkHeavyIcon } from '@navikt/aksel-icons'
 
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { useMode } from '@core/providers/Modes'
+import { DetailedAlert } from '@components/help/GeneralErrors'
 
 type Props = {
     contextOrganisasjonsnummer: string | undefined | null
@@ -33,6 +34,8 @@ function BehandlerOrganisasjonsnummerAnswer({ contextOrganisasjonsnummer }: Prop
         )
     }
 
+    const hasValidOrgNummer = /^[0-9]{9}$/.test(contextOrganisasjonsnummer ?? '')
+
     return (
         <FormSummary.Answer className="relative">
             <FormSummary.Label>Organisasjonsnummer</FormSummary.Label>
@@ -40,8 +43,26 @@ function BehandlerOrganisasjonsnummerAnswer({ contextOrganisasjonsnummer }: Prop
                 <FormSummary.Value>
                     {manualOrgnummer} <span className="italic">(manuelt)</span>
                 </FormSummary.Value>
-            ) : (
+            ) : hasValidOrgNummer ? (
                 <FormSummary.Value>{contextOrganisasjonsnummer}</FormSummary.Value>
+            ) : (
+                <DetailedAlert
+                    title="Ugyldig organisasjonsnummer"
+                    level="warning"
+                    size="small"
+                    className="mt-2"
+                    noCallToAction
+                    noSessionId
+                >
+                    <BodyShort spacing>
+                        Organisasjonsnummeret vi fant på deg ({contextOrganisasjonsnummer}) ser ikke ut til å være et
+                        gyldig organisasjonsnummer.
+                    </BodyShort>
+                    <BodyShort>
+                        Du bør derfor endre det for å unngå problemer med innsending av sykmeldingen. Dette må endres i
+                        ditt EPJ-system.
+                    </BodyShort>
+                </DetailedAlert>
             )}
             {mode.type !== 'FHIR' && (
                 <Button
