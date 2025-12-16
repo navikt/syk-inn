@@ -114,11 +114,7 @@ function SummarySection(): ReactElement {
                                 variant="primary"
                                 icon={<PaperplaneIcon aria-hidden />}
                                 iconPosition="right"
-                                disabled={
-                                    nySykmelding.mutation.result.loading ||
-                                    behandlerQuery.loading ||
-                                    submitHasOtherOutcome != null
-                                }
+                                disabled={nySykmelding.mutation.result.loading || behandlerQuery.loading}
                                 loading={nySykmelding.mutation.result.loading || behandlerQuery.loading}
                                 onClick={() => nySykmelding.mutation.opprettSykmelding()}
                                 shortcut={{
