@@ -6,7 +6,7 @@ const INPUT_TOPIC_NAME = 'tsm.sykmeldinger-input'
 export async function initializeKafka(container: StartedKafkaContainer): Promise<Kafka> {
     return new Kafka({
         clientId: 'syk-inn-test',
-        brokers: [`localhost:${container.getMappedPort(9093)}`],
+        brokers: [`${container.getHost()}:${container.getMappedPort(9093)}`],
         logLevel: logLevel.ERROR,
     })
 }
