@@ -4,6 +4,7 @@ import importAlias from '@limegrass/eslint-plugin-import-alias'
 import { defineConfig } from 'eslint/config'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import tsmEslintReact from '@navikt/tsm-eslint-react'
+import vitest from '@vitest/eslint-plugin'
 
 const eslintConfig = defineConfig([
     ...nextVitals,
@@ -39,6 +40,13 @@ const eslintConfig = defineConfig([
         files: ['e2e/**/*.ts'],
         rules: {
             'import/no-extraneous-dependencies': 'off',
+        },
+    },
+    {
+        files: ['src/**/*.test.ts', 'src/**/*.integration.ts'],
+        plugins: { vitest },
+        rules: {
+            ...vitest.configs.recommended.rules,
         },
     },
 ])

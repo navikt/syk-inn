@@ -96,7 +96,7 @@ describe('SykInnApi integration', () => {
         expect(secondResult.sykmeldingId).toEqual(opprettResult.sykmeldingId)
     })
 
-    it.only('POST /sykmelding should handle idempotentness correctly even with simultaneous requests', async () => {
+    it('POST /sykmelding should handle idempotentness correctly even with simultaneous requests', async () => {
         const payload = createFullOpprettSykmeldingPayload()
         const [result1, result2] = await Promise.all([
             sykInnApiService.opprettSykmelding(payload),
@@ -309,7 +309,7 @@ describe('SykInnApi integration', () => {
         expect(pdf.byteLength).toBeGreaterThan(1000)
     }, 10_000)
 
-    it('/sykmelding/<id>/pdf not get PDF that does not belong to HPR', async () => {
+    it('GET /sykmelding/<id>/pdf not get PDF that does not belong to HPR', async () => {
         const payload = createFullOpprettSykmeldingPayload()
         const opprettResult = await sykInnApiService.opprettSykmelding(payload)
 
