@@ -4047,7 +4047,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/scope-manager@npm:8.49.0":
+"@typescript-eslint/scope-manager@npm:8.49.0, @typescript-eslint/scope-manager@npm:^8.46.1":
   version: 8.49.0
   resolution: "@typescript-eslint/scope-manager@npm:8.49.0"
   dependencies:
@@ -4108,7 +4108,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:8.49.0":
+"@typescript-eslint/utils@npm:8.49.0, @typescript-eslint/utils@npm:^8.46.1":
   version: 8.49.0
   resolution: "@typescript-eslint/utils@npm:8.49.0"
   dependencies:
@@ -4296,6 +4296,25 @@ __metadata:
   version: 1.11.1
   resolution: "@unrs/resolver-binding-win32-x64-msvc@npm:1.11.1"
   conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@vitest/eslint-plugin@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "@vitest/eslint-plugin@npm:1.5.2"
+  dependencies:
+    "@typescript-eslint/scope-manager": "npm:^8.46.1"
+    "@typescript-eslint/utils": "npm:^8.46.1"
+  peerDependencies:
+    eslint: ">=8.57.0"
+    typescript: ">=5.0.0"
+    vitest: "*"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+    vitest:
+      optional: true
+  checksum: 10c0/921ad59d42108c570799ffb4d76f37214a854b464c9470cc51922d1fffabbbbffd5c2299507210f922f2152b56b1d40861d371e989577262ca5a7eaf73583cf4
   languageName: node
   linkType: hard
 
@@ -11336,6 +11355,7 @@ __metadata:
     "@types/react": "npm:19.2.7"
     "@types/react-dom": "npm:19.2.3"
     "@unleash/nextjs": "npm:^1.6.2"
+    "@vitest/eslint-plugin": "npm:^1.5.2"
     clsx: "npm:^2.1.1"
     concurrently: "npm:^9.2.1"
     date-fns: "npm:^4.1.0"
