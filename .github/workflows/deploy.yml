@@ -82,6 +82,7 @@ jobs:
       digest: ${{ steps.next-build.outputs.digest }}
 
   build-prod:
+    if: github.ref_name == 'main'
     name: Build for prod
     runs-on: ubuntu-latest
     steps:
