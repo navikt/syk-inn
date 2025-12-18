@@ -4,17 +4,24 @@ import { StartedKafkaContainer } from '@testcontainers/kafka'
 const INPUT_TOPIC_NAME = 'tsm.sykmeldinger-input'
 
 export async function initializeKafka(container: StartedKafkaContainer): Promise<Kafka> {
-    return new Kafka({
+    const kafka = new Kafka({
         clientId: 'syk-inn-test',
         brokers: [`${container.getHost()}:${container.getMappedPort(9093)}`],
         logLevel: logLevel.ERROR,
     })
+
+    const admin = kafka.admin()
+    await admin.connect()
+    await admin.createTopics({
+        topics: [{ topic: INPUT_TOPIC_NAME, numPartitions: 1 }],
+    })
+    await admin.disconnect()
+    return kafka
 }
 
 export async function initializeConsumer(kafka: Kafka): Promise<Consumer> {
     const consumer = kafka.consumer({ groupId: crypto.randomUUID() })
     await consumer.subscribe({ topic: INPUT_TOPIC_NAME, fromBeginning: true })
-
     return consumer
 }
 

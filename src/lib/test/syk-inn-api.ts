@@ -61,6 +61,9 @@ export async function initializeSykInnApi(applog: boolean = false): Promise<{
             DB_USER: postgres.getUsername(),
             DB_PASSWORD: postgres.getPassword(),
             BOOTSTRAP_SERVERS: `${KAFKA_ALIAS}:9092`,
+            JOBS_SYKMELDING_INITIAL_DELAY: '1',
+            JOBS_SYKMELDING_FIXED_DELAY: '1',
+            JOBS_SYKMELDING_RESET_TIMEOUT_DELAY: '10',
         })
         .withExposedPorts(8080)
         .withWaitStrategy(Wait.forHttp('/internal/health', 8080))
