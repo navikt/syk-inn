@@ -8,6 +8,15 @@ import { streamToStdout } from '@lib/test/testcontainers-utils'
 const POSTGRES_ALIAS = 'db'
 const KAFKA_ALIAS = 'kafka'
 
+const SYK_INN_API_IMAGE = process.env.SYK_INN_API_INTEGRATION_TESTS_IMAGE || 'ghcr.io/navikt/syk-inn-api-test:latest'
+if (!SYK_INN_API_IMAGE.startsWith('ghcr.io/navikt')) {
+    throw new Error("Oop! This image isn't under ghcr.io/navikt, that seems illegal 🤔")
+}
+
+if (process.env.SYK_INN_API_INTEGRATION_TESTS_IMAGE) {
+    logger.info(`Using syk-inn-api image from SYK_INN_API_INTEGRATION_TESTS_IMAGE: ${SYK_INN_API_IMAGE}`)
+}
+
 export async function initializeSykInnApi(applog: boolean = false): Promise<{
     sykInnApi: StartedTestContainer
     kafka: StartedKafkaContainer
@@ -44,7 +53,7 @@ export async function initializeSykInnApi(applog: boolean = false): Promise<{
             }),
     ])
 
-    const sykInnApi = await new GenericContainer('ghcr.io/navikt/syk-inn-api-test:latest')
+    const sykInnApi = await new GenericContainer(SYK_INN_API_IMAGE)
         .withNetwork(network)
         .withEnvironment({
             SPRING_PROFILES_ACTIVE: 'local',
