@@ -5,13 +5,12 @@ Navs behov: **Lese**, **Skrive**
 _Relevante referanser:_
 
 - [no-basis-DocumentReference](https://simplifier.net/hl7norwayno-basis/nobasisdocumentreference) (
-  simplifier)
+  Simplifier)
 - [no-basis-DocumentReferenceType](https://simplifier.net/hl7norwayno-basis/no-basis-documentreference-type) (
+  Simplifier)
 - [DocumentReference](https://www.hl7.org/fhir/R4/documentreference.html) (HL7)
-  simplifier)
 - [Kodesystem for Dokumenttyper](https://finnkode.helsedirektoratet.no/adm/collections/9602?q=9602)(
-  Finnkode -
-  Helsedirektoratet)
+  Finnkode - Helsedirektoratet)
 
 ## Eksempel JSON-struktur for _no-basis-DocumentReference_
 
@@ -22,18 +21,16 @@ et felt som Nav bruker i dag.
 {
     "resourceType": "DocumentReference",
     "id": "unik DocumentReference id",
-    "description": "Generell forklaring av dokumentet",
-    "type": [
-        {
-            "coding": [
-                {
-                    "system": "urn:oid:2.16.578.1.12.4.1.1.9602",
-                    "code": "J01-2",
-                    "display": "Sykmeldinger og trygdesaker"
-                }
-            ]
-        }
-    ],
+    "description": "Menneskelig lesbar forklaring av dokumentet",
+    "type": {
+        "coding": [
+            {
+                "system": "urn:oid:2.16.578.1.12.4.1.1.9602",
+                "code": "J01-2",
+                "display": "Sykmeldinger og trygdesaker"
+            }
+        ]
+    },
     "content": [
         {
             "attachment": {
@@ -75,16 +72,14 @@ et felt som Nav bruker i dag.
 - `Content` er selve dokumentet, for sykmeldinger så vil vi opprette PDF-er med base64-koding som
   vist
   i eksempelet over.
-- `Subject` benyttes for å identifisere pasient for det aktuelle dokumentet.
+- `Subject` er en refereanse til pasienten som gjelder for den aktuelle sykmeldingen.
 - `Author` er en referanse til Practitioner som sendte inn sykmeldingen.
 - `Context` → `Encounter` er brukt til å ivareta kravet om at en sykmelding krever en konsultasjon.
   Sykmeldingsapplikasjonen
   vil ivare ta at sykmeldinger kun sendes i rett type konsultasjon. Se [Encounter](encounter.md) for
   flere detaljer.
 
-`Context.Encounter` **må** inneholde referanse til konsultasjon da Lov om folketrygd (
-folketrygdloven)
-§8-7 krever
+`Context.Encounter` **MÅ** inneholde referanse til konsultasjon da Folketrygdloven §8-7 krever
 konsultasjon for sykmelding.
 
 ## Avklaringer
