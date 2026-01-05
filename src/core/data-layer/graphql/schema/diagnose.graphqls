@@ -1,6 +1,7 @@
 enum DiagnoseSystem {
     ICD10
     ICPC2
+    ICPC2B
 }
 
 type Diagnose {

@@ -35,7 +35,7 @@ export const DraftValuesSchema = z.object({
         .nullable(),
     hoveddiagnose: z
         .object({
-            system: z.enum(['ICD10', 'ICPC2']),
+            system: z.enum(['ICD10', 'ICPC2', 'ICPC2B']),
             code: z.string(),
             text: z.string(),
         })
@@ -43,7 +43,7 @@ export const DraftValuesSchema = z.object({
     bidiagnoser: z
         .array(
             z.object({
-                system: z.enum(['ICD10', 'ICPC2']),
+                system: z.enum(['ICD10', 'ICPC2', 'ICPC2B']),
                 code: z.string(),
                 text: z.string(),
             }),

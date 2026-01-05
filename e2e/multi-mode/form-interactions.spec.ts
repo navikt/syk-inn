@@ -27,7 +27,7 @@ modes.forEach(({ mode }) => {
 
         await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
         await editHoveddiagnose({ search: 'H75', select: /H75/ })(page)
-        await expectHoveddiagnose(/Svulst øre/)(page)
+        await expectHoveddiagnose(/Svulst i øre/)(page)
     })
 
     test(`${mode}: bidiagnoser - adding, editing, deleting adhd test`, async ({ page }) => {

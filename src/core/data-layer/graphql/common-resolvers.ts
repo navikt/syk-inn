@@ -15,7 +15,7 @@ import {
 } from '@data-layer/common/continuous-sykefravaer-utils'
 
 export const commonQueryResolvers: QueryResolvers<CommonGraphqlContext> = {
-    diagnose: (_, { query, system }) => searchDiagnose(query, system),
+    diagnose: (_, { query, systems }) => searchDiagnose(query, systems),
 }
 
 export const commonObjectResolvers: Resolvers<CommonGraphqlContext> = {

@@ -38,7 +38,7 @@
         "@grafana/faro-web-tracing": "^2.1.0",
         "@graphql-tools/schema": "^10.0.30",
         "@navikt/aksel-icons": "^7.37.0",
-        "@navikt/diagnosekoder": "^1.2025.0",
+        "@navikt/dig-kod": "workspace:*",
         "@navikt/ds-css": "^7.37.0",
         "@navikt/ds-react": "^7.37.0",
         "@navikt/ds-tailwind": "^7.37.0",

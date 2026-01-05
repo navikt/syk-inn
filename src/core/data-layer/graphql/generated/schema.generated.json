@@ -702,7 +702,8 @@
                 "interfaces": null,
                 "enumValues": [
                     { "name": "ICD10", "description": null, "isDeprecated": false, "deprecationReason": null },
-                    { "name": "ICPC2", "description": null, "isDeprecated": false, "deprecationReason": null }
+                    { "name": "ICPC2", "description": null, "isDeprecated": false, "deprecationReason": null },
+                    { "name": "ICPC2B", "description": null, "isDeprecated": false, "deprecationReason": null }
                 ],
                 "possibleTypes": null
             },
@@ -1903,12 +1904,20 @@
                                 "deprecationReason": null
                             },
                             {
-                                "name": "system",
+                                "name": "systems",
                                 "description": null,
                                 "type": {
                                     "kind": "NON_NULL",
                                     "name": null,
-                                    "ofType": { "kind": "ENUM", "name": "DiagnoseSystem", "ofType": null }
+                                    "ofType": {
+                                        "kind": "LIST",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "NON_NULL",
+                                            "name": null,
+                                            "ofType": { "kind": "ENUM", "name": "DiagnoseSystem", "ofType": null }
+                                        }
+                                    }
                                 },
                                 "defaultValue": null,
                                 "isDeprecated": false,
