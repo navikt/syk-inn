@@ -2471,14 +2471,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/diagnosekoder@npm:^1.2025.0":
-  version: 1.2025.0
-  resolution: "@navikt/diagnosekoder@npm:1.2025.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdiagnosekoder%2F1.2025.0%2F2675cb1178884832541008211afed1a73de742b7"
-  checksum: 10c0/071851ecf31e85d26f9f188a11b1f0d5612031e12569ff813a4fb73367c9b2770a03bb784ad4d625e753a999bfa2b50e1449d94acf698257ef3733b75691b502
-  languageName: node
-  linkType: hard
-
-"@navikt/dig-kod@workspace:libs/dig-kod":
+"@navikt/dig-kod@workspace:*, @navikt/dig-kod@workspace:libs/dig-kod":
   version: 0.0.0-use.local
   resolution: "@navikt/dig-kod@workspace:libs/dig-kod"
   dependencies:
@@ -11339,7 +11332,7 @@ __metadata:
     "@hookform/devtools": "npm:^4.4.0"
     "@limegrass/eslint-plugin-import-alias": "npm:^1.6.0"
     "@navikt/aksel-icons": "npm:^7.37.0"
-    "@navikt/diagnosekoder": "npm:^1.2025.0"
+    "@navikt/dig-kod": "workspace:*"
     "@navikt/ds-css": "npm:^7.37.0"
     "@navikt/ds-react": "npm:^7.37.0"
     "@navikt/ds-tailwind": "npm:^7.37.0"

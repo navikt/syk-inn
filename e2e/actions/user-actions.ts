@@ -19,7 +19,7 @@ export function pickHoveddiagnose({ search, select }: { search: string; select: 
                 await endreButton.click() // Diagnose is pre-filled
             }
             await diagnoseRegion.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
-            await diagnoseRegion.getByRole('option', { name: select }).click()
+            await diagnoseRegion.getByRole('option', { name: select }).nth(0).click()
 
             return diagnoseRegion
         })
@@ -34,7 +34,7 @@ export function editHoveddiagnose({ search, select }: { search: string; select: 
 
             await diagnoseRegion.getByRole('button', { name: 'Endre' }).click()
             await diagnoseRegion.getByRole('combobox', { name: 'Hoveddiagnose' }).fill(search)
-            await diagnoseRegion.getByRole('option', { name: select }).click()
+            await diagnoseRegion.getByRole('option', { name: select }).nth(0).click()
         })
     }
 }
@@ -56,7 +56,7 @@ export function addBidiagnose({ search, select }: { search: string; select: RegE
                 name: `Bidiagnose ${nextBiDiagnoseIndex}`,
             })
             await relevantDiagnoseSection.getByRole('combobox', { name: 'Bidiagnose' }).fill(search)
-            await relevantDiagnoseSection.getByRole('option', { name: select }).click()
+            await relevantDiagnoseSection.getByRole('option', { name: select }).nth(0).click()
 
             return bidiagnoseRegion
         })
@@ -102,7 +102,7 @@ export function editBidiagnose({
             const bidiagnoseGroup = bidiagnoseRegion.getByRole('group', { name: `Bidiagnose ${index}` })
             await bidiagnoseGroup.getByRole('button', { name: 'Endre' }).click()
             await bidiagnoseGroup.getByRole('combobox', { name: 'Bidiagnose' }).fill(search)
-            await bidiagnoseGroup.getByRole('option', { name: select }).click()
+            await bidiagnoseGroup.getByRole('option', { name: select }).nth(0).click()
         })
     }
 }

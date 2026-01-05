@@ -112,7 +112,7 @@ export type Diagnose = {
     text: Scalars['String']['output']
 }
 
-export type DiagnoseSystem = 'ICD10' | 'ICPC2'
+export type DiagnoseSystem = 'ICD10' | 'ICPC2' | 'ICPC2B'
 
 export type DocumentStatus = 'COMPLETE' | 'ERRORED' | 'PENDING'
 
@@ -311,7 +311,7 @@ export type Query = {
 
 export type QueryDiagnoseArgs = {
     query: Scalars['String']['input']
-    system: DiagnoseSystem
+    systems: Array<DiagnoseSystem>
 }
 
 export type QueryDraftArgs = {
@@ -1000,7 +1000,7 @@ export type QueryResolvers<
         Maybe<Array<ResolversTypes['Diagnose']>>,
         ParentType,
         ContextType,
-        RequireFields<QueryDiagnoseArgs, 'query' | 'system'>
+        RequireFields<QueryDiagnoseArgs, 'query' | 'systems'>
     >
     draft?: Resolver<
         Maybe<ResolversTypes['OpprettSykmeldingDraft']>,

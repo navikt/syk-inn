@@ -4,10 +4,10 @@ import { CodeableConcept, FhirCondition } from '@navikt/smart-on-fhir/zod'
 
 import { Diagnose } from '@resolvers'
 import { raise } from '@lib/ts'
-import { DiagnoseSystem, ICD10_OID_VALUE, ICPC2_OID_VALUE } from '@data-layer/common/diagnose'
+import { DiagnoseSystem, ICD10_OID_VALUE, ICPC2_OID_VALUE, ICPC2B_OID_VALUE } from '@data-layer/common/diagnose'
 
 type Diagnosis = {
-    system: 'ICD10' | 'ICPC2'
+    system: 'ICD10' | 'ICPC2' | 'ICPC2B'
     code: string
     display: string
     rank?: number
@@ -58,6 +58,8 @@ function diagnosisUrnToOidType(urn: string): DiagnoseSystem | null {
     switch (urn.replace('urn:oid:', '')) {
         case ICPC2_OID_VALUE:
             return 'ICPC2'
+        case ICPC2B_OID_VALUE:
+            return 'ICPC2B'
         case ICD10_OID_VALUE:
             return 'ICD10'
         default:
