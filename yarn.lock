@@ -2478,6 +2478,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@navikt/dig-kod@workspace:libs/dig-kod":
+  version: 0.0.0-use.local
+  resolution: "@navikt/dig-kod@workspace:libs/dig-kod"
+  dependencies:
+    remeda: "npm:^2.33.1"
+  languageName: unknown
+  linkType: soft
+
 "@navikt/ds-css@npm:^7.37.0":
   version: 7.37.0
   resolution: "@navikt/ds-css@npm:7.37.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.37.0%2Fb0752aaf6a6ea970fedd2f6cdc0da93aa7b0c9fa"
