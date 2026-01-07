@@ -31285,11 +31285,6 @@
         "system": "ICD10"
     },
     {
-        "code": "M19.06",
-        "text": "Primær artrose i kneledd",
-        "system": "ICD10"
-    },
-    {
         "code": "M19.07",
         "text": "Primær artrose i ankel eller ledd mellom knokler i fot",
         "system": "ICD10"
@@ -31337,11 +31332,6 @@
     {
         "code": "M19.15",
         "text": "Posttraumatisk artrose i sakroiliakalledd",
-        "system": "ICD10"
-    },
-    {
-        "code": "M19.16",
-        "text": "Posttraumatisk artrose i kneledd",
         "system": "ICD10"
     },
     {
@@ -31395,11 +31385,6 @@
         "system": "ICD10"
     },
     {
-        "code": "M19.26",
-        "text": "Sekundær artrose i kneledd",
-        "system": "ICD10"
-    },
-    {
         "code": "M19.27",
         "text": "Annen sekundær artrose i ankel eller ledd mellom knokler i fot",
         "system": "ICD10"
@@ -31450,11 +31435,6 @@
         "system": "ICD10"
     },
     {
-        "code": "M19.86",
-        "text": "Annen spesifisert artrose i kneledd",
-        "system": "ICD10"
-    },
-    {
         "code": "M19.87",
         "text": "Annen spesifisert artrose i ankel eller ledd mellom knokler i fot",
         "system": "ICD10"
@@ -31502,11 +31482,6 @@
     {
         "code": "M19.95",
         "text": "Uspesifisert artrose i hofteledd eller sakroiliakalledd",
-        "system": "ICD10"
-    },
-    {
-        "code": "M19.96",
-        "text": "Uspesifisert artrose i kneledd",
         "system": "ICD10"
     },
     {

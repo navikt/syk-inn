@@ -5,6 +5,9 @@ import { writeFileSync } from 'fs'
 import { readFile } from 'node:fs/promises'
 
 import * as R from 'remeda'
+import { isBefore } from 'date-fns'
+
+const today = new Date()
 
 async function parseICPC2(): Promise<void> {
     console.info('Parsing ICPC-2(B) kodeverk')
@@ -23,6 +26,7 @@ async function parseICPC2(): Promise<void> {
         Kode: string
         Tekst_uten_lengdebegrensning: string
         Gyldig_fra: string
+        Gyldig_til?: string
         Kodeverk: string
         Tilhørighet_i_ICPC_2B: string
         Foreldrekode: string
@@ -35,6 +39,7 @@ async function parseICPC2(): Promise<void> {
         R.prop('ICPC-2B'),
         // "Root" ICDC-2 nodes are the only one that have Tilhørighet_i_ICPC_2B === 'ICPC-2'
         R.filter((it) => it['Tilhørighet_i_ICPC_2B'] === 'ICPC-2'),
+        R.filter((it) => it['Gyldig_til'] == null || !isBefore(it['Gyldig_til'], today)),
         R.map((it) => ({
             code: it.Foreldrekode,
             text: it.Foreldrekodetekst,
@@ -51,6 +56,7 @@ async function parseICPC2(): Promise<void> {
         R.prop('ICPC-2B'),
         // "Sub-terms" in ICDC-2B has the value TERM, there are also ICD-10 nodes, we don't want these (probably).
         R.filter((it) => it['Tilhørighet_i_ICPC_2B'] === 'TERM'),
+        R.filter((it) => it['Gyldig_til'] == null || !isBefore(it['Gyldig_til'], today)),
         R.map((it) => ({
             code: it.Kode,
             text: it.Tekst_uten_lengdebegrensning,
@@ -96,6 +102,7 @@ async function parseICD10(): Promise<void> {
     const icd10 = R.pipe(
         rawIcd10 as KoteEntry[],
         R.filter((it) => it.Rapporteres_til_NPR == 'Ja'),
+        R.filter((it) => it['Gyldig_til'] == null || !isBefore(it['Gyldig_til'], today)),
         R.map((it) => ({
             code: it.Kode,
             text: it.Tekst_uten_lengdebegrensning,

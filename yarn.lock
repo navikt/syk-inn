@@ -2475,6 +2475,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@navikt/dig-kod@workspace:libs/dig-kod"
   dependencies:
+    date-fns: "npm:^4.1.0"
     remeda: "npm:^2.33.1"
   languageName: unknown
   linkType: soft

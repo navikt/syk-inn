@@ -20083,13 +20083,6 @@
         "system": "ICPC2B"
     },
     {
-        "code": "L94.0040",
-        "text": "Serøs koksitt",
-        "parent_code": "L94",
-        "parent_text": "Osteokondrose",
-        "system": "ICPC2B"
-    },
-    {
         "code": "L94.0041",
         "text": "Spinal osteokondrose INA",
         "parent_code": "L94",
@@ -24472,20 +24465,6 @@
         "system": "ICPC2B"
     },
     {
-        "code": "P09.0004",
-        "text": "Kjønnsinkongruens i barndom",
-        "parent_code": "P09",
-        "parent_text": "Seksuell legning bekymring for",
-        "system": "ICPC2B"
-    },
-    {
-        "code": "P09.0005",
-        "text": "Uspesifisert kjønnsinkongruens",
-        "parent_code": "P09",
-        "parent_text": "Seksuell legning bekymring for",
-        "system": "ICPC2B"
-    },
-    {
         "code": "P09.0006",
         "text": "Pedofili",
         "parent_code": "P09",
@@ -24516,13 +24495,6 @@
     {
         "code": "P09.0010",
         "text": "Seksuelt avvik INA",
-        "parent_code": "P09",
-        "parent_text": "Seksuell legning bekymring for",
-        "system": "ICPC2B"
-    },
-    {
-        "code": "P09.0011",
-        "text": "Transseksualisme",
         "parent_code": "P09",
         "parent_text": "Seksuell legning bekymring for",
         "system": "ICPC2B"
@@ -25851,13 +25823,6 @@
         "system": "ICPC2B"
     },
     {
-        "code": "P71.0015",
-        "text": "Posttraumatisk hjernesyndrom organisk",
-        "parent_code": "P71",
-        "parent_text": "Organisk psykisk lidelse IKA",
-        "system": "ICPC2B"
-    },
-    {
         "code": "P71.0016",
         "text": "Psykisk sykdom organisk betinget IKA",
         "parent_code": "P71",
@@ -26112,13 +26077,6 @@
     {
         "code": "P73.0015",
         "text": "Bipolar affektiv lidelse, manisk, psykotisk",
-        "parent_code": "P73",
-        "parent_text": "Bipolar lidelse",
-        "system": "ICPC2B"
-    },
-    {
-        "code": "P73.0016",
-        "text": "Personlighetsforstyrrelse affektiv",
         "parent_code": "P73",
         "parent_text": "Bipolar lidelse",
         "system": "ICPC2B"
@@ -33488,20 +33446,6 @@
         "system": "ICPC2B"
     },
     {
-        "code": "T89.0005",
-        "text": "IDDM (insulin dependent diabetes mellitus)",
-        "parent_code": "T89",
-        "parent_text": "Diabetes type 1",
-        "system": "ICPC2B"
-    },
-    {
-        "code": "T89.0006",
-        "text": "Juvenil diabetes",
-        "parent_code": "T89",
-        "parent_text": "Diabetes type 1",
-        "system": "ICPC2B"
-    },
-    {
         "code": "T89.0014",
         "text": "Diabetes type 1 med hyperglykemisk koma",
         "parent_code": "T89",
@@ -33560,13 +33504,6 @@
     {
         "code": "T90.0007",
         "text": "Diabetes type 2 med hypoglykemisk koma",
-        "parent_code": "T90",
-        "parent_text": "Diabetes type 2",
-        "system": "ICPC2B"
-    },
-    {
-        "code": "T90.0008",
-        "text": "NIDDN (non-insulin dependent diabetes mellitus)",
         "parent_code": "T90",
         "parent_text": "Diabetes type 2",
         "system": "ICPC2B"
@@ -35903,27 +35840,6 @@
         "system": "ICPC2B"
     },
     {
-        "code": "U99.0027",
-        "text": "Nyresvikt akutt",
-        "parent_code": "U99",
-        "parent_text": "Urinveissykdom IKA",
-        "system": "ICPC2B"
-    },
-    {
-        "code": "U99.0028",
-        "text": "Nyresvikt INA",
-        "parent_code": "U99",
-        "parent_text": "Urinveissykdom IKA",
-        "system": "ICPC2B"
-    },
-    {
-        "code": "U99.0029",
-        "text": "Nyresvikt kronisk",
-        "parent_code": "U99",
-        "parent_text": "Urinveissykdom IKA",
-        "system": "ICPC2B"
-    },
-    {
         "code": "U99.0030",
         "text": "Nyresykdom INA",
         "parent_code": "U99",
@@ -35989,27 +35905,6 @@
     {
         "code": "U99.0039",
         "text": "Striktur urinrør",
-        "parent_code": "U99",
-        "parent_text": "Urinveissykdom IKA",
-        "system": "ICPC2B"
-    },
-    {
-        "code": "U99.0040",
-        "text": "Uremi INA",
-        "parent_code": "U99",
-        "parent_text": "Urinveissykdom IKA",
-        "system": "ICPC2B"
-    },
-    {
-        "code": "U99.0041",
-        "text": "Uremi postrenal",
-        "parent_code": "U99",
-        "parent_text": "Urinveissykdom IKA",
-        "system": "ICPC2B"
-    },
-    {
-        "code": "U99.0042",
-        "text": "Uremi prerenal",
         "parent_code": "U99",
         "parent_text": "Urinveissykdom IKA",
         "system": "ICPC2B"
