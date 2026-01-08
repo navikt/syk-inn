@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js'
+import { ICD10, ICPC2, ICPC2B } from '@navikt/tsm-diagnoser'
 
-import { ICD10, ICPC2, ICPC2B } from '@navikt/dig-kod'
 import { raise } from '@lib/ts'
 import { Diagnose, DiagnoseSystem } from '@data-layer/common/diagnose'
 
