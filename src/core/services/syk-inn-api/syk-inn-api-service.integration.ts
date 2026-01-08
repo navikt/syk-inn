@@ -146,7 +146,10 @@ describe('SykInnApi integration', () => {
     })
 
     it('POST /sykmelding should be published to kafka from syk-inn-api', async () => {
-        const payload = createFullOpprettSykmeldingPayload()
+        const payload = createFullOpprettSykmeldingPayload(undefined, {
+            hoveddiagnose: { system: 'ICPC2B', code: 'T99.0084' },
+            bidiagnoser: [{ system: 'ICPC2', code: 'D97' }],
+        })
         const opprettResult = await sykInnApiService.opprettSykmelding(payload)
 
         if ('errorType' in opprettResult) {
@@ -163,7 +166,10 @@ describe('SykInnApi integration', () => {
 
         expect(kafkaMessage.sykmelding.metadata.avsenderSystem.navn).toEqual('syk-inn test')
         expect(kafkaMessage.sykmelding.pasient.fnr).toEqual('01010112345')
-        expect(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.kode).toEqual('P74')
+        expect(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.system).toEqual('ICPC2B')
+        expect(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.kode).toEqual('T99.0084')
+        expect(kafkaMessage.sykmelding.medisinskVurdering.biDiagnoser[0].system).toEqual('ICPC2')
+        expect(kafkaMessage.sykmelding.medisinskVurdering.biDiagnoser[0].kode).toEqual('D97')
         expect(kafkaMessage.sykmelding.medisinskVurdering.biDiagnoser).toHaveLength(1)
 
         // Assert that utdypende spørsmål are part of the kafka message
