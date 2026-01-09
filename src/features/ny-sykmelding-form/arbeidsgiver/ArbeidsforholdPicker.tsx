@@ -1,4 +1,4 @@
-import { Radio, RadioGroup, Stack, Textarea } from '@navikt/ds-react'
+import { Radio, RadioGroup, Stack, TextField } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 
 import { useController } from '../form/types'
@@ -17,7 +17,7 @@ function ArbeidsforholdPicker(): ReactElement {
         rules: {
             validate: (value) => {
                 if (harFlereArbeidsforhold.field.value === 'JA' && !value) {
-                    return 'Du må fylle inn hvilke arbeidsforhold pasienten skal sykmeldes fra'
+                    return 'Du må fylle inn hvilket arbeidsforhold pasienten skal sykmeldes fra'
                 }
             },
         },
@@ -36,8 +36,8 @@ function ArbeidsforholdPicker(): ReactElement {
                 </Stack>
             </RadioGroup>
             {harFlereArbeidsforhold.field.value === 'JA' && (
-                <Textarea
-                    label="Hvilke arbeidsforhold skal pasienten sykmeldes fra?"
+                <TextField
+                    label="Hvilket arbeidsforhold skal pasienten sykmeldes fra?"
                     error={sykmeldtFraArbeidsforhold.fieldState.error?.message}
                     {...sykmeldtFraArbeidsforhold.field}
                     value={sykmeldtFraArbeidsforhold.field.value || ''}

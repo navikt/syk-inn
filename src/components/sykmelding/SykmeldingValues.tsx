@@ -54,7 +54,7 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                 {sykmelding.values.arbeidsgiver?.harFlere ? 'Ja' : 'Nei'}
             </ValueItem>
             {sykmelding.values.arbeidsgiver?.harFlere && (
-                <ValueItem title="Hvilke arbeidsforhold skal pasienten sykmeldes fra?">
+                <ValueItem title="Hvilket arbeidsforhold skal pasienten sykmeldes fra?">
                     {sykmelding.values.arbeidsgiver.arbeidsgivernavn}
                 </ValueItem>
             )}

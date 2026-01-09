@@ -62,7 +62,7 @@ function ArbeidsforholdFromAaregPicker({
     const sykmeldtFraArbeidsforhold = useController({
         name: 'arbeidsforhold.aaregArbeidsforhold',
         rules: {
-            required: hasAnyArbeidsgivere && 'Du må fylle inn hvilke arbeidsforhold pasienten skal sykmeldes fra',
+            required: hasAnyArbeidsgivere && 'Du må fylle inn hvilket arbeidsforhold pasienten skal sykmeldes fra',
         },
     })
     const annetArbeidsforhold = useController({
@@ -81,7 +81,7 @@ function ArbeidsforholdFromAaregPicker({
             {arbeidsforhold.length > 1 ? (
                 <Select
                     className="&>.onavds-select__container:w-64"
-                    label="Hvilke arbeidsforhold skal pasienten sykmeldes fra?"
+                    label="Hvilket arbeidsforhold skal pasienten sykmeldes fra?"
                     value={sykmeldtFraArbeidsforhold.field.value ?? ''}
                     onChange={(event) => {
                         sykmeldtFraArbeidsforhold.field.onChange(event)

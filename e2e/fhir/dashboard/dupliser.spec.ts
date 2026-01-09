@@ -77,7 +77,7 @@ test('should be able to dupliser (from dashboard) an existing sykmelding with co
 
     await verifySummaryPage([
         { name: 'Har pasienten flere arbeidsforhold?', values: ['Ja'] },
-        { name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?', values: ['The Other One AB'] },
+        { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?', values: ['The Other One AB'] },
     ])(page)
 
     await submitSykmelding()(page)

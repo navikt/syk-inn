@@ -93,7 +93,7 @@ function NySykmeldingInnerForm({
         <TwoPaneGrid tag="form" onSubmit={form.handleSubmit(onSubmit)}>
             <FormSheet className="relative">
                 {selectedPasient == null && <NoActivePasientWarning />}
-                <FormSection title="Arbeidsgiver">
+                <FormSection title="Arbeidsgiver" hideTitle>
                     <ArbeidsforholdSection />
                 </FormSection>
                 <AktivitetSection initialFom={initialFom ?? null} />

@@ -77,7 +77,7 @@ test('should be able to forlenge an existing sykmelding with correct values', as
 
     await verifySummaryPage([
         { name: 'Har pasienten flere arbeidsforhold?', values: ['Ja'] },
-        { name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?', values: ['Duplicatiore AS'] },
+        { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?', values: ['Duplicatiore AS'] },
         { name: 'Periode', values: [new RegExp(toReadableDatePeriod(inDays(15), inDays(28)))] },
     ])(page)
 

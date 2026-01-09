@@ -178,7 +178,7 @@ export function expectArbeidsforhold({
             if (sykmeldtFraArbeidsforhold) {
                 await expect(
                     arbeidsforholdRegion.getByRole('textbox', {
-                        name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?',
+                        name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?',
                     }),
                 ).toHaveValue(sykmeldtFraArbeidsforhold)
             }

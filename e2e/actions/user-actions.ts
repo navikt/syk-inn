@@ -152,7 +152,7 @@ export function fillArbeidsforhold({
             if (harFlereArbeidsforhold) {
                 await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Ja').click()
                 await page
-                    .getByRole('textbox', { name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?' })
+                    .getByRole('textbox', { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?' })
                     .fill(sykmeldtFraArbeidsforhold || '')
             } else {
                 await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Nei').click()

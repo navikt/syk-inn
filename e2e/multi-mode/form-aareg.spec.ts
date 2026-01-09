@@ -31,7 +31,7 @@ modes.forEach(({ mode }) => {
                 .getByText('Ja')
                 .click()
             await arbeidsforholdSection
-                .getByRole('combobox', { name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?' })
+                .getByRole('combobox', { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?' })
                 .selectOption('Eksempel 2 AS (987654321)')
         })
 
@@ -42,7 +42,7 @@ modes.forEach(({ mode }) => {
             verifySignerendeBehandlerFillIfNeeded(mode),
             verifySummaryPage([
                 {
-                    name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?',
+                    name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?',
                     values: ['Eksempel 2 AS'],
                 },
             ]),
@@ -88,7 +88,7 @@ modes.forEach(({ mode }) => {
                 .getByText('Ja')
                 .click()
             await arbeidsforholdSection
-                .getByRole('combobox', { name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?' })
+                .getByRole('combobox', { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?' })
                 .selectOption('Eksempel 2 AS (987654321)')
         })
 
@@ -109,7 +109,7 @@ modes.forEach(({ mode }) => {
             ).toBeChecked()
             await expect(
                 arbeidsforholdSection.getByRole('combobox', {
-                    name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?',
+                    name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?',
                 }),
             ).toHaveValue('Eksempel 2 AS')
         })
@@ -129,7 +129,7 @@ modes.forEach(({ mode }) => {
                 .getByText('Ja')
                 .click()
             await arbeidsforholdSection
-                .getByRole('combobox', { name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?' })
+                .getByRole('combobox', { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?' })
                 .selectOption('Eksempel 2 AS (987654321)')
         })
 
@@ -170,7 +170,7 @@ modes.forEach(({ mode }) => {
             ).toBeChecked()
             await expect(
                 arbeidsforholdSection.getByRole('combobox', {
-                    name: 'Hvilke arbeidsforhold skal pasienten sykmeldes fra?',
+                    name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?',
                 }),
             ).toHaveValue('Eksempel 2 AS')
         })

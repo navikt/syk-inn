@@ -429,7 +429,7 @@ function ArbeidsforholdSummaryAnswers({
             </FormSummary.Answer>
             {arbeidsforhold?.harFlereArbeidsforhold && (
                 <FormSummary.Answer>
-                    <FormSummary.Label>Hvilke arbeidsforhold skal pasienten sykmeldes fra?</FormSummary.Label>
+                    <FormSummary.Label>Hvilket arbeidsforhold skal pasienten sykmeldes fra?</FormSummary.Label>
                     <FormSummary.Value>{arbeidsforhold?.sykmeldtFraArbeidsforhold}</FormSummary.Value>
                 </FormSummary.Answer>
             )}
