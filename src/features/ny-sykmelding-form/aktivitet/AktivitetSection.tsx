@@ -2,11 +2,12 @@ import React, { ReactElement } from 'react'
 import { Button, ErrorMessage } from '@navikt/ds-react'
 import { addDays } from 'date-fns'
 import { TrashIcon } from '@navikt/aksel-icons'
+import { UseFieldArrayAppend } from 'react-hook-form'
 
 import { dateOnly } from '@lib/date'
 import FormSection from '@components/form/form-section/FormSection'
 
-import { AktivitetsPeriode, useFieldArray, useFormContext } from '../form/types'
+import { AktivitetsPeriode, NySykmeldingMainFormValues, useFieldArray, useFormContext } from '../form/types'
 import { defaultPeriode } from '../form/default-values'
 
 import AktivitetPicker from './AktivitetPicker'
@@ -20,7 +21,7 @@ type Props = {
 }
 
 function AktivitetSection({ initialFom }: Props): ReactElement {
-    const { getValues, formState } = useFormContext()
+    const { formState } = useFormContext()
     const { fields, append, remove } = useFieldArray({
         name: 'perioder' as const,
         rules: {
@@ -52,38 +53,52 @@ function AktivitetSection({ initialFom }: Props): ReactElement {
                             />
                         )}
                     </div>
+                    {fields.length - 1 === index && (
+                        <div className="mt-6 mb-2">
+                            <AddNewPeriodButton append={append} />
+                        </div>
+                    )}
                 </FormSection>
             ))}
             {formState.errors.perioder?.root?.message && (
                 <ErrorMessage>{formState.errors.perioder.root.message}</ErrorMessage>
             )}
-            <div className="mt-2 mb-2">
-                <Button
-                    variant="secondary"
-                    type="button"
-                    size="small"
-                    onClick={() => {
-                        const periods = getValues('perioder')
-                        const lastPeriode = periods[periods.length - 1]
-
-                        /**
-                         * Fom should be N+1 previous period's tom.
-                         */
-                        const nyPeriode: AktivitetsPeriode = {
-                            ...defaultPeriode(),
-                            periode: {
-                                fom: lastPeriode.periode.tom ? dateOnly(addDays(lastPeriode.periode.tom, 1)) : null,
-                                tom: null,
-                            },
-                        }
-
-                        append(nyPeriode, { shouldFocus: false })
-                    }}
-                >
-                    Legg til ny periode
-                </Button>
-            </div>
         </>
+    )
+}
+
+function AddNewPeriodButton({
+    append,
+}: {
+    append: UseFieldArrayAppend<NySykmeldingMainFormValues, 'perioder'>
+}): ReactElement {
+    const { getValues } = useFormContext()
+
+    return (
+        <Button
+            variant="secondary"
+            type="button"
+            size="small"
+            onClick={() => {
+                const periods = getValues('perioder')
+                const lastPeriode = periods[periods.length - 1]
+
+                /**
+                 * Fom should be N+1 previous period's tom.
+                 */
+                const nyPeriode: AktivitetsPeriode = {
+                    ...defaultPeriode(),
+                    periode: {
+                        fom: lastPeriode.periode.tom ? dateOnly(addDays(lastPeriode.periode.tom, 1)) : null,
+                        tom: null,
+                    },
+                }
+
+                append(nyPeriode, { shouldFocus: false })
+            }}
+        >
+            Legg til ny periode
+        </Button>
     )
 }
 
