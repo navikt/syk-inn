@@ -48,9 +48,9 @@ MD="$(
 )"
 
 awk -v start="$START" -v end="$END" -v md="$MD" '
-  $0 ~ start { print; print md; inblock=1; next }
-  $0 ~ end   { inblock=0; print; next }
-  !inblock   { print }
-' e2e/README.md > e2e/README.md.tmp
+  index($0, start) { print start; print md; inblock=1; next }
+  index($0, end)   { inblock=0; print ""; print end; next }
+  !inblock         { print }
+' "$README" > "$README.tmp"
 
-mv e2e/README.md.tmp e2e/README.md
+mv "$README.tmp" "$README"

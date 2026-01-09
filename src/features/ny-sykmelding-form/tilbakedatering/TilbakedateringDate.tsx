@@ -1,9 +1,8 @@
-import { BodyShort, DatePicker, useDatepicker } from '@navikt/ds-react'
+import { DatePicker, useDatepicker } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
 import { parseISO } from 'date-fns'
 
-import { dateOnly, toReadableDate } from '@lib/date'
+import { dateOnly } from '@lib/date'
 
 import { useController } from '../form/types'
 
@@ -12,7 +11,7 @@ function TilbakedateringDate(): ReactElement {
         name: 'tilbakedatering.fom' as const,
         rules: {
             validate: (value) => {
-                if (value == null) return `Du må velge dato for når pasienten først tok kontakt`
+                if (value == null) return `Du må velge dato (mm.dd.yyyy) for når pasienten først tok kontakt`
             },
         },
     })
@@ -35,21 +34,6 @@ function TilbakedateringDate(): ReactElement {
                 onBlur={field.onBlur}
                 error={fieldState.error?.message}
             />
-            <AnimatePresence initial={false}>
-                {field.value && (
-                    <motion.div
-                        className="overflow-hidden"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    >
-                        <BodyShort className="mt-1 ml-2" size="small">
-                            {toReadableDate(field.value)}
-                        </BodyShort>
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </DatePicker>
     )
 }
