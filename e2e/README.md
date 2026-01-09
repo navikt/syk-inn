@@ -166,4 +166,4 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 - [FHIR: successful launch but is not a PILOT_USER should see no graphql requests @feature-toggle](./multi-mode/launch.spec.ts#L6)
 - [Standalone: successful launch but is not a PILOT_USER should see no graphql requests @feature-toggle](./multi-mode/launch.spec.ts#L6)
-    <!-- TESTS:END -->
+  <!-- TESTS:END -->

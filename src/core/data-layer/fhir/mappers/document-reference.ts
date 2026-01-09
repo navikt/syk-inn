@@ -28,7 +28,7 @@ export function createNewDocumentReferencePayload(
         content: [
             {
                 attachment: {
-                    title: 'My cool sykmelding document',
+                    title: params.description,
                     language: 'NO-nb',
                     contentType: 'application/pdf',
                     data: base64Pdf,
