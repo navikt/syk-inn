@@ -51,7 +51,12 @@ _Relevante referanser:_
 ```
 
 ## Begrunnelse
+
 Condition benyttes for å preutfylle diagnose i appen, er ikke påkrevd
-- _coding.system_ - må være av type urn:oid:2.16.578.1.12.4.1.1.7170 eller urn:oid:2.16.578.1.12.4.1.1.7110
-- _coding.code_ - må være en godkjent _ICD-10_ eller _ICPC-2 kode_
+
+- _coding.system_ - må være av type:
+    - ICD10: `urn:oid:2.16.578.1.12.4.1.1.7170`
+    - ICPC2: `urn:oid:2.16.578.1.12.4.1.1.7110`
+    - ICPC2B `urn:oid:2.16.578.1.12.4.1.1.7171`
+- _coding.code_ - må være en godkjent _ICD-10_, _ICPC-2 kode_ eller _ICPC-2B kode_
 - _coding.display_ - tekst som beskriver diagnosen, brukes til visning for helsepersonell
