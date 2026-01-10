@@ -2620,10 +2620,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/tsm-diagnoser@npm:^2026.1.9":
-  version: 2026.1.9
-  resolution: "@navikt/tsm-diagnoser@npm:2026.1.9::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftsm-diagnoser%2F2026.1.9%2F54f5cfa99e763fce25a00098cc2856d34f733769"
-  checksum: 10c0/0f47f8917e56f69762ad3c1647e1b9a68e9937938e0e7f0e098a227a012815fa6cc21fd752fa351a5d6957ab31dddca2d50250cdb7313b149910ad314625853a
+"@navikt/tsm-diagnoser@npm:^2026.1.10":
+  version: 2026.1.10
+  resolution: "@navikt/tsm-diagnoser@npm:2026.1.10::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftsm-diagnoser%2F2026.1.10%2F5bf180f4982d292cae53e23b0782aa5cf4f49235"
+  checksum: 10c0/68d25b3898cbf9f12042c1cea6c9d13798acd3b270729c7060b4140934a7f39b23501025dd60ff540f31f4ac91494843adea4c1ce1202dbc101251fa9fe063a8
   languageName: node
   linkType: hard
 
@@ -11384,7 +11384,7 @@ __metadata:
     "@navikt/next-logger": "npm:^4.4.5"
     "@navikt/smart-on-fhir": "npm:1.5.16"
     "@navikt/texas": "npm:^4.1.1"
-    "@navikt/tsm-diagnoser": "npm:^2026.1.9"
+    "@navikt/tsm-diagnoser": "npm:^2026.1.10"
     "@navikt/tsm-eslint-react": "npm:^1.0.0"
     "@navikt/tsm-prettier": "npm:^2.0.0"
     "@opentelemetry/api": "npm:^1.9.0"
