@@ -23,10 +23,13 @@ function DiagnoseInfoAlert(): ReactElement | null {
         formDiagnose.bidiagnoser.every(
             (bi) => suggestionsQuery.suggestions.bidiagnoser?.some((it) => isSameDiagnose(bi, it)) ?? false,
         )
+    const zeroFromEpj =
+        suggestionsQuery.suggestions.diagnose.value == null &&
+        (suggestionsQuery.suggestions.bidiagnoser == null || suggestionsQuery.suggestions.bidiagnoser?.length === 0)
 
     return (
         <AnimatePresence>
-            {!(sameHovedDiagnose && allBiSame) && (
+            {!zeroFromEpj && !(sameHovedDiagnose && allBiSame) && (
                 <SimpleReveal>
                     <InfoCard data-color="info" className="mt-4" size="small">
                         <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>

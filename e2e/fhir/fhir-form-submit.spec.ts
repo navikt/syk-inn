@@ -171,7 +171,7 @@ test('should pre-fill bidiagnoser from FHIR @feature-toggle', async ({ page }) =
 })
 
 test.describe('Resetting diagnoser when prefilled from FHIR @feature-toggle', () => {
-    test('adding extra diagnose and resetting them should remove them @feature-toggle', async ({ page }) => {
+    test('adding extra diagnose and resetting them should remove them', async ({ page }) => {
         await launchWithMock('empty', {
             // Kari only has one diagnose in FHIR
             patient: 'Kari Normann',
@@ -212,9 +212,7 @@ test.describe('Resetting diagnoser when prefilled from FHIR @feature-toggle', ()
         await verifyIsOnKvitteringPage()(page)
     })
 
-    test('removing diagonses from FHIR prefill and reseetting them should add them back @feature-toggle', async ({
-        page,
-    }) => {
+    test('removing diagonses from FHIR prefill and reseetting them should add them back', async ({ page }) => {
         await launchWithMock('empty', {
             // Espen has 3 diagnoser in FHIR
             patient: 'Espen Eksempel',
