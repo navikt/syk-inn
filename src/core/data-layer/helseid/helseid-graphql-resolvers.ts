@@ -22,6 +22,7 @@ import { DraftValuesSchema } from '@data-layer/draft/draft-schema'
 import { getDraftClient } from '@data-layer/draft/draft-client'
 import { NoHelseIdCurrentPatient } from '@data-layer/helseid/error/Errors'
 import metrics from '@lib/prometheus/metrics'
+import { countDiagnoses } from '@data-layer/common/diagnose-counting'
 
 import { HelseIdGraphqlContext } from './helseid-graphql-context'
 
@@ -194,6 +195,8 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
                 },
                 1,
             )
+
+            countDiagnoses(values, 'helseid')
 
             // Delete the draft after successful creation
             const draftClient = await getDraftClient()
