@@ -29,6 +29,12 @@ class AppMetrics {
         help: 'Histogram of number of created fetched sykmeldinger from FHIR server',
         labelNames: ['hpr', 'outcome'] as const,
     })
+
+    public diagnoseCounter = new Counter({
+        name: 'syk_inn_number_of_diagnoser_total',
+        help: 'Counter of number of diagnoses submitted in sykmeldinger',
+        labelNames: ['system', 'code', 'type', 'source'] as const,
+    })
 }
 
 export default nextleton('metrics', () => new AppMetrics())

@@ -32,6 +32,7 @@ import { FhirGraphqlContext } from '@data-layer/fhir/fhir-graphql-context'
 import { getHasRequestedAccessToSykmeldinger } from '@core/session/session'
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
 import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
+import { countDiagnoses } from '@data-layer/common/diagnose-counting'
 import metrics from '@lib/prometheus/metrics'
 
 import { getDraftClient } from '../draft/draft-client'
@@ -310,6 +311,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 },
                 1,
             )
+
+            countDiagnoses(values, 'fhir')
 
             // Delete the draft after successful creation
             const draftClient = await getDraftClient()
