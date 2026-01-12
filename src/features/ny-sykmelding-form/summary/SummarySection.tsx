@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client/react'
 
 import { BehandlerDocument } from '@queries'
 import { SimpleReveal } from '@components/animation/Reveal'
-import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
+import { ShortcutButton } from '@components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { LocalAndDemoBonusActionMenu } from '@dev/tools/LocalAndDemoBonusActionMenu'
@@ -96,7 +96,7 @@ function SummarySection(): ReactElement {
                                 className="flex-grow md:max-w-46"
                                 inactive={ruleOutcomeState.type === 'rule-outcome'}
                             />
-                            <ShortcutButtons
+                            <ShortcutButton
                                 className="flex-grow md:max-w-46"
                                 variant="secondary"
                                 onClick={() => setStep('main')}
@@ -108,8 +108,8 @@ function SummarySection(): ReactElement {
                                 inactive={ruleOutcomeState.type === 'rule-outcome'}
                             >
                                 Forrige steg
-                            </ShortcutButtons>
-                            <ShortcutButtons
+                            </ShortcutButton>
+                            <ShortcutButton
                                 className="flex-grow md:max-w-46"
                                 variant="primary"
                                 icon={<PaperplaneIcon aria-hidden />}
@@ -124,7 +124,7 @@ function SummarySection(): ReactElement {
                                 inactive={ruleOutcomeState.type === 'rule-outcome'}
                             >
                                 Send inn
-                            </ShortcutButtons>
+                            </ShortcutButton>
                         </div>
                         {(isLocal || isDemo) && (
                             <div className="self-end">

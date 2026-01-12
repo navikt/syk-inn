@@ -4,7 +4,7 @@ import { ExclamationmarkTriangleIcon, InformationSquareIcon, PaperplaneIcon } fr
 
 import { UseOpprettSykmeldingMutation } from '@features/ny-sykmelding-form/useOpprettSykmeldingMutation'
 import { getRuleText } from '@features/ny-sykmelding-form/summary/rules/rule-texts'
-import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
+import { ShortcutButton } from '@components/shortcut/ShortcutButtons'
 import { RuleOutcomeFragment } from '@queries'
 import { UnknownSystemError } from '@components/help/GeneralErrors'
 import { useFormStep } from '@features/ny-sykmelding-form/steps/useFormStep'
@@ -77,7 +77,7 @@ export function RuleHitSendAnywayModal({
                 {hasSubmittedAnyway && nySykmelding.mutation.result.error && <UnknownSystemError className="mt-2" />}
             </Modal.Body>
             <Modal.Footer>
-                <ShortcutButtons
+                <ShortcutButton
                     variant="danger"
                     icon={<PaperplaneIcon aria-hidden />}
                     iconPosition="right"
@@ -91,8 +91,8 @@ export function RuleHitSendAnywayModal({
                     }}
                 >
                     Send inn
-                </ShortcutButtons>
-                <ShortcutButtons
+                </ShortcutButton>
+                <ShortcutButton
                     variant="secondary"
                     iconPosition="right"
                     disabled={!open || nySykmelding.mutation.result.loading}
@@ -103,7 +103,7 @@ export function RuleHitSendAnywayModal({
                     }}
                 >
                     Endre opplysninger
-                </ShortcutButtons>
+                </ShortcutButton>
             </Modal.Footer>
         </Modal>
     )

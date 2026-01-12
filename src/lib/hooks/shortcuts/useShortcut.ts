@@ -1,9 +1,14 @@
 import { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
+import { PopoverProps } from '@navikt/ds-react'
 
 export type Shortcut = {
     modifier: 'alt' | 'shift'
-    code: 'KeyN' | 'KeyS' | 'KeyD' | 'ArrowLeft' | 'ArrowRight'
+    code: 'KeyN' | 'KeyM' | 'KeyS' | 'KeyD' | 'ArrowLeft' | 'ArrowRight'
+    /**
+     * Where the shortcut hint should be placed, defaults to bottom-end
+     */
+    hintPlacement?: PopoverProps['placement']
 }
 
 type RegisteredShortcut = {
@@ -58,6 +63,8 @@ function getKeyLabel(code: Shortcut['code']): string {
     switch (code) {
         case 'KeyN':
             return 'N'
+        case 'KeyM':
+            return 'M'
         case 'KeyS':
             return 'S'
         case 'KeyD':

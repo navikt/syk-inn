@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { FloppydiskIcon } from '@navikt/aksel-icons'
 
 import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
-import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
+import { ShortcutButton } from '@components/shortcut/ShortcutButtons'
 import { spanBrowserAsync } from '@lib/otel/browser'
 import { useMode } from '@core/providers/Modes'
 import { useFormDraftSync } from '@features/ny-sykmelding-form/draft/FormDraftSync'
@@ -17,7 +17,7 @@ export function LagreDraftButton({ className }: { className?: string }): ReactEl
     const draft = useFormDraftSync()
 
     return (
-        <ShortcutButtons
+        <ShortcutButton
             className={className}
             variant="secondary"
             icon={<FloppydiskIcon aria-hidden />}
@@ -34,7 +34,7 @@ export function LagreDraftButton({ className }: { className?: string }): ReactEl
             }}
         >
             Lagre (utkast)
-        </ShortcutButtons>
+        </ShortcutButton>
     )
 }
 
@@ -63,7 +63,7 @@ export function ForkastDraftButton({
     })
 
     return (
-        <ShortcutButtons
+        <ShortcutButton
             className={className}
             variant="tertiary"
             onClick={() =>
@@ -93,6 +93,6 @@ export function ForkastDraftButton({
             inactive={inactive}
         >
             Avbryt og forkast
-        </ShortcutButtons>
+        </ShortcutButton>
     )
 }

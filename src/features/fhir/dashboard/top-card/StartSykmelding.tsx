@@ -1,14 +1,15 @@
 import React, { ReactElement, useState } from 'react'
-import { BodyShort, Checkbox, Detail, Heading, Skeleton } from '@navikt/ds-react'
+import { ActionMenu, BodyShort, Checkbox, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
+import { CarIcon, ChevronDownIcon, FirstAidIcon, GavelSoundBlockIcon } from '@navikt/aksel-icons'
+import { logger } from '@navikt/next-logger'
 
-import { ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
+import { ShortcutButton, ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
 import { PasientDocument } from '@queries'
 import { SimpleAlert } from '@components/help/GeneralErrors'
 import { useMode } from '@core/providers/Modes'
 
 function StartSykmelding(): ReactElement {
-    const mode = useMode()
     const { data, loading, error, refetch } = useQuery(PasientDocument)
     const [hasLegged, setHasLegged] = useState(true)
 
@@ -66,21 +67,81 @@ function StartSykmelding(): ReactElement {
                         Pasienten er kjent eller har vist legitimasjon
                     </Checkbox>
                 </div>
-
-                <ShortcutButtonLink
-                    href={mode.paths.ny}
-                    variant="primary"
+                <FancyMultiOptionStartButton
                     disabled={loading || !hasLegged || data?.pasient == null}
                     loading={loading}
-                    size="medium"
-                    shortcut={{
-                        modifier: 'alt',
-                        code: 'KeyN',
-                    }}
-                >
-                    Opprett sykmelding
-                </ShortcutButtonLink>
+                />
             </div>
+        </div>
+    )
+}
+
+export function FancyMultiOptionStartButton({
+    loading,
+    disabled,
+}: {
+    loading: boolean
+    disabled: boolean
+}): ReactElement {
+    const mode = useMode()
+
+    return (
+        <div className="flex gap-[2px]">
+            <ShortcutButtonLink
+                href={mode.paths.ny}
+                variant="primary"
+                disabled={disabled}
+                loading={loading}
+                size="medium"
+                buttonClassName="rounded-r-none"
+                shortcut={{
+                    modifier: 'alt',
+                    code: 'KeyN',
+                    hintPlacement: 'bottom-start',
+                }}
+            >
+                Opprett sykmelding
+            </ShortcutButtonLink>
+            <ActionMenu>
+                <ActionMenu.Trigger>
+                    <ShortcutButton
+                        shortcut={{ modifier: 'alt', code: 'KeyM', hintPlacement: 'bottom' }}
+                        variant="primary"
+                        buttonClassName="rounded-l-none"
+                        icon={<ChevronDownIcon title="Andre handlinger" />}
+                    />
+                </ActionMenu.Trigger>
+                <ActionMenu.Content>
+                    <ActionMenu.Group label="Andre sykmeldingstyper">
+                        <ActionMenu.Item
+                            icon={<FirstAidIcon aria-hidden />}
+                            onSelect={() => {
+                                logger.info('First item!')
+                            }}
+                        >
+                            Behandlingsdager
+                        </ActionMenu.Item>
+                        <ActionMenu.Item
+                            icon={<CarIcon aria-hidden />}
+                            onSelect={() => {
+                                logger.info('Second item!')
+                            }}
+                        >
+                            Reisetilskudd
+                        </ActionMenu.Item>
+                    </ActionMenu.Group>
+                    <ActionMenu.Group label="Andre andre andre ting">
+                        <ActionMenu.Item
+                            icon={<GavelSoundBlockIcon aria-hidden />}
+                            onSelect={() => {
+                                logger.info('Third item!')
+                            }}
+                        >
+                            Annen lovfestet fraværsgrunn
+                        </ActionMenu.Item>
+                    </ActionMenu.Group>
+                </ActionMenu.Content>
+            </ActionMenu>
         </div>
     )
 }
