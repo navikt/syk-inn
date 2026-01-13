@@ -10,7 +10,7 @@ import {
 } from '@core/redux/reducers/ny-sykmelding'
 import { NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
 import { Diagnose } from '@data-layer/common/diagnose'
-import { NySykmeldingUtdypendeSporsmal } from '@core/redux/reducers/ny-sykmelding/form'
+import { NySykmeldingAnnenFravarsgrunn, NySykmeldingUtdypendeSporsmal } from '@core/redux/reducers/ny-sykmelding/form'
 
 export function stateArbeidsforholdToFormValues(
     stateArbeidsforhold: NySykmeldingArbeidsforhold | null,
@@ -137,5 +137,16 @@ export function stateUtdypendeSporsmalToFormValues(
         utfordringerMedArbeid: stateUtdypendeSporsmal.utfordringerMedArbeid ?? null,
         medisinskOppsummering: stateUtdypendeSporsmal.medisinskOppsummering ?? null,
         hensynPaArbeidsplassen: stateUtdypendeSporsmal.hensynPaArbeidsplassen ?? null,
+    }
+}
+
+export function stateAnnenFravarsgrunnToFormValues(
+    stateAnnenFravarsgrunn: NySykmeldingAnnenFravarsgrunn | null,
+): NySykmeldingMainFormValues['annenFravarsgrunn'] | null {
+    if (stateAnnenFravarsgrunn == null) return null
+
+    return {
+        harFravarsgrunn: stateAnnenFravarsgrunn.harFravarsgrunn,
+        fravarsgrunn: stateAnnenFravarsgrunn.fravarsgrunn,
     }
 }
