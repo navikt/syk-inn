@@ -9,6 +9,7 @@ import { OpprettSykmeldingMeta, OpprettSykmeldingPayload } from '@core/services/
 import { initializeValkey } from '@lib/test/valkey'
 import { daysAgo, inDays, today } from '@lib/test/date-utils'
 import { consumeUntil, initializeConsumer, initializeKafka } from '@lib/test/syk-inn-kafka'
+import { AnnenFravarsgrunnArsak } from '@resolvers'
 
 describe('SykInnApi integration', () => {
     let sykInnApi: StartedTestContainer
@@ -375,6 +376,7 @@ const createFullOpprettSykmeldingPayload = (
             medisinskOppsummering: 'Pasienten har influensa',
             hensynPaArbeidsplassen: 'Trenger ro og hvile',
         },
+        annenFravarsgrunn: 'BEHANDLING_STERILISERING' satisfies AnnenFravarsgrunnArsak,
         ...valueOverrides,
     },
 })

@@ -3,6 +3,7 @@ import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import { precedence } from '@features/ny-sykmelding-form/form/utils'
 import {
     stateAndreSporsmalToFormValues,
+    stateAnnenFravarsgrunnToFormValues,
     stateArbeidsforholdToFormValues,
     stateBidiagnoserToFormValues,
     stateHoveddiagnoseToFormValues,
@@ -13,6 +14,7 @@ import {
 } from '@features/actions/common/state-sykmelding-mappers'
 import {
     defaultAndreSporsmal,
+    defaultAnnenfravarsgrunn,
     defaultArbeidsforhold,
     defaultMeldinger,
     defaultPeriode,
@@ -55,6 +57,10 @@ export function nySykmeldingDefaultValues(
         utdypendeSporsmal: precedence([
             stateUtdypendeSporsmalToFormValues(state?.utdypendeSporsmal ?? null),
             defaultUtdypendeSporsmal(),
+        ]),
+        annenFravarsgrunn: precedence([
+            stateAnnenFravarsgrunnToFormValues(state?.annenFravarsgrunn ?? null),
+            defaultAnnenfravarsgrunn(),
         ]),
     }
 }

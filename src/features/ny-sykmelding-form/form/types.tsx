@@ -12,7 +12,7 @@ import {
 
 import { Diagnose } from '@data-layer/common/diagnose'
 import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
-import { ArbeidsrelatertArsakType, DiagnoseFragment } from '@queries'
+import { AnnenFravarsgrunnArsak, ArbeidsrelatertArsakType, DiagnoseFragment } from '@queries'
 
 export type NySykmeldingSuggestions = {
     diagnose: {
@@ -78,6 +78,11 @@ type AndreSporsmalFields = {
     } | null
 }
 
+type AnnenFravarsgrunnFields = {
+    harFravarsgrunn: boolean
+    fravarsgrunn: AnnenFravarsgrunnArsak | null
+}
+
 type UtdypendeSporsmalFields = {
     utfordringerMedArbeid: string | null
     medisinskOppsummering: string | null
@@ -94,6 +99,7 @@ export type NySykmeldingMainFormValues = {
     tilbakedatering: TilbakedateringField | null
     meldinger: MeldingerField
     andreSporsmal: AndreSporsmalFields
+    annenFravarsgrunn: AnnenFravarsgrunnFields
     utdypendeSporsmal: UtdypendeSporsmalFields | null
 }
 

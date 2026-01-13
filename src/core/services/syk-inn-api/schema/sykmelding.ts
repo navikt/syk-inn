@@ -118,6 +118,7 @@ export const SykInnApiSykmeldingSchema = z
             arbeidsgiver: ArbeidsgiverSchema.nullable(),
             tilbakedatering: TilbakedateringSchema.nullable(),
             utdypendeSporsmal: UtdypendeSporsmalSchema.nullable(),
+            annenFravarsgrunn: z.string().nullable(),
         }),
         utfall: RuleResultSchema,
     })

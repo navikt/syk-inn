@@ -95,5 +95,6 @@ export const OpprettSykmeldingPayloadSchema = z.object({
                 hensynPaArbeidsplassen: z.string().nullable(),
             })
             .nullable(),
+        annenFravarsgrunn: z.string().nullable(),
     }),
 })

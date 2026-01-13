@@ -54,6 +54,10 @@ test('draft values shall be used as default if provided', () => {
             medisinskOppsummering: null,
             hensynPaArbeidsplassen: null,
         },
+        annenFravarsgrunn: {
+            harFravarsgrunn: false,
+            fravarsgrunn: null,
+        },
     } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
 
@@ -110,6 +114,10 @@ test('form values shall have higher presedence than draft values', () => {
             medisinskOppsummering: null,
             hensynPaArbeidsplassen: null,
         },
+        annenFravarsgrunn: {
+            harFravarsgrunn: false,
+            fravarsgrunn: null,
+        },
     } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
 
@@ -136,6 +144,10 @@ test('server suggestions shall be used if no draft or form values are provided',
             utfordringerMedArbeid: null,
             medisinskOppsummering: null,
             hensynPaArbeidsplassen: null,
+        },
+        annenFravarsgrunn: {
+            harFravarsgrunn: false,
+            fravarsgrunn: null,
         },
     } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })
@@ -184,6 +196,7 @@ const fullDraft: DraftValues = {
     svangerskapsrelatert: false,
     yrkesskade: { yrkesskade: true, skadedato: '2024-11-20' },
     utdypendeSporsmal: null,
+    annenFravarsgrunn: null,
 }
 
 const fullExistingStateValues: NySykmeldingFormState = {
@@ -222,6 +235,7 @@ const fullExistingStateValues: NySykmeldingFormState = {
         yrkesskade: false,
         yrkesskadeDato: null,
     },
+    annenFravarsgrunn: null,
     utdypendeSporsmal: null,
 }
 
