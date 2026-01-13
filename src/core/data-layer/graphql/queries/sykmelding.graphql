@@ -96,6 +96,7 @@ fragment SykmeldingFull on SykmeldingFull {
             medisinskOppsummering
             hensynPaArbeidsplassen
         }
+        annenFravarsgrunn
     }
     documentStatus
 }

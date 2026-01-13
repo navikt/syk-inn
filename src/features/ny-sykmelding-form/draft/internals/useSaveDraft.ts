@@ -84,5 +84,9 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
             medisinskOppsummering: values.utdypendeSporsmal?.medisinskOppsummering ?? null,
             hensynPaArbeidsplassen: values.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
         },
+        annenFravarsgrunn: {
+            harFravarsgrunn: values.annenFravarsgrunn.harFravarsgrunn,
+            fravarsgrunn: values.annenFravarsgrunn.fravarsgrunn,
+        },
     }
 }

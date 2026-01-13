@@ -1,4 +1,4 @@
-import { ArbeidsrelatertArsakType } from '@queries'
+import { AnnenFravarsgrunnArsak, ArbeidsrelatertArsakType } from '@queries'
 import { Diagnose } from '@data-layer/common/diagnose'
 import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
 
@@ -62,6 +62,11 @@ export type NySykmeldingUtdypendeSporsmal = {
     hensynPaArbeidsplassen: string | null
 }
 
+export type NySykmeldingAnnenFravarsgrunn = {
+    harFravarsgrunn: boolean
+    fravarsgrunn: AnnenFravarsgrunnArsak | null
+}
+
 export type NySykmeldingFormState = {
     arbeidsforhold: NySykmeldingArbeidsforhold | null
     aktiviteter: NySykmeldingAktivitet[] | null
@@ -70,14 +75,16 @@ export type NySykmeldingFormState = {
     meldinger: NySykmeldingMeldinger | null
     andreSporsmal: NySykmeldingAndreSporsmal | null
     utdypendeSporsmal: NySykmeldingUtdypendeSporsmal | null
+    annenFravarsgrunn: NySykmeldingAnnenFravarsgrunn | null
 }
 
 export type NySykmeldingFormPayload = {
     arbeidsforhold: NySykmeldingArbeidsforhold | null
-    diagnose: NySykmeldingDiagnoser
     aktiviteter: NySykmeldingAktivitet[]
     tilbakedatering: NySykmeldingTilbakedatering | null
+    diagnose: NySykmeldingDiagnoser
     meldinger: NySykmeldingMeldinger
     andreSporsmal: NySykmeldingAndreSporsmal
     utdypendeSporsmal: NySykmeldingUtdypendeSporsmal | null
+    annenFravarsgrunn: NySykmeldingAnnenFravarsgrunn
 }

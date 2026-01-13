@@ -78,6 +78,12 @@ export const DraftValuesSchema = z.object({
             hensynPaArbeidsplassen: z.string().nullable(),
         })
         .nullable(),
+    annenFravarsgrunn: z
+        .object({
+            harFravarsgrunn: z.boolean(),
+            fravarsgrunn: z.string().nullable(),
+        })
+        .nullable(),
 })
 
 /**

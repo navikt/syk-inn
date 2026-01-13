@@ -24,6 +24,7 @@ type SykmeldingFullValues {
     arbeidsgiver: Arbeidsgiver
     tilbakedatering: Tilbakedatering
     utdypendeSporsmal: UtdypendeSporsmal
+    annenFravarsgrunn: AnnenFravarsgrunnArsak
 }
 
 type SykmeldingMelding {
@@ -50,4 +51,44 @@ type UtdypendeSporsmal {
     utfordringerMedArbeid: String
     medisinskOppsummering: String
     hensynPaArbeidsplassen: String
+}
+
+enum AnnenFravarsgrunnArsak {
+    """
+    A: Når vedkommende er innlagt i en godkjent helseinstitusjon
+    """
+    GODKJENT_HELSEINSTITUSJON
+    # B, not applicable: BEHANDLING_FORHINDRER_ARBEID
+    """
+    C: Når vedkommende deltar på et arbeidsrettet tiltak,
+    """
+    ARBEIDSRETTET_TILTAK
+    """
+    D: Når vedkommende på grunn av sykdom, skade eller lyte får tilskott til opplæringstiltak etter § 10-7 tredje ledd,
+    """
+    MOTTAR_TILSKUDD_GRUNNET_HELSETILSTAND
+    """
+    E: Når vedkommende er til nødvendig kontrollundersøkelse som krever minst 24 timers fravær, reisetid medregnet,
+    """
+    NODVENDIG_KONTROLLUNDENRSOKELSE
+    """
+    F: Når vedkommende myndighet har nedlagt forbud mot at han eller hun arbeider på grunn av smittefare,
+    """
+    SMITTEFARE
+    """
+    G: Når vedkommende er arbeidsufør som følge av svangerskapsavbrudd,
+    """
+    ABORT
+    """
+    H: Når vedkommende er arbeidsufør som følge av behandling for barnløshet,
+    """
+    UFOR_GRUNNET_BARNLOSHET
+    """
+    I: Når vedkommende er donor eller er under vurdering som donor,
+    """
+    DONOR
+    """
+    J: Når vedkommende er arbeidsufør som følge av behandling i forbindelse med sterilisering
+    """
+    BEHANDLING_STERILISERING
 }

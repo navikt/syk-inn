@@ -2,6 +2,7 @@ import { expect, Locator, Page, test } from '@playwright/test'
 import { add } from 'date-fns'
 import { toReadableDatePeriod } from '@lib/date'
 import { daysAgo, inputDate } from '@lib/test/date-utils'
+import { AnnenFravarsgrunnArsak } from '@queries'
 
 export function expectPatient(patient: { name: string; fnr: string }) {
     return async (region: Locator) => {
@@ -83,6 +84,19 @@ export function expectBidagnoses(expectedBidiagnoses: string[]) {
             for (let index = 0; index < expectedBidiagnoses.length; index++) {
                 await expect(bidiagnoses.nth(index)).toHaveText(new RegExp(expectedBidiagnoses[index]))
             }
+        })
+    }
+}
+
+export function expectAnnenLovpalagtFravarsgrunn(expectedFravarsgrunn: AnnenFravarsgrunnArsak) {
+    return async (page: Page) => {
+        return test.step(`Verify that annen lovfestet fraværsgrunn is ${expectedFravarsgrunn}`, async () => {
+            const group = page.getByRole('group', { name: 'Annen lovfestet fraværsgrunn' })
+
+            await expect(
+                group.getByRole('checkbox', { name: 'Sykmeldingen har en annen lovfestet fraværsgrunn' }),
+            ).toBeChecked()
+            await expect(group.getByRole('combobox', { name: 'Velg fraværsgrunn' })).toHaveValue(expectedFravarsgrunn)
         })
     }
 }

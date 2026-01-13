@@ -25,6 +25,7 @@ input OpprettSykmeldingInput {
     arbeidsforhold: InputArbeidsforhold
     tilbakedatering: InputTilbakedatering
     utdypendeSporsmal: InputUtdypendeSporsmal
+    annenFravarsgrunn: AnnenFravarsgrunnArsak
 }
 
 input InputDiagnose {

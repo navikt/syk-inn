@@ -43,5 +43,9 @@ test('multiple bidiagnoser from server suggestion shall be used', () => {
             medisinskOppsummering: null,
             hensynPaArbeidsplassen: null,
         },
+        annenFravarsgrunn: {
+            harFravarsgrunn: false,
+            fravarsgrunn: null,
+        },
     } satisfies DefaultValues<NySykmeldingMainFormValues>)
 })

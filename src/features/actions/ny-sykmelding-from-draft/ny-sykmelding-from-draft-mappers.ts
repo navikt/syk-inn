@@ -6,6 +6,7 @@ import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import { precedence } from '@features/ny-sykmelding-form/form/utils'
 import {
     stateAndreSporsmalToFormValues,
+    stateAnnenFravarsgrunnToFormValues,
     stateArbeidsforholdToFormValues,
     stateBidiagnoserToFormValues,
     stateHoveddiagnoseToFormValues,
@@ -16,6 +17,7 @@ import {
 } from '@features/actions/common/state-sykmelding-mappers'
 import {
     defaultAndreSporsmal,
+    defaultAnnenfravarsgrunn,
     defaultArbeidsforhold,
     defaultMeldinger,
     defaultPeriode,
@@ -23,6 +25,7 @@ import {
     defaultUtdypendeSporsmal,
 } from '@features/ny-sykmelding-form/form/default-values'
 import { serverDiagnoseSuggestionToFormValue } from '@features/actions/common/gql-sykmelding-mappers'
+import { AnnenFravarsgrunnArsak } from '@queries'
 
 export function nySykmeldingFromDraftDefaultValues(
     draft: DraftValues | null,
@@ -73,6 +76,11 @@ export function nySykmeldingFromDraftDefaultValues(
             stateUtdypendeSporsmalToFormValues(state?.utdypendeSporsmal ?? null),
             draftUtdypendeSporsmalToFormValues(draft?.utdypendeSporsmal ?? null),
             defaultUtdypendeSporsmal(),
+        ]),
+        annenFravarsgrunn: precedence([
+            stateAnnenFravarsgrunnToFormValues(state?.annenFravarsgrunn ?? null),
+            draftAnnenFravarsgrunnToFormValues(draft?.annenFravarsgrunn ?? null),
+            defaultAnnenfravarsgrunn(),
         ]),
     }
 }
@@ -215,5 +223,16 @@ function draftUtdypendeSporsmalToFormValues(
         utfordringerMedArbeid: draftUtdypendeSporsmal.utfordringerMedArbeid ?? null,
         medisinskOppsummering: draftUtdypendeSporsmal.medisinskOppsummering ?? null,
         hensynPaArbeidsplassen: draftUtdypendeSporsmal.hensynPaArbeidsplassen ?? null,
+    }
+}
+
+function draftAnnenFravarsgrunnToFormValues(
+    draftAnnenFravarsgrunn: DraftValues['annenFravarsgrunn'] | null,
+): NySykmeldingMainFormValues['annenFravarsgrunn'] | null {
+    if (draftAnnenFravarsgrunn == null) return null
+
+    return {
+        harFravarsgrunn: draftAnnenFravarsgrunn.harFravarsgrunn ?? false,
+        fravarsgrunn: (draftAnnenFravarsgrunn.fravarsgrunn as AnnenFravarsgrunnArsak) ?? null,
     }
 }

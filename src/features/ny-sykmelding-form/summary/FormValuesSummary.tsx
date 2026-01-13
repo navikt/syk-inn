@@ -17,9 +17,10 @@ import { AkselNextLink } from '@components/links/AkselNextLink'
 import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
 import { toReadableDate, toReadableDatePeriod, toReadablePeriodLength } from '@lib/date'
 import { PasientDocument } from '@queries'
-import { NySykmeldingUtdypendeSporsmal } from '@core/redux/reducers/ny-sykmelding/form'
+import { NySykmeldingAnnenFravarsgrunn, NySykmeldingUtdypendeSporsmal } from '@core/redux/reducers/ny-sykmelding/form'
 import { useMode } from '@core/providers/Modes'
 import { DetailedAlert, InlineWarning, SimpleAlert } from '@components/help/GeneralErrors'
+import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
 
 import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
 import { useFormStep } from '../steps/useFormStep'
@@ -113,6 +114,7 @@ function FormValuesSummary({ className }: Props): ReactElement {
                     <AktivitetSummaryAnswers aktiviteter={values.aktiviteter} />
                     <TilbakedateringSummaryAnswers tilbakedatering={values.tilbakedatering} />
                     <DiagnoseSummaryAnswers diagnose={values.diagnose} />
+                    <AnnenFravarsgrunn annenFravarsgrunn={values.annenFravarsgrunn} />
                     <UtdypendeSporsmalSummaryAnswers utdypendeSporsmal={values.utdypendeSporsmal} />
                     <MeldingerSummaryAnswers meldinger={values.meldinger} />
                     <AnderSporsmalSummaryAnswers andreSporsmal={values.andreSporsmal} />
@@ -384,6 +386,29 @@ function AnderSporsmalSummaryAnswers({
                     <FormSummary.Value>{toReadableDate(andreSporsmal.yrkesskadeDato)}</FormSummary.Value>
                 </FormSummary.Answer>
             )}
+        </>
+    )
+}
+
+function AnnenFravarsgrunn({
+    annenFravarsgrunn,
+}: {
+    annenFravarsgrunn: NySykmeldingAnnenFravarsgrunn | null
+}): ReactElement | null {
+    if (annenFravarsgrunn == null || !annenFravarsgrunn.harFravarsgrunn) {
+        return null
+    }
+
+    return (
+        <>
+            <FormSummary.Answer>
+                <FormSummary.Label>Annen lovfestet fraværsgrunn</FormSummary.Label>
+                <FormSummary.Value>
+                    {annenFravarsgrunn.fravarsgrunn
+                        ? annenFravarsgrunnToText(annenFravarsgrunn.fravarsgrunn)
+                        : 'Mangler'}
+                </FormSummary.Value>
+            </FormSummary.Answer>
         </>
     )
 }

@@ -40,6 +40,10 @@ export function formValuesToStatePayload(values: NySykmeldingMainFormValues): Ny
             yrkesskade: values.andreSporsmal.yrkesskade?.yrkesskade ?? false,
             yrkesskadeDato: values.andreSporsmal.yrkesskade?.skadedato ?? null,
         },
+        annenFravarsgrunn: {
+            harFravarsgrunn: values.annenFravarsgrunn.harFravarsgrunn,
+            fravarsgrunn: values.annenFravarsgrunn.fravarsgrunn,
+        },
         utdypendeSporsmal: {
             utfordringerMedArbeid: values.utdypendeSporsmal?.utfordringerMedArbeid ?? null,
             medisinskOppsummering: values.utdypendeSporsmal?.medisinskOppsummering ?? null,
