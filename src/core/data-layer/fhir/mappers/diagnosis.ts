@@ -1,10 +1,14 @@
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 import { CodeableConcept, FhirCondition } from '@navikt/smart-on-fhir/zod'
+import { getICPC2 } from '@navikt/tsm-diagnoser/ICPC2'
+import { getICD10 } from '@navikt/tsm-diagnoser/ICD10'
+import { getICPC2B } from '@navikt/tsm-diagnoser/ICPC2B'
+import Fuse from 'fuse.js'
 
-import { Diagnose } from '@resolvers'
-import { raise } from '@lib/ts'
 import { DiagnoseSystem, ICD10_OID_VALUE, ICPC2_OID_VALUE, ICPC2B_OID_VALUE } from '@data-layer/common/diagnose'
+import { raise } from '@lib/ts'
+import { Diagnose } from '@resolvers'
 
 type Diagnosis = {
     system: 'ICD10' | 'ICPC2' | 'ICPC2B'
@@ -51,6 +55,7 @@ export function fhirDiagnosisToRelevantDiagnosis(conditions: FhirCondition[] | n
                     text: it.display,
                 }) satisfies Diagnose,
         ),
+        R.tap(logDiagnoseDifferences),
     )
 }
 
@@ -64,5 +69,37 @@ function diagnosisUrnToOidType(urn: string): DiagnoseSystem | null {
             return 'ICD10'
         default:
             return null
+    }
+}
+
+/**
+ * Temporary log based analysis of differences between FHIR diagnosis texts and the actual texts
+ */
+function logDiagnoseDifferences(diagnosis: Diagnose[]): void {
+    const fuse = new Fuse<string>([], {
+        includeScore: true,
+        ignoreLocation: true,
+        isCaseSensitive: true,
+        threshold: 1,
+    })
+
+    function normalizeText(text: string): string {
+        return text.toLowerCase().split(' ').sort().join(' ')
+    }
+
+    for (const it of diagnosis) {
+        const actual =
+            it.system === 'ICPC2' ? getICPC2(it.code) : it.system === 'ICPC2B' ? getICPC2B(it.code) : getICD10(it.code)
+
+        fuse.setCollection([normalizeText(actual?.text ?? '')])
+        const [comparison] = fuse.search(normalizeText(it.text))
+
+        if (comparison == null || comparison.score == null) {
+            logger.warn(`[Diagnoseanalyse]: Ugyldig diagnose - ${it.system}:${it.code}:${it.text}`)
+        } else if (comparison.score > 0.1) {
+            logger.warn(
+                `[Diagnoseanalyse]: Stor diff - ${it.system}:${it.code}:${it.text}:${actual?.text}:${comparison.score.toFixed(2)}`,
+            )
+        }
     }
 }

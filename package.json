@@ -47,7 +47,7 @@
         "@navikt/next-logger": "^4.4.5",
         "@navikt/smart-on-fhir": "1.5.16",
         "@navikt/texas": "^4.1.1",
-        "@navikt/tsm-diagnoser": "^2026.1.10",
+        "@navikt/tsm-diagnoser": "^2026.1.13",
         "@opentelemetry/api": "^1.9.0",
         "@opentelemetry/core": "^2.3.0",
         "@reduxjs/toolkit": "^2.11.2",

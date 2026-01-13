@@ -377,11 +377,6 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
-            const patientInContext = await client.patient.request()
-            if ('error' in patientInContext) {
-                throw new GraphQLError('PARSING_ERROR')
-            }
-
             if (conditionsByEncounter.entry == null) {
                 metrics.numberOfDiagnosesFetched.observe(0)
                 return []
