@@ -1,7 +1,7 @@
 import { expect, Locator, Page, test } from '@playwright/test'
 import { add } from 'date-fns'
 import { ApolloLink } from '@apollo/client'
-import { OpprettSykmeldingDocument } from '@queries'
+import { AnnenFravarsgrunnArsak, OpprettSykmeldingDocument } from '@queries'
 import { toReadableDatePeriod } from '@lib/date'
 import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
 import { inputDate } from '@lib/test/date-utils'
@@ -139,6 +139,15 @@ export function addUtdypendeSporsmal({
                     .fill(hensynPaArbeidsplassen)
             }
         })
+    }
+}
+
+export function selectAnnenLovpalagtFravarsgrunn({ reason }: { reason: AnnenFravarsgrunnArsak }) {
+    return async (page: Page) => {
+        const group = page.getByRole('group', { name: 'Annen lovfestet fraværsgrunn' })
+
+        await group.getByRole('checkbox', { name: 'Sykmeldingen har en annen lovfestet fraværsgrunn' }).click()
+        await group.getByRole('combobox', { name: 'Velg fraværsgrunn' }).selectOption(reason)
     }
 }
 

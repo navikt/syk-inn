@@ -159,6 +159,7 @@ function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingState): O
             medisinskOppsummering: formState.utdypendeSporsmal?.medisinskOppsummering ?? null,
             hensynPaArbeidsplassen: formState.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
         },
+        annenFravarsgrunn: formState.annenFravarsgrunn?.fravarsgrunn ?? null,
     } satisfies OpprettSykmeldingInput
 }
 

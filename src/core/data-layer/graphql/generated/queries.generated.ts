@@ -44,6 +44,26 @@ export type AktivitetRedacted = FomTom & {
 
 export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'GRADERT' | 'REISETILSKUDD'
 
+export type AnnenFravarsgrunnArsak =
+    /** G: Når vedkommende er arbeidsufør som følge av svangerskapsavbrudd, */
+    | 'ABORT'
+    /** C: Når vedkommende deltar på et arbeidsrettet tiltak, */
+    | 'ARBEIDSRETTET_TILTAK'
+    /** J: Når vedkommende er arbeidsufør som følge av behandling i forbindelse med sterilisering */
+    | 'BEHANDLING_STERILISERING'
+    /** I: Når vedkommende er donor eller er under vurdering som donor, */
+    | 'DONOR'
+    /** A: Når vedkommende er innlagt i en godkjent helseinstitusjon */
+    | 'GODKJENT_HELSEINSTITUSJON'
+    /** D: Når vedkommende på grunn av sykdom, skade eller lyte får tilskott til opplæringstiltak etter § 10-7 tredje ledd, */
+    | 'MOTTAR_TILSKUDD_GRUNNET_HELSETILSTAND'
+    /** E: Når vedkommende er til nødvendig kontrollundersøkelse som krever minst 24 timers fravær, reisetid medregnet, */
+    | 'NODVENDIG_KONTROLLUNDENRSOKELSE'
+    /** F: Når vedkommende myndighet har nedlagt forbud mot at han eller hun arbeider på grunn av smittefare, */
+    | 'SMITTEFARE'
+    /** H: Når vedkommende er arbeidsufør som følge av behandling for barnløshet, */
+    | 'UFOR_GRUNNET_BARNLOSHET'
+
 export type Arbeidsforhold = {
     __typename: 'Arbeidsforhold'
     navn: Scalars['String']['output']
@@ -242,6 +262,7 @@ export type OpprettSykmeldingDraft = {
 
 export type OpprettSykmeldingInput = {
     aktivitet: Array<InputAktivitet>
+    annenFravarsgrunn: InputMaybe<AnnenFravarsgrunnArsak>
     arbeidsforhold: InputMaybe<InputArbeidsforhold>
     bidiagnoser: Array<InputDiagnose>
     hoveddiagnose: InputDiagnose
@@ -374,6 +395,7 @@ export type SykmeldingFull = SykmeldingBase & {
 export type SykmeldingFullValues = {
     __typename: 'SykmeldingFullValues'
     aktivitet: Array<Aktivitet>
+    annenFravarsgrunn: Maybe<AnnenFravarsgrunnArsak>
     arbeidsgiver: Maybe<Arbeidsgiver>
     bidiagnoser: Maybe<Array<Diagnose>>
     hoveddiagnose: Maybe<Diagnose>
@@ -513,6 +535,7 @@ export type AllDashboardQuery = {
                       __typename: 'SykmeldingFullValues'
                       svangerskapsrelatert: boolean
                       pasientenSkalSkjermes: boolean
+                      annenFravarsgrunn: AnnenFravarsgrunnArsak | null
                       hoveddiagnose: {
                           __typename: 'Diagnose'
                           system: DiagnoseSystem
@@ -670,6 +693,7 @@ export type AllDashboardQuery = {
                       __typename: 'SykmeldingFullValues'
                       svangerskapsrelatert: boolean
                       pasientenSkalSkjermes: boolean
+                      annenFravarsgrunn: AnnenFravarsgrunnArsak | null
                       hoveddiagnose: {
                           __typename: 'Diagnose'
                           system: DiagnoseSystem
@@ -963,6 +987,7 @@ export type SykmeldingByIdQuery = {
                   __typename: 'SykmeldingFullValues'
                   svangerskapsrelatert: boolean
                   pasientenSkalSkjermes: boolean
+                  annenFravarsgrunn: AnnenFravarsgrunnArsak | null
                   hoveddiagnose: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
                   bidiagnoser: Array<{
                       __typename: 'Diagnose'
@@ -1114,6 +1139,7 @@ export type OpprettSykmeldingMutation = {
                   __typename: 'SykmeldingFullValues'
                   svangerskapsrelatert: boolean
                   pasientenSkalSkjermes: boolean
+                  annenFravarsgrunn: AnnenFravarsgrunnArsak | null
                   hoveddiagnose: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
                   bidiagnoser: Array<{
                       __typename: 'Diagnose'
@@ -1207,6 +1233,7 @@ export type SykmeldingFullFragment = {
         __typename: 'SykmeldingFullValues'
         svangerskapsrelatert: boolean
         pasientenSkalSkjermes: boolean
+        annenFravarsgrunn: AnnenFravarsgrunnArsak | null
         hoveddiagnose: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
         bidiagnoser: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
         aktivitet: Array<
@@ -1323,6 +1350,7 @@ type Sykmelding_SykmeldingFull_Fragment = {
         __typename: 'SykmeldingFullValues'
         svangerskapsrelatert: boolean
         pasientenSkalSkjermes: boolean
+        annenFravarsgrunn: AnnenFravarsgrunnArsak | null
         hoveddiagnose: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
         bidiagnoser: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
         aktivitet: Array<
@@ -1896,6 +1924,7 @@ export const SykmeldingFullFragmentDoc = {
                                         ],
                                     },
                                 },
+                                { kind: 'Field', name: { kind: 'Name', value: 'annenFravarsgrunn' } },
                             ],
                         },
                     },
@@ -2513,6 +2542,7 @@ export const SykmeldingFragmentDoc = {
                                         ],
                                     },
                                 },
+                                { kind: 'Field', name: { kind: 'Name', value: 'annenFravarsgrunn' } },
                             ],
                         },
                     },
@@ -2947,6 +2977,7 @@ export const AllDashboardDocument = {
                                         ],
                                     },
                                 },
+                                { kind: 'Field', name: { kind: 'Name', value: 'annenFravarsgrunn' } },
                             ],
                         },
                     },
@@ -3863,6 +3894,7 @@ export const SykmeldingByIdDocument = {
                                         ],
                                     },
                                 },
+                                { kind: 'Field', name: { kind: 'Name', value: 'annenFravarsgrunn' } },
                             ],
                         },
                     },
@@ -4359,6 +4391,7 @@ export const OpprettSykmeldingDocument = {
                                         ],
                                     },
                                 },
+                                { kind: 'Field', name: { kind: 'Name', value: 'annenFravarsgrunn' } },
                             ],
                         },
                     },

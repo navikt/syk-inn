@@ -83,6 +83,13 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 - [Standalone: aareg @feature-toggle - going to summary and returning should keep arbeidsgiver in Select](./multi-mode/form-aareg.spec.ts#L65)
 - [Standalone: aareg @feature-toggle - saving a draft and returning should keep arbeidsgiver in Select](./multi-mode/form-aareg.spec.ts#L106)
 
+## [multi-mode/form-annen-fravarsgrunn.spec.ts](./multi-mode/form-annen-fravarsgrunn.spec.ts)
+
+- [FHIR: Submit sykmelding with annen lovfestet fraværsgrunn](./multi-mode/form-annen-fravarsgrunn.spec.ts#L18)
+- [FHIR: When ticking the checkbox the reason should be required](./multi-mode/form-annen-fravarsgrunn.spec.ts#L49)
+- [Standalone: Submit sykmelding with annen lovfestet fraværsgrunn](./multi-mode/form-annen-fravarsgrunn.spec.ts#L18)
+- [Standalone: When ticking the checkbox the reason should be required](./multi-mode/form-annen-fravarsgrunn.spec.ts#L49)
+
 ## [multi-mode/form-interactions.spec.ts](./multi-mode/form-interactions.spec.ts)
 
 - [FHIR: hoveddiagnose - shall be able to edit diagnose](./multi-mode/form-interactions.spec.ts#L17)
@@ -106,12 +113,12 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [multi-mode/form-persistence.spec.ts](./multi-mode/form-persistence.spec.ts)
 
-- [FHIR: filling out the form, and returning to main step, should keep all values](./multi-mode/form-persistence.spec.ts#L58)
-- [FHIR: filling out the form, saving a draft, and returning to the form, should keep all the values](./multi-mode/form-persistence.spec.ts#L72)
-- [FHIR: filling out the form, and reloading on kvittering page should restore values](./multi-mode/form-persistence.spec.ts#L108)
-- [Standalone: filling out the form, and returning to main step, should keep all values](./multi-mode/form-persistence.spec.ts#L58)
-- [Standalone: filling out the form, saving a draft, and returning to the form, should keep all the values](./multi-mode/form-persistence.spec.ts#L72)
-- [Standalone: filling out the form, and reloading on kvittering page should restore values](./multi-mode/form-persistence.spec.ts#L108)
+- [FHIR: filling out the form, and returning to main step, should keep all values](./multi-mode/form-persistence.spec.ts#L62)
+- [FHIR: filling out the form, saving a draft, and returning to the form, should keep all the values](./multi-mode/form-persistence.spec.ts#L76)
+- [FHIR: filling out the form, and reloading on kvittering page should restore values](./multi-mode/form-persistence.spec.ts#L112)
+- [Standalone: filling out the form, and returning to main step, should keep all values](./multi-mode/form-persistence.spec.ts#L62)
+- [Standalone: filling out the form, saving a draft, and returning to the form, should keep all the values](./multi-mode/form-persistence.spec.ts#L76)
+- [Standalone: filling out the form, and reloading on kvittering page should restore values](./multi-mode/form-persistence.spec.ts#L112)
 
 ## [multi-mode/form-rule-validations.spec.ts](./multi-mode/form-rule-validations.spec.ts)
 

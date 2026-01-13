@@ -9,6 +9,7 @@ import { ValueItem } from '@components/sykmelding/ValuesSection'
 import { ArbeidsrelaterteArsaker } from '@features/ny-sykmelding-form/aktivitet/ArsakerPicker'
 import { Diagnose } from '@data-layer/common/diagnose'
 import { PREVIOUS_OFFSET_DAYS } from '@data-layer/common/sykmelding-utils'
+import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
 
 type Props = {
     sykmelding: SykmeldingFragment
@@ -72,6 +73,11 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                 hoveddiagnose={sykmelding.values.hoveddiagnose}
                 bidiagnoser={sykmelding.values.bidiagnoser}
             />
+            {sykmelding.values.annenFravarsgrunn && (
+                <ValueItem title="Sykmeldingen har en annen lovfestet fraværsgrunn">
+                    {annenFravarsgrunnToText(sykmelding.values.annenFravarsgrunn)}
+                </ValueItem>
+            )}
             {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid && (
                 <ValueItem title="Hvilke utfordringer har pasienten med å utføre gradert arbeid?">
                     {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid}

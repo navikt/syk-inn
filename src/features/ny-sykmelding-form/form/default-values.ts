@@ -28,6 +28,13 @@ export function defaultUtdypendeSporsmal(): NySykmeldingMainFormValues['utdypend
     }
 }
 
+export function defaultAnnenfravarsgrunn(): NySykmeldingMainFormValues['annenFravarsgrunn'] {
+    return {
+        harFravarsgrunn: false,
+        fravarsgrunn: null,
+    }
+}
+
 export function defaultTilbakedatering(): NySykmeldingMainFormValues['tilbakedatering'] {
     return null
 }

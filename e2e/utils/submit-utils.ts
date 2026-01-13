@@ -30,6 +30,7 @@ export const defaultOpprettSykmeldingValues: Omit<OpprettSykmeldingInput, 'aktiv
         medisinskOppsummering: null,
         hensynPaArbeidsplassen: null,
     },
+    annenFravarsgrunn: null,
 }
 
 export const defaultAktivitetIkkeMulig = ({
