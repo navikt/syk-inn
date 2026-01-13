@@ -56,8 +56,6 @@ spec:
         - host: 'helseid-sts.test.nhn.no'
         - host: 'slack.com'
       rules:
-        - application: logging
-          namespace: nais-system
         - application: syk-inn-api
         - application: tsm-pdl-cache
         # Team Logs: https://docs.nais.io/observability/logging/how-to/team-logs/
