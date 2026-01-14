@@ -150,6 +150,7 @@ We'll use the power of TypeScript to automatically update all the mappings.
 1. GraphQL: Update `OpprettSykmeldingInput` with a new nullable field and run `yarn gen`
     - You will now have 20-30 TSC errors in misc mapping and test files.
     - Fix these. Once you hit real application code move to the next step.
+    - Update any queries/mutation that request the parent object, and add your new field to the query.
 2. Draft: Update draft schema in `DraftValuesSchema` with your new value
     - Update any TS-errors, mapping _from_ draft to default form values will only be possible after step 3.
 3. Form: Once you need the form value to complete the mapping, add your new types to:
