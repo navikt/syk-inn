@@ -164,3 +164,59 @@ We'll use the power of TypeScript to automatically update all the mappings.
 6. API Integration tests: Update syk-inn-api integration tests
     - Prerequisite: Actually have implemented your new value in syk-inn-api
     - Update or write new tests that verify that your payload data is received and returned correctly.
+
+### High level data flow
+
+There are a lot of stop-points in the data flow because of our strict typing, and multi-step form behaviour.
+
+```mermaid
+flowchart TD
+  %% ---------- Feature-specific pipelines ----------
+  subgraph NYF["Feature: Ny"]
+    NY_FETCH[Start ny]
+    NY_MAP[Map to defaultValues]
+  end
+
+  subgraph DRAFTF["Feature: Draft"]
+    D_FETCH[Start draft]
+    D_MAP[Map to defaultValues]
+  end
+
+  subgraph FORLENGF["Feature: Forleng"]
+    F_FETCH[Start forleng]
+    F_MAP[Map to defaultValues]
+  end
+
+  subgraph DUPLISERF["Feature: Dupliser"]
+    U_FETCH[Start dupliser]
+    U_MAP[Map to defaultValues]
+  end
+
+  %% ---------- Browser ----------
+  subgraph BROWSER["Browser"]
+    FORM[Ny sykmelding form]
+    REDUX[Redux state]
+    SUMMARY[Summary page]
+    MAP_BACK[Map Redux -> defaultValues]
+    MAP_GQL[Map Redux -> GraphQL]
+  end
+
+  %% feature -> form
+  NY_FETCH --> NY_MAP --> FORM
+  D_FETCH --> D_MAP --> FORM
+  F_FETCH --> F_MAP --> FORM
+  U_FETCH --> U_MAP --> FORM
+
+  %% browser flow
+  FORM -->|✅ Submit| REDUX --> SUMMARY
+  SUMMARY -->|⬅️ Back| MAP_BACK --> FORM
+  SUMMARY -->|✅ Submit| MAP_GQL
+
+  %% ---------- Backend ----------
+  MAP_GQL --> GQL[GraphQL API]
+  GQL --> CONS[Consolidate]
+  FHIR[FHIR] --> CONS
+  CONS --> SYK[syk-inn-api]
+  SYK -->|⚠️ Rule Hit ⚠️| SUMMARY
+  SYK --> SUCCESS["🎉 Sykmelding created and published 🎉"]
+```
