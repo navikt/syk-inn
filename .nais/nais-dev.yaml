@@ -30,7 +30,6 @@ spec:
     logging:
       destinations:
         - id: loki
-        - id: elastic
   prometheus:
     enabled: true
     path: /samarbeidspartner/sykmelding/api/internal/metrics
