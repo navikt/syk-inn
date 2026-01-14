@@ -156,7 +156,7 @@ We'll use the power of TypeScript to automatically update all the mappings.
     - `NySykmeldingFormState` (Redux) and `NySykmeldingFormValues` (Form)
     - Continue fixing (simple) TS-errors and update mappings
     - Update all the form mappings
-        - Default values for all variants with correct presedence (see other mappings)
+        - Default values for all variants with correct precedence (see other mappings)
         - Mappings for forleng/duplicate with multiple variants (light/full/redacted)
 4. API: Update the payload for the data to syk-inn-api
     - Add new value to `OpprettSykmeldingPayloadSchema` (Zod)

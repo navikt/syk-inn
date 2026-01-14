@@ -159,7 +159,7 @@ function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingState): O
             medisinskOppsummering: formState.utdypendeSporsmal?.medisinskOppsummering ?? null,
             hensynPaArbeidsplassen: formState.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
         },
-    }
+    } satisfies OpprettSykmeldingInput
 }
 
 function tilbakedateringStepToInputTilbakedatering(
@@ -215,7 +215,7 @@ function aktivitetStepToInputAktivitet(value: NySykmeldingAktivitet): InputAktiv
                 gradert: null,
                 behandlingsdager: null,
                 reisetilskudd: null,
-            }
+            } satisfies InputAktivitet
         case 'GRADERT':
             return {
                 type: 'GRADERT',
@@ -230,6 +230,6 @@ function aktivitetStepToInputAktivitet(value: NySykmeldingAktivitet): InputAktiv
                 avventende: null,
                 behandlingsdager: null,
                 reisetilskudd: null,
-            }
+            } satisfies InputAktivitet
     }
 }

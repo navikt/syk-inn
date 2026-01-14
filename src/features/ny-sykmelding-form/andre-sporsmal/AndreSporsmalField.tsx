@@ -10,7 +10,7 @@ import { SimpleReveal } from '@components/animation/Reveal'
 
 import { useController } from '../form/types'
 
-function AndreSporsmalField(): ReactElement {
+export function AndreSporsmalField(): ReactElement {
     const andreSporsmal = useController({
         name: 'andreSporsmal',
     })
@@ -86,5 +86,3 @@ function YrkesskadeDatoPicker(): ReactElement {
         </>
     )
 }
-
-export default AndreSporsmalField

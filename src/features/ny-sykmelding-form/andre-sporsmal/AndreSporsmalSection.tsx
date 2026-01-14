@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import AndreSporsmalField from './AndreSporsmalField'
+import { AndreSporsmalField } from './AndreSporsmalField'
 
 function AndreSporsmalSection(): ReactElement {
     return (

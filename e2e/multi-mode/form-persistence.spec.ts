@@ -17,6 +17,7 @@ import {
 import { userInteractionsGroup } from '../utils/actions'
 import {
     expectAndreSporsmal,
+    expectArbeidsforhold,
     expectBidagnoses,
     expectHoveddiagnose,
     expectMeldinger,
@@ -33,42 +34,18 @@ import { verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verif
 const fillAllTheValues = (mode: Modes): ((page: Page) => Promise<void>) =>
     userInteractionsGroup(
         launchAndStart(mode),
-        fillArbeidsforhold({
-            harFlereArbeidsforhold: false,
-        }),
-        fillPeriodeRelative({
-            type: { grad: 65 },
-            fromRelative: -9,
-            days: 14,
-        }),
-        fillTilbakedatering({
-            contact: daysAgo(4),
-            reason: 'Ventetid på legetime',
-        }),
-        pickHoveddiagnose({
-            search: 'Angst',
-            select: /Angstlidelse/,
-        }),
-        addBidiagnose({
-            search: 'A03',
-            select: /Feber/,
-        }),
-        addBidiagnose({
-            search: 'S95',
-            select: /Molluscum contagiosum/,
-        }),
-        fillAndreSporsmal({
-            svangerskapsrelatert: true,
-            yrkesskade: true,
-            yrkesskadeDato: daysAgo(2),
-        }),
-        fillMeldinger({
-            tilNav: 'Trenger mer penger',
-            tilArbeidsgiver: 'Trenger sev-henk pult',
-        }),
+        fillArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Ella Pella AS' }),
+        fillPeriodeRelative({ type: { grad: 65 }, fromRelative: -9, days: 14 }),
+        fillTilbakedatering({ contact: daysAgo(4), reason: 'Ventetid på legetime' }),
+        pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ }),
+        addBidiagnose({ search: 'A03', select: /Feber/ }),
+        addBidiagnose({ search: 'S95', select: /Molluscum contagiosum/ }),
+        fillAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(2) }),
+        fillMeldinger({ tilNav: 'Trenger mer penger', tilArbeidsgiver: 'Trenger sev-henk pult' }),
     )
 
 const verifyAlltheValues = userInteractionsGroup(
+    expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Ella Pella AS' }),
     expectPeriode({ type: { grad: 65 }, fromRelative: -9, days: 14 }),
     expectTilbakedatering({ daysAgo: 4, reason: 'VENTETID_LEGETIME' }),
     expectHoveddiagnose('P74 - Angstlidelse'),
@@ -147,7 +124,8 @@ modes.forEach(({ mode }) => {
                       name: 'Sykmeldingen gjelder',
                       values: ['Ola Nordmann Hansen', '21037712323'],
                   },
-            { name: 'Har pasienten flere arbeidsforhold?', values: ['Nei'] },
+            { name: 'Har pasienten flere arbeidsforhold?', values: ['Ja'] },
+            { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?', values: ['Ella Pella AS'] },
             { name: 'Periode', values: [new RegExp(toReadableDatePeriod(daysAgo(9), daysAgo(-5)))] },
             { name: 'Periode', values: [/Gradert sykmelding \(65%\)/] },
             { name: 'Dato for tilbakedatering', values: [toReadableDate(daysAgo(4))] },

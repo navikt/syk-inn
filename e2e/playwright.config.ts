@@ -38,8 +38,8 @@ const opts: OptionsType = process.env.CI
         ({
             baseURL: `http://localhost:${PORT}`,
             timeout: 60 * 1000,
-            // Multiple tests in UI mode is pointless :D
-            workers: 1,
+            // Multiple tests in UI mode is pointless :D But allow overrides
+            workers: !process.env.WORKERS ? 1 : +process.env.WORKERS,
             server: {
                 command: 'NEXT_PUBLIC_RUNTIME_ENV=e2e yarn server:dev',
                 url: `http://localhost:${PORT}/api/internal/is_ready`,
