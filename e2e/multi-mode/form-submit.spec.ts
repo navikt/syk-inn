@@ -18,6 +18,7 @@ import { expectGraphQLRequest } from '../utils/assertions'
 import { userInteractionsGroup } from '../utils/actions'
 import { verifySummaryPage } from '../actions/user-verifications'
 import { verifyIsOnKvitteringPage } from '../fhir/actions/fhir-user-verifications'
+import { defaultAktivitetIkkeMulig, defaultOpprettSykmeldingValues, diagnoseSelection } from '../utils/submit-utils'
 
 import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 import { launchAndStart } from './actions/mode-user-actions'
@@ -371,7 +372,7 @@ modes.forEach(({ mode }) => {
             reason: 'Annet',
             otherReason: 'Annen årsak til tilbakedatering',
         })(page)
-        await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+        await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
 
         await nextStep()(page)
         await verifySignerendeBehandlerFillIfNeeded(mode)(page)
@@ -383,40 +384,17 @@ modes.forEach(({ mode }) => {
             meta: expectedSykmeldingMeta(mode),
             force: false,
             values: {
-                hoveddiagnose: { system: 'ICPC2', code: 'P74' },
-                bidiagnoser: [],
+                ...defaultOpprettSykmeldingValues,
+                hoveddiagnose: diagnoseSelection.angst.verify,
                 aktivitet: [
-                    {
-                        type: 'AKTIVITET_IKKE_MULIG',
+                    defaultAktivitetIkkeMulig({
                         fom: daysAgo(5),
                         tom: inDays(0),
-                        aktivitetIkkeMulig: {
-                            medisinskArsak: { isMedisinskArsak: true },
-                            arbeidsrelatertArsak: {
-                                isArbeidsrelatertArsak: false,
-                                arbeidsrelaterteArsaker: [],
-                                annenArbeidsrelatertArsak: null,
-                            },
-                        },
-                        avventende: null,
-                        gradert: null,
-                        behandlingsdager: null,
-                        reisetilskudd: null,
-                    },
+                    }),
                 ],
                 tilbakedatering: {
                     startdato: daysAgo(2),
                     begrunnelse: 'Annen årsak til tilbakedatering',
-                },
-                meldinger: { tilNav: null, tilArbeidsgiver: null },
-                svangerskapsrelatert: false,
-                yrkesskade: { yrkesskade: false, skadedato: null },
-                arbeidsforhold: null,
-                pasientenSkalSkjermes: false,
-                utdypendeSporsmal: {
-                    utfordringerMedArbeid: null,
-                    medisinskOppsummering: null,
-                    hensynPaArbeidsplassen: null,
                 },
             },
         })
