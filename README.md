@@ -138,3 +138,29 @@ FAST=true yarn e2e:dev
 ```
 
 Note that this UI-mode, any code changes made to the application will not be reflected. But any changes to tests will automatically be reflected.
+
+## Adding new data to the form
+
+Follow these easy 27. steps and you'll have new data in your "Ny Sykmelding Form" in no time!
+
+We'll use the power of TypeScript to automatically update all the mappings.
+
+1. GraphQL: Update `OpprettSykmeldingInput` with a new nullable field and run `yarn gen`
+    - You will now have 20-30 TSC errors in misc mapping and test files.
+    - Fix these. Once you hit real application code move to the next step.
+2. Form: Once you need the form value to complete the mapping, add your new types to:
+    - `NySykmeldingFormState` (Redux) and `NySykmeldingFormValues` (Form)
+    - Continue fixing (simple) TS-errors and update mappings
+    - Update all the form mappings
+        - Default values for all variants with correct presedence (see other mappings)
+        - Mappings for forleng/duplicate with multiple variants (light/full/redacted)
+3. 🎉 Actually implement your form interactions! Have fun. 🎉
+4. API: Update the payload for the data to syk-inn-api
+    - Add new value to `OpprettSykmeldingPayloadSchema` (Zod)
+    - Fix 2-3 TS-errors, you should have all you need to map from GQL payload.
+5. Playwright: Run all playwright tests and update any payload verifications
+    - use `anything()` where applicable, or `null` for unaffected payloads.
+    - Write new tests that verify your new interaction, assert that the values are provided to the API.
+6. API Integration tests: Update syk-inn-api integration tests
+    - Prerequisite: Actually have implemented your new value in syk-inn-api
+    - Update or write new tests that verify that your payload data is received and returned correctly.
