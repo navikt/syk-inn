@@ -12,9 +12,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^4.0.11":
-  version: 4.0.11
-  resolution: "@apollo/client@npm:4.0.11"
+"@apollo/client@npm:^4.0.12":
+  version: 4.0.12
+  resolution: "@apollo/client@npm:4.0.12"
   dependencies:
     "@graphql-typed-document-node/core": "npm:^3.1.1"
     "@wry/caches": "npm:^1.0.0"
@@ -39,7 +39,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 10c0/a50f3ea06420ac08680119d42024576b37b1f98e8e9419b9da57c6928665b6bb9d15668cf20ec67164195d28685fd9d54eba038b534561bd9dcc15ce0f907477
+  checksum: 10c0/aaf67908591b546f93e20b2c5484559179863e9dacddb2f1b1fae6a37c0bc30377e0db4fee3c00afe48074c21591d0ee490f6288545fe230967fe338ed5ed61d
   languageName: node
   linkType: hard
 
@@ -935,9 +935,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-codegen/cli@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@graphql-codegen/cli@npm:6.1.0"
+"@graphql-codegen/cli@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "@graphql-codegen/cli@npm:6.1.1"
   dependencies:
     "@babel/generator": "npm:^7.18.13"
     "@babel/template": "npm:^7.18.10"
@@ -984,7 +984,7 @@ __metadata:
     graphql-code-generator: cjs/bin.js
     graphql-codegen: cjs/bin.js
     graphql-codegen-esm: esm/bin.js
-  checksum: 10c0/9545e9622d631c7c54888e8d038e692625ec8a1b9d35c50e9cf22fe39ebbba20ce738ec0f288f59c7133ef2db42b238f862f931281a0946663d524cf79293708
+  checksum: 10c0/8d3d8b32dfce0374fde14817ff2c4d8a495dedb5c606ff5f02586d39c036fd5c0f427be9adcfe291990f2ce43a515545cc6be77c2168ccdc080fc1d4738ecabf
   languageName: node
   linkType: hard
 
@@ -2478,28 +2478,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/aksel-icons@npm:^7.38.0":
-  version: 7.38.0
-  resolution: "@navikt/aksel-icons@npm:7.38.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.38.0%2Ff21368acbac4d1e28604e774d0b95f50404da561"
-  checksum: 10c0/96251a5e2921c4261aa5565a72322bdba5d69563e8886dfddc1064a18120e102f621396948338940b96c1915c6905a076ab52782de3e4f51a2f1b7cb04e8a165
+"@navikt/aksel-icons@npm:^7.39.0":
+  version: 7.39.0
+  resolution: "@navikt/aksel-icons@npm:7.39.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.39.0%2Fa085e7e78b32ffa64bd7319ab6ac697a59941067"
+  checksum: 10c0/2d4b9e6aa67b81e4cbc6d3d368280707a875f57288d0bf9353b8857168cd535359e4b99dae5a3992ffc8ab25f79b569c19885cb8dec7a3409f0ac32215825e8a
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^7.38.0":
-  version: 7.38.0
-  resolution: "@navikt/ds-css@npm:7.38.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.38.0%2Fa150b0a282f19f2ba5c583406635fda7f4e4924a"
-  checksum: 10c0/e660fed63ac2caee1b4121c66257044f38fddf833abc9d10624d633e87665f9cd302b75104451abddd59ccd893b0296ad29b365943e8575f8a3a69e513ddbe73
+"@navikt/ds-css@npm:^7.39.0":
+  version: 7.39.0
+  resolution: "@navikt/ds-css@npm:7.39.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.39.0%2Fcffa34e23426bc9f15f8f9f8f02ca30f2ddfdb2b"
+  checksum: 10c0/f535f2eee8e27b365553186b669421f321365a10217341380b1e7dd7696a867b5994f2dce1dad3b6c39a4ce0554cccd59b13f0e55025df4a9e1e203ee6ec705a
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^7.38.0":
-  version: 7.38.0
-  resolution: "@navikt/ds-react@npm:7.38.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.38.0%2Fcd426d7d27b652e85f9b511b46539b87c74f7e58"
+"@navikt/ds-react@npm:^7.39.0":
+  version: 7.39.0
+  resolution: "@navikt/ds-react@npm:7.39.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.39.0%2F6ae2986f89fc61890e37016b9c683bf74a309adf"
   dependencies:
     "@floating-ui/react": "npm:0.27.8"
     "@floating-ui/react-dom": "npm:^2.1.6"
-    "@navikt/aksel-icons": "npm:^7.38.0"
-    "@navikt/ds-tokens": "npm:^7.38.0"
+    "@navikt/aksel-icons": "npm:^7.39.0"
+    "@navikt/ds-tokens": "npm:^7.39.0"
     clsx: "npm:^2.1.0"
     date-fns: "npm:^4.0.0"
     react-day-picker: "npm:9.7.0"
@@ -2507,21 +2507,21 @@ __metadata:
     "@types/react": ^17.0.30 || ^18 || ^19
     react: ^17 || ^18 || ^19
     react-dom: ^17 || ^18 || ^19
-  checksum: 10c0/ca6136e9f4dd710902ebde2cb5a2bfba55bb47453a18287c2dda994873d9b18c08ac9b4a769b60dbefbdc21fde5bc4c1d9b57c39533ff4767e2d93950463d5dd
+  checksum: 10c0/e992819e2bde31b0f4bf80505ad9c9944d7d0d66897e7820c51ced281f5c7f682ed41fd609e5d379c82aeb9e972cc9ac29e24fcca4bbb90f05966b38170256ba
   languageName: node
   linkType: hard
 
-"@navikt/ds-tailwind@npm:^7.38.0":
-  version: 7.38.0
-  resolution: "@navikt/ds-tailwind@npm:7.38.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.38.0%2F282ddf91422cedd4b76fce089d7d4894d2cc1500"
-  checksum: 10c0/e856d6650e127910f80dd6685c367f47f9fff7633bd89cc39be255f3b1d14850be2d28a96f3744439637c199040ca3954cc3af3aaf18bdfe3578e63ddc449c5b
+"@navikt/ds-tailwind@npm:^7.39.0":
+  version: 7.39.0
+  resolution: "@navikt/ds-tailwind@npm:7.39.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.39.0%2Fb472fc2c328c4f0e2b75ab91e84929bbe6a14e54"
+  checksum: 10c0/7f9387cfd643b957103f4b71c8e5889a16b8101896861ca20f45406703d2b75e1fc8a93a6960bea36d5edf23a89c77477624673367716853991ee0f9de6ee6f1
   languageName: node
   linkType: hard
 
-"@navikt/ds-tokens@npm:^7.38.0":
-  version: 7.38.0
-  resolution: "@navikt/ds-tokens@npm:7.38.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.38.0%2Fd98840acd074278426e3cbe2f767e3841d8b6bd6"
-  checksum: 10c0/8e7296857392042f37755f7fa2b8dd8df08feb6c249666e8a8ca3e991f3a953cca570b87f5e226320048759f517536618ce657b60bcc6e66fff8ccc61b51d2da
+"@navikt/ds-tokens@npm:^7.39.0":
+  version: 7.39.0
+  resolution: "@navikt/ds-tokens@npm:7.39.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.39.0%2F1ae77ff83ab4e63b49d2538e57f4f577f1765092"
+  checksum: 10c0/9a0a500504f6581905f07b6c638e56afeb4a308820c481b064ce3b5daf9fbbf11b2b70ee5d2056339f0a62e7e52c5289fd388de6ec1e067ac098423265ff073c
   languageName: node
   linkType: hard
 
@@ -2531,7 +2531,7 @@ __metadata:
   dependencies:
     "@navikt/pino-logger": "npm:^4.4.5"
     "@navikt/smart-on-fhir": "npm:1.5.16"
-    "@types/node": "npm:^24.10.6"
+    "@types/node": "npm:^24.10.7"
     hono: "npm:^4.11.3"
     jose: "npm:^6.1.3"
     nextleton: "npm:^0.6.1"
@@ -2853,7 +2853,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:2.2.0, @opentelemetry/core@npm:^2.0.0, @opentelemetry/core@npm:^2.2.0":
+"@opentelemetry/core@npm:2.2.0":
   version: 2.2.0
   resolution: "@opentelemetry/core@npm:2.2.0"
   dependencies:
@@ -2864,7 +2864,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:^2.3.0":
+"@opentelemetry/core@npm:^2.0.0, @opentelemetry/core@npm:^2.2.0, @opentelemetry/core@npm:^2.3.0":
   version: 2.3.0
   resolution: "@opentelemetry/core@npm:2.3.0"
   dependencies:
@@ -3203,119 +3203,119 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/watcher-android-arm64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-android-arm64@npm:2.5.1"
+"@parcel/watcher-android-arm64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-android-arm64@npm:2.5.4"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@parcel/watcher-darwin-arm64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-darwin-arm64@npm:2.5.1"
+"@parcel/watcher-darwin-arm64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-darwin-arm64@npm:2.5.4"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@parcel/watcher-darwin-x64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-darwin-x64@npm:2.5.1"
+"@parcel/watcher-darwin-x64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-darwin-x64@npm:2.5.4"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@parcel/watcher-freebsd-x64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-freebsd-x64@npm:2.5.1"
+"@parcel/watcher-freebsd-x64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-freebsd-x64@npm:2.5.4"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@parcel/watcher-linux-arm-glibc@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-linux-arm-glibc@npm:2.5.1"
+"@parcel/watcher-linux-arm-glibc@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-linux-arm-glibc@npm:2.5.4"
   conditions: os=linux & cpu=arm & libc=glibc
   languageName: node
   linkType: hard
 
-"@parcel/watcher-linux-arm-musl@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-linux-arm-musl@npm:2.5.1"
+"@parcel/watcher-linux-arm-musl@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-linux-arm-musl@npm:2.5.4"
   conditions: os=linux & cpu=arm & libc=musl
   languageName: node
   linkType: hard
 
-"@parcel/watcher-linux-arm64-glibc@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-linux-arm64-glibc@npm:2.5.1"
+"@parcel/watcher-linux-arm64-glibc@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-linux-arm64-glibc@npm:2.5.4"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@parcel/watcher-linux-arm64-musl@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-linux-arm64-musl@npm:2.5.1"
+"@parcel/watcher-linux-arm64-musl@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-linux-arm64-musl@npm:2.5.4"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@parcel/watcher-linux-x64-glibc@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-linux-x64-glibc@npm:2.5.1"
+"@parcel/watcher-linux-x64-glibc@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-linux-x64-glibc@npm:2.5.4"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@parcel/watcher-linux-x64-musl@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-linux-x64-musl@npm:2.5.1"
+"@parcel/watcher-linux-x64-musl@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-linux-x64-musl@npm:2.5.4"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@parcel/watcher-win32-arm64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-win32-arm64@npm:2.5.1"
+"@parcel/watcher-win32-arm64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-win32-arm64@npm:2.5.4"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@parcel/watcher-win32-ia32@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-win32-ia32@npm:2.5.1"
+"@parcel/watcher-win32-ia32@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-win32-ia32@npm:2.5.4"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@parcel/watcher-win32-x64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher-win32-x64@npm:2.5.1"
+"@parcel/watcher-win32-x64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher-win32-x64@npm:2.5.4"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@parcel/watcher@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "@parcel/watcher@npm:2.5.1"
+"@parcel/watcher@npm:^2.5.4":
+  version: 2.5.4
+  resolution: "@parcel/watcher@npm:2.5.4"
   dependencies:
-    "@parcel/watcher-android-arm64": "npm:2.5.1"
-    "@parcel/watcher-darwin-arm64": "npm:2.5.1"
-    "@parcel/watcher-darwin-x64": "npm:2.5.1"
-    "@parcel/watcher-freebsd-x64": "npm:2.5.1"
-    "@parcel/watcher-linux-arm-glibc": "npm:2.5.1"
-    "@parcel/watcher-linux-arm-musl": "npm:2.5.1"
-    "@parcel/watcher-linux-arm64-glibc": "npm:2.5.1"
-    "@parcel/watcher-linux-arm64-musl": "npm:2.5.1"
-    "@parcel/watcher-linux-x64-glibc": "npm:2.5.1"
-    "@parcel/watcher-linux-x64-musl": "npm:2.5.1"
-    "@parcel/watcher-win32-arm64": "npm:2.5.1"
-    "@parcel/watcher-win32-ia32": "npm:2.5.1"
-    "@parcel/watcher-win32-x64": "npm:2.5.1"
-    detect-libc: "npm:^1.0.3"
+    "@parcel/watcher-android-arm64": "npm:2.5.4"
+    "@parcel/watcher-darwin-arm64": "npm:2.5.4"
+    "@parcel/watcher-darwin-x64": "npm:2.5.4"
+    "@parcel/watcher-freebsd-x64": "npm:2.5.4"
+    "@parcel/watcher-linux-arm-glibc": "npm:2.5.4"
+    "@parcel/watcher-linux-arm-musl": "npm:2.5.4"
+    "@parcel/watcher-linux-arm64-glibc": "npm:2.5.4"
+    "@parcel/watcher-linux-arm64-musl": "npm:2.5.4"
+    "@parcel/watcher-linux-x64-glibc": "npm:2.5.4"
+    "@parcel/watcher-linux-x64-musl": "npm:2.5.4"
+    "@parcel/watcher-win32-arm64": "npm:2.5.4"
+    "@parcel/watcher-win32-ia32": "npm:2.5.4"
+    "@parcel/watcher-win32-x64": "npm:2.5.4"
+    detect-libc: "npm:^2.0.3"
     is-glob: "npm:^4.0.3"
-    micromatch: "npm:^4.0.5"
     node-addon-api: "npm:^7.0.0"
     node-gyp: "npm:latest"
+    picomatch: "npm:^4.0.3"
   dependenciesMeta:
     "@parcel/watcher-android-arm64":
       optional: true
@@ -3343,7 +3343,7 @@ __metadata:
       optional: true
     "@parcel/watcher-win32-x64":
       optional: true
-  checksum: 10c0/8f35073d0c0b34a63d4c8d2213482f0ebc6a25de7b2cdd415d19cb929964a793cb285b68d1d50bfb732b070b3c82a2fdb4eb9c250eab709a1cd9d63345455a82
+  checksum: 10c0/f6d2f7fd8a8dd7a969d121ef86da96108a07cec1d0ecd6466a8e50f276ad58223ee476372dcb5943ab73eeb09ab5d9ba3ad33c828e88a340058d9c1ed292ab57
   languageName: node
   linkType: hard
 
@@ -3957,12 +3957,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=13.7.0":
-  version: 24.10.4
-  resolution: "@types/node@npm:24.10.4"
+"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:^24.10.7":
+  version: 24.10.7
+  resolution: "@types/node@npm:24.10.7"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10c0/069639cb7233ee747df1897b5e784f6b6c5da765c96c94773c580aac888fa1a585048d2a6e95eb8302d89c7a9df75801c8b5a0b7d0221d4249059cf09a5f4228
+  checksum: 10c0/dcc1b8caf16c7b54dfccbe5c23cf4156e924cebcd9ab0a00147c841279f8151a10888c76fd82dda76e0a849aaf5a57097ee2b156308a355959900c1e647d7e61
   languageName: node
   linkType: hard
 
@@ -3972,15 +3972,6 @@ __metadata:
   dependencies:
     undici-types: "npm:~5.26.4"
   checksum: 10c0/22ba2bc9f8863101a7e90a56aaeba1eb3ebdc51e847cef4a6d188967ab1acbce9b4f92251372fd0329ecb924bbf610509e122c3dfe346c04dbad04013d4ad7d0
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^24.10.6":
-  version: 24.10.6
-  resolution: "@types/node@npm:24.10.6"
-  dependencies:
-    undici-types: "npm:~7.16.0"
-  checksum: 10c0/4c93fb9c4ad38ef0738a34815d84bb091cf6e7af7d51d58f20a8600a8a189edbf0fb54c4f86e344b2199db7bda04fecf17c9d171055ff7a9aa8333b3b96fce4c
   languageName: node
   linkType: hard
 
@@ -4000,12 +3991,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:19.2.7":
-  version: 19.2.7
-  resolution: "@types/react@npm:19.2.7"
+"@types/react@npm:19.2.8":
+  version: 19.2.8
+  resolution: "@types/react@npm:19.2.8"
   dependencies:
     csstype: "npm:^3.2.2"
-  checksum: 10c0/a7b75f1f9fcb34badd6f84098be5e35a0aeca614bc91f93d2698664c0b2ba5ad128422bd470ada598238cebe4f9e604a752aead7dc6f5a92261d0c7f9b27cfd1
+  checksum: 10c0/832834998c4ee971fca72ecf1eb95dc924ad3931a2112c687a4dae498aabd115c5fa4db09186853e34a646226b0223808c8f867df03d17601168f9cf119448de
   languageName: node
   linkType: hard
 
@@ -5044,11 +5035,11 @@ __metadata:
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.8.3, baseline-browser-mapping@npm:^2.9.0":
-  version: 2.9.11
-  resolution: "baseline-browser-mapping@npm:2.9.11"
+  version: 2.9.14
+  resolution: "baseline-browser-mapping@npm:2.9.14"
   bin:
     baseline-browser-mapping: dist/cli.js
-  checksum: 10c0/eba49fcc1b33ab994aeeb73a4848f2670e06a0886dd5b903689ae6f60d47e7f1bea9262dbb2548c48179e858f7eda2b82ddf941ae783b862f4dcc51085a246f2
+  checksum: 10c0/c9bf03c65e9a6690e4abbe60c269ad14ce5578cac09fed51ff1ed6e899e049afb094c2b173365cb2397d48012a83747500db6e79dca2761faf548aee10574d3d
   languageName: node
   linkType: hard
 
@@ -5270,9 +5261,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001579, caniuse-lite@npm:^1.0.30001759":
-  version: 1.0.30001762
-  resolution: "caniuse-lite@npm:1.0.30001762"
-  checksum: 10c0/93707eac5b0240af3f2ce6e2d7ab504a6fefcf9c2f9cd8fb9d488e496a333c61e557dab0472c1b00c17bc386a5dbb792aa4c778cda2d768e17f986617d7aec53
+  version: 1.0.30001764
+  resolution: "caniuse-lite@npm:1.0.30001764"
+  checksum: 10c0/3fbc2bcb35792bd860e20210283e7c700aab10c5af435dbb8bfbf952edccaa3e7de8b479af0f600c4d23f269dbc166e16b7b72df5cd1981653b252174c9cbfa8
   languageName: node
   linkType: hard
 
@@ -5868,15 +5859,6 @@ __metadata:
   version: 6.1.0
   resolution: "detect-indent@npm:6.1.0"
   checksum: 10c0/dd83cdeda9af219cf77f5e9a0dc31d828c045337386cfb55ce04fad94ba872ee7957336834154f7647b89b899c3c7acc977c57a79b7c776b506240993f97acc7
-  languageName: node
-  linkType: hard
-
-"detect-libc@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "detect-libc@npm:1.0.3"
-  bin:
-    detect-libc: ./bin/detect-libc.js
-  checksum: 10c0/4da0deae9f69e13bc37a0902d78bf7169480004b1fed3c19722d56cff578d16f0e11633b7fbf5fb6249181236c72e90024cbd68f0b9558ae06e281f47326d50d
   languageName: node
   linkType: hard
 
@@ -6926,9 +6908,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^12.25.0":
-  version: 12.25.0
-  resolution: "framer-motion@npm:12.25.0"
+"framer-motion@npm:^12.26.1":
+  version: 12.26.1
+  resolution: "framer-motion@npm:12.26.1"
   dependencies:
     motion-dom: "npm:^12.24.11"
     motion-utils: "npm:^12.24.10"
@@ -6944,7 +6926,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/d07b629bf2f1e0a33da15da47f851ab6e0bcdf37ef01f3edf309880ad20c6c776f5d2eebc74d989665e58a8bae261b6ceec3ba48674800857079d26a032b254a
+  checksum: 10c0/ba75f6a043f13fa740c54fba2e93ccbf36cb685f176c0ce79f8e153addd02c1d29648191bc10723374d7f24bc0c196f37df60325e2d4e5e5248446f63a0a7729
   languageName: node
   linkType: hard
 
@@ -8898,11 +8880,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion@npm:^12.25.0":
-  version: 12.25.0
-  resolution: "motion@npm:12.25.0"
+"motion@npm:^12.26.1":
+  version: 12.26.1
+  resolution: "motion@npm:12.26.1"
   dependencies:
-    framer-motion: "npm:^12.25.0"
+    framer-motion: "npm:^12.26.1"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
@@ -8915,7 +8897,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/27c91355ac95a09026198e57e2b4028209dbfa800c80b6fff11c2e73b4aa5a0446149f59f13a549e92f39cb60067d798da860ed272fda7047d29e93564592445
+  checksum: 10c0/b807db1e7869ae3d4b848d580310b8933f29c76ad28c6edfea42fc354d8fed96b5fbd011f611deb3bb5d794561f3f6b506d9fe7d07f5306dad14eb6ccfc73e03
   languageName: node
   linkType: hard
 
@@ -10069,12 +10051,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.70.0":
-  version: 7.70.0
-  resolution: "react-hook-form@npm:7.70.0"
+"react-hook-form@npm:^7.71.0":
+  version: 7.71.0
+  resolution: "react-hook-form@npm:7.71.0"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 10c0/009c9c86b9ddb4f68964a121693fedcf61d656bc30052b217d4c87002ee26d6c5540cabd193abca4eb290775fdcd3c0a06b3b96fd54d9fead0c0d268a1760a5e
+  checksum: 10c0/848a9710d1e0e7ba7ec61229f48ba52bb182761b8ac9604e03cf893dbf357da61f5fc8d761ae3554d508fdd1e4f81a74c847056e3e7c2e812288c753d9f8303b
   languageName: node
   linkType: hard
 
@@ -11372,23 +11354,23 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "syk-inn@workspace:."
   dependencies:
-    "@apollo/client": "npm:^4.0.11"
+    "@apollo/client": "npm:^4.0.12"
     "@ariakit/react": "npm:^0.4.20"
     "@envelop/core": "npm:^5.4.0"
     "@envelop/opentelemetry": "npm:^9.0.0"
     "@grafana/faro-web-sdk": "npm:^2.1.0"
     "@grafana/faro-web-tracing": "npm:^2.1.0"
-    "@graphql-codegen/cli": "npm:^6.1.0"
+    "@graphql-codegen/cli": "npm:^6.1.1"
     "@graphql-codegen/fragment-matcher": "npm:^6.0.0"
     "@graphql-codegen/introspection": "npm:^5.0.0"
     "@graphql-codegen/typescript-resolvers": "npm:^5.1.5"
     "@graphql-tools/schema": "npm:^10.0.31"
     "@hookform/devtools": "npm:^4.4.0"
     "@limegrass/eslint-plugin-import-alias": "npm:^1.6.0"
-    "@navikt/aksel-icons": "npm:^7.38.0"
-    "@navikt/ds-css": "npm:^7.38.0"
-    "@navikt/ds-react": "npm:^7.38.0"
-    "@navikt/ds-tailwind": "npm:^7.38.0"
+    "@navikt/aksel-icons": "npm:^7.39.0"
+    "@navikt/ds-css": "npm:^7.39.0"
+    "@navikt/ds-react": "npm:^7.39.0"
+    "@navikt/ds-tailwind": "npm:^7.39.0"
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/helseid-mock-server": "workspace:*"
     "@navikt/next-api-proxy": "npm:^5.0.2"
@@ -11400,13 +11382,13 @@ __metadata:
     "@navikt/tsm-prettier": "npm:^2.0.0"
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^2.3.0"
-    "@parcel/watcher": "npm:^2.5.1"
+    "@parcel/watcher": "npm:^2.5.4"
     "@reduxjs/toolkit": "npm:^2.11.2"
     "@tailwindcss/postcss": "npm:^4.1.18"
     "@testcontainers/kafka": "npm:^11.11.0"
     "@testcontainers/postgresql": "npm:^11.11.0"
-    "@types/node": "npm:^24.10.6"
-    "@types/react": "npm:19.2.7"
+    "@types/node": "npm:^24.10.7"
+    "@types/react": "npm:19.2.8"
     "@types/react-dom": "npm:19.2.3"
     "@unleash/nextjs": "npm:^1.6.2"
     "@vitest/eslint-plugin": "npm:^1.6.6"
@@ -11426,7 +11408,7 @@ __metadata:
     kafkajs: "npm:^2.2.4"
     knip: "npm:^5.80.2"
     lint-staged: "npm:^16.2.7"
-    motion: "npm:^12.25.0"
+    motion: "npm:^12.26.1"
     next: "npm:^16.1.1"
     next-logger: "npm:^5.0.2"
     nextleton: "npm:^0.6.1"
@@ -11441,7 +11423,7 @@ __metadata:
     quick-lru: "npm:^7.3.0"
     react: "npm:^19.2.3"
     react-dom: "npm:^19.2.3"
-    react-hook-form: "npm:^7.70.0"
+    react-hook-form: "npm:^7.71.0"
     react-minimal-pie-chart: "npm:^9.1.2"
     react-redux: "npm:^9.2.0"
     remeda: "npm:^2.33.1"

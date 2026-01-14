@@ -106,12 +106,12 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [multi-mode/form-persistence.spec.ts](./multi-mode/form-persistence.spec.ts)
 
-- [FHIR: filling out the form, and returning to main step, should keep all values](./multi-mode/form-persistence.spec.ts#L81)
-- [FHIR: filling out the form, saving a draft, and returning to the form, should keep all the values](./multi-mode/form-persistence.spec.ts#L95)
-- [FHIR: filling out the form, and reloading on kvittering page should restore values](./multi-mode/form-persistence.spec.ts#L131)
-- [Standalone: filling out the form, and returning to main step, should keep all values](./multi-mode/form-persistence.spec.ts#L81)
-- [Standalone: filling out the form, saving a draft, and returning to the form, should keep all the values](./multi-mode/form-persistence.spec.ts#L95)
-- [Standalone: filling out the form, and reloading on kvittering page should restore values](./multi-mode/form-persistence.spec.ts#L131)
+- [FHIR: filling out the form, and returning to main step, should keep all values](./multi-mode/form-persistence.spec.ts#L58)
+- [FHIR: filling out the form, saving a draft, and returning to the form, should keep all the values](./multi-mode/form-persistence.spec.ts#L72)
+- [FHIR: filling out the form, and reloading on kvittering page should restore values](./multi-mode/form-persistence.spec.ts#L108)
+- [Standalone: filling out the form, and returning to main step, should keep all values](./multi-mode/form-persistence.spec.ts#L58)
+- [Standalone: filling out the form, saving a draft, and returning to the form, should keep all the values](./multi-mode/form-persistence.spec.ts#L72)
+- [Standalone: filling out the form, and reloading on kvittering page should restore values](./multi-mode/form-persistence.spec.ts#L108)
 
 ## [multi-mode/form-rule-validations.spec.ts](./multi-mode/form-rule-validations.spec.ts)
 
