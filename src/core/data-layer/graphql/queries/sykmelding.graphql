@@ -40,7 +40,7 @@ fragment SykmeldingRedacted on SykmeldingRedacted {
     }
     utfall {
         result
-        message
+        melding
     }
     values {
         aktivitet {
@@ -61,7 +61,7 @@ fragment SykmeldingFull on SykmeldingFull {
     }
     utfall {
         result
-        message
+        melding
     }
     values {
         hoveddiagnose {
@@ -110,7 +110,7 @@ fragment SykmeldingLight on SykmeldingLight {
     }
     utfall {
         result
-        message
+        melding
     }
     values {
         hoveddiagnose {

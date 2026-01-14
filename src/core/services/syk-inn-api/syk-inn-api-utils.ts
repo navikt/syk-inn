@@ -62,7 +62,7 @@ export function sykInnApiSykmeldingToResolverSykmelding(
                 bidiagnoser: sykmelding.values.bidiagnoser,
             },
             utfall: sykmelding.utfall,
-            documentStatus,
+            documentStatus: documentStatus ?? null,
         } satisfies SykmeldingLight
     }
 
@@ -95,7 +95,7 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
             utdypendeSporsmal: sykmelding.values.utdypendeSporsmal,
         },
         utfall: sykmelding.utfall,
-        documentStatus,
+        documentStatus: documentStatus ?? null,
     }
 }
 

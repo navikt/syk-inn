@@ -1705,7 +1705,7 @@
                 "isOneOf": null,
                 "fields": [
                     {
-                        "name": "message",
+                        "name": "melding",
                         "description": null,
                         "args": [],
                         "type": { "kind": "SCALAR", "name": "String", "ofType": null },

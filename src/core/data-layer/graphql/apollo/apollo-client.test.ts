@@ -77,7 +77,7 @@ describe('apollo cache normalization - sykmelding', async () => {
      * This seems crazy, but this lets us re-use the data-builder from the mock-engine, the mapper
      * from the resolvers, and applies __typenames the same way an apollo-client/sever combo would.
      */
-    const executionResult: ExecutionResult<Omit<AllDashboardQuery, '__typename'>, unknown> = await execute({
+    const executionResult: ExecutionResult<Partial<Omit<AllDashboardQuery, '__typename'>>, unknown> = await execute({
         schema: createSchema({
             Query: {
                 sykmeldinger: () => ({

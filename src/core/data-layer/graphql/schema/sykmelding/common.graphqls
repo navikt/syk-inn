@@ -21,7 +21,7 @@ type SykmeldingMeta {
 
 type Outcome {
     result: String!
-    message: String
+    melding: String
 }
 
 union SykmeldingValidering = RuleOutcome | RuleOK

@@ -271,7 +271,7 @@ export type OtherSubmitOutcomesEnum = 'MISSING_PRACTITIONER_INFO' | 'PATIENT_NOT
 
 export type Outcome = {
     __typename?: 'Outcome'
-    message?: Maybe<Scalars['String']['output']>
+    melding?: Maybe<Scalars['String']['output']>
     result: Scalars['String']['output']
 }
 
@@ -959,7 +959,7 @@ export type OutcomeResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Outcome'] = ResolversParentTypes['Outcome'],
 > = {
-    message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    melding?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     result?: Resolver<ResolversTypes['String'], ParentType, ContextType>
 }
 

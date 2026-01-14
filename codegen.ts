@@ -10,6 +10,7 @@ const config: CodegenConfig = {
             plugins: ['typescript', 'typescript-operations', 'typed-document-node', eslintDisabler],
             config: {
                 enumsAsTypes: true,
+                avoidOptionals: true,
                 scalars: { DateTime: 'string', DateOnly: 'string', JSON: 'unknown' },
                 nonOptionalTypename: true,
             },

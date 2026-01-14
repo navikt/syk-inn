@@ -150,7 +150,7 @@ function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingState): O
         svangerskapsrelatert: formState.andreSporsmal?.svangerskapsrelatert ?? false,
         yrkesskade: {
             yrkesskade: formState.andreSporsmal?.yrkesskade ?? false,
-            skadedato: formState.andreSporsmal?.yrkesskadeDato,
+            skadedato: formState.andreSporsmal?.yrkesskadeDato ?? null,
         },
         tilbakedatering: tilbakedateringStepToInputTilbakedatering(formState.tilbakedatering),
         pasientenSkalSkjermes: multiStepState.summary?.skalSkjermes ?? false,
