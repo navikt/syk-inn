@@ -77,7 +77,7 @@ The form is built specifically to handle multiple "contexts" without the form ha
 
 (Use mise? `mise i` to install the required prerequisites)
 
-- [Node.js](https://nodejs.org/en/) v22 (LTS)
+- [Node.js](https://nodejs.org/en/) (LTS)
 - [Yarn](https://yarnpkg.com/) (`corepack enable`)
 - [Docker](https://www.docker.com/)
 
