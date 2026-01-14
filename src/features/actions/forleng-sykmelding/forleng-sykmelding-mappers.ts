@@ -62,12 +62,7 @@ function forlengFullSykmelding(
             ...fullSykmeldingFragmentToNySykmeldingFormValues(sykmelding),
             perioder: [forlengetPeriode],
             // Meldinger are specifically not part of the forlenging
-            meldinger: {
-                showTilNav: false,
-                tilNav: null,
-                showTilArbeidsgiver: false,
-                tilArbeidsgiver: null,
-            },
+            meldinger: defaultMeldinger(),
         },
         nextFom,
     ]
@@ -182,33 +177,16 @@ function forlengRedactedSykmelding(
 
     return [
         {
-            // TODO: Re-use form default values per field
             perioder: [nextAkvititet],
-            arbeidsforhold: {
-                harFlereArbeidsforhold: 'NEI',
-                sykmeldtFraArbeidsforhold: null,
-                // Used only for feature-toggle: 'SYK_INN_AAREG'
-                aaregArbeidsforhold: null,
-            },
-            tilbakedatering: null,
             diagnoser: {
                 hoved: null,
                 bidiagnoser: [],
             },
-            meldinger: {
-                showTilNav: false,
-                tilNav: null,
-                showTilArbeidsgiver: false,
-                tilArbeidsgiver: null,
-            },
-            andreSporsmal: {
-                svangerskapsrelatert: false,
-                yrkesskade: {
-                    yrkesskade: false,
-                    skadedato: null,
-                },
-            },
-            utdypendeSporsmal: null,
+            arbeidsforhold: defaultArbeidsforhold(),
+            tilbakedatering: defaultTilbakedatering(),
+            meldinger: defaultMeldinger(),
+            andreSporsmal: defaultAndreSporsmal(),
+            utdypendeSporsmal: defaultUtdypendeSporsmal(),
         },
         nextFom,
     ]
