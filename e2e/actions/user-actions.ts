@@ -122,17 +122,19 @@ export function addUtdypendeSporsmal({
             await expect(utdypendeSporsmalRegion).toBeVisible()
 
             await utdypendeSporsmalRegion
-                .getByRole('textbox', { name: 'Hvilke utfordringer har pasienten med å utføre gradert arbeid?' })
-                .fill(utfordringerMedArbeid)
-            await utdypendeSporsmalRegion
                 .getByRole('textbox', {
-                    name: 'Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt behandling)',
+                    name: 'Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, behandling)',
                 })
                 .fill(medisinskOppsummering)
+            await utdypendeSporsmalRegion
+                .getByRole('textbox', {
+                    name: 'Beskriv kort hvilke helsemessige begrensninger som gjør det vanskelig å jobbe gradert',
+                })
+                .fill(utfordringerMedArbeid)
             if (hensynPaArbeidsplassen) {
                 await utdypendeSporsmalRegion
                     .getByRole('textbox', {
-                        name: 'Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet? (ikke obligatorisk)',
+                        name: 'Beskriv eventuelle medisinske forhold som bør ivaretas ved eventuell tilbakeføring til nåværende arbeid (ikke obligatorisk)',
                     })
                     .fill(hensynPaArbeidsplassen)
             }
