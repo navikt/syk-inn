@@ -70,31 +70,15 @@ function dupliserLightSykmelding(sykmelding: SykmeldingLightFragment): NySykmeld
 function dupliserRedactedSykmelding(sykmelding: SykmeldingRedactedFragment): NySykmeldingMainFormValues {
     return {
         perioder: sykmelding.values.aktivitet.map(toDuplisertRedactedAktivitet).filter(R.isNonNull),
-        arbeidsforhold: {
-            harFlereArbeidsforhold: 'NEI',
-            sykmeldtFraArbeidsforhold: null,
-            // Used only for feature-toggle: 'SYK_INN_AAREG'
-            aaregArbeidsforhold: null,
-        },
-        tilbakedatering: null,
         diagnoser: {
             hoved: null,
             bidiagnoser: [],
         },
-        meldinger: {
-            showTilNav: false,
-            tilNav: null,
-            showTilArbeidsgiver: false,
-            tilArbeidsgiver: null,
-        },
-        andreSporsmal: {
-            svangerskapsrelatert: false,
-            yrkesskade: {
-                yrkesskade: false,
-                skadedato: null,
-            },
-        },
-        utdypendeSporsmal: null,
+        arbeidsforhold: defaultArbeidsforhold(),
+        tilbakedatering: defaultTilbakedatering(),
+        meldinger: defaultMeldinger(),
+        andreSporsmal: defaultAndreSporsmal(),
+        utdypendeSporsmal: defaultUtdypendeSporsmal(),
     }
 }
 
