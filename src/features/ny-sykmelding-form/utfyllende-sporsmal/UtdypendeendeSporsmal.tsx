@@ -40,19 +40,20 @@ function Uke7(): ReactElement {
         <FormSection title="Utdypende spørsmål uke 8">
             <BodyShort spacing>Helseopplysninger i Navs vurdering av aktivitetskrav og oppfølging</BodyShort>
             <Textarea
-                label="Hvilke utfordringer har pasienten med å utføre gradert arbeid?"
-                onChange={utfordringerMedArbeid.field.onChange}
-                value={utfordringerMedArbeid.field.value ?? ''}
-                error={utfordringerMedArbeid.fieldState.error?.message}
-            />
-            <Textarea
-                label="Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt behandling)"
+                label="Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, behandling)"
                 onChange={medisinskOppsummering.field.onChange}
                 value={medisinskOppsummering.field.value ?? ''}
                 error={medisinskOppsummering.fieldState.error?.message}
             />
             <Textarea
-                label="Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet? (ikke obligatorisk)"
+                label="Beskriv kort hvilke helsemessige begrensninger som gjør det vanskelig å jobbe gradert"
+                onChange={utfordringerMedArbeid.field.onChange}
+                value={utfordringerMedArbeid.field.value ?? ''}
+                error={utfordringerMedArbeid.fieldState.error?.message}
+            />
+
+            <Textarea
+                label="Beskriv eventuelle medisinske forhold som bør ivaretas ved eventuell tilbakeføring til nåværende arbeid (ikke obligatorisk)"
                 onChange={hensynPaArbeidsplassen.field.onChange}
                 value={hensynPaArbeidsplassen.field.value ?? ''}
                 error={hensynPaArbeidsplassen.fieldState.error?.message}
