@@ -145,16 +145,19 @@ Follow these easy 27. steps and you'll have new data in your "Ny Sykmelding Form
 
 We'll use the power of TypeScript to automatically update all the mappings.
 
+### Data flow and mappings
+
 1. GraphQL: Update `OpprettSykmeldingInput` with a new nullable field and run `yarn gen`
     - You will now have 20-30 TSC errors in misc mapping and test files.
     - Fix these. Once you hit real application code move to the next step.
-2. Form: Once you need the form value to complete the mapping, add your new types to:
+2. Draft: Update draft schema in `DraftValuesSchema` with your new value
+    - Update any TS-errors, mapping _from_ draft to default form values will only be possible after step 3.
+3. Form: Once you need the form value to complete the mapping, add your new types to:
     - `NySykmeldingFormState` (Redux) and `NySykmeldingFormValues` (Form)
     - Continue fixing (simple) TS-errors and update mappings
     - Update all the form mappings
         - Default values for all variants with correct presedence (see other mappings)
         - Mappings for forleng/duplicate with multiple variants (light/full/redacted)
-3. 🎉 Actually implement your form interactions! Have fun. 🎉
 4. API: Update the payload for the data to syk-inn-api
     - Add new value to `OpprettSykmeldingPayloadSchema` (Zod)
     - Fix 2-3 TS-errors, you should have all you need to map from GQL payload.
@@ -164,6 +167,16 @@ We'll use the power of TypeScript to automatically update all the mappings.
 6. API Integration tests: Update syk-inn-api integration tests
     - Prerequisite: Actually have implemented your new value in syk-inn-api
     - Update or write new tests that verify that your payload data is received and returned correctly.
+
+Following these simple 69 steps and resolving TypeScript-errors (pro tip: use "Project errors" in IntelliJ) you should
+not be able to 'lose' any data in the mapping steps due to the strict typing. The next step is updating any visual
+representation of the data.
+
+### Visual changes
+
+1. 🎉 Actually implement your form interactions! Have fun. 🎉
+2. Update `FormValuesSummary.tsx`, used for pre-submit summary page.
+3. Update `SykmeldingValues.tsx`, used for "kvittering" page and previous sykmelding page.
 
 ### High level data flow
 
