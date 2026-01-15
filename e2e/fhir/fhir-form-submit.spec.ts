@@ -12,6 +12,12 @@ import {
 import { anything, expectGraphQLRequest } from '../utils/assertions'
 import { expectBidagnoses, expectPeriode } from '../actions/user-form-verification'
 import { wait } from '../utils/actions'
+import {
+    defaultAktivitetGradert,
+    defaultAktivitetIkkeMulig,
+    defaultOpprettSykmeldingValues,
+    diagnoseSelection,
+} from '../utils/submit-utils'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
@@ -38,34 +44,15 @@ test('submit with only default values and prefilled FHIR values', async ({ page 
         meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
-            hoveddiagnose: { system: 'ICPC2', code: 'L73' },
-            bidiagnoser: [],
+            ...defaultOpprettSykmeldingValues,
+            hoveddiagnose: diagnoseSelection.any.verify,
             aktivitet: [
-                {
-                    type: 'GRADERT',
+                defaultAktivitetGradert({
                     fom: today(),
                     tom: inDays(3),
-                    gradert: {
-                        grad: 60,
-                        reisetilskudd: false,
-                    },
-                    aktivitetIkkeMulig: null,
-                    avventende: null,
-                    behandlingsdager: null,
-                    reisetilskudd: null,
-                },
+                    grad: 60,
+                }),
             ],
-            meldinger: { tilNav: null, tilArbeidsgiver: null },
-            svangerskapsrelatert: false,
-            yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsforhold: null,
-            tilbakedatering: null,
-            pasientenSkalSkjermes: false,
-            utdypendeSporsmal: {
-                utfordringerMedArbeid: null,
-                medisinskOppsummering: null,
-                hensynPaArbeidsplassen: null,
-            },
         },
     })
 
@@ -127,6 +114,7 @@ test('should pre-fill bidiagnoser from FHIR @feature-toggle', async ({ page }) =
         meta: { orgnummer: null, legekontorTlf: null },
         force: false,
         values: {
+            ...defaultOpprettSykmeldingValues,
             // Pre filled from FHIR
             hoveddiagnose: { code: 'L73', system: 'ICPC2' },
             // Pre filled from FHIR
@@ -135,35 +123,11 @@ test('should pre-fill bidiagnoser from FHIR @feature-toggle', async ({ page }) =
                 { system: 'ICD10', code: 'A051' },
             ],
             aktivitet: [
-                {
-                    type: 'AKTIVITET_IKKE_MULIG',
+                defaultAktivitetIkkeMulig({
                     fom: today(),
                     tom: inDays(3),
-                    aktivitetIkkeMulig: {
-                        medisinskArsak: { isMedisinskArsak: true },
-                        arbeidsrelatertArsak: {
-                            isArbeidsrelatertArsak: false,
-                            arbeidsrelaterteArsaker: [],
-                            annenArbeidsrelatertArsak: null,
-                        },
-                    },
-                    avventende: null,
-                    gradert: null,
-                    behandlingsdager: null,
-                    reisetilskudd: null,
-                },
+                }),
             ],
-            meldinger: { tilNav: null, tilArbeidsgiver: null },
-            svangerskapsrelatert: false,
-            yrkesskade: { yrkesskade: false, skadedato: null },
-            arbeidsforhold: null,
-            tilbakedatering: null,
-            pasientenSkalSkjermes: false,
-            utdypendeSporsmal: {
-                utfordringerMedArbeid: null,
-                medisinskOppsummering: null,
-                hensynPaArbeidsplassen: null,
-            },
         },
     })
 
@@ -196,16 +160,8 @@ test.describe('Resetting diagnoser when prefilled from FHIR @feature-toggle', ()
             force: false,
             meta: anything(),
             values: {
-                hoveddiagnose: { code: 'A051', system: 'ICD10' },
-                bidiagnoser: [],
+                ...defaultOpprettSykmeldingValues,
                 aktivitet: anything(),
-                meldinger: anything(),
-                svangerskapsrelatert: anything(),
-                yrkesskade: anything(),
-                arbeidsforhold: null,
-                tilbakedatering: null,
-                pasientenSkalSkjermes: anything(),
-                utdypendeSporsmal: anything(),
             },
         })
 
@@ -239,6 +195,7 @@ test.describe('Resetting diagnoser when prefilled from FHIR @feature-toggle', ()
             force: false,
             meta: anything(),
             values: {
+                ...defaultOpprettSykmeldingValues,
                 // Pre filled from FHIR
                 hoveddiagnose: { code: 'L73', system: 'ICPC2' },
                 // Pre filled from FHIR
@@ -247,13 +204,6 @@ test.describe('Resetting diagnoser when prefilled from FHIR @feature-toggle', ()
                     { system: 'ICD10', code: 'A051' },
                 ],
                 aktivitet: anything(),
-                meldinger: anything(),
-                svangerskapsrelatert: anything(),
-                yrkesskade: anything(),
-                arbeidsforhold: null,
-                tilbakedatering: null,
-                pasientenSkalSkjermes: anything(),
-                utdypendeSporsmal: anything(),
             },
         })
 

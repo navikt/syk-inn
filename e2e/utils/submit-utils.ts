@@ -1,6 +1,23 @@
 import { AktivitetIkkeMuligInput, InputAktivitet, OpprettSykmeldingInput } from '@queries'
 
-export const defaultOpprettSykmeldingValues: Omit<OpprettSykmeldingInput, 'hoveddiagnose' | 'aktivitet'> = {
+import { anything } from './assertions'
+
+export const diagnoseSelection = {
+    angst: {
+        pick: { search: 'Angst', select: /Angstlidelse/ },
+        verify: { system: 'ICPC2', code: 'P74' },
+    },
+    tobakkmisbruk: {
+        pick: { search: 'P17', select: /Tobakkmisbruk/ },
+        verify: { system: 'ICPC2', code: 'P17' },
+    },
+    any: {
+        verify: { system: anything(), code: anything() },
+    },
+} as const
+
+export const defaultOpprettSykmeldingValues: Omit<OpprettSykmeldingInput, 'aktivitet'> = {
+    hoveddiagnose: diagnoseSelection.any.verify,
     bidiagnoser: [],
     meldinger: { tilNav: null, tilArbeidsgiver: null },
     svangerskapsrelatert: false,
@@ -59,14 +76,3 @@ export const defaultAktivitetGradert = ({
     behandlingsdager: null,
     reisetilskudd: null,
 })
-
-export const diagnoseSelection = {
-    angst: {
-        pick: { search: 'Angst', select: /Angstlidelse/ },
-        verify: { system: 'ICPC2', code: 'P74' },
-    },
-    tobakkmisbruk: {
-        pick: { search: 'P17', select: /Tobakkmisbruk/ },
-        verify: { system: 'ICPC2', code: 'P17' },
-    },
-} as const

@@ -52,12 +52,12 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [fhir/fhir-form-submit.spec.ts](./fhir/fhir-form-submit.spec.ts)
 
-- [submit with only default values and prefilled FHIR values](./fhir/fhir-form-submit.spec.ts#L20)
-- [should be able to submit purely with shortcuts](./fhir/fhir-form-submit.spec.ts#L75)
-- [should pre-fill bidiagnoser from FHIR @feature-toggle](./fhir/fhir-form-submit.spec.ts#L110)
+- [submit with only default values and prefilled FHIR values](./fhir/fhir-form-submit.spec.ts#L26)
+- [should be able to submit purely with shortcuts](./fhir/fhir-form-submit.spec.ts#L62)
+- [should pre-fill bidiagnoser from FHIR @feature-toggle](./fhir/fhir-form-submit.spec.ts#L97)
     ## [Resetting diagnoser when prefilled from FHIR @feature-toggle](./fhir/fhir-form-submit.spec.ts)
-    - [adding extra diagnose and resetting them should remove them](./fhir/fhir-form-submit.spec.ts#L174)
-    - [removing diagonses from FHIR prefill and reseetting them should add them back](./fhir/fhir-form-submit.spec.ts#L215)
+    - [adding extra diagnose and resetting them should remove them](./fhir/fhir-form-submit.spec.ts#L138)
+    - [removing diagonses from FHIR prefill and reseetting them should add them back](./fhir/fhir-form-submit.spec.ts#L171)
 
 ## [fhir/fhir-launch.spec.ts](./fhir/fhir-launch.spec.ts)
 
@@ -76,12 +76,12 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [multi-mode/form-aareg.spec.ts](./multi-mode/form-aareg.spec.ts)
 
-- [FHIR: aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG data](./multi-mode/form-aareg.spec.ts#L22)
-- [FHIR: aareg @feature-toggle - going to summary and returning should keep arbeidsgiver in Select](./multi-mode/form-aareg.spec.ts#L77)
-- [FHIR: aareg @feature-toggle - saving a draft and returning should keep arbeidsgiver in Select](./multi-mode/form-aareg.spec.ts#L118)
-- [Standalone: aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG data](./multi-mode/form-aareg.spec.ts#L22)
-- [Standalone: aareg @feature-toggle - going to summary and returning should keep arbeidsgiver in Select](./multi-mode/form-aareg.spec.ts#L77)
-- [Standalone: aareg @feature-toggle - saving a draft and returning should keep arbeidsgiver in Select](./multi-mode/form-aareg.spec.ts#L118)
+- [FHIR: aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG data](./multi-mode/form-aareg.spec.ts#L23)
+- [FHIR: aareg @feature-toggle - going to summary and returning should keep arbeidsgiver in Select](./multi-mode/form-aareg.spec.ts#L65)
+- [FHIR: aareg @feature-toggle - saving a draft and returning should keep arbeidsgiver in Select](./multi-mode/form-aareg.spec.ts#L106)
+- [Standalone: aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG data](./multi-mode/form-aareg.spec.ts#L23)
+- [Standalone: aareg @feature-toggle - going to summary and returning should keep arbeidsgiver in Select](./multi-mode/form-aareg.spec.ts#L65)
+- [Standalone: aareg @feature-toggle - saving a draft and returning should keep arbeidsgiver in Select](./multi-mode/form-aareg.spec.ts#L106)
 
 ## [multi-mode/form-interactions.spec.ts](./multi-mode/form-interactions.spec.ts)
 
@@ -155,12 +155,12 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [multi-mode/form-utdypende-sporsmal.spec.ts](./multi-mode/form-utdypende-sporsmal.spec.ts)
 
-- [FHIR: Submit sykmelding with utdypende spørsmål when owning all sykmeldinger](./multi-mode/form-utdypende-sporsmal.spec.ts#L19)
-- [FHIR: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted but SYK_INN_SHOW_REDACTED: true](./multi-mode/form-utdypende-sporsmal.spec.ts#L80)
-- [FHIR: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted last one is owned by user](./multi-mode/form-utdypende-sporsmal.spec.ts#L144)
-- [Standalone: Submit sykmelding with utdypende spørsmål when owning all sykmeldinger](./multi-mode/form-utdypende-sporsmal.spec.ts#L19)
-- [Standalone: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted but SYK_INN_SHOW_REDACTED: true](./multi-mode/form-utdypende-sporsmal.spec.ts#L80)
-- [Standalone: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted last one is owned by user](./multi-mode/form-utdypende-sporsmal.spec.ts#L144)
+- [FHIR: Submit sykmelding with utdypende spørsmål when owning all sykmeldinger](./multi-mode/form-utdypende-sporsmal.spec.ts#L20)
+- [FHIR: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted but SYK_INN_SHOW_REDACTED: true](./multi-mode/form-utdypende-sporsmal.spec.ts#L57)
+- [FHIR: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted last one is owned by user](./multi-mode/form-utdypende-sporsmal.spec.ts#L97)
+- [Standalone: Submit sykmelding with utdypende spørsmål when owning all sykmeldinger](./multi-mode/form-utdypende-sporsmal.spec.ts#L20)
+- [Standalone: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted but SYK_INN_SHOW_REDACTED: true](./multi-mode/form-utdypende-sporsmal.spec.ts#L57)
+- [Standalone: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted last one is owned by user](./multi-mode/form-utdypende-sporsmal.spec.ts#L97)
 
 ## [multi-mode/launch.spec.ts](./multi-mode/launch.spec.ts)
 

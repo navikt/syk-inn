@@ -13,6 +13,7 @@ import { anything, expectGraphQLRequest } from '../utils/assertions'
 import { verifySummaryPage } from '../actions/user-verifications'
 import { userInteractionsGroup } from '../utils/actions'
 import * as standaloneActions from '../standalone/actions/standalone-user-actions'
+import { defaultOpprettSykmeldingValues } from '../utils/submit-utils'
 
 import { modes, onMode } from './modes'
 import { launchAndStart } from './actions/mode-user-actions'
@@ -54,22 +55,9 @@ modes.forEach(({ mode }) => {
             meta: expectedSykmeldingMeta(mode),
             force: false,
             values: {
-                arbeidsforhold: {
-                    arbeidsgivernavn: 'Eksempel 2 AS',
-                },
-                hoveddiagnose: anything(),
-                bidiagnoser: anything(),
+                ...defaultOpprettSykmeldingValues,
+                arbeidsforhold: { arbeidsgivernavn: 'Eksempel 2 AS' },
                 aktivitet: anything(),
-                meldinger: anything(),
-                svangerskapsrelatert: anything(),
-                yrkesskade: anything(),
-                pasientenSkalSkjermes: false,
-                tilbakedatering: null,
-                utdypendeSporsmal: {
-                    utfordringerMedArbeid: null,
-                    medisinskOppsummering: null,
-                    hensynPaArbeidsplassen: null,
-                },
             },
         })
     })

@@ -10,6 +10,7 @@ import {
     submitSykmelding,
 } from '../actions/user-actions'
 import { expectGraphQLRequest } from '../utils/assertions'
+import { defaultAktivitetIkkeMulig, defaultOpprettSykmeldingValues, diagnoseSelection } from '../utils/submit-utils'
 
 import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 import { launchAndStart } from './actions/mode-user-actions'
@@ -19,13 +20,8 @@ modes.forEach(({ mode }) => {
     test(`${mode}: Submit sykmelding with utdypende spørsmål when owning all sykmeldinger`, async ({ page }) => {
         await launchAndStart(mode, 'utfyllende-sporsmal')(page)
 
-        await fillPeriodeRelative({
-            type: '100%',
-            days: 3,
-        })(page)
-
-        await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-
+        await fillPeriodeRelative({ type: '100%', days: 3 })(page)
+        await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
         await addUtdypendeSporsmal({
             utfordringerMedArbeid: 'Utfordringer',
             medisinskOppsummering: 'Oppsummering',
@@ -41,33 +37,14 @@ modes.forEach(({ mode }) => {
             meta: expectedSykmeldingMeta(mode),
             force: false,
             values: {
-                hoveddiagnose: { system: 'ICPC2', code: 'P74' },
-                bidiagnoser: [],
+                ...defaultOpprettSykmeldingValues,
+                hoveddiagnose: diagnoseSelection.angst.verify,
                 aktivitet: [
-                    {
-                        type: 'AKTIVITET_IKKE_MULIG',
+                    defaultAktivitetIkkeMulig({
                         fom: today(),
                         tom: inDays(3),
-                        aktivitetIkkeMulig: {
-                            medisinskArsak: { isMedisinskArsak: true },
-                            arbeidsrelatertArsak: {
-                                isArbeidsrelatertArsak: false,
-                                arbeidsrelaterteArsaker: [],
-                                annenArbeidsrelatertArsak: null,
-                            },
-                        },
-                        avventende: null,
-                        gradert: null,
-                        behandlingsdager: null,
-                        reisetilskudd: null,
-                    },
+                    }),
                 ],
-                meldinger: { tilNav: null, tilArbeidsgiver: null },
-                svangerskapsrelatert: false,
-                yrkesskade: { yrkesskade: false, skadedato: null },
-                arbeidsforhold: null,
-                tilbakedatering: null,
-                pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
                     utfordringerMedArbeid: 'Utfordringer',
                     medisinskOppsummering: 'Oppsummering',
@@ -84,13 +61,8 @@ modes.forEach(({ mode }) => {
             SYK_INN_SHOW_REDACTED: true,
         })(page)
 
-        await fillPeriodeRelative({
-            type: '100%',
-            days: 3,
-        })(page)
-
-        await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
-
+        await fillPeriodeRelative({ type: '100%', days: 3 })(page)
+        await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
         await addUtdypendeSporsmal({
             utfordringerMedArbeid: 'Utfordringer',
             medisinskOppsummering: 'Oppsummering',
@@ -105,33 +77,14 @@ modes.forEach(({ mode }) => {
             meta: expectedSykmeldingMeta(mode),
             force: false,
             values: {
-                hoveddiagnose: { system: 'ICPC2', code: 'P74' },
-                bidiagnoser: [],
+                ...defaultOpprettSykmeldingValues,
+                hoveddiagnose: diagnoseSelection.angst.verify,
                 aktivitet: [
-                    {
-                        type: 'AKTIVITET_IKKE_MULIG',
+                    defaultAktivitetIkkeMulig({
                         fom: today(),
                         tom: inDays(3),
-                        aktivitetIkkeMulig: {
-                            medisinskArsak: { isMedisinskArsak: true },
-                            arbeidsrelatertArsak: {
-                                isArbeidsrelatertArsak: false,
-                                arbeidsrelaterteArsaker: [],
-                                annenArbeidsrelatertArsak: null,
-                            },
-                        },
-                        avventende: null,
-                        gradert: null,
-                        behandlingsdager: null,
-                        reisetilskudd: null,
-                    },
+                    }),
                 ],
-                meldinger: { tilNav: null, tilArbeidsgiver: null },
-                svangerskapsrelatert: false,
-                yrkesskade: { yrkesskade: false, skadedato: null },
-                arbeidsforhold: null,
-                tilbakedatering: null,
-                pasientenSkalSkjermes: false,
                 utdypendeSporsmal: {
                     utfordringerMedArbeid: 'Utfordringer',
                     medisinskOppsummering: 'Oppsummering',
@@ -148,12 +101,8 @@ modes.forEach(({ mode }) => {
             SYK_INN_SHOW_REDACTED: false,
         })(page)
 
-        await fillPeriodeRelative({
-            type: '100%',
-            days: 3,
-        })(page)
-
-        await pickHoveddiagnose({ search: 'Angst', select: /Angstlidelse/ })(page)
+        await fillPeriodeRelative({ type: '100%', days: 3 })(page)
+        await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
 
         await nextStep()(page)
         await verifySignerendeBehandlerFillIfNeeded(mode)(page)
@@ -164,38 +113,14 @@ modes.forEach(({ mode }) => {
             meta: expectedSykmeldingMeta(mode),
             force: false,
             values: {
-                hoveddiagnose: { system: 'ICPC2', code: 'P74' },
-                bidiagnoser: [],
+                ...defaultOpprettSykmeldingValues,
+                hoveddiagnose: diagnoseSelection.angst.verify,
                 aktivitet: [
-                    {
-                        type: 'AKTIVITET_IKKE_MULIG',
+                    defaultAktivitetIkkeMulig({
                         fom: today(),
                         tom: inDays(3),
-                        aktivitetIkkeMulig: {
-                            medisinskArsak: { isMedisinskArsak: true },
-                            arbeidsrelatertArsak: {
-                                isArbeidsrelatertArsak: false,
-                                arbeidsrelaterteArsaker: [],
-                                annenArbeidsrelatertArsak: null,
-                            },
-                        },
-                        avventende: null,
-                        gradert: null,
-                        behandlingsdager: null,
-                        reisetilskudd: null,
-                    },
+                    }),
                 ],
-                meldinger: { tilNav: null, tilArbeidsgiver: null },
-                svangerskapsrelatert: false,
-                yrkesskade: { yrkesskade: false, skadedato: null },
-                arbeidsforhold: null,
-                tilbakedatering: null,
-                pasientenSkalSkjermes: false,
-                utdypendeSporsmal: {
-                    utfordringerMedArbeid: null,
-                    medisinskOppsummering: null,
-                    hensynPaArbeidsplassen: null,
-                },
             },
         })
     })
