@@ -44,11 +44,10 @@ export function ShortcutButtons({
                 open={currentMod === shortcut.modifier && inactive !== true}
                 onClose={() => void 0}
                 anchorEl={buttonRef.current}
-                arrow={false}
                 offset={4}
                 placement="bottom-end"
             >
-                <Popover.Content className="whitespace-nowrap text-sm py-1 px-2 border-border-subtle text-text-subtle font-bold">
+                <Popover.Content className="whitespace-nowrap text-sm py-1 px-2 border-ax-border-neutral-subtle text-ax-text-neutral-subtle font-ax-bold">
                     Hurtigtast: {registeredShortcut.label}
                 </Popover.Content>
             </Popover>
@@ -88,11 +87,10 @@ export function ShortcutButtonLink({
                 open={currentMod === shortcut.modifier && inactive !== true}
                 onClose={() => void 0}
                 anchorEl={buttonRef.current}
-                arrow={false}
                 offset={4}
                 placement="bottom-end"
             >
-                <Popover.Content className="whitespace-nowrap text-sm py-1 px-2 border-border-subtle text-text-subtle font-bold">
+                <Popover.Content className="whitespace-nowrap text-sm py-1 px-2 border-ax-border-neutral-subtle text-ax-text-neutral-subtle font-ax-bold">
                     Hurtigtast: {registeredShortcut.label}
                 </Popover.Content>
             </Popover>
@@ -126,11 +124,10 @@ export function ShortcutSubmitButton({
                 open={currentMod === shortcut.modifier && inactive !== true}
                 onClose={() => void 0}
                 anchorEl={buttonRef.current}
-                arrow={false}
                 offset={4}
                 placement="bottom-end"
             >
-                <Popover.Content className="whitespace-nowrap text-sm py-1 px-2 border-border-subtle text-text-subtle font-bold">
+                <Popover.Content className="whitespace-nowrap text-sm py-1 px-2 border-ax-border-neutral-subtle text-ax-text-neutral-subtle font-ax-bold">
                     Hurtigtast: {registeredShortcut.label}
                 </Popover.Content>
             </Popover>

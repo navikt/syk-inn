@@ -19,7 +19,7 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
     })
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-[30ch_1fr] gap-4 mt-2">
+        <div className="grid grid-cols-1 ax-md:grid-cols-[30ch_1fr] gap-4 mt-2">
             <Select
                 label="Mulighet for arbeid"
                 className="max-w-sm flex flex-col"

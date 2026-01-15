@@ -22,7 +22,7 @@ export function PageLayout({ heading, size, bg, children }: PropsWithChildren<Pr
                 ) : (
                     heading
                 )}
-                <div className={cn('rounded-xl', { 'lg:w-fit': size !== 'full', 'bg-white': bg === 'white' })}>
+                <div className={cn('rounded-xl', { 'lg:w-fit': size !== 'full', 'bg-ax-bg-default': bg === 'white' })}>
                     {children}
                 </div>
             </PageBlock>

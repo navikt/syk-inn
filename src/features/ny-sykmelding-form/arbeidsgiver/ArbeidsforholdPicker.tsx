@@ -1,4 +1,4 @@
-import { Radio, RadioGroup, Stack, TextField } from '@navikt/ds-react'
+import { Radio, RadioGroup, TextField } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 
 import { useController } from '../form/types'
@@ -30,10 +30,10 @@ function ArbeidsforholdPicker(): ReactElement {
                 error={harFlereArbeidsforhold.fieldState.error?.message}
                 {...harFlereArbeidsforhold.field}
             >
-                <Stack direction="row" gap="4">
+                <div className="flex gap-4">
                     <Radio value="JA">Ja</Radio>
                     <Radio value="NEI">Nei</Radio>
-                </Stack>
+                </div>
             </RadioGroup>
             {harFlereArbeidsforhold.field.value === 'JA' && (
                 <TextField

@@ -91,13 +91,13 @@ function SummarySection(): ReactElement {
                             Pasienten skal skjermes for medisinske opplysninger
                         </Checkbox>
 
-                        <div className="flex flex-row flex-wrap md:grid-cols-3 gap-3 lg:justify-end">
+                        <div className="flex flex-row flex-wrap ax-md:grid-cols-3 gap-3 ax-lg:justify-end">
                             <ForkastDraftButton
-                                className="flex-grow md:max-w-46"
+                                className="flex-grow ax-md:max-w-46"
                                 inactive={ruleOutcomeState.type === 'rule-outcome'}
                             />
                             <ShortcutButtons
-                                className="flex-grow md:max-w-46"
+                                className="flex-grow ax-md:max-w-46"
                                 variant="secondary"
                                 onClick={() => setStep('main')}
                                 disabled={nySykmelding.mutation.result.loading}
@@ -110,7 +110,7 @@ function SummarySection(): ReactElement {
                                 Forrige steg
                             </ShortcutButtons>
                             <ShortcutButtons
-                                className="flex-grow md:max-w-46"
+                                className="flex-grow ax-md:max-w-46"
                                 variant="primary"
                                 icon={<PaperplaneIcon aria-hidden />}
                                 iconPosition="right"

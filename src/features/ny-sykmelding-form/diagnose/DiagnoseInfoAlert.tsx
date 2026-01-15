@@ -41,7 +41,8 @@ function DiagnoseInfoAlert(): ReactElement | null {
                                 ikke bli oppdatert automatisk.
                             </BodyShort>
                             <Button
-                                variant="secondary-neutral"
+                                data-color="neutral"
+                                variant="secondary"
                                 size="small"
                                 className="mt-4"
                                 type="button"

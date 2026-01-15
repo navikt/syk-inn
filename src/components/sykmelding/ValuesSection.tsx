@@ -16,9 +16,9 @@ export function ValuesSection({ title, children }: PropsWithChildren<ValueSectio
     return (
         <section
             aria-labelledby={id}
-            className="bg-surface-default border border-border-subtle rounded-large overflow-hidden"
+            className="bg-ax-bg-default border border-ax-border-neutral-subtle rounded-lg overflow-hidden"
         >
-            <header className="bg-surface-subtle py-4 px-6">
+            <header className="bg-ax-bg-neutral-soft py-4 px-6">
                 <Heading id={id} size="medium" level="3">
                     {title}
                 </Heading>
@@ -37,7 +37,7 @@ type SykmeldingValueProps = {
  */
 export function ValueItem({ title, children }: PropsWithChildren<SykmeldingValueProps>): ReactElement {
     return (
-        <div className="not-last:border-b border-b-border-subtle not-last:mb-4 not-last:pb-4">
+        <div className="not-last:border-b border-b-ax-border-neutral-subtle not-last:mb-4 not-last:pb-4">
             <Label as="dt">{title}</Label>
             <BodyLong as="dd">{children}</BodyLong>
         </div>
@@ -46,7 +46,7 @@ export function ValueItem({ title, children }: PropsWithChildren<SykmeldingValue
 
 export function ValueItemSkeleton(): ReactElement {
     return (
-        <div className="not-last:border-b border-b-border-subtle not-last:mb-4 not-last:pb-4">
+        <div className="not-last:border-b border-b-ax-border-neutral-subtle not-last:mb-4 not-last:pb-4">
             <Label as="dt">
                 <Skeleton variant="text" width={98} />
             </Label>

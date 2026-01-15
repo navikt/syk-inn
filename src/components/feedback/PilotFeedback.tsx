@@ -62,9 +62,10 @@ function PilotFeedback(): ReactElement {
     return (
         <div className="fixed -bottom-1 right-32 w-fit">
             <Button
-                variant="secondary-neutral"
+                data-color="neutral"
+                variant="secondary"
                 size="small"
-                className="bg-white"
+                className="bg-ax-bg-default rounded-b-none"
                 onClick={() => modalRef.current?.showModal()}
             >
                 Tilbakemelding
@@ -171,7 +172,7 @@ function PilotFeedback(): ReactElement {
                             </Button>
                         </>
                     ) : (
-                        <Button type="button" variant="secondary-neutral" onClick={handleClose}>
+                        <Button data-color="neutral" type="button" variant="secondary" onClick={handleClose}>
                             Lukk
                         </Button>
                     )}

@@ -17,18 +17,11 @@ export function ShorthandHint({ focused, suggestion, anchorEl }: Props): ReactEl
     const isOpen = focused && suggestion != null
 
     return (
-        <Popover
-            anchorEl={anchorEl}
-            open={isOpen}
-            onClose={() => void 0}
-            placement="top"
-            aria-expanded={isOpen}
-            arrow={false}
-        >
+        <Popover anchorEl={anchorEl} open={isOpen} onClose={() => void 0} placement="top" aria-expanded={isOpen}>
             <Popover.Content role="region" aria-labelledby="popover-shorthand-hint">
-                <Detail className="font-bold" id="popover-shorthand-hint">
-                    Trykk <span className="font-mono px-1 bg-bg-subtle rounded-sm text-xs">Enter</span> for å bruke
-                    følgende datoer
+                <Detail className="font-ax-bold" id="popover-shorthand-hint">
+                    Trykk <span className="font-mono px-1 bg-ax-bg-neutral-soft rounded-sm text-xs">Enter</span> for å
+                    bruke følgende datoer
                 </Detail>
                 {description?.top && <Detail className="mt-1">{description?.top}</Detail>}
                 {description?.bottom && <BodyShort>{description?.bottom}</BodyShort>}

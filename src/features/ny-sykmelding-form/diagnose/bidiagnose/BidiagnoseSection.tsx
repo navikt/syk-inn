@@ -23,7 +23,8 @@ function BidiagnoseSection(): ReactElement {
                         onSelect={() => requestAnimationFrame(() => addNewRef.current?.focus())}
                     >
                         <Button
-                            variant="danger"
+                            data-color="danger"
+                            variant="primary"
                             type="button"
                             size="small"
                             icon={<TrashIcon title="Slett bidiagnose" />}
@@ -35,7 +36,6 @@ function BidiagnoseSection(): ReactElement {
                     </BidiagnosePicker>
                 </div>
             ))}
-
             <div className="mt-4">
                 <Button
                     ref={addNewRef}

@@ -25,10 +25,10 @@ function Error({ error }: Props): ReactElement {
         <Page>
             {(isLocal || isDemo) && <DemoWarning />}
             <PageBlock as="main" width="xl" gutters>
-                <Box paddingBlock="20 8">
+                <Box paddingBlock="space-20 space-8">
                     <HGrid columns="minmax(auto,600px)" data-aksel-template="500-v2">
-                        <VStack gap="16">
-                            <VStack gap="12" align="start">
+                        <VStack gap="space-16">
+                            <VStack gap="space-12" align="start">
                                 <div>
                                     <BodyShort textColor="subtle" size="small">
                                         Statuskode 500
@@ -42,7 +42,7 @@ function Error({ error }: Props): ReactElement {
                                         ikke noe du gjorde.
                                     </BodyShort>
                                     <BodyShort>Du kan prøve å</BodyShort>
-                                    <List>
+                                    <List className="my-4">
                                         <ListItem>
                                             vente noen minutter og{' '}
                                             <Link href="#" onClick={() => location.reload()}>
