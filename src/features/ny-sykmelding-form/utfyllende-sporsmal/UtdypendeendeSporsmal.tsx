@@ -6,6 +6,13 @@ import { useController, useFormContext } from '@features/ny-sykmelding-form/form
 import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-utils'
 import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolvers.generated'
 
+const getTitleForUtdypendeSporsmal = (skalViseSporsmal: { uke7: boolean; uke17: boolean; uke39: boolean }): string => {
+    if (skalViseSporsmal.uke39) return 'Utdypende spørsmål uke 40'
+    if (skalViseSporsmal.uke17) return 'Utdypende spørsmål uke 18'
+    if (skalViseSporsmal.uke7) return 'Utdypende spørsmål uke 8'
+    return ''
+}
+
 export function UtdypendeSporsmal({
     utdypendeSporsmal,
 }: {
@@ -15,8 +22,21 @@ export function UtdypendeSporsmal({
 
     if (!utdypendeSporsmal) return null
 
-    if (shouldShowUke7Sporsmal(perioder, utdypendeSporsmal)) {
-        return <Uke7 />
+    const skalViseSporsmalForUke = {
+        uke7: shouldShowUke7Sporsmal(perioder, utdypendeSporsmal),
+        uke17: false, // shouldShowUke17Sporsmal(perioder, utdypendeSporsmal),
+        uke39: false, // shouldShowUke39Sporsmal(perioder, utdypendeSporsmal),
+    }
+
+    const visUtdypendeSporsmal = Object.values(skalViseSporsmalForUke).some((it) => it === true)
+
+    if (visUtdypendeSporsmal) {
+        return (
+            <FormSection title={getTitleForUtdypendeSporsmal(skalViseSporsmalForUke)}>
+                <BodyShort spacing>Helseopplysninger i Navs vurdering av aktivitetskrav og oppfølging</BodyShort>
+                {skalViseSporsmalForUke.uke7 && <Uke7 />}
+            </FormSection>
+        )
     }
 
     return null
@@ -37,8 +57,7 @@ function Uke7(): ReactElement {
         name: 'utdypendeSporsmal.hensynPaArbeidsplassen',
     })
     return (
-        <FormSection title="Utdypende spørsmål uke 8">
-            <BodyShort spacing>Helseopplysninger i Navs vurdering av aktivitetskrav og oppfølging</BodyShort>
+        <>
             <Textarea
                 label="Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, behandling)"
                 onChange={medisinskOppsummering.field.onChange}
@@ -58,6 +77,6 @@ function Uke7(): ReactElement {
                 value={hensynPaArbeidsplassen.field.value ?? ''}
                 error={hensynPaArbeidsplassen.fieldState.error?.message}
             />
-        </FormSection>
+        </>
     )
 }

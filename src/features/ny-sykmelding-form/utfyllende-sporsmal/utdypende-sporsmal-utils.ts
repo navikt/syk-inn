@@ -46,6 +46,29 @@ export const totalDaysIsMoreThanDays = (
     return totalDays > days
 }
 
+export const satisfiesGeneralConditions = (
+    perioder: AktivitetsPeriode[],
+    utdypendeSporsmal: UtdypendeOpplysningerHint,
+    daysForPeriode: number,
+): boolean => {
+    if (!currentSykmeldingIsAktivitetIkkeMulig(perioder)) return false
+
+    if (!currentSykmeldingIsPartOfPeriode(perioder, utdypendeSporsmal)) return false
+
+    if (utdypendeSporsmal && utdypendeSporsmal.days > daysForPeriode) return true
+
+    const currentPeriode: SykmeldingDateRange[] =
+        perioder?.length > 0
+            ? [
+                  {
+                      earliestFom: R.firstBy(perioder, [(it) => it.periode.fom ?? '', 'desc'])?.periode.fom ?? '',
+                      latestTom: R.firstBy(perioder, [(it) => it.periode.tom ?? '', 'desc'])?.periode.tom ?? '',
+                  },
+              ]
+            : []
+    return totalDaysIsMoreThanDays(utdypendeSporsmal, currentPeriode, daysForPeriode + 7)
+}
+
 export const shouldShowUke7Sporsmal = (
     perioder: AktivitetsPeriode[],
     utdypendeSporsmal: UtdypendeOpplysningerHint,
@@ -59,22 +82,27 @@ export const shouldShowUke7Sporsmal = (
         return false
     }
 
-    if (!currentSykmeldingIsAktivitetIkkeMulig(perioder)) return false
+    return satisfiesGeneralConditions(perioder, utdypendeSporsmal, DAYS_IN_7_WEEKS)
+}
 
-    if (!currentSykmeldingIsPartOfPeriode(perioder, utdypendeSporsmal)) return false
-    // First check if we're above 7 weeks already
-    if (utdypendeSporsmal && utdypendeSporsmal.days > DAYS_IN_7_WEEKS) return true
+export const shouldShowUke17Sporsmal = (
+    perioder: AktivitetsPeriode[],
+    utdypendeSporsmal: UtdypendeOpplysningerHint,
+): boolean => {
+    const DAYS_IN_17_WEEKS = 17 * 7
 
-    // Check if adding current sykmelding will push above 8 weeks
-    const currentPeriode: SykmeldingDateRange[] =
-        perioder?.length > 0
-            ? [
-                  {
-                      earliestFom: R.firstBy(perioder, [(it) => it.periode.fom ?? '', 'desc'])?.periode.fom ?? '',
-                      latestTom: R.firstBy(perioder, [(it) => it.periode.tom ?? '', 'desc'])?.periode.tom ?? '',
-                  },
-              ]
-            : []
+    // TODO check if already answered uke 17 questions
 
-    return totalDaysIsMoreThanDays(utdypendeSporsmal, currentPeriode, DAYS_IN_7_WEEKS + 7)
+    return satisfiesGeneralConditions(perioder, utdypendeSporsmal, DAYS_IN_17_WEEKS)
+}
+
+export const shouldShowUke39Sporsmal = (
+    perioder: AktivitetsPeriode[],
+    utdypendeSporsmal: UtdypendeOpplysningerHint,
+): boolean => {
+    const DAYS_IN_39_WEEKS = 39 * 7
+
+    // TODO check if already answered uke 39 questions
+
+    return satisfiesGeneralConditions(perioder, utdypendeSporsmal, DAYS_IN_39_WEEKS)
 }
