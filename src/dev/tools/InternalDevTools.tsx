@@ -17,17 +17,18 @@ type Props = { onClose: () => void }
 
 export function InternalDevToolsPanel({ onClose }: Props): ReactElement {
     return (
-        <div className="w-[500px] max-w-[500px] h-full overflow-auto p-2 border-l-2 border-l-border-alt-3 bg-surface-alt-3-subtle">
+        <div className="w-[500px] max-w-[500px] h-full overflow-auto p-2 border-l-2 border-l-ax-border-brand-blue bg-ax-bg-brand-blue-soft">
             <Heading level="3" size="medium">
                 App DevTools
             </Heading>
             <Button
-                variant="tertiary-neutral"
+                data-color="neutral"
+                variant="tertiary"
                 icon={<XMarkIcon title="Lukk DevTools" />}
                 onClick={onClose}
                 className="absolute right-2 top-2"
             />
-            <BodyShort size="small" className="text-text-subtle">
+            <BodyShort size="small" className="text-ax-text-neutral-subtle">
                 Collection of actions and utilities used for local development only.
             </BodyShort>
             <div className="grid grid-cols-1 gap-6 mt-6">
@@ -43,7 +44,7 @@ export function InternalDevToolsPanel({ onClose }: Props): ReactElement {
 function ScenarioPicker(): ReactElement {
     return (
         <DevToolItem title="Scenarios" description="Pre-load your session with different scenarios">
-            <List as="ul">
+            <List className="my-4">
                 {R.entries(scenarios).map(([key, scenario]) => (
                     <List.Item key={key}>
                         <Link href={pathWithBasePath(`/dev/set-scenario/${key}?returnTo=/fhir`)}>
@@ -62,7 +63,8 @@ function OtherStuff(): ReactElement {
     return (
         <DevToolItem title="Other stuff" description="Miscellaneous dev actions">
             <Button
-                variant="secondary-neutral"
+                data-color="neutral"
+                variant="secondary"
                 size="small"
                 onClick={async () => {
                     await deleteRequestAccessCookie()
@@ -95,15 +97,15 @@ function FeatureToggles(): ReactElement {
                     <Checkbox key={toggle.name} value={toggle.name}>
                         {toggle.name}{' '}
                         {overriddenToggles.includes(toggle.name) && (
-                            <span className="text-text-subtle">(overridden)</span>
+                            <span className="text-ax-text-neutral-subtle">(overridden)</span>
                         )}
                     </Checkbox>
                 ))}
             </CheckboxGroup>
-
             <div className="mt-4 flex gap-3">
                 <Button
-                    variant="secondary-neutral"
+                    data-color="neutral"
+                    variant="secondary"
                     size="small"
                     onClick={resetOverrides}
                     disabled={overriddenToggles.length === 0}
@@ -111,7 +113,8 @@ function FeatureToggles(): ReactElement {
                     Clear all overrides
                 </Button>
                 <Button
-                    variant="secondary-neutral"
+                    data-color="neutral"
+                    variant="secondary"
                     size="small"
                     onClick={() => {
                         startTransition(async () => {

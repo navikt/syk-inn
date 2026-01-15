@@ -72,7 +72,7 @@ function TidligereSykmeldingShell({ children, className }: PropsWithChildren<{ c
     const mode = useMode()
 
     return (
-        <div className={cn('p-4 bg-white', className)}>
+        <div className={cn('p-4 bg-ax-bg-default', className)}>
             <TwoPaneGrid tag="div">{children}</TwoPaneGrid>
             <div className="mx-4 flex justify-end p-4 pb-0">
                 <Link href={mode.paths.root}>Lukk</Link>
@@ -85,8 +85,8 @@ function TidligereSykmeldingTopBar(
     props: { loading: true } | { loading: false; sykmelding: SykmeldingFragment },
 ): ReactElement {
     return (
-        <div className="flex flex-col gap-2 md:gap-0 md:flex-row justify-between items-center lg:col-span-2 h-auto md:h-8 ">
-            <div className="flex flex-col sm:flex-row gap-0 sm:gap-10 justify-around ml-4 w-full md:w-auto">
+        <div className="flex flex-col gap-2 ax-md:gap-0 ax-md:flex-row justify-between items-center ax-lg:col-span-2 h-auto ax-md:h-8 ">
+            <div className="flex flex-col ax-sm:flex-row gap-0 ax-sm:gap-10 justify-around ml-4 w-full ax-md:w-auto">
                 <div className="flex gap-1">
                     <span>Mottatt:</span>
                     {props.loading ? (

@@ -8,7 +8,7 @@ function MeldingTilNavField(): ReactElement {
     const showTilNav = form.watch('meldinger.showTilNav')
 
     return (
-        <div className="max-w-prose bg-bg-subtle rounded-xl py-2 px-5">
+        <div className="max-w-prose bg-ax-bg-neutral-soft rounded-xl py-2 px-5">
             <Switch position="right" {...form.register('meldinger.showTilNav')}>
                 Melding til Nav
             </Switch>

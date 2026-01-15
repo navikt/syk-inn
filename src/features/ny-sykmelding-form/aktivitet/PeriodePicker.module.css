@@ -3,7 +3,7 @@
 }
 
 .dateRangePicker {
-    gap: var(--a-spacing-4);
+    gap: var(--ax-space-16);
     display: grid;
     place-items: start;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -11,7 +11,7 @@
 }
 
 .dateRangePicker :global(.navds-text-field__input[size]) {
-    width: calc(var(--a-spacing-32) * 1.4);
+    width: calc(var(--ax-space-128) * 1.4);
 }
 
 .dateRangeInput > :global(.navds-date__wrapper) {

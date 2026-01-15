@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default async function DevLayout({ children }: LayoutProps<'/'>): Promise<ReactElement> {
     return (
-        <html lang="nb" className="bg-bg-subtle">
+        <html lang="nb" className="bg-ax-bg-neutral-soft">
             <head>
                 <link rel="icon" href="https://cdn.nav.no/personbruker/decorator-next/public/favicon.ico" sizes="any" />
                 <link

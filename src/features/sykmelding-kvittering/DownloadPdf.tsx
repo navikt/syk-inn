@@ -21,10 +21,11 @@ export function DownloadPdfButton({ sykmeldingId }: Props): ReactElement {
     return (
         <>
             <Button
+                data-color="neutral"
                 size="small"
                 className="h-[62px] w-full"
                 icon={<FilePdfIcon fontSize="2rem" aria-hidden />}
-                variant="secondary-neutral"
+                variant="secondary"
                 loading={loading}
                 onClick={async () => {
                     setError(null)

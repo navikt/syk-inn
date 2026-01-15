@@ -98,10 +98,13 @@ function NySykmeldingInnerForm({
                 </FormSection>
                 <AktivitetSection initialFom={initialFom ?? null} />
                 <DynamicTilbakedateringSection />
-                <div className="bg-surface-subtle w-4 h-[calc(100%-2rem)] absolute -right-6 rounded hidden lg:block" />
+                <div className="bg-ax-bg-neutral-soft w-4 h-[calc(100%-2rem)] absolute -right-6 rounded hidden ax-lg:block" />
             </FormSheet>
             <FormSheet>
-                <FormSection title="Diagnose" className="border-t border-t-border-subtle pt-3 lg:pt-0 lg:border-none">
+                <FormSection
+                    title="Diagnose"
+                    className="border-t border-t-ax-border-neutral-subtle pt-3 ax-lg:pt-0 ax-lg:border-none"
+                >
                     <DiagnoseSection diagnosePrefillError={contextualErrors.diagnose} />
                     <BidiagnoseSection />
                     {mode.type === 'FHIR' && <DiagnoseInfoAlert />}
@@ -113,11 +116,11 @@ function NySykmeldingInnerForm({
                 <FormSection title="Meldinger" hideBorder>
                     <MeldingerSection />
                 </FormSection>
-                <div className="flex flex-row flex-wrap md:grid-cols-3 gap-3 p-2 lg:justify-end">
-                    <ForkastDraftButtonInFormSync className="flex-grow md:max-w-46" />
-                    <LagreDraftButton className="flex-grow md:max-w-46" />
+                <div className="flex flex-row flex-wrap ax-md:grid-cols-3 gap-3 p-2 ax-lg:justify-end">
+                    <ForkastDraftButtonInFormSync className="flex-grow ax-md:max-w-46" />
+                    <LagreDraftButton className="flex-grow ax-md:max-w-46" />
                     <ShortcutSubmitButton
-                        className="flex-grow md:max-w-46"
+                        className="flex-grow ax-md:max-w-46"
                         id="step-navigation-next"
                         variant="primary"
                         icon={<ArrowRightIcon aria-hidden />}

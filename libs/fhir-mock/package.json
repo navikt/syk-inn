@@ -34,7 +34,7 @@
         "zod": "^4.3.6"
     },
     "devDependencies": {
-        "@types/node": "^24.10.11",
+        "@types/node": "^24.10.12",
         "pino-pretty": "^13.1.3"
     }
 }

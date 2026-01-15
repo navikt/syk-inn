@@ -162,16 +162,13 @@ function SykmeldingKvitteringValues({ sykmelding, loading }: SykmeldingKvitterin
 
     return (
         <ExpansionCard aria-label="Innsendte opplysninger" size="medium" open={open} className="relative">
-            <ExpansionCard.Header
-                onClick={() => setOpen((b) => !b)}
-                className="bg-surface-subtle border-b-0! rounded-br-none rounded-bl-none"
-            >
+            <ExpansionCard.Header onClick={() => setOpen((b) => !b)} className="bg-ax-bg-neutral-soft rounded-b-none">
                 <ExpansionCard.Title as="h3" size="medium">
                     Innsendte opplysninger
                 </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content
-                className={cn('block overflow-hidden [&>div]:[animation:none]', {
+                className={cn('block visible pt-4 [&>div]:opacity-100', {
                     'max-h-48': !open,
                 })}
             >
@@ -188,9 +185,9 @@ function SykmeldingKvitteringValues({ sykmelding, loading }: SykmeldingKvitterin
                 ) : null}
                 {!open && (
                     <>
-                        <div className="absolute left-1 bottom-1 w-[99%] rounded-b-large">
-                            <div className="h-24 bg-gradient-to-b from-transparent to-white" />
-                            <div className="bg-white flex items-center justify-center">
+                        <div className="absolute left-1 bottom-1 w-[99%] rounded-b-lg">
+                            <div className="h-24 bg-linear-to-b from-transparent to-ax-bg-default" />
+                            <div className="bg-ax-bg-default flex items-center justify-center">
                                 <Button
                                     className="flex flex-col items-center justify-center"
                                     variant="tertiary"
@@ -204,8 +201,8 @@ function SykmeldingKvitteringValues({ sykmelding, loading }: SykmeldingKvitterin
                             </div>
                         </div>
                         <div
-                            className="absolute left-2 bottom-0 w-[97%] h-2 bg-white"
-                            style={{ borderBottom: '1px solid var(--a-border-default)' }}
+                            className="absolute left-2 bottom-0 w-[97%] h-2 bg-ax-bg-default"
+                            style={{ borderBottom: '1px solid var(--ax-border-neutral)' }}
                         />
                     </>
                 )}

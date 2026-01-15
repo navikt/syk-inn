@@ -17,7 +17,12 @@ export function NoBehandlerError(): ReactElement {
                     ditt journalsystem.
                 </BodyShort>
                 <div className="flex gap-3 justify-end mt-8">
-                    <Button type="button" variant="secondary-neutral" onClick={() => window.location.reload()}>
+                    <Button
+                        data-color="neutral"
+                        type="button"
+                        variant="secondary"
+                        onClick={() => window.location.reload()}
+                    >
                         Last siden på nytt
                     </Button>
                 </div>

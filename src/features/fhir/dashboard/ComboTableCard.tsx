@@ -65,7 +65,13 @@ function AllDraftsError({ refetch }: { refetch: () => void }): ReactElement {
                             Det skjedde en ukjent feil under henting av dine utkast. Du kan prøve å laste siden på nytt,
                             eller prøve på nytt senere.
                         </BodyShort>
-                        <Button type="button" size="small" variant="secondary-neutral" onClick={() => refetch()}>
+                        <Button
+                            data-color="neutral"
+                            type="button"
+                            size="small"
+                            variant="secondary"
+                            onClick={() => refetch()}
+                        >
                             Prøv på nytt
                         </Button>
                         <SessionIdInfo />
@@ -89,7 +95,13 @@ function AllSykmeldingerError({ refetch }: { refetch: () => void }): ReactElemen
                             Det skjedde en ukjent feil under henting av sykmeldinger. Du kan prøve å laste siden på
                             nytt, eller prøve på nytt senere.
                         </BodyShort>
-                        <Button type="button" size="small" variant="secondary-neutral" onClick={() => refetch()}>
+                        <Button
+                            data-color="neutral"
+                            type="button"
+                            size="small"
+                            variant="secondary"
+                            onClick={() => refetch()}
+                        >
                             Prøv på nytt
                         </Button>
                         <SessionIdInfo />
@@ -113,10 +125,11 @@ function EverythingError({ refetch }: { refetch: () => void }): ReactElement {
                         eller prøve på nytt senere.
                     </BodyShort>
                     <Button
+                        data-color="neutral"
                         type="button"
                         size="small"
                         className="my-4"
-                        variant="secondary-neutral"
+                        variant="secondary"
                         onClick={() => refetch()}
                     >
                         Prøv på nytt
@@ -131,7 +144,7 @@ function EverythingError({ refetch }: { refetch: () => void }): ReactElement {
 
 function ComboTableEmptyState(): ReactElement {
     return (
-        <div className="flex flex-col gap-6 items-center justify-center w-full h-64 text-text-subtle">
+        <div className="flex flex-col gap-6 items-center justify-center w-full h-64 text-ax-text-neutral-subtle">
             <FlowerPetalsIcon aria-hidden fontSize="4rem" className="opacity-75" />
             <BodyShort>Pasienten har ingen utkast eller pågående sykmeldinger</BodyShort>
         </div>

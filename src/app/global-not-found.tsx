@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 // TODO: Why is this not rendered in production when layout throws 404?
 function GlobalNotFound(): ReactElement {
     return (
-        <html lang="nb" className="bg-bg-subtle">
+        <html lang="nb" className="bg-ax-bg-neutral-soft">
             <head>
                 <link rel="icon" href="https://cdn.nav.no/personbruker/decorator-next/public/favicon.ico" sizes="any" />
                 <link
@@ -33,9 +33,9 @@ function GlobalNotFound(): ReactElement {
             <body>
                 {(isLocal || isDemo) && <DemoWarning />}
                 <PageBlock as="main" width="xl" gutters>
-                    <Box paddingBlock="20 16">
-                        <VStack gap="16">
-                            <VStack gap="12" align="start">
+                    <Box paddingBlock="space-20 space-16">
+                        <VStack gap="space-16">
+                            <VStack gap="space-12" align="start">
                                 <div>
                                     <Heading level="1" size="large" spacing>
                                         Beklager, vi fant ikke siden
@@ -43,7 +43,7 @@ function GlobalNotFound(): ReactElement {
                                     <BodyShort>
                                         Denne siden kan være slettet eller flyttet, eller det er en feil i lenken.
                                     </BodyShort>
-                                    <List>
+                                    <List className="py-4">
                                         <ListItem>Bruk gjerne søket eller menyen</ListItem>
                                         <ListItem>
                                             <Link href="https://nav.no/samarbeidspartner">Gå til forsiden</Link>

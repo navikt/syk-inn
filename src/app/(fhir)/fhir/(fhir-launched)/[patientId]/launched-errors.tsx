@@ -23,14 +23,20 @@ export function NoPractitionerSession(): ReactElement {
                     ditt journalsystem.
                 </BodyShort>
                 <div className="flex gap-3 justify-end mt-8">
-                    <Button type="button" variant="secondary-neutral" onClick={() => window.location.reload()}>
+                    <Button
+                        data-color="neutral"
+                        type="button"
+                        variant="secondary"
+                        onClick={() => window.location.reload()}
+                    >
                         Last siden på nytt
                     </Button>
                     {(isLocal || isDemo) && (
                         <Button
+                            data-color="neutral"
                             type="button"
                             as="a"
-                            variant="secondary-neutral"
+                            variant="secondary"
                             href={pathWithBasePath(
                                 `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel` satisfies MockLaunchType}`}`,
                             )}
@@ -70,7 +76,7 @@ function DevGcpErrorInfo({ why }: { why: string }): ReactElement | null {
     if (!isDevGcp) return null
 
     return (
-        <div className="max-w-prose mt-8 bg-bg-default p-4 rounded-xl">
+        <div className="max-w-prose mt-8 bg-ax-bg-default p-4 rounded-xl">
             <Heading level="3" size="small" spacing className="flex flex-row gap-3 items-center -mt-1">
                 <TerminalIcon aria-hidden />
                 Teknisk debug for dev-gcp
@@ -78,10 +84,10 @@ function DevGcpErrorInfo({ why }: { why: string }): ReactElement | null {
             <BodyShort spacing>{why}</BodyShort>
             <BodyShort spacing>
                 For å se nøyaktig hva som gikk galt, kan du enten sjekke loggene eller OTEL-tracing. Lenkene under må{' '}
-                <span className="font-bold">KOPIERES</span> og åpnes på din faktiske maskin, det er ikke vits å åpne den
-                i WinVerify1.
+                <span className="font-ax-bold">KOPIERES</span> og åpnes på din faktiske maskin, det er ikke vits å åpne
+                den i WinVerify1.
             </BodyShort>
-            <List>
+            <List className="py-4">
                 <List.Item>
                     <span>Logger: </span>
                     <a href="https://grafana.nav.cloud.nais.io/goto/QYbT-ZSvg?orgId=1">Kopier meg</a>

@@ -173,7 +173,7 @@ function AktivitetSummaryAnswer({
                 {aktivitet.tom != null ? (
                     <BodyShort>
                         {toReadableDatePeriod(aktivitet.fom, aktivitet.tom)}
-                        <span className="font-bold"> · </span>
+                        <span className="font-ax-bold"> · </span>
                         {toReadablePeriodLength(aktivitet.fom, aktivitet.tom)}
                     </BodyShort>
                 ) : (
@@ -186,14 +186,14 @@ function AktivitetSummaryAnswer({
                             aktivitet.medisinskArsak.isMedisinskArsak,
                             aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak,
                         ].some(R.isTruthy) && (
-                            <List>
+                            <List className="my-4">
                                 {aktivitet.medisinskArsak.isMedisinskArsak && (
                                     <List.Item>Medisinske årsaker forhindrer arbeidsaktivitet</List.Item>
                                 )}
                                 {aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak && (
                                     <List.Item>
                                         <BodyShort>Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet</BodyShort>
-                                        <List size="small">
+                                        <List className="py-4" size="small">
                                             {aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker?.map((arsak) => {
                                                 if (arsak === 'ANNET') {
                                                     return (

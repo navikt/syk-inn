@@ -35,7 +35,7 @@ function ManualPatientDrafts({ ident }: Props): ReactElement {
                     ? drafts.map((draft) => <ContinueDraftCard key={draft.draftId} draft={draft} ident={ident} />)
                     : null}
                 {!draftsQuery.loading && !hasDrafts && (
-                    <div className="h-[90px] border border-border-subtle rounded-md flex items-center justify-center">
+                    <div className="h-[90px] border border-ax-border-neutral-subtle rounded-md flex items-center justify-center">
                         Du har ingen pågående utkast for denne pasienten.
                     </div>
                 )}
@@ -54,16 +54,16 @@ function ContinueDraftCard({ draft, ident }: { draft: DraftFragment; ident: stri
                     <Link href={`/draft/${draft.draftId}`}>Fortsett utkast for {ident}</Link>
                 </LinkCard.Anchor>
                 <LinkCard.Footer className="relative">
-                    <Tag size="small" variant="neutral">
+                    <Tag data-color="neutral" size="small" variant="outline">
                         {draftDiagnoseText(values?.hoveddiagnose)}
                     </Tag>
                     {draftAktivitetText(values?.perioder) != null && (
-                        <Tag size="small" variant="neutral">
+                        <Tag data-color="neutral" size="small" variant="outline">
                             {draftAktivitetText(values?.perioder)}
                         </Tag>
                     )}
                     {draftArbeidsforholdText(values?.arbeidsforhold) != null && (
-                        <Tag size="small" variant="neutral">
+                        <Tag data-color="neutral" size="small" variant="outline">
                             {draftArbeidsforholdText(values?.arbeidsforhold)}
                         </Tag>
                     )}
