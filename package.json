@@ -31,16 +31,16 @@
     },
     "dependencies": {
         "@apollo/client": "^4.0.12",
-        "@ariakit/react": "^0.4.20",
+        "@ariakit/react": "^0.4.21",
         "@envelop/core": "^5.4.0",
         "@envelop/opentelemetry": "^9.0.0",
         "@grafana/faro-web-sdk": "^2.1.0",
         "@grafana/faro-web-tracing": "^2.1.0",
         "@graphql-tools/schema": "^10.0.31",
-        "@navikt/aksel-icons": "^7.39.0",
-        "@navikt/ds-css": "^7.39.0",
-        "@navikt/ds-react": "^7.39.0",
-        "@navikt/ds-tailwind": "^7.39.0",
+        "@navikt/aksel-icons": "^7.39.1",
+        "@navikt/ds-css": "^7.39.1",
+        "@navikt/ds-react": "^7.39.1",
+        "@navikt/ds-tailwind": "^7.39.1",
         "@navikt/fhir-mock-server": "workspace:*",
         "@navikt/helseid-mock-server": "workspace:*",
         "@navikt/next-api-proxy": "^5.0.2",
@@ -114,7 +114,7 @@
         "testcontainers": "^11.11.0",
         "typescript": "^5.9.3",
         "vite-tsconfig-paths": "^6.0.4",
-        "vitest": "^4.0.16"
+        "vitest": "^4.0.17"
     },
     "prettier": "@navikt/tsm-prettier"
 }
