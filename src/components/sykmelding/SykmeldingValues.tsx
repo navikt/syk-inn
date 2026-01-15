@@ -105,7 +105,7 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
             )}
             {[sykmelding.values.svangerskapsrelatert, sykmelding.values.pasientenSkalSkjermes].some(R.isTruthy) && (
                 <ValueItem title="Annen info">
-                    <List>
+                    <List className="my-4">
                         {sykmelding.values.svangerskapsrelatert && (
                             <List.Item>Sykdommen er svangerskapsrelatert</List.Item>
                         )}

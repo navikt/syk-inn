@@ -20,9 +20,9 @@ type Props = {
  */
 function HelseIdHeader({ behandler }: Props): ReactElement {
     return (
-        <div className="border-b border-b-border-subtle h-20 max-h-20 flex justify-between px-2 bg-white">
+        <div className="border-b border-b-ax-border-neutral-subtle h-20 max-h-20 flex justify-between px-2 bg-ax-bg-default">
             <div className="flex justify-center items-center gap-8">
-                <NavLogo className="ml-2 text-nav-red" />
+                <NavLogo className="ml-2 text-ax-text-logo" />
                 <Heading level="1" size="medium">
                     Innsending av Sykmelding
                 </Heading>

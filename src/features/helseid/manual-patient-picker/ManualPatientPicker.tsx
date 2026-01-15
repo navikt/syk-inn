@@ -54,7 +54,7 @@ function ManualPatientPicker(): ReactElement {
 
     return (
         <TwoPaneGrid tag="div">
-            <div className="p-4 bg-white">
+            <div className="p-4 bg-ax-bg-default">
                 <ManualPatientSearch handleSearch={handleSearch} defaultIdent={existingPatient?.ident} />
                 {loading && (
                     <div className="mt-4">

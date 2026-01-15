@@ -31,7 +31,7 @@ function BuildInfo(): ReactElement {
 }
 
 function BuildInfoInCorner({ children }: PropsWithChildren): ReactElement {
-    return <div className="fixed top-2 right-2 text-text-subtle text-sm text-right">{children}</div>
+    return <div className="fixed top-2 right-2 text-ax-text-neutral-subtle text-sm text-right">{children}</div>
 }
 
 export default BuildInfo

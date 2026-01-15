@@ -6,6 +6,8 @@ import { BodyShort, Box, Heading, HGrid, Link, List, VStack } from '@navikt/ds-r
 import { PageBlock } from '@navikt/ds-react/Page'
 import { ListItem } from '@navikt/ds-react/List'
 
+import SessionIdInfo from '@components/help/SessionIdInfo'
+
 type Props = {
     error: Error & { digest?: string }
 }
@@ -20,10 +22,10 @@ function Error({ error }: Props): ReactElement {
 
     return (
         <PageBlock as="main" width="xl" gutters>
-            <Box paddingBlock="20 8">
+            <Box paddingBlock="space-20 space-8">
                 <HGrid columns="minmax(auto,600px)" data-aksel-template="500-v2">
-                    <VStack gap="16">
-                        <VStack gap="12" align="start">
+                    <VStack gap="space-16">
+                        <VStack gap="space-12" align="start">
                             <div>
                                 <BodyShort textColor="subtle" size="small">
                                     Statuskode 500
@@ -37,7 +39,7 @@ function Error({ error }: Props): ReactElement {
                                     noe du gjorde.
                                 </BodyShort>
                                 <BodyShort>Du kan prøve å</BodyShort>
-                                <List>
+                                <List className="py-4">
                                     <ListItem>
                                         vente noen minutter og{' '}
                                         <Link href="#" onClick={() => location.reload()}>
@@ -59,11 +61,7 @@ function Error({ error }: Props): ReactElement {
                                 </BodyShort>
                             </div>
 
-                            {/*<BodyShort size="small" textColor="subtle">
-                                Feil-id: 12345678-9123-4567-8912-345678912345
-                            </BodyShort>
-
-                            <Button>Gå til Min side</Button>*/}
+                            <SessionIdInfo />
                         </VStack>
 
                         <div>
