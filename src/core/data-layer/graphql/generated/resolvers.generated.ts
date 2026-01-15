@@ -197,8 +197,16 @@ export type InputTilbakedatering = {
 }
 
 export type InputUtdypendeSporsmal = {
+    behandlingOgFremtidigArbeid?: InputMaybe<Scalars['String']['input']>
+    forventetHelsetilstandUtvikling?: InputMaybe<Scalars['String']['input']>
+    helserelatertUtfordringArbeidssituasjon?: InputMaybe<Scalars['String']['input']>
     hensynPaArbeidsplassen?: InputMaybe<Scalars['String']['input']>
     medisinskOppsummering?: InputMaybe<Scalars['String']['input']>
+    medisinskeHensyn?: InputMaybe<Scalars['String']['input']>
+    realistiskArbeidshverdag?: InputMaybe<Scalars['String']['input']>
+    sisteMedisinskeOppsummering?: InputMaybe<Scalars['String']['input']>
+    sykdomsutvikling?: InputMaybe<Scalars['String']['input']>
+    uavklarteForhold?: InputMaybe<Scalars['String']['input']>
     utfordringerMedArbeid?: InputMaybe<Scalars['String']['input']>
 }
 

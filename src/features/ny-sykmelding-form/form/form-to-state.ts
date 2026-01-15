@@ -48,6 +48,15 @@ export function formValuesToStatePayload(values: NySykmeldingMainFormValues): Ny
             utfordringerMedArbeid: values.utdypendeSporsmal?.utfordringerMedArbeid ?? null,
             medisinskOppsummering: values.utdypendeSporsmal?.medisinskOppsummering ?? null,
             hensynPaArbeidsplassen: values.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
+            sykdomsutvikling: values.utdypendeSporsmal?.sykdomsutvikling ?? null,
+            helserelatertUtfordringArbeidssituasjon:
+                values.utdypendeSporsmal?.helserelatertUtfordringArbeidssituasjon ?? null,
+            behandlingOgFremtidigArbeid: values.utdypendeSporsmal?.behandlingOgFremtidigArbeid ?? null,
+            uavklarteForhold: values.utdypendeSporsmal?.uavklarteForhold ?? null,
+            sisteMedisinskeOppsummering: values.utdypendeSporsmal?.sisteMedisinskeOppsummering ?? null,
+            realistiskArbeidshverdag: values.utdypendeSporsmal?.realistiskArbeidshverdag ?? null,
+            forventetHelsetilstandUtvikling: values.utdypendeSporsmal?.forventetHelsetilstandUtvikling ?? null,
+            medisinskeHensyn: values.utdypendeSporsmal?.medisinskeHensyn ?? null,
         },
     }
 }

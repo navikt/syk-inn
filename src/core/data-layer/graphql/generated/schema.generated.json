@@ -1153,6 +1153,30 @@
                 "fields": null,
                 "inputFields": [
                     {
+                        "name": "behandlingOgFremtidigArbeid",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "forventetHelsetilstandUtvikling",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "helserelatertUtfordringArbeidssituasjon",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "hensynPaArbeidsplassen",
                         "description": null,
                         "type": { "kind": "SCALAR", "name": "String", "ofType": null },
@@ -1162,6 +1186,46 @@
                     },
                     {
                         "name": "medisinskOppsummering",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "medisinskeHensyn",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "realistiskArbeidshverdag",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "sisteMedisinskeOppsummering",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "sykdomsutvikling",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "uavklarteForhold",
                         "description": null,
                         "type": { "kind": "SCALAR", "name": "String", "ofType": null },
                         "defaultValue": null,
