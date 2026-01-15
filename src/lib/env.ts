@@ -104,4 +104,5 @@ export function getServerEnv(): ServerEnv {
 export const isE2E = bundledEnv.runtimeEnv === 'e2e'
 export const isDemo = bundledEnv.runtimeEnv === 'demo'
 export const isLocal = bundledEnv.runtimeEnv === 'local'
+export const isDevGcp = bundledEnv.runtimeEnv === 'dev-gcp'
 export const isCloud = bundledEnv.runtimeEnv === 'dev-gcp' || bundledEnv.runtimeEnv === 'prod-gcp'
