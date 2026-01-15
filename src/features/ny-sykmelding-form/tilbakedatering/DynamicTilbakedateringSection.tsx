@@ -18,7 +18,7 @@ function DynamicTilbakedateringSection(): ReactElement | null {
         <AnimatePresence initial={false}>
             {tilbakedatering && (
                 <motion.div
-                    className="overflow-hidden lg:col-span-2 p-1"
+                    className="overflow-hidden ax-lg:col-span-2 p-1"
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}

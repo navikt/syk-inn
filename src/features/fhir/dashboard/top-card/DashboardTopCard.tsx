@@ -37,9 +37,9 @@ function DashboardTopCard({ className }: { className?: string }): ReactElement {
             }
             className={cn(className)}
         >
-            <div className="flex flex-col md:flex-row gap-3">
+            <div className="flex flex-col ax-md:flex-row gap-3">
                 <StartSykmelding />
-                <div className="w-1 mt-2 mb-2 mx-2 lg:mx-8 bg-bg-subtle shrink-0 self-stretch hidden md:block"></div>
+                <div className="w-1 mt-2 mb-2 mx-2 ax-lg:mx-8 bg-ax-bg-neutral-soft shrink-0 self-stretch hidden ax-md:block"></div>
                 <PatientStats />
             </div>
         </DashboardCard>

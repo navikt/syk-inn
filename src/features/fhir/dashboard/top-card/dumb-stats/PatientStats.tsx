@@ -32,23 +32,23 @@ function PatientStats(): ReactElement {
     const days = continiousSykefravaer([...current, ...previous])
 
     return (
-        <div className="mb-2 flex gap-3 sm:gap-12 mt-4 border-t-2 border-t-border-subtle pt-4 md:border-none md:pt-0">
+        <div className="mb-2 flex gap-3 ax-sm:gap-12 mt-4 border-t-2 border-t-ax-border-neutral-subtle pt-4 ax-md:border-none ax-md:pt-0">
             {sykefravaerInfoToggle && (
                 <div className="flex items-center relative">
                     <PieChart
-                        className="size-36 lg:size-48"
+                        className="size-36 ax-lg:size-48"
                         lineWidth={26}
                         startAngle={270}
                         data={[
-                            { title: 'One', value: (days / 365) * 100, color: 'var(--a-green-500)' },
-                            { title: 'Two', value: ((365 - days) / 365) * 100, color: 'var(--a-green-200)' },
+                            { title: 'One', value: (days / 365) * 100, color: 'var(--ax-success-600)' },
+                            { title: 'Two', value: ((365 - days) / 365) * 100, color: 'var(--ax-success-300)' },
                         ]}
                     />
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-                        <BodyShort size="small" className="text-nowrap text-xs lg:text-base">
+                        <BodyShort size="small" className="text-nowrap text-xs ax-lg:text-base">
                             Påløpt sykefravær
                         </BodyShort>
-                        <BodyShort className="text-xs lg:text-base">{(days / 7).toFixed(0)} av 52 uker</BodyShort>
+                        <BodyShort className="text-xs ax-lg:text-base">{(days / 7).toFixed(0)} av 52 uker</BodyShort>
                     </div>
                 </div>
             )}

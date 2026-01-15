@@ -15,7 +15,13 @@ export function UnknownSystemError({ className, retry }: { className?: string; r
                     Vi opplever litt problemer akkurat nå, og våre systemer klarte ikke å gjøre jobben sin.
                 </BodyShort>
                 {retry && (
-                    <Button size="small" variant="secondary-neutral" onClick={() => retry()} className="mb-2">
+                    <Button
+                        data-color="neutral"
+                        size="small"
+                        variant="secondary"
+                        onClick={() => retry()}
+                        className="mb-2"
+                    >
                         Prøv på nytt
                     </Button>
                 )}
@@ -68,7 +74,13 @@ export function DetailedAlert({
             <LocalAlert.Content>
                 {children}
                 {retry && (
-                    <Button size="small" variant="secondary-neutral" onClick={() => retry()} className="mb-2">
+                    <Button
+                        data-color="neutral"
+                        size="small"
+                        variant="secondary"
+                        onClick={() => retry()}
+                        className="mb-2"
+                    >
                         Prøv på nytt
                     </Button>
                 )}

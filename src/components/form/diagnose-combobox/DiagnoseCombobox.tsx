@@ -151,7 +151,8 @@ function DiagnoseCombobox({
                     </div>
                     <div className="flex gap-1 items-start">
                         <Button
-                            variant="secondary-neutral"
+                            data-color="neutral"
+                            variant="secondary"
                             size="small"
                             type="button"
                             onClick={() => {
