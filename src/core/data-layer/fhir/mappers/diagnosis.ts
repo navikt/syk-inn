@@ -4,11 +4,17 @@ import { CodeableConcept, FhirCondition } from '@navikt/smart-on-fhir/zod'
 import { getICPC2 } from '@navikt/tsm-diagnoser/ICPC2'
 import { getICD10 } from '@navikt/tsm-diagnoser/ICD10'
 import { getICPC2B } from '@navikt/tsm-diagnoser/ICPC2B'
+import { ICPC2B } from '@navikt/tsm-diagnoser'
 import Fuse from 'fuse.js'
 
-import { DiagnoseSystem, ICD10_OID_VALUE, ICPC2_OID_VALUE, ICPC2B_OID_VALUE } from '@data-layer/common/diagnose'
+import {
+    Diagnose,
+    DiagnoseSystem,
+    ICD10_OID_VALUE,
+    ICPC2_OID_VALUE,
+    ICPC2B_OID_VALUE,
+} from '@data-layer/common/diagnose'
 import { raise } from '@lib/ts'
-import { Diagnose } from '@resolvers'
 
 type Diagnosis = {
     system: 'ICD10' | 'ICPC2' | 'ICPC2B'
@@ -76,30 +82,73 @@ function diagnosisUrnToOidType(urn: string): DiagnoseSystem | null {
  * Temporary log based analysis of differences between FHIR diagnosis texts and the actual texts
  */
 function logDiagnoseDifferences(diagnosis: Diagnose[]): void {
-    const fuse = new Fuse<string>([], {
-        includeScore: true,
-        ignoreLocation: true,
-        isCaseSensitive: true,
-        threshold: 1,
-    })
+    try {
+        const fuse = new Fuse<string>([], {
+            includeScore: true,
+            ignoreLocation: true,
+            isCaseSensitive: true,
+            threshold: 1,
+        })
 
-    function normalizeText(text: string): string {
-        return text.toLowerCase().split(' ').sort().join(' ')
-    }
-
-    for (const it of diagnosis) {
-        const actual =
-            it.system === 'ICPC2' ? getICPC2(it.code) : it.system === 'ICPC2B' ? getICPC2B(it.code) : getICD10(it.code)
-
-        fuse.setCollection([normalizeText(actual?.text ?? '')])
-        const [comparison] = fuse.search(normalizeText(it.text))
-
-        if (comparison == null || comparison.score == null) {
-            logger.warn(`[Diagnoseanalyse]: Ugyldig diagnose - ${it.system}:${it.code}:${it.text}`)
-        } else if (comparison.score > 0.1) {
-            logger.warn(
-                `[Diagnoseanalyse]: Stor diff - ${it.system}:${it.code}:${it.text}:${actual?.text}:${comparison.score.toFixed(2)}`,
-            )
+        function normalizeText(text: string): string {
+            return text.toLowerCase().split(' ').sort().join(' ')
         }
+
+        for (const it of diagnosis) {
+            const actual =
+                it.system === 'ICPC2'
+                    ? getICPC2(it.code)
+                    : it.system === 'ICPC2B'
+                      ? getICPC2B(it.code)
+                      : getICD10(it.code)
+
+            fuse.setCollection([normalizeText(actual?.text ?? '')])
+            const [comparison] = fuse.search(normalizeText(it.text))
+
+            if (comparison == null || comparison.score == null) {
+                logger.warn(`[Diagnoseanalyse]: Ugyldig diagnose - ${it.system}:${it.code}:${it.text}`)
+            } else if (comparison.score > 0.1) {
+                logger.warn(
+                    `[Diagnoseanalyse]: Stor diff - ${it.system}:${it.code}:${it.text}:${actual?.text}:${comparison.score.toFixed(2)}`,
+                )
+
+                const icpc2bMatch = isICPC2ActuallyICPC2B(it.text, comparison.score)
+                if (icpc2bMatch != null) {
+                    logger.warn(
+                        `[Diagnoseanalyse]: ↑ Kan ligne på ICPC2B? - ${it.system}:${it.code}:${it.text} → ${icpc2bMatch.system}:${icpc2bMatch.code}:${icpc2bMatch?.text}:${icpc2bMatch.score.toFixed(2)}`,
+                    )
+                }
+            }
+        }
+    } catch (e) {
+        logger.error(new Error('Feil under diagnoseanalyse', { cause: e }))
+    }
+}
+
+function isICPC2ActuallyICPC2B(text: string, icpc2Score: number): (Diagnose & { score: number }) | null {
+    try {
+        const icpc2bFuse = new Fuse(ICPC2B, {
+            keys: ['code', 'text', 'system'],
+            includeScore: true,
+            ignoreLocation: true,
+            isCaseSensitive: true,
+            threshold: 1,
+        })
+
+        const search = icpc2bFuse.search(text)
+        if (search.length === 0) return null
+
+        const [firstHit] = search
+        if (icpc2Score < (firstHit.score ?? 1)) return null
+
+        return {
+            system: 'ICPC2B',
+            code: firstHit.item.code,
+            text: firstHit.item.text,
+            score: firstHit.score ?? 1,
+        }
+    } catch (e) {
+        logger.error(new Error('Feil under ICPC2B diagnoseanalyse', { cause: e }))
+        return null
     }
 }

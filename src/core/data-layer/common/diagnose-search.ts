@@ -18,7 +18,8 @@ export function searchDiagnose(query: string, systems: DiagnoseSystem[]): Diagno
                     system: it.item.system as DiagnoseSystem,
                     code: it.item.code,
                     text: it.item.text,
-                }) satisfies Diagnose,
+                    score: it.score ?? null,
+                }) satisfies Diagnose & { score: number | null },
         )
         .slice(0, 100)
 
