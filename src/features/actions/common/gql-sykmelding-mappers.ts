@@ -35,6 +35,15 @@ export function fullSykmeldingFragmentToNySykmeldingFormValues(
             svangerskapsrelatert: sykmelding.values.svangerskapsrelatert ?? false,
         },
         diagnoser: sykmeldingDiagnoserFragmentToSykmeldingFormValues(sykmelding.values),
+        annenFravarsgrunn: sykmelding.values.annenFravarsgrunn
+            ? {
+                  harFravarsgrunn: true,
+                  fravarsgrunn: sykmelding.values.annenFravarsgrunn,
+              }
+            : {
+                  harFravarsgrunn: false,
+                  fravarsgrunn: null,
+              },
         utdypendeSporsmal: null,
     }
 }

@@ -20,6 +20,7 @@ import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sy
 import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import {
     defaultAndreSporsmal,
+    defaultAnnenfravarsgrunn,
     defaultArbeidsforhold,
     defaultMeldinger,
     defaultTilbakedatering,
@@ -81,6 +82,7 @@ function forlengLightSykmelding(
             andreSporsmal: defaultAndreSporsmal(),
             arbeidsforhold: defaultArbeidsforhold(),
             utdypendeSporsmal: defaultUtdypendeSporsmal(),
+            annenFravarsgrunn: defaultAnnenfravarsgrunn(),
             tilbakedatering: defaultTilbakedatering(),
         },
         nextFom,
@@ -186,6 +188,7 @@ function forlengRedactedSykmelding(
             tilbakedatering: defaultTilbakedatering(),
             meldinger: defaultMeldinger(),
             andreSporsmal: defaultAndreSporsmal(),
+            annenFravarsgrunn: defaultAnnenfravarsgrunn(),
             utdypendeSporsmal: defaultUtdypendeSporsmal(),
         },
         nextFom,

@@ -84,6 +84,7 @@ export function sykInnApiPayloadToResponse(
                 : null,
             tilbakedatering: payload.values.tilbakedatering ?? null,
             utdypendeSporsmal: payload.values.utdypendeSporsmal ?? null,
+            annenFravarsgrunn: payload.values.annenFravarsgrunn,
         },
         utfall: utfall,
     }

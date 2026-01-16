@@ -89,4 +89,5 @@ const emptyDraft: DraftValues = {
     meldinger: null,
     yrkesskade: null,
     utdypendeSporsmal: null,
+    annenFravarsgrunn: null,
 }

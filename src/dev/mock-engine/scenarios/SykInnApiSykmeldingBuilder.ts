@@ -51,6 +51,7 @@ export class SykmeldingBuilder {
                 tilArbeidsgiver: null,
             },
             utdypendeSporsmal: null,
+            annenFravarsgrunn: null,
         },
     }
 

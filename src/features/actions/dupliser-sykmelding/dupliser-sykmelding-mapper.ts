@@ -17,6 +17,7 @@ import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sykmelding-mappers'
 import {
     defaultAndreSporsmal,
+    defaultAnnenfravarsgrunn,
     defaultArbeidsforhold,
     defaultMeldinger,
     defaultTilbakedatering,
@@ -63,6 +64,7 @@ function dupliserLightSykmelding(sykmelding: SykmeldingLightFragment): NySykmeld
         andreSporsmal: defaultAndreSporsmal(),
         arbeidsforhold: defaultArbeidsforhold(),
         utdypendeSporsmal: defaultUtdypendeSporsmal(),
+        annenFravarsgrunn: defaultAnnenfravarsgrunn(),
         tilbakedatering: defaultTilbakedatering(),
     }
 }
@@ -78,6 +80,7 @@ function dupliserRedactedSykmelding(sykmelding: SykmeldingRedactedFragment): NyS
         tilbakedatering: defaultTilbakedatering(),
         meldinger: defaultMeldinger(),
         andreSporsmal: defaultAndreSporsmal(),
+        annenFravarsgrunn: defaultAnnenfravarsgrunn(),
         utdypendeSporsmal: defaultUtdypendeSporsmal(),
     }
 }

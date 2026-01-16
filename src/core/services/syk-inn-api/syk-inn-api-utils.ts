@@ -14,6 +14,7 @@ import {
 } from '@core/services/syk-inn-api/schema/opprett'
 import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '@core/services/syk-inn-api/schema/sykmelding'
 import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
+import { AnnenFravarsgrunnArsak } from '@queries'
 
 export function sykInnApiSykmeldingRedactedToResolverSykmelding(
     sykmelding: SykInnApiSykmeldingRedacted,
@@ -93,6 +94,7 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
             arbeidsgiver: sykmelding.values.arbeidsgiver,
             tilbakedatering: sykmelding.values.tilbakedatering,
             utdypendeSporsmal: sykmelding.values.utdypendeSporsmal,
+            annenFravarsgrunn: sykmelding.values.annenFravarsgrunn as AnnenFravarsgrunnArsak,
         },
         utfall: sykmelding.utfall,
         documentStatus: documentStatus ?? null,
@@ -137,6 +139,7 @@ export function resolverInputToSykInnApiPayload(
                       hensynPaArbeidsplassen: values.utdypendeSporsmal.hensynPaArbeidsplassen ?? null,
                   }
                 : null,
+            annenFravarsgrunn: values.annenFravarsgrunn ?? null,
         },
     }
 }

@@ -197,6 +197,72 @@
                 "possibleTypes": null
             },
             {
+                "kind": "ENUM",
+                "name": "AnnenFravarsgrunnArsak",
+                "description": null,
+                "isOneOf": null,
+                "fields": null,
+                "inputFields": null,
+                "interfaces": null,
+                "enumValues": [
+                    {
+                        "name": "ABORT",
+                        "description": "G: Når vedkommende er arbeidsufør som følge av svangerskapsavbrudd,",
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "ARBEIDSRETTET_TILTAK",
+                        "description": "C: Når vedkommende deltar på et arbeidsrettet tiltak,",
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "BEHANDLING_STERILISERING",
+                        "description": "J: Når vedkommende er arbeidsufør som følge av behandling i forbindelse med sterilisering",
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "DONOR",
+                        "description": "I: Når vedkommende er donor eller er under vurdering som donor,",
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "GODKJENT_HELSEINSTITUSJON",
+                        "description": "A: Når vedkommende er innlagt i en godkjent helseinstitusjon",
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "MOTTAR_TILSKUDD_GRUNNET_HELSETILSTAND",
+                        "description": "D: Når vedkommende på grunn av sykdom, skade eller lyte får tilskott til opplæringstiltak etter § 10-7 tredje ledd,",
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "NODVENDIG_KONTROLLUNDENRSOKELSE",
+                        "description": "E: Når vedkommende er til nødvendig kontrollundersøkelse som krever minst 24 timers fravær, reisetid medregnet,",
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "SMITTEFARE",
+                        "description": "F: Når vedkommende myndighet har nedlagt forbud mot at han eller hun arbeider på grunn av smittefare,",
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "UFOR_GRUNNET_BARNLOSHET",
+                        "description": "H: Når vedkommende er arbeidsufør som følge av behandling for barnløshet,",
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "possibleTypes": null
+            },
+            {
                 "kind": "OBJECT",
                 "name": "Arbeidsforhold",
                 "description": null,
@@ -1503,6 +1569,14 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "annenFravarsgrunn",
+                        "description": null,
+                        "type": { "kind": "ENUM", "name": "AnnenFravarsgrunnArsak", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "arbeidsforhold",
                         "description": null,
                         "type": { "kind": "INPUT_OBJECT", "name": "InputArbeidsforhold", "ofType": null },
@@ -2408,6 +2482,14 @@
                                 }
                             }
                         },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "annenFravarsgrunn",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "ENUM", "name": "AnnenFravarsgrunnArsak", "ofType": null },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
