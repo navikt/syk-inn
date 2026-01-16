@@ -36,12 +36,12 @@ function ScenarioLinksFhir(): ReactElement {
 
     return (
         <div className="mt-2">
-            <div className="flex flex-col md:flex-row justify-between">
+            <div className="flex flex-col ax-md:flex-row justify-between">
                 <Heading level="3" size="medium" spacing className="flex gap-1 items-center">
                     <Image src="https://cdn.nav.no/tsm/syk-inn/dass.gif" alt="" width="48" height="48" unoptimized />
                     FHIR scenarioer
                 </Heading>
-                <div className="grid grid-cols-3 gap-2 mb-4 relative md:max-w-2/3">
+                <div className="grid grid-cols-3 gap-2 mb-4 relative ax-md:max-w-2/3">
                     <Select label="Pasient" size="small" onChange={(e) => setPatient(e.target.value)} value={patient}>
                         <option value={'Espen Eksempel' satisfies MockPatients}>Espen Eksempel</option>
                         <option value={'Kari Normann' satisfies MockPatients}>Kari Normann</option>
@@ -87,7 +87,7 @@ function ScenarioLinksFhir(): ReactElement {
                     </Link>
                 </div>
             </div>
-            <div className="grid md:grid-cols-2 gap-3">
+            <div className="grid ax-md:grid-cols-2 gap-3">
                 <LinkCard>
                     <LinkCard.Icon>
                         <PlayIcon fontSize="2rem" />
@@ -107,7 +107,7 @@ function ScenarioLinksFhir(): ReactElement {
                             Keep scenario
                         </LinkCard.Anchor>
                     </LinkCard.Title>
-                    <LinkCard.Description className="text-sm sm:text-base">
+                    <LinkCard.Description className="text-sm ax-sm:text-base">
                         Just re-launches FHIR, does not change your scenario
                     </LinkCard.Description>
                 </LinkCard>
@@ -129,7 +129,7 @@ function ScenarioLinksFhir(): ReactElement {
                                 {scenarioKey}
                             </LinkCard.Anchor>
                         </LinkCard.Title>
-                        <LinkCard.Description className="text-sm sm:text-base">
+                        <LinkCard.Description className="text-sm ax-sm:text-base">
                             {scenario.description}
                         </LinkCard.Description>
                     </LinkCard>

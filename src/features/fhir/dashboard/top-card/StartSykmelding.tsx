@@ -13,7 +13,7 @@ function StartSykmelding(): ReactElement {
     const [hasLegged, setHasLegged] = useState(true)
 
     return (
-        <div className="pr-4 lg:pr-16">
+        <div className="pr-4 ax-lg:pr-16">
             <Heading size="small" level="3">
                 Pasientopplysninger
             </Heading>
@@ -45,11 +45,11 @@ function StartSykmelding(): ReactElement {
             {!loading && data?.pasient && (
                 <div className="flex gap-6 mt-3">
                     <div className="min-w-32">
-                        <Detail className="font-bold">Navn</Detail>
+                        <Detail className="font-ax-bold">Navn</Detail>
                         <BodyShort spacing>{data.pasient.navn ?? 'Navn mangler'}</BodyShort>
                     </div>
                     <div>
-                        <Detail className="font-bold">ID-nummer</Detail>
+                        <Detail className="font-ax-bold">ID-nummer</Detail>
                         <BodyShort spacing>{data.pasient.ident}</BodyShort>
                     </div>
                 </div>

@@ -28,14 +28,20 @@ export function NoValidHPR({ mode }: { mode: ModeType }): ReactElement {
                     Vedvarer problemet kan du kontakte lege- og behandlertelefonen til Nav.
                 </BodyShort>
                 <div className="flex gap-3 justify-end mt-8">
-                    <Button type="button" variant="secondary-neutral" onClick={() => window.location.reload()}>
+                    <Button
+                        data-color="neutral"
+                        type="button"
+                        variant="secondary"
+                        onClick={() => window.location.reload()}
+                    >
                         Last siden på nytt
                     </Button>
                     {(isLocal || isDemo) && mode === 'FHIR' && (
                         <Button
+                            data-color="neutral"
                             type="button"
                             as="a"
-                            variant="secondary-neutral"
+                            variant="secondary"
                             href={pathWithBasePath(
                                 `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel` satisfies MockLaunchType}`}`,
                             )}

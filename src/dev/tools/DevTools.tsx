@@ -21,29 +21,30 @@ function DevTools(): ReactElement {
                     'right-[calc(500px+0.5rem)]': internalOpen,
                 })}
             >
-                <div className="text-right text-text-subtle [text-shadow:1px_1px_0px_white]">
+                <div className="text-right text-ax-text-neutral-subtle [text-shadow:1px_1px_0px_white]">
                     <div>
                         <Detail className="">Internal devtools</Detail>
-                        <Detail className="-mt-1 font-bold">{getAltKeyLabel()} + l</Detail>
+                        <Detail className="-mt-1 font-ax-bold">{getAltKeyLabel()} + l</Detail>
                     </div>
                     <div>
                         <Detail className="">Reset query cache</Detail>
-                        <Detail className="-mt-1 font-bold">{getAltKeyLabel()} + r</Detail>
+                        <Detail className="-mt-1 font-ax-bold">{getAltKeyLabel()} + r</Detail>
                     </div>
                 </div>
                 <div className="flex items-end pointer-events-auto">
                     <Button
-                        variant="secondary-neutral"
+                        data-color="neutral"
+                        variant="secondary"
                         size="small"
                         icon={<SandboxIcon title="Lokale utviklingsverktøy" />}
-                        className="bg-white"
+                        className="bg-ax-bg-default"
                         onClick={toggleInternalDevTools}
                     />
                 </div>
             </div>
             <dialog
                 ref={refs.internalDialogRef}
-                className="fixed left-auto bottom-0 top-0 right-0 h-full z-popover"
+                className="fixed left-auto bottom-0 top-0 right-0 h-full z-[1000]"
                 open={internalOpen}
             >
                 {internalOpen && <InternalDevToolsPanel onClose={closeAllDevTools} />}

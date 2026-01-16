@@ -110,7 +110,8 @@ export function ToggleAPIFailures(): ReactElement {
             </CheckboxGroup>
             <div>
                 <Button
-                    variant="secondary-neutral"
+                    data-color="neutral"
+                    variant="secondary"
                     size="small"
                     onClick={async () => {
                         await client.refetchQueries({

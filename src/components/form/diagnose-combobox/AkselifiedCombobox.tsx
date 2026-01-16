@@ -86,7 +86,7 @@ export function AkselifiedComboboxPopover({
             sameWidth
             className="navds-combobox__list"
             fitViewport
-            render={<div className="z-popover" />}
+            render={<div className="z-[1000]" />}
             {...props}
         >
             {children}
@@ -112,7 +112,7 @@ export function AkselifiedComboboxNonInteractiveFeedbackItem({
 }: PropsWithChildren<{
     className?: string
 }>): ReactElement {
-    return <div className={cn('p-2 text-text-subtle', className)}>{children}</div>
+    return <div className={cn('p-2 text-ax-text-neutral-subtle', className)}>{children}</div>
 }
 
 export function AkselifiedComboboxLoading(): ReactElement {

@@ -1,4 +1,4 @@
-import { BodyShort, Detail, FormSummary, List, Skeleton } from '@navikt/ds-react'
+import { BodyShort, Detail, FormSummary, List, Skeleton, Box } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 import { useQuery } from '@apollo/client/react'
@@ -171,7 +171,7 @@ function AktivitetSummaryAnswer({
                 {aktivitet.tom != null ? (
                     <BodyShort>
                         {toReadableDatePeriod(aktivitet.fom, aktivitet.tom)}
-                        <span className="font-bold"> · </span>
+                        <span className="font-ax-bold"> · </span>
                         {toReadablePeriodLength(aktivitet.fom, aktivitet.tom)}
                     </BodyShort>
                 ) : (
@@ -184,36 +184,42 @@ function AktivitetSummaryAnswer({
                             aktivitet.medisinskArsak.isMedisinskArsak,
                             aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak,
                         ].some(R.isTruthy) && (
-                            <List>
+                            <List className="my-4">
                                 {aktivitet.medisinskArsak.isMedisinskArsak && (
                                     <List.Item>Medisinske årsaker forhindrer arbeidsaktivitet</List.Item>
                                 )}
                                 {aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak && (
                                     <List.Item>
                                         <BodyShort>Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet</BodyShort>
-                                        <List size="small">
-                                            {aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker?.map((arsak) => {
-                                                if (arsak === 'ANNET') {
-                                                    return (
-                                                        <List.Item key={arsak}>
-                                                            <BodyShort>{ArbeidsrelaterteArsaker[arsak]}</BodyShort>
-                                                            <BodyShort size="small" className="italic">
-                                                                {
-                                                                    aktivitet.arbeidsrelatertArsak
-                                                                        .annenArbeidsrelatertArsak
-                                                                }
-                                                            </BodyShort>
-                                                        </List.Item>
-                                                    )
-                                                }
+                                        <Box marginBlock="space-12" asChild>
+                                            <List data-aksel-migrated-v8 size="small">
+                                                {aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker?.map(
+                                                    (arsak) => {
+                                                        if (arsak === 'ANNET') {
+                                                            return (
+                                                                <List.Item key={arsak}>
+                                                                    <BodyShort>
+                                                                        {ArbeidsrelaterteArsaker[arsak]}
+                                                                    </BodyShort>
+                                                                    <BodyShort size="small" className="italic">
+                                                                        {
+                                                                            aktivitet.arbeidsrelatertArsak
+                                                                                .annenArbeidsrelatertArsak
+                                                                        }
+                                                                    </BodyShort>
+                                                                </List.Item>
+                                                            )
+                                                        }
 
-                                                return (
-                                                    <List.Item key={arsak}>
-                                                        <BodyShort>{ArbeidsrelaterteArsaker[arsak]}</BodyShort>
-                                                    </List.Item>
-                                                )
-                                            })}
-                                        </List>
+                                                        return (
+                                                            <List.Item key={arsak}>
+                                                                <BodyShort>{ArbeidsrelaterteArsaker[arsak]}</BodyShort>
+                                                            </List.Item>
+                                                        )
+                                                    },
+                                                )}
+                                            </List>
+                                        </Box>
                                     </List.Item>
                                 )}
                             </List>

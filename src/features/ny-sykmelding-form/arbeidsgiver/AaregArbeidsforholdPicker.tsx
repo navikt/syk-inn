@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react'
-import { BodyShort, InfoCard, ProgressBar, Radio, RadioGroup, Select, Stack, TextField } from '@navikt/ds-react'
+import { BodyShort, InfoCard, ProgressBar, Radio, RadioGroup, Select, TextField } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 import { AnimatePresence } from 'motion/react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
@@ -25,10 +25,10 @@ export function AaregArbeidsforholdPicker(): ReactElement {
                 error={harFlereArbeidsforhold.fieldState.error?.message}
                 {...harFlereArbeidsforhold.field}
             >
-                <Stack direction="row" gap="4">
+                <div className="flex gap-4">
                     <Radio value="JA">Ja</Radio>
                     <Radio value="NEI">Nei</Radio>
-                </Stack>
+                </div>
             </RadioGroup>
             <AnimatePresence initial={false}>
                 {harFlereArbeidsforhold.field.value === 'JA' && (
