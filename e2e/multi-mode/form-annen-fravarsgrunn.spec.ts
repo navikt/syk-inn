@@ -55,7 +55,7 @@ modes.forEach(({ mode }) => {
 
         await nextStep()(page)
 
-        await expect(page.getByRole('combobox', { name: 'Velg fraværsgrunn' })).toHaveAccessibleDescription(
+        await expect(page.getByRole('combobox', { name: 'Velg lovfestet fraværsgrunn' })).toHaveAccessibleDescription(
             'Du må velge en lovfestet fraværsgrunn',
         )
     })

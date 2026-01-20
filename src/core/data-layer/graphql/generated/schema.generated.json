@@ -218,6 +218,12 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "BEHANDLING_FORHINDRER_ARBEID",
+                        "description": "B: Når pasienten er under behandling som gjør det nødvendig med fravær fra arbeid (ikke enkeltstående behandlingsdager)\n   Dette er spesifikt IKKE!!!! enkeltstående behandlingsdager, og faller under den forenklede annen fraværsgrunnene\n   vi støtter i denne spesifikke flyten.",
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "BEHANDLING_STERILISERING",
                         "description": "J: Når vedkommende er arbeidsufør som følge av behandling i forbindelse med sterilisering",
                         "isDeprecated": false,

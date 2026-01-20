@@ -96,7 +96,9 @@ export function expectAnnenLovpalagtFravarsgrunn(expectedFravarsgrunn: AnnenFrav
             await expect(
                 group.getByRole('checkbox', { name: 'Sykmeldingen har en annen lovfestet fraværsgrunn' }),
             ).toBeChecked()
-            await expect(group.getByRole('combobox', { name: 'Velg fraværsgrunn' })).toHaveValue(expectedFravarsgrunn)
+            await expect(group.getByRole('combobox', { name: 'Velg lovfestet fraværsgrunn' })).toHaveValue(
+                expectedFravarsgrunn,
+            )
         })
     }
 }
