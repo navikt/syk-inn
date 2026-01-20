@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Checkbox, Fieldset, Select } from '@navikt/ds-react'
+import { Checkbox, Fieldset, HelpText, Select, Link as AkselLink, BodyShort } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
 
 import { useController } from '@features/ny-sykmelding-form/form/types'
@@ -44,7 +44,25 @@ function AnnenLovfestetFravarsgrunn(): ReactElement {
 
     return (
         <Select
-            label="Velg fraværsgrunn"
+            label={
+                <div className="flex items-center gap-2">
+                    <BodyShort>Velg lovfestet fraværsgrunn</BodyShort>
+                    <HelpText title="Hva er annen lovfestet fraværsgrunn?">
+                        <BodyShort spacing>
+                            Situasjoner som kan gi rett til sykepenger, selv om pasienten ikke er arbeidsufør på grunn
+                            av sykdom eller skade.{' '}
+                        </BodyShort>
+                        <AkselLink
+                            target="_blank"
+                            href="https://www.nav.no/samarbeidspartner/om-sykmeldingen#spesielle-grunner"
+                            className="inline"
+                        >
+                            Les mer om annen lovfestet fraværsgrunn på nav.no
+                        </AkselLink>
+                        .
+                    </HelpText>
+                </div>
+            }
             className="mb-2"
             {...fravarsgrunn.field}
             value={fravarsgrunn.field.value ?? ''}
@@ -52,17 +70,18 @@ function AnnenLovfestetFravarsgrunn(): ReactElement {
             error={fravarsgrunn.fieldState.error?.message}
         >
             <option value="" disabled>
-                Velg fraværsgrunn
+                Ingen grunn valgt
             </option>
-            <Option grunn="ABORT" />
-            <Option grunn="ARBEIDSRETTET_TILTAK" />
-            <Option grunn="BEHANDLING_STERILISERING" />
-            <Option grunn="DONOR" />
             <Option grunn="GODKJENT_HELSEINSTITUSJON" />
+            <Option grunn="BEHANDLING_FORHINDRER_ARBEID" />
             <Option grunn="MOTTAR_TILSKUDD_GRUNNET_HELSETILSTAND" />
+            <Option grunn="ARBEIDSRETTET_TILTAK" />
             <Option grunn="NODVENDIG_KONTROLLUNDENRSOKELSE" />
             <Option grunn="SMITTEFARE" />
+            <Option grunn="ABORT" />
             <Option grunn="UFOR_GRUNNET_BARNLOSHET" />
+            <Option grunn="DONOR" />
+            <Option grunn="BEHANDLING_STERILISERING" />
         </Select>
     )
 }
