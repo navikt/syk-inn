@@ -4,6 +4,8 @@ export function annenFravarsgrunnToText(grunn: AnnenFravarsgrunnArsak): string {
     switch (grunn) {
         case 'ABORT':
             return 'Pasienten er arbeidsufør som følge av svangerskapsavbrudd'
+        case 'BEHANDLING_FORHINDRER_ARBEID':
+            return 'Pasienten er under behandling som gjør det nødvendig med fravær fra arbeid (ikke enkeltstående behandlingsdager)'
         case 'ARBEIDSRETTET_TILTAK':
             return 'Pasienten deltar på et arbeidsrettet tiltak'
         case 'BEHANDLING_STERILISERING':

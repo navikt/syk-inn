@@ -144,10 +144,12 @@ export function addUtdypendeSporsmal({
 
 export function selectAnnenLovpalagtFravarsgrunn({ reason }: { reason: AnnenFravarsgrunnArsak }) {
     return async (page: Page) => {
-        const group = page.getByRole('group', { name: 'Annen lovfestet fraværsgrunn' })
+        return test.step(`Select fravarsgrunn: ${reason}`, async () => {
+            const group = page.getByRole('group', { name: 'Annen lovfestet fraværsgrunn' })
 
-        await group.getByRole('checkbox', { name: 'Sykmeldingen har en annen lovfestet fraværsgrunn' }).click()
-        await group.getByRole('combobox', { name: 'Velg fraværsgrunn' }).selectOption(reason)
+            await group.getByRole('checkbox', { name: 'Sykmeldingen har en annen lovfestet fraværsgrunn' }).click()
+            await group.getByRole('combobox', { name: 'Velg lovfestet fraværsgrunn' }).selectOption(reason)
+        })
     }
 }
 

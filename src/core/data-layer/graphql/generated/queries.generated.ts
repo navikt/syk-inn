@@ -49,6 +49,12 @@ export type AnnenFravarsgrunnArsak =
     | 'ABORT'
     /** C: Når vedkommende deltar på et arbeidsrettet tiltak, */
     | 'ARBEIDSRETTET_TILTAK'
+    /**
+     * B: Når pasienten er under behandling som gjør det nødvendig med fravær fra arbeid (ikke enkeltstående behandlingsdager)
+     *    Dette er spesifikt IKKE!!!! enkeltstående behandlingsdager, og faller under den forenklede annen fraværsgrunnene
+     *    vi støtter i denne spesifikke flyten.
+     */
+    | 'BEHANDLING_FORHINDRER_ARBEID'
     /** J: Når vedkommende er arbeidsufør som følge av behandling i forbindelse med sterilisering */
     | 'BEHANDLING_STERILISERING'
     /** I: Når vedkommende er donor eller er under vurdering som donor, */
