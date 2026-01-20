@@ -159,14 +159,9 @@ function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingState): O
             medisinskOppsummering: formState.utdypendeSporsmal?.medisinskOppsummering ?? null,
             hensynPaArbeidsplassen: formState.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
             behandlingOgFremtidigArbeid: formState.utdypendeSporsmal?.behandlingOgFremtidigArbeid ?? null,
-            forventetHelsetilstandUtvikling: formState.utdypendeSporsmal?.forventetHelsetilstandUtvikling ?? null,
-            helserelatertUtfordringArbeidssituasjon:
-                formState.utdypendeSporsmal?.helserelatertUtfordringArbeidssituasjon ?? null,
-            medisinskeHensyn: formState.utdypendeSporsmal?.medisinskeHensyn ?? null,
-            realistiskArbeidshverdag: formState.utdypendeSporsmal?.realistiskArbeidshverdag ?? null,
-            sisteMedisinskeOppsummering: formState.utdypendeSporsmal?.sisteMedisinskeOppsummering ?? null,
-            sykdomsutvikling: formState.utdypendeSporsmal?.sykdomsutvikling ?? null,
             uavklarteForhold: formState.utdypendeSporsmal?.uavklarteForhold ?? null,
+            forventetHelsetilstandUtvikling: formState.utdypendeSporsmal?.forventetHelsetilstandUtvikling ?? null,
+            medisinskeHensyn: formState.utdypendeSporsmal?.medisinskeHensyn ?? null,
         },
         annenFravarsgrunn: formState.annenFravarsgrunn?.fravarsgrunn ?? null,
     } satisfies OpprettSykmeldingInput

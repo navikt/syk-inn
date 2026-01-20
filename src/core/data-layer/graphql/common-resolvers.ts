@@ -61,6 +61,21 @@ export const commonObjectResolvers: Resolvers<CommonGraphqlContext> = {
                     if (sykmelding.values.utdypendeSporsmal.medisinskOppsummering) {
                         previouslyAnsweredSporsmal.push('MEDISINSK_OPPSUMMERING')
                     }
+                    if (sykmelding.values.utdypendeSporsmal.hensynPaArbeidsplassen) {
+                        previouslyAnsweredSporsmal.push('HENSYN_PA_ARBEIDSPLASSEN')
+                    }
+                    if (sykmelding.values.utdypendeSporsmal.behandlingOgFremtidigArbeid) {
+                        previouslyAnsweredSporsmal.push('BEHANDLING_OG_FREMTIDIG_ARBEID')
+                    }
+                    if (sykmelding.values.utdypendeSporsmal.uavklarteForhold) {
+                        previouslyAnsweredSporsmal.push('UAVKLARTE_FORHOLD')
+                    }
+                    if (sykmelding.values.utdypendeSporsmal.forventetHelsetilstandUtvikling) {
+                        previouslyAnsweredSporsmal.push('FORVENTET_HELSETILSTAND_UTVIKLING')
+                    }
+                    if (sykmelding.values.utdypendeSporsmal.medisinskeHensyn) {
+                        previouslyAnsweredSporsmal.push('MEDISINSKE_HENSYN')
+                    }
                 }
             })
 

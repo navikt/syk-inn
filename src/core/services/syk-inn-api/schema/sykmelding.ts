@@ -70,6 +70,10 @@ const UtdypendeSporsmalSchema = z.object({
     utfordringerMedArbeid: z.string().nullable(),
     medisinskOppsummering: z.string().nullable(),
     hensynPaArbeidsplassen: z.string().nullable(),
+    behandlingOgFremtidigArbeid: z.string().nullable(),
+    uavklarteForhold: z.string().nullable(),
+    forventetHelsetilstandUtvikling: z.string().nullable(),
+    medisinskeHensyn: z.string().nullable(),
 })
 
 const ArbeidsgiverSchema = z.object({

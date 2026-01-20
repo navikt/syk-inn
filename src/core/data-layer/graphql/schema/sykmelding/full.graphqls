@@ -51,6 +51,10 @@ type UtdypendeSporsmal {
     utfordringerMedArbeid: String
     medisinskOppsummering: String
     hensynPaArbeidsplassen: String
+    behandlingOgFremtidigArbeid: String
+    uavklarteForhold: String
+    forventetHelsetilstandUtvikling: String
+    medisinskeHensyn: String
 }
 
 enum AnnenFravarsgrunnArsak {

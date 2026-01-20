@@ -199,13 +199,9 @@ export type InputTilbakedatering = {
 export type InputUtdypendeSporsmal = {
     behandlingOgFremtidigArbeid?: InputMaybe<Scalars['String']['input']>
     forventetHelsetilstandUtvikling?: InputMaybe<Scalars['String']['input']>
-    helserelatertUtfordringArbeidssituasjon?: InputMaybe<Scalars['String']['input']>
     hensynPaArbeidsplassen?: InputMaybe<Scalars['String']['input']>
     medisinskOppsummering?: InputMaybe<Scalars['String']['input']>
     medisinskeHensyn?: InputMaybe<Scalars['String']['input']>
-    realistiskArbeidshverdag?: InputMaybe<Scalars['String']['input']>
-    sisteMedisinskeOppsummering?: InputMaybe<Scalars['String']['input']>
-    sykdomsutvikling?: InputMaybe<Scalars['String']['input']>
     uavklarteForhold?: InputMaybe<Scalars['String']['input']>
     utfordringerMedArbeid?: InputMaybe<Scalars['String']['input']>
 }
@@ -503,12 +499,23 @@ export type UtdypendeOpplysningerHint = {
 
 export type UtdypendeSporsmal = {
     __typename?: 'UtdypendeSporsmal'
+    behandlingOgFremtidigArbeid?: Maybe<Scalars['String']['output']>
+    forventetHelsetilstandUtvikling?: Maybe<Scalars['String']['output']>
     hensynPaArbeidsplassen?: Maybe<Scalars['String']['output']>
     medisinskOppsummering?: Maybe<Scalars['String']['output']>
+    medisinskeHensyn?: Maybe<Scalars['String']['output']>
+    uavklarteForhold?: Maybe<Scalars['String']['output']>
     utfordringerMedArbeid?: Maybe<Scalars['String']['output']>
 }
 
-export type UtdypendeSporsmalOptions = 'HENSYN_PA_ARBEIDSPLASSEN' | 'MEDISINSK_OPPSUMMERING' | 'UTFORDRINGER_MED_ARBEID'
+export type UtdypendeSporsmalOptions =
+    | 'BEHANDLING_OG_FREMTIDIG_ARBEID'
+    | 'FORVENTET_HELSETILSTAND_UTVIKLING'
+    | 'HENSYN_PA_ARBEIDSPLASSEN'
+    | 'MEDISINSKE_HENSYN'
+    | 'MEDISINSK_OPPSUMMERING'
+    | 'UAVKLARTE_FORHOLD'
+    | 'UTFORDRINGER_MED_ARBEID'
 
 export type Yrkesskade = {
     __typename?: 'Yrkesskade'
@@ -1236,8 +1243,12 @@ export type UtdypendeSporsmalResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['UtdypendeSporsmal'] = ResolversParentTypes['UtdypendeSporsmal'],
 > = {
+    behandlingOgFremtidigArbeid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    forventetHelsetilstandUtvikling?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     hensynPaArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     medisinskOppsummering?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    medisinskeHensyn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    uavklarteForhold?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     utfordringerMedArbeid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
 }
 

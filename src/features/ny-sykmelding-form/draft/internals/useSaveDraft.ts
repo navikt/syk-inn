@@ -84,14 +84,9 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
             medisinskOppsummering: values.utdypendeSporsmal?.medisinskOppsummering ?? null,
             hensynPaArbeidsplassen: values.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
             behandlingOgFremtidigArbeid: values.utdypendeSporsmal?.behandlingOgFremtidigArbeid ?? null,
-            forventetHelsetilstandUtvikling: values.utdypendeSporsmal?.forventetHelsetilstandUtvikling ?? null,
-            helserelatertUtfordringArbeidssituasjon:
-                values.utdypendeSporsmal?.helserelatertUtfordringArbeidssituasjon ?? null,
-            medisinskeHensyn: values.utdypendeSporsmal?.medisinskeHensyn ?? null,
-            realistiskArbeidshverdag: values.utdypendeSporsmal?.realistiskArbeidshverdag ?? null,
-            sisteMedisinskeOppsummering: values.utdypendeSporsmal?.sisteMedisinskeOppsummering ?? null,
-            sykdomsutvikling: values.utdypendeSporsmal?.sykdomsutvikling ?? null,
             uavklarteForhold: values.utdypendeSporsmal?.uavklarteForhold ?? null,
+            forventetHelsetilstandUtvikling: values.utdypendeSporsmal?.forventetHelsetilstandUtvikling ?? null,
+            medisinskeHensyn: values.utdypendeSporsmal?.medisinskeHensyn ?? null,
         },
         annenFravarsgrunn: {
             harFravarsgrunn: values.annenFravarsgrunn.harFravarsgrunn,

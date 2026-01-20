@@ -53,17 +53,13 @@ input InputTilbakedatering {
 }
 
 input InputUtdypendeSporsmal {
-    utfordringerMedArbeid: String
-    medisinskOppsummering: String
-    hensynPaArbeidsplassen: String
-    sykdomsutvikling: String # UKE 17 "Gi en kort oppdatering på sykdomsutviklingen siden uke 7, med vekt på endringer i symptomer og funn som er relevante for det videre sykefraværet"
-    helserelatertUtfordringArbeidssituasjon: String # UKE 17 "Hvilke utfordringen gir helsetilstanden i arbeidssituasjonen?" - "Tenk på forhold som: fysisk belastning, utholdenhet, tempo, konsentrasjon, samhandling med andre, stress - og kravtoleranse, behov for pauser eller skjerming"
-    behandlingOgFremtidigArbeid: String # UKE 17 "Beskriv pågående og planlagt utredning/behandling, og om dette forventes å påvirke muligheten for arbeid fremover"
-    uavklarteForhold: String # UKE 17 "Er det forhold som fortsatt er uavklarte eller hindrer videre arbeidsdeltakelse, som Nav bør være kjent med i sin oppfølging? (ikke obligatorisk)"
-    sisteMedisinskeOppsummering: String # UKE 39 "Gi en kort oppdatert medisinsk oppsummering relevant for sykefraværet (utvikling, hovedsymptomer og relevante funn)"
-    realistiskArbeidshverdag: String # UKE 39 "Hva kan pasienten realistisk sett mestre i en arbeidshverdag nå, og hvilke helserelaterte forhold begrenser dette?"
-    forventetHelsetilstandUtvikling: String # UKE 39 "Hvordan forventes helsetilstanden å utvikle seg de neste 3-6 månedene med tanke på mulighet for økt arbeidsdeltakelse?"
-    medisinskeHensyn: String # UKE 39 "Er det medisinske hensyn eller avklaringsbehov Nav bør ta høyde for i videre oppfølging?"
+    utfordringerMedArbeid: String # Uke 7, 17 og 39
+    medisinskOppsummering: String # Uke 7, 17 og 39
+    hensynPaArbeidsplassen: String # Uke 7
+    behandlingOgFremtidigArbeid: String # Uke 17 "Beskriv pågående og planlagt utredning/behandling, og om dette forventes å påvirke muligheten for arbeid fremover"
+    uavklarteForhold: String # Uke 17 "Er det forhold som fortsatt er uavklarte eller hindrer videre arbeidsdeltakelse, som Nav bør være kjent med i sin oppfølging? (ikke obligatorisk)"
+    forventetHelsetilstandUtvikling: String # Uke 39 "Hvordan forventes helsetilstanden å utvikle seg de neste 3-6 månedene med tanke på mulighet for økt arbeidsdeltakelse?"
+    medisinskeHensyn: String # Uke 39 "Er det medisinske hensyn eller avklaringsbehov Nav bør ta høyde for i videre oppfølging?"
 }
 
 """

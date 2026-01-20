@@ -1169,14 +1169,6 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "helserelatertUtfordringArbeidssituasjon",
-                        "description": null,
-                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "hensynPaArbeidsplassen",
                         "description": null,
                         "type": { "kind": "SCALAR", "name": "String", "ofType": null },
@@ -1194,30 +1186,6 @@
                     },
                     {
                         "name": "medisinskeHensyn",
-                        "description": null,
-                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "realistiskArbeidshverdag",
-                        "description": null,
-                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "sisteMedisinskeOppsummering",
-                        "description": null,
-                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "sykdomsutvikling",
                         "description": null,
                         "type": { "kind": "SCALAR", "name": "String", "ofType": null },
                         "defaultValue": null,
@@ -3182,6 +3150,22 @@
                 "isOneOf": null,
                 "fields": [
                     {
+                        "name": "behandlingOgFremtidigArbeid",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "forventetHelsetilstandUtvikling",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "hensynPaArbeidsplassen",
                         "description": null,
                         "args": [],
@@ -3191,6 +3175,22 @@
                     },
                     {
                         "name": "medisinskOppsummering",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "medisinskeHensyn",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "uavklarteForhold",
                         "description": null,
                         "args": [],
                         "type": { "kind": "SCALAR", "name": "String", "ofType": null },
@@ -3221,13 +3221,37 @@
                 "interfaces": null,
                 "enumValues": [
                     {
+                        "name": "BEHANDLING_OG_FREMTIDIG_ARBEID",
+                        "description": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "FORVENTET_HELSETILSTAND_UTVIKLING",
+                        "description": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "HENSYN_PA_ARBEIDSPLASSEN",
                         "description": null,
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
                     {
+                        "name": "MEDISINSKE_HENSYN",
+                        "description": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "MEDISINSK_OPPSUMMERING",
+                        "description": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "UAVKLARTE_FORHOLD",
                         "description": null,
                         "isDeprecated": false,
                         "deprecationReason": null
