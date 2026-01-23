@@ -5,6 +5,7 @@ import FormSection from '@components/form/form-section/FormSection'
 import { useController, useFormContext } from '@features/ny-sykmelding-form/form/types'
 import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-utils'
 import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolvers.generated'
+import { questionTexts } from '@data-layer/common/questions'
 
 const getTitleForUtdypendeSporsmal = (skalViseSporsmal: { uke7: boolean; uke17: boolean; uke39: boolean }): string => {
     if (skalViseSporsmal.uke39) return 'Utdypende spørsmål uke 40'
@@ -59,20 +60,20 @@ function Uke7(): ReactElement {
     return (
         <>
             <Textarea
-                label="Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, behandling)"
+                label={questionTexts.utdypdendeSporsmal.medisinskOppsummering.label}
                 onChange={medisinskOppsummering.field.onChange}
                 value={medisinskOppsummering.field.value ?? ''}
                 error={medisinskOppsummering.fieldState.error?.message}
             />
             <Textarea
-                label="Beskriv kort hvilke helsemessige begrensninger som gjør det vanskelig å jobbe gradert"
+                label={questionTexts.utdypdendeSporsmal.utfordringerMedArbeid.label}
                 onChange={utfordringerMedArbeid.field.onChange}
                 value={utfordringerMedArbeid.field.value ?? ''}
                 error={utfordringerMedArbeid.fieldState.error?.message}
             />
 
             <Textarea
-                label="Beskriv eventuelle medisinske forhold som bør ivaretas ved eventuell tilbakeføring til nåværende arbeid (ikke obligatorisk)"
+                label={questionTexts.utdypdendeSporsmal.hensynPaArbeidsplassen.label}
                 onChange={hensynPaArbeidsplassen.field.onChange}
                 value={hensynPaArbeidsplassen.field.value ?? ''}
                 error={hensynPaArbeidsplassen.fieldState.error?.message}
