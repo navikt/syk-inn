@@ -7,7 +7,7 @@ import {
 } from '@data-layer/common/continuous-sykefravaer-utils'
 import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
 import { raise } from '@lib/ts'
-import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolvers.generated'
+import { UtdypendeOpplysningerHint, UtdypendeSporsmalOptions } from '@data-layer/graphql/generated/resolvers.generated'
 
 const ISYFO_MAX_DAYS_GAP = 16
 
@@ -69,6 +69,13 @@ export const satisfiesGeneralConditions = (
     return totalDaysIsMoreThanDays(utdypendeSporsmal, currentPeriode, daysForPeriode + 7)
 }
 
+const timesAnsweredQuestion = (
+    previouslyAnsweredSporsmal: UtdypendeSporsmalOptions[],
+    questionType: UtdypendeSporsmalOptions,
+): number => {
+    return previouslyAnsweredSporsmal.filter((it) => it === questionType).length
+}
+
 export const shouldShowUke7Sporsmal = (
     perioder: AktivitetsPeriode[],
     utdypendeSporsmal: UtdypendeOpplysningerHint,
@@ -76,8 +83,8 @@ export const shouldShowUke7Sporsmal = (
     const DAYS_IN_7_WEEKS = 7 * 7
 
     if (
-        utdypendeSporsmal.previouslyAnsweredSporsmal.includes('UTFORDRINGER_MED_ARBEID') &&
-        utdypendeSporsmal.previouslyAnsweredSporsmal.includes('MEDISINSK_OPPSUMMERING')
+        timesAnsweredQuestion(utdypendeSporsmal.previouslyAnsweredSporsmal, 'UTFORDRINGER_MED_ARBEID') > 0 &&
+        timesAnsweredQuestion(utdypendeSporsmal.previouslyAnsweredSporsmal, 'MEDISINSK_OPPSUMMERING') > 0
     ) {
         return false
     }
@@ -91,8 +98,12 @@ export const shouldShowUke17Sporsmal = (
 ): boolean => {
     const DAYS_IN_17_WEEKS = 17 * 7
 
-    // TODO check if already answered uke 17 questions
-
+    if (
+        timesAnsweredQuestion(utdypendeSporsmal.previouslyAnsweredSporsmal, 'UTFORDRINGER_MED_ARBEID') > 1 &&
+        timesAnsweredQuestion(utdypendeSporsmal.previouslyAnsweredSporsmal, 'MEDISINSK_OPPSUMMERING') > 1
+    ) {
+        return false
+    }
     return satisfiesGeneralConditions(perioder, utdypendeSporsmal, DAYS_IN_17_WEEKS)
 }
 
@@ -102,7 +113,12 @@ export const shouldShowUke39Sporsmal = (
 ): boolean => {
     const DAYS_IN_39_WEEKS = 39 * 7
 
-    // TODO check if already answered uke 39 questions
+    if (
+        timesAnsweredQuestion(utdypendeSporsmal.previouslyAnsweredSporsmal, 'UTFORDRINGER_MED_ARBEID') > 2 &&
+        timesAnsweredQuestion(utdypendeSporsmal.previouslyAnsweredSporsmal, 'MEDISINSK_OPPSUMMERING') > 2
+    ) {
+        return false
+    }
 
     return satisfiesGeneralConditions(perioder, utdypendeSporsmal, DAYS_IN_39_WEEKS)
 }

@@ -95,6 +95,14 @@ fragment SykmeldingFull on SykmeldingFull {
             utfordringerMedArbeid
             medisinskOppsummering
             hensynPaArbeidsplassen
+            sykdomsutvikling
+            utfordringerHelsetilstand
+            behandlingOgFremtidigArbeid
+            uavklarteForhold
+            oppdatertMedisinskOppsummering
+            mestringArbeidshverdag
+            forventetHelsetilstandUtvikling
+            medisinskeHensyn
         }
         annenFravarsgrunn
     }

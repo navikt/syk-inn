@@ -51,8 +51,12 @@ type UtdypendeSporsmal {
     utfordringerMedArbeid: String
     medisinskOppsummering: String
     hensynPaArbeidsplassen: String
+    sykdomsutvikling: String
+    utfordringerHelsetilstand: String
     behandlingOgFremtidigArbeid: String
     uavklarteForhold: String
+    oppdatertMedisinskOppsummering: String
+    mestringArbeidshverdag: String
     forventetHelsetilstandUtvikling: String
     medisinskeHensyn: String
 }

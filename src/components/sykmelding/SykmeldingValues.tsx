@@ -10,6 +10,7 @@ import { ArbeidsrelaterteArsaker } from '@features/ny-sykmelding-form/aktivitet/
 import { Diagnose } from '@data-layer/common/diagnose'
 import { PREVIOUS_OFFSET_DAYS } from '@data-layer/common/sykmelding-utils'
 import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
+import { utdypendeSporsmalTekster } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-tekster'
 
 type Props = {
     sykmelding: SykmeldingFragment
@@ -78,19 +79,59 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                     {annenFravarsgrunnToText(sykmelding.values.annenFravarsgrunn)}
                 </ValueItem>
             )}
-            {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid && (
-                <ValueItem title="Hvilke utfordringer har pasienten med å utføre gradert arbeid?">
-                    {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid}
-                </ValueItem>
-            )}
             {sykmelding.values.utdypendeSporsmal?.medisinskOppsummering && (
-                <ValueItem title="Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt behandling)">
+                <ValueItem title={utdypendeSporsmalTekster.medisinskOppsummering}>
                     {sykmelding.values.utdypendeSporsmal?.medisinskOppsummering}
                 </ValueItem>
             )}
+            {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid && (
+                <ValueItem title={utdypendeSporsmalTekster.utfordringerMedArbeid}>
+                    {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid}
+                </ValueItem>
+            )}
             {sykmelding.values.utdypendeSporsmal?.hensynPaArbeidsplassen && (
-                <ValueItem title="Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet? (ikke obligatorisk)">
+                <ValueItem title={utdypendeSporsmalTekster.hensynPaArbeidsplassen}>
                     {sykmelding.values.utdypendeSporsmal?.hensynPaArbeidsplassen}
+                </ValueItem>
+            )}
+            {sykmelding.values.utdypendeSporsmal?.sykdomsutvikling && (
+                <ValueItem title={utdypendeSporsmalTekster.sykdomsutvikling}>
+                    {sykmelding.values.utdypendeSporsmal?.sykdomsutvikling}
+                </ValueItem>
+            )}
+            {sykmelding.values.utdypendeSporsmal?.utfordringerHelsetilstand && (
+                <ValueItem title={utdypendeSporsmalTekster.utfordringerHelsetilstand}>
+                    {sykmelding.values.utdypendeSporsmal?.utfordringerHelsetilstand}
+                </ValueItem>
+            )}
+            {sykmelding.values.utdypendeSporsmal?.behandlingOgFremtidigArbeid && (
+                <ValueItem title={utdypendeSporsmalTekster.behandlingOgFremtidigArbeid}>
+                    {sykmelding.values.utdypendeSporsmal?.behandlingOgFremtidigArbeid}
+                </ValueItem>
+            )}
+            {sykmelding.values.utdypendeSporsmal?.uavklarteForhold && (
+                <ValueItem title={utdypendeSporsmalTekster.uavklarteForhold}>
+                    {sykmelding.values.utdypendeSporsmal?.uavklarteForhold}
+                </ValueItem>
+            )}
+            {sykmelding.values.utdypendeSporsmal?.oppdatertMedisinskOppsummering && (
+                <ValueItem title={utdypendeSporsmalTekster.oppdatertMedisinskOppsummering}>
+                    {sykmelding.values.utdypendeSporsmal?.oppdatertMedisinskOppsummering}
+                </ValueItem>
+            )}
+            {sykmelding.values.utdypendeSporsmal?.mestringArbeidshverdag && (
+                <ValueItem title={utdypendeSporsmalTekster.mestringArbeidshverdag}>
+                    {sykmelding.values.utdypendeSporsmal?.mestringArbeidshverdag}
+                </ValueItem>
+            )}
+            {sykmelding.values.utdypendeSporsmal?.forventetHelsetilstandUtvikling && (
+                <ValueItem title={utdypendeSporsmalTekster.forventetHelsetilstandUtvikling}>
+                    {sykmelding.values.utdypendeSporsmal?.forventetHelsetilstandUtvikling}
+                </ValueItem>
+            )}
+            {sykmelding.values.utdypendeSporsmal?.medisinskeHensyn && (
+                <ValueItem title={utdypendeSporsmalTekster.medisinskeHensyn}>
+                    {sykmelding.values.utdypendeSporsmal?.medisinskeHensyn}
                 </ValueItem>
             )}
             {sykmelding.values.yrkesskade?.yrkesskade && (

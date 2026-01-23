@@ -21,6 +21,7 @@ import { NySykmeldingAnnenFravarsgrunn, NySykmeldingUtdypendeSporsmal } from '@c
 import { useMode } from '@core/providers/Modes'
 import { DetailedAlert, InlineWarning, SimpleAlert } from '@components/help/GeneralErrors'
 import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
+import { utdypendeSporsmalTekster } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-tekster'
 
 import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
 import { useFormStep } from '../steps/useFormStep'
@@ -306,29 +307,70 @@ function UtdypendeSporsmalSummaryAnswers({
 }): ReactElement | null {
     return (
         <>
-            {utdypendeSporsmal?.utfordringerMedArbeid && (
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        Hvilke utfordringer har pasienten med å utføre gradert arbeid?
-                    </FormSummary.Label>
-                    <FormSummary.Value>{utdypendeSporsmal.utfordringerMedArbeid}</FormSummary.Value>
-                </FormSummary.Answer>
-            )}
             {utdypendeSporsmal?.medisinskOppsummering && (
                 <FormSummary.Answer>
-                    <FormSummary.Label>
-                        Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt
-                        behandling)
-                    </FormSummary.Label>
+                    <FormSummary.Label>{utdypendeSporsmalTekster.medisinskOppsummering}</FormSummary.Label>
                     <FormSummary.Value>{utdypendeSporsmal.medisinskOppsummering}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {utdypendeSporsmal?.utfordringerMedArbeid && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>{utdypendeSporsmalTekster.utfordringerMedArbeid}</FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.utfordringerMedArbeid}</FormSummary.Value>
                 </FormSummary.Answer>
             )}
             {utdypendeSporsmal?.hensynPaArbeidsplassen && (
                 <FormSummary.Answer>
-                    <FormSummary.Label>
-                        Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet?
-                    </FormSummary.Label>
+                    <FormSummary.Label>{utdypendeSporsmalTekster.hensynPaArbeidsplassen}</FormSummary.Label>
                     <FormSummary.Value>{utdypendeSporsmal.hensynPaArbeidsplassen}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {utdypendeSporsmal?.sykdomsutvikling && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>{utdypendeSporsmalTekster.sykdomsutvikling}</FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.sykdomsutvikling}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {utdypendeSporsmal?.utfordringerHelsetilstand && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>{utdypendeSporsmalTekster.utfordringerHelsetilstand}</FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.utfordringerHelsetilstand}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {utdypendeSporsmal?.behandlingOgFremtidigArbeid && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>{utdypendeSporsmalTekster.behandlingOgFremtidigArbeid}</FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.behandlingOgFremtidigArbeid}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {utdypendeSporsmal?.uavklarteForhold && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>{utdypendeSporsmalTekster.uavklarteForhold}</FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.uavklarteForhold}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {utdypendeSporsmal?.oppdatertMedisinskOppsummering && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>{utdypendeSporsmalTekster.oppdatertMedisinskOppsummering}</FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.oppdatertMedisinskOppsummering}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {utdypendeSporsmal?.mestringArbeidshverdag && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>{utdypendeSporsmalTekster.mestringArbeidshverdag}</FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.mestringArbeidshverdag}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {utdypendeSporsmal?.forventetHelsetilstandUtvikling && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>{utdypendeSporsmalTekster.forventetHelsetilstandUtvikling}</FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.forventetHelsetilstandUtvikling}</FormSummary.Value>
+                </FormSummary.Answer>
+            )}
+            {utdypendeSporsmal?.medisinskeHensyn && (
+                <FormSummary.Answer>
+                    <FormSummary.Label>{utdypendeSporsmalTekster.medisinskeHensyn}</FormSummary.Label>
+                    <FormSummary.Value>{utdypendeSporsmal.medisinskeHensyn}</FormSummary.Value>
                 </FormSummary.Answer>
             )}
         </>

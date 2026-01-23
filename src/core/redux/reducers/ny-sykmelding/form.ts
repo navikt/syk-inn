@@ -60,8 +60,12 @@ export type NySykmeldingUtdypendeSporsmal = {
     utfordringerMedArbeid: string | null
     medisinskOppsummering: string | null
     hensynPaArbeidsplassen: string | null
+    sykdomsutvikling: string | null
+    utfordringerHelsetilstand: string | null
     behandlingOgFremtidigArbeid: string | null
     uavklarteForhold: string | null
+    oppdatertMedisinskOppsummering: string | null
+    mestringArbeidshverdag: string | null
     forventetHelsetilstandUtvikling: string | null
     medisinskeHensyn: string | null
 }

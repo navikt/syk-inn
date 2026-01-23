@@ -200,7 +200,11 @@ export type InputUtdypendeSporsmal = {
     hensynPaArbeidsplassen: InputMaybe<Scalars['String']['input']>
     medisinskOppsummering: InputMaybe<Scalars['String']['input']>
     medisinskeHensyn: InputMaybe<Scalars['String']['input']>
+    mestringArbeidshverdag: InputMaybe<Scalars['String']['input']>
+    oppdatertMedisinskOppsummering: InputMaybe<Scalars['String']['input']>
+    sykdomsutvikling: InputMaybe<Scalars['String']['input']>
     uavklarteForhold: InputMaybe<Scalars['String']['input']>
+    utfordringerHelsetilstand: InputMaybe<Scalars['String']['input']>
     utfordringerMedArbeid: InputMaybe<Scalars['String']['input']>
 }
 
@@ -502,7 +506,11 @@ export type UtdypendeSporsmal = {
     hensynPaArbeidsplassen: Maybe<Scalars['String']['output']>
     medisinskOppsummering: Maybe<Scalars['String']['output']>
     medisinskeHensyn: Maybe<Scalars['String']['output']>
+    mestringArbeidshverdag: Maybe<Scalars['String']['output']>
+    oppdatertMedisinskOppsummering: Maybe<Scalars['String']['output']>
+    sykdomsutvikling: Maybe<Scalars['String']['output']>
     uavklarteForhold: Maybe<Scalars['String']['output']>
+    utfordringerHelsetilstand: Maybe<Scalars['String']['output']>
     utfordringerMedArbeid: Maybe<Scalars['String']['output']>
 }
 
@@ -613,6 +621,14 @@ export type AllDashboardQuery = {
                           utfordringerMedArbeid: string | null
                           medisinskOppsummering: string | null
                           hensynPaArbeidsplassen: string | null
+                          sykdomsutvikling: string | null
+                          utfordringerHelsetilstand: string | null
+                          behandlingOgFremtidigArbeid: string | null
+                          uavklarteForhold: string | null
+                          oppdatertMedisinskOppsummering: string | null
+                          mestringArbeidshverdag: string | null
+                          forventetHelsetilstandUtvikling: string | null
+                          medisinskeHensyn: string | null
                       } | null
                   }
               }
@@ -771,6 +787,14 @@ export type AllDashboardQuery = {
                           utfordringerMedArbeid: string | null
                           medisinskOppsummering: string | null
                           hensynPaArbeidsplassen: string | null
+                          sykdomsutvikling: string | null
+                          utfordringerHelsetilstand: string | null
+                          behandlingOgFremtidigArbeid: string | null
+                          uavklarteForhold: string | null
+                          oppdatertMedisinskOppsummering: string | null
+                          mestringArbeidshverdag: string | null
+                          forventetHelsetilstandUtvikling: string | null
+                          medisinskeHensyn: string | null
                       } | null
                   }
               }
@@ -1056,6 +1080,14 @@ export type SykmeldingByIdQuery = {
                       utfordringerMedArbeid: string | null
                       medisinskOppsummering: string | null
                       hensynPaArbeidsplassen: string | null
+                      sykdomsutvikling: string | null
+                      utfordringerHelsetilstand: string | null
+                      behandlingOgFremtidigArbeid: string | null
+                      uavklarteForhold: string | null
+                      oppdatertMedisinskOppsummering: string | null
+                      mestringArbeidshverdag: string | null
+                      forventetHelsetilstandUtvikling: string | null
+                      medisinskeHensyn: string | null
                   } | null
               }
           }
@@ -1208,6 +1240,14 @@ export type OpprettSykmeldingMutation = {
                       utfordringerMedArbeid: string | null
                       medisinskOppsummering: string | null
                       hensynPaArbeidsplassen: string | null
+                      sykdomsutvikling: string | null
+                      utfordringerHelsetilstand: string | null
+                      behandlingOgFremtidigArbeid: string | null
+                      uavklarteForhold: string | null
+                      oppdatertMedisinskOppsummering: string | null
+                      mestringArbeidshverdag: string | null
+                      forventetHelsetilstandUtvikling: string | null
+                      medisinskeHensyn: string | null
                   } | null
               }
           }
@@ -1297,6 +1337,14 @@ export type SykmeldingFullFragment = {
             utfordringerMedArbeid: string | null
             medisinskOppsummering: string | null
             hensynPaArbeidsplassen: string | null
+            sykdomsutvikling: string | null
+            utfordringerHelsetilstand: string | null
+            behandlingOgFremtidigArbeid: string | null
+            uavklarteForhold: string | null
+            oppdatertMedisinskOppsummering: string | null
+            mestringArbeidshverdag: string | null
+            forventetHelsetilstandUtvikling: string | null
+            medisinskeHensyn: string | null
         } | null
     }
 }
@@ -1414,6 +1462,14 @@ type Sykmelding_SykmeldingFull_Fragment = {
             utfordringerMedArbeid: string | null
             medisinskOppsummering: string | null
             hensynPaArbeidsplassen: string | null
+            sykdomsutvikling: string | null
+            utfordringerHelsetilstand: string | null
+            behandlingOgFremtidigArbeid: string | null
+            uavklarteForhold: string | null
+            oppdatertMedisinskOppsummering: string | null
+            mestringArbeidshverdag: string | null
+            forventetHelsetilstandUtvikling: string | null
+            medisinskeHensyn: string | null
         } | null
     }
 }
@@ -1942,6 +1998,26 @@ export const SykmeldingFullFragmentDoc = {
                                             { kind: 'Field', name: { kind: 'Name', value: 'utfordringerMedArbeid' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'medisinskOppsummering' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'hensynPaArbeidsplassen' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykdomsutvikling' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'utfordringerHelsetilstand' },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeid' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'uavklarteForhold' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'oppdatertMedisinskOppsummering' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mestringArbeidshverdag' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'forventetHelsetilstandUtvikling' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'medisinskeHensyn' } },
                                         ],
                                     },
                                 },
@@ -2560,6 +2636,26 @@ export const SykmeldingFragmentDoc = {
                                             { kind: 'Field', name: { kind: 'Name', value: 'utfordringerMedArbeid' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'medisinskOppsummering' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'hensynPaArbeidsplassen' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykdomsutvikling' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'utfordringerHelsetilstand' },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeid' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'uavklarteForhold' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'oppdatertMedisinskOppsummering' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mestringArbeidshverdag' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'forventetHelsetilstandUtvikling' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'medisinskeHensyn' } },
                                         ],
                                     },
                                 },
@@ -2995,6 +3091,26 @@ export const AllDashboardDocument = {
                                             { kind: 'Field', name: { kind: 'Name', value: 'utfordringerMedArbeid' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'medisinskOppsummering' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'hensynPaArbeidsplassen' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykdomsutvikling' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'utfordringerHelsetilstand' },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeid' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'uavklarteForhold' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'oppdatertMedisinskOppsummering' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mestringArbeidshverdag' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'forventetHelsetilstandUtvikling' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'medisinskeHensyn' } },
                                         ],
                                     },
                                 },
@@ -3912,6 +4028,26 @@ export const SykmeldingByIdDocument = {
                                             { kind: 'Field', name: { kind: 'Name', value: 'utfordringerMedArbeid' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'medisinskOppsummering' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'hensynPaArbeidsplassen' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykdomsutvikling' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'utfordringerHelsetilstand' },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeid' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'uavklarteForhold' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'oppdatertMedisinskOppsummering' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mestringArbeidshverdag' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'forventetHelsetilstandUtvikling' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'medisinskeHensyn' } },
                                         ],
                                     },
                                 },
@@ -4409,6 +4545,26 @@ export const OpprettSykmeldingDocument = {
                                             { kind: 'Field', name: { kind: 'Name', value: 'utfordringerMedArbeid' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'medisinskOppsummering' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'hensynPaArbeidsplassen' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'sykdomsutvikling' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'utfordringerHelsetilstand' },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeid' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'uavklarteForhold' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'oppdatertMedisinskOppsummering' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'mestringArbeidshverdag' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'forventetHelsetilstandUtvikling' },
+                                            },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'medisinskeHensyn' } },
                                         ],
                                     },
                                 },

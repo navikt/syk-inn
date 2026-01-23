@@ -1193,7 +1193,39 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "mestringArbeidshverdag",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "oppdatertMedisinskOppsummering",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "sykdomsutvikling",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "uavklarteForhold",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "utfordringerHelsetilstand",
                         "description": null,
                         "type": { "kind": "SCALAR", "name": "String", "ofType": null },
                         "defaultValue": null,
@@ -3190,7 +3222,39 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "mestringArbeidshverdag",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "oppdatertMedisinskOppsummering",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "sykdomsutvikling",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "uavklarteForhold",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "utfordringerHelsetilstand",
                         "description": null,
                         "args": [],
                         "type": { "kind": "SCALAR", "name": "String", "ofType": null },

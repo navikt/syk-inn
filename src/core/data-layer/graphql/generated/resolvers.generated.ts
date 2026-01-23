@@ -202,7 +202,11 @@ export type InputUtdypendeSporsmal = {
     hensynPaArbeidsplassen?: InputMaybe<Scalars['String']['input']>
     medisinskOppsummering?: InputMaybe<Scalars['String']['input']>
     medisinskeHensyn?: InputMaybe<Scalars['String']['input']>
+    mestringArbeidshverdag?: InputMaybe<Scalars['String']['input']>
+    oppdatertMedisinskOppsummering?: InputMaybe<Scalars['String']['input']>
+    sykdomsutvikling?: InputMaybe<Scalars['String']['input']>
     uavklarteForhold?: InputMaybe<Scalars['String']['input']>
+    utfordringerHelsetilstand?: InputMaybe<Scalars['String']['input']>
     utfordringerMedArbeid?: InputMaybe<Scalars['String']['input']>
 }
 
@@ -504,7 +508,11 @@ export type UtdypendeSporsmal = {
     hensynPaArbeidsplassen?: Maybe<Scalars['String']['output']>
     medisinskOppsummering?: Maybe<Scalars['String']['output']>
     medisinskeHensyn?: Maybe<Scalars['String']['output']>
+    mestringArbeidshverdag?: Maybe<Scalars['String']['output']>
+    oppdatertMedisinskOppsummering?: Maybe<Scalars['String']['output']>
+    sykdomsutvikling?: Maybe<Scalars['String']['output']>
     uavklarteForhold?: Maybe<Scalars['String']['output']>
+    utfordringerHelsetilstand?: Maybe<Scalars['String']['output']>
     utfordringerMedArbeid?: Maybe<Scalars['String']['output']>
 }
 
@@ -1248,7 +1256,11 @@ export type UtdypendeSporsmalResolvers<
     hensynPaArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     medisinskOppsummering?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     medisinskeHensyn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    mestringArbeidshverdag?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    oppdatertMedisinskOppsummering?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    sykdomsutvikling?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     uavklarteForhold?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    utfordringerHelsetilstand?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     utfordringerMedArbeid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
 }
 

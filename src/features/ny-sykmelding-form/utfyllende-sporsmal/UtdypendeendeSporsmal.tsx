@@ -1,17 +1,15 @@
 import { ReactElement } from 'react'
-import { BodyShort, Textarea } from '@navikt/ds-react'
+import { BodyShort, Select, Textarea } from '@navikt/ds-react'
 
 import FormSection from '@components/form/form-section/FormSection'
 import { useController, useFormContext } from '@features/ny-sykmelding-form/form/types'
-import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-utils'
+import {
+    shouldShowUke17Sporsmal,
+    shouldShowUke39Sporsmal,
+    shouldShowUke7Sporsmal,
+} from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-utils'
 import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolvers.generated'
-
-const getTitleForUtdypendeSporsmal = (skalViseSporsmal: { uke7: boolean; uke17: boolean; uke39: boolean }): string => {
-    if (skalViseSporsmal.uke39) return 'Utdypende spørsmål uke 40'
-    if (skalViseSporsmal.uke17) return 'Utdypende spørsmål uke 18'
-    if (skalViseSporsmal.uke7) return 'Utdypende spørsmål uke 8'
-    return ''
-}
+import { utdypendeSporsmalTekster } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-tekster'
 
 export function UtdypendeSporsmal({
     utdypendeSporsmal,
@@ -22,21 +20,15 @@ export function UtdypendeSporsmal({
 
     if (!utdypendeSporsmal) return null
 
-    const skalViseSporsmalForUke = {
-        uke7: shouldShowUke7Sporsmal(perioder, utdypendeSporsmal),
-        uke17: false, // shouldShowUke17Sporsmal(perioder, utdypendeSporsmal),
-        uke39: false, // shouldShowUke39Sporsmal(perioder, utdypendeSporsmal),
+    if (shouldShowUke39Sporsmal(perioder, utdypendeSporsmal)) {
+        return <Uke39 />
     }
 
-    const visUtdypendeSporsmal = Object.values(skalViseSporsmalForUke).some((it) => it === true)
-
-    if (visUtdypendeSporsmal) {
-        return (
-            <FormSection title={getTitleForUtdypendeSporsmal(skalViseSporsmalForUke)}>
-                <BodyShort spacing>Helseopplysninger i Navs vurdering av aktivitetskrav og oppfølging</BodyShort>
-                {skalViseSporsmalForUke.uke7 && <Uke7 />}
-            </FormSection>
-        )
+    if (shouldShowUke17Sporsmal(perioder, utdypendeSporsmal)) {
+        return <Uke17 />
+    }
+    if (shouldShowUke7Sporsmal(perioder, utdypendeSporsmal)) {
+        return <Uke7 />
     }
 
     return null
@@ -57,26 +49,142 @@ function Uke7(): ReactElement {
         name: 'utdypendeSporsmal.hensynPaArbeidsplassen',
     })
     return (
-        <>
+        <FormSection title="Utdypende spørsmål uke 8">
+            <BodyShort spacing>Helseopplysninger i Navs vurdering av aktivitetskrav og oppfølging</BodyShort>
             <Textarea
-                label="Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, behandling)"
+                label={utdypendeSporsmalTekster.medisinskOppsummering}
                 onChange={medisinskOppsummering.field.onChange}
                 value={medisinskOppsummering.field.value ?? ''}
                 error={medisinskOppsummering.fieldState.error?.message}
             />
             <Textarea
-                label="Beskriv kort hvilke helsemessige begrensninger som gjør det vanskelig å jobbe gradert"
+                label={utdypendeSporsmalTekster.utfordringerMedArbeid}
                 onChange={utfordringerMedArbeid.field.onChange}
                 value={utfordringerMedArbeid.field.value ?? ''}
                 error={utfordringerMedArbeid.fieldState.error?.message}
             />
 
             <Textarea
-                label="Beskriv eventuelle medisinske forhold som bør ivaretas ved eventuell tilbakeføring til nåværende arbeid (ikke obligatorisk)"
+                label={utdypendeSporsmalTekster.hensynPaArbeidsplassen}
                 onChange={hensynPaArbeidsplassen.field.onChange}
                 value={hensynPaArbeidsplassen.field.value ?? ''}
                 error={hensynPaArbeidsplassen.fieldState.error?.message}
             />
-        </>
+        </FormSection>
+    )
+}
+
+function Uke17(): ReactElement {
+    const sykdomsutvikling = useController({
+        name: 'utdypendeSporsmal.sykdomsutvikling',
+        rules: { required: 'Du må fylle ut dette feltet' },
+    })
+
+    const utfordringerHelsetilstand = useController({
+        name: 'utdypendeSporsmal.utfordringerHelsetilstand',
+        rules: { required: 'Du må fylle ut dette feltet' },
+    })
+
+    const behandlingOgFremtidigArbeid = useController({
+        name: 'utdypendeSporsmal.behandlingOgFremtidigArbeid',
+        rules: { required: 'Du må fylle ut dette feltet' },
+    })
+
+    const uavklarteForhold = useController({
+        name: 'utdypendeSporsmal.uavklarteForhold',
+    })
+
+    return (
+        <FormSection title="Utdypende spørsmål uke 18">
+            <BodyShort spacing>Helseopplysninger i Navs vurdering av aktivitetskrav og oppfølging</BodyShort>
+            <Textarea
+                label={utdypendeSporsmalTekster.sykdomsutvikling}
+                onChange={sykdomsutvikling.field.onChange}
+                value={sykdomsutvikling.field.value ?? ''}
+                error={sykdomsutvikling.fieldState.error?.message}
+            />
+            <Textarea
+                label={utdypendeSporsmalTekster.utfordringerHelsetilstand}
+                onChange={utfordringerHelsetilstand.field.onChange}
+                value={utfordringerHelsetilstand.field.value ?? ''}
+                error={utfordringerHelsetilstand.fieldState.error?.message}
+            />
+            <Textarea
+                label={utdypendeSporsmalTekster.behandlingOgFremtidigArbeid}
+                onChange={behandlingOgFremtidigArbeid.field.onChange}
+                value={behandlingOgFremtidigArbeid.field.value ?? ''}
+                error={behandlingOgFremtidigArbeid.fieldState.error?.message}
+            />
+            <Textarea
+                label={utdypendeSporsmalTekster.uavklarteForhold}
+                onChange={uavklarteForhold.field.onChange}
+                value={uavklarteForhold.field.value ?? ''}
+                error={uavklarteForhold.fieldState.error?.message}
+            />
+        </FormSection>
+    )
+}
+
+function Uke39(): ReactElement {
+    const oppdatertMedisinskOppsummering = useController({
+        name: 'utdypendeSporsmal.oppdatertMedisinskOppsummering',
+        rules: { required: 'Du må fylle ut dette feltet' },
+    })
+
+    const mestringArbeidshverdag = useController({
+        name: 'utdypendeSporsmal.mestringArbeidshverdag',
+        rules: { required: 'Du må fylle ut dette feltet' },
+    })
+
+    const forventetHelsetilstandUtvikling = useController({
+        name: 'utdypendeSporsmal.forventetHelsetilstandUtvikling',
+        rules: { required: 'Du må fylle ut dette feltet' },
+    })
+
+    const medisinskeHensyn = useController({
+        name: 'utdypendeSporsmal.medisinskeHensyn',
+        rules: { required: 'Du må fylle ut dette feltet' },
+    })
+    return (
+        <FormSection title="Utdypende spørsmål uke 40">
+            <BodyShort spacing>
+                Gi en kort oppdatert medisinsk oppsummering relevant for sykefraværet (utvikling, hovedsymptomer og
+                relevante funn)
+            </BodyShort>
+            <Textarea
+                label={utdypendeSporsmalTekster.oppdatertMedisinskOppsummering}
+                onChange={oppdatertMedisinskOppsummering.field.onChange}
+                value={oppdatertMedisinskOppsummering.field.value ?? ''}
+                error={oppdatertMedisinskOppsummering.fieldState.error?.message}
+            />
+            <Textarea
+                label={utdypendeSporsmalTekster.mestringArbeidshverdag}
+                onChange={mestringArbeidshverdag.field.onChange}
+                value={mestringArbeidshverdag.field.value ?? ''}
+                error={mestringArbeidshverdag.fieldState.error?.message}
+            />
+            <Select
+                label={utdypendeSporsmalTekster.forventetHelsetilstandUtvikling}
+                onChange={forventetHelsetilstandUtvikling.field.onChange}
+                value={forventetHelsetilstandUtvikling.field.value ?? ''}
+                error={forventetHelsetilstandUtvikling.fieldState.error?.message}
+            >
+                <option value="">Velg</option>
+                <option value="Forventet bedring - økt arbeidsdeltakelse realistisk">
+                    Forventet bedring - økt arbeidsdeltakelse realistisk
+                </option>
+                <option value="Gradvis bedring - omfang usikkert">Gradvis bedring - omfang usikkert</option>
+                <option value="Lite endring forventes">Lite endring forventes</option>
+                <option value="Uavklart - avhenger av pågående avklaring/behandling">
+                    Uavklart - avhenger av pågående avklaring/behandling
+                </option>
+            </Select>
+            <Textarea
+                label={utdypendeSporsmalTekster.medisinskeHensyn}
+                onChange={medisinskeHensyn.field.onChange}
+                value={medisinskeHensyn.field.value ?? ''}
+                error={medisinskeHensyn.fieldState.error?.message}
+            />
+        </FormSection>
     )
 }

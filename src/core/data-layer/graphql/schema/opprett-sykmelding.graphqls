@@ -53,11 +53,15 @@ input InputTilbakedatering {
 }
 
 input InputUtdypendeSporsmal {
-    utfordringerMedArbeid: String # Uke 7, 17 og 39
-    medisinskOppsummering: String # Uke 7, 17 og 39
+    utfordringerMedArbeid: String # Uke 7
+    medisinskOppsummering: String # Uke
     hensynPaArbeidsplassen: String # Uke 7
+    sykdomsutvikling: String # Uke 17 Gi en kort oppdatering på sykdomsutviklingen siden uke 7, med vekt på endringer i symptomer og funn som er relevante for det videre sykefraværet
+    utfordringerHelsetilstand: String # Uke 17 Hvilke utfordringen gir helsetilstanden i arbeidssituasjonen?
     behandlingOgFremtidigArbeid: String # Uke 17 "Beskriv pågående og planlagt utredning/behandling, og om dette forventes å påvirke muligheten for arbeid fremover"
     uavklarteForhold: String # Uke 17 "Er det forhold som fortsatt er uavklarte eller hindrer videre arbeidsdeltakelse, som Nav bør være kjent med i sin oppfølging? (ikke obligatorisk)"
+    oppdatertMedisinskOppsummering: String # Uke 39 Gi en kort oppdatert medisinsk oppsummering relevant for sykefraværet (utvikling, hovedsymptomer og relevante funn)
+    mestringArbeidshverdag: String # Uke 39 Hva kan pasienten realistisk sett mestre i en arbeidshverdag nå, og hvilke helserelaterte forhold begrenser dette?
     forventetHelsetilstandUtvikling: String # Uke 39 "Hvordan forventes helsetilstanden å utvikle seg de neste 3-6 månedene med tanke på mulighet for økt arbeidsdeltakelse?"
     medisinskeHensyn: String # Uke 39 "Er det medisinske hensyn eller avklaringsbehov Nav bør ta høyde for i videre oppfølging?"
 }

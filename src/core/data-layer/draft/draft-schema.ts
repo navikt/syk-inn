@@ -76,8 +76,12 @@ export const DraftValuesSchema = z.object({
             utfordringerMedArbeid: z.string().nullable(),
             medisinskOppsummering: z.string().nullable(),
             hensynPaArbeidsplassen: z.string().nullable(),
+            sykdomsutvikling: z.string().nullable(),
+            utfordringerHelsetilstand: z.string().nullable(),
             behandlingOgFremtidigArbeid: z.string().nullable(),
             uavklarteForhold: z.string().nullable(),
+            oppdatertMedisinskOppsummering: z.string().nullable(),
+            mestringArbeidshverdag: z.string().nullable(),
             forventetHelsetilstandUtvikling: z.string().nullable(),
             medisinskeHensyn: z.string().nullable(),
         })

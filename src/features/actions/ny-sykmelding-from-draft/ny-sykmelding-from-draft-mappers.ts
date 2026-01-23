@@ -223,8 +223,12 @@ function draftUtdypendeSporsmalToFormValues(
         utfordringerMedArbeid: draftUtdypendeSporsmal.utfordringerMedArbeid ?? null,
         medisinskOppsummering: draftUtdypendeSporsmal.medisinskOppsummering ?? null,
         hensynPaArbeidsplassen: draftUtdypendeSporsmal.hensynPaArbeidsplassen ?? null,
+        sykdomsutvikling: draftUtdypendeSporsmal.sykdomsutvikling ?? null,
+        utfordringerHelsetilstand: draftUtdypendeSporsmal.utfordringerHelsetilstand ?? null,
         behandlingOgFremtidigArbeid: draftUtdypendeSporsmal.behandlingOgFremtidigArbeid ?? null,
         uavklarteForhold: draftUtdypendeSporsmal.uavklarteForhold ?? null,
+        oppdatertMedisinskOppsummering: draftUtdypendeSporsmal.oppdatertMedisinskOppsummering ?? null,
+        mestringArbeidshverdag: draftUtdypendeSporsmal.mestringArbeidshverdag ?? null,
         forventetHelsetilstandUtvikling: draftUtdypendeSporsmal.forventetHelsetilstandUtvikling ?? null,
         medisinskeHensyn: draftUtdypendeSporsmal.medisinskeHensyn ?? null,
     }
