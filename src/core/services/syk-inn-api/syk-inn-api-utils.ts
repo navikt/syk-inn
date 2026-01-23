@@ -2,6 +2,8 @@ import {
     AktivitetType,
     DocumentStatus,
     InputAktivitet,
+    InputMaybe,
+    InputUtdypendeSporsmal,
     OpprettSykmeldingInput,
     SykmeldingFull,
     SykmeldingLight,
@@ -15,6 +17,7 @@ import {
 import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '@core/services/syk-inn-api/schema/sykmelding'
 import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
 import { AnnenFravarsgrunnArsak } from '@queries'
+import { questionTexts } from '@data-layer/common/questions'
 
 export function sykInnApiSykmeldingRedactedToResolverSykmelding(
     sykmelding: SykInnApiSykmeldingRedacted,
@@ -139,9 +142,46 @@ export function resolverInputToSykInnApiPayload(
                       hensynPaArbeidsplassen: values.utdypendeSporsmal.hensynPaArbeidsplassen ?? null,
                   }
                 : null,
+            utdypendeSporsmal2: mapUtdypendeSporsmalToSykInnApiMap(values.utdypendeSporsmal),
             annenFravarsgrunn: values.annenFravarsgrunn ?? null,
         },
     }
+}
+
+function mapUtdypendeSporsmalToSykInnApiMap(
+    utdypendeSporsmal?: InputMaybe<InputUtdypendeSporsmal> | undefined,
+): OpprettSykmeldingPayload['values']['utdypendeSporsmal2'] {
+    const result: OpprettSykmeldingPayload['values']['utdypendeSporsmal2'] = {
+        utfordringerMedArbeid: null,
+        medisinskOppsummering: null,
+        hensynPaArbeidsplassen: null,
+    }
+
+    if (!utdypendeSporsmal) {
+        return result
+    }
+
+    // Explicitly map known fields to ensure type safety
+    if (utdypendeSporsmal.utfordringerMedArbeid != null) {
+        result.utfordringerMedArbeid = {
+            sporsmalstekst: questionTexts.utdypdendeSporsmal.utfordringerMedArbeid.label,
+            svar: utdypendeSporsmal.utfordringerMedArbeid,
+        }
+    }
+    if (utdypendeSporsmal.medisinskOppsummering != null) {
+        result.medisinskOppsummering = {
+            sporsmalstekst: questionTexts.utdypdendeSporsmal.medisinskOppsummering.label,
+            svar: utdypendeSporsmal.medisinskOppsummering,
+        }
+    }
+    if (utdypendeSporsmal.hensynPaArbeidsplassen != null) {
+        result.hensynPaArbeidsplassen = {
+            sporsmalstekst: questionTexts.utdypdendeSporsmal.hensynPaArbeidsplassen.label,
+            svar: utdypendeSporsmal.hensynPaArbeidsplassen,
+        }
+    }
+
+    return result
 }
 
 /**

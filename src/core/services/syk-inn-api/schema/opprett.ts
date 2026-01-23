@@ -17,6 +17,11 @@ const OpprettSykmeldingDiagnoseSchema = z.object({
     code: z.string(),
 })
 
+export const UtdypendeSporsmalSchema = z.object({
+    sporsmalstekst: z.string(),
+    svar: z.string(),
+})
+
 export type OpprettSykmeldingAktivitet = z.infer<typeof OpprettSykmeldingAktivitetSchema>
 const OpprettSykmeldingAktivitetSchema = z.discriminatedUnion('type', [
     z.object({
@@ -95,6 +100,11 @@ export const OpprettSykmeldingPayloadSchema = z.object({
                 hensynPaArbeidsplassen: z.string().nullable(),
             })
             .nullable(),
+        utdypendeSporsmal2: z.object({
+            utfordringerMedArbeid: UtdypendeSporsmalSchema.nullable(),
+            medisinskOppsummering: UtdypendeSporsmalSchema.nullable(),
+            hensynPaArbeidsplassen: UtdypendeSporsmalSchema.nullable(),
+        }),
         annenFravarsgrunn: z.string().nullable(),
     }),
 })

@@ -10,6 +10,7 @@ import { initializeValkey } from '@lib/test/valkey'
 import { daysAgo, inDays, today } from '@lib/test/date-utils'
 import { consumeUntil, initializeConsumer, initializeKafka } from '@lib/test/syk-inn-kafka'
 import { AnnenFravarsgrunnArsak } from '@resolvers'
+import { questionTexts } from '@data-layer/common/questions'
 
 describe('SykInnApi integration', () => {
     let sykInnApi: StartedTestContainer
@@ -375,6 +376,20 @@ const createFullOpprettSykmeldingPayload = (
             utfordringerMedArbeid: 'Kan ikke sitte lenge',
             medisinskOppsummering: 'Pasienten har influensa',
             hensynPaArbeidsplassen: 'Trenger ro og hvile',
+        },
+        utdypendeSporsmal2: {
+            utfordringerMedArbeid: {
+                sporsmalstekst: questionTexts.utdypdendeSporsmal.utfordringerMedArbeid.label,
+                svar: 'Kan ikke sitte lenge',
+            },
+            medisinskOppsummering: {
+                sporsmalstekst: questionTexts.utdypdendeSporsmal.medisinskOppsummering.label,
+                svar: 'Pasienten har influensa',
+            },
+            hensynPaArbeidsplassen: {
+                sporsmalstekst: questionTexts.utdypdendeSporsmal.hensynPaArbeidsplassen.label,
+                svar: 'Trenger ro og hvile',
+            },
         },
         annenFravarsgrunn: 'BEHANDLING_STERILISERING' satisfies AnnenFravarsgrunnArsak,
         ...valueOverrides,
