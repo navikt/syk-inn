@@ -377,7 +377,7 @@ const createFullOpprettSykmeldingPayload = (
             medisinskOppsummering: 'Pasienten har influensa',
             hensynPaArbeidsplassen: 'Trenger ro og hvile',
         },
-        utdypendeSporsmal2: {
+        utdypendeSporsmalAnswerOptions: {
             utfordringerMedArbeid: {
                 sporsmalstekst: questionTexts.utdypdendeSporsmal.utfordringerMedArbeid.label,
                 svar: 'Kan ikke sitte lenge',

@@ -142,7 +142,7 @@ export function resolverInputToSykInnApiPayload(
                       hensynPaArbeidsplassen: values.utdypendeSporsmal.hensynPaArbeidsplassen ?? null,
                   }
                 : null,
-            utdypendeSporsmal2: mapUtdypendeSporsmalToSykInnApiMap(values.utdypendeSporsmal),
+            utdypendeSporsmalAnswerOptions: mapUtdypendeSporsmalToSykInnApiMap(values.utdypendeSporsmal),
             annenFravarsgrunn: values.annenFravarsgrunn ?? null,
         },
     }
@@ -150,8 +150,8 @@ export function resolverInputToSykInnApiPayload(
 
 function mapUtdypendeSporsmalToSykInnApiMap(
     utdypendeSporsmal?: InputMaybe<InputUtdypendeSporsmal> | undefined,
-): OpprettSykmeldingPayload['values']['utdypendeSporsmal2'] {
-    const result: OpprettSykmeldingPayload['values']['utdypendeSporsmal2'] = {
+): OpprettSykmeldingPayload['values']['utdypendeSporsmalAnswerOptions'] {
+    const result: OpprettSykmeldingPayload['values']['utdypendeSporsmalAnswerOptions'] = {
         utfordringerMedArbeid: null,
         medisinskOppsummering: null,
         hensynPaArbeidsplassen: null,
