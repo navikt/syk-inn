@@ -1,24 +1,59 @@
 #!/usr/bin/env sh
 
-set -e  # Exit immediately if any command fails
+# This entire script is AI slop, but it works (probably).
 
-if nc -z localhost 3000; then
-  printf "\033[0;31m 🔥🔥🔥 Oh no, you have a dev server running on port 3000! This dev mode does not support other ports than 3000.\033[0m\n"
-  exit 1
+set -eu
+
+c_blue="$(printf '\033[34m')"
+c_green="$(printf '\033[32m')"
+c_yellow="$(printf '\033[33m')"
+c_red="$(printf '\033[31m')"
+c_reset="$(printf '\033[0m')"
+
+info() { printf "%sℹ️  %s%s\n" "$c_blue" "$*" "$c_reset"; }
+ok()   { printf "%s✅ %s%s\n" "$c_green" "$*" "$c_reset"; }
+warn() { printf "%s⚠️  %s%s\n" "$c_yellow" "$*" "$c_reset"; }
+err()  { printf "%s🔥 %s%s\n" "$c_red" "$*" "$c_reset" >&2; }
+
+need() { command -v "$1" >/dev/null 2>&1 || { err "Missing dependency: $1"; exit 1; }; }
+
+need docker
+need jq
+
+# Only manage compose in local runtime env
+grep -q '^NEXT_PUBLIC_RUNTIME_ENV=local$' .env.development 2>/dev/null || exit 0
+
+services="$(docker compose config --services 2>/dev/null || true)"
+[ -n "${services:-}" ] || { warn "No compose services found (docker compose config --services)"; exit 0; }
+
+# Build a set of running services from docker compose ps json
+running_services="$(
+  docker compose ps --format json 2>/dev/null \
+  | jq -r 'select(.State=="running") | .Service' \
+  | sort -u
+)"
+
+need_up=0
+for s in $services; do
+  echo "$running_services" | grep -qx "$s" || { need_up=1; break; }
+done
+
+if [ "$need_up" -eq 0 ]; then
+  ok "All compose services are running."
+  exit 0
 fi
 
-if grep -q "NEXT_PUBLIC_RUNTIME_ENV=local" .env.development; then
-    if ! nc -z localhost 6379; then
-        if [ "$(docker ps -aq -f name=syk-inn-dev-valkey)" ]; then
-            printf "\e[34m  👀 Found existing stopped docker valkey container, starting it... \e[32m\e[0m\n\n"
-            docker start syk-inn-dev-valkey >> /dev/null || { printf "\e[31m 🔥🔥🔥 Failed to start Valkey container\n"; exit 1; }
-            exit 0
-        else
-            printf "\e[33m  😲 No valkey image found! Starting valkey container... \e[32m\e[0m\n\n"
-            yarn dev:valkey >> /dev/null || { printf "\e[31m 🔥🔥🔥 Failed to start Valkey via Yarn\n"; exit 1; }
-            exit 0
-        fi
-    fi
+info "Starting missing/stopped compose services..."
+tmp="${TMPDIR:-/tmp}/pre-dev.$$.log"
+: >"$tmp"
 
-    printf "\e[32m  👍 Valkey available. Starting dev server ... \e[32m\e[0m\n\n"
+# Suppress the ugly compose chatter unless it fails
+if docker compose up -d --remove-orphans >"$tmp" 2>&1; then
+  ok "Compose stack is up."
+  rm -f "$tmp"
+else
+  err "docker compose up failed:"
+  cat "$tmp" >&2
+  rm -f "$tmp"
+  exit 1
 fi

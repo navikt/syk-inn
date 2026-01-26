@@ -17,7 +17,7 @@ import {
 import { commonTypeResolvers } from '@data-layer/graphql/common-type-resolvers'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { getFnrIdent, getNameFromPdl } from '@core/services/pdl/pdl-api-utils'
+import { getFnrIdent, formatPdlName } from '@core/services/pdl/pdl-api-utils'
 import {
     resolverInputToSykInnApiPayload,
     sykInnApiSykmeldingRedactedToResolverSykmelding,
@@ -157,7 +157,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             return {
                 ident: getFnrIdent(person.identer) ?? raise('Person without valid FNR/DNR, hows that possible?'),
-                navn: getNameFromPdl(person.navn),
+                navn: formatPdlName(person.navn),
             } satisfies QueriedPerson
         },
         draft: async (_, { draftId }, { client, hpr }) => {
