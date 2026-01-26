@@ -4,9 +4,7 @@ import { FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
 import { GraphQLError } from 'graphql/error'
 import { teamLogger } from '@navikt/next-logger/team-log'
 
-import { toReadableDatePeriod } from '@lib/date'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 import {
     getOrganisasjonsnummerFromFhir,
@@ -14,6 +12,8 @@ import {
 } from '@data-layer/fhir/mappers/organization'
 import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
+import { gotenbergService } from '@data-layer/pdf/gotenberg-service'
+import { getSimpleSykmeldingDescription } from '@data-layer/common/sykmelding-utils'
 
 import { getHpr } from './mappers/practitioner'
 import { createNewDocumentReferencePayload } from './mappers/document-reference'
@@ -114,6 +114,12 @@ export async function createDocumentReference(
             return { error: 'API_ERROR' }
         }
 
+        // Also generate PDF with gotenberg to compare speed
+        await gotenbergService.generateGotenbergPdf(sykmelding).catch((err) => {
+            // Ignore error while shadow-generating PDF
+            logger.error(new Error('Shadow-gotenberg failed', { cause: err }))
+        })
+
         const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.update(
             'DocumentReference',
             {
@@ -124,7 +130,7 @@ export async function createDocumentReference(
                         patientId: client.patient.id,
                         encounterId: client.encounter.id,
                         practitionerId: client.user.id,
-                        description: getSykmeldingDescription(sykmelding.values),
+                        description: getSimpleSykmeldingDescription(sykmelding.values.aktivitet),
                     },
                     Buffer.from(pdfBuffer).toString('base64'),
                 ),
@@ -148,29 +154,4 @@ export async function createDocumentReference(
 
         return createdDocumentReference
     })
-}
-
-function getSykmeldingDescription(sykmelding: SykInnApiSykmelding['values']): string {
-    const [firstAktivitet] = sykmelding.aktivitet
-
-    let type
-    switch (firstAktivitet.type) {
-        case 'AKTIVITET_IKKE_MULIG':
-            type = '100%'
-            break
-        case 'AVVENTENDE':
-            type = 'Avventende'
-            break
-        case 'BEHANDLINGSDAGER':
-            type = `${firstAktivitet.antallBehandlingsdager} behandlingsdager`
-            break
-        case 'GRADERT':
-            type = `${firstAktivitet.grad}%`
-            break
-        case 'REISETILSKUDD':
-            type = 'Reisetilskudd'
-            break
-    }
-
-    return `${type} sykmelding, ${toReadableDatePeriod(firstAktivitet.fom, firstAktivitet.tom)}`
 }

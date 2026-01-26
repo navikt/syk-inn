@@ -1,0 +1,149 @@
+/**
+ * This is inlined from @navikt/ds-css/dist/global/baseline.css
+ **/
+
+// language=CSS
+export const resetCss = `
+html,
+:host {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+  color: inherit;
+}
+
+button,
+input {
+  overflow: visible;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+}
+
+legend {
+  box-sizing: border-box;
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  padding: 0;
+  white-space: normal;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default. */
+
+[hidden] {
+  display: none !important;
+}
+
+/* https://web.dev/prefers-reduced-motion/ */
+
+@media (prefers-reduced-motion: reduce) {
+  *:not(.navds-loader *, .navds-loader, .navds-progress-bar *, .navds-progress-bar),
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/*
+ * From https://github.com/h5bp/html5-boilerplate/blob/master/dist/css/style.css
+ *
+ * Hide only visually, but have it available for screen readers:
+ * https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+ *
+ * 1. For long content, line feeds are not interpreted as spaces and small width
+ *    causes content to wrap 1 word per line:
+ *    https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+ */
+
+.sr-only,
+.navds-sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/*
+* From https://github.com/h5bp/html5-boilerplate/blob/master/dist/css/style.css
+*
+* Extends the .sr-only class to allow the element
+* to be focusable when navigated to via the keyboard:
+* https://www.drupal.org/node/897638
+*/
+
+.sr-only.focusable:active,
+.sr-only.focusable:focus,
+.navds-sr-only.focusable:active,
+.navds-sr-only.focusable:focus {
+  clip: auto;
+  clip-path: none;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  white-space: inherit;
+  width: auto;
+}
+
+:root,
+:host,
+[data-theme="light"] {
+  --a-shadow-focus: 0 0 0 3px var(--a-border-focus);
+
+  color: var(--a-text-default);
+}
+
+[data-theme="dark"] {
+  --a-shadow-focus: var(--a-shadow-focus-inverted);
+
+  color: var(--a-text-on-inverted);
+}
+
+body,
+:host {
+  font-family: var(--a-font-family, "Source Sans 3", "Source Sans Pro", Arial, sans-serif);
+  line-height: 1.333;
+  font-size: 1.125rem;
+}
+
+a {
+  color: var(--a-text-action);
+}
+`

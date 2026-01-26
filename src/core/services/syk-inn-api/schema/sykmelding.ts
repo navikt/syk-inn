@@ -26,6 +26,7 @@ const AktivitetIkkeMuligSchema = BaseAktivitetSchema.extend({
         .optional(),
 })
 
+export type SykInnApiAktivitetGradert = z.infer<typeof AktivitetGradertSchema>
 const AktivitetGradertSchema = BaseAktivitetSchema.extend({
     type: z.literal('GRADERT'),
     grad: z.number(),

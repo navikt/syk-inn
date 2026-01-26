@@ -8,7 +8,7 @@ import { createSchema } from '@data-layer/graphql/create-schema'
 import { commonTypeResolvers } from '@data-layer/graphql/common-type-resolvers'
 import { raise } from '@lib/ts'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
-import { getFnrIdent, getNameFromPdl } from '@core/services/pdl/pdl-api-utils'
+import { getFnrIdent, formatPdlName } from '@core/services/pdl/pdl-api-utils'
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
 import {
     resolverInputToSykInnApiPayload,
@@ -50,7 +50,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             }
 
             return {
-                navn: getNameFromPdl(person.navn),
+                navn: formatPdlName(person.navn),
                 ident: patientIdent,
             }
         },
@@ -107,7 +107,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
 
             return {
                 ident: getFnrIdent(person.identer) ?? raise('Person without valid FNR/DNR, hows that possible?'),
-                navn: getNameFromPdl(person.navn),
+                navn: formatPdlName(person.navn),
             } satisfies QueriedPerson
         },
         ...commonQueryResolvers,

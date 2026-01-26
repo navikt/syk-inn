@@ -2,6 +2,8 @@ import * as R from 'remeda'
 import { isAfter, isSameDay, sub, subDays } from 'date-fns'
 
 import { raise } from '@lib/ts'
+import { SykInnApiAktivitet } from '@core/services/syk-inn-api/schema/sykmelding'
+import { toReadableDatePeriod } from '@lib/date'
 
 /**
  * The definition of what the offset where Practitioners are able to see the sykmelding without
@@ -59,4 +61,28 @@ export function latestTom(sykmelding: { values: { aktivitet: { tom: string }[] }
         raise('Sykmelding without aktivitetsperioder, this should not happen')
     }
     return latestTom.tom
+}
+
+export function aktivitetTypeText(aktivitet: SykInnApiAktivitet): string {
+    switch (aktivitet.type) {
+        case 'AKTIVITET_IKKE_MULIG':
+            return '100%'
+        case 'AVVENTENDE':
+            return 'Avventende'
+        case 'BEHANDLINGSDAGER':
+            return `${aktivitet.antallBehandlingsdager} behandlingsdager`
+        case 'GRADERT':
+            return `${aktivitet.grad}%`
+        case 'REISETILSKUDD':
+            return 'Reisetilskudd'
+    }
+}
+
+/**
+ * Only used for document metadata and such, only the first aktivitet is considered!!
+ */
+export function getSimpleSykmeldingDescription(aktivitet: SykInnApiAktivitet[]): string {
+    const [firstAktivitet] = aktivitet
+
+    return `${aktivitetTypeText(firstAktivitet)} sykmelding, ${toReadableDatePeriod(firstAktivitet.fom, firstAktivitet.tom)}`
 }
