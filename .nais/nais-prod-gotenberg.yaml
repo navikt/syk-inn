@@ -1,0 +1,58 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: tsm-gotenberg
+  namespace: tsm
+  labels:
+    team: tsm
+  annotations:
+    nais.io/read-only-file-system: 'false'
+    nais.io/run-as-user: '1001'
+    nais.io/run-as-group: '1001'
+
+spec:
+  command:
+    - 'gotenberg'
+    - '--log-format=json'
+    - '--chromium-auto-start'
+    - '--webhook-disable'
+    - '--api-disable-health-check-logging'
+    - '--prometheus-disable-route-logging'
+
+  # Scaling
+  replicas:
+    min: 2
+    max: 4
+    cpuThresholdPercentage: 90
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 1024Mi
+
+  # Health'n stuff
+  port: 3000
+  readiness:
+    path: /health
+    initialDelay: 20
+    timeout: 5
+    failureThreshold: 10
+  liveness:
+    path: /health
+    initialDelay: 60
+    timeout: 5
+    failureThreshold: 10
+  prometheus:
+    enabled: true
+    path: /prometheus/metrics
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: sdk
+
+  # Only syk-inn should have access for now, and only through service discovery
+  accessPolicy:
+    inbound:
+      rules:
+        - application: syk-inn

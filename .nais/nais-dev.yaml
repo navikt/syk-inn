@@ -56,6 +56,7 @@ spec:
         - host: 'slack.com'
       rules:
         - application: syk-inn-api
+        - application: tsm-gotenberg
         - application: tsm-pdl-cache
         # Team Logs: https://docs.nais.io/observability/logging/how-to/team-logs/
         - application: logging

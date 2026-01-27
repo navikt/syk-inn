@@ -48,6 +48,7 @@ spec:
         - host: 'slack.com'
       rules:
         - application: syk-inn-api
+        - application: tsm-gotenberg
         - application: tsm-pdl-cache
         - application: logging
           namespace: nais-system
