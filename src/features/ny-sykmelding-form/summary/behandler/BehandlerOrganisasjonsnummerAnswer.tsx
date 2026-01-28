@@ -66,8 +66,9 @@ function BehandlerOrganisasjonsnummerAnswer({ contextOrganisasjonsnummer }: Prop
             )}
             {mode.type !== 'FHIR' && (
                 <Button
+                    data-color="neutral"
                     ref={endreRef}
-                    variant="secondary-neutral"
+                    variant="secondary"
                     size="xsmall"
                     className="top-0 right-2 absolute"
                     onClick={() => {
@@ -129,10 +130,11 @@ function ManualOrganisasjonsnummerForm({
                     className="grow"
                 ></TextField>
                 <Button
+                    data-color="neutral"
                     className="h-fit mt-8"
                     icon={<CheckmarkHeavyIcon title="Bruk organisasjonsnummer" />}
                     type="submit"
-                    variant="secondary-neutral"
+                    variant="secondary"
                 />
             </form>
         </FormSummary.Answer>

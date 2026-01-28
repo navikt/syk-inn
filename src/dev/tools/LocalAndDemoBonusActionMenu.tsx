@@ -15,19 +15,20 @@ export function LocalAndDemoBonusActionMenu({
     const [currentOverride, setVerifySendOverride] = useQueryState(MockRuleMarkers.query)
 
     return (
-        <div className={cn('flex items-center', { 'text-red-500': currentOverride != null })}>
+        <div className={cn('flex items-center', { 'text-ax-danger-600': currentOverride != null })}>
             <ActionMenu>
                 <ActionMenu.Trigger>
                     <Button
-                        variant="tertiary-neutral"
+                        data-color="neutral"
+                        variant="tertiary"
                         loading={mutation.result.loading}
                         icon={
                             <figure
                                 title="Flere demo-handlinger"
-                                className={cn('relative', { 'text-red-500': currentOverride != null })}
+                                className={cn('relative', { 'text-ax-danger-600': currentOverride != null })}
                             >
                                 <TerminalIcon aria-hidden />
-                                <div className="bg-bg-subtle h-2 w-2  absolute top-0 right-1.25" />
+                                <div className="bg-ax-bg-neutral-soft h-2 w-2  absolute top-0 right-1.25" />
                                 <MenuElipsisVerticalIcon
                                     aria-hidden
                                     className="absolute -top-[6px] -right-[3px] animate-bounce"
@@ -87,7 +88,7 @@ export function LocalAndDemoBonusActionMenu({
             {currentOverride !== null && (
                 <div className="text-xs pointer-events-none">
                     <div className="text-nowrap">Valgt overstyring</div>
-                    <div className="text-nowrap font-bold flex">{currentOverride}</div>
+                    <div className="text-nowrap font-ax-bold flex">{currentOverride}</div>
                 </div>
             )}
         </div>

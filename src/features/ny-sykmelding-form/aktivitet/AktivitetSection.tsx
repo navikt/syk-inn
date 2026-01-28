@@ -44,8 +44,9 @@ function AktivitetSection({ initialFom }: Props): ReactElement {
 
                         {index > 0 && (
                             <Button
+                                data-color="danger"
                                 className="absolute top-8 right-4"
-                                variant="danger"
+                                variant="primary"
                                 type="button"
                                 size="small"
                                 icon={<TrashIcon title="Slett periode" />}

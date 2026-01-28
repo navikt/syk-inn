@@ -28,7 +28,7 @@ function DashboardCard({
 
     return (
         <section
-            className={cn(className, 'bg-bg-default rounded-xl py-5 px-6 relative')}
+            className={cn(className, 'bg-ax-bg-default rounded-xl py-5 px-6 relative')}
             aria-labelledby={id}
             aria-label={'ariaLabel' in rest ? rest.ariaLabel : undefined}
             aria-busy={ariaBusy}

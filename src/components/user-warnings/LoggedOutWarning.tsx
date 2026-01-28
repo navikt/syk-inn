@@ -40,14 +40,15 @@ function LoggedOutWarning(): ReactElement | null {
                 </BodyLong>
             </Modal.Body>
             <Modal.Footer>
-                <Button type="button" variant="secondary-neutral" onClick={() => window.location.reload()}>
+                <Button data-color="neutral" type="button" variant="secondary" onClick={() => window.location.reload()}>
                     {mode.type === 'FHIR' ? 'Last siden på nytt' : 'Logg inn igjen'}
                 </Button>
                 {(isLocal || isDemo) && mode.type === 'FHIR' && (
                     <Button
+                        data-color="neutral"
                         type="button"
                         as="a"
-                        variant="secondary-neutral"
+                        variant="secondary"
                         href={pathWithBasePath(
                             `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel` satisfies MockLaunchType}`}`,
                         )}

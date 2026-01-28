@@ -45,8 +45,9 @@ function BehandlerTelefonnummerAnswer({ contextTelefonnummer }: Props): ReactEle
             )}
             {mode.type !== 'FHIR' && (
                 <Button
+                    data-color="neutral"
                     ref={endreRef}
-                    variant="secondary-neutral"
+                    variant="secondary"
                     size="xsmall"
                     className="top-0 right-2 absolute"
                     onClick={() => {
@@ -106,10 +107,11 @@ function ManualTelefonnummerForm({
                     className="grow"
                 ></TextField>
                 <Button
+                    data-color="neutral"
                     className="h-fit mt-8"
                     icon={<CheckmarkHeavyIcon title="Bruk telefonnummer" />}
                     type="submit"
-                    variant="secondary-neutral"
+                    variant="secondary"
                 />
             </form>
         </FormSummary.Answer>

@@ -18,7 +18,7 @@ function DraftPeriodeLink({ draftId, lastChanged, perioder }: Props): ReactEleme
     const mode = useMode()
 
     return (
-        <div className="flex gap-3 items-start lg:items-center italic flex-col lg:flex-row">
+        <div className="flex gap-3 items-start ax-lg:items-center italic flex-col ax-lg:flex-row">
             <AkselNextLink href={mode.paths.utkast(draftId)}>{draftPeriodeText(perioder)}</AkselNextLink>
             <Detail className="text-xs">
                 Sist endret <AutoUpdatingDistance time={lastChanged} />
