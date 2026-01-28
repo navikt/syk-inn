@@ -15,9 +15,17 @@ spec:
     - 'gotenberg'
     - '--log-format=json'
     - '--chromium-auto-start'
-    - '--webhook-disable'
+    - '--chromium-disable-javascript'
+    # Disable spammy logging
     - '--api-disable-health-check-logging'
     - '--prometheus-disable-route-logging'
+    # Disable features we don't use
+    - '--webhook-disable'
+    - '--libreoffice-disable-routes'
+    - '--pdfengines-disable-routes'
+    # Other stuff
+    - '--prometheus-namespace=tsm-gotenberg'
+    - '--gotenberg-hide-banner'
 
   # Scaling
   replicas:
@@ -26,10 +34,10 @@ spec:
     cpuThresholdPercentage: 90
   resources:
     requests:
-      cpu: 100m
-      memory: 512Mi
+      cpu: 200m
+      memory: 1Gi
     limits:
-      memory: 1024Mi
+      memory: 2Gi
 
   # Health'n stuff
   port: 3000

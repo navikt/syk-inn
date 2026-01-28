@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - gotenberg/**
+      - .nais/nais-dev-gotenberg.yaml
+      - .nais/nais-prod-gotenberg.yaml
     branches:
       - main
       - dev/better-pdf
