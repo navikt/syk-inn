@@ -2606,6 +2606,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@navikt/syk-zara@workspace:libs/syk-zara":
+  version: 0.0.0-use.local
+  resolution: "@navikt/syk-zara@workspace:libs/syk-zara"
+  languageName: unknown
+  linkType: soft
+
 "@navikt/texas@npm:^4.1.2":
   version: 4.1.2
   resolution: "@navikt/texas@npm:4.1.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftexas%2F4.1.2%2F1186a3e4a52af4b774eb768a5081821f02f28605"

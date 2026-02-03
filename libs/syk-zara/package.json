@@ -1,0 +1,16 @@
+{
+    "name": "@navikt/syk-zara",
+    "version": "0.0.0",
+    "type": "module",
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://npm.pkg.github.com/"
+    },
+    "files": [
+        "src/**"
+    ],
+    "exports": "./src/index.ts",
+    "scripts": {
+        "tsc": "tsc"
+    }
+}
