@@ -2,6 +2,7 @@ name: Build & Deploy
 on:
   push:
     paths-ignore:
+      - libs/**
       - docs/**
       - README.md
 
