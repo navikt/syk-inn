@@ -127,6 +127,7 @@ describe('SykInnApi integration', () => {
             arbeidsgiver: null,
             yrkesskade: null,
             utdypendeSporsmal: null,
+            utdypendeSporsmalAnswerOptions: null,
             tilbakedatering: null,
             svangerskapsrelatert: false,
             pasientenSkalSkjermes: false,
