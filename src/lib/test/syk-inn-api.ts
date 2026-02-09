@@ -8,8 +8,11 @@ import { streamToStdout } from '@lib/test/testcontainers-utils'
 const POSTGRES_ALIAS = 'db'
 const KAFKA_ALIAS = 'kafka'
 
+/**
+ * See README for local run with syk-inn-api-local docker image
+ */
 const SYK_INN_API_IMAGE = process.env.SYK_INN_API_INTEGRATION_TESTS_IMAGE || 'ghcr.io/navikt/syk-inn-api-test:latest'
-if (!SYK_INN_API_IMAGE.startsWith('ghcr.io/navikt')) {
+if (!(SYK_INN_API_IMAGE.startsWith('ghcr.io/navikt') || SYK_INN_API_IMAGE.startsWith('syk-inn-api-local'))) {
     throw new Error("Oop! This image isn't under ghcr.io/navikt, that seems illegal 🤔")
 }
 

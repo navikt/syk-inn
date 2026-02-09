@@ -103,6 +103,15 @@ variable USE_LOCAL_SYK_INN_API in .env.development.
 
 See the README for syk-inn-api on how to run it using bootRun or IntelliJ.
 
+## Running integration tests against local syk-inn-api
+
+Build a local docker image for syk-inn-api and it should work out of the box.
+
+1. cd to syk-inn-api
+2. `docker build -t syk-inn-api-local .`
+3. cd to syk-inn
+4. `SYK_INN_API_INTEGRATION_TESTS_IMAGE=syk-inn-api-local yarn test:integration`
+
 ### Running e2e tests
 
 Headless:
