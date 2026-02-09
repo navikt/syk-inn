@@ -371,7 +371,7 @@ const createFullOpprettSykmeldingPayload = (
         meldinger: { tilNav: 'Dette er en melding til Nav', tilArbeidsgiver: 'Dette er en melding til arbeidsgiver' },
         svangerskapsrelatert: true,
         yrkesskade: { yrkesskade: true, skadedato: daysAgo(3) },
-        arbeidsgiver: { arbeidsgivernavn: 'Test Testere AS' },
+        arbeidsgiver: { harFlere: true, arbeidsgivernavn: 'Test Testere AS' },
         tilbakedatering: { begrunnelse: 'Vært i koma', startdato: daysAgo(3) },
         utdypendeSporsmal: {
             utfordringerMedArbeid: 'Kan ikke sitte lenge',

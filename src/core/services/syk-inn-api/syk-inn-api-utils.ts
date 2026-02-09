@@ -128,7 +128,12 @@ export function resolverInputToSykInnApiPayload(
                       skadedato: values.yrkesskade.skadedato ?? null,
                   }
                 : null,
-            arbeidsgiver: values.arbeidsforhold ?? null,
+            arbeidsgiver: values.arbeidsforhold
+                ? {
+                      harFlere: true,
+                      arbeidsgivernavn: values.arbeidsforhold.arbeidsgivernavn,
+                  }
+                : null,
             tilbakedatering: values.tilbakedatering
                 ? {
                       begrunnelse: values.tilbakedatering.begrunnelse,

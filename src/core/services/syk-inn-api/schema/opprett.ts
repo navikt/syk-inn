@@ -84,6 +84,7 @@ export const OpprettSykmeldingPayloadSchema = z.object({
             .nullable(),
         arbeidsgiver: z
             .object({
+                harFlere: z.boolean(),
                 arbeidsgivernavn: z.string(),
             })
             .nullable(),
