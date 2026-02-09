@@ -10,6 +10,7 @@ import { createFeedbackClient } from '../client'
 import { createFeedbackPubClient } from '../pubsub/pub'
 
 export type AdminFeedbackClient = FeedbackClient & {
+    createRaw: (id: string, feedback: Omit<Feedback, 'id'>) => Promise<void>
     delete: (id: string) => Promise<void>
     all: () => Promise<Feedback[]>
     byId: (id: string) => Promise<Feedback | null>
@@ -31,6 +32,16 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
 
     return {
         ...createFeedbackClient(valkey),
+        createRaw: async (id, feedback) => {
+            const key = feedbackValkeyKey(id)
+
+            await valkey.hset(key, {
+                id: id,
+                ...feedback,
+            } satisfies Record<keyof Feedback, unknown>)
+
+            pub.new(id)
+        },
         all: async () => {
             const allkeys = await valkey.keys(`${FEEDBACK_KEY_PREFIX}*`)
             const feedback = await Promise.all(
