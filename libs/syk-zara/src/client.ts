@@ -46,7 +46,7 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
                 redactionLog: JSON.stringify([]),
                 metaSource: payload.meta.source,
                 metaTags: JSON.stringify(payload.meta.tags),
-            } satisfies Record<keyof Feedback, unknown>)
+            } satisfies Record<keyof Feedback, string | null>)
 
             pub.new(id)
         },

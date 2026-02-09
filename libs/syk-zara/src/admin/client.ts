@@ -10,7 +10,11 @@ import { createFeedbackClient } from '../client'
 import { createFeedbackPubClient } from '../pubsub/pub'
 
 export type AdminFeedbackClient = FeedbackClient & {
-    createRaw: (id: string, feedback: Omit<Feedback, 'id'>) => Promise<void>
+    /**
+     * Not to be confused with create, this allows you to insert feedback directly,
+     * for example when seeding the valkey.
+     */
+    insert: (id: string, feedback: Omit<Feedback, 'id'>) => Promise<void>
     delete: (id: string) => Promise<void>
     all: () => Promise<Feedback[]>
     byId: (id: string) => Promise<Feedback | null>
@@ -32,13 +36,15 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
 
     return {
         ...createFeedbackClient(valkey),
-        createRaw: async (id, feedback) => {
+        insert: async (id, feedback) => {
             const key = feedbackValkeyKey(id)
 
             await valkey.hset(key, {
                 id: id,
                 ...feedback,
-            } satisfies Record<keyof Feedback, unknown>)
+                redactionLog: JSON.stringify(feedback.redactionLog ?? []),
+                metaTags: JSON.stringify(feedback.metaTags ?? []),
+            } satisfies Record<keyof Feedback, string | null>)
 
             pub.new(id)
         },
