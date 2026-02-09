@@ -19,7 +19,7 @@ export const FeedbackSchema = z.object({
     name: z.string().nonempty(),
     message: z.string().nonempty(),
     timestamp: DateTime,
-    sentiment: z.number().min(1).max(5).nullable(),
+    sentiment: z.coerce.number().int().min(1).max(5).nullable(),
     category: z.enum(['FEIL', 'FORSLAG', 'ANNET']),
     contactType: ContactTypeSchema,
     contactDetails: NullableValkeyString,
