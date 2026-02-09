@@ -2609,6 +2609,12 @@ __metadata:
 "@navikt/syk-zara@workspace:libs/syk-zara":
   version: 0.0.0-use.local
   resolution: "@navikt/syk-zara@workspace:libs/syk-zara"
+  peerDependencies:
+    "@navikt/pino-logger": "*"
+    date-fns: 4
+    iovalkey: 0 || 1
+    remeda: "*"
+    zod: 4
   languageName: unknown
   linkType: soft
 

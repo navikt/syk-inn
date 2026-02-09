@@ -1,1 +1,1 @@
-export * from './keys'
+export { type FeedbackClient, createFeedbackClient } from './client'

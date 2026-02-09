@@ -9,8 +9,18 @@
     "files": [
         "src/**"
     ],
-    "exports": "./src/index.ts",
+    "exports": {
+        ".": "./src/index.ts",
+        "./admin": "./src/admin/index.ts"
+    },
     "scripts": {
         "tsc": "tsc"
+    },
+    "peerDependencies": {
+        "@navikt/pino-logger": "*",
+        "date-fns": "4",
+        "iovalkey": "0 || 1",
+        "remeda": "*",
+        "zod": "4"
     }
 }
