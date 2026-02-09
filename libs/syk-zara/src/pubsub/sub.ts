@@ -3,7 +3,7 @@ import type Valkey from 'iovalkey'
 
 import { FEEDBACK_PUBSUB_CHANNELS } from './channels'
 
-type FeedbackSubClient = (
+export type FeedbackSubClient = (
     valkey: Valkey,
     channels: {
         new?: (id: string) => Promise<void>

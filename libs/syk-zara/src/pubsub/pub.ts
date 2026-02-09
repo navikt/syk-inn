@@ -8,6 +8,10 @@ type FeedbackPubClient = {
     deleted: (id: string) => Promise<void>
 }
 
+/**
+ * All of these events should be triggered internally in clients, and should never have
+ * to be exposed to the consumers of this library.
+ */
 export const createFeedbackPubClient = (valkey: Valkey): FeedbackPubClient => {
     return {
         new: async (id) => {
