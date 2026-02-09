@@ -19,6 +19,8 @@ export const FeedbackSchema = z.object({
     name: z.string().nonempty(),
     message: z.string().nonempty(),
     timestamp: DateTime,
+    sentiment: z.number().min(1).max(5).nullable(),
+    category: z.enum(['FEIL', 'FORSLAG', 'ANNET']),
     contactType: ContactTypeSchema,
     contactDetails: NullableValkeyString,
     contactedAt: NullableDateTime,
@@ -47,7 +49,8 @@ export const FeedbackSchema = z.object({
                 }),
             ),
         ),
-    metaSource: z.string().nonempty(),
+    metaSource: z.literal('syk-inn'),
+    metaLocation: z.string().nonempty().nullable(),
     metaTags: z
         .string()
         .transform((val, ctx) => {

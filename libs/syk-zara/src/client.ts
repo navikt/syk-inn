@@ -9,12 +9,14 @@ type FeedbackPayload = z.infer<typeof FeedbackPayloadSchema>
 const FeedbackPayloadSchema = z.object({
     message: z.string().nonempty(),
     name: z.string().nonempty(),
+    sentiment: z.number().min(1).max(5).nullable(),
+    category: z.enum(['FEIL', 'FORSLAG', 'ANNET']),
     contact: z.object({
         type: ContactTypeSchema,
         details: z.string().nonempty().nullable(),
     }),
     meta: z.object({
-        source: z.string().nonempty(),
+        location: z.string().nonempty().nullable(),
         tags: z.array(z.string()),
     }),
 })
@@ -37,6 +39,8 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
                 timestamp: timestamp,
                 message: payload.message,
                 name: payload.name,
+                category: payload.category,
+                sentiment: payload.sentiment,
                 contactType: payload.contact.type,
                 contactDetails: payload.contact.details,
                 verifiedContentAt: null,
@@ -44,9 +48,11 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
                 contactedAt: null,
                 contactedBy: null,
                 redactionLog: JSON.stringify([]),
-                metaSource: payload.meta.source,
+                metaLocation: payload.meta.location,
                 metaTags: JSON.stringify(payload.meta.tags),
-            } satisfies Record<keyof Feedback, string | null>)
+                // TODO: Expand this if we'll use it it more than syk-inn
+                metaSource: 'syk-inn',
+            } satisfies Record<keyof Feedback, string | number | null>)
 
             pub.new(id)
         },

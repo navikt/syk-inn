@@ -3,7 +3,7 @@ import * as R from 'remeda'
 
 import { Feedback } from '../lib/schema'
 import { FeedbackClient } from '../client'
-import { FEEDBACK_KEY_PREFIX, feedbackValkeyKey } from '../lib/keys'
+import { feedbackValkeyKey } from '../lib/keys'
 import { FeedbackSchema } from '../lib/schema'
 import { raise } from '../lib/utils'
 import { createFeedbackClient } from '../client'
@@ -44,12 +44,12 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                 ...feedback,
                 redactionLog: JSON.stringify(feedback.redactionLog ?? []),
                 metaTags: JSON.stringify(feedback.metaTags ?? []),
-            } satisfies Record<keyof Feedback, string | null>)
+            } satisfies Record<keyof Feedback, string | number | null>)
 
             pub.new(id)
         },
         all: async () => {
-            const allkeys = await valkey.keys(`${FEEDBACK_KEY_PREFIX}*`)
+            const allkeys = await valkey.keys(`feedback:*`)
             const feedback = await Promise.all(
                 allkeys.map(async (key) => {
                     const data = await valkey.hgetall(key)
