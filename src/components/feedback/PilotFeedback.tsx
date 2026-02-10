@@ -15,6 +15,9 @@ type TilbakemeldingForm = {
     message: string
 }
 
+/**
+ * This is the primitive "V1" feedback that just posts directly to Slack.
+ */
 function PilotFeedback(): ReactElement {
     const mode = useMode()
     const modalRef = useRef<HTMLDialogElement>(null)

@@ -20,6 +20,7 @@ import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { FhirModeProvider } from '@core/providers/Modes'
 import { createFhirPaths } from '@core/providers/ModePaths'
 import PilotFeedback from '@components/feedback/PilotFeedback'
+import FeedbackButton from '@components/feedback/v2/FeedbackButton'
 
 import { NoPractitionerSession, NoValidPatient } from './launched-errors'
 
@@ -76,6 +77,7 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
                     <LoggedOutWarning />
                     {(isLocal || isDemo) && <LazyDevTools />}
                     {getFlag('PILOT_FEEDBACK', rootFhirData.toggles) && <PilotFeedback />}
+                    {getFlag('SYK_INN_FEEDBACK_V2', rootFhirData.toggles) && <FeedbackButton />}
                 </ToggleProvider>
             </Providers>
         </FhirModeProvider>

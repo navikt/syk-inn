@@ -2572,7 +2572,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/syk-zara@workspace:libs/syk-zara":
+"@navikt/syk-zara@workspace:*, @navikt/syk-zara@workspace:libs/syk-zara":
   version: 0.0.0-use.local
   resolution: "@navikt/syk-zara@workspace:libs/syk-zara"
   peerDependencies:
@@ -11178,6 +11178,7 @@ __metadata:
     "@navikt/next-api-proxy": "npm:^5.0.2"
     "@navikt/next-logger": "npm:^4.5.1"
     "@navikt/smart-on-fhir": "npm:1.5.16"
+    "@navikt/syk-zara": "workspace:*"
     "@navikt/texas": "npm:^4.1.4"
     "@navikt/tsm-diagnoser": "npm:^2026.1.13"
     "@navikt/tsm-eslint-react": "npm:^1.0.0"

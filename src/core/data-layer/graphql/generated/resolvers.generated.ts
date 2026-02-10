@@ -113,6 +113,7 @@ export type AvventendeInput = {
 
 export type Behandler = {
     __typename?: 'Behandler'
+    epost?: Maybe<Scalars['String']['output']>
     hpr: Scalars['String']['output']
     legekontorTlf?: Maybe<Scalars['String']['output']>
     navn: Scalars['String']['output']
@@ -854,6 +855,7 @@ export type BehandlerResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Behandler'] = ResolversParentTypes['Behandler'],
 > = {
+    epost?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     hpr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     legekontorTlf?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>

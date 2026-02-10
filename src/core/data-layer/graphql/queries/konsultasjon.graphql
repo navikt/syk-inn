@@ -11,11 +11,16 @@ query Konsultasjon {
     }
 }
 
+fragment Behandler on Behandler {
+    navn
+    hpr
+    epost
+    orgnummer
+    legekontorTlf
+}
+
 query Behandler {
     behandler {
-        navn
-        hpr
-        orgnummer
-        legekontorTlf
+        ...Behandler
     }
 }

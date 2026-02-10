@@ -3,4 +3,5 @@ type Behandler {
     navn: String!
     orgnummer: String
     legekontorTlf: String
+    epost: String
 }
