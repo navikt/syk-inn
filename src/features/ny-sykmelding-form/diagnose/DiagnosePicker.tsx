@@ -15,25 +15,22 @@ function DiagnosePicker(): ReactElement {
     })
 
     return (
-        <>
-            <DiagnoseCombobox
-                id="diagnoser.hoved"
-                label="Hoveddiagnose"
-                description="Diagnosekoder fra ICPC-2"
-                className="max-w-prose"
-                value={field.value ?? null}
-                onBlur={field.onBlur}
-                error={fieldState.error?.message}
-                onSelect={(suggestion) => {
-                    field.onChange(suggestion)
-                }}
-                onChange={() => {
-                    if (field.value != null) {
-                        field.onChange(null)
-                    }
-                }}
-            />
-        </>
+        <DiagnoseCombobox
+            id="diagnoser.hoved"
+            label="Hoveddiagnose"
+            className="max-w-prose"
+            value={field.value ?? null}
+            onBlur={field.onBlur}
+            error={fieldState.error?.message}
+            onSelect={(suggestion) => {
+                field.onChange(suggestion)
+            }}
+            onChange={() => {
+                if (field.value != null) {
+                    field.onChange(null)
+                }
+            }}
+        />
     )
 }
 

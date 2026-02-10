@@ -1,0 +1,5 @@
+.comboboxWrapper {
+    :global(.aksel-combobox__list-item) {
+        white-space: preserve;
+    }
+}
