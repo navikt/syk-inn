@@ -38,7 +38,7 @@ export function getHpr(identifiers: GeneralIdentifier | GeneralIdentifier[]): st
     return hprIdentifier.value
 }
 
-export function practitionerToBehandler(practitioner: FhirPractitioner): Pick<Behandler, 'hpr' | 'navn'> {
+export function practitionerToBehandler(practitioner: FhirPractitioner): Pick<Behandler, 'hpr' | 'navn' | 'epost'> {
     const hpr = getHpr(practitioner.identifier)
     if (hpr == null) {
         teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
@@ -48,5 +48,7 @@ export function practitionerToBehandler(practitioner: FhirPractitioner): Pick<Be
     return {
         navn: getNameFromFhir(practitioner.name),
         hpr: hpr,
+        // TODO: Get from telecom
+        epost: null,
     }
 }

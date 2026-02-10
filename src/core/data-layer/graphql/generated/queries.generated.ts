@@ -111,6 +111,7 @@ export type AvventendeInput = {
 
 export type Behandler = {
     __typename: 'Behandler'
+    epost: Maybe<Scalars['String']['output']>
     hpr: Scalars['String']['output']
     legekontorTlf: Maybe<Scalars['String']['output']>
     navn: Scalars['String']['output']
@@ -920,6 +921,15 @@ export type KonsultasjonQuery = {
     } | null
 }
 
+export type BehandlerFragment = {
+    __typename: 'Behandler'
+    navn: string
+    hpr: string
+    epost: string | null
+    orgnummer: string | null
+    legekontorTlf: string | null
+}
+
 export type BehandlerQueryVariables = Exact<{ [key: string]: never }>
 
 export type BehandlerQuery = {
@@ -928,6 +938,7 @@ export type BehandlerQuery = {
         __typename: 'Behandler'
         navn: string
         hpr: string
+        epost: string | null
         orgnummer: string | null
         legekontorTlf: string | null
     } | null
@@ -1619,6 +1630,26 @@ export const KonsultasjonFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<KonsultasjonFragment, unknown>
+export const BehandlerFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Behandler' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Behandler' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'hpr' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'epost' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'orgnummer' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'legekontorTlf' } },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<BehandlerFragment, unknown>
 export const RuleOutcomeFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -3423,14 +3454,24 @@ export const BehandlerDocument = {
                         name: { kind: 'Name', value: 'behandler' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'hpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'orgnummer' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorTlf' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Behandler' } }],
                         },
                     },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Behandler' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Behandler' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'hpr' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'epost' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'orgnummer' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'legekontorTlf' } },
                 ],
             },
         },

@@ -12,11 +12,8 @@
         "isolatedModules": true,
         "jsx": "react-jsx",
         "incremental": true,
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ],
+        "plugins": [{ "name": "next" }],
+        "types": ["@navikt/ds-react/types/theme"],
         "paths": {
             "@lib/*": ["./src/lib/*"],
             "@core/*": ["./src/core/*"],

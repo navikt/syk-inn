@@ -17,7 +17,7 @@ function DemoWarning(): ReactElement {
         <div className="p-4  flex items-center justify-center w-full">
             <InfoCard data-color="warning" size="small">
                 <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
-                    <InfoCard.Title>Demoside for test</InfoCard.Title>
+                    <InfoCard.Title suppressHydrationWarning>Demoside for test</InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
                     <BodyShort>
