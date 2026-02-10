@@ -30,7 +30,6 @@
     },
     "dependencies": {
         "@apollo/client": "^4.1.4",
-        "@ariakit/react": "^0.4.21",
         "@envelop/core": "^5.5.0",
         "@envelop/opentelemetry": "^9.1.0",
         "@grafana/faro-web-sdk": "^2.2.2",
