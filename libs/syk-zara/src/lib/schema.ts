@@ -78,5 +78,5 @@ export const FeedbackSchema = z.object({
                 return z.NEVER
             }
         })
-        .pipe(z.record(z.string(), z.string())),
+        .pipe(z.record(z.string(), z.string().nullable())),
 })
