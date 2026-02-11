@@ -1,7 +1,7 @@
 import * as z from 'zod'
 import Valkey from 'iovalkey'
 
-import { ContactTypeSchema, Feedback } from './lib/schema'
+import { ContactTypeSchema, Feedback } from './schema/schema'
 import { feedbackValkeyKey } from './lib/keys'
 import { createFeedbackPubClient } from './pubsub/pub'
 

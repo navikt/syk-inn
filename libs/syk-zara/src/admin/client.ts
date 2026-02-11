@@ -1,10 +1,10 @@
 import type Valkey from 'iovalkey'
 import * as R from 'remeda'
 
-import { Feedback } from '../lib/schema'
+import { Feedback } from '../schema/schema'
 import { FeedbackClient } from '../client'
 import { feedbackValkeyKey } from '../lib/keys'
-import { FeedbackSchema } from '../lib/schema'
+import { FeedbackSchema } from '../schema/schema'
 import { raise } from '../lib/utils'
 import { createFeedbackClient } from '../client'
 import { createFeedbackPubClient } from '../pubsub/pub'

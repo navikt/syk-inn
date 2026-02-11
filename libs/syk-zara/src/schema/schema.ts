@@ -1,17 +1,19 @@
 import * as z from 'zod'
-import { formatISO, parseISO } from 'date-fns'
 
+import { DateTime, NullableDateTime, NullableValkeyString } from './common'
+import { RedactionLogSchema } from './meta-schema'
+
+/**
+ * The types of supported contact methods for feedback follow-up.
+ */
 export const ContactTypeSchema = z.enum(['PHONE', 'EMAIL', 'NONE'])
 
-export const NullableValkeyString = z.string().transform((it) => (it.trim() === '' ? null : it))
-
-export const NullableDateTime = z.string().transform((date) => {
-    if (date == null || date.trim() === '') return null
-
-    return formatISO(parseISO(date))
-})
-
-export const DateTime = z.string().transform((date) => formatISO(parseISO(date)))
+/**
+ * The sentiment is stored in valkey as nothing (''), or 1-5. This schema transforms it to a number or null.
+ */
+const SentimentSchema = NullableValkeyString.transform((val) => (val == null ? null : Number(val))).pipe(
+    z.number().min(1).max(5).nullable(),
+)
 
 export type Feedback = z.infer<typeof FeedbackSchema>
 export const FeedbackSchema = z.object({
@@ -20,10 +22,11 @@ export const FeedbackSchema = z.object({
     uid: z.string().nonempty(),
     message: z.string().nonempty(),
     timestamp: DateTime,
-    sentiment: NullableValkeyString.transform((val) => (val == null ? null : Number(val))).pipe(
-        z.number().min(1).max(5).nullable(),
-    ),
+    sentiment: SentimentSchema,
     category: z.enum(['FEIL', 'FORSLAG', 'ANNET']),
+    /**
+     * Metadata used for storing the administrative state of the feedback
+     */
     contactType: ContactTypeSchema,
     contactDetails: NullableValkeyString,
     contactedAt: NullableDateTime,
@@ -33,29 +36,10 @@ export const FeedbackSchema = z.object({
     sharedAt: NullableDateTime,
     sharedBy: NullableValkeyString,
     sharedLink: NullableValkeyString,
-    redactionLog: z
-        .string()
-        .nullable()
-        .transform((val, ctx) => {
-            if (val == null) return []
-
-            try {
-                return JSON.parse(val)
-            } catch {
-                ctx.addIssue({ code: 'custom', message: 'Invalid JSON' })
-                return z.NEVER
-            }
-        })
-        .pipe(
-            z.array(
-                z.object({
-                    name: z.string(),
-                    count: z.number(),
-                    timestamp: DateTime,
-                }),
-            ),
-        ),
-    metaSource: z.literal('syk-inn'),
+    /**
+     * Metadata used for audit logging of redactions
+     */
+    redactionLog: RedactionLogSchema,
     /**
      * Current path of the user, only pathname, no URL or query params.
      */
@@ -64,6 +48,13 @@ export const FeedbackSchema = z.object({
      * The system, e.g. which EHR system the feedback was provided through
      */
     metaSystem: z.string().nonempty(),
+    /**
+     * Future proofing: If multiple apps are to use zara, we need this.
+     */
+    metaSource: z.literal('syk-inn'),
+    /**
+     * Tags are used to categorize feedback.
+     */
     metaTags: z
         .string()
         .transform((val, ctx) => {

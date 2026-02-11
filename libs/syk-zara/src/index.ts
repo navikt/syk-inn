@@ -1,3 +1,3 @@
 export { type FeedbackClient, createFeedbackClient } from './client'
 
-export { type Feedback } from './lib/schema'
+export { type Feedback } from './schema/schema'
