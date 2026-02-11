@@ -96,7 +96,7 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
             yrkesskade: sykmelding.values.yrkesskade,
             arbeidsgiver: sykmelding.values.arbeidsgiver,
             tilbakedatering: sykmelding.values.tilbakedatering,
-            utdypendeSporsmal: sykmelding.values.utdypendeSporsmal,
+            utdypendeSporsmalSvar: sykmelding.values.utdypendeSporsmalSvar,
             annenFravarsgrunn: sykmelding.values.annenFravarsgrunn as AnnenFravarsgrunnArsak,
         },
         utfall: sykmelding.utfall,
@@ -138,13 +138,6 @@ export function resolverInputToSykInnApiPayload(
                 ? {
                       begrunnelse: values.tilbakedatering.begrunnelse,
                       startdato: values.tilbakedatering.startdato,
-                  }
-                : null,
-            utdypendeSporsmal: values.utdypendeSporsmal
-                ? {
-                      utfordringerMedArbeid: values.utdypendeSporsmal.utfordringerMedArbeid ?? null,
-                      medisinskOppsummering: values.utdypendeSporsmal.medisinskOppsummering ?? null,
-                      hensynPaArbeidsplassen: values.utdypendeSporsmal.hensynPaArbeidsplassen ?? null,
                   }
                 : null,
             utdypendeSporsmalAnswerOptions: mapUtdypendeSporsmalToSykInnApiMap(values.utdypendeSporsmal),

@@ -37,6 +37,7 @@ export const commonObjectResolvers: Resolvers<CommonGraphqlContext> = {
                 throw new GraphQLError('API_ERROR')
             }
 
+            // TODO la utdypendespørsmål basere seg på alle sykmeldinger, ikke bare egen behandler
             const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
 
             const sykmeldinger = R.pipe(
@@ -54,11 +55,25 @@ export const commonObjectResolvers: Resolvers<CommonGraphqlContext> = {
 
             const previouslyAnsweredSporsmal: UtdypendeSporsmalOptions[] = []
             sykmeldinger.forEach((sykmelding) => {
-                if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmal) {
-                    if (sykmelding.values.utdypendeSporsmal.utfordringerMedArbeid) {
+                if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmalSvar) {
+                    if (sykmelding.values.utdypendeSporsmalSvar.utfordringerMedArbeid?.svar) {
                         previouslyAnsweredSporsmal.push('UTFORDRINGER_MED_ARBEID')
                     }
-                    if (sykmelding.values.utdypendeSporsmal.medisinskOppsummering) {
+                    if (sykmelding.values.utdypendeSporsmalSvar.medisinskOppsummering?.svar) {
+                        previouslyAnsweredSporsmal.push('MEDISINSK_OPPSUMMERING')
+                    }
+                }
+                if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmal) {
+                    if (
+                        sykmelding.values.utdypendeSporsmal.utfordringerMedArbeid &&
+                        !previouslyAnsweredSporsmal.includes('UTFORDRINGER_MED_ARBEID')
+                    ) {
+                        previouslyAnsweredSporsmal.push('UTFORDRINGER_MED_ARBEID')
+                    }
+                    if (
+                        sykmelding.values.utdypendeSporsmal.medisinskOppsummering &&
+                        !previouslyAnsweredSporsmal.includes('MEDISINSK_OPPSUMMERING')
+                    ) {
                         previouslyAnsweredSporsmal.push('MEDISINSK_OPPSUMMERING')
                     }
                 }

@@ -126,7 +126,6 @@ describe('SykInnApi integration', () => {
             },
             arbeidsgiver: null,
             yrkesskade: null,
-            utdypendeSporsmal: null,
             utdypendeSporsmalAnswerOptions: null,
             tilbakedatering: null,
             svangerskapsrelatert: false,
@@ -144,7 +143,7 @@ describe('SykInnApi integration', () => {
         expect(opprettResult.values.hoveddiagnose?.code).toEqual(payload.values.hoveddiagnose.code)
         expect(opprettResult.values.arbeidsgiver).toBeNull()
         expect(opprettResult.values.yrkesskade).toBeNull()
-        expect(opprettResult.values.utdypendeSporsmal).toBeNull()
+        expect(opprettResult.values.utdypendeSporsmalSvar).toBeNull()
         expect(opprettResult.values.tilbakedatering).toBeNull()
     })
 
@@ -373,11 +372,6 @@ const createFullOpprettSykmeldingPayload = (
         yrkesskade: { yrkesskade: true, skadedato: daysAgo(3) },
         arbeidsgiver: { harFlere: true, arbeidsgivernavn: 'Test Testere AS' },
         tilbakedatering: { begrunnelse: 'Vært i koma', startdato: daysAgo(3) },
-        utdypendeSporsmal: {
-            utfordringerMedArbeid: 'Kan ikke sitte lenge',
-            medisinskOppsummering: 'Pasienten har influensa',
-            hensynPaArbeidsplassen: 'Trenger ro og hvile',
-        },
         utdypendeSporsmalAnswerOptions: {
             utfordringerMedArbeid: {
                 sporsmalstekst: questionTexts.utdypdendeSporsmal.utfordringerMedArbeid.label,

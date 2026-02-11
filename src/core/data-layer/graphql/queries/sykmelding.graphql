@@ -96,6 +96,20 @@ fragment SykmeldingFull on SykmeldingFull {
             medisinskOppsummering
             hensynPaArbeidsplassen
         }
+        utdypendeSporsmalSvar {
+            utfordringerMedArbeid {
+                sporsmalstekst
+                svar
+            }
+            medisinskOppsummering {
+                sporsmalstekst
+                svar
+            }
+            hensynPaArbeidsplassen {
+                sporsmalstekst
+                svar
+            }
+        }
         annenFravarsgrunn
     }
     documentStatus

@@ -94,13 +94,6 @@ export const OpprettSykmeldingPayloadSchema = z.object({
                 begrunnelse: z.string(),
             })
             .nullable(),
-        utdypendeSporsmal: z
-            .object({
-                utfordringerMedArbeid: z.string().nullable(),
-                medisinskOppsummering: z.string().nullable(),
-                hensynPaArbeidsplassen: z.string().nullable(),
-            })
-            .nullable(),
         utdypendeSporsmalAnswerOptions: z
             .object({
                 utfordringerMedArbeid: UtdypendeSporsmalSchema.nullable(),
