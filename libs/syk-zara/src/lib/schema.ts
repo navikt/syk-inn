@@ -30,6 +30,9 @@ export const FeedbackSchema = z.object({
     contactedBy: NullableValkeyString,
     verifiedContentAt: NullableDateTime,
     verifiedContentBy: NullableValkeyString,
+    sharedAt: NullableDateTime,
+    sharedBy: NullableValkeyString,
+    sharedLink: NullableValkeyString,
     redactionLog: z
         .string()
         .nullable()
