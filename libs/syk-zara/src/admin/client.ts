@@ -22,6 +22,7 @@ export type AdminFeedbackClient = FeedbackClient & {
     mark: {
         verified: (id: string, by: string) => Promise<void>
         contacted: (id: string, by: string) => Promise<void>
+        shared: (id: string, by: string, link: string) => Promise<void>
     }
 }
 
@@ -123,6 +124,21 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                 await valkey.hset(key, {
                     contactedAt: new Date().toISOString(),
                     contactedBy: by,
+                })
+
+                pub.update(id)
+            },
+            shared: async (id, by, link) => {
+                const key = feedbackValkeyKey(id)
+                const existingAt = await valkey.hget(key, 'sharedAt')
+                if (existingAt) {
+                    raise(`Unable to mark feedback as shared, it was already shared at ${existingAt}`)
+                }
+
+                await valkey.hset(key, {
+                    sharedAt: new Date().toISOString(),
+                    sharedBy: by,
+                    sharedLink: link,
                 })
 
                 pub.update(id)
