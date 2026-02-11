@@ -17,6 +17,7 @@ export type Feedback = z.infer<typeof FeedbackSchema>
 export const FeedbackSchema = z.object({
     id: z.string(),
     name: z.string().nonempty(),
+    uid: z.string().nonempty(),
     message: z.string().nonempty(),
     timestamp: DateTime,
     sentiment: NullableValkeyString.transform((val) => (val == null ? null : Number(val))).pipe(

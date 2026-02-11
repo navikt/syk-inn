@@ -8,7 +8,10 @@ import { createFeedbackPubClient } from './pubsub/pub'
 type FeedbackPayload = z.infer<typeof FeedbackPayloadSchema>
 const FeedbackPayloadSchema = z.object({
     message: z.string().nonempty(),
-    name: z.string().nonempty(),
+    user: z.object({
+        name: z.string().nonempty(),
+        hpr: z.string().nonempty(),
+    }),
     sentiment: z.number().min(1).max(5).nullable(),
     category: z.enum(['FEIL', 'FORSLAG', 'ANNET']),
     contact: z.object({
@@ -16,6 +19,7 @@ const FeedbackPayloadSchema = z.object({
         details: z.string().nonempty().nullable(),
     }),
     meta: z.object({
+        system: z.string().nonempty(),
         location: z.string().nonempty().nullable(),
         tags: z.array(z.string()).optional(),
         dev: z.record(z.string(), z.string()).optional(),
@@ -39,7 +43,8 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
                 id: id,
                 timestamp: timestamp,
                 message: payload.message,
-                name: payload.name,
+                name: payload.user.name,
+                uid: payload.user.hpr,
                 category: payload.category,
                 sentiment: payload.sentiment,
                 contactType: payload.contact.type,
