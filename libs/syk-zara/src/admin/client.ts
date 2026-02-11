@@ -44,6 +44,7 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                 ...feedback,
                 redactionLog: JSON.stringify(feedback.redactionLog ?? []),
                 metaTags: JSON.stringify(feedback.metaTags ?? []),
+                metaDev: JSON.stringify(feedback.metaDev ?? {}),
             } satisfies Record<keyof Feedback, string | number | null>)
 
             pub.new(id)

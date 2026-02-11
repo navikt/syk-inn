@@ -62,4 +62,18 @@ export const FeedbackSchema = z.object({
             }
         })
         .pipe(z.array(z.string())),
+    /**
+     * A generic record used for non-structured metadata used for debugging.
+     */
+    metaDev: z
+        .string()
+        .transform((val, ctx) => {
+            try {
+                return JSON.parse(val)
+            } catch {
+                ctx.addIssue({ code: 'custom', message: 'Invalid JSON' })
+                return z.NEVER
+            }
+        })
+        .pipe(z.record(z.string(), z.string())),
 })

@@ -17,7 +17,8 @@ const FeedbackPayloadSchema = z.object({
     }),
     meta: z.object({
         location: z.string().nonempty().nullable(),
-        tags: z.array(z.string()),
+        tags: z.array(z.string()).optional(),
+        dev: z.record(z.string(), z.string()).optional(),
     }),
 })
 
@@ -49,7 +50,8 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
                 contactedBy: null,
                 redactionLog: JSON.stringify([]),
                 metaLocation: payload.meta.location,
-                metaTags: JSON.stringify(payload.meta.tags),
+                metaTags: JSON.stringify(payload.meta.tags ?? []),
+                metaDev: JSON.stringify(payload.meta.dev ?? {}),
                 // TODO: Expand this if we'll use it it more than syk-inn
                 metaSource: 'syk-inn',
             } satisfies Record<keyof Feedback, string | number | null>)
