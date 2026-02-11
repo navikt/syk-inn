@@ -614,6 +614,24 @@ export type AllDashboardQuery = {
                           medisinskOppsummering: string | null
                           hensynPaArbeidsplassen: string | null
                       } | null
+                      utdypendeSporsmalSvar: {
+                          __typename: 'UtdypendeSporsmalSvar'
+                          utfordringerMedArbeid: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          medisinskOppsummering: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          hensynPaArbeidsplassen: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                      } | null
                   }
               }
             | {
@@ -771,6 +789,24 @@ export type AllDashboardQuery = {
                           utfordringerMedArbeid: string | null
                           medisinskOppsummering: string | null
                           hensynPaArbeidsplassen: string | null
+                      } | null
+                      utdypendeSporsmalSvar: {
+                          __typename: 'UtdypendeSporsmalSvar'
+                          utfordringerMedArbeid: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          medisinskOppsummering: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          hensynPaArbeidsplassen: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
                       } | null
                   }
               }
@@ -1067,6 +1103,24 @@ export type SykmeldingByIdQuery = {
                       medisinskOppsummering: string | null
                       hensynPaArbeidsplassen: string | null
                   } | null
+                  utdypendeSporsmalSvar: {
+                      __typename: 'UtdypendeSporsmalSvar'
+                      utfordringerMedArbeid: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      medisinskOppsummering: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      hensynPaArbeidsplassen: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                  } | null
               }
           }
         | {
@@ -1219,6 +1273,24 @@ export type OpprettSykmeldingMutation = {
                       medisinskOppsummering: string | null
                       hensynPaArbeidsplassen: string | null
                   } | null
+                  utdypendeSporsmalSvar: {
+                      __typename: 'UtdypendeSporsmalSvar'
+                      utfordringerMedArbeid: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      medisinskOppsummering: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      hensynPaArbeidsplassen: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                  } | null
               }
           }
 }
@@ -1307,6 +1379,12 @@ export type SykmeldingFullFragment = {
             utfordringerMedArbeid: string | null
             medisinskOppsummering: string | null
             hensynPaArbeidsplassen: string | null
+        } | null
+        utdypendeSporsmalSvar: {
+            __typename: 'UtdypendeSporsmalSvar'
+            utfordringerMedArbeid: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            medisinskOppsummering: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            hensynPaArbeidsplassen: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
         } | null
     }
 }
@@ -1424,6 +1502,12 @@ type Sykmelding_SykmeldingFull_Fragment = {
             utfordringerMedArbeid: string | null
             medisinskOppsummering: string | null
             hensynPaArbeidsplassen: string | null
+        } | null
+        utdypendeSporsmalSvar: {
+            __typename: 'UtdypendeSporsmalSvar'
+            utfordringerMedArbeid: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            medisinskOppsummering: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            hensynPaArbeidsplassen: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
         } | null
     }
 }
@@ -1972,6 +2056,57 @@ export const SykmeldingFullFragmentDoc = {
                                             { kind: 'Field', name: { kind: 'Name', value: 'utfordringerMedArbeid' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'medisinskOppsummering' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'hensynPaArbeidsplassen' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'utdypendeSporsmalSvar' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'utfordringerMedArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'medisinskOppsummering' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'hensynPaArbeidsplassen' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
                                         ],
                                     },
                                 },
@@ -2593,6 +2728,57 @@ export const SykmeldingFragmentDoc = {
                                         ],
                                     },
                                 },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'utdypendeSporsmalSvar' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'utfordringerMedArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'medisinskOppsummering' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'hensynPaArbeidsplassen' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
                                 { kind: 'Field', name: { kind: 'Name', value: 'annenFravarsgrunn' } },
                             ],
                         },
@@ -3025,6 +3211,57 @@ export const AllDashboardDocument = {
                                             { kind: 'Field', name: { kind: 'Name', value: 'utfordringerMedArbeid' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'medisinskOppsummering' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'hensynPaArbeidsplassen' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'utdypendeSporsmalSvar' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'utfordringerMedArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'medisinskOppsummering' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'hensynPaArbeidsplassen' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
                                         ],
                                     },
                                 },
@@ -3955,6 +4192,57 @@ export const SykmeldingByIdDocument = {
                                         ],
                                     },
                                 },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'utdypendeSporsmalSvar' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'utfordringerMedArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'medisinskOppsummering' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'hensynPaArbeidsplassen' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
                                 { kind: 'Field', name: { kind: 'Name', value: 'annenFravarsgrunn' } },
                             ],
                         },
@@ -4449,6 +4737,57 @@ export const OpprettSykmeldingDocument = {
                                             { kind: 'Field', name: { kind: 'Name', value: 'utfordringerMedArbeid' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'medisinskOppsummering' } },
                                             { kind: 'Field', name: { kind: 'Name', value: 'hensynPaArbeidsplassen' } },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'utdypendeSporsmalSvar' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'utfordringerMedArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'medisinskOppsummering' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'hensynPaArbeidsplassen' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
                                         ],
                                     },
                                 },

@@ -73,6 +73,17 @@ const UtdypendeSporsmalSchema = z.object({
     hensynPaArbeidsplassen: z.string().nullable(),
 })
 
+const SporsmalSvarSchema = z.object({
+    sporsmalstekst: z.string().nullable(),
+    svar: z.string(),
+})
+
+const UtdypendeSporsmalSvarSchema = z.object({
+    utfordringerMedArbeid: SporsmalSvarSchema.nullable(),
+    medisinskOppsummering: SporsmalSvarSchema.nullable(),
+    hensynPaArbeidsplassen: SporsmalSvarSchema.nullable(),
+})
+
 const ArbeidsgiverSchema = z.object({
     harFlere: z.boolean(),
     arbeidsgivernavn: z.string(),
@@ -119,6 +130,7 @@ export const SykInnApiSykmeldingSchema = z
             arbeidsgiver: ArbeidsgiverSchema.nullable(),
             tilbakedatering: TilbakedateringSchema.nullable(),
             utdypendeSporsmal: UtdypendeSporsmalSchema.nullable(),
+            utdypendeSporsmalSvar: UtdypendeSporsmalSvarSchema.nullable(),
             annenFravarsgrunn: z.string().nullable(),
         }),
         utfall: RuleResultSchema,
