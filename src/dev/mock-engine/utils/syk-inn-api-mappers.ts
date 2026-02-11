@@ -83,7 +83,17 @@ export function sykInnApiPayloadToResponse(
                   }
                 : null,
             tilbakedatering: payload.values.tilbakedatering ?? null,
-            utdypendeSporsmal: payload.values.utdypendeSporsmal ?? null,
+            utdypendeSporsmal: null,
+            utdypendeSporsmalSvar: payload.values.utdypendeSporsmalAnswerOptions
+                ? {
+                      utfordringerMedArbeid:
+                          payload.values.utdypendeSporsmalAnswerOptions.utfordringerMedArbeid ?? null,
+                      medisinskOppsummering:
+                          payload.values.utdypendeSporsmalAnswerOptions.medisinskOppsummering ?? null,
+                      hensynPaArbeidsplassen:
+                          payload.values.utdypendeSporsmalAnswerOptions.hensynPaArbeidsplassen ?? null,
+                  }
+                : null,
             annenFravarsgrunn: payload.values.annenFravarsgrunn,
         },
         utfall: utfall,

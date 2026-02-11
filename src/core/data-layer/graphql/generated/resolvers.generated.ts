@@ -379,6 +379,12 @@ export type RuleOutcome = {
 
 export type RuleOutcomeStatus = 'INVALID' | 'MANUAL_PROCESSING'
 
+export type SporsmalSvar = {
+    __typename?: 'SporsmalSvar'
+    sporsmalstekst?: Maybe<Scalars['String']['output']>
+    svar: Scalars['String']['output']
+}
+
 export type Sykmelding = SykmeldingFull | SykmeldingLight | SykmeldingRedacted
 
 export type SykmeldingBase = {
@@ -412,6 +418,7 @@ export type SykmeldingFullValues = {
     svangerskapsrelatert: Scalars['Boolean']['output']
     tilbakedatering?: Maybe<Tilbakedatering>
     utdypendeSporsmal?: Maybe<UtdypendeSporsmal>
+    utdypendeSporsmalSvar?: Maybe<UtdypendeSporsmalSvar>
     yrkesskade?: Maybe<Yrkesskade>
 }
 
@@ -501,6 +508,13 @@ export type UtdypendeSporsmal = {
 }
 
 export type UtdypendeSporsmalOptions = 'HENSYN_PA_ARBEIDSPLASSEN' | 'MEDISINSK_OPPSUMMERING' | 'UTFORDRINGER_MED_ARBEID'
+
+export type UtdypendeSporsmalSvar = {
+    __typename?: 'UtdypendeSporsmalSvar'
+    hensynPaArbeidsplassen?: Maybe<SporsmalSvar>
+    medisinskOppsummering?: Maybe<SporsmalSvar>
+    utfordringerMedArbeid?: Maybe<SporsmalSvar>
+}
 
 export type Yrkesskade = {
     __typename?: 'Yrkesskade'
@@ -671,6 +685,7 @@ export type ResolversTypes = {
     RuleOK: ResolverTypeWrapper<RuleOk>
     RuleOutcome: ResolverTypeWrapper<RuleOutcome>
     RuleOutcomeStatus: RuleOutcomeStatus
+    SporsmalSvar: ResolverTypeWrapper<SporsmalSvar>
     String: ResolverTypeWrapper<Scalars['String']['output']>
     Sykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Sykmelding']>
     SykmeldingBase: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['SykmeldingBase']>
@@ -702,6 +717,7 @@ export type ResolversTypes = {
     UtdypendeOpplysningerHint: ResolverTypeWrapper<UtdypendeOpplysningerHint>
     UtdypendeSporsmal: ResolverTypeWrapper<UtdypendeSporsmal>
     UtdypendeSporsmalOptions: UtdypendeSporsmalOptions
+    UtdypendeSporsmalSvar: ResolverTypeWrapper<UtdypendeSporsmalSvar>
     Yrkesskade: ResolverTypeWrapper<Yrkesskade>
 }
 
@@ -754,6 +770,7 @@ export type ResolversParentTypes = {
     ReisetilskuddInput: ReisetilskuddInput
     RuleOK: RuleOk
     RuleOutcome: RuleOutcome
+    SporsmalSvar: SporsmalSvar
     String: Scalars['String']['output']
     Sykmelding: ResolversUnionTypes<ResolversParentTypes>['Sykmelding']
     SykmeldingBase: ResolversInterfaceTypes<ResolversParentTypes>['SykmeldingBase']
@@ -778,6 +795,7 @@ export type ResolversParentTypes = {
     Tilbakedatering: Tilbakedatering
     UtdypendeOpplysningerHint: UtdypendeOpplysningerHint
     UtdypendeSporsmal: UtdypendeSporsmal
+    UtdypendeSporsmalSvar: UtdypendeSporsmalSvar
     Yrkesskade: Yrkesskade
 }
 
@@ -1079,6 +1097,14 @@ export type RuleOutcomeResolvers<
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
+export type SporsmalSvarResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['SporsmalSvar'] = ResolversParentTypes['SporsmalSvar'],
+> = {
+    sporsmalstekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    svar?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+}
+
 export type SykmeldingResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Sykmelding'] = ResolversParentTypes['Sykmelding'],
@@ -1120,6 +1146,7 @@ export type SykmeldingFullValuesResolvers<
     svangerskapsrelatert?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     tilbakedatering?: Resolver<Maybe<ResolversTypes['Tilbakedatering']>, ParentType, ContextType>
     utdypendeSporsmal?: Resolver<Maybe<ResolversTypes['UtdypendeSporsmal']>, ParentType, ContextType>
+    utdypendeSporsmalSvar?: Resolver<Maybe<ResolversTypes['UtdypendeSporsmalSvar']>, ParentType, ContextType>
     yrkesskade?: Resolver<Maybe<ResolversTypes['Yrkesskade']>, ParentType, ContextType>
 }
 
@@ -1233,6 +1260,15 @@ export type UtdypendeSporsmalResolvers<
     utfordringerMedArbeid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
 }
 
+export type UtdypendeSporsmalSvarResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['UtdypendeSporsmalSvar'] = ResolversParentTypes['UtdypendeSporsmalSvar'],
+> = {
+    hensynPaArbeidsplassen?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
+    medisinskOppsummering?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
+    utfordringerMedArbeid?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
+}
+
 export type YrkesskadeResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Yrkesskade'] = ResolversParentTypes['Yrkesskade'],
@@ -1271,6 +1307,7 @@ export type Resolvers<ContextType = any> = {
     Reisetilskudd?: ReisetilskuddResolvers<ContextType>
     RuleOK?: RuleOkResolvers<ContextType>
     RuleOutcome?: RuleOutcomeResolvers<ContextType>
+    SporsmalSvar?: SporsmalSvarResolvers<ContextType>
     Sykmelding?: SykmeldingResolvers<ContextType>
     SykmeldingBase?: SykmeldingBaseResolvers<ContextType>
     SykmeldingFull?: SykmeldingFullResolvers<ContextType>
@@ -1287,5 +1324,6 @@ export type Resolvers<ContextType = any> = {
     Tilbakedatering?: TilbakedateringResolvers<ContextType>
     UtdypendeOpplysningerHint?: UtdypendeOpplysningerHintResolvers<ContextType>
     UtdypendeSporsmal?: UtdypendeSporsmalResolvers<ContextType>
+    UtdypendeSporsmalSvar?: UtdypendeSporsmalSvarResolvers<ContextType>
     Yrkesskade?: YrkesskadeResolvers<ContextType>
 }
