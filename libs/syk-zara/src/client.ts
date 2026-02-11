@@ -28,6 +28,7 @@ const FeedbackPayloadSchema = z.object({
 
 export type FeedbackClient = {
     create: (id: string, feedback: FeedbackPayload) => Promise<void>
+    sentiment: (id: string, sentiment: number) => Promise<void>
 }
 
 export function createFeedbackClient(valkey: Valkey): FeedbackClient {
@@ -66,6 +67,19 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
             } satisfies Record<keyof Feedback, string | number | null>)
 
             pub.new(id)
+        },
+        sentiment: async (id, sentiment) => {
+            const key = feedbackValkeyKey(id)
+            const exists = await valkey.exists(key)
+            if (exists !== 1) {
+                throw new Error(`Feedback with id ${id} does not exist`)
+            }
+
+            await valkey.hset(key, {
+                sentiment: sentiment,
+            })
+
+            pub.update(id)
         },
     }
 }
