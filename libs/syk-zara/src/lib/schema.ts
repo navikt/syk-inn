@@ -53,7 +53,14 @@ export const FeedbackSchema = z.object({
             ),
         ),
     metaSource: z.literal('syk-inn'),
+    /**
+     * Current path of the user, only pathname, no URL or query params.
+     */
     metaLocation: z.string().nonempty().nullable(),
+    /**
+     * The system, e.g. which EHR system the feedback was provided through
+     */
+    metaSystem: z.string().nonempty(),
     metaTags: z
         .string()
         .transform((val, ctx) => {

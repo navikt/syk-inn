@@ -55,6 +55,7 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
                 contactedBy: null,
                 redactionLog: JSON.stringify([]),
                 metaLocation: payload.meta.location,
+                metaSystem: payload.meta.system,
                 metaTags: JSON.stringify(payload.meta.tags ?? []),
                 metaDev: JSON.stringify(payload.meta.dev ?? {}),
                 // TODO: Expand this if we'll use it it more than syk-inn
