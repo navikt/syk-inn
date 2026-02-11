@@ -78,21 +78,40 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                     {annenFravarsgrunnToText(sykmelding.values.annenFravarsgrunn)}
                 </ValueItem>
             )}
-            {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid && (
-                <ValueItem title="Hvilke utfordringer har pasienten med å utføre gradert arbeid?">
-                    {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid}
-                </ValueItem>
+            {sykmelding.values.utdypendeSporsmalSvar ? (
+                <>
+                    {Object.entries(sykmelding.values.utdypendeSporsmalSvar)
+                        .filter(([key]) => key !== '__typename')
+                        .filter(([, value]) => value !== null)
+                        .map(([key, value]) => {
+                            const sporsmal = value as unknown as { sporsmalstekst: string; svar: string }
+                            return (
+                                <ValueItem key={key} title={sporsmal.sporsmalstekst}>
+                                    {sporsmal.svar}
+                                </ValueItem>
+                            )
+                        })}
+                </>
+            ) : (
+                <>
+                    {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid && (
+                        <ValueItem title="Hvilke utfordringer har pasienten med å utføre gradert arbeid?">
+                            {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid}
+                        </ValueItem>
+                    )}
+                    {sykmelding.values.utdypendeSporsmal?.medisinskOppsummering && (
+                        <ValueItem title="Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt behandling)">
+                            {sykmelding.values.utdypendeSporsmal?.medisinskOppsummering}
+                        </ValueItem>
+                    )}
+                    {sykmelding.values.utdypendeSporsmal?.hensynPaArbeidsplassen && (
+                        <ValueItem title="Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet? (ikke obligatorisk)">
+                            {sykmelding.values.utdypendeSporsmal?.hensynPaArbeidsplassen}
+                        </ValueItem>
+                    )}
+                </>
             )}
-            {sykmelding.values.utdypendeSporsmal?.medisinskOppsummering && (
-                <ValueItem title="Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt behandling)">
-                    {sykmelding.values.utdypendeSporsmal?.medisinskOppsummering}
-                </ValueItem>
-            )}
-            {sykmelding.values.utdypendeSporsmal?.hensynPaArbeidsplassen && (
-                <ValueItem title="Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet? (ikke obligatorisk)">
-                    {sykmelding.values.utdypendeSporsmal?.hensynPaArbeidsplassen}
-                </ValueItem>
-            )}
+
             {sykmelding.values.yrkesskade?.yrkesskade && (
                 <ValueItem title="Yrkesskade">
                     <BodyShort>Kan skyldes yrkesskade? Ja</BodyShort>
