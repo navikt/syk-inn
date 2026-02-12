@@ -42,13 +42,13 @@ export async function POST(
                 system: client.issuerName,
             })
 
-            if (typeof feedback !== 'string') {
+            if (!('feedbackId' in feedback)) {
                 failSpan(span, 'Failed to handle V2 feedback', new Error(feedback.message))
                 return Response.json({ message: feedback.message }, { status: feedback.code })
             }
 
             logger.info('Successfully handled V2 feedback')
-            return Response.json({ ok: 'ok' })
+            return Response.json({ feedbackId: feedback.feedbackId })
         } else {
             logger.info('Received "old" pilot feedback')
             const feedback = await handleOldPilotFeedback(json, {

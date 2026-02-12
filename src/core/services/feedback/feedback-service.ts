@@ -1,33 +1,37 @@
-import { failSpan, spanServerAsync } from '@lib/otel/server'
-import { wait } from '@lib/wait'
+import * as z from 'zod'
 
-import { feedbackPayloadSchema } from './feedback-payload'
+import { failSpan, spanServerAsync } from '@lib/otel/server'
+
+import { feedbackUpdateSentimmentPayloadSchema, fullFeedbackPayloadSchema } from './feedback-payload'
 import { getFeedbackClient } from './feedback-client'
 
 export async function handleV2Feedback(
     json: unknown,
     meta: { name: string; hpr: string; system: string },
-): Promise<'ok' | { message: string; code: number }> {
+): Promise<{ feedbackId: string } | { message: string; code: number }> {
     return spanServerAsync('Feedback.handleV2Feedback', async (span) => {
-        const payload = feedbackPayloadSchema.safeParse(json)
+        const payload = z.union([fullFeedbackPayloadSchema, feedbackUpdateSentimmentPayloadSchema]).safeParse(json)
         if (!payload.success) {
             failSpan(span, 'Invalid feedback payload', payload.error)
             return { message: 'Feil format på tilbakemeldingen', code: 400 }
         }
 
-        await wait(1500)
-
         const feedbackClient = getFeedbackClient()
+        if ('sentiment' in payload.data) {
+            await feedbackClient.sentiment(payload.data.id, payload.data.sentiment)
+
+            return { feedbackId: payload.data.id }
+        }
 
         const uuid = crypto.randomUUID()
         await feedbackClient.create(uuid, {
             category: payload.data.type,
             message: payload.data.message,
+            sentiment: null,
             user: {
                 name: meta.name,
                 hpr: meta.hpr,
             },
-            sentiment: toValidSentiment(payload.data.sentiment),
             contact: {
                 type: payload.data.contact.type,
                 details: payload.data.contact.details,
@@ -40,12 +44,6 @@ export async function handleV2Feedback(
             },
         })
 
-        return 'ok'
+        return { feedbackId: uuid }
     })
-}
-
-function toValidSentiment(sentiment: number | null): number | null {
-    if (sentiment == null) return null
-    if (sentiment < 1 || sentiment > 5) return null
-    return sentiment
 }

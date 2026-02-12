@@ -1,34 +1,38 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 import { useParams, usePathname } from 'next/navigation'
 
 import { spanBrowserAsync } from '@lib/otel/browser'
-import { FeedbackPayload } from '@core/services/feedback/feedback-payload'
+import { FullFeedbackPayload, FeedbackUpdateSentimentPayload } from '@core/services/feedback/feedback-payload'
 import { useMode } from '@core/providers/Modes'
 import { pathWithBasePath } from '@lib/url'
 import { getBrowserSessionId } from '@lib/otel/faro'
 
 import { FeedbackFormValues } from './form'
 
-export function useFeedback(): {
+type UseFeedback = {
     submitting: boolean
-    success: boolean
+    success: { feedbackId: string } | null
     error: string | null
     submit: (values: FeedbackFormValues) => Promise<void>
-} {
+}
+
+type UpdateSentiment = {
+    updateSentiment: (sentiment: number) => Promise<void>
+    sentimentUpdated: boolean
+}
+
+export function useFeedback(): UseFeedback & UpdateSentiment {
     const mode = useMode()
-    const [submitting, setSubmitting] = useState(false)
-    const [success, setSuccess] = useState(false)
-    const [error, setError] = useState<string | null>(null)
+    const [state, dispatch] = useReducer(feedbackReducer, defaultFeedbackState)
     const formValuesToPayload = useFormValuesToPayload()
 
     const handleSubmit = async (values: FeedbackFormValues): Promise<void> => {
-        setSubmitting(true)
+        dispatch({ type: 'SENDING_FEEDBACK' })
         try {
             await spanBrowserAsync('Feedback.onSubmit', async () => {
                 const payload = formValuesToPayload(values)
-
                 const response = await fetch(pathWithBasePath(mode.paths.feedback) + '?variant=v2', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -36,35 +40,69 @@ export function useFeedback(): {
                 })
 
                 if (response.ok) {
-                    setSubmitting(false)
-                    setSuccess(true)
-                    setError(null)
+                    const data: { feedbackId: string } = await response.json()
+
+                    dispatch({ type: 'SUCCESS', feedbackId: data.feedbackId })
                     return
                 }
 
                 const data = await response.json()
-                setError(data.message)
+                dispatch({ type: 'ERROR', message: data.message })
             })
         } catch (e) {
             logger.error(e)
-            setError('Ukjent systemfeil')
-            setSuccess(false)
-        } finally {
-            setSubmitting(false)
+            dispatch({ type: 'ERROR', message: 'Ukjent systemfeil' })
         }
     }
 
-    return { submitting, success, error, submit: handleSubmit }
+    const handleUpdateSentiment = async (sentiment: number): Promise<void> => {
+        if (state.state !== 'submitted') {
+            logger.warn('Tried to update sentiment without having been submitted first. How?!')
+            return
+        }
+
+        await spanBrowserAsync('Feedback.updateSentiment', async () => {
+            dispatch({ type: 'UPDATING_SENTIMENT' })
+
+            const payload: FeedbackUpdateSentimentPayload = {
+                id: state.success.feedbackId,
+                sentiment: sentiment,
+            }
+
+            const response = await fetch(pathWithBasePath(mode.paths.feedback) + '?variant=v2', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            })
+
+            if (response.ok) {
+                dispatch({ type: 'SENTIMENT_SUCCESS' })
+                return
+            }
+
+            const serverSays = await response.text()
+            logger.error(new Error(`Unable to update sentiment, ${response.status}: ${serverSays}`))
+        })
+    }
+
+    return {
+        submitting: state.loading,
+        success: state.success != null ? { feedbackId: state.success.feedbackId } : null,
+        submit: handleSubmit,
+        error: state.error,
+        updateSentiment: handleUpdateSentiment,
+        sentimentUpdated: state.state === 'updated',
+    }
 }
 
 /**
  * Custom hook to curry a mapper function, as we use other hooks to extract metadata
  */
-function useFormValuesToPayload(): (values: FeedbackFormValues) => FeedbackPayload {
+function useFormValuesToPayload(): (values: FeedbackFormValues) => FullFeedbackPayload {
     const params = useParams()
     const path = usePathname()
 
-    return (values: FeedbackFormValues): FeedbackPayload => {
+    return (values: FeedbackFormValues): FullFeedbackPayload => {
         const contact = {
             type: values.contact.type,
             details:
@@ -82,7 +120,6 @@ function useFormValuesToPayload(): (values: FeedbackFormValues) => FeedbackPaylo
         return {
             type: values.type,
             message: values.message,
-            sentiment: values.sentiment >= 1 ? values.sentiment : null,
             contact: contact,
             meta: {
                 location: path,
@@ -93,4 +130,75 @@ function useFormValuesToPayload(): (values: FeedbackFormValues) => FeedbackPaylo
             },
         }
     }
+}
+
+type SuccessState = {
+    state: 'submitted' | 'updated' | 'updating_sentiment'
+    success: { feedbackId: string }
+    loading: false
+    error: null
+}
+
+type OtherState = {
+    state: 'idle' | 'submitting' | 'error'
+    loading: boolean
+    success: null
+    error: string | null
+}
+
+type Actions =
+    | { type: 'SENDING_FEEDBACK' }
+    | { type: 'UPDATING_SENTIMENT' }
+    | { type: 'SUCCESS'; feedbackId: string }
+    | { type: 'SENTIMENT_SUCCESS' }
+    | { type: 'ERROR'; message: string }
+
+const feedbackReducer = (state: SuccessState | OtherState, action: Actions): SuccessState | OtherState => {
+    switch (action.type) {
+        case 'SENDING_FEEDBACK':
+            return {
+                ...state,
+                state: 'submitting',
+                loading: true,
+                error: null,
+                success: null,
+            } satisfies OtherState
+        case 'SUCCESS':
+            return {
+                ...state,
+                loading: false,
+                state: 'submitted',
+                success: { feedbackId: action.feedbackId },
+                error: null,
+            } satisfies SuccessState
+        case 'SENTIMENT_SUCCESS':
+            return {
+                ...(state as SuccessState),
+                state: 'updated',
+                loading: false,
+                error: null,
+            } satisfies SuccessState
+        case 'UPDATING_SENTIMENT':
+            return {
+                ...(state as SuccessState),
+                state: 'updating_sentiment',
+                // This is a "optimistic" fire and forget action, and does not trigger loading state
+                loading: false,
+            } satisfies SuccessState
+        case 'ERROR':
+            return {
+                ...state,
+                loading: false,
+                state: 'error',
+                error: action.message,
+                success: null,
+            } satisfies OtherState
+    }
+}
+
+const defaultFeedbackState: OtherState = {
+    state: 'idle',
+    loading: false,
+    error: null,
+    success: null,
 }
