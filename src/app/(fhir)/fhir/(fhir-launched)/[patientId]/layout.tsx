@@ -68,6 +68,10 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
         }
     }
 
+    // Feedback V2 has higher precedence than the old one
+    const feedbackV2 = getFlag('SYK_INN_FEEDBACK_V2', rootFhirData.toggles)
+    const oldFeedback = getFlag('PILOT_FEEDBACK', rootFhirData.toggles)
+
     return (
         <FhirModeProvider activePatientId={patientId}>
             <Providers patient={rootFhirData.pasient} graphqlPath={createFhirPaths(patientId).graphql}>
@@ -76,8 +80,8 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
                     {children}
                     <LoggedOutWarning />
                     {(isLocal || isDemo) && <LazyDevTools />}
-                    {getFlag('PILOT_FEEDBACK', rootFhirData.toggles) && <PilotFeedback />}
-                    {getFlag('SYK_INN_FEEDBACK_V2', rootFhirData.toggles) && <FeedbackButton />}
+                    {oldFeedback && !feedbackV2 && <PilotFeedback />}
+                    {feedbackV2 && <FeedbackButton />}
                 </ToggleProvider>
             </Providers>
         </FhirModeProvider>

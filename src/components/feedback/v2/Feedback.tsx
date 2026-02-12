@@ -76,7 +76,7 @@ export function FullFeedbackSentimentFollowUp({
 }): ReactElement {
     return (
         <section aria-labelledby="sentiment-followup-heading" className="flex flex-col items-center">
-            <Heading size="xsmall" id="sentiment-followup-heading" spacing>
+            <Heading size="xsmall" level="2" id="sentiment-followup-heading" spacing>
                 Hvor godt liker du å bruke den nye sykmeldingsløsningen?
             </Heading>
             {!hasUpdated ? (
