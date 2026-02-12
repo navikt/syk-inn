@@ -39,6 +39,11 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 - [spamming 'Send'-button repeatedly should only submit 1 sykmelding](./fhir/fhir-chaosmonkey.spec.ts#L10)
 
+## [fhir/fhir-feedback.spec.ts](./fhir/fhir-feedback.spec.ts)
+
+- [submitting feedback should work](./fhir/fhir-feedback.spec.ts#L7)
+- [submitting feedback without contact should work](./fhir/fhir-feedback.spec.ts#L20)
+
 ## [fhir/fhir-form-interactions.spec.ts](./fhir/fhir-form-interactions.spec.ts)
 
 ## ['shorthand' date interactions](./fhir/fhir-form-interactions.spec.ts)

@@ -1,6 +1,8 @@
 import * as z from 'zod'
 
 import { failSpan, spanServerAsync } from '@lib/otel/server'
+import { shouldUseMockEngine } from '@dev/mock-engine'
+import { getServerEnv } from '@lib/env'
 
 import { feedbackUpdateSentimmentPayloadSchema, fullFeedbackPayloadSchema } from './feedback-payload'
 import { getFeedbackClient } from './feedback-client'
@@ -14,6 +16,10 @@ export async function handleV2Feedback(
         if (!payload.success) {
             failSpan(span, 'Invalid feedback payload', payload.error)
             return { message: 'Feil format på tilbakemeldingen', code: 400 }
+        }
+
+        if (shouldUseMockEngine() && !getServerEnv().useLocalValkey) {
+            return { feedbackId: crypto.randomUUID() }
         }
 
         const feedbackClient = getFeedbackClient()

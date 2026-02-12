@@ -3,7 +3,7 @@
 import React, { ReactElement } from 'react'
 import { BodyShort, Button, Dialog, Heading, LocalAlert, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
-import { CheckmarkHeavyIcon } from '@navikt/aksel-icons'
+import { CheckmarkHeavyIcon, LightBulbIcon } from '@navikt/aksel-icons'
 
 import { BehandlerDocument } from '@queries'
 import SessionIdInfo from '@components/help/SessionIdInfo'
@@ -26,11 +26,18 @@ function FeedbackButton(): ReactElement {
     }
 
     return (
-        <div className="fixed -bottom-1 right-72 w-fit animate-bounce">
+        <div className="fixed -bottom-0.5 right-32 w-fit">
             <Dialog onOpenChange={handleOpenChange}>
                 <Dialog.Trigger>
-                    <Button variant="secondary-neutral" size="small" className="bg-ax-bg-default rounded-b-none">
-                        Tilbakemelding V2
+                    <Button
+                        variant="secondary-neutral"
+                        size="small"
+                        className="bg-ax-bg-default rounded-b-none"
+                        data-color="accent"
+                        icon={<LightBulbIcon aria-hidden />}
+                        iconPosition="right"
+                    >
+                        Tilbakemelding
                     </Button>
                 </Dialog.Trigger>
                 <Dialog.Popup position="right" id="feedback-dialog">
@@ -57,7 +64,7 @@ function FeedbackButton(): ReactElement {
                                 <div className="size-24 bg-ax-bg-success-strong rounded-full text-ax-text-success-contrast">
                                     <CheckmarkHeavyIcon aria-hidden className="size-24" />
                                 </div>
-                                <Heading size="large" level="3">
+                                <Heading size="large" level="2">
                                     Tilbakemelding mottatt, tusen takk!
                                 </Heading>
                                 <div className="mt-16">
@@ -72,7 +79,7 @@ function FeedbackButton(): ReactElement {
                         )}
                     </Dialog.Body>
                     {!feedback.success ? (
-                        <Dialog.Footer className="mt-auto">
+                        <Dialog.Footer className="mt-auto pr-2">
                             <Dialog.CloseTrigger>
                                 <Button
                                     id="close-feedback-button"
@@ -84,7 +91,7 @@ function FeedbackButton(): ReactElement {
                                 </Button>
                             </Dialog.CloseTrigger>
                             <Button form="feedback-form-v2" type="submit" loading={feedback.submitting}>
-                                Send inn Tilbakemeldingen
+                                Send tilbakemelding
                             </Button>
                         </Dialog.Footer>
                     ) : (
