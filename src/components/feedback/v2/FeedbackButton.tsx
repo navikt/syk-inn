@@ -10,7 +10,7 @@ import SessionIdInfo from '@components/help/SessionIdInfo'
 import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
 import { useFeedback } from '@components/feedback/v2/useFeedback'
 
-import { FeedbackV2 } from './Feedback'
+import { FullFeedback, FullFeedbackSentimentFollowUp } from './Feedback'
 
 function FeedbackButton(): ReactElement {
     const feedback = useFeedback()
@@ -44,7 +44,7 @@ function FeedbackButton(): ReactElement {
                     <Dialog.Body>
                         {behandler.loading && <Skeleton variant="rounded" width="100%" height={569} />}
                         {behandler.data?.behandler && !feedback.success && (
-                            <FeedbackV2
+                            <FullFeedback
                                 behandler={behandler.data.behandler}
                                 onSubmit={(values) => feedback.submit(values)}
                             />
@@ -52,14 +52,22 @@ function FeedbackButton(): ReactElement {
                         {behandler.data?.behandler == null && !behandler.loading && (
                             <FeedbackErrorNoBehandler refetch={() => behandler.refetch()} />
                         )}
-                        {feedback.success && (
-                            <div className="h-96 w-full flex items-center justify-center flex flex-col gap-4">
+                        {feedback.success != null && (
+                            <div className="h-96 w-full flex items-center justify-center flex flex-col gap-4 mt-16">
                                 <div className="size-24 bg-ax-bg-success-strong rounded-full text-ax-text-success-contrast">
                                     <CheckmarkHeavyIcon aria-hidden className="size-24" />
                                 </div>
                                 <Heading size="large" level="3">
                                     Tilbakemelding mottatt, tusen takk!
                                 </Heading>
+                                <div className="mt-16">
+                                    <FullFeedbackSentimentFollowUp
+                                        onSentiment={(sentiment) => {
+                                            feedback.updateSentiment(sentiment)
+                                        }}
+                                        hasUpdated={feedback.sentimentUpdated}
+                                    />
+                                </div>
                             </div>
                         )}
                     </Dialog.Body>
