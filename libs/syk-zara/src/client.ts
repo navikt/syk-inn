@@ -22,7 +22,7 @@ const FeedbackPayloadSchema = z.object({
         system: z.string().nonempty(),
         location: z.string().nonempty().nullable(),
         tags: z.array(z.string()).optional(),
-        dev: z.record(z.string(), z.string()).optional(),
+        dev: z.record(z.string(), z.string().nullish()).optional(),
     }),
 })
 
