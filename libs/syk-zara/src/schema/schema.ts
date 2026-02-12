@@ -1,34 +1,18 @@
 import * as z from 'zod'
 
-import { DateTime, NullableDateTime, NullableValkeyString } from './common'
-import { RedactionLogSchema } from './meta-schema'
+import { DateTime, NullableDateTime, NullableValkeyString, SentimentSchema } from './common'
+import { MetaDevSchema, MetaTagsSchema, RedactionLogSchema } from './meta-schema'
 
-/**
- * The types of supported contact methods for feedback follow-up.
- */
-export const ContactTypeSchema = z.enum(['PHONE', 'EMAIL', 'NONE'])
-
-/**
- * The sentiment is stored in valkey as nothing (''), or 1-5. This schema transforms it to a number or null.
- */
-const SentimentSchema = NullableValkeyString.transform((val) => (val == null ? null : Number(val))).pipe(
-    z.number().min(1).max(5).nullable(),
-)
-
-export type Feedback = z.infer<typeof FeedbackSchema>
-export const FeedbackSchema = z.object({
-    id: z.string(),
-    name: z.string().nonempty(),
-    uid: z.string().nonempty(),
-    message: z.string().nonempty(),
-    timestamp: DateTime,
+const SentimentableSchema = z.object({
     sentiment: SentimentSchema,
-    category: z.enum(['FEIL', 'FORSLAG', 'ANNET']),
+})
+
+const BaseFeedbackSchema = z.object({
+    id: z.string(),
+    timestamp: DateTime,
     /**
      * Metadata used for storing the administrative state of the feedback
      */
-    contactType: ContactTypeSchema,
-    contactDetails: NullableValkeyString,
     contactedAt: NullableDateTime,
     contactedBy: NullableValkeyString,
     verifiedContentAt: NullableDateTime,
@@ -55,29 +39,39 @@ export const FeedbackSchema = z.object({
     /**
      * Tags are used to categorize feedback.
      */
-    metaTags: z
-        .string()
-        .transform((val, ctx) => {
-            try {
-                return JSON.parse(val)
-            } catch {
-                ctx.addIssue({ code: 'custom', message: 'Invalid JSON' })
-                return z.NEVER
-            }
-        })
-        .pipe(z.array(z.string())),
+    metaTags: MetaTagsSchema,
     /**
      * A generic record used for non-structured metadata used for debugging.
      */
-    metaDev: z
-        .string()
-        .transform((val, ctx) => {
-            try {
-                return JSON.parse(val)
-            } catch {
-                ctx.addIssue({ code: 'custom', message: 'Invalid JSON' })
-                return z.NEVER
-            }
-        })
-        .pipe(z.record(z.string(), z.string().nullable())),
+    metaDev: MetaDevSchema,
 })
+
+/**
+ * The types of supported contact methods for feedback follow-up.
+ */
+export const ContactTypeSchema = z.enum(['PHONE', 'EMAIL', 'NONE'])
+
+export type ContactableUserFeedback = z.infer<typeof ContactableUserFeedbackSchema>
+export const ContactableUserFeedbackSchema = BaseFeedbackSchema.safeExtend(SentimentableSchema.shape).safeExtend({
+    type: z.literal('CONTACTABLE'),
+    name: z.string().nonempty(),
+    uid: z.string().nonempty(),
+    message: z.string().nonempty(),
+    category: z.enum(['FEIL', 'FORSLAG', 'ANNET']),
+    contactType: ContactTypeSchema,
+    contactDetails: NullableValkeyString,
+})
+
+export type InSituFeedback = z.infer<typeof ContactableUserFeedbackSchema>
+export const InSituFeedbackSchema = BaseFeedbackSchema.safeExtend(SentimentableSchema.shape).safeExtend({
+    type: z.literal('IN_SITU'),
+    name: z.string().nonempty(),
+    uid: z.string().nonempty(),
+    message: z.string().nonempty(),
+})
+
+export type AllFeedbackTypes = z.infer<typeof AllFeedbackTypesSchema>
+export const AllFeedbackTypesSchema = z.discriminatedUnion('type', [
+    ContactableUserFeedbackSchema,
+    InSituFeedbackSchema,
+])

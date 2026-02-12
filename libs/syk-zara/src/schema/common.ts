@@ -10,3 +10,10 @@ export const NullableDateTime = z.string().transform((date) => {
 
     return formatISO(parseISO(date))
 })
+
+/**
+ * The sentiment is stored in valkey as nothing (''), or 1-5. This schema transforms it to a number or null.
+ */
+export const SentimentSchema = NullableValkeyString.transform((val) => (val == null ? null : Number(val))).pipe(
+    z.number().min(1).max(5).nullable(),
+)

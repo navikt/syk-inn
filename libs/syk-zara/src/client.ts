@@ -1,7 +1,7 @@
 import * as z from 'zod'
 import Valkey from 'iovalkey'
 
-import { ContactTypeSchema, Feedback } from './schema/schema'
+import { ContactTypeSchema, ContactableUserFeedback } from './schema/schema'
 import { feedbackValkeyKey } from './lib/keys'
 import { createFeedbackPubClient } from './pubsub/pub'
 
@@ -42,6 +42,7 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
 
             await valkey.hset(key, {
                 id: id,
+                type: 'CONTACTABLE',
                 timestamp: timestamp,
                 message: payload.message,
                 name: payload.user.name,
@@ -64,7 +65,7 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
                 metaDev: JSON.stringify(payload.meta.dev ?? {}),
                 // TODO: Expand this if we'll use it it more than syk-inn
                 metaSource: 'syk-inn',
-            } satisfies Record<keyof Feedback, string | number | null>)
+            } satisfies Record<keyof ContactableUserFeedback, string | number | null>)
 
             pub.new(id)
         },

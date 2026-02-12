@@ -24,3 +24,27 @@ export const RedactionLogSchema = z
             }),
         ),
     )
+
+export const MetaTagsSchema = z
+    .string()
+    .transform((val, ctx) => {
+        try {
+            return JSON.parse(val)
+        } catch {
+            ctx.addIssue({ code: 'custom', message: 'Invalid JSON' })
+            return z.NEVER
+        }
+    })
+    .pipe(z.array(z.string()))
+
+export const MetaDevSchema = z
+    .string()
+    .transform((val, ctx) => {
+        try {
+            return JSON.parse(val)
+        } catch {
+            ctx.addIssue({ code: 'custom', message: 'Invalid JSON' })
+            return z.NEVER
+        }
+    })
+    .pipe(z.record(z.string(), z.string().nullable()))
