@@ -7,6 +7,11 @@ import { SimpleReveal } from '@components/animation/Reveal'
 
 import { FeedbackFormValues } from '../form'
 
+/**
+ * Psuedo feature toggle for phone contact field.
+ */
+const PHONE_CONTACT_ENABLED = false
+
 export function ContactField(): ReactElement {
     const type = useController<FeedbackFormValues, 'contact.type'>({
         name: 'contact.type',
@@ -17,7 +22,7 @@ export function ContactField(): ReactElement {
             <Select {...type.field} label="Ønsker du å bli kontaktet?" className="mb-4">
                 <option value="NONE">Nei takk</option>
                 <option value="EMAIL">Ja, via epost</option>
-                <option value="PHONE">Ja, via telefon</option>
+                {PHONE_CONTACT_ENABLED && <option value="PHONE">Ja, via telefon</option>}
             </Select>
             <AnimatePresence>
                 {type.field.value === 'EMAIL' && (
