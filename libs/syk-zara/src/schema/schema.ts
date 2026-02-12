@@ -62,7 +62,7 @@ export const ContactableUserFeedbackSchema = BaseFeedbackSchema.safeExtend(Senti
     contactDetails: NullableValkeyString,
 })
 
-export type InSituFeedback = z.infer<typeof ContactableUserFeedbackSchema>
+export type InSituFeedback = z.infer<typeof InSituFeedbackSchema>
 export const InSituFeedbackSchema = BaseFeedbackSchema.safeExtend(SentimentableSchema.shape).safeExtend({
     type: z.literal('IN_SITU'),
     name: z.string().nonempty(),
