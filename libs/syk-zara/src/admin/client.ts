@@ -3,7 +3,7 @@ import * as R from 'remeda'
 
 import { FeedbackClient } from '../client'
 import { feedbackValkeyKey } from '../lib/keys'
-import { AllFeedbackTypes, AllFeedbackTypesSchema } from '../schema/schema'
+import { AllFeedbackVariantsSchema, Feedback } from '../schema/schema'
 import { raise } from '../lib/utils'
 import { createFeedbackClient } from '../client'
 import { createFeedbackPubClient } from '../pubsub/pub'
@@ -13,10 +13,10 @@ export type AdminFeedbackClient = FeedbackClient & {
      * Not to be confused with create, this allows you to insert feedback directly,
      * for example when seeding the valkey.
      */
-    insert: (id: string, feedback: Omit<AllFeedbackTypes, 'id'>) => Promise<void>
+    insert: (id: string, feedback: Omit<Feedback, 'id'>) => Promise<void>
     delete: (id: string) => Promise<void>
-    all: () => Promise<AllFeedbackTypes[]>
-    byId: (id: string) => Promise<AllFeedbackTypes | null>
+    all: () => Promise<Feedback[]>
+    byId: (id: string) => Promise<Feedback | null>
     redactFeedback: (id: string, message: string, whom: { name: string; count: number }) => Promise<void>
     mark: {
         verified: (id: string, by: string) => Promise<void>
@@ -45,7 +45,7 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                 redactionLog: JSON.stringify(feedback.redactionLog ?? []),
                 metaTags: JSON.stringify(feedback.metaTags ?? []),
                 metaDev: JSON.stringify(feedback.metaDev ?? {}),
-            } satisfies Record<keyof AllFeedbackTypes, string | number | null>)
+            } satisfies Record<keyof Feedback, string | number | null>)
 
             pub.new(id)
         },
@@ -55,7 +55,7 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                 allkeys.map(async (key) => {
                     const data = await valkey.hgetall(key)
 
-                    return AllFeedbackTypesSchema.parse(data)
+                    return AllFeedbackVariantsSchema.parse(data)
                 }),
             )
 
@@ -69,7 +69,7 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                 return null
             }
 
-            return AllFeedbackTypesSchema.parse(data)
+            return AllFeedbackVariantsSchema.parse(data)
         },
         delete: async (id) => {
             const key = feedbackValkeyKey(id)

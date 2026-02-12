@@ -70,8 +70,8 @@ export const InSituFeedbackSchema = BaseFeedbackSchema.safeExtend(SentimentableS
     message: z.string().nonempty(),
 })
 
-export type AllFeedbackTypes = z.infer<typeof AllFeedbackTypesSchema>
-export const AllFeedbackTypesSchema = z.discriminatedUnion('type', [
+export type Feedback = z.infer<typeof AllFeedbackVariantsSchema>
+export const AllFeedbackVariantsSchema = z.discriminatedUnion('type', [
     ContactableUserFeedbackSchema,
     InSituFeedbackSchema,
 ])
