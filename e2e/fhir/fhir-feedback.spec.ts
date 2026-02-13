@@ -70,7 +70,7 @@ test('submitting feedback on kvittering page should work', async ({ page }) => {
             inSituRegion.getByRole('button', { name: 'Send tilbakemelding' }).click(),
             waitForHttp('/feedback', 'POST')(page),
         )
-        await expect(inSituRegion.getByText('Tilbakemelding mottatt, tusen takk!')).toBeVisible()
+        await expect(inSituRegion.getByText('Takk for tilbakemeldingen!')).toBeVisible()
         expect(await result.response().then((it) => it?.status())).toBe(200)
     })
 })
@@ -93,7 +93,7 @@ function openFeedbackDialog() {
 function submitFeedback() {
     return async (dialog: Locator) => {
         await dialog.getByRole('button', { name: 'Send tilbakemelding' }).click()
-        await expect(dialog.getByRole('heading', { name: 'Tilbakemelding mottatt, tusen takk!' })).toBeVisible()
+        await expect(dialog.getByRole('heading', { name: 'Takk for tilbakemeldingen!' })).toBeVisible()
     }
 }
 

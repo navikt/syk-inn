@@ -12,7 +12,7 @@ function FeedbackInSitu(): ReactElement {
 
     return (
         <section
-            className="mt-6 border border-ax-bg-neutral-moderate bg-ax-bg-sunken rounded-md p-4"
+            className="mt-6 border border-ax-bg-neutral-moderate bg-ax-bg-sunken rounded-md p-4 pt-3"
             aria-label="Tilbakemelding"
         >
             {!wantsToFeedback && (
@@ -55,11 +55,11 @@ function InSituQuestionaire(): ReactElement {
             {!feedback.success && <FeedbackInSituForm onSubmit={feedback.submit} loading={feedback.submitting} />}
             {feedback.success && (
                 <div>
-                    <BodyShort className="font-bold flex gap-2 items-center">
+                    <BodyShort className="flex gap-2 items-center">
                         <span className="size-6 bg-ax-bg-success-strong rounded-full text-ax-text-success-contrast">
                             <CheckmarkHeavyIcon aria-hidden className="size-6" />
                         </span>
-                        Tilbakemelding mottatt, tusen takk!
+                        Takk for tilbakemeldingen!
                     </BodyShort>
                 </div>
             )}

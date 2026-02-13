@@ -70,7 +70,7 @@ function FeedbackButton(): ReactElement {
                                     <CheckmarkHeavyIcon aria-hidden className="size-24" />
                                 </div>
                                 <Heading size="large" level="2">
-                                    Tilbakemelding mottatt, tusen takk!
+                                    Takk for tilbakemeldingen!
                                 </Heading>
                                 <div className="mt-16">
                                     <FullFeedbackSentimentFollowUp
