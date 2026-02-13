@@ -51,6 +51,7 @@ export const satisfiesGeneralConditions = (
     utdypendeSporsmal: UtdypendeOpplysningerHint,
     daysForPeriode: number,
 ): boolean => {
+    // TODO: Gjelder IKKE for uke 17 og 39
     if (!currentSykmeldingIsAktivitetIkkeMulig(perioder)) return false
 
     if (!currentSykmeldingIsPartOfPeriode(perioder, utdypendeSporsmal)) return false
