@@ -119,6 +119,10 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                 if (existingAt) {
                     raise(`Unable to mark feedback as contacted, it was already contacted at ${existingAt}`)
                 }
+                const type = (await valkey.hget(key, 'type')) as Feedback['type']
+                if (type !== 'CONTACTABLE') {
+                    raise(`Unable to mark feedback as contacted, only CONTACTABLE feedback can be marked as contacted.`)
+                }
 
                 await valkey.hset(key, {
                     contactedAt: new Date().toISOString(),
