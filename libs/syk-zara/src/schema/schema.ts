@@ -74,6 +74,10 @@ export const InSituFeedbackSchema = BaseFeedbackSchema.safeExtend(SentimentableS
     name: z.string().nonempty(),
     uid: z.string().nonempty(),
     message: z.string().nonempty(),
+    /**
+     * What variant of in-situ feedback this is (e.g., which UI prompt or placement it came from)
+     */
+    variant: z.string().nonempty(),
 })
 
 export type Feedback = z.infer<typeof AllFeedbackVariantsSchema>
