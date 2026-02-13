@@ -4,18 +4,23 @@ import * as R from 'remeda'
 import { useParams, usePathname } from 'next/navigation'
 
 import { spanBrowserAsync } from '@lib/otel/browser'
-import { FullFeedbackPayload, FeedbackUpdateSentimentPayload } from '@core/services/feedback/feedback-payload'
+import {
+    FullFeedbackPayload,
+    FeedbackUpdateSentimentPayload,
+    InSituFeedbackPayload,
+} from '@core/services/feedback/feedback-payload'
 import { useMode } from '@core/providers/Modes'
 import { pathWithBasePath } from '@lib/url'
 import { getBrowserSessionId } from '@lib/otel/faro'
 
-import { FeedbackFormValues } from './form'
+import { InSituFeedbackFormValues } from './in-situ/form'
+import { FeedbackFormValues } from './full-feedback/form'
 
 type UseFeedback = {
     submitting: boolean
     success: { feedbackId: string } | null
     error: string | null
-    submit: (values: FeedbackFormValues) => Promise<void>
+    submit: (values: FeedbackFormValues | InSituFeedbackFormValues) => Promise<void>
 }
 
 type UpdateSentiment = {
@@ -26,13 +31,13 @@ type UpdateSentiment = {
 export function useFeedback(): UseFeedback & UpdateSentiment {
     const mode = useMode()
     const [state, dispatch] = useReducer(feedbackReducer, defaultFeedbackState)
-    const formValuesToPayload = useFormValuesToPayload()
+    const mappers = useFormValuesToPayload()
 
-    const handleSubmit = async (values: FeedbackFormValues): Promise<void> => {
+    const handleSubmit = async (values: FeedbackFormValues | InSituFeedbackFormValues): Promise<void> => {
         dispatch({ type: 'SENDING_FEEDBACK' })
         try {
             await spanBrowserAsync('Feedback.onSubmit', async () => {
-                const payload = formValuesToPayload(values)
+                const payload = 'contact' in values ? mappers.full(values) : mappers.inSitu(values)
                 const response = await fetch(pathWithBasePath(mode.paths.feedback) + '?variant=v2', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -65,6 +70,7 @@ export function useFeedback(): UseFeedback & UpdateSentiment {
             dispatch({ type: 'UPDATING_SENTIMENT' })
 
             const payload: FeedbackUpdateSentimentPayload = {
+                feedbackType: 'SENTIMENT_UPDATE',
                 id: state.success.feedbackId,
                 sentiment: sentiment,
             }
@@ -98,11 +104,28 @@ export function useFeedback(): UseFeedback & UpdateSentiment {
 /**
  * Custom hook to curry a mapper function, as we use other hooks to extract metadata
  */
-function useFormValuesToPayload(): (values: FeedbackFormValues) => FullFeedbackPayload {
+function useFormValuesToPayload(): {
+    full: (values: FeedbackFormValues) => FullFeedbackPayload
+    inSitu: (values: InSituFeedbackFormValues) => InSituFeedbackPayload
+} {
     const params = useParams()
     const path = usePathname()
 
-    return (values: FeedbackFormValues): FullFeedbackPayload => {
+    const getMeta = (): FullFeedbackPayload['meta'] => {
+        const routeParams: Record<string, string | null> = R.mapValues(params, (it) =>
+            Array.isArray(it) ? it.join(',') : (it ?? null),
+        )
+
+        return {
+            location: path,
+            dev: {
+                ...routeParams,
+                sessionId: getBrowserSessionId(),
+            },
+        }
+    }
+
+    const fullMapper = (values: FeedbackFormValues): FullFeedbackPayload => {
         const contact = {
             type: values.contact.type,
             details:
@@ -113,22 +136,28 @@ function useFormValuesToPayload(): (values: FeedbackFormValues) => FullFeedbackP
                       : null,
         }
 
-        const routeParams: Record<string, string | null> = R.mapValues(params, (it) =>
-            Array.isArray(it) ? it.join(',') : (it ?? null),
-        )
-
         return {
+            feedbackType: 'FULL',
             type: values.type,
             message: values.message,
             contact: contact,
-            meta: {
-                location: path,
-                dev: {
-                    ...routeParams,
-                    sessionId: getBrowserSessionId(),
-                },
-            },
+            meta: getMeta(),
         }
+    }
+
+    const inSituMapper = (values: InSituFeedbackFormValues): InSituFeedbackPayload => {
+        return {
+            feedbackType: 'IN_SITU',
+            message: values.message,
+            sentiment: values.sentiment,
+            variant: 'Kvittering',
+            meta: getMeta(),
+        }
+    }
+
+    return {
+        full: fullMapper,
+        inSitu: inSituMapper,
     }
 }
 

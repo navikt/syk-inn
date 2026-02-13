@@ -3,7 +3,7 @@ import { useController } from 'react-hook-form'
 import { ToggleGroup } from '@navikt/ds-react'
 import { BugIcon, LightBulbIcon, QuestionmarkIcon } from '@navikt/aksel-icons'
 
-import { FeedbackFormValues } from '../form'
+import { FeedbackFormValues } from '../full-feedback/form'
 
 export function TypeField(): ReactElement {
     const type = useController<FeedbackFormValues, 'type'>({

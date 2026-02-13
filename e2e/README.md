@@ -41,8 +41,9 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [fhir/fhir-feedback.spec.ts](./fhir/fhir-feedback.spec.ts)
 
-- [submitting feedback should work](./fhir/fhir-feedback.spec.ts#L7)
-- [submitting feedback without contact should work](./fhir/fhir-feedback.spec.ts#L20)
+- [submitting feedback should work](./fhir/fhir-feedback.spec.ts#L11)
+- [submitting feedback without contact should work](./fhir/fhir-feedback.spec.ts#L24)
+- [submitting feedback on kvittering page should work](./fhir/fhir-feedback.spec.ts#L37)
 
 ## [fhir/fhir-form-interactions.spec.ts](./fhir/fhir-form-interactions.spec.ts)
 

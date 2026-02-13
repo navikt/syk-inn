@@ -4,6 +4,7 @@ import { InformationSquareIcon, TerminalIcon, VirusIcon } from '@navikt/aksel-ic
 import React, { ReactElement } from 'react'
 import { notFound } from 'next/navigation'
 import { Page, PageBlock } from '@navikt/ds-react/Page'
+import { InfoCardContent, InfoCardHeader, InfoCardTitle } from '@navikt/ds-react/InfoCard'
 
 import { isLocal, isDemo, getServerEnv } from '@lib/env'
 import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
@@ -68,20 +69,20 @@ export default function Home(): ReactElement {
                         )}
 
                         {isLocalValkeyEnabled && (
-                            <InfoCard data-color="info" className="mt-4" size="small">
-                                <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
-                                    <InfoCard.Title>
-                                        You have enabled local Valkey! Any scenarios that include drafts will not be a
-                                        part of the scenario you launch.
-                                    </InfoCard.Title>
-                                </InfoCard.Header>
-                                <InfoCard.Content>
+                            <InfoCard data-color="info" className="mt-4 mb-6" size="small">
+                                <InfoCardHeader icon={<InformationSquareIcon aria-hidden />}>
+                                    <InfoCardTitle>You have enabled local Valkey!</InfoCardTitle>
+                                </InfoCardHeader>
+                                <InfoCardContent>
+                                    <BodyShort spacing>
+                                        Any scenarios that include drafts will not be a part of the scenario you launch.
+                                    </BodyShort>
                                     Set{' '}
                                     <code className="text-sm bg-ax-bg-neutral-soft p-1 rounded-md">
                                         USE_LOCAL_VALKEY=false
                                     </code>{' '}
                                     in your .env.development file to re-enable drafts in scenarios.
-                                </InfoCard.Content>
+                                </InfoCardContent>
                             </InfoCard>
                         )}
 

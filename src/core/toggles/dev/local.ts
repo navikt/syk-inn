@@ -2,6 +2,8 @@
 
 import { IToggle } from '@unleash/nextjs'
 
+import { raise } from '@lib/ts'
+
 import { ExpectedToggles } from '../toggles'
 
 const on: Omit<IToggle, 'name'> = {
@@ -49,6 +51,16 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
         name: 'SYK_INN_FEEDBACK_V2',
         ...on,
     },
+    SYK_INN_FEEDBACK_KVITTERING: {
+        name: 'SYK_INN_FEEDBACK_KVITTERING',
+        ...on,
+    },
+}
+
+for (const [key, value] of Object.entries(devToggles)) {
+    if (key !== value.name) {
+        raise(`You messed up! Key ${key} needs to have the same name property.`)
+    }
 }
 
 export const localDevelopmentToggles: IToggle[] = Object.values(devToggles)

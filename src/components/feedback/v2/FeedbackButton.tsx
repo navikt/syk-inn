@@ -10,8 +10,13 @@ import SessionIdInfo from '@components/help/SessionIdInfo'
 import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
 import { useFeedback } from '@components/feedback/v2/useFeedback'
 
-import { FullFeedback, FullFeedbackSentimentFollowUp } from './Feedback'
+import { FullFeedback, FullFeedbackSentimentFollowUp } from './full-feedback/FullFeedbackForm'
 
+/**
+ * This is a fixed buttot that will align itself in the bottom right corne.r
+ *
+ * For inline feedback, use the 'in situ'-form.
+ */
 function FeedbackButton(): ReactElement {
     const feedback = useFeedback()
     const behandler = useQuery(BehandlerDocument, { notifyOnNetworkStatusChange: true })
