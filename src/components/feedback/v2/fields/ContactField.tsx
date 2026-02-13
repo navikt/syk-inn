@@ -5,7 +5,7 @@ import { AnimatePresence } from 'motion/react'
 
 import { SimpleReveal } from '@components/animation/Reveal'
 
-import { FeedbackFormValues } from '../form'
+import { FeedbackFormValues } from '../full-feedback/form'
 
 /**
  * Psuedo feature toggle for phone contact field.

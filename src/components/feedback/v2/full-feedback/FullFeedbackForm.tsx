@@ -7,10 +7,11 @@ import { BehandlerFragment } from '@queries'
 import SessionIdInfo from '@components/help/SessionIdInfo'
 import { SentimentPicker } from '@components/feedback/v2/sentiment/SentimentPicker'
 
+import { TypeField } from '../fields/TypeField'
+import { ContactField } from '../fields/ContactField'
+import { FeedbackField } from '../fields/FeedbackField'
+
 import { FeedbackFormValues } from './form'
-import { TypeField } from './fields/TypeField'
-import { ContactField } from './fields/ContactField'
-import { FeedbackField } from './fields/FeedbackField'
 
 type Props = {
     behandler: BehandlerFragment
@@ -80,9 +81,7 @@ export function FullFeedbackSentimentFollowUp({
                 Hvor godt liker du å bruke den nye sykmeldingsløsningen?
             </Heading>
             {!hasUpdated ? (
-                <>
-                    <SentimentPicker onSentiment={onSentiment} />
-                </>
+                <SentimentPicker ariaLabelledby="sentiment-followup-heading" onSentiment={onSentiment} />
             ) : (
                 <div className="h-14 flex items-center italic gap-1">
                     Takk for din mening!

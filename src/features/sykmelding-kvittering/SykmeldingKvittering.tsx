@@ -17,6 +17,8 @@ import { useMode } from '@core/providers/Modes'
 import TwoPaneGrid from '@components/layout/TwoPaneGrid'
 import { SimpleAlert } from '@components/help/GeneralErrors'
 import { ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
+import { useFlag } from '@core/toggles/context'
+import FeedbackInSitu from '@components/feedback/v2/in-situ/FeedbackInSitu'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 import { SykmeldingSynchronization } from './SykmeldingSynchronization'
@@ -27,6 +29,7 @@ type Props = {
 }
 
 function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
+    const kvitteringFeedback = useFlag('SYK_INN_FEEDBACK_KVITTERING')
     const dispatch = useAppDispatch()
     const mode = useMode()
 
@@ -43,38 +46,39 @@ function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
             <TwoPaneGrid tag="div">
                 <div className="">
                     <SykmeldingKvitteringSummary sykmeldingId={sykmeldingId} />
+                    <div className="flex justify-end mt-4">
+                        {mode.type === 'FHIR' ? (
+                            <ShortcutButtonLink
+                                variant="primary"
+                                size="small"
+                                href={mode.paths.root}
+                                className="underline"
+                                shortcut={{
+                                    modifier: 'alt',
+                                    code: 'ArrowLeft',
+                                }}
+                            >
+                                Tilbake til pasientoversikt
+                            </ShortcutButtonLink>
+                        ) : (
+                            <ShortcutButtonLink
+                                variant="primary"
+                                size="small"
+                                href={mode.paths.root}
+                                className="underline"
+                                shortcut={{
+                                    modifier: 'alt',
+                                    code: 'ArrowLeft',
+                                }}
+                            >
+                                Tilbake til pasientsøk
+                            </ShortcutButtonLink>
+                        )}
+                    </div>
                 </div>
                 <div>
                     <SykmeldingKvitteringStatus sykmeldingId={sykmeldingId} />
-                </div>
-                <div className="flex justify-end">
-                    {mode.type === 'FHIR' ? (
-                        <ShortcutButtonLink
-                            variant="primary"
-                            size="small"
-                            href={mode.paths.root}
-                            className="underline"
-                            shortcut={{
-                                modifier: 'alt',
-                                code: 'ArrowLeft',
-                            }}
-                        >
-                            Tilbake til pasientoversikt
-                        </ShortcutButtonLink>
-                    ) : (
-                        <ShortcutButtonLink
-                            variant="primary"
-                            size="small"
-                            href={mode.paths.root}
-                            className="underline"
-                            shortcut={{
-                                modifier: 'alt',
-                                code: 'ArrowLeft',
-                            }}
-                        >
-                            Tilbake til pasientsøk
-                        </ShortcutButtonLink>
-                    )}
+                    {kvitteringFeedback && <FeedbackInSitu />}
                 </div>
             </TwoPaneGrid>
         </div>

@@ -1,8 +1,12 @@
 import test, { expect, Locator, Page } from '@playwright/test'
+import { inDays, inputDate } from '@lib/test/date-utils'
 
 import { clickAndWait, waitForHttp } from '../utils/request-utils'
+import { nextStep, submitSykmelding } from '../actions/user-actions'
 
 import { launchWithMock } from './actions/fhir-actions'
+import { startNewSykmelding } from './actions/fhir-user-actions'
+import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 test('submitting feedback should work', async ({ page }) => {
     const dialog = await openFeedbackDialog()(page)
@@ -28,6 +32,47 @@ test('submitting feedback without contact should work', async ({ page }) => {
     await answerSentiment()(dialog, page)
 
     await dialog.getByRole('button', { name: 'Lukk' }).nth(0).click()
+})
+
+test('submitting feedback on kvittering page should work', async ({ page }) => {
+    await launchWithMock('empty')(page)
+    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await test.step('fill only values that are not prefilled (tom, grad)', async () => {
+        // Tom is not prefilled
+        await page.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(inDays(3)))
+
+        // Grad is not prefilled
+        await page.getByRole('textbox', { name: 'Sykmeldingsgrad (%)' }).fill(`60`)
+    })
+    await nextStep()(page)
+    await verifySignerendeBehandler()(page)
+    await submitSykmelding()(page)
+    await verifyIsOnKvitteringPage()(page)
+
+    const inSituRegion = page.getByRole('region', { name: 'Tilbakemelding' })
+    await test.step('Fyll ut in-situ tilbakemelding', async () => {
+        await expect(inSituRegion).toBeVisible()
+        await inSituRegion.getByRole('button', { name: 'Ja takk!' }).click()
+        await inSituRegion
+            .getByRole('textbox', { name: /Hvordan synes du den nye løsningen fungerer/ })
+            .fill('Jeg synes den fungerer bra!')
+
+        await inSituRegion
+            .getByRole('radiogroup', { name: 'Hvor fornøyd er du med den nye løsningen?' })
+            .getByRole('radio', {
+                name: 'Jeg er fornøyd',
+            })
+            .click()
+    })
+
+    await test.step('send og bekreft at det er good', async () => {
+        const result = await clickAndWait(
+            inSituRegion.getByRole('button', { name: 'Send tilbakemelding' }).click(),
+            waitForHttp('/feedback', 'POST')(page),
+        )
+        await expect(inSituRegion.getByText('Tilbakemelding mottatt, tusen takk!')).toBeVisible()
+        expect(await result.response().then((it) => it?.status())).toBe(200)
+    })
 })
 
 function openFeedbackDialog() {
@@ -87,7 +132,10 @@ function answerSentiment() {
         })
         await expect(sentimentRegion).toBeVisible()
         const result = await clickAndWait(
-            sentimentRegion.getByRole('button', { name: 'Jeg er fornøyd' }).click(),
+            sentimentRegion
+                .getByRole('radiogroup', { name: 'Hvor godt liker du å bruke den nye sykmeldingsløsningen?' })
+                .getByRole('radio', { name: 'Jeg er fornøyd' })
+                .click(),
             waitForHttp('/feedback', 'POST')(page),
         )
         await expect(sentimentRegion.getByText('Takk for din mening!')).toBeVisible()

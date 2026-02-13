@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { Textarea } from '@navikt/ds-react'
 import { useController } from 'react-hook-form'
 
-import { FeedbackFormValues, useFeedbackContext } from '../form'
+import { FeedbackFormValues, useFeedbackContext } from '../full-feedback/form'
 
 export function FeedbackField(): ReactElement {
     const message = useController<FeedbackFormValues, 'message'>({
