@@ -11,12 +11,13 @@ const BaseFeedbackSchema = z.object({
     id: z.string(),
     timestamp: DateTime,
     /**
-     * Metadata used for storing the administrative state of the feedback
+     * Each feedback can be verified by administrators
      */
-    contactedAt: NullableDateTime,
-    contactedBy: NullableValkeyString,
     verifiedContentAt: NullableDateTime,
     verifiedContentBy: NullableValkeyString,
+    /**
+     * Each feedback is shareable to slack exactly once
+     */
     sharedAt: NullableDateTime,
     sharedBy: NullableValkeyString,
     sharedLink: NullableValkeyString,
@@ -60,6 +61,11 @@ export const ContactableUserFeedbackSchema = BaseFeedbackSchema.safeExtend(Senti
     category: z.enum(['FEIL', 'FORSLAG', 'ANNET']),
     contactType: ContactTypeSchema,
     contactDetails: NullableValkeyString,
+    /**
+     * Metadata used for storing the administrative state of the feedback
+     */
+    contactedAt: NullableDateTime,
+    contactedBy: NullableValkeyString,
 })
 
 export type InSituFeedback = z.infer<typeof InSituFeedbackSchema>
