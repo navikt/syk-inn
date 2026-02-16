@@ -83,7 +83,7 @@ export function ComboTableHeader({ className }: { className?: string }): ReactEl
         <Table.Header className={className}>
             <Table.Row>
                 <Table.HeaderCell scope="col" className="min-w-38">
-                    Periode
+                    Periode(r)
                 </Table.HeaderCell>
                 <Table.HeaderCell scope="col" className="min-w-46">
                     Diagnose
@@ -114,7 +114,7 @@ function DraftTableRow({ draft }: { draft: DraftFragment }): ReactElement {
 
     return (
         <TableRow
-            periode={
+            perioder={
                 <DraftPeriodeLink draftId={draft.draftId} lastChanged={draft.lastUpdated} perioder={values?.perioder} />
             }
             diagnose={draftDiagnoseText(values?.hoveddiagnose)}
@@ -138,7 +138,7 @@ function FullTableRow({
 }): ReactElement {
     return (
         <TableRow
-            periode={
+            perioder={
                 <SykmeldingPeriodeLink sykmeldingId={sykmelding.sykmeldingId} aktivitet={sykmelding.values.aktivitet} />
             }
             diagnose={sykmeldingDiagnoseText(sykmelding.values.hoveddiagnose)}
@@ -168,7 +168,7 @@ function LightTableRow({
 }): ReactElement {
     return (
         <TableRow
-            periode={
+            perioder={
                 <SykmeldingPeriodeLink sykmeldingId={sykmelding.sykmeldingId} aktivitet={sykmelding.values.aktivitet} />
             }
             diagnose={sykmeldingDiagnoseText(sykmelding.values.hoveddiagnose)}
@@ -198,7 +198,7 @@ function RedactedTableRow({
 }): ReactElement {
     return (
         <TableRow
-            periode={
+            perioder={
                 <SykmeldingPeriodeLink sykmeldingId={sykmelding.sykmeldingId} aktivitet={sykmelding.values.aktivitet} />
             }
             diagnose={<Redaction className="w-42" title="Diagnose skjult" />}
@@ -218,7 +218,7 @@ function RedactedTableRow({
 }
 
 function TableRow(props: {
-    periode: string | ReactNode
+    perioder: string | ReactNode
     diagnose: string | ReactNode | null
     grad: string | ReactNode | null
     arbeidsgiver: string | ReactNode | null
@@ -228,7 +228,7 @@ function TableRow(props: {
 }): ReactElement {
     return (
         <Table.Row>
-            <Table.DataCell>{props.periode}</Table.DataCell>
+            <Table.DataCell>{props.perioder}</Table.DataCell>
             <Table.DataCell>{props.diagnose}</Table.DataCell>
             <Table.DataCell>{props.grad}</Table.DataCell>
             <Table.DataCell>{props.arbeidsgiver}</Table.DataCell>

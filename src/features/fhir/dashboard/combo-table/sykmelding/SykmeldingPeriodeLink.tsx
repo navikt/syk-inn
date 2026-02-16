@@ -1,3 +1,4 @@
+import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 
 import { SykmeldingFragment } from '@queries'
@@ -13,10 +14,14 @@ type Props = {
 
 function SykmeldingPeriodeLink({ sykmeldingId, aktivitet }: Props): ReactElement {
     const mode = useMode()
+    const [first, ...rest] = R.sortBy(aktivitet, [(it) => it.fom, 'desc'])
 
     return (
         <>
-            <AkselNextLink href={mode.paths.sykmelding(sykmeldingId)}>{sykmeldingPeriodeText(aktivitet)}</AkselNextLink>
+            <AkselNextLink href={mode.paths.sykmelding(sykmeldingId)}>{sykmeldingPeriodeText(first)}</AkselNextLink>
+            {rest.map((periode) => (
+                <div key={periode.fom}>{sykmeldingPeriodeText(periode)}</div>
+            ))}
         </>
     )
 }

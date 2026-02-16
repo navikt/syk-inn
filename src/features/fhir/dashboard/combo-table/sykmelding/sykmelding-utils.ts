@@ -1,18 +1,13 @@
-import * as R from 'remeda'
-
 import { raise } from '@lib/ts'
 import { toReadableDatePeriod } from '@lib/date'
 import { AktivitetFragment, DiagnoseFragment } from '@queries'
 
-export function sykmeldingPeriodeText(perioder: { fom: string; tom: string }[]): string {
-    const earliestPeriode = R.firstBy(perioder, [(it) => it.fom, 'desc'])
-    const latestPeriode = R.firstBy(perioder, [(it) => it.fom, 'desc'])
-
-    if (!earliestPeriode || !latestPeriode) {
+export function sykmeldingPeriodeText(periode: { fom: string; tom: string }): string {
+    if (!periode.fom || !periode.tom) {
         raise('Sykmelding without aktivitetsperioder, this should not happen')
     }
 
-    return toReadableDatePeriod(earliestPeriode.fom, latestPeriode.tom)
+    return toReadableDatePeriod(periode.fom, periode.tom)
 }
 
 export function sykmeldingDiagnoseText(hoveddiagnose: DiagnoseFragment | null | undefined): string {
