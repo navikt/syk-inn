@@ -1,5 +1,6 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
+import { BodyShort, VStack } from '@navikt/ds-react'
 
 import { SykmeldingFragment } from '@queries'
 import { AkselNextLink } from '@components/links/AkselNextLink'
@@ -17,12 +18,14 @@ function SykmeldingPeriodeLink({ sykmeldingId, aktivitet }: Props): ReactElement
     const [first, ...rest] = R.sortBy(aktivitet, [(it) => it.fom, 'desc'])
 
     return (
-        <>
+        <VStack gap="space-2">
             <AkselNextLink href={mode.paths.sykmelding(sykmeldingId)}>{sykmeldingPeriodeText(first)}</AkselNextLink>
             {rest.map((periode) => (
-                <div key={periode.fom}>{sykmeldingPeriodeText(periode)}</div>
+                <BodyShort size="small" key={periode.fom}>
+                    {sykmeldingPeriodeText(periode)}
+                </BodyShort>
             ))}
-        </>
+        </VStack>
     )
 }
 
