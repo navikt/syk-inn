@@ -74,6 +74,7 @@ function Uke7(): ReactElement {
 
             <Textarea
                 label={questionTexts.utdypdendeSporsmal.hensynPaArbeidsplassen.label}
+                description={questionTexts.utdypdendeSporsmal.hensynPaArbeidsplassen.description}
                 onChange={hensynPaArbeidsplassen.field.onChange}
                 value={hensynPaArbeidsplassen.field.value ?? ''}
                 error={hensynPaArbeidsplassen.fieldState.error?.message}
