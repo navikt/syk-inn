@@ -5,6 +5,7 @@ import { AnnenFravarsgrunnArsak, OpprettSykmeldingDocument } from '@queries'
 import { toReadableDatePeriod } from '@lib/date'
 import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
 import { inputDate } from '@lib/test/date-utils'
+import { questionTexts } from '@data-layer/common/questions'
 
 import { clickAndWait, getDraftId, waitForGqlRequest } from '../utils/request-utils'
 
@@ -123,18 +124,18 @@ export function addUtdypendeSporsmal({
 
             await utdypendeSporsmalRegion
                 .getByRole('textbox', {
-                    name: 'Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, behandling)',
+                    name: questionTexts.utdypdendeSporsmal.medisinskOppsummering.label,
                 })
                 .fill(medisinskOppsummering)
             await utdypendeSporsmalRegion
                 .getByRole('textbox', {
-                    name: 'Beskriv kort hvilke helsemessige begrensninger som gjør det vanskelig å jobbe gradert',
+                    name: questionTexts.utdypdendeSporsmal.utfordringerMedArbeid.label,
                 })
                 .fill(utfordringerMedArbeid)
             if (hensynPaArbeidsplassen) {
                 await utdypendeSporsmalRegion
                     .getByRole('textbox', {
-                        name: 'Beskriv eventuelle medisinske forhold som bør ivaretas ved eventuell tilbakeføring til nåværende arbeid (ikke obligatorisk)',
+                        name: questionTexts.utdypdendeSporsmal.hensynPaArbeidsplassen.label,
                     })
                     .fill(hensynPaArbeidsplassen)
             }
