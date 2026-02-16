@@ -24,6 +24,7 @@ type SykmeldingFullValues {
     arbeidsgiver: Arbeidsgiver
     tilbakedatering: Tilbakedatering
     utdypendeSporsmal: UtdypendeSporsmal
+    utdypendeSporsmalSvar: UtdypendeSporsmalSvar
     annenFravarsgrunn: AnnenFravarsgrunnArsak
 }
 
@@ -51,6 +52,17 @@ type UtdypendeSporsmal {
     utfordringerMedArbeid: String
     medisinskOppsummering: String
     hensynPaArbeidsplassen: String
+}
+
+type UtdypendeSporsmalSvar {
+    utfordringerMedArbeid: SporsmalSvar
+    medisinskOppsummering: SporsmalSvar
+    hensynPaArbeidsplassen: SporsmalSvar
+}
+
+type SporsmalSvar {
+    sporsmalstekst: String
+    svar: String!
 }
 
 enum AnnenFravarsgrunnArsak {

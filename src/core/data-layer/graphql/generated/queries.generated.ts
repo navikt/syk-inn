@@ -378,6 +378,12 @@ export type RuleOutcome = {
 
 export type RuleOutcomeStatus = 'INVALID' | 'MANUAL_PROCESSING'
 
+export type SporsmalSvar = {
+    __typename: 'SporsmalSvar'
+    sporsmalstekst: Maybe<Scalars['String']['output']>
+    svar: Scalars['String']['output']
+}
+
 export type Sykmelding = SykmeldingFull | SykmeldingLight | SykmeldingRedacted
 
 export type SykmeldingBase = {
@@ -411,6 +417,7 @@ export type SykmeldingFullValues = {
     svangerskapsrelatert: Scalars['Boolean']['output']
     tilbakedatering: Maybe<Tilbakedatering>
     utdypendeSporsmal: Maybe<UtdypendeSporsmal>
+    utdypendeSporsmalSvar: Maybe<UtdypendeSporsmalSvar>
     yrkesskade: Maybe<Yrkesskade>
 }
 
@@ -500,6 +507,13 @@ export type UtdypendeSporsmal = {
 }
 
 export type UtdypendeSporsmalOptions = 'HENSYN_PA_ARBEIDSPLASSEN' | 'MEDISINSK_OPPSUMMERING' | 'UTFORDRINGER_MED_ARBEID'
+
+export type UtdypendeSporsmalSvar = {
+    __typename: 'UtdypendeSporsmalSvar'
+    hensynPaArbeidsplassen: Maybe<SporsmalSvar>
+    medisinskOppsummering: Maybe<SporsmalSvar>
+    utfordringerMedArbeid: Maybe<SporsmalSvar>
+}
 
 export type Yrkesskade = {
     __typename: 'Yrkesskade'

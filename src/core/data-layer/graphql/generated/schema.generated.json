@@ -2305,6 +2305,38 @@
                 "possibleTypes": null
             },
             {
+                "kind": "OBJECT",
+                "name": "SporsmalSvar",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "sporsmalstekst",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "svar",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
                 "kind": "SCALAR",
                 "name": "String",
                 "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
@@ -2588,6 +2620,14 @@
                         "description": null,
                         "args": [],
                         "type": { "kind": "OBJECT", "name": "UtdypendeSporsmal", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "utdypendeSporsmalSvar",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "OBJECT", "name": "UtdypendeSporsmalSvar", "ofType": null },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
@@ -3183,6 +3223,42 @@
                         "deprecationReason": null
                     }
                 ],
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "UtdypendeSporsmalSvar",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "hensynPaArbeidsplassen",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "OBJECT", "name": "SporsmalSvar", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "medisinskOppsummering",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "OBJECT", "name": "SporsmalSvar", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "utfordringerMedArbeid",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "OBJECT", "name": "SporsmalSvar", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
                 "possibleTypes": null
             },
             {
