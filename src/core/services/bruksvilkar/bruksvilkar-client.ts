@@ -1,7 +1,7 @@
 import Valkey from 'iovalkey'
 
 export type BruksvilkarClient = {
-    acceptBruksvilkar: (hpr: string, name: string, version: string) => Promise<void>
+    acceptBruksvilkar: (hpr: string, name: string, version: string) => Promise<string>
     hasAcceptedBruksvilkar: (hpr: string) => Promise<{
         acceptedAt: string
         version: string
@@ -21,6 +21,8 @@ export function createBruksvilkarClient(valkey: Valkey): BruksvilkarClient {
                 version: version,
                 tokenValid: true,
             } satisfies BruksvilkarValkeyData)
+
+            return acceptedAt
         },
         hasAcceptedBruksvilkar: async (hpr: string) => {
             const key = createKey(hpr)
@@ -30,14 +32,14 @@ export function createBruksvilkarClient(valkey: Valkey): BruksvilkarClient {
                 return null
             }
 
-            const data = await valkey.hgetall(key)
-            if (!data || !data.acceptedAt || !data.acceptedVersion) {
+            const data: Record<keyof BruksvilkarValkeyData, string> = await valkey.hgetall(key)
+            if (!data || !data.acceptedAt || !data.version) {
                 return null
             }
 
             return {
                 acceptedAt: data.acceptedAt,
-                version: data.acceptedVersion,
+                version: data.version,
             }
         },
     }

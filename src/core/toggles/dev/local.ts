@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { IToggle } from '@unleash/nextjs'
 
 import { raise } from '@lib/ts'
@@ -54,6 +52,10 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
     SYK_INN_FEEDBACK_KVITTERING: {
         name: 'SYK_INN_FEEDBACK_KVITTERING',
         ...on,
+    },
+    SYK_INN_REQUIRE_BRUKSVILKAR: {
+        name: 'SYK_INN_REQUIRE_BRUKSVILKAR',
+        ...off,
     },
 }
 

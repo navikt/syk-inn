@@ -11,6 +11,10 @@ export type ModePaths = {
     kvittering: (id: string) => `/${string}`
     pdf: (id: string) => `/${string}`
     feedback: `/${string}`
+    bruksvilkar: {
+        root: `/${string}`
+        accept: `/${string}`
+    }
 }
 
 export const createFhirPaths = (patientId: string): ModePaths => ({
@@ -24,6 +28,10 @@ export const createFhirPaths = (patientId: string): ModePaths => ({
     kvittering: (id) => `/fhir/${patientId}/kvittering/${id}`,
     pdf: (id) => `/fhir/${patientId}/pdf/${id}`,
     feedback: `/fhir/${patientId}/feedback`,
+    bruksvilkar: {
+        root: `/fhir/bruksvilkar`,
+        accept: `/fhir/bruksvilkar/accept`,
+    },
 })
 
 export const HelseIdPaths: ModePaths = {
@@ -37,4 +45,8 @@ export const HelseIdPaths: ModePaths = {
     kvittering: (id) => `/kvittering/${id}`,
     pdf: (id) => `/pdf/${id}`,
     feedback: '/feedback',
+    bruksvilkar: {
+        root: `/bruksvilkar`,
+        accept: `/bruksvilkar/accept`,
+    },
 }
