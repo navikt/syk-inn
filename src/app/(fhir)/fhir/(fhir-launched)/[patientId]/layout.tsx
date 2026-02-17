@@ -7,8 +7,7 @@ import { NoValidHPR } from '@components/errors/NoValidHPR'
 import { getFlag, getUserToggles, toToggleMap } from '@core/toggles/unleash'
 import { ToggleProvider } from '@core/toggles/context'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
-import { bundledEnv, isDemo, isLocal } from '@lib/env'
-import NonPilotUserWarning from '@components/user-warnings/NonPilotUserWarning'
+import { isDemo, isLocal } from '@lib/env'
 import metrics from '@lib/prometheus/metrics'
 import DemoWarning from '@components/user-warnings/DemoWarning'
 import { LazyDevTools } from '@dev/tools/LazyDevTools'
@@ -36,11 +35,6 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
     const rootFhirData = await getRootFhirData(patientId)
 
     if ('error' in rootFhirData) {
-        if (bundledEnv.runtimeEnv === 'prod-gcp') {
-            logger.error(`Faking non-pilot page for error ${rootFhirData.error} in production! 🙈`)
-            return <NonPilotUserWarning />
-        }
-
         metrics.appLoadErrorsTotal.inc({ mode: 'FHIR', error_type: rootFhirData.error })
 
         switch (rootFhirData.error) {
