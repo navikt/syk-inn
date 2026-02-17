@@ -20,6 +20,7 @@ import { FhirModeProvider } from '@core/providers/Modes'
 import { createFhirPaths } from '@core/providers/ModePaths'
 import PilotFeedback from '@components/feedback/PilotFeedback'
 import FeedbackButton from '@components/feedback/v2/FeedbackButton'
+import { hasAcceptedBruksvilkar } from '@core/services/bruksvilkar/bruksvilkar-service'
 
 import { NoPractitionerSession, NoValidPatient } from './launched-errors'
 
@@ -88,6 +89,7 @@ type RootFhirData =
       }
     | {
           pasient: AutoPatient
+          acceptedBruksvilkarAt: string | null
           toggles: Awaited<ReturnType<typeof getUserToggles>>
       }
 
@@ -120,11 +122,18 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
         const toggles = await spanServerAsync('FHIR.getRootFhirData.toggles', async () => await getUserToggles(hpr))
 
         metrics.appLoadsTotal.inc({ hpr: hpr, mode: 'FHIR' })
-
         if (!getFlag('PILOT_USER', toggles)) {
             logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
 
             redirect('/fhir/error/non-pilot-user')
+        }
+
+        const requireBruksvilkarToggle = getFlag('SYK_INN_REQUIRE_BRUKSVILKAR', toggles)
+        const acceptedBruksvilkar = await hasAcceptedBruksvilkar(hpr)
+        span.setAttribute('PilotUser.acceptedAt', acceptedBruksvilkar?.acceptedAt ?? 'never')
+
+        if (requireBruksvilkarToggle && acceptedBruksvilkar?.acceptedAt == null) {
+            redirect(`/fhir/bruksvilkar?returnTo=${currentPatientId}`)
         }
 
         const navn = getNameFromFhir(patient.name)
@@ -135,7 +144,11 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
             return { error: 'NO_PATIENT' }
         }
 
-        return { pasient: { type: 'auto', navn, ident }, toggles } satisfies RootFhirData
+        return {
+            pasient: { type: 'auto', navn, ident },
+            acceptedBruksvilkarAt: acceptedBruksvilkar?.acceptedAt ?? null,
+            toggles,
+        } satisfies RootFhirData
     })
 }
 

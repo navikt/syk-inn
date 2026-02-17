@@ -19,6 +19,10 @@ export function toReadableDate(date: string | Date): string {
     return format(date, `d. MMMM yyyy`, { locale: nb })
 }
 
+export function toReadableDateTime(date: string | Date): string {
+    return format(date, `d. MMMM yyyy HH:mm`, { locale: nb })
+}
+
 /**
  * Get a text representation of the period fom to tom
  * @return {string} The period string
