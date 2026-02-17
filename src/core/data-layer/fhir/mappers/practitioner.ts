@@ -1,5 +1,4 @@
 import { logger } from '@navikt/next-logger'
-import { teamLogger } from '@navikt/next-logger/team-log'
 import { FhirPractitioner, GeneralIdentifier } from '@navikt/smart-on-fhir/zod'
 
 import { getNameFromFhir } from '@data-layer/fhir/mappers/patient'
@@ -12,7 +11,7 @@ const HPR_OID = '2.16.578.1.12.4.1.4.4'
 /**
  * Kilde: https://www.ehelse.no/teknisk-dokumentasjon/oid-identifikatorserier-i-helse-og-omsorgstjenesten
  */
-export function userUrnToOidType(urn: string, value: string): 'fnr' | 'dnr' | 'hpr' | 'annet' {
+export function userUrnToOidType(urn: string): 'fnr' | 'dnr' | 'hpr' | 'annet' {
     switch (urn.replace('urn:oid:', '')) {
         case FNR_OID:
             return 'fnr'
@@ -21,8 +20,7 @@ export function userUrnToOidType(urn: string, value: string): 'fnr' | 'dnr' | 'h
         case HPR_OID:
             return 'hpr'
         default:
-            logger.error(`Unknown OID: ${urn}, see team logs for value.`)
-            teamLogger.error(`Unknown OID: ${urn}, value: ${value}`)
+            logger.error(`Unknown OID: ${urn}`)
             return 'annet'
     }
 }
@@ -41,8 +39,7 @@ export function getHpr(identifiers: GeneralIdentifier | GeneralIdentifier[]): st
 export function practitionerToBehandler(practitioner: FhirPractitioner): Pick<Behandler, 'hpr' | 'navn' | 'epost'> {
     const hpr = getHpr(practitioner.identifier)
     if (hpr == null) {
-        teamLogger.error(`Practitioner without HPR: ${JSON.stringify(practitioner, null, 2)}`)
-        throw new Error(`Practitioner without HPR (see team logs for name)`)
+        throw new Error(`Practitioner without HPR, FHIR ID: ${practitioner.id}`)
     }
 
     return {

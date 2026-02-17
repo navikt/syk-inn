@@ -2,7 +2,6 @@ import { logger } from '@navikt/next-logger'
 import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
 import { GraphQLError } from 'graphql/error'
-import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
@@ -48,22 +47,33 @@ export async function getAllSykmeldingMetaFromFhir(
 
         const legekontorOrgnr = getOrganisasjonsnummerFromFhir(organization)
         if (legekontorOrgnr == null) {
-            failSpan(span, 'Organization without valid orgnummer')
-            teamLogger.error(`Organization without valid orgnummer: ${JSON.stringify(organization, null, 2)}`)
+            failSpan(
+                span,
+                'Organization without valid orgnummer',
+                new Error(`Organization without valid orgnummer: ${JSON.stringify(organization, null, 2)}`),
+            )
             throw new GraphQLError('API_ERROR')
         }
 
         const legekontorTlf = getOrganisasjonstelefonnummerFromFhir(organization)
         if (legekontorTlf == null) {
-            failSpan(span, 'Organization without valid phone number')
-            teamLogger.error(`Organization without valid phone number: ${JSON.stringify(organization, null, 2)}`)
+            failSpan(
+                span,
+                'Organization without valid phone number',
+                new Error(`Organization without valid phone number: ${JSON.stringify(organization, null, 2)}`),
+            )
             throw new GraphQLError('API_ERROR')
         }
 
         const pasientIdent = getValidPatientIdent(patient.identifier)
         if (pasientIdent == null) {
-            failSpan(span, 'Patient without valid FNR/DNR')
-            teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(patient, null, 2)}`)
+            failSpan(
+                span,
+                'Patient without valid FNR/DNR',
+                new Error(
+                    `Patient without valid FNR/DNR, found OIDs: ${patient.identifier?.map((id) => id.system).join(', ') || 'none'}`,
+                ),
+            )
             throw new GraphQLError('API_ERROR')
         }
 

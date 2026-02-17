@@ -2,7 +2,6 @@ import { logger } from '@navikt/next-logger'
 import { startTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { useMutation } from '@apollo/client/react'
-import { teamLogger } from '@navikt/next-logger/team-log'
 
 import { raise } from '@lib/ts'
 import {
@@ -22,7 +21,7 @@ import { useAppSelector } from '@core/redux/hooks'
 import { useMode } from '@core/providers/Modes'
 import { NySykmeldingAktivitet, NySykmeldingTilbakedatering } from '@core/redux/reducers/ny-sykmelding'
 import { NySykmeldingState } from '@core/redux/reducers/ny-sykmelding/ny-sykmelding-slice'
-import { isCloud, isDemo, isE2E, isLocal } from '@lib/env'
+import { isDemo, isE2E, isLocal } from '@lib/env'
 import { createBrowserRuleOverrideHeaders } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
 
 import { useDraftId } from './draft/useDraftId'
@@ -60,16 +59,12 @@ export function useOpprettSykmeldingMutation(
     })
 
     const opprettSykmelding = withSpanBrowserAsync('OpprettSykmelding.submitSykmelding', async (force?: true) => {
-        if (isLocal || isCloud) teamLogger.info(`(Client) Submitting values: ${JSON.stringify(formState)}`)
-
         try {
             const meta: OpprettSykmeldingMetaInput = {
                 orgnummer: formState.behandler?.organisasjonsnummer ?? null,
                 legekontorTlf: formState.behandler?.legekontorTlf ?? null,
             }
             const values = formStateToOpprettSykmeldingInput(formState)
-
-            if (isLocal || isCloud) teamLogger.info(`(Client), mapped values: ${JSON.stringify(values)}`)
 
             const draftIdToUse = draftId ?? crypto.randomUUID()
             if (draftId == null) {

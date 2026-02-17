@@ -1,6 +1,5 @@
 import * as z from 'zod'
 import { logger } from '@navikt/next-logger'
-import { teamLogger } from '@navikt/next-logger/team-log'
 import { decodeJwt } from 'jose'
 
 import { spanServerAsync } from '@lib/otel/server'
@@ -45,17 +44,9 @@ export async function getHelseIdUserInfo(): Promise<UserInfo | null> {
             throw new Error(`Failed to fetch user info: ${response.statusText}`)
         }
 
-        try {
-            teamLogger.warn(await getHelseIdIdToken())
-        } catch (error) {
-            teamLogger.error(new Error('Failed to log id_token for debugging purposes', { cause: error }))
-        }
-
         const rawResponse: unknown = await response.json()
         const parsedResponse = UserInfoSchema.safeParse(rawResponse)
         if (!parsedResponse.success) {
-            teamLogger.error(await getHelseIdAccessToken())
-            teamLogger.error(JSON.stringify(rawResponse, null, 2))
             logger.error(
                 new Error(
                     `Tried to get /connect/userinfo from HelseID, but something looks wrong and zod parse failed: ${parsedResponse.error.message}`,

@@ -1,7 +1,6 @@
 import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
-import { teamLogger } from '@navikt/next-logger/team-log'
 import { cookies } from 'next/headers'
 
 import { Behandler, QueriedPerson, Resolvers } from '@resolvers'
@@ -113,8 +112,9 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const ident = getValidPatientIdent(patientInContext.identifier)
             if (ident == null) {
-                logger.error('Missing valid FNR/DNR in patient resource')
-                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(patientInContext, null, 2)}`)
+                logger.error(
+                    `Missing valid FNR/DNR in patient resource, found OIDs: ${patientInContext.identifier?.map((it) => it.system) ?? 'none'}`,
+                )
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -161,15 +161,17 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             } satisfies QueriedPerson
         },
         draft: async (_, { draftId }, { client, hpr }) => {
-            const pasient = await client.patient.request()
-            if ('error' in pasient) {
+            const patient = await client.patient.request()
+            if ('error' in patient) {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const ident = getValidPatientIdent(pasient.identifier)
+            const ident = getValidPatientIdent(patient.identifier)
             if (ident == null) {
                 logger.error('Missing valid FNR/DNR in patient resource')
-                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
+                logger.error(
+                    `Missing valid FNR/DNR in patient resource, found OIDs: ${patient.identifier?.map((it) => it.system) ?? 'none'}`,
+                )
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -185,15 +187,16 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             }
         },
         drafts: async (_, _args, { client, hpr }) => {
-            const pasient = await client.patient.request()
-            if ('error' in pasient) {
+            const patient = await client.patient.request()
+            if ('error' in patient) {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const ident = getValidPatientIdent(pasient.identifier)
+            const ident = getValidPatientIdent(patient.identifier)
             if (ident == null) {
-                logger.error('Missing valid FNR/DNR in patient resource')
-                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
+                logger.error(
+                    `Missing valid FNR/DNR in patient resource, found OIDs: ${patient.identifier?.map((it) => it.system) ?? 'none'}`,
+                )
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -207,15 +210,16 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     },
     Mutation: {
         saveDraft: async (_, { draftId, values }, { client, hpr }) => {
-            const pasient = await client.patient.request()
-            if ('error' in pasient) {
+            const patient = await client.patient.request()
+            if ('error' in patient) {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const ident = getValidPatientIdent(pasient.identifier)
+            const ident = getValidPatientIdent(patient.identifier)
             if (ident == null) {
-                logger.error('Missing valid FNR/DNR in patient resource')
-                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
+                logger.error(
+                    `Missing valid FNR/DNR in patient resource, found OIDs: ${patient.identifier?.map((it) => it.system) ?? 'none'}`,
+                )
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -241,15 +245,16 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             }
         },
         deleteDraft: async (_, { draftId }, { client, hpr }) => {
-            const pasient = await client.patient.request()
-            if ('error' in pasient) {
+            const patient = await client.patient.request()
+            if ('error' in patient) {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const ident = getValidPatientIdent(pasient.identifier)
+            const ident = getValidPatientIdent(patient.identifier)
             if (ident == null) {
-                logger.error('Missing valid FNR/DNR in patient resource')
-                teamLogger.error(`Patient without valid FNR/DNR: ${JSON.stringify(pasient, null, 2)}`)
+                logger.error(
+                    `Missing valid FNR/DNR in patient resource, found OIDs: ${patient.identifier?.map((it) => it.system) ?? 'none'}`,
+                )
                 throw new GraphQLError('API_ERROR')
             }
 

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 import * as R from 'remeda'
 import { type ApolloClient } from '@apollo/client'
 import { logger } from '@navikt/next-logger'
-import { teamLogger } from '@navikt/next-logger/team-log'
 import { useMutation } from '@apollo/client/react'
 
 import { SaveDraftMutation, SaveDraftMutationVariables } from '@queries'
@@ -179,6 +178,5 @@ function detectBadState(formValues: DraftValues): void {
         logger.error(
             'Draft values contain __typename, which is not expected. This might cause issues with the draft saving. See team logs for object.',
         )
-        teamLogger.error(`Diff engine detected __typename in form values: ${stringifedValues}`)
     }
 }

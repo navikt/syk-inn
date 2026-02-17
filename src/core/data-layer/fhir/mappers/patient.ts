@@ -17,7 +17,7 @@ export function getValidPatientIdent(identifier: FhirPatient['identifier']): str
     }
 
     const oidsByType = oids.map((it) => ({
-        type: userUrnToOidType(it.system, it.value),
+        type: userUrnToOidType(it.system),
         nr: it.value,
     }))
 
