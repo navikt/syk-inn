@@ -2,6 +2,7 @@
 set -euo pipefail
 
 README="e2e/README.md"
+trap 'rm -f "$README.tmp"' EXIT
 START="<!-- TESTS:START -->"
 END="<!-- TESTS:END -->"
 
@@ -47,8 +48,9 @@ MD="$(
   ' <<<"$JSON"
 )"
 
-awk -v start="$START" -v end="$END" -v md="$MD" '
-  index($0, start) { print start; print md; inblock=1; next }
+export __MD="$MD"
+awk -v start="$START" -v end="$END" '
+  index($0, start) { print start; print ENVIRON["__MD"]; inblock=1; next }
   index($0, end)   { inblock=0; print ""; print end; next }
   !inblock         { print }
 ' "$README" > "$README.tmp"
