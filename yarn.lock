@@ -5966,6 +5966,7 @@ __metadata:
   dependencies:
     "@playwright/test": "npm:^1.58.2"
     date-fns: "npm:^4.1.0"
+    remeda: "npm:^2.33.5"
   languageName: unknown
   linkType: soft
 
