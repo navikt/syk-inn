@@ -42,8 +42,9 @@
         "@navikt/fhir-mock-server": "workspace:*",
         "@navikt/helseid-mock-server": "workspace:*",
         "@navikt/next-api-proxy": "^5.0.2",
-        "@navikt/next-logger": "^4.5.1",
-        "@navikt/smart-on-fhir": "1.5.16",
+        "@navikt/next-logger": "^4.5.2-20260217111611",
+        "@navikt/pino-logger": "^4.5.2-20260217111611",
+        "@navikt/smart-on-fhir": "1.5.18",
         "@navikt/syk-zara": "workspace:*",
         "@navikt/texas": "^4.1.4",
         "@navikt/tsm-diagnoser": "^2026.1.13",
@@ -115,5 +116,9 @@
         "vite-tsconfig-paths": "^6.1.1",
         "vitest": "^4.0.18"
     },
-    "prettier": "@navikt/tsm-prettier"
+    "prettier": "@navikt/tsm-prettier",
+    "resolutions": {
+        "@navikt/next-logger": "^4.5.2-20260217111611",
+        "@navikt/pino-logger": "^4.5.2-20260217111611"
+    }
 }
