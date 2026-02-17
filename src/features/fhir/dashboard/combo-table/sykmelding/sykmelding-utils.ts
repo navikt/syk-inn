@@ -1,3 +1,5 @@
+import * as R from 'remeda'
+
 import { raise } from '@lib/ts'
 import { toReadableDatePeriod } from '@lib/date'
 import { AktivitetFragment, DiagnoseFragment, AktivitetRedacted } from '@queries'
@@ -36,7 +38,12 @@ export function sykmeldingDiagnoseText(hoveddiagnose: DiagnoseFragment | null | 
 }
 
 export function sykmeldingGradText(aktivitet: AktivitetFragment[]): string {
-    return aktivitetGradText(aktivitet[0])
+    const latestPeriode = R.firstBy(aktivitet, [(it) => it.tom, 'desc'])
+    if (!latestPeriode) {
+        raise('Sykmelding without aktivitetsperioder, this should not happen')
+    }
+
+    return aktivitetGradText(latestPeriode)
 }
 
 export function sykmeldingArbeidsgiverText(

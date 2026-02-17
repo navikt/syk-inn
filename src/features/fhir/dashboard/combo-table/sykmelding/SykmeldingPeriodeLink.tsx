@@ -26,7 +26,7 @@ function SykmeldingPeriodeLink({ sykmeldingId, aktivitet }: Props): ReactElement
                 sortedPeriode.map((periode) => (
                     <React.Fragment key={periode.fom}>
                         <BodyShort size="small" className="whitespace-nowrap">
-                            · {sykmeldingPeriodeText([periode])} ({aktivitetGradText(periode)})
+                            {sykmeldingPeriodeText([periode])} ({aktivitetGradText(periode)})
                         </BodyShort>
                     </React.Fragment>
                 ))}
