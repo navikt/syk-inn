@@ -101,20 +101,15 @@ test('sykmelding with multiple periods should show full period in link and all o
 
     await submitSykmelding()(page)
 
-    //await nextStep()(page)
     await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
 
     const dateText = toReadableDatePeriod(new Date(), add(new Date(), { days: 20 }))
-
     const tableRow = page.getByRole('cell', { name: dateText })
-
     await expect(tableRow.getByRole('link', { name: dateText })).toBeVisible()
-
     await tableRow.getByRole('button', { name: 'Se alle perioder for sykmelding' }).click()
 
     const periodeText = sykmeldingPeriodeText([
         { fom: new Date().toISOString(), tom: add(new Date(), { days: 6 }).toISOString() },
     ])
-
     await expect(tableRow.getByText(`${periodeText} (100%)`)).toBeVisible()
 })
