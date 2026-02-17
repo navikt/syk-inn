@@ -1,9 +1,21 @@
 import { expect, test } from '@playwright/test'
+import { toReadableDatePeriod } from '@lib/date'
+import { add } from 'date-fns'
+import { sykmeldingPeriodeText } from '@features/fhir/dashboard/combo-table/sykmelding/sykmelding-utils'
 
 import { launchWithMock } from '../actions/fhir-actions'
 import { gotoExistingSykmelding } from '../actions/fhir-user-actions'
-import { requestAccessToSykmeldinger } from '../../actions/user-actions'
+import {
+    fillPeriodeRelative,
+    nextStep,
+    pickHoveddiagnose,
+    requestAccessToSykmeldinger,
+    submitSykmelding,
+} from '../../actions/user-actions'
 import { verifyNoHorizontalScroll } from '../../utils/assertions'
+import { launchAndStart } from '../../multi-mode/actions/mode-user-actions'
+import { diagnoseSelection } from '../../utils/submit-utils'
+import { verifySignerendeBehandlerFillIfNeeded } from '../../multi-mode/actions/mode-user-verifications'
 
 test('should be able to view previous sykmelding', async ({ page }) => {
     await launchWithMock('plenty-of-previous')(page)
@@ -69,4 +81,40 @@ test('previous sykmelding older than 4 days should display less values', async (
     await expect(behandlerSection.getByText('Organisasjonsnummer')).toBeVisible()
 
     await verifyNoHorizontalScroll()(page)
+})
+
+test('sykmelding with multiple periods should show full period in link and all other periods in helptext', async ({
+    page,
+}) => {
+    await launchAndStart('FHIR', 'normal')(page)
+
+    await fillPeriodeRelative({ type: '100%', days: 6, nth: 0 })(page)
+    await page.getByRole('button', { name: 'Legg til ny periode' }).click()
+    await fillPeriodeRelative({ type: { grad: 50 }, days: 6, fromRelative: 7, nth: 1 })(page)
+    await page.getByRole('button', { name: 'Legg til ny periode' }).click()
+    await fillPeriodeRelative({ type: { grad: 30 }, days: 6, fromRelative: 14, nth: 2 })(page)
+
+    await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
+
+    await nextStep()(page)
+    await verifySignerendeBehandlerFillIfNeeded('FHIR')(page)
+
+    await submitSykmelding()(page)
+
+    //await nextStep()(page)
+    await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
+
+    const dateText = toReadableDatePeriod(new Date(), add(new Date(), { days: 20 }))
+
+    const tableRow = page.getByRole('cell', { name: dateText })
+
+    await expect(tableRow.getByRole('link', { name: dateText })).toBeVisible()
+
+    await tableRow.getByRole('button', { name: 'Se alle perioder for sykmelding' }).click()
+
+    const periodeText = sykmeldingPeriodeText([
+        { fom: new Date().toISOString(), tom: add(new Date(), { days: 6 }).toISOString() },
+    ])
+
+    await expect(tableRow.getByText(`${periodeText} (100%)`)).toBeVisible()
 })
