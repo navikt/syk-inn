@@ -1,7 +1,8 @@
 import Valkey from 'iovalkey'
 
-import { AaregArbeidsforhold } from '@core/services/aareg/aareg-schema'
-import { createDraftClient, DraftClient } from '@data-layer/draft/draft-client'
+import type { AaregArbeidsforhold } from '@core/services/aareg/aareg-schema'
+import { createBruksvilkarClient, type BruksvilkarClient } from '@core/services/bruksvilkar/bruksvilkar-client'
+import { createDraftClient, type DraftClient } from '@data-layer/draft/draft-client'
 import { SykInnApiMock } from '@dev/mock-engine/SykInnApiMock'
 
 import { createInMemoryValkey } from './valkey/InMemValkey'
@@ -19,6 +20,7 @@ export class MockEngine {
     public readonly sykInnApi: SykInnApiMock
     public readonly arbeidsforhold: AaregMock
     public readonly draftClient: DraftClient
+    public readonly bruksvilkarClient: BruksvilkarClient
 
     constructor(scenario: Scenario) {
         this.valkey = createInMemoryValkey()
@@ -26,6 +28,7 @@ export class MockEngine {
 
         this.sykInnApi = new SykInnApiMock(scenario.sykmeldinger)
         this.arbeidsforhold = new AaregMock(scenario.arbeidsforhold)
+        this.bruksvilkarClient = createBruksvilkarClient(this.valkey)
         this.draftClient = createDraftClient(this.valkey)
     }
 

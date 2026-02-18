@@ -4,6 +4,8 @@ import { BRUKSVILKAR_VERSION } from '@features/bruksvilkar/BruksvilkarInfo'
 import { productionValkey } from '@core/services/valkey/client'
 import { spanServerAsync } from '@lib/otel/server'
 import { raise } from '@lib/ts'
+import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
+import { getServerEnv } from '@lib/env'
 
 import { type BruksvilkarClient, createBruksvilkarClient } from './bruksvilkar-client'
 import { versionUtils } from './utils'
@@ -16,7 +18,7 @@ export async function hasAcceptedBruksvilkar(hpr: string): Promise<{
     stale: boolean
 } | null> {
     return spanServerAsync('BruksvilkarService.hasAcceptedBruksvilkar', async () => {
-        const client = getClient()
+        const client = await getClient()
 
         const result = await client.hasAcceptedBruksvilkar(hpr)
         if (!result) return null
@@ -36,7 +38,7 @@ export async function acceptBruksvilkar(
     version: string
 }> {
     return spanServerAsync('BruksvilkarService.acceptBruksvilkar', async () => {
-        const client = getClient()
+        const client = await getClient()
         const versionDiff = versionUtils.relative(version, BUNDLED_VERSION)
         switch (versionDiff) {
             case 'newer':
@@ -57,6 +59,15 @@ export async function acceptBruksvilkar(
     })
 }
 
-function getClient(): BruksvilkarClient {
+async function getClient(): Promise<BruksvilkarClient> {
+    if (shouldUseMockEngine() && !getServerEnv().useLocalValkey) {
+        const mockEngine = await mockEngineForSession()
+        return mockEngine.bruksvilkarClient
+    }
+
+    if (shouldUseMockEngine() && getServerEnv().useLocalValkey) {
+        logger.warn('USE_LOCAL_VALKEY is enabled, using actual valkey for bruksvilkår.')
+    }
+
     return createBruksvilkarClient(productionValkey())
 }
