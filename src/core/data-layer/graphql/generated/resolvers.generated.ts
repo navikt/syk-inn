@@ -198,8 +198,16 @@ export type InputTilbakedatering = {
 }
 
 export type InputUtdypendeSporsmal = {
+    arbeidsrelaterteUtfordringer?: InputMaybe<Scalars['String']['input']>
+    behandlingOgFremtidigArbeidArbeid?: InputMaybe<Scalars['String']['input']>
+    forventetHelsetilstandUtvikling?: InputMaybe<Scalars['String']['input']>
     hensynPaArbeidsplassen?: InputMaybe<Scalars['String']['input']>
     medisinskOppsummering?: InputMaybe<Scalars['String']['input']>
+    medisinskeHensyn?: InputMaybe<Scalars['String']['input']>
+    oppdatertMedisinskStatus?: InputMaybe<Scalars['String']['input']>
+    realistiskMestringArbeid?: InputMaybe<Scalars['String']['input']>
+    sykdomsutvikling?: InputMaybe<Scalars['String']['input']>
+    uavklarteForhold?: InputMaybe<Scalars['String']['input']>
     utfordringerMedArbeid?: InputMaybe<Scalars['String']['input']>
 }
 
@@ -508,12 +516,27 @@ export type UtdypendeSporsmal = {
     utfordringerMedArbeid?: Maybe<Scalars['String']['output']>
 }
 
-export type UtdypendeSporsmalOptions = 'HENSYN_PA_ARBEIDSPLASSEN' | 'MEDISINSK_OPPSUMMERING' | 'UTFORDRINGER_MED_ARBEID'
+export type UtdypendeSporsmalOptions =
+    | 'BEHANDLING_OG_FREMTIDIG_ARBEID'
+    | 'FORVENTET_HELSETILSTAND_UTVIKLING'
+    | 'HENSYN_PA_ARBEIDSPLASSEN'
+    | 'MEDISINSKE_HENSYN'
+    | 'MEDISINSK_OPPSUMMERING'
+    | 'UAVKLARTE_FORHOLD'
+    | 'UTFORDRINGER_MED_ARBEID'
 
 export type UtdypendeSporsmalSvar = {
     __typename?: 'UtdypendeSporsmalSvar'
+    arbeidsrelaterteUtfordringer?: Maybe<SporsmalSvar>
+    behandlingOgFremtidigArbeidArbeid?: Maybe<SporsmalSvar>
+    forventetHelsetilstandUtvikling?: Maybe<SporsmalSvar>
     hensynPaArbeidsplassen?: Maybe<SporsmalSvar>
     medisinskOppsummering?: Maybe<SporsmalSvar>
+    medisinskeHensyn?: Maybe<SporsmalSvar>
+    oppdatertMedisinskStatus?: Maybe<SporsmalSvar>
+    realistiskMestringArbeid?: Maybe<SporsmalSvar>
+    sykdomsutvikling?: Maybe<SporsmalSvar>
+    uavklarteForhold?: Maybe<SporsmalSvar>
     utfordringerMedArbeid?: Maybe<SporsmalSvar>
 }
 
@@ -1266,8 +1289,16 @@ export type UtdypendeSporsmalSvarResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['UtdypendeSporsmalSvar'] = ResolversParentTypes['UtdypendeSporsmalSvar'],
 > = {
+    arbeidsrelaterteUtfordringer?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
+    behandlingOgFremtidigArbeidArbeid?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
+    forventetHelsetilstandUtvikling?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
     hensynPaArbeidsplassen?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
     medisinskOppsummering?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
+    medisinskeHensyn?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
+    oppdatertMedisinskStatus?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
+    realistiskMestringArbeid?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
+    sykdomsutvikling?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
+    uavklarteForhold?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
     utfordringerMedArbeid?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
 }
 

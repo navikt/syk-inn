@@ -56,6 +56,14 @@ input InputUtdypendeSporsmal {
     utfordringerMedArbeid: String
     medisinskOppsummering: String
     hensynPaArbeidsplassen: String
+    sykdomsutvikling: String
+    arbeidsrelaterteUtfordringer: String
+    behandlingOgFremtidigArbeidArbeid: String
+    uavklarteForhold: String
+    oppdatertMedisinskStatus: String
+    realistiskMestringArbeid: String
+    forventetHelsetilstandUtvikling: String
+    medisinskeHensyn: String
 }
 
 """

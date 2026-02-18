@@ -196,8 +196,16 @@ export type InputTilbakedatering = {
 }
 
 export type InputUtdypendeSporsmal = {
+    arbeidsrelaterteUtfordringer: InputMaybe<Scalars['String']['input']>
+    behandlingOgFremtidigArbeidArbeid: InputMaybe<Scalars['String']['input']>
+    forventetHelsetilstandUtvikling: InputMaybe<Scalars['String']['input']>
     hensynPaArbeidsplassen: InputMaybe<Scalars['String']['input']>
     medisinskOppsummering: InputMaybe<Scalars['String']['input']>
+    medisinskeHensyn: InputMaybe<Scalars['String']['input']>
+    oppdatertMedisinskStatus: InputMaybe<Scalars['String']['input']>
+    realistiskMestringArbeid: InputMaybe<Scalars['String']['input']>
+    sykdomsutvikling: InputMaybe<Scalars['String']['input']>
+    uavklarteForhold: InputMaybe<Scalars['String']['input']>
     utfordringerMedArbeid: InputMaybe<Scalars['String']['input']>
 }
 
@@ -506,12 +514,27 @@ export type UtdypendeSporsmal = {
     utfordringerMedArbeid: Maybe<Scalars['String']['output']>
 }
 
-export type UtdypendeSporsmalOptions = 'HENSYN_PA_ARBEIDSPLASSEN' | 'MEDISINSK_OPPSUMMERING' | 'UTFORDRINGER_MED_ARBEID'
+export type UtdypendeSporsmalOptions =
+    | 'BEHANDLING_OG_FREMTIDIG_ARBEID'
+    | 'FORVENTET_HELSETILSTAND_UTVIKLING'
+    | 'HENSYN_PA_ARBEIDSPLASSEN'
+    | 'MEDISINSKE_HENSYN'
+    | 'MEDISINSK_OPPSUMMERING'
+    | 'UAVKLARTE_FORHOLD'
+    | 'UTFORDRINGER_MED_ARBEID'
 
 export type UtdypendeSporsmalSvar = {
     __typename: 'UtdypendeSporsmalSvar'
+    arbeidsrelaterteUtfordringer: Maybe<SporsmalSvar>
+    behandlingOgFremtidigArbeidArbeid: Maybe<SporsmalSvar>
+    forventetHelsetilstandUtvikling: Maybe<SporsmalSvar>
     hensynPaArbeidsplassen: Maybe<SporsmalSvar>
     medisinskOppsummering: Maybe<SporsmalSvar>
+    medisinskeHensyn: Maybe<SporsmalSvar>
+    oppdatertMedisinskStatus: Maybe<SporsmalSvar>
+    realistiskMestringArbeid: Maybe<SporsmalSvar>
+    sykdomsutvikling: Maybe<SporsmalSvar>
+    uavklarteForhold: Maybe<SporsmalSvar>
     utfordringerMedArbeid: Maybe<SporsmalSvar>
 }
 

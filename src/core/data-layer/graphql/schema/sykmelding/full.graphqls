@@ -58,6 +58,14 @@ type UtdypendeSporsmalSvar {
     utfordringerMedArbeid: SporsmalSvar
     medisinskOppsummering: SporsmalSvar
     hensynPaArbeidsplassen: SporsmalSvar
+    sykdomsutvikling: SporsmalSvar
+    arbeidsrelaterteUtfordringer: SporsmalSvar
+    behandlingOgFremtidigArbeidArbeid: SporsmalSvar
+    uavklarteForhold: SporsmalSvar
+    oppdatertMedisinskStatus: SporsmalSvar
+    realistiskMestringArbeid: SporsmalSvar
+    forventetHelsetilstandUtvikling: SporsmalSvar
+    medisinskeHensyn: SporsmalSvar
 }
 
 type SporsmalSvar {
