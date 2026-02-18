@@ -15,6 +15,7 @@
         "plugins": [{ "name": "next" }],
         "types": ["@navikt/ds-react/types/theme"],
         "paths": {
+            "@bruksvilkar.mdx": ["./docs/bruksvilkar.mdx"],
             "@lib/*": ["./src/lib/*"],
             "@core/*": ["./src/core/*"],
             "@data-layer/*": ["./src/core/data-layer/*"],
