@@ -61,6 +61,7 @@ async function BruksvilkarWithData({ patientId }: { patientId: string }): Promis
                     ? {
                           at: acceptedBruksvilkar.acceptedAt,
                           version: acceptedBruksvilkar.version,
+                          stale: acceptedBruksvilkar.stale,
                       }
                     : null
             }

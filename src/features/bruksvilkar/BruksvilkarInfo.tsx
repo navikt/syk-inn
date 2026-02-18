@@ -3,7 +3,7 @@ import { BodyLong, Detail, Heading } from '@navikt/ds-react'
 
 import { toReadableDateTime } from '@lib/date'
 
-export const BRUKSVILKAR_VERSION = '0.0'
+export const BRUKSVILKAR_VERSION = '4.0'
 export const BRUKSVILKAR_TIMESTAMP = '2026-02-17T14:32:03.686Z'
 
 export function ActualBruksvilkar(): ReactElement {

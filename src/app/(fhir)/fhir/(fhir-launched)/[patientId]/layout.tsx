@@ -132,7 +132,7 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
         const acceptedBruksvilkar = await hasAcceptedBruksvilkar(hpr)
         span.setAttribute('PilotUser.acceptedAt', acceptedBruksvilkar?.acceptedAt ?? 'never')
 
-        if (requireBruksvilkarToggle && acceptedBruksvilkar?.acceptedAt == null) {
+        if (requireBruksvilkarToggle && (acceptedBruksvilkar?.acceptedAt == null || acceptedBruksvilkar.stale)) {
             redirect(`/fhir/bruksvilkar?returnTo=${currentPatientId}`)
         }
 
