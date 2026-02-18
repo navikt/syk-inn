@@ -1,7 +1,5 @@
 import { NextConfig } from 'next'
-import Sonda from 'sonda/next'
-
-const withSondaAnalyzer = Sonda()
+import createMDX from '@next/mdx'
 
 const nextConfig: NextConfig = {
     output: 'standalone',
@@ -35,6 +33,8 @@ const nextConfig: NextConfig = {
     productionBrowserSourceMaps: true,
 }
 
-export default process.env.NODE_ENV === 'development' || process.env.TURBOPACK
-    ? nextConfig
-    : withSondaAnalyzer(nextConfig)
+const withMDX = createMDX({
+    extension: /\.(md|mdx)$/,
+})
+
+export default withMDX(nextConfig)
