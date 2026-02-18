@@ -1,30 +1,36 @@
 import Valkey from 'iovalkey'
 
 export type BruksvilkarClient = {
-    acceptBruksvilkar: (hpr: string, name: string, version: string) => Promise<string>
+    acceptBruksvilkar: (
+        version: `${number}.${number}`,
+        user: { hpr: string; name: string; orgnummer: string },
+        meta: { system: string },
+    ) => Promise<string>
     hasAcceptedBruksvilkar: (hpr: string) => Promise<{
         acceptedAt: string
-        version: string
+        version: `${number}.${number}`
     } | null>
 }
 
 export function createBruksvilkarClient(valkey: Valkey): BruksvilkarClient {
     return {
-        acceptBruksvilkar: async (hpr: string, name: string, version: string) => {
-            const key = createKey(hpr)
+        acceptBruksvilkar: async (version, user, meta) => {
+            const key = createKey(user.hpr)
             const acceptedAt = new Date().toISOString()
 
             await valkey.hset(key, {
                 acceptedAt: acceptedAt,
-                name: name,
-                hpr: hpr,
+                name: user.name,
+                hpr: user.hpr,
+                org: user.orgnummer,
+                system: meta.system,
                 version: version,
                 tokenValid: true,
             } satisfies BruksvilkarValkeyData)
 
             return acceptedAt
         },
-        hasAcceptedBruksvilkar: async (hpr: string) => {
+        hasAcceptedBruksvilkar: async (hpr) => {
             const key = createKey(hpr)
 
             const exists = await valkey.exists(key)
@@ -39,7 +45,7 @@ export function createBruksvilkarClient(valkey: Valkey): BruksvilkarClient {
 
             return {
                 acceptedAt: data.acceptedAt,
-                version: data.version,
+                version: data.version as `${number}.${number}`,
             }
         },
     }
@@ -49,6 +55,8 @@ type BruksvilkarValkeyData = {
     acceptedAt: string
     name: string
     hpr: string
+    org: string
+    system: string
     version: string
     tokenValid: boolean
 }

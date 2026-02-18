@@ -1,15 +1,17 @@
 import * as z from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { logger } from '@navikt/next-logger'
+import { GraphQLError } from 'graphql/error'
 
 import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { acceptBruksvilkar } from '@core/services/bruksvilkar/bruksvilkar-service'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getNameFromFhir } from '@data-layer/fhir/mappers/patient'
+import { getOrganisasjonsnummerFromFhir } from '@data-layer/fhir/mappers/organization'
 
 const PayloadSchema = z.object({
     patientId: z.string(),
-    version: z.string(),
+    version: z.templateLiteral([z.number(), '.', z.number()]),
 })
 
 type ResponsePayload = {
@@ -19,6 +21,7 @@ type ResponsePayload = {
 
 export async function PUT(request: NextRequest): Promise<Response> {
     const body = PayloadSchema.parse(await request.json())
+
     const readyClient = await getReadyClient(body.patientId)
     if ('error' in readyClient) {
         logger.error(`Tried to accept bruksvilkår, got ${readyClient.error}`)
@@ -37,6 +40,29 @@ export async function PUT(request: NextRequest): Promise<Response> {
         return NextResponse.json({ error: 'NO_HPR' }, { status: 401 })
     }
 
-    const accept: ResponsePayload = await acceptBruksvilkar(hpr, getNameFromFhir(practitioner.name), body.version)
+    const encounter = await readyClient.encounter.request()
+    if ('error' in encounter) {
+        logger.error(`Tried to accept bruksvilkår, got ${encounter.error}`)
+        throw new GraphQLError('API_ERROR')
+    }
+
+    const organization = await readyClient.request(encounter.serviceProvider.reference as `Organization/${string}`)
+    if ('error' in organization) {
+        logger.error(`Tried to accept bruksvilkår, got ${organization.error}`)
+        throw new GraphQLError('API_ERROR')
+    }
+
+    const orgnummer = getOrganisasjonsnummerFromFhir(organization)
+    if (orgnummer == null) {
+        logger.error('Organization without valid orgnummer')
+        throw new GraphQLError('API_ERROR')
+    }
+
+    const accept: ResponsePayload = await acceptBruksvilkar(
+        body.version,
+        { hpr, orgnummer, name: getNameFromFhir(practitioner.name) },
+        { system: readyClient.issuerName },
+    )
+
     return Response.json(accept)
 }
