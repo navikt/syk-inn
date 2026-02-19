@@ -1,6 +1,6 @@
 import { logger } from '@navikt/next-logger'
 
-import { BRUKSVILKAR_VERSION } from '@features/bruksvilkar/BruksvilkarInfo'
+import { BRUKSVILKAR_VERSION } from '@features/bruksvilkar/BruksvilkarSection'
 import { productionValkey } from '@core/services/valkey/client'
 import { spanServerAsync } from '@lib/otel/server'
 import { raise } from '@lib/ts'

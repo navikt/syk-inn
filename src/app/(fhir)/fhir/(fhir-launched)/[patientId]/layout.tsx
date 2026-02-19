@@ -133,6 +133,10 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
         span.setAttribute('PilotUser.acceptedAt', acceptedBruksvilkar?.acceptedAt ?? 'never')
 
         if (requireBruksvilkarToggle && (acceptedBruksvilkar?.acceptedAt == null || acceptedBruksvilkar.stale)) {
+            logger.info(
+                `User needs to sign (is stale: ${acceptedBruksvilkar?.stale ? 'yes' : 'no'}) the bruksvilkår, HPR: ${hpr})`,
+            )
+
             redirect(`/fhir/bruksvilkar?returnTo=${currentPatientId}`)
         }
 
