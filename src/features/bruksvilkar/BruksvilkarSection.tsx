@@ -4,8 +4,7 @@ import { Detail, Heading } from '@navikt/ds-react'
 
 import { toReadableDateTime } from '@lib/date'
 import BruksvilkarMarkdown, { metadata } from '@bruksvilkar.mdx'
-
-import { DateTime } from '../../../libs/syk-zara/src/schema/common'
+import { DateTime } from '@lib/zod'
 
 export const BRUKSVILKAR_VERSION = metadata.version
 export const BRUKSVILKAR_TIMESTAMP = metadata.updated
