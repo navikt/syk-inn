@@ -94,10 +94,8 @@ test('should be able to submit purely with shortcuts', async ({ page }) => {
     await verifyIsOnKvitteringPage()(page)
 })
 
-test('should pre-fill bidiagnoser from FHIR @feature-toggle', async ({ page }) => {
-    await launchWithMock('empty', {
-        SYK_INN_AUTO_BIDIAGNOSER: true,
-    })(page)
+test('should pre-fill bidiagnoser from FHIR', async ({ page }) => {
+    await launchWithMock('empty')(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
 
     await fillPeriodeRelative({
@@ -134,12 +132,11 @@ test('should pre-fill bidiagnoser from FHIR @feature-toggle', async ({ page }) =
     await verifyIsOnKvitteringPage()(page)
 })
 
-test.describe('Resetting diagnoser when prefilled from FHIR @feature-toggle', () => {
+test.describe('Resetting diagnoser when prefilled from FHIR', () => {
     test('adding extra diagnose and resetting them should remove them', async ({ page }) => {
         await launchWithMock('empty', {
             // Kari only has one diagnose in FHIR
             patient: 'Kari Normann',
-            SYK_INN_AUTO_BIDIAGNOSER: true,
         })(page)
         await startNewSykmelding()(page)
         await fillPeriodeRelative({ type: '100%', days: 3 })(page)
@@ -172,7 +169,6 @@ test.describe('Resetting diagnoser when prefilled from FHIR @feature-toggle', ()
         await launchWithMock('empty', {
             // Espen has 3 diagnoser in FHIR
             patient: 'Espen Eksempel',
-            SYK_INN_AUTO_BIDIAGNOSER: true,
         })(page)
         await startNewSykmelding()(page)
         await fillPeriodeRelative({ type: '100%', days: 3 })(page)
