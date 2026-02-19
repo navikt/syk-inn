@@ -47,7 +47,7 @@ const components: MDXComponents = {
     ),
     li: ({ children }) => <List.Item>{children}</List.Item>,
     table: ({ children }) => (
-        <Table size="small" className="-mt-6">
+        <Table size="small" className="-mt-6 mb-6">
             {children}
         </Table>
     ),
