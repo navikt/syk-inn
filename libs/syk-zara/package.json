@@ -10,8 +10,8 @@
         "src/**"
     ],
     "exports": {
-        ".": "./src/index.ts",
-        "./admin": "./src/admin/index.ts"
+        "./feedback": "./src/feedback/index.ts",
+        "./feedback/admin": "./src/feedback/admin/index.ts"
     },
     "scripts": {
         "tsc": "tsc"
