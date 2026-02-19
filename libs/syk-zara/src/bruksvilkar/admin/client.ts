@@ -10,7 +10,7 @@ export function createAdminBruksvilkarClient(valkey: Valkey): AdminBruksvilkarCl
     return {
         ...createBruksvilkarClient(valkey),
         all: async () => {
-            const allkeys = await valkey.keys(`feedback:*`)
+            const allkeys = await valkey.keys(`bruksvilkar:*`)
 
             const all = await Promise.all(
                 allkeys.map(async (key) => {
