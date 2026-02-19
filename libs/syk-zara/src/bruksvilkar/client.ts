@@ -51,7 +51,7 @@ export function createBruksvilkarClient(valkey: Valkey): BruksvilkarClient {
     }
 }
 
-type BruksvilkarValkeyData = {
+export type BruksvilkarValkeyData = {
     acceptedAt: string
     name: string
     hpr: string

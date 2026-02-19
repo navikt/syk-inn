@@ -6,8 +6,8 @@ import { spanServerAsync } from '@lib/otel/server'
 import { raise } from '@lib/ts'
 import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
 import { getServerEnv } from '@lib/env'
+import { type BruksvilkarClient, createBruksvilkarClient } from '@navikt/syk-zara/bruksvilkar'
 
-import { type BruksvilkarClient, createBruksvilkarClient } from './bruksvilkar-client'
 import { versionUtils } from './utils'
 
 const BUNDLED_VERSION = BRUKSVILKAR_VERSION

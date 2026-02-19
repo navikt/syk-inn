@@ -11,7 +11,9 @@
     ],
     "exports": {
         "./feedback": "./src/feedback/index.ts",
-        "./feedback/admin": "./src/feedback/admin/index.ts"
+        "./feedback/admin": "./src/feedback/admin/index.ts",
+        "./bruksvilkar": "./src/bruksvilkar/index.ts",
+        "./bruksvilkar/admin": "./src/bruksvilkar/admin/index.ts"
     },
     "scripts": {
         "tsc": "tsc"

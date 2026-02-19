@@ -66,10 +66,10 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 - [submit with only default values and prefilled FHIR values](./fhir/fhir-form-submit.spec.ts#L26)
 - [should be able to submit purely with shortcuts](./fhir/fhir-form-submit.spec.ts#L62)
-- [should pre-fill bidiagnoser from FHIR](./fhir/fhir-form-submit.spec.ts#L97)
-    ## [Resetting diagnoser when prefilled from FHIR](./fhir/fhir-form-submit.spec.ts)
-    - [adding extra diagnose and resetting them should remove them](./fhir/fhir-form-submit.spec.ts#L136)
-    - [removing diagonses from FHIR prefill and reseetting them should add them back](./fhir/fhir-form-submit.spec.ts#L168)
+- [should pre-fill bidiagnoser from FHIR @feature-toggle](./fhir/fhir-form-submit.spec.ts#L97)
+    ## [Resetting diagnoser when prefilled from FHIR @feature-toggle](./fhir/fhir-form-submit.spec.ts)
+    - [adding extra diagnose and resetting them should remove them](./fhir/fhir-form-submit.spec.ts#L138)
+    - [removing diagonses from FHIR prefill and reseetting them should add them back](./fhir/fhir-form-submit.spec.ts#L171)
 
 ## [fhir/fhir-launch.spec.ts](./fhir/fhir-launch.spec.ts)
 
