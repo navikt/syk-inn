@@ -2,7 +2,6 @@ import { useQuery } from '@apollo/client/react'
 import { useRef } from 'react'
 
 import { type DiagnoseFragment, KonsultasjonDocument } from '@queries'
-import { useFlag } from '@core/toggles/context'
 import type { NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form/types'
 import useOnFocus from '@lib/hooks/useOnFocus'
 
@@ -21,7 +20,6 @@ export function useDiagnoseSuggestions():
         /* This lets the consultasjon query finish even when the parent component unmounts */
         context: { signal: neverAbortSignal.current.signal },
     })
-    const serverBidiagnoserToggle = useFlag('SYK_INN_AUTO_BIDIAGNOSER')
 
     useOnFocus(konsultasjonsQuery.refetch)
 
@@ -37,9 +35,7 @@ export function useDiagnoseSuggestions():
                 value: pickMostRelevantDiagnose(konsultasjonsQuery.data?.konsultasjon?.diagnoser ?? null),
                 error: konsultasjonsQuery.error ? { error: 'FHIR_FAILED' } : undefined,
             },
-            bidiagnoser: serverBidiagnoserToggle
-                ? (konsultasjonsQuery.data?.konsultasjon?.diagnoser?.slice(1) ?? null)
-                : null,
+            bidiagnoser: konsultasjonsQuery.data?.konsultasjon?.diagnoser?.slice(1) ?? null,
         },
     }
 }

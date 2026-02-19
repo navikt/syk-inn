@@ -33,10 +33,6 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
         name: 'SYK_INN_SYKEFRAVAER_INFO',
         ...on,
     },
-    SYK_INN_AUTO_BIDIAGNOSER: {
-        name: 'SYK_INN_AUTO_BIDIAGNOSER',
-        ...on,
-    },
     SYK_INN_REQUEST_HISTORISKE: {
         name: 'SYK_INN_REQUEST_HISTORISKE',
         ...on,
