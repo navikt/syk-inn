@@ -21,10 +21,6 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
         name: 'PILOT_USER',
         ...on,
     },
-    PILOT_FEEDBACK: {
-        name: 'PILOT_FEEDBACK',
-        ...on,
-    },
     SYK_INN_AAREG: {
         name: 'SYK_INN_AAREG',
         ...on,

@@ -18,7 +18,6 @@ import { AutoPatient } from '@core/redux/reducers/ny-sykmelding/patient'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { FhirModeProvider } from '@core/providers/Modes'
 import { createFhirPaths } from '@core/providers/ModePaths'
-import PilotFeedback from '@components/feedback/PilotFeedback'
 import FeedbackButton from '@components/feedback/v2/FeedbackButton'
 import { hasAcceptedBruksvilkar } from '@core/services/bruksvilkar/bruksvilkar-service'
 
@@ -63,9 +62,7 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
         }
     }
 
-    // Feedback V2 has higher precedence than the old one
-    const feedbackV2 = getFlag('SYK_INN_FEEDBACK_V2', rootFhirData.toggles)
-    const oldFeedback = getFlag('PILOT_FEEDBACK', rootFhirData.toggles)
+    const feedbackToggle = getFlag('SYK_INN_FEEDBACK_V2', rootFhirData.toggles)
 
     return (
         <FhirModeProvider activePatientId={patientId}>
@@ -75,8 +72,7 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
                     {children}
                     <LoggedOutWarning />
                     {(isLocal || isDemo) && <LazyDevTools />}
-                    {oldFeedback && !feedbackV2 && <PilotFeedback />}
-                    {feedbackV2 && <FeedbackButton />}
+                    {feedbackToggle && <FeedbackButton />}
                 </ToggleProvider>
             </Providers>
         </FhirModeProvider>

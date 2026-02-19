@@ -31,9 +31,10 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [fhir/dashboard/sykmelding.spec.ts](./fhir/dashboard/sykmelding.spec.ts)
 
-- [should be able to view previous sykmelding](./fhir/dashboard/sykmelding.spec.ts#L8)
-- [previous sykmelding within 4 days should still show as a full sykmelding](./fhir/dashboard/sykmelding.spec.ts#L29)
-- [previous sykmelding older than 4 days should display less values](./fhir/dashboard/sykmelding.spec.ts#L50)
+- [should be able to view previous sykmelding](./fhir/dashboard/sykmelding.spec.ts#L20)
+- [previous sykmelding within 4 days should still show as a full sykmelding](./fhir/dashboard/sykmelding.spec.ts#L41)
+- [previous sykmelding older than 4 days should display less values](./fhir/dashboard/sykmelding.spec.ts#L62)
+- [sykmelding with multiple periods should show full period in link and all other periods in helptext](./fhir/dashboard/sykmelding.spec.ts#L86)
 
 ## [fhir/fhir-bruksvilkar.spec.ts](./fhir/fhir-bruksvilkar.spec.ts)
 
@@ -174,11 +175,11 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 ## [multi-mode/form-utdypende-sporsmal.spec.ts](./multi-mode/form-utdypende-sporsmal.spec.ts)
 
 - [FHIR: Submit sykmelding with utdypende spørsmål when owning all sykmeldinger](./multi-mode/form-utdypende-sporsmal.spec.ts#L20)
-- [FHIR: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted but SYK_INN_SHOW_REDACTED: true](./multi-mode/form-utdypende-sporsmal.spec.ts#L57)
-- [FHIR: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted last one is owned by user](./multi-mode/form-utdypende-sporsmal.spec.ts#L97)
+- [FHIR: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted but SYK_INN_SHOW_REDACTED: true](./multi-mode/form-utdypende-sporsmal.spec.ts#L65)
+- [FHIR: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted last one is owned by user](./multi-mode/form-utdypende-sporsmal.spec.ts#L113)
 - [Standalone: Submit sykmelding with utdypende spørsmål when owning all sykmeldinger](./multi-mode/form-utdypende-sporsmal.spec.ts#L20)
-- [Standalone: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted but SYK_INN_SHOW_REDACTED: true](./multi-mode/form-utdypende-sporsmal.spec.ts#L57)
-- [Standalone: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted last one is owned by user](./multi-mode/form-utdypende-sporsmal.spec.ts#L97)
+- [Standalone: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted but SYK_INN_SHOW_REDACTED: true](./multi-mode/form-utdypende-sporsmal.spec.ts#L65)
+- [Standalone: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted last one is owned by user](./multi-mode/form-utdypende-sporsmal.spec.ts#L113)
 
 ## [multi-mode/launch.spec.ts](./multi-mode/launch.spec.ts)
 

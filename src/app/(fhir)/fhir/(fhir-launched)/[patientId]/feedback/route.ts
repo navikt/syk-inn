@@ -5,7 +5,6 @@ import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getNameFromFhir } from '@data-layer/fhir/mappers/patient'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
-import { handleOldPilotFeedback } from '@core/services/feedback/old-feedback'
 import { handleV2Feedback } from '@core/services/feedback/feedback-service'
 
 export async function POST(
@@ -32,37 +31,20 @@ export async function POST(
         }
         const behandlerName = getNameFromFhir(practitioner.name)
 
+        logger.info('Received V2 feedback with HPR and name!')
         const json = await request.json()
-        const variant = request.nextUrl.searchParams.get('variant')
-        if (variant === 'v2') {
-            logger.info('Received V2 feedback')
-            const feedback = await handleV2Feedback(json, {
-                hpr: hpr,
-                name: behandlerName,
-                system: client.issuerName,
-            })
+        const feedback = await handleV2Feedback(json, {
+            hpr: hpr,
+            name: behandlerName,
+            system: client.issuerName,
+        })
 
-            if (!('feedbackId' in feedback)) {
-                failSpan(span, 'Failed to handle V2 feedback', new Error(feedback.message))
-                return Response.json({ message: feedback.message }, { status: feedback.code })
-            }
-
-            logger.info('Successfully handled V2 feedback')
-            return Response.json({ feedbackId: feedback.feedbackId })
-        } else {
-            logger.info('Received "old" pilot feedback')
-            const feedback = await handleOldPilotFeedback(json, {
-                hpr: hpr,
-                name: behandlerName,
-            })
-
-            if (typeof feedback !== 'string') {
-                failSpan(span, 'Failed to handle old pilot feedback', new Error(feedback.message))
-                return Response.json({ message: feedback.message }, { status: feedback.code })
-            }
-
-            logger.info('Successfully handled old pilot feedback')
-            return Response.json({ ok: 'ok' })
+        if (!('feedbackId' in feedback)) {
+            failSpan(span, 'Failed to handle V2 feedback', new Error(feedback.message))
+            return Response.json({ message: feedback.message }, { status: feedback.code })
         }
+
+        logger.info('Successfully handled V2 feedback')
+        return Response.json({ feedbackId: feedback.feedbackId })
     })
 }
