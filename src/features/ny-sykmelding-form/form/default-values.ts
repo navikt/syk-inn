@@ -25,6 +25,14 @@ export function defaultUtdypendeSporsmal(): NySykmeldingMainFormValues['utdypend
         utfordringerMedArbeid: null,
         medisinskOppsummering: null,
         hensynPaArbeidsplassen: null,
+        sykdomsutvikling: null,
+        arbeidsrelaterteUtfordringer: null,
+        behandlingOgFremtidigArbeidArbeid: null,
+        uavklarteForhold: null,
+        oppdatertMedisinskStatus: null,
+        realistiskMestringArbeid: null,
+        forventetHelsetilstandUtvikling: null,
+        medisinskeHensyn: null,
     }
 }
 

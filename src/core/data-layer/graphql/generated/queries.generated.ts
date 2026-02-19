@@ -654,6 +654,46 @@ export type AllDashboardQuery = {
                               sporsmalstekst: string | null
                               svar: string
                           } | null
+                          sykdomsutvikling: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          arbeidsrelaterteUtfordringer: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          behandlingOgFremtidigArbeidArbeid: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          uavklarteForhold: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          oppdatertMedisinskStatus: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          realistiskMestringArbeid: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          forventetHelsetilstandUtvikling: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          medisinskeHensyn: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
                       } | null
                   }
               }
@@ -826,6 +866,46 @@ export type AllDashboardQuery = {
                               svar: string
                           } | null
                           hensynPaArbeidsplassen: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          sykdomsutvikling: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          arbeidsrelaterteUtfordringer: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          behandlingOgFremtidigArbeidArbeid: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          uavklarteForhold: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          oppdatertMedisinskStatus: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          realistiskMestringArbeid: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          forventetHelsetilstandUtvikling: {
+                              __typename: 'SporsmalSvar'
+                              sporsmalstekst: string | null
+                              svar: string
+                          } | null
+                          medisinskeHensyn: {
                               __typename: 'SporsmalSvar'
                               sporsmalstekst: string | null
                               svar: string
@@ -1143,6 +1223,46 @@ export type SykmeldingByIdQuery = {
                           sporsmalstekst: string | null
                           svar: string
                       } | null
+                      sykdomsutvikling: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      arbeidsrelaterteUtfordringer: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      behandlingOgFremtidigArbeidArbeid: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      uavklarteForhold: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      oppdatertMedisinskStatus: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      realistiskMestringArbeid: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      forventetHelsetilstandUtvikling: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      medisinskeHensyn: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
                   } | null
               }
           }
@@ -1313,6 +1433,46 @@ export type OpprettSykmeldingMutation = {
                           sporsmalstekst: string | null
                           svar: string
                       } | null
+                      sykdomsutvikling: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      arbeidsrelaterteUtfordringer: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      behandlingOgFremtidigArbeidArbeid: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      uavklarteForhold: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      oppdatertMedisinskStatus: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      realistiskMestringArbeid: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      forventetHelsetilstandUtvikling: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
+                      medisinskeHensyn: {
+                          __typename: 'SporsmalSvar'
+                          sporsmalstekst: string | null
+                          svar: string
+                      } | null
                   } | null
               }
           }
@@ -1408,6 +1568,26 @@ export type SykmeldingFullFragment = {
             utfordringerMedArbeid: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
             medisinskOppsummering: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
             hensynPaArbeidsplassen: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            sykdomsutvikling: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            arbeidsrelaterteUtfordringer: {
+                __typename: 'SporsmalSvar'
+                sporsmalstekst: string | null
+                svar: string
+            } | null
+            behandlingOgFremtidigArbeidArbeid: {
+                __typename: 'SporsmalSvar'
+                sporsmalstekst: string | null
+                svar: string
+            } | null
+            uavklarteForhold: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            oppdatertMedisinskStatus: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            realistiskMestringArbeid: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            forventetHelsetilstandUtvikling: {
+                __typename: 'SporsmalSvar'
+                sporsmalstekst: string | null
+                svar: string
+            } | null
+            medisinskeHensyn: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
         } | null
     }
 }
@@ -1531,6 +1711,26 @@ type Sykmelding_SykmeldingFull_Fragment = {
             utfordringerMedArbeid: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
             medisinskOppsummering: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
             hensynPaArbeidsplassen: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            sykdomsutvikling: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            arbeidsrelaterteUtfordringer: {
+                __typename: 'SporsmalSvar'
+                sporsmalstekst: string | null
+                svar: string
+            } | null
+            behandlingOgFremtidigArbeidArbeid: {
+                __typename: 'SporsmalSvar'
+                sporsmalstekst: string | null
+                svar: string
+            } | null
+            uavklarteForhold: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            oppdatertMedisinskStatus: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            realistiskMestringArbeid: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
+            forventetHelsetilstandUtvikling: {
+                __typename: 'SporsmalSvar'
+                sporsmalstekst: string | null
+                svar: string
+            } | null
+            medisinskeHensyn: { __typename: 'SporsmalSvar'; sporsmalstekst: string | null; svar: string } | null
         } | null
     }
 }
@@ -2119,6 +2319,118 @@ export const SykmeldingFullFragmentDoc = {
                                             {
                                                 kind: 'Field',
                                                 name: { kind: 'Name', value: 'hensynPaArbeidsplassen' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'sykdomsutvikling' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'arbeidsrelaterteUtfordringer' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeidArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'uavklarteForhold' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'oppdatertMedisinskStatus' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'realistiskMestringArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'forventetHelsetilstandUtvikling' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'medisinskeHensyn' },
                                                 selectionSet: {
                                                     kind: 'SelectionSet',
                                                     selections: [
@@ -2799,6 +3111,118 @@ export const SykmeldingFragmentDoc = {
                                                     ],
                                                 },
                                             },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'sykdomsutvikling' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'arbeidsrelaterteUtfordringer' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeidArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'uavklarteForhold' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'oppdatertMedisinskStatus' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'realistiskMestringArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'forventetHelsetilstandUtvikling' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'medisinskeHensyn' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
                                         ],
                                     },
                                 },
@@ -3274,6 +3698,118 @@ export const AllDashboardDocument = {
                                             {
                                                 kind: 'Field',
                                                 name: { kind: 'Name', value: 'hensynPaArbeidsplassen' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'sykdomsutvikling' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'arbeidsrelaterteUtfordringer' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeidArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'uavklarteForhold' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'oppdatertMedisinskStatus' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'realistiskMestringArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'forventetHelsetilstandUtvikling' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'medisinskeHensyn' },
                                                 selectionSet: {
                                                     kind: 'SelectionSet',
                                                     selections: [
@@ -4263,6 +4799,118 @@ export const SykmeldingByIdDocument = {
                                                     ],
                                                 },
                                             },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'sykdomsutvikling' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'arbeidsrelaterteUtfordringer' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeidArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'uavklarteForhold' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'oppdatertMedisinskStatus' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'realistiskMestringArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'forventetHelsetilstandUtvikling' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'medisinskeHensyn' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
                                         ],
                                     },
                                 },
@@ -4800,6 +5448,118 @@ export const OpprettSykmeldingDocument = {
                                             {
                                                 kind: 'Field',
                                                 name: { kind: 'Name', value: 'hensynPaArbeidsplassen' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'sykdomsutvikling' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'arbeidsrelaterteUtfordringer' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeidArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'uavklarteForhold' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'oppdatertMedisinskStatus' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'realistiskMestringArbeid' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'forventetHelsetilstandUtvikling' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'sporsmalstekst' },
+                                                        },
+                                                        { kind: 'Field', name: { kind: 'Name', value: 'svar' } },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'medisinskeHensyn' },
                                                 selectionSet: {
                                                     kind: 'SelectionSet',
                                                     selections: [
