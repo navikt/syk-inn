@@ -4,7 +4,7 @@ export type BruksvilkarClient = {
     acceptBruksvilkar: (
         version: `${number}.${number}`,
         user: { hpr: string; name: string; orgnummer: string },
-        meta: { system: string },
+        meta: { system: string; commmitHash: string },
     ) => Promise<string>
     hasAcceptedBruksvilkar: (hpr: string) => Promise<{
         acceptedAt: string
@@ -23,8 +23,9 @@ export function createBruksvilkarClient(valkey: Valkey): BruksvilkarClient {
                 name: user.name,
                 hpr: user.hpr,
                 org: user.orgnummer,
-                system: meta.system,
                 version: version,
+                system: meta.system,
+                hash: meta.commmitHash,
                 tokenValid: true,
             } satisfies BruksvilkarValkeyData)
 
@@ -56,8 +57,9 @@ export type BruksvilkarValkeyData = {
     name: string
     hpr: string
     org: string
-    system: string
     version: string
+    system: string
+    hash: string
     tokenValid: boolean
 }
 

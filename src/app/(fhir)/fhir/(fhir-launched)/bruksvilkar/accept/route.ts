@@ -8,6 +8,7 @@ import { acceptBruksvilkar } from '@core/services/bruksvilkar/bruksvilkar-servic
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getNameFromFhir } from '@data-layer/fhir/mappers/patient'
 import { getOrganisasjonsnummerFromFhir } from '@data-layer/fhir/mappers/organization'
+import { bundledEnv } from '@lib/env'
 
 const PayloadSchema = z.object({
     patientId: z.string(),
@@ -61,7 +62,7 @@ export async function PUT(request: NextRequest): Promise<Response> {
     const accept: ResponsePayload = await acceptBruksvilkar(
         body.version,
         { hpr, orgnummer, name: getNameFromFhir(practitioner.name) },
-        { system: readyClient.issuerName },
+        { system: readyClient.issuerName, commmitHash: bundledEnv.NEXT_PUBLIC_VERSION ?? 'missing' },
     )
 
     return Response.json(accept)
