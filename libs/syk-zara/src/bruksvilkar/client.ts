@@ -1,5 +1,7 @@
 import Valkey from 'iovalkey'
 
+import { Bruksvilkar } from './schema'
+
 export type BruksvilkarClient = {
     acceptBruksvilkar: (
         version: `${number}.${number}`,
@@ -27,7 +29,7 @@ export function createBruksvilkarClient(valkey: Valkey): BruksvilkarClient {
                 system: meta.system,
                 hash: meta.commmitHash,
                 tokenValid: true,
-            } satisfies BruksvilkarValkeyData)
+            } satisfies Bruksvilkar)
 
             return acceptedAt
         },
@@ -39,7 +41,7 @@ export function createBruksvilkarClient(valkey: Valkey): BruksvilkarClient {
                 return null
             }
 
-            const data: Record<keyof BruksvilkarValkeyData, string> = await valkey.hgetall(key)
+            const data: Record<keyof Bruksvilkar, string> = await valkey.hgetall(key)
             if (!data || !data.acceptedAt || !data.version) {
                 return null
             }
@@ -50,17 +52,6 @@ export function createBruksvilkarClient(valkey: Valkey): BruksvilkarClient {
             }
         },
     }
-}
-
-export type BruksvilkarValkeyData = {
-    acceptedAt: string
-    name: string
-    hpr: string
-    org: string
-    version: string
-    system: string
-    hash: string
-    tokenValid: boolean
 }
 
 const PREFIX = 'bruksvilkar:'

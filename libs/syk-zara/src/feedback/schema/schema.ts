@@ -1,6 +1,8 @@
 import * as z from 'zod'
 
-import { DateTime, NullableDateTime, NullableValkeyString, SentimentSchema } from './common'
+import { DateTime } from '../../lib/zod'
+
+import { NullableDateTime, NullableValkeyString, SentimentSchema } from './common'
 import { MetaDevSchema, MetaTagsSchema, RedactionLogSchema } from './meta-schema'
 
 const SentimentableSchema = z.object({

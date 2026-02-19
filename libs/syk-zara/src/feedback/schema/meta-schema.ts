@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-import { DateTime } from './common'
+import { DateTime } from '../../lib/zod'
 
 export const RedactionLogSchema = z
     .string()

@@ -1,9 +1,12 @@
 import type Valkey from 'iovalkey'
+import * as R from 'remeda'
+import { logger } from '@navikt/pino-logger'
 
-import { BruksvilkarClient, BruksvilkarValkeyData, createBruksvilkarClient } from '../client'
+import { BruksvilkarClient, createBruksvilkarClient } from '../client'
+import { Bruksvilkar, BruksvilkarValkeySchema } from '../schema'
 
 export type AdminBruksvilkarClient = BruksvilkarClient & {
-    all: () => Promise<BruksvilkarValkeyData[]>
+    all: () => Promise<Bruksvilkar[]>
 }
 
 export function createAdminBruksvilkarClient(valkey: Valkey): AdminBruksvilkarClient {
@@ -15,12 +18,17 @@ export function createAdminBruksvilkarClient(valkey: Valkey): AdminBruksvilkarCl
             const all = await Promise.all(
                 allkeys.map(async (key) => {
                     const data = await valkey.hgetall(key)
-                    // TODO: Actually zod it
-                    return data as unknown as BruksvilkarValkeyData
+                    const parsed = BruksvilkarValkeySchema.safeParse(data)
+                    if (!parsed.success) {
+                        logger.error(`Dirty data in bruksvilkar valkey, skipping. HPR: ${data.hpr ?? 'missing'}`)
+                        return null
+                    }
+
+                    return parsed.data
                 }),
             )
 
-            return all
+            return all.filter(R.isNonNull)
         },
     }
 }
