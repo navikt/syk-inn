@@ -4,8 +4,8 @@ import { CheckmarkHeavyIcon, FaceLaughIcon } from '@navikt/aksel-icons'
 import { AnimatePresence } from 'motion/react'
 
 import { SimpleReveal } from '@components/animation/Reveal'
-import FeedbackInSituForm from '@components/feedback/v2/in-situ/FeedbackInSituForm'
-import { useFeedback } from '@components/feedback/v2/useFeedback'
+import FeedbackInSituForm from '@components/feedback/in-situ/FeedbackInSituForm'
+import { useFeedback } from '@components/feedback/useFeedback'
 
 function FeedbackInSitu(): ReactElement {
     const [wantsToFeedback, setWantsToFeedback] = useState(false)

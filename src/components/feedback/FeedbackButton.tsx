@@ -8,7 +8,7 @@ import { CheckmarkHeavyIcon, LightBulbIcon } from '@navikt/aksel-icons'
 import { BehandlerDocument } from '@queries'
 import SessionIdInfo from '@components/help/SessionIdInfo'
 import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
-import { useFeedback } from '@components/feedback/v2/useFeedback'
+import { useFeedback } from '@components/feedback/useFeedback'
 
 import { FullFeedback, FullFeedbackSentimentFollowUp } from './full-feedback/FullFeedbackForm'
 

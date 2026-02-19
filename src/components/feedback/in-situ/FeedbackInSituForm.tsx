@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { useController, useForm } from 'react-hook-form'
 import { Button, InlineMessage, Label, Textarea } from '@navikt/ds-react'
 
-import { InSituFeedbackFormValues } from '@components/feedback/v2/in-situ/form'
+import { InSituFeedbackFormValues } from '@components/feedback/in-situ/form'
 
 import { SentimentPicker } from '../sentiment/SentimentPicker'
 

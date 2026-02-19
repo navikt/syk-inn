@@ -18,7 +18,7 @@ import { AutoPatient } from '@core/redux/reducers/ny-sykmelding/patient'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { FhirModeProvider } from '@core/providers/Modes'
 import { createFhirPaths } from '@core/providers/ModePaths'
-import FeedbackButton from '@components/feedback/v2/FeedbackButton'
+import FeedbackButton from '@components/feedback/FeedbackButton'
 import { hasAcceptedBruksvilkar } from '@core/services/bruksvilkar/bruksvilkar-service'
 
 import { NoPractitionerSession, NoValidPatient } from './launched-errors'

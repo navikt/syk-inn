@@ -18,7 +18,7 @@ import TwoPaneGrid from '@components/layout/TwoPaneGrid'
 import { SimpleAlert } from '@components/help/GeneralErrors'
 import { ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
 import { useFlag } from '@core/toggles/context'
-import FeedbackInSitu from '@components/feedback/v2/in-situ/FeedbackInSitu'
+import FeedbackInSitu from '@components/feedback/in-situ/FeedbackInSitu'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 import { SykmeldingSynchronization } from './SykmeldingSynchronization'
