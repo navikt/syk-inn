@@ -35,6 +35,11 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 - [previous sykmelding within 4 days should still show as a full sykmelding](./fhir/dashboard/sykmelding.spec.ts#L29)
 - [previous sykmelding older than 4 days should display less values](./fhir/dashboard/sykmelding.spec.ts#L50)
 
+## [fhir/fhir-bruksvilkar.spec.ts](./fhir/fhir-bruksvilkar.spec.ts)
+
+- [when bruksvilkår toggle is on, user should be automatically redirected to bruksvilkår page](./fhir/fhir-bruksvilkar.spec.ts#L5)
+- [accepting the bruksvilkår should allow you to return to the patient](./fhir/fhir-bruksvilkar.spec.ts#L17)
+
 ## [fhir/fhir-chaosmonkey.spec.ts](./fhir/fhir-chaosmonkey.spec.ts)
 
 - [spamming 'Send'-button repeatedly should only submit 1 sykmelding](./fhir/fhir-chaosmonkey.spec.ts#L10)

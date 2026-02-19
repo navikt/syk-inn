@@ -53,48 +53,56 @@ function Bruksvilkar({ patientId, accepter, accepted }: Props): ReactElement {
             </div>
             {acceptOk != null && <YouAcceptedBruksvilkar version={acceptOk.version} at={acceptOk.at} />}
             <BruksvilkarSection />
-            <InlineMessage
-                status="info"
-                className="border border-ax-border-info-subtle rounded-sm p-2 italic mt-4 mb-4"
-            >
-                Du er {accepter.name} med HPR-nummer {accepter.hpr}
-            </InlineMessage>
-            {acceptOk == null ? (
-                <AcceptBruksvilkar
-                    patientId={patientId}
-                    onAcceptOk={(accept) => setAcceptOk({ ...accept, stale: false })}
-                />
-            ) : (
-                <YouAcceptedBruksvilkar version={acceptOk.version} at={acceptOk.at} />
-            )}
-            {acceptOk?.stale === true && (
-                <InfoCard data-color="info">
-                    <InfoCard.Header>
-                        <InfoCard.Title>Oppdaterte bruksvilkår</InfoCard.Title>
-                    </InfoCard.Header>
-                    <InfoCard.Content>
-                        <BodyShort spacing>
-                            Bruksvilkårene ble oppdatert {toReadableDateTime(BRUKSVILKAR_TIMESTAMP)} til v
-                            {BRUKSVILKAR_VERSION}. For å fortsette å bruke løsningen må du godta de oppdaterte
-                            bruksvilkårene.
-                        </BodyShort>
-                        <AcceptBruksvilkar
-                            patientId={patientId}
-                            onAcceptOk={(accept) => setAcceptOk({ ...accept, stale: false })}
-                        />
-                    </InfoCard.Content>
-                </InfoCard>
-            )}
-
-            <AnimatePresence>
-                {acceptOk != null && !acceptOk.stale && (
-                    <SimpleReveal>
-                        <Button href={paths.root} className="w-full mt-4" variant="secondary" as={AssableNextLink}>
-                            Gå tilbake til pasienten
-                        </Button>
-                    </SimpleReveal>
+            <section aria-label="Godta bruksvilkår">
+                <InlineMessage
+                    status="info"
+                    className="border border-ax-border-info-subtle rounded-sm p-2 italic mt-4 mb-4"
+                >
+                    Du er {accepter.name} med HPR-nummer {accepter.hpr}
+                </InlineMessage>
+                {acceptOk == null ? (
+                    <AcceptBruksvilkar
+                        patientId={patientId}
+                        onAcceptOk={(accept) => setAcceptOk({ ...accept, stale: false })}
+                    />
+                ) : (
+                    <YouAcceptedBruksvilkar version={acceptOk.version} at={acceptOk.at} />
                 )}
-            </AnimatePresence>
+                {acceptOk?.stale === true && (
+                    <InfoCard data-color="info">
+                        <InfoCard.Header>
+                            <InfoCard.Title>Oppdaterte bruksvilkår</InfoCard.Title>
+                        </InfoCard.Header>
+                        <InfoCard.Content>
+                            <BodyShort spacing>
+                                Bruksvilkårene ble oppdatert {toReadableDateTime(BRUKSVILKAR_TIMESTAMP)} til v
+                                {BRUKSVILKAR_VERSION}. For å fortsette å bruke løsningen må du godta de oppdaterte
+                                bruksvilkårene.
+                            </BodyShort>
+                            <AcceptBruksvilkar
+                                patientId={patientId}
+                                onAcceptOk={(accept) => setAcceptOk({ ...accept, stale: false })}
+                            />
+                        </InfoCard.Content>
+                    </InfoCard>
+                )}
+
+                <AnimatePresence>
+                    {acceptOk != null && !acceptOk.stale && (
+                        <SimpleReveal>
+                            <Button
+                                role="link"
+                                href={paths.root}
+                                className="w-full mt-4"
+                                variant="secondary"
+                                as={AssableNextLink}
+                            >
+                                Gå tilbake til pasienten
+                            </Button>
+                        </SimpleReveal>
+                    )}
+                </AnimatePresence>
+            </section>
         </div>
     )
 }
