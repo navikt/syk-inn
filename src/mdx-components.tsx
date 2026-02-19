@@ -1,5 +1,7 @@
 import type { MDXComponents } from 'mdx/types'
-import { BodyLong, Heading, List } from '@navikt/ds-react'
+import { BodyLong, Heading, List, Table, Link as AkselLink } from '@navikt/ds-react'
+
+import styles from './mdx-components.module.css'
 
 const components: MDXComponents = {
     h1: ({ children }) => (
@@ -44,6 +46,25 @@ const components: MDXComponents = {
         </List>
     ),
     li: ({ children }) => <List.Item>{children}</List.Item>,
+    table: ({ children }) => (
+        <Table size="small" className="-mt-6">
+            {children}
+        </Table>
+    ),
+    thead: ({ children }) => <Table.Header>{children}</Table.Header>,
+    tbody: ({ children }) => <Table.Body>{children}</Table.Body>,
+    tr: ({ children }) => <Table.Row>{children}</Table.Row>,
+    th: ({ children }) => (
+        <Table.HeaderCell scope="col" textSize="small">
+            {children}
+        </Table.HeaderCell>
+    ),
+    td: ({ children }) => (
+        <Table.DataCell textSize="small" className={styles.listsInTd}>
+            {children}
+        </Table.DataCell>
+    ),
+    a: ({ children, href }) => <AkselLink href={href}>{children}</AkselLink>,
 }
 
 export function useMDXComponents(): MDXComponents {

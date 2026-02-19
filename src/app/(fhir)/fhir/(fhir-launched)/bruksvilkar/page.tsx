@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import { PageBlock } from '@navikt/ds-react/Page'
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
 
@@ -71,17 +70,13 @@ async function BruksvilkarWithData({ patientId }: { patientId: string }): Promis
 
 function BruksvilkarError(): ReactElement {
     return (
-        <PageBlock as="main" width="xl" gutters className="pt-4">
-            <div className="max-w-prose">
-                <Heading size="medium" level="3" spacing>
-                    Kunne ikke vise bruksvilkår
-                </Heading>
-                <BodyShort spacing>
-                    Dette kan tyde på at det skjedde en feil under oppstarten av applikasjonen.
-                </BodyShort>
-                <LegeOgBehandlerTelefonen />
-            </div>
-        </PageBlock>
+        <div className="max-w-prose">
+            <Heading size="medium" level="3" spacing>
+                Kunne ikke vise bruksvilkår
+            </Heading>
+            <BodyShort spacing>Dette kan tyde på at det skjedde en feil under oppstarten av applikasjonen.</BodyShort>
+            <LegeOgBehandlerTelefonen />
+        </div>
     )
 }
 

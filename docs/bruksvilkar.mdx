@@ -51,4 +51,54 @@ Ved behov for å sykmelde i disse tilfellene eller på disse tidspunktene, må l
 
 #### Leges ansvar
 
-TODO - Resten. Testen!
+Bare personer med gyldig autorisasjon som lege kan bruke applikasjonen.
+
+Lege skal vurdere og dokumentere arbeidsuførhet i sykmelding, iht. folketrygdloven kapittel 8 og de krav som er satt av Nav for utfylling av sykmeldinger. Lege er databehandlingsansvarlig for de personopplysninger som er underlagt journalføringsplikt og som behandles om pasient for å ivareta pliktene som er pålagt lege. Leges ansvar inkluderer ivaretakelse av pasientens rettigheter iht. personopplysningsloven, så langt eget databehandlingsansvar strekker seg.
+
+Lege er ansvarlig for å sikre at sykmeldingen er korrekt utfylt og, herunder å sikre at de opplysninger som applikasjonen til enhver tid henter fra EPJ-systemet er oppdaterte og korrekte.
+
+Lege forplikter seg til å gi tilbakemelding om brukserfaring og forbedringsforslag. Ved eventuelle feil eller avvik ved bruk av applikasjonen, skal lege rapportere dette til Nav så snart som mulig
+
+Tilgang til applikasjonen er personlig og påloggingsdetaljer skal ikke deles med andre.
+
+#### Navs ansvar
+
+Nav er databehandlingsansvarlig for applikasjonen som er utviklet for å legge til rette for innsending av sykmeldinger og som er integrert med journalsystemet. Nav har ansvaret for å sikre etterlevelse av rettslige rammer, herunder sikkerhetskrav i systemløsningen gjennom tilgangsstyring, logging, sikring av overføringer mv. Loggene kan brukes til kontrollformål av behandlingsansvarlig virksomhet, Nav, eller relevante tilsynsmyndigheter.
+
+Som ledd i å tilrettelegge for utfylling og innsending av sykmelding, vil Nav sitt behandlingsansvar for versjon 1 av applikasjonen inkludere:
+
+- Tilrettelegging for innhenting, visning og automatisk utfylling av pasientpersonalia og diagnose fra konsultasjon, i utkast til sykmeldingen. Dette hentes fra EPJ-systemet.
+- Tilrettelegging for innhenting og automatisk utfylling av opplysninger om signerende helsepersonell og tilhørende virksomhet. Dette hentes fra EPJ-systemet.
+- Midlertidig lagring og automatisk sletting av utkast til ny sykmelding etter 48 timer. Midlertidig lagring av utkast gjøres i database driftet av Nav.
+- Tilbakemeldinger om innsending er mottatt og gyldighet av dokument
+- Tilbakeskrive kopi av innsendt sykmelding som kvittering tilbake til EPJ
+- Begrenset deling av sykmeldingshistorikk i Dashboard
+- Maskinell logikk for å vise spørsmål om utdypende opplysninger ved 7 uker sykmelding
+- Midlertidig lagring av historiske sykmeldingsdata i egen database for applikasjonen for å håndtere mottak av sykmeldinger og funksjonalitet i applikasjonen. Opplysningene i databasen har en lagringstid på inntil ett år.
+
+Nav er ansvarlig for å gjennomføre tekniske og organisatoriske tiltak for å sikre at opplysninger i utkast til sykmelding ikke benyttes i saksbehandling av sykepenger eller for oppfølging av sykmeldt før fullstendig utfylt sykmelding er sendt av lege og mottatt hos Nav.
+
+### Behandlingsgrunnlag
+
+Behandlingsgrunnlag for sykmeldingsprosess og applikasjon følger av GDPR art. 6 nr. 1 bokstav e og art. 9 nr. 1, med følgende supplerende rettslig grunnlag i nasjonal lovgivning for de ulike delene av behandlingen:
+
+| Del av prosess eller behandling                                                                                                                                                                                     | Supplerende rettslig grunnlag                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Utvikling og drift av applikasjon                                                                                                                                                                                   | Ftrl. kapittel 8, jf. ftrl. § 21-4 (2)                                                                                                 |
+| Utforming av sykmeldingsskjema                                                                                                                                                                                      | Ftrl. kapittel 8, jf. ftrl § 21-4 (2)                                                                                                  |
+| Midlertidig lagring og automatisk sletting av utkast til sykmeldinger                                                                                                                                               | Ftrl. kapittel 8, jf. ftrl. § 21-4 (2)                                                                                                 |
+| Tilbakemeldinger om innsending og gyldighet av dokument                                                                                                                                                             | Eforvaltningsforskriften §§ 6 og 7                                                                                                     |
+| Tilbakeskriving av sykmelding som kvittering til EPJ-system                                                                                                                                                         | Eforvaltningsforskriften, herunder § 6 og hpl. §§ 39 og 40 med tilhørende forskrifter, herunder pasientjournalforskriften § 8, jf. § 4 |
+| Deling av opplysninger om <ul><li>F.o.m.-t.o.m.-dato</li><li>Grad</li><li>Diagnose</li></ul> for sykmeldinger som på konsultasjonstidspunktet er aktive eller avsluttet inntil fire dager i forkant av konsultasjon | Fvl. § 13 b nr 2 og ftrl. §§ 8-4, 8-6 og 8-7, jf. ftrl. § 21-4 (2)                                                                     |
+| Forlengelse og duplisering av pågående og nylig avsluttede sykmeldinger                                                                                                                                             | Fvl. § 13 b nr 2 og ftrl. §§ 8-4, 8-6 og 8-7, jf. ftrl. § 21-4 (2)                                                                     |
+| Logikk for utdypende spørsmål i uke 7                                                                                                                                                                               | Ftrl. §§ 8-4 (1), 8-7 (7), 8-7a og 21-4 (2)                                                                                            |
+
+### Endringshåndtering og varsling
+
+Applikasjonen er under utvikling, og endringer kan oppstå underveis i testperioden.
+
+Nav kan stenge leges tilgang til applikasjonen hvis det oppdages hendelser som utgjør en betydelig risiko for informasjonssikkerhet, og skal varsle lege så snart det lar seg gjøre. Nav skal varsle brukerne ved endring av bruksvilkår, større funksjonelle endringer i applikasjonen, eventuelle feil, planlagte nedetider, og ved nyheter som er knyttet til applikasjonen.
+
+Bruker forplikter seg til å holde seg oppdatert på de til enhver tid gjeldende bruksvilkår for applikasjonen. Eventuelle endringer i bruksvilkår varsles gjennom utstedelse av e-post. Alle endringer av bruksvilkårene anses akseptert av lege så lenge Nav ikke mottar innsigelser etter at varsel om endring er gitt. Innsigelser må fremsettes innen rimelig tid fra varselet er mottatt. Innsigelsen må meldes til Nav gjennom e-postadresse for kontakt.
+
+Spørsmål og innsigelser om bruksvilkår og personvern meldes til Margrethe.Hansen.Krogh@nav.no.

@@ -1,0 +1,10 @@
+.listsInTd ul {
+    margin: 0;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+.listsInTd li {
+    margin: 0;
+    padding: 0;
+}
