@@ -126,7 +126,9 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
 
         const requireBruksvilkarToggle = getFlag('SYK_INN_REQUIRE_BRUKSVILKAR', toggles)
         const acceptedBruksvilkar = await hasAcceptedBruksvilkar(hpr)
-        span.setAttribute('PilotUser.acceptedAt', acceptedBruksvilkar?.acceptedAt ?? 'never')
+        span.setAttribute('PilotUser.bruskvilkar.acceptedAt', acceptedBruksvilkar?.acceptedAt ?? 'never')
+        span.setAttribute('PilotUser.bruksvilkar.stale', acceptedBruksvilkar?.stale ? 'yes' : 'no')
+        span.setAttribute('PilotUser.bruksvilkar.toggledOn', requireBruksvilkarToggle ? 'yes' : 'no')
 
         if (requireBruksvilkarToggle && (acceptedBruksvilkar?.acceptedAt == null || acceptedBruksvilkar.stale)) {
             logger.info(
