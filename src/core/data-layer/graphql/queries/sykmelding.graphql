@@ -109,6 +109,38 @@ fragment SykmeldingFull on SykmeldingFull {
                 sporsmalstekst
                 svar
             }
+            sykdomsutvikling {
+                sporsmalstekst
+                svar
+            }
+            arbeidsrelaterteUtfordringer {
+                sporsmalstekst
+                svar
+            }
+            behandlingOgFremtidigArbeidArbeid {
+                sporsmalstekst
+                svar
+            }
+            uavklarteForhold {
+                sporsmalstekst
+                svar
+            }
+            oppdatertMedisinskStatus {
+                sporsmalstekst
+                svar
+            }
+            realistiskMestringArbeid {
+                sporsmalstekst
+                svar
+            }
+            forventetHelsetilstandUtvikling {
+                sporsmalstekst
+                svar
+            }
+            medisinskeHensyn {
+                sporsmalstekst
+                svar
+            }
         }
         annenFravarsgrunn
     }

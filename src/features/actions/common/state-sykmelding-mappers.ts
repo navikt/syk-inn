@@ -137,6 +137,14 @@ export function stateUtdypendeSporsmalToFormValues(
         utfordringerMedArbeid: stateUtdypendeSporsmal.utfordringerMedArbeid ?? null,
         medisinskOppsummering: stateUtdypendeSporsmal.medisinskOppsummering ?? null,
         hensynPaArbeidsplassen: stateUtdypendeSporsmal.hensynPaArbeidsplassen ?? null,
+        sykdomsutvikling: stateUtdypendeSporsmal.sykdomsutvikling ?? null,
+        arbeidsrelaterteUtfordringer: stateUtdypendeSporsmal.arbeidsrelaterteUtfordringer ?? null,
+        behandlingOgFremtidigArbeidArbeid: stateUtdypendeSporsmal.behandlingOgFremtidigArbeidArbeid ?? null,
+        uavklarteForhold: stateUtdypendeSporsmal.uavklarteForhold ?? null,
+        oppdatertMedisinskStatus: stateUtdypendeSporsmal.oppdatertMedisinskStatus ?? null,
+        realistiskMestringArbeid: stateUtdypendeSporsmal.realistiskMestringArbeid ?? null,
+        forventetHelsetilstandUtvikling: stateUtdypendeSporsmal.forventetHelsetilstandUtvikling ?? null,
+        medisinskeHensyn: stateUtdypendeSporsmal.medisinskeHensyn ?? null,
     }
 }
 

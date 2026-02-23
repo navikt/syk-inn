@@ -87,6 +87,14 @@ type UtdypendeSporsmalFields = {
     utfordringerMedArbeid: string | null
     medisinskOppsummering: string | null
     hensynPaArbeidsplassen: string | null
+    sykdomsutvikling: string | null
+    arbeidsrelaterteUtfordringer: string | null
+    behandlingOgFremtidigArbeidArbeid: string | null
+    uavklarteForhold: string | null
+    oppdatertMedisinskStatus: string | null
+    realistiskMestringArbeid: string | null
+    forventetHelsetilstandUtvikling: string | null
+    medisinskeHensyn: string | null
 }
 
 export type NySykmeldingMainFormValues = {
