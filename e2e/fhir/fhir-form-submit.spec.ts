@@ -95,8 +95,11 @@ test('should be able to submit purely with shortcuts', async ({ page }) => {
 })
 
 test('should pre-fill bidiagnoser from FHIR', async ({ page }) => {
-    await launchWithMock('empty')(page)
-    await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
+    await launchWithMock('empty', {
+        // Kari has 3 diagnoses in FHIR
+        patient: 'Kari Normann',
+    })(page)
+    await startNewSykmelding({ name: 'Kari Normann', fnr: '45847100951' })(page)
 
     await fillPeriodeRelative({
         type: '100%',
@@ -114,11 +117,11 @@ test('should pre-fill bidiagnoser from FHIR', async ({ page }) => {
         values: {
             ...defaultOpprettSykmeldingValues,
             // Pre filled from FHIR
-            hoveddiagnose: { code: 'L73', system: 'ICPC2' },
+            hoveddiagnose: diagnoseSelection.fhirPrefills.botulisme.verify,
             // Pre filled from FHIR
             bidiagnoser: [
-                { system: 'ICPC2', code: 'P74' },
-                { system: 'ICD10', code: 'A051' },
+                diagnoseSelection.fhirPrefills.angstlidelse.verify,
+                diagnoseSelection.fhirPrefills.bruddLeggAnkel.verify,
             ],
             aktivitet: [
                 defaultAktivitetIkkeMulig({
@@ -135,8 +138,8 @@ test('should pre-fill bidiagnoser from FHIR', async ({ page }) => {
 test.describe('Resetting diagnoser when prefilled from FHIR', () => {
     test('adding extra diagnose and resetting them should remove them', async ({ page }) => {
         await launchWithMock('empty', {
-            // Kari only has one diagnose in FHIR
-            patient: 'Kari Normann',
+            // Espen only has one diagnose in FHIR
+            patient: 'Espen Eksempel',
         })(page)
         await startNewSykmelding()(page)
         await fillPeriodeRelative({ type: '100%', days: 3 })(page)
@@ -167,19 +170,19 @@ test.describe('Resetting diagnoser when prefilled from FHIR', () => {
 
     test('removing diagonses from FHIR prefill and reseetting them should add them back', async ({ page }) => {
         await launchWithMock('empty', {
-            // Espen has 3 diagnoser in FHIR
-            patient: 'Espen Eksempel',
+            // Kari has 3 diagnoser in FHIR
+            patient: 'Kari Normann',
         })(page)
         await startNewSykmelding()(page)
         await fillPeriodeRelative({ type: '100%', days: 3 })(page)
-        await expectBidagnoses(['Angstlidelse', 'Botulisme'])(page)
+        await expectBidagnoses(['Angstlidelse', 'Brudd legg/ankel'])(page)
         await deleteBidiagnose(2)(page)
         await deleteBidiagnose(1)(page)
         await expectBidagnoses([])(page)
 
         await test.step('Reset diagnoser', async () => {
             await page.getByRole('button', { name: 'Bruk diagnoser fra EPJ' }).click()
-            await expectBidagnoses(['Angstlidelse', 'Botulisme'])(page)
+            await expectBidagnoses(['Angstlidelse', 'Brudd legg/ankel'])(page)
         })
 
         await nextStep()(page)
@@ -193,11 +196,11 @@ test.describe('Resetting diagnoser when prefilled from FHIR', () => {
             values: {
                 ...defaultOpprettSykmeldingValues,
                 // Pre filled from FHIR
-                hoveddiagnose: { code: 'L73', system: 'ICPC2' },
+                hoveddiagnose: { system: 'ICD10', code: 'A051' },
                 // Pre filled from FHIR
                 bidiagnoser: [
                     { system: 'ICPC2', code: 'P74' },
-                    { system: 'ICD10', code: 'A051' },
+                    { system: 'ICPC2', code: 'L73' },
                 ],
                 aktivitet: anything(),
             },
