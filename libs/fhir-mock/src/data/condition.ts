@@ -39,12 +39,12 @@ export function getConditionsFor(
 ): FhirCondition[] {
     switch (patientName) {
         case 'Kari Normann':
-            return [createCondition(patient.id, encounterId, codingBotulisme)]
-        case 'Espen Eksempel':
             return [
-                createCondition(patient.id, encounterId, codingBruddLeggAnkel),
-                createCondition(patient.id, encounterId, codingAngstlidelse),
                 createCondition(patient.id, encounterId, codingBotulisme),
+                createCondition(patient.id, encounterId, codingAngstlidelse),
+                createCondition(patient.id, encounterId, codingBruddLeggAnkel),
             ]
+        case 'Espen Eksempel':
+            return [createCondition(patient.id, encounterId, codingBruddLeggAnkel)]
     }
 }

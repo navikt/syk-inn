@@ -14,6 +14,17 @@ export const diagnoseSelection = {
     any: {
         verify: { system: anything(), code: anything() },
     },
+    fhirPrefills: {
+        botulisme: {
+            verify: { system: 'ICD10', code: 'A051' },
+        },
+        bruddLeggAnkel: {
+            verify: { system: 'ICPC2', code: 'L73' },
+        },
+        angstlidelse: {
+            verify: { system: 'ICPC2', code: 'P74' },
+        },
+    },
 } as const
 
 export const defaultOpprettSykmeldingValues: Omit<OpprettSykmeldingInput, 'aktivitet'> = {

@@ -10,7 +10,7 @@ interface Props {
 
 function DiagnoseSection({ diagnosePrefillError }: Props): ReactElement {
     return (
-        <>
+        <section aria-label="Hoveddiagnose">
             <DiagnosePicker />
             {diagnosePrefillError && (
                 <BodyShort className="mt-2 flex gap-1 items-center">
@@ -18,7 +18,7 @@ function DiagnoseSection({ diagnosePrefillError }: Props): ReactElement {
                     Kunne ikke hente diagnoser, du kan fortsatt velge diagnosen manuelt.
                 </BodyShort>
             )}
-        </>
+        </section>
     )
 }
 

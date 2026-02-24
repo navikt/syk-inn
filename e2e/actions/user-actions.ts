@@ -12,10 +12,10 @@ import { clickAndWait, getDraftId, waitForGqlRequest } from '../utils/request-ut
 export function pickHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
     return async (page: Page) => {
         return await test.step('Input hoveddiagnose', async () => {
-            const diagnoseRegion = page.getByRole('region', { name: 'Diagnose', exact: true })
+            const diagnoseRegion = page.getByRole('region', { name: 'Hoveddiagnose', exact: true })
             await expect(diagnoseRegion).toBeVisible()
 
-            const endreButton = page.getByRole('button', { name: 'Endre' })
+            const endreButton = diagnoseRegion.getByRole('button', { name: 'Endre' })
             if (await endreButton.isVisible()) {
                 await endreButton.click() // Diagnose is pre-filled
             }
