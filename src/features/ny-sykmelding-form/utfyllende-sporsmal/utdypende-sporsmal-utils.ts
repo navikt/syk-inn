@@ -51,9 +51,6 @@ export const satisfiesGeneralConditions = (
     utdypendeSporsmal: UtdypendeOpplysningerHint,
     daysForPeriode: number,
 ): boolean => {
-    // TODO: Gjelder IKKE for uke 17 og 39
-    if (!currentSykmeldingIsAktivitetIkkeMulig(perioder)) return false
-
     if (!currentSykmeldingIsPartOfPeriode(perioder, utdypendeSporsmal)) return false
 
     if (utdypendeSporsmal && utdypendeSporsmal.days > daysForPeriode) return true
@@ -83,6 +80,8 @@ export const shouldShowUke7Sporsmal = (
         return false
     }
 
+    if (!currentSykmeldingIsAktivitetIkkeMulig(perioder)) return false
+
     return satisfiesGeneralConditions(perioder, utdypendeSporsmal, DAYS_IN_7_WEEKS)
 }
 
@@ -92,7 +91,12 @@ export const shouldShowUke17Sporsmal = (
 ): boolean => {
     const DAYS_IN_17_WEEKS = 17 * 7
 
-    // TODO check if already answered uke 17 questions
+    if (
+        utdypendeSporsmal.previouslyAnsweredSporsmal.includes('BEHANDLING_OG_FREMTIDIG_ARBEID') &&
+        utdypendeSporsmal.previouslyAnsweredSporsmal.includes('UAVKLARTE_FORHOLD')
+    ) {
+        return false
+    }
 
     return satisfiesGeneralConditions(perioder, utdypendeSporsmal, DAYS_IN_17_WEEKS)
 }
@@ -103,7 +107,12 @@ export const shouldShowUke39Sporsmal = (
 ): boolean => {
     const DAYS_IN_39_WEEKS = 39 * 7
 
-    // TODO check if already answered uke 39 questions
+    if (
+        utdypendeSporsmal.previouslyAnsweredSporsmal.includes('FORVENTET_HELSETILSTAND_UTVIKLING') &&
+        utdypendeSporsmal.previouslyAnsweredSporsmal.includes('MEDISINSKE_HENSYN')
+    ) {
+        return false
+    }
 
     return satisfiesGeneralConditions(perioder, utdypendeSporsmal, DAYS_IN_39_WEEKS)
 }

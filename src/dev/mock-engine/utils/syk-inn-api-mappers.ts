@@ -92,6 +92,19 @@ export function sykInnApiPayloadToResponse(
                           payload.values.utdypendeSporsmalAnswerOptions.medisinskOppsummering ?? null,
                       hensynPaArbeidsplassen:
                           payload.values.utdypendeSporsmalAnswerOptions.hensynPaArbeidsplassen ?? null,
+                      sykdomsutvikling: payload.values.utdypendeSporsmalAnswerOptions.sykdomsutvikling ?? null,
+                      arbeidsrelaterteUtfordringer:
+                          payload.values.utdypendeSporsmalAnswerOptions.arbeidsrelaterteUtfordringer ?? null,
+                      behandlingOgFremtidigArbeidArbeid:
+                          payload.values.utdypendeSporsmalAnswerOptions.behandlingOgFremtidigArbeidArbeid ?? null,
+                      uavklarteForhold: payload.values.utdypendeSporsmalAnswerOptions.uavklarteForhold ?? null,
+                      oppdatertMedisinskStatus:
+                          payload.values.utdypendeSporsmalAnswerOptions.oppdatertMedisinskStatus ?? null,
+                      realistiskMestringArbeid:
+                          payload.values.utdypendeSporsmalAnswerOptions.realistiskMestringArbeid ?? null,
+                      forventetHelsetilstandUtvikling:
+                          payload.values.utdypendeSporsmalAnswerOptions.forventetHelsetilstandUtvikling ?? null,
+                      medisinskeHensyn: payload.values.utdypendeSporsmalAnswerOptions.medisinskeHensyn ?? null,
                   }
                 : null,
             annenFravarsgrunn: payload.values.annenFravarsgrunn,
