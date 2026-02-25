@@ -124,18 +124,18 @@ export function addUtdypendeSporsmal({
 
             await utdypendeSporsmalRegion
                 .getByRole('textbox', {
-                    name: questionTexts.utdypdendeSporsmal.medisinskOppsummering.label,
+                    name: questionTexts.utdypendeSporsmal.medisinskOppsummering.label,
                 })
                 .fill(medisinskOppsummering)
             await utdypendeSporsmalRegion
                 .getByRole('textbox', {
-                    name: questionTexts.utdypdendeSporsmal.utfordringerMedArbeid.label,
+                    name: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
                 })
                 .fill(utfordringerMedArbeid)
             if (hensynPaArbeidsplassen) {
                 await utdypendeSporsmalRegion
                     .getByRole('textbox', {
-                        name: questionTexts.utdypdendeSporsmal.hensynPaArbeidsplassen.label,
+                        name: questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.label,
                     })
                     .fill(hensynPaArbeidsplassen)
             }

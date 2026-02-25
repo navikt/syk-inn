@@ -82,6 +82,14 @@ const UtdypendeSporsmalSvarSchema = z.object({
     utfordringerMedArbeid: SporsmalSvarSchema.nullable(),
     medisinskOppsummering: SporsmalSvarSchema.nullable(),
     hensynPaArbeidsplassen: SporsmalSvarSchema.nullable(),
+    sykdomsutvikling: SporsmalSvarSchema.nullable(),
+    arbeidsrelaterteUtfordringer: SporsmalSvarSchema.nullable(),
+    behandlingOgFremtidigArbeidArbeid: SporsmalSvarSchema.nullable(),
+    uavklarteForhold: SporsmalSvarSchema.nullable(),
+    oppdatertMedisinskStatus: SporsmalSvarSchema.nullable(),
+    realistiskMestringArbeid: SporsmalSvarSchema.nullable(),
+    forventetHelsetilstandUtvikling: SporsmalSvarSchema.nullable(),
+    medisinskeHensyn: SporsmalSvarSchema.nullable(),
 })
 
 const ArbeidsgiverSchema = z.object({

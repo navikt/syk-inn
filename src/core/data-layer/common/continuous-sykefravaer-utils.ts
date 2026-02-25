@@ -5,6 +5,7 @@ import { SykmeldingFragment } from '@queries'
 import { earliestFom, latestTom } from '@data-layer/common/sykmelding-utils'
 import { raise } from '@lib/ts'
 import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
+import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '@core/services/syk-inn-api/schema/sykmelding'
 
 export interface SykmeldingDateRange {
     earliestFom: string
@@ -50,7 +51,32 @@ export function currentSykmeldingIsAktivitetIkkeMulig(perioder: AktivitetsPeriod
     return latestTomPeriode?.aktivitet.type === 'AKTIVITET_IKKE_MULIG' ? true : false
 }
 
-export function filterSykmeldingerWithinDaysGap(sykmeldinger: SykmeldingDateRange[]): SykmeldingDateRange[] {
+export function filterSykmeldingerWithinDaysGap(
+    sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[],
+): (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[] {
+    const ISYFO_MAX_DAYS_GAP = 16
+
+    const sortedSykmeldinger = R.sortBy(sykmeldinger, [(it) => latestTom(it), 'desc'])
+
+    const filteredSykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[] = []
+    for (const [i, sykmelding] of sortedSykmeldinger.entries()) {
+        if (i === 0) {
+            filteredSykmeldinger.push(sykmelding)
+            continue
+        }
+        const prev = sortedSykmeldinger[i - 1]
+        const prevFom = prev.values.aktivitet[0].fom
+
+        const currentTom = sykmelding.values.aktivitet[0].tom
+
+        const diff = differenceInDays(new Date(prevFom), new Date(currentTom))
+        if (diff < ISYFO_MAX_DAYS_GAP) filteredSykmeldinger.push(sykmelding)
+        else break
+    }
+    return filteredSykmeldinger
+}
+
+export function __filterSykmeldingerWithinDaysGap(sykmeldinger: SykmeldingDateRange[]): SykmeldingDateRange[] {
     const ISYFO_MAX_DAYS_GAP = 16
 
     const sortedSykmeldinger = R.sortBy(sykmeldinger, [(it) => it.latestTom, 'desc'])

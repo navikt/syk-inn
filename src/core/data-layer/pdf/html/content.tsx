@@ -9,7 +9,6 @@ import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmeldin
 import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
 import { getSimpleSykmeldingDescription } from '@data-layer/common/sykmelding-utils'
 import { Diagnose } from '@data-layer/common/diagnose'
-import { questionTexts } from '@data-layer/common/questions'
 import { toReadableDate } from '@lib/date'
 
 import { toHTML } from './render'
@@ -77,29 +76,11 @@ function SykmeldingValues({
                 />
             )}
 
-            {sykmelding.values.utdypendeSporsmal?.utfordringerMedArbeid && (
-                <ValueItem
-                    label={questionTexts.utdypdendeSporsmal.utfordringerMedArbeid.label}
-                    value={sykmelding.values.utdypendeSporsmal.utfordringerMedArbeid}
-                    full
-                />
-            )}
-
-            {sykmelding.values.utdypendeSporsmal?.medisinskOppsummering && (
-                <ValueItem
-                    label={questionTexts.utdypdendeSporsmal.medisinskOppsummering.label}
-                    value={sykmelding.values.utdypendeSporsmal.medisinskOppsummering}
-                    full
-                />
-            )}
-
-            {sykmelding.values.utdypendeSporsmal?.hensynPaArbeidsplassen && (
-                <ValueItem
-                    label={questionTexts.utdypdendeSporsmal.hensynPaArbeidsplassen.label}
-                    value={sykmelding.values.utdypendeSporsmal.hensynPaArbeidsplassen}
-                    full
-                />
-            )}
+            {Object.values(sykmelding.values.utdypendeSporsmalSvar ?? {})
+                .filter((it) => it != null)
+                .map((it) => (
+                    <ValueItem key={it?.sporsmalstekst} label={it?.sporsmalstekst ?? ''} value={it.svar} full />
+                ))}
 
             {(sykmelding.values.svangerskapsrelatert || sykmelding.values.yrkesskade?.yrkesskade) && (
                 <AndresporsmalItem values={sykmelding.values} />

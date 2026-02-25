@@ -43,17 +43,15 @@ export const commonObjectResolvers: Resolvers<CommonGraphqlContext> = {
             const sykmeldinger = R.pipe(
                 sykInnSykmeldinger,
                 R.filter((it) => showRedactedFlag || it.kind !== 'redacted'),
+                filterSykmeldingerWithinDaysGap,
             )
 
             const sykmeldingDateRanges = mapSykInnApiSykmeldingerToDateRanges(sykmeldinger)
-            const totalDays = R.pipe(
-                sykmeldingDateRanges,
-                filterSykmeldingerWithinDaysGap,
-                calculateTotalLengthOfSykmeldinger,
-            )
+            const totalDays = R.pipe(sykmeldingDateRanges, calculateTotalLengthOfSykmeldinger)
             const latestTom = R.sortBy(sykmeldingDateRanges, [(it) => it.latestTom, 'desc'])[0]?.latestTom ?? null
 
             const previouslyAnsweredSporsmal: UtdypendeSporsmalOptions[] = []
+            // TODO: Only run for sykmeldinger inside of date
             sykmeldinger.forEach((sykmelding) => {
                 if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmalSvar) {
                     if (sykmelding.values.utdypendeSporsmalSvar.utfordringerMedArbeid?.svar) {
@@ -61,6 +59,18 @@ export const commonObjectResolvers: Resolvers<CommonGraphqlContext> = {
                     }
                     if (sykmelding.values.utdypendeSporsmalSvar.medisinskOppsummering?.svar) {
                         previouslyAnsweredSporsmal.push('MEDISINSK_OPPSUMMERING')
+                    }
+                    if (sykmelding.values.utdypendeSporsmalSvar.behandlingOgFremtidigArbeidArbeid?.svar) {
+                        previouslyAnsweredSporsmal.push('BEHANDLING_OG_FREMTIDIG_ARBEID')
+                    }
+                    if (sykmelding.values.utdypendeSporsmalSvar.uavklarteForhold?.svar) {
+                        previouslyAnsweredSporsmal.push('UAVKLARTE_FORHOLD')
+                    }
+                    if (sykmelding.values.utdypendeSporsmalSvar.forventetHelsetilstandUtvikling?.svar) {
+                        previouslyAnsweredSporsmal.push('FORVENTET_HELSETILSTAND_UTVIKLING')
+                    }
+                    if (sykmelding.values.utdypendeSporsmalSvar.medisinskeHensyn?.svar) {
+                        previouslyAnsweredSporsmal.push('MEDISINSKE_HENSYN')
                     }
                 }
                 if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmal) {
