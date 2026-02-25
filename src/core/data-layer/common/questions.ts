@@ -30,8 +30,10 @@ export const questionTexts = {
         },
         realistiskMestringArbeid: {
             label: 'Hva kan pasienten realistisk sett mestre av arbeidsdeltakelse nå, og hvilke helserelaterte forhold begrenser dette?',
-            description:
-                '(somatiske lidelser): Tenk eksempelvis på pasientens kapasitet og tålegrenser når det gjelder fysisk belastning, utholdenhet, tempo, smerteprovokasjon, behov for pauser, stillingskifte eller skjerming) (psykiske lidelser, utmattelse, post-covid): Tenk på pasientens kapasitet når det gjelder eksempelvis konsentrasjon, oppmerksomhet, stress- og kravtoleranse, samhandling med andre, struktur, beslutningstaking eller for for skjerming/pauser',
+            descriptionSomatisk:
+                '(somatiske lidelser): Tenk eksempelvis på pasientens kapasitet og tålegrenser når det gjelder fysisk belastning, utholdenhet, tempo, smerteprovokasjon, behov for pauser, stillingskifte eller skjerming)',
+            descriptionPsykisk:
+                '(psykiske lidelser, utmattelse, post-covid): Tenk på pasientens kapasitet når det gjelder eksempelvis konsentrasjon, oppmerksomhet, stress- og kravtoleranse, samhandling med andre, struktur, beslutningstaking eller for for skjerming/pauser',
         },
         forventetHelsetilstandUtvikling: {
             label: 'Hvordan forventes helsetilstanden å utvikle seg de neste 3-6 månedene med tanke på mulighet for økt arbeidsdeltakelse?',
