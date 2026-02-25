@@ -374,15 +374,15 @@ const createFullOpprettSykmeldingPayload = (
         tilbakedatering: { begrunnelse: 'Vært i koma', startdato: daysAgo(3) },
         utdypendeSporsmalAnswerOptions: {
             utfordringerMedArbeid: {
-                sporsmalstekst: questionTexts.utdypdendeSporsmal.utfordringerMedArbeid.label,
+                sporsmalstekst: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
                 svar: 'Kan ikke sitte lenge',
             },
             medisinskOppsummering: {
-                sporsmalstekst: questionTexts.utdypdendeSporsmal.medisinskOppsummering.label,
+                sporsmalstekst: questionTexts.utdypendeSporsmal.medisinskOppsummering.label,
                 svar: 'Pasienten har influensa',
             },
             hensynPaArbeidsplassen: {
-                sporsmalstekst: questionTexts.utdypdendeSporsmal.hensynPaArbeidsplassen.label,
+                sporsmalstekst: questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.label,
                 svar: 'Trenger ro og hvile',
             },
             sykdomsutvikling: null,

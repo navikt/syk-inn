@@ -1,6 +1,7 @@
 import { expect, describe, test } from 'vitest'
 
 import { SykmeldingFragment } from '@queries'
+import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 
 import {
     calculateTotalLengthOfSykmeldinger,
@@ -47,33 +48,54 @@ describe('filterSykmeldingerWithinDaysGap', () => {
         expect(result).toEqual([])
     })
     test('should sort by latest tom desc', () => {
-        const result = filterSykmeldingerWithinDaysGap([
-            { earliestFom: '2023-01-01', latestTom: '2023-01-05' },
-            { earliestFom: '2023-01-06', latestTom: '2023-01-10' },
-        ])
+        const sykmelding1 = new SykmeldingBuilder()
+            .aktivitet({ type: 'AKTIVITET_IKKE_MULIG', fom: '2023-01-01', tom: '2023-01-05' })
+            .build()
+        const sykmelding2 = new SykmeldingBuilder()
+            .aktivitet({ type: 'AKTIVITET_IKKE_MULIG', fom: '2023-01-06', tom: '2023-01-10' })
+            .build()
+
+        const result = filterSykmeldingerWithinDaysGap([sykmelding1, sykmelding2])
         expect(result).toHaveLength(2)
-        expect(result[0].latestTom).toBe('2023-01-10')
-        expect(result[1].latestTom).toBe('2023-01-05')
+        expect(result[0].values.aktivitet[0].tom).toBe('2023-01-10')
+        expect(result[1].values.aktivitet[0].tom).toBe('2023-01-05')
     })
     test('should filter out sykmeldinger with ISYFO_DAYS_GAP of 16 days or more', () => {
-        const result = filterSykmeldingerWithinDaysGap([
-            { earliestFom: '2025-01-01', latestTom: '2025-01-10' },
-            { earliestFom: '2025-01-24', latestTom: '2025-02-01' },
-            { earliestFom: '2025-02-17', latestTom: '2025-02-31' },
-        ])
+        const sykmelding1 = new SykmeldingBuilder()
+            .aktivitet({ type: 'AKTIVITET_IKKE_MULIG', fom: '2025-01-01', tom: '2025-01-10' })
+            .build()
+        const sykmelding2 = new SykmeldingBuilder()
+            .aktivitet({ type: 'AKTIVITET_IKKE_MULIG', fom: '2025-01-24', tom: '2025-02-01' })
+            .build()
+        const sykmelding3 = new SykmeldingBuilder()
+            .aktivitet({ type: 'AKTIVITET_IKKE_MULIG', fom: '2025-02-17', tom: '2025-02-31' })
+            .build()
+
+        const result = filterSykmeldingerWithinDaysGap([sykmelding1, sykmelding2, sykmelding3])
         expect(result).toHaveLength(1)
-        expect(result[0]).toEqual({ earliestFom: '2025-02-17', latestTom: '2025-02-31' })
+        expect(result[0].values.aktivitet[0].fom).toBe('2025-02-17')
+        expect(result[0].values.aktivitet[0].tom).toBe('2025-02-31')
     })
     test('should only return the newest period with continious sykfraver', () => {
-        const result = filterSykmeldingerWithinDaysGap([
-            { earliestFom: '2025-01-01', latestTom: '2025-01-10' },
-            { earliestFom: '2025-01-11', latestTom: '2025-01-20' },
-            { earliestFom: '2024-01-01', latestTom: '2024-01-10' },
-            { earliestFom: '2024-01-11', latestTom: '2024-01-20' },
-        ])
+        const sykmelding1 = new SykmeldingBuilder()
+            .aktivitet({ type: 'AKTIVITET_IKKE_MULIG', fom: '2025-01-01', tom: '2025-01-10' })
+            .build()
+        const sykmelding2 = new SykmeldingBuilder()
+            .aktivitet({ type: 'AKTIVITET_IKKE_MULIG', fom: '2025-01-11', tom: '2025-01-20' })
+            .build()
+        const sykmelding3 = new SykmeldingBuilder()
+            .aktivitet({ type: 'AKTIVITET_IKKE_MULIG', fom: '2024-01-01', tom: '2024-01-10' })
+            .build()
+        const sykmelding4 = new SykmeldingBuilder()
+            .aktivitet({ type: 'AKTIVITET_IKKE_MULIG', fom: '2024-01-11', tom: '2024-01-20' })
+            .build()
+
+        const result = filterSykmeldingerWithinDaysGap([sykmelding1, sykmelding2, sykmelding3, sykmelding4])
         expect(result).toHaveLength(2)
-        expect(result[0]).toEqual({ earliestFom: '2025-01-11', latestTom: '2025-01-20' })
-        expect(result[1]).toEqual({ earliestFom: '2025-01-01', latestTom: '2025-01-10' })
+        expect(result[0].values.aktivitet[0].fom).toBe('2025-01-11')
+        expect(result[0].values.aktivitet[0].tom).toBe('2025-01-20')
+        expect(result[1].values.aktivitet[0].fom).toBe('2025-01-01')
+        expect(result[1].values.aktivitet[0].tom).toBe('2025-01-10')
     })
 })
 

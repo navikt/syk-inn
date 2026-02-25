@@ -170,20 +170,68 @@ function mapUtdypendeSporsmalToSykInnApiMap(
     // Explicitly map known fields to ensure type safety
     if (utdypendeSporsmal.utfordringerMedArbeid != null) {
         result.utfordringerMedArbeid = {
-            sporsmalstekst: questionTexts.utdypdendeSporsmal.utfordringerMedArbeid.label,
+            sporsmalstekst: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
             svar: utdypendeSporsmal.utfordringerMedArbeid,
         }
     }
     if (utdypendeSporsmal.medisinskOppsummering != null) {
         result.medisinskOppsummering = {
-            sporsmalstekst: questionTexts.utdypdendeSporsmal.medisinskOppsummering.label,
+            sporsmalstekst: questionTexts.utdypendeSporsmal.medisinskOppsummering.label,
             svar: utdypendeSporsmal.medisinskOppsummering,
         }
     }
     if (utdypendeSporsmal.hensynPaArbeidsplassen != null) {
         result.hensynPaArbeidsplassen = {
-            sporsmalstekst: questionTexts.utdypdendeSporsmal.hensynPaArbeidsplassen.label,
+            sporsmalstekst: questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.label,
             svar: utdypendeSporsmal.hensynPaArbeidsplassen,
+        }
+    }
+    if (utdypendeSporsmal.sykdomsutvikling != null) {
+        result.sykdomsutvikling = {
+            sporsmalstekst: questionTexts.utdypendeSporsmal.sykdomsutvikling.label,
+            svar: utdypendeSporsmal.sykdomsutvikling,
+        }
+    }
+    if (utdypendeSporsmal.arbeidsrelaterteUtfordringer != null) {
+        result.arbeidsrelaterteUtfordringer = {
+            sporsmalstekst: questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.label,
+            svar: utdypendeSporsmal.arbeidsrelaterteUtfordringer,
+        }
+    }
+    if (utdypendeSporsmal.behandlingOgFremtidigArbeidArbeid != null) {
+        result.behandlingOgFremtidigArbeidArbeid = {
+            sporsmalstekst: questionTexts.utdypendeSporsmal.behandlingOgFremtidigArbeidArbeid.label,
+            svar: utdypendeSporsmal.behandlingOgFremtidigArbeidArbeid,
+        }
+    }
+    if (utdypendeSporsmal.uavklarteForhold != null) {
+        result.uavklarteForhold = {
+            sporsmalstekst: questionTexts.utdypendeSporsmal.uavklarteForhold.label,
+            svar: utdypendeSporsmal.uavklarteForhold,
+        }
+    }
+    if (utdypendeSporsmal.oppdatertMedisinskStatus != null) {
+        result.oppdatertMedisinskStatus = {
+            sporsmalstekst: questionTexts.utdypendeSporsmal.oppdatertMedisinskStatus.label,
+            svar: utdypendeSporsmal.oppdatertMedisinskStatus,
+        }
+    }
+    if (utdypendeSporsmal.realistiskMestringArbeid != null) {
+        result.realistiskMestringArbeid = {
+            sporsmalstekst: questionTexts.utdypendeSporsmal.realistiskMestringArbeid.label,
+            svar: utdypendeSporsmal.realistiskMestringArbeid,
+        }
+    }
+    if (utdypendeSporsmal.forventetHelsetilstandUtvikling != null) {
+        result.forventetHelsetilstandUtvikling = {
+            sporsmalstekst: questionTexts.utdypendeSporsmal.forventetHelsetilstandUtvikling.label,
+            svar: utdypendeSporsmal.forventetHelsetilstandUtvikling,
+        }
+    }
+    if (utdypendeSporsmal.medisinskeHensyn != null) {
+        result.medisinskeHensyn = {
+            sporsmalstekst: questionTexts.utdypendeSporsmal.medisinskeHensyn.label,
+            svar: utdypendeSporsmal.medisinskeHensyn,
         }
     }
 
