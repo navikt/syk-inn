@@ -45,13 +45,15 @@ export function UtdypendeSporsmal({
         return (
             <FormSection title={getTitleForUtdypendeSporsmal(skalViseSporsmalForUke)}>
                 <BodyShort spacing>Helseopplysninger i Navs vurdering av aktivitetskrav og oppfølging</BodyShort>
-                <UtfordringerMedArbeid skalViseSporsmal={skalViseSporsmalForUke} />
-                <MedisinskOppsummering skalViseSporsmal={skalViseSporsmalForUke} />
-                {skalViseSporsmalForUke.uke7 && <HensynPaArbeidsplassen />}
-                {skalViseSporsmalForUke.uke17 && <BehandlingOgFremtidigArbeid />}
-                {skalViseSporsmalForUke.uke17 && <UavklarteForhold />}
-                {skalViseSporsmalForUke.uke39 && <ForventetHelsetilstandUtvikling />}
-                {skalViseSporsmalForUke.uke39 && <MedisinskeHensyn />}
+                <div className="flex flex-col gap-8">
+                    <UtfordringerMedArbeid skalViseSporsmal={skalViseSporsmalForUke} />
+                    <MedisinskOppsummering skalViseSporsmal={skalViseSporsmalForUke} />
+                    {skalViseSporsmalForUke.uke7 && <HensynPaArbeidsplassen />}
+                    {skalViseSporsmalForUke.uke17 && <BehandlingOgFremtidigArbeid />}
+                    {skalViseSporsmalForUke.uke17 && <UavklarteForhold />}
+                    {skalViseSporsmalForUke.uke39 && <ForventetHelsetilstandUtvikling />}
+                    {skalViseSporsmalForUke.uke39 && <MedisinskeHensyn />}
+                </div>
             </FormSection>
         )
     }
@@ -165,7 +167,14 @@ function UtfordringerMedArbeidUke39(): ReactElement {
     return (
         <Textarea
             label={questionTexts.utdypendeSporsmal.realistiskMestringArbeid.label}
-            description={questionTexts.utdypendeSporsmal.realistiskMestringArbeid.description}
+            description={
+                <>
+                    <BodyShort spacing>
+                        {questionTexts.utdypendeSporsmal.realistiskMestringArbeid.descriptionSomatisk}
+                    </BodyShort>
+                    <BodyShort>{questionTexts.utdypendeSporsmal.realistiskMestringArbeid.descriptionPsykisk}</BodyShort>
+                </>
+            }
             onChange={realistiskMestringArbeid.field.onChange}
             value={realistiskMestringArbeid.field.value ?? ''}
             error={realistiskMestringArbeid.fieldState.error?.message}
