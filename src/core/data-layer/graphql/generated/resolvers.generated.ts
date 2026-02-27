@@ -199,7 +199,7 @@ export type InputTilbakedatering = {
 
 export type InputUtdypendeSporsmal = {
     arbeidsrelaterteUtfordringer?: InputMaybe<Scalars['String']['input']>
-    behandlingOgFremtidigArbeidArbeid?: InputMaybe<Scalars['String']['input']>
+    behandlingOgFremtidigArbeid?: InputMaybe<Scalars['String']['input']>
     forventetHelsetilstandUtvikling?: InputMaybe<Scalars['String']['input']>
     hensynPaArbeidsplassen?: InputMaybe<Scalars['String']['input']>
     medisinskOppsummering?: InputMaybe<Scalars['String']['input']>
@@ -528,7 +528,7 @@ export type UtdypendeSporsmalOptions =
 export type UtdypendeSporsmalSvar = {
     __typename?: 'UtdypendeSporsmalSvar'
     arbeidsrelaterteUtfordringer?: Maybe<SporsmalSvar>
-    behandlingOgFremtidigArbeidArbeid?: Maybe<SporsmalSvar>
+    behandlingOgFremtidigArbeid?: Maybe<SporsmalSvar>
     forventetHelsetilstandUtvikling?: Maybe<SporsmalSvar>
     hensynPaArbeidsplassen?: Maybe<SporsmalSvar>
     medisinskOppsummering?: Maybe<SporsmalSvar>
@@ -1290,7 +1290,7 @@ export type UtdypendeSporsmalSvarResolvers<
     ParentType extends ResolversParentTypes['UtdypendeSporsmalSvar'] = ResolversParentTypes['UtdypendeSporsmalSvar'],
 > = {
     arbeidsrelaterteUtfordringer?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
-    behandlingOgFremtidigArbeidArbeid?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
+    behandlingOgFremtidigArbeid?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
     forventetHelsetilstandUtvikling?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
     hensynPaArbeidsplassen?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
     medisinskOppsummering?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>

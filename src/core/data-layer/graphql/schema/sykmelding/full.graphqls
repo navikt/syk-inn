@@ -60,7 +60,7 @@ type UtdypendeSporsmalSvar {
     hensynPaArbeidsplassen: SporsmalSvar
     sykdomsutvikling: SporsmalSvar
     arbeidsrelaterteUtfordringer: SporsmalSvar
-    behandlingOgFremtidigArbeidArbeid: SporsmalSvar
+    behandlingOgFremtidigArbeid: SporsmalSvar
     uavklarteForhold: SporsmalSvar
     oppdatertMedisinskStatus: SporsmalSvar
     realistiskMestringArbeid: SporsmalSvar

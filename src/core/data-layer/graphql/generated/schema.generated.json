@@ -1169,7 +1169,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "behandlingOgFremtidigArbeidArbeid",
+                        "name": "behandlingOgFremtidigArbeid",
                         "description": null,
                         "type": { "kind": "SCALAR", "name": "String", "ofType": null },
                         "defaultValue": null,
@@ -3328,7 +3328,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "behandlingOgFremtidigArbeidArbeid",
+                        "name": "behandlingOgFremtidigArbeid",
                         "description": null,
                         "args": [],
                         "type": { "kind": "OBJECT", "name": "SporsmalSvar", "ofType": null },

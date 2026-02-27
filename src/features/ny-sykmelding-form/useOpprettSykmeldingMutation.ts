@@ -154,7 +154,7 @@ function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingState): O
             medisinskOppsummering: formState.utdypendeSporsmal?.medisinskOppsummering ?? null,
             hensynPaArbeidsplassen: formState.utdypendeSporsmal?.hensynPaArbeidsplassen ?? null,
             arbeidsrelaterteUtfordringer: null,
-            behandlingOgFremtidigArbeidArbeid: null,
+            behandlingOgFremtidigArbeid: null,
             forventetHelsetilstandUtvikling: null,
             medisinskeHensyn: null,
             oppdatertMedisinskStatus: null,

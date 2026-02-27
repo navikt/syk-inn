@@ -41,7 +41,7 @@ export const defaultOpprettSykmeldingValues: Omit<OpprettSykmeldingInput, 'aktiv
         medisinskOppsummering: null,
         hensynPaArbeidsplassen: null,
         arbeidsrelaterteUtfordringer: null,
-        behandlingOgFremtidigArbeidArbeid: null,
+        behandlingOgFremtidigArbeid: null,
         forventetHelsetilstandUtvikling: null,
         medisinskeHensyn: null,
         oppdatertMedisinskStatus: null,

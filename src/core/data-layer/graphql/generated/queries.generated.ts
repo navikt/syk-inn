@@ -197,7 +197,7 @@ export type InputTilbakedatering = {
 
 export type InputUtdypendeSporsmal = {
     arbeidsrelaterteUtfordringer: InputMaybe<Scalars['String']['input']>
-    behandlingOgFremtidigArbeidArbeid: InputMaybe<Scalars['String']['input']>
+    behandlingOgFremtidigArbeid: InputMaybe<Scalars['String']['input']>
     forventetHelsetilstandUtvikling: InputMaybe<Scalars['String']['input']>
     hensynPaArbeidsplassen: InputMaybe<Scalars['String']['input']>
     medisinskOppsummering: InputMaybe<Scalars['String']['input']>
@@ -526,7 +526,7 @@ export type UtdypendeSporsmalOptions =
 export type UtdypendeSporsmalSvar = {
     __typename: 'UtdypendeSporsmalSvar'
     arbeidsrelaterteUtfordringer: Maybe<SporsmalSvar>
-    behandlingOgFremtidigArbeidArbeid: Maybe<SporsmalSvar>
+    behandlingOgFremtidigArbeid: Maybe<SporsmalSvar>
     forventetHelsetilstandUtvikling: Maybe<SporsmalSvar>
     hensynPaArbeidsplassen: Maybe<SporsmalSvar>
     medisinskOppsummering: Maybe<SporsmalSvar>
@@ -664,7 +664,7 @@ export type AllDashboardQuery = {
                               sporsmalstekst: string | null
                               svar: string
                           } | null
-                          behandlingOgFremtidigArbeidArbeid: {
+                          behandlingOgFremtidigArbeid: {
                               __typename: 'SporsmalSvar'
                               sporsmalstekst: string | null
                               svar: string
@@ -880,7 +880,7 @@ export type AllDashboardQuery = {
                               sporsmalstekst: string | null
                               svar: string
                           } | null
-                          behandlingOgFremtidigArbeidArbeid: {
+                          behandlingOgFremtidigArbeid: {
                               __typename: 'SporsmalSvar'
                               sporsmalstekst: string | null
                               svar: string
@@ -1233,7 +1233,7 @@ export type SykmeldingByIdQuery = {
                           sporsmalstekst: string | null
                           svar: string
                       } | null
-                      behandlingOgFremtidigArbeidArbeid: {
+                      behandlingOgFremtidigArbeid: {
                           __typename: 'SporsmalSvar'
                           sporsmalstekst: string | null
                           svar: string
@@ -1443,7 +1443,7 @@ export type OpprettSykmeldingMutation = {
                           sporsmalstekst: string | null
                           svar: string
                       } | null
-                      behandlingOgFremtidigArbeidArbeid: {
+                      behandlingOgFremtidigArbeid: {
                           __typename: 'SporsmalSvar'
                           sporsmalstekst: string | null
                           svar: string
@@ -1574,7 +1574,7 @@ export type SykmeldingFullFragment = {
                 sporsmalstekst: string | null
                 svar: string
             } | null
-            behandlingOgFremtidigArbeidArbeid: {
+            behandlingOgFremtidigArbeid: {
                 __typename: 'SporsmalSvar'
                 sporsmalstekst: string | null
                 svar: string
@@ -1717,7 +1717,7 @@ type Sykmelding_SykmeldingFull_Fragment = {
                 sporsmalstekst: string | null
                 svar: string
             } | null
-            behandlingOgFremtidigArbeidArbeid: {
+            behandlingOgFremtidigArbeid: {
                 __typename: 'SporsmalSvar'
                 sporsmalstekst: string | null
                 svar: string
@@ -2360,7 +2360,7 @@ export const SykmeldingFullFragmentDoc = {
                                             },
                                             {
                                                 kind: 'Field',
-                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeidArbeid' },
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeid' },
                                                 selectionSet: {
                                                     kind: 'SelectionSet',
                                                     selections: [
@@ -3141,7 +3141,7 @@ export const SykmeldingFragmentDoc = {
                                             },
                                             {
                                                 kind: 'Field',
-                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeidArbeid' },
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeid' },
                                                 selectionSet: {
                                                     kind: 'SelectionSet',
                                                     selections: [
@@ -3739,7 +3739,7 @@ export const AllDashboardDocument = {
                                             },
                                             {
                                                 kind: 'Field',
-                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeidArbeid' },
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeid' },
                                                 selectionSet: {
                                                     kind: 'SelectionSet',
                                                     selections: [
@@ -4829,7 +4829,7 @@ export const SykmeldingByIdDocument = {
                                             },
                                             {
                                                 kind: 'Field',
-                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeidArbeid' },
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeid' },
                                                 selectionSet: {
                                                     kind: 'SelectionSet',
                                                     selections: [
@@ -5489,7 +5489,7 @@ export const OpprettSykmeldingDocument = {
                                             },
                                             {
                                                 kind: 'Field',
-                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeidArbeid' },
+                                                name: { kind: 'Name', value: 'behandlingOgFremtidigArbeid' },
                                                 selectionSet: {
                                                     kind: 'SelectionSet',
                                                     selections: [
