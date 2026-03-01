@@ -86,7 +86,7 @@
         "zod": "^4.3.6"
     },
     "devDependencies": {
-        "@graphql-codegen/cli": "^6.1.1",
+        "@graphql-codegen/cli": "^6.1.2",
         "@graphql-codegen/fragment-matcher": "^6.0.0",
         "@graphql-codegen/introspection": "^5.0.0",
         "@graphql-codegen/typescript-resolvers": "^5.1.6",
