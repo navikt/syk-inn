@@ -12,9 +12,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^4.1.5":
-  version: 4.1.5
-  resolution: "@apollo/client@npm:4.1.5"
+"@apollo/client@npm:^4.1.6":
+  version: 4.1.6
+  resolution: "@apollo/client@npm:4.1.6"
   dependencies:
     "@graphql-typed-document-node/core": "npm:^3.1.1"
     "@wry/caches": "npm:^1.0.0"
@@ -39,7 +39,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 10c0/ed51e4a3268e71862c97eafec53047e7a22e5e4f9a3e255bef719828c86d35e42f3af5471152953875b49169fcfa91f6d710972a9af8329f69aca47879ef2f38
+  checksum: 10c0/ff152317932cb0ba46423161d388d1a2bc0bbc6c8ec6e2e85e915bb2ec22f461effa6fd2bbc8b754babd75ac8b52843f1e3ddf8e501cbe1d9b857e4df2f2f2df
   languageName: node
   linkType: hard
 
@@ -7504,10 +7504,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^16.12.0":
-  version: 16.12.0
-  resolution: "graphql@npm:16.12.0"
-  checksum: 10c0/b6fffa4e8a4e4a9933ebe85e7470b346dbf49050c1a482fac5e03e4a1a7bed2ecd3a4c97e29f04457af929464bc5e4f2aac991090c2f320111eef26e902a5c75
+"graphql@npm:^16.13.0":
+  version: 16.13.0
+  resolution: "graphql@npm:16.13.0"
+  checksum: 10c0/c20e7909c6c8d405a30f8caeae5aaf604b9f949bdcdf80bdb3d3561123e6099181c39eae697cf4fcdc5dd301ab215363b8def0aa0ff51f03cc7e4b48a8c2c2b1
   languageName: node
   linkType: hard
 
@@ -12387,7 +12387,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "syk-inn@workspace:."
   dependencies:
-    "@apollo/client": "npm:^4.1.5"
+    "@apollo/client": "npm:^4.1.6"
     "@envelop/core": "npm:^5.5.1"
     "@envelop/opentelemetry": "npm:^9.1.1"
     "@grafana/faro-web-sdk": "npm:^2.2.4"
@@ -12438,7 +12438,7 @@ __metadata:
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-prettier: "npm:^5.5.5"
     fuse.js: "npm:^7.1.0"
-    graphql: "npm:^16.12.0"
+    graphql: "npm:^16.13.0"
     graphql-yoga: "npm:^5.18.0"
     husky: "npm:^9.1.7"
     iovalkey: "npm:^0.3.3"
