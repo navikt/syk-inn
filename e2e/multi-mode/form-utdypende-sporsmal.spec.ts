@@ -1,6 +1,7 @@
 import { test } from '@playwright/test'
 import { OpprettSykmeldingDocument } from '@queries'
 import { today, inDays } from '@lib/test/date-utils'
+import { questionTexts } from '@core/data-layer/common/questions'
 
 import {
     addUtdypendeSporsmal,
@@ -137,6 +138,100 @@ modes.forEach(({ mode }) => {
                         tom: inDays(3),
                     }),
                 ],
+            },
+        })
+    })
+
+    test(`${mode}: Trigger all utdypende spørsmål in one 100% sykmelding`, async ({ page }) => {
+        await launchAndStart(mode, 'empty')(page)
+
+        await fillPeriodeRelative({ type: '100%', days: 280 })(page)
+        await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
+        await addUtdypendeSporsmal({
+            uke: '40',
+            realistiskMestringArbeid: 'Utfordringer',
+            oppdatertMedisinskStatus: 'Sykdomsutvikling',
+            hensynPaArbeidsplassen: 'Hensyn på arbeidsplassen',
+            behandlingOgFremtidigArbeid: 'Behandling og fremtidig arbeid',
+            uavklarteForhold: 'Uavklarte forhold',
+            forventetHelsetilstandUtvikling: 'bedring',
+            medisinskeHensyn: 'Medisinske hensyn',
+        })(page)
+
+        await nextStep()(page)
+        const { request, draftId } = await submitSykmelding()(page)
+        await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+            draftId: draftId,
+            meta: expectedSykmeldingMeta(mode),
+            force: false,
+            values: {
+                ...defaultOpprettSykmeldingValues,
+                hoveddiagnose: diagnoseSelection.angst.verify,
+                aktivitet: [
+                    defaultAktivitetIkkeMulig({
+                        fom: today(),
+                        tom: inDays(280),
+                    }),
+                ],
+                utdypendeSporsmal: {
+                    utfordringerMedArbeid: null,
+                    medisinskOppsummering: null,
+                    hensynPaArbeidsplassen: 'Hensyn på arbeidsplassen',
+                    arbeidsrelaterteUtfordringer: null,
+                    sykdomsutvikling: null,
+                    behandlingOgFremtidigArbeid: 'Behandling og fremtidig arbeid',
+                    uavklarteForhold: 'Uavklarte forhold',
+                    oppdatertMedisinskStatus: 'Sykdomsutvikling',
+                    realistiskMestringArbeid: 'Utfordringer',
+                    forventetHelsetilstandUtvikling:
+                        questionTexts.utdypendeSporsmal.forventetHelsetilstandUtvikling.answerOptions.forventetBedring,
+                    medisinskeHensyn: 'Medisinske hensyn',
+                },
+            },
+        })
+    })
+
+    test(`${mode}: Trigger week 17 when week 7 has already been answered`, async ({ page }) => {
+        await launchAndStart(mode, 'utdypende-sporsmal-answered-7-weeks')(page)
+
+        await fillPeriodeRelative({ type: '100%', days: 100 })(page)
+        await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
+        await addUtdypendeSporsmal({
+            uke: '18',
+            arbeidsrelaterteUtfordringer: 'Utfordringer',
+            sykdomsutvikling: 'Sykdomsutvikling',
+            behandlingOgFremtidigArbeid: 'Behandling og fremtidig arbeid',
+            uavklarteForhold: 'Uavklarte forhold',
+        })(page)
+
+        await nextStep()(page)
+        const { request, draftId } = await submitSykmelding()(page)
+        await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+            draftId: draftId,
+            meta: expectedSykmeldingMeta(mode),
+            force: false,
+            values: {
+                ...defaultOpprettSykmeldingValues,
+                hoveddiagnose: diagnoseSelection.angst.verify,
+                aktivitet: [
+                    defaultAktivitetIkkeMulig({
+                        fom: today(),
+                        tom: inDays(100),
+                    }),
+                ],
+                utdypendeSporsmal: {
+                    utfordringerMedArbeid: null,
+                    medisinskOppsummering: null,
+                    hensynPaArbeidsplassen: null,
+                    arbeidsrelaterteUtfordringer: 'Utfordringer',
+                    sykdomsutvikling: 'Sykdomsutvikling',
+                    behandlingOgFremtidigArbeid: 'Behandling og fremtidig arbeid',
+                    uavklarteForhold: 'Uavklarte forhold',
+                    oppdatertMedisinskStatus: null,
+                    realistiskMestringArbeid: null,
+                    forventetHelsetilstandUtvikling: null,
+                    medisinskeHensyn: null,
+                },
             },
         })
     })

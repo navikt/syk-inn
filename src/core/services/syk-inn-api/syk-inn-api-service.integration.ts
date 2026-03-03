@@ -387,7 +387,7 @@ const createFullOpprettSykmeldingPayload = (
             },
             sykdomsutvikling: null,
             arbeidsrelaterteUtfordringer: null,
-            behandlingOgFremtidigArbeidArbeid: null,
+            behandlingOgFremtidigArbeid: null,
             uavklarteForhold: null,
             oppdatertMedisinskStatus: null,
             realistiskMestringArbeid: null,

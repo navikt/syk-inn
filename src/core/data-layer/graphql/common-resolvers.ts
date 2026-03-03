@@ -60,7 +60,7 @@ export const commonObjectResolvers: Resolvers<CommonGraphqlContext> = {
                     if (sykmelding.values.utdypendeSporsmalSvar.medisinskOppsummering?.svar) {
                         previouslyAnsweredSporsmal.push('MEDISINSK_OPPSUMMERING')
                     }
-                    if (sykmelding.values.utdypendeSporsmalSvar.behandlingOgFremtidigArbeidArbeid?.svar) {
+                    if (sykmelding.values.utdypendeSporsmalSvar.behandlingOgFremtidigArbeid?.svar) {
                         previouslyAnsweredSporsmal.push('BEHANDLING_OG_FREMTIDIG_ARBEID')
                     }
                     if (sykmelding.values.utdypendeSporsmalSvar.uavklarteForhold?.svar) {

@@ -122,6 +122,27 @@ const simpleScenarios = {
             drafts: [],
         }),
     },
+    'utdypende-sporsmal-answered-7-weeks': {
+        description: 'Long period of sykmelding, utdypende sporsmal for week 7 already answered',
+        scenario: () => ({
+            sykmeldinger: [
+                new SykmeldingBuilder({ offset: -50 }).enkelAktivitet({ offset: 0, days: 49 }).uke7Answered().build(),
+            ],
+            arbeidsforhold: simpleAaregArbeidsforhold,
+            drafts: [],
+        }),
+    },
+    'utdypende-sporsmal-answered-17-weeks': {
+        description: 'Long period of sykmelding, utdypende sporsmal for week 7 already answered',
+        scenario: () => ({
+            sykmeldinger: [
+                new SykmeldingBuilder({ offset: -70 }).enkelAktivitet({ offset: 0, days: 70 }).uke17Answered().build(),
+                new SykmeldingBuilder({ offset: -130 }).enkelAktivitet({ offset: 0, days: 50 }).uke7Answered().build(),
+            ],
+            arbeidsforhold: simpleAaregArbeidsforhold,
+            drafts: [],
+        }),
+    },
 } satisfies Record<string, { description: string; scenario: ScenarioCreator }>
 
 export const scenarios = { ...simpleScenarios }

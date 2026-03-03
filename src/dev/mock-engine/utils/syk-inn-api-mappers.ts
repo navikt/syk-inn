@@ -95,8 +95,8 @@ export function sykInnApiPayloadToResponse(
                       sykdomsutvikling: payload.values.utdypendeSporsmalAnswerOptions.sykdomsutvikling ?? null,
                       arbeidsrelaterteUtfordringer:
                           payload.values.utdypendeSporsmalAnswerOptions.arbeidsrelaterteUtfordringer ?? null,
-                      behandlingOgFremtidigArbeidArbeid:
-                          payload.values.utdypendeSporsmalAnswerOptions.behandlingOgFremtidigArbeidArbeid ?? null,
+                      behandlingOgFremtidigArbeid:
+                          payload.values.utdypendeSporsmalAnswerOptions.behandlingOgFremtidigArbeid ?? null,
                       uavklarteForhold: payload.values.utdypendeSporsmalAnswerOptions.uavklarteForhold ?? null,
                       oppdatertMedisinskStatus:
                           payload.values.utdypendeSporsmalAnswerOptions.oppdatertMedisinskStatus ?? null,

@@ -8,6 +8,7 @@ import {
     SykInnApiSykmeldingRedactedSchema,
 } from '@core/services/syk-inn-api/schema/sykmelding'
 import { dateOnly } from '@lib/date'
+import { questionTexts } from '@data-layer/common/questions'
 
 export class SykmeldingBuilder {
     private readonly mottatt: string = '2020-02-01'
@@ -74,6 +75,12 @@ export class SykmeldingBuilder {
         return this
     }
 
+    utdypendeSporsmal(sporsmal: SykInnApiSykmelding['values']['utdypendeSporsmalSvar']): SykmeldingBuilder {
+        this._sykmelding.values.utdypendeSporsmalSvar = sporsmal
+
+        return this
+    }
+
     relativeAktivitet(
         aktivitet: Omit<SykInnApiAktivitet, 'fom' | 'tom'>,
         time: { offset: number; days: number },
@@ -101,6 +108,65 @@ export class SykmeldingBuilder {
         }
 
         return this.relativeAktivitet(aktivitet, relative)
+    }
+
+    uke7Answered(): SykmeldingBuilder {
+        const utdypendeSporsmal: SykInnApiSykmelding['values']['utdypendeSporsmalSvar'] = {
+            utfordringerMedArbeid: {
+                sporsmalstekst: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
+                svar: 'Utfordringer med arbeid',
+            },
+            medisinskOppsummering: {
+                sporsmalstekst: questionTexts.utdypendeSporsmal.medisinskOppsummering.label,
+                svar: 'Medisinsk oppsummering',
+            },
+            hensynPaArbeidsplassen: {
+                sporsmalstekst: questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.label,
+                svar: 'Hensyn på arbeidsplassen',
+            },
+            sykdomsutvikling: null,
+            arbeidsrelaterteUtfordringer: null,
+            behandlingOgFremtidigArbeid: null,
+            uavklarteForhold: null,
+            oppdatertMedisinskStatus: null,
+            realistiskMestringArbeid: null,
+            forventetHelsetilstandUtvikling: null,
+            medisinskeHensyn: null,
+        }
+
+        this.utdypendeSporsmal(utdypendeSporsmal)
+        return this
+    }
+
+    uke17Answered(): SykmeldingBuilder {
+        const utdypendeSporsmal: SykInnApiSykmelding['values']['utdypendeSporsmalSvar'] = {
+            utfordringerMedArbeid: null,
+            medisinskOppsummering: null,
+            hensynPaArbeidsplassen: null,
+            sykdomsutvikling: {
+                sporsmalstekst: questionTexts.utdypendeSporsmal.sykdomsutvikling.label,
+                svar: 'Sykdomsutvikling',
+            },
+            arbeidsrelaterteUtfordringer: {
+                sporsmalstekst: questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.label,
+                svar: 'Arbeidsrelaterte utfordringer',
+            },
+            behandlingOgFremtidigArbeid: {
+                sporsmalstekst: questionTexts.utdypendeSporsmal.behandlingOgFremtidigArbeid.label,
+                svar: 'Behandling og fremtidig arbeid',
+            },
+            uavklarteForhold: {
+                sporsmalstekst: questionTexts.utdypendeSporsmal.uavklarteForhold.label,
+                svar: 'Uavklarte forhold',
+            },
+            oppdatertMedisinskStatus: null,
+            realistiskMestringArbeid: null,
+            forventetHelsetilstandUtvikling: null,
+            medisinskeHensyn: null,
+        }
+
+        this.utdypendeSporsmal(utdypendeSporsmal)
+        return this
     }
 
     build(): SykInnApiSykmelding {
