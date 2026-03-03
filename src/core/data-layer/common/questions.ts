@@ -19,7 +19,7 @@ export const questionTexts = {
             description:
                 'Tenk på forhold som: fysisk belastning, utholdenhet, tempo, konsentrasjon, samhandling med andre, stress - og kravtoleranse, behov for pauser eller skjerming',
         },
-        behandlingOgFremtidigArbeidArbeid: {
+        behandlingOgFremtidigArbeid: {
             label: 'Beskriv pågående og planlagt utredning/behandling, og om dette forventes å påvirke muligheten for økt arbeidsdeltakelse fremover',
         },
         uavklarteForhold: {

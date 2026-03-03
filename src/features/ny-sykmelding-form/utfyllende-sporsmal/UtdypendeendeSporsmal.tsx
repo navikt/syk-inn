@@ -87,7 +87,7 @@ function MedisinskOppsummeringUke7(): ReactElement {
 
 function MedisinskOppsummeringUke17(): ReactElement {
     const sykdomsutvikling = useController({
-        name: 'utdypendeSporsmal.oppdatertMedisinskStatus',
+        name: 'utdypendeSporsmal.sykdomsutvikling',
         rules: { required: 'Du må fylle ut dette feltet' },
     })
 
@@ -200,13 +200,13 @@ function HensynPaArbeidsplassen(): ReactElement {
 
 function BehandlingOgFremtidigArbeid(): ReactElement {
     const behandlingOgFremtidigArbeid = useController({
-        name: 'utdypendeSporsmal.behandlingOgFremtidigArbeidArbeid',
+        name: 'utdypendeSporsmal.behandlingOgFremtidigArbeid',
         rules: { required: 'Du må fylle ut dette feltet' },
     })
 
     return (
         <Textarea
-            label={questionTexts.utdypendeSporsmal.behandlingOgFremtidigArbeidArbeid.label}
+            label={questionTexts.utdypendeSporsmal.behandlingOgFremtidigArbeid.label}
             onChange={behandlingOgFremtidigArbeid.field.onChange}
             value={behandlingOgFremtidigArbeid.field.value ?? ''}
             error={behandlingOgFremtidigArbeid.fieldState.error?.message}

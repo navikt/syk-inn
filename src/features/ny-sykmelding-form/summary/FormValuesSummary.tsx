@@ -21,6 +21,7 @@ import { NySykmeldingAnnenFravarsgrunn, NySykmeldingUtdypendeSporsmal } from '@c
 import { useMode } from '@core/providers/Modes'
 import { DetailedAlert, InlineWarning, SimpleAlert } from '@components/help/GeneralErrors'
 import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
+import { questionTexts } from '@data-layer/common/questions'
 
 import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
 import { useFormStep } from '../steps/useFormStep'
@@ -306,31 +307,16 @@ function UtdypendeSporsmalSummaryAnswers({
 }): ReactElement | null {
     return (
         <>
-            {utdypendeSporsmal?.utfordringerMedArbeid && (
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        Hvilke utfordringer har pasienten med å utføre gradert arbeid?
-                    </FormSummary.Label>
-                    <FormSummary.Value>{utdypendeSporsmal.utfordringerMedArbeid}</FormSummary.Value>
-                </FormSummary.Answer>
-            )}
-            {utdypendeSporsmal?.medisinskOppsummering && (
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        Gi en kort medisinsk oppsummering av tilstanden (sykehistorie, hovedsymptomer, pågående/planlagt
-                        behandling)
-                    </FormSummary.Label>
-                    <FormSummary.Value>{utdypendeSporsmal.medisinskOppsummering}</FormSummary.Value>
-                </FormSummary.Answer>
-            )}
-            {utdypendeSporsmal?.hensynPaArbeidsplassen && (
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        Hvilke hensyn må være på plass for at pasienten kan prøves i det nåværende arbeidet?
-                    </FormSummary.Label>
-                    <FormSummary.Value>{utdypendeSporsmal.hensynPaArbeidsplassen}</FormSummary.Value>
-                </FormSummary.Answer>
-            )}
+            {Object.entries(utdypendeSporsmal ?? {}).map(([key, value]) => {
+                if (value == null) return null
+                const questionKey = key as keyof typeof questionTexts.utdypendeSporsmal
+                return (
+                    <FormSummary.Answer key={key}>
+                        <FormSummary.Label>{questionTexts.utdypendeSporsmal[questionKey].label}</FormSummary.Label>
+                        <FormSummary.Value>{value}</FormSummary.Value>
+                    </FormSummary.Answer>
+                )
+            })}
         </>
     )
 }

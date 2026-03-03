@@ -101,7 +101,7 @@ export const OpprettSykmeldingPayloadSchema = z.object({
                 hensynPaArbeidsplassen: UtdypendeSporsmalSchema.nullable(),
                 sykdomsutvikling: UtdypendeSporsmalSchema.nullable(),
                 arbeidsrelaterteUtfordringer: UtdypendeSporsmalSchema.nullable(),
-                behandlingOgFremtidigArbeidArbeid: UtdypendeSporsmalSchema.nullable(),
+                behandlingOgFremtidigArbeid: UtdypendeSporsmalSchema.nullable(),
                 uavklarteForhold: UtdypendeSporsmalSchema.nullable(),
                 oppdatertMedisinskStatus: UtdypendeSporsmalSchema.nullable(),
                 realistiskMestringArbeid: UtdypendeSporsmalSchema.nullable(),

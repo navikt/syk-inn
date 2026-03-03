@@ -109,35 +109,119 @@ export function editBidiagnose({
 }
 
 export function addUtdypendeSporsmal({
+    uke = '8',
     utfordringerMedArbeid,
     medisinskOppsummering,
     hensynPaArbeidsplassen,
+    arbeidsrelaterteUtfordringer,
+    sykdomsutvikling,
+    behandlingOgFremtidigArbeid,
+    uavklarteForhold,
+    oppdatertMedisinskStatus,
+    realistiskMestringArbeid,
+    forventetHelsetilstandUtvikling,
+    medisinskeHensyn,
 }: {
-    utfordringerMedArbeid: string
-    medisinskOppsummering: string
+    uke?: '8' | '18' | '40'
+    utfordringerMedArbeid?: string
+    medisinskOppsummering?: string
     hensynPaArbeidsplassen?: string
+    arbeidsrelaterteUtfordringer?: string
+    sykdomsutvikling?: string
+    behandlingOgFremtidigArbeid?: string
+    uavklarteForhold?: string
+    oppdatertMedisinskStatus?: string
+    realistiskMestringArbeid?: string
+    forventetHelsetilstandUtvikling?: 'bedring'
+    medisinskeHensyn?: string
 }) {
     return async (page: Page) => {
-        await test.step('Add utdypende spørsmål uke 8', async () => {
-            const utdypendeSporsmalRegion = page.getByRole('region', { name: 'Utdypende spørsmål uke 8', exact: true })
+        await test.step(`Add utdypende spørsmål uke ${uke}`, async () => {
+            const utdypendeSporsmalRegion = page.getByRole('region', {
+                name: `Utdypende spørsmål uke ${uke}`,
+                exact: true,
+            })
             await expect(utdypendeSporsmalRegion).toBeVisible()
 
-            await utdypendeSporsmalRegion
-                .getByRole('textbox', {
-                    name: questionTexts.utdypendeSporsmal.medisinskOppsummering.label,
-                })
-                .fill(medisinskOppsummering)
-            await utdypendeSporsmalRegion
-                .getByRole('textbox', {
-                    name: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
-                })
-                .fill(utfordringerMedArbeid)
+            if (medisinskOppsummering) {
+                await utdypendeSporsmalRegion
+                    .getByRole('textbox', {
+                        name: questionTexts.utdypendeSporsmal.medisinskOppsummering.label,
+                    })
+                    .fill(medisinskOppsummering)
+            }
+            if (utfordringerMedArbeid) {
+                await utdypendeSporsmalRegion
+                    .getByRole('textbox', {
+                        name: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
+                    })
+                    .fill(utfordringerMedArbeid)
+            }
             if (hensynPaArbeidsplassen) {
                 await utdypendeSporsmalRegion
                     .getByRole('textbox', {
                         name: questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.label,
                     })
                     .fill(hensynPaArbeidsplassen)
+            }
+            if (arbeidsrelaterteUtfordringer) {
+                await utdypendeSporsmalRegion
+                    .getByRole('textbox', {
+                        name: questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.label,
+                    })
+                    .fill(arbeidsrelaterteUtfordringer)
+            }
+            if (sykdomsutvikling) {
+                await utdypendeSporsmalRegion
+                    .getByRole('textbox', {
+                        name: questionTexts.utdypendeSporsmal.sykdomsutvikling.label,
+                    })
+                    .fill(sykdomsutvikling)
+            }
+            if (behandlingOgFremtidigArbeid) {
+                await utdypendeSporsmalRegion
+                    .getByRole('textbox', {
+                        name: questionTexts.utdypendeSporsmal.behandlingOgFremtidigArbeid.label,
+                    })
+                    .fill(behandlingOgFremtidigArbeid)
+            }
+            if (uavklarteForhold) {
+                await utdypendeSporsmalRegion
+                    .getByRole('textbox', {
+                        name: questionTexts.utdypendeSporsmal.uavklarteForhold.label,
+                    })
+                    .fill(uavklarteForhold)
+            }
+            if (oppdatertMedisinskStatus) {
+                await utdypendeSporsmalRegion
+                    .getByRole('textbox', {
+                        name: questionTexts.utdypendeSporsmal.oppdatertMedisinskStatus.label,
+                    })
+                    .fill(oppdatertMedisinskStatus)
+            }
+            if (realistiskMestringArbeid) {
+                await utdypendeSporsmalRegion
+                    .getByRole('textbox', {
+                        name: questionTexts.utdypendeSporsmal.realistiskMestringArbeid.label,
+                    })
+                    .fill(realistiskMestringArbeid)
+            }
+            if (forventetHelsetilstandUtvikling) {
+                await utdypendeSporsmalRegion
+                    .getByRole('group', {
+                        name: questionTexts.utdypendeSporsmal.forventetHelsetilstandUtvikling.label,
+                    })
+                    .getByLabel(
+                        questionTexts.utdypendeSporsmal.forventetHelsetilstandUtvikling.answerOptions.forventetBedring,
+                    )
+                    .check()
+            }
+            if (medisinskeHensyn) {
+                await utdypendeSporsmalRegion
+                    .getByRole('textbox', {
+                        name: questionTexts.utdypendeSporsmal.medisinskeHensyn.label,
+                    })
+                    .fill(medisinskeHensyn)
             }
         })
     }

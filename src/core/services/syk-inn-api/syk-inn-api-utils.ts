@@ -155,7 +155,7 @@ function mapUtdypendeSporsmalToSykInnApiMap(
         hensynPaArbeidsplassen: null,
         sykdomsutvikling: null,
         arbeidsrelaterteUtfordringer: null,
-        behandlingOgFremtidigArbeidArbeid: null,
+        behandlingOgFremtidigArbeid: null,
         uavklarteForhold: null,
         oppdatertMedisinskStatus: null,
         realistiskMestringArbeid: null,
@@ -198,10 +198,10 @@ function mapUtdypendeSporsmalToSykInnApiMap(
             svar: utdypendeSporsmal.arbeidsrelaterteUtfordringer,
         }
     }
-    if (utdypendeSporsmal.behandlingOgFremtidigArbeidArbeid != null) {
-        result.behandlingOgFremtidigArbeidArbeid = {
-            sporsmalstekst: questionTexts.utdypendeSporsmal.behandlingOgFremtidigArbeidArbeid.label,
-            svar: utdypendeSporsmal.behandlingOgFremtidigArbeidArbeid,
+    if (utdypendeSporsmal.behandlingOgFremtidigArbeid != null) {
+        result.behandlingOgFremtidigArbeid = {
+            sporsmalstekst: questionTexts.utdypendeSporsmal.behandlingOgFremtidigArbeid.label,
+            svar: utdypendeSporsmal.behandlingOgFremtidigArbeid,
         }
     }
     if (utdypendeSporsmal.uavklarteForhold != null) {
