@@ -159,6 +159,7 @@ modes.forEach(({ mode }) => {
         })(page)
 
         await nextStep()(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
         const { request, draftId } = await submitSykmelding()(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
             draftId: draftId,
@@ -205,6 +206,7 @@ modes.forEach(({ mode }) => {
         })(page)
 
         await nextStep()(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
         const { request, draftId } = await submitSykmelding()(page)
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
             draftId: draftId,
