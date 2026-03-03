@@ -59,17 +59,14 @@ export async function initializeSykInnApi(applog: boolean = false): Promise<{
     const sykInnApi = await new GenericContainer(SYK_INN_API_IMAGE)
         .withNetwork(network)
         .withEnvironment({
-            SPRING_PROFILES_ACTIVE: 'local',
-            DB_URL: `jdbc:postgresql://${POSTGRES_ALIAS}:5432/${postgres.getDatabase()}?reWriteBatchedInserts=true`,
-            DB_USER: postgres.getUsername(),
+            DB_JDBC_URL: `jdbc:postgresql://${POSTGRES_ALIAS}:5432/${postgres.getDatabase()}?reWriteBatchedInserts=true`,
+            DB_USERNAME: postgres.getUsername(),
             DB_PASSWORD: postgres.getPassword(),
             BOOTSTRAP_SERVERS: `${KAFKA_ALIAS}:9092`,
-            JOBS_SYKMELDING_INITIAL_DELAY: '1',
-            JOBS_SYKMELDING_FIXED_DELAY: '1',
-            JOBS_SYKMELDING_RESET_TIMEOUT_DELAY: '10',
         })
+        .withCommand(['app.jar', '-config=application-local.conf'])
         .withExposedPorts(8080)
-        .withWaitStrategy(Wait.forHttp('/internal/health', 8080))
+        .withWaitStrategy(Wait.forHttp('/internal/health/alive', 8080))
         .withStartupTimeout(30_000)
         .withLogConsumer(applog ? streamToStdout : () => void 0)
         .start()
