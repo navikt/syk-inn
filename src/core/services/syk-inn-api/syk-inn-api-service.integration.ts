@@ -29,9 +29,9 @@ describe('SykInnApi integration', () => {
     }, 60_000)
 
     it('sanity check health endpoint', async () => {
-        const healthResult = await fetch(getSykInnApiPath(sykInnApi, '/internal/health')).then((it) => it.json())
+        const healthResponse = await fetch(getSykInnApiPath(sykInnApi, '/internal/health/alive'))
 
-        expect(healthResult.status).toEqual('UP')
+        expect(healthResponse.status).toEqual(200)
     })
 
     it('POST /sykmelding/verify should be able to verify with all values', async () => {
