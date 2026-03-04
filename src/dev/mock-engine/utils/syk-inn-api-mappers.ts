@@ -84,29 +84,6 @@ export function sykInnApiPayloadToResponse(
                 : null,
             tilbakedatering: payload.values.tilbakedatering ?? null,
             utdypendeSporsmal: null,
-            utdypendeSporsmalSvar: payload.values.utdypendeSporsmalAnswerOptions
-                ? {
-                      utfordringerMedArbeid:
-                          payload.values.utdypendeSporsmalAnswerOptions.utfordringerMedArbeid ?? null,
-                      medisinskOppsummering:
-                          payload.values.utdypendeSporsmalAnswerOptions.medisinskOppsummering ?? null,
-                      hensynPaArbeidsplassen:
-                          payload.values.utdypendeSporsmalAnswerOptions.hensynPaArbeidsplassen ?? null,
-                      sykdomsutvikling: payload.values.utdypendeSporsmalAnswerOptions.sykdomsutvikling ?? null,
-                      arbeidsrelaterteUtfordringer:
-                          payload.values.utdypendeSporsmalAnswerOptions.arbeidsrelaterteUtfordringer ?? null,
-                      behandlingOgFremtidigArbeid:
-                          payload.values.utdypendeSporsmalAnswerOptions.behandlingOgFremtidigArbeid ?? null,
-                      uavklarteForhold: payload.values.utdypendeSporsmalAnswerOptions.uavklarteForhold ?? null,
-                      oppdatertMedisinskStatus:
-                          payload.values.utdypendeSporsmalAnswerOptions.oppdatertMedisinskStatus ?? null,
-                      realistiskMestringArbeid:
-                          payload.values.utdypendeSporsmalAnswerOptions.realistiskMestringArbeid ?? null,
-                      forventetHelsetilstandUtvikling:
-                          payload.values.utdypendeSporsmalAnswerOptions.forventetHelsetilstandUtvikling ?? null,
-                      medisinskeHensyn: payload.values.utdypendeSporsmalAnswerOptions.medisinskeHensyn ?? null,
-                  }
-                : null,
             annenFravarsgrunn: payload.values.annenFravarsgrunn,
         },
         utfall: utfall,
