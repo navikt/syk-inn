@@ -26,7 +26,7 @@ type MedisinskArsak {
 }
 
 enum ArbeidsrelatertArsakType {
-    TILRETTELEGGING_IKKE_MULIG
+    MANGLENDE_TILRETTELEGGING
     ANNET
 }
 

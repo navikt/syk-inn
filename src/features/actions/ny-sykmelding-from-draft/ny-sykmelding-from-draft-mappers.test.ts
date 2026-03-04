@@ -30,7 +30,7 @@ test('draft values shall be used as default if provided', () => {
                 medisinskArsak: { isMedisinskArsak: false },
                 arbeidsrelatertArsak: {
                     annenArbeidsrelatertArsak: 'Ingen tilretteleggingsmuligheter',
-                    arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG'],
+                    arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING'],
                     isArbeidsrelatertArsak: true,
                 },
             },
@@ -91,7 +91,7 @@ test('form values shall have higher presedence than draft values', () => {
                 medisinskArsak: { isMedisinskArsak: true },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: true,
-                    arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                    arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
                     annenArbeidsrelatertArsak: 'Ingen mulighet for hjemmekontor',
                 },
             },
@@ -199,7 +199,7 @@ const fullDraft: DraftValues = {
             },
             arbeidsrelatertArsak: {
                 isArbeidsrelatertArsak: true,
-                arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG'],
+                arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING'],
                 annenArbeidsrelatertArsak: 'Ingen tilretteleggingsmuligheter',
             },
         },
@@ -234,7 +234,7 @@ const fullExistingStateValues: NySykmeldingFormState = {
             medisinskArsak: { isMedisinskArsak: true },
             arbeidsrelatertArsak: {
                 isArbeidsrelatertArsak: true,
-                arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
                 annenArbeidsrelatertArsak: 'Ingen mulighet for hjemmekontor',
             },
         },

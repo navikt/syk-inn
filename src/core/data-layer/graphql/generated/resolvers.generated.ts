@@ -97,7 +97,7 @@ export type ArbeidsrelatertArsakInput = {
     isArbeidsrelatertArsak: Scalars['Boolean']['input']
 }
 
-export type ArbeidsrelatertArsakType = 'ANNET' | 'TILRETTELEGGING_IKKE_MULIG'
+export type ArbeidsrelatertArsakType = 'ANNET' | 'MANGLENDE_TILRETTELEGGING'
 
 export type Avventende = FomTom & {
     __typename?: 'Avventende'
