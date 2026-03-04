@@ -327,7 +327,7 @@ modes.forEach(({ mode }) => {
                             medisinskArsak: { isMedisinskArsak: true },
                             arbeidsrelatertArsak: {
                                 isArbeidsrelatertArsak: true,
-                                arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                                arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
                                 annenArbeidsrelatertArsak: 'Annen årsak til aktivitet ikke mulig',
                             },
                         },

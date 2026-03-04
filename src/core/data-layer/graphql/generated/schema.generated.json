@@ -455,7 +455,7 @@
                 "enumValues": [
                     { "name": "ANNET", "description": null, "isDeprecated": false, "deprecationReason": null },
                     {
-                        "name": "TILRETTELEGGING_IKKE_MULIG",
+                        "name": "MANGLENDE_TILRETTELEGGING",
                         "description": null,
                         "isDeprecated": false,
                         "deprecationReason": null
