@@ -20,10 +20,6 @@ _Relevante referanser:_
         {
             "system": "urn:oid:2.16.578.1.12.4.1.4.4",
             "value": "hpr-nummer"
-        },
-        {
-            "system": "urn:oid:2.16.578.1.12.4.1.2",
-            "value": "her-id"
         }
     ]
 }
@@ -31,4 +27,3 @@ _Relevante referanser:_
 
 ## Begrunnelse
 - Identifier/hpr-nummer benyttes som identifikator for sykmelder/helsepersonell. 
-- Identifier/her-id brukes til å sende dokumenter asynkront (som Dialogmelding) til EPJ hvis synkron tilbakeskriving feiler.
