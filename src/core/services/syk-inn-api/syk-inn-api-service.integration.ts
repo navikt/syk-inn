@@ -18,7 +18,7 @@ describe('SykInnApi integration', () => {
     let kafka: Kafka
 
     beforeAll(async () => {
-        const sykInnContainers = await initializeSykInnApi(false)
+        const sykInnContainers = await initializeSykInnApi(true)
         sykInnApi = sykInnContainers.sykInnApi
         valkey = await initializeValkey()
         kafka = await initializeKafka(sykInnContainers.kafka)
@@ -126,7 +126,7 @@ describe('SykInnApi integration', () => {
             },
             arbeidsgiver: null,
             yrkesskade: null,
-            utdypendeSporsmalAnswerOptions: null,
+            utdypendeSporsmal: null,
             tilbakedatering: null,
             svangerskapsrelatert: false,
             pasientenSkalSkjermes: false,
@@ -361,7 +361,7 @@ const createFullOpprettSykmeldingPayload = (
                 medisinskArsak: { isMedisinskArsak: true },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: true,
-                    arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                    arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
                     annenArbeidsrelatertArsak: 'Trenger tilrettelegging',
                 },
             },
@@ -372,7 +372,7 @@ const createFullOpprettSykmeldingPayload = (
         yrkesskade: { yrkesskade: true, skadedato: daysAgo(3) },
         arbeidsgiver: { harFlere: true, arbeidsgivernavn: 'Test Testere AS' },
         tilbakedatering: { begrunnelse: 'Vært i koma', startdato: daysAgo(3) },
-        utdypendeSporsmalAnswerOptions: {
+        utdypendeSporsmal: {
             utfordringerMedArbeid: {
                 sporsmalstekst: questionTexts.utdypdendeSporsmal.utfordringerMedArbeid.label,
                 svar: 'Kan ikke sitte lenge',
@@ -387,7 +387,7 @@ const createFullOpprettSykmeldingPayload = (
             },
             sykdomsutvikling: null,
             arbeidsrelaterteUtfordringer: null,
-            behandlingOgFremtidigArbeidArbeid: null,
+            behandlingOgFremtidigArbeid: null,
             uavklarteForhold: null,
             oppdatertMedisinskStatus: null,
             realistiskMestringArbeid: null,

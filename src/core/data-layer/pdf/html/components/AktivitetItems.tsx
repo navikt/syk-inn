@@ -71,7 +71,7 @@ function AktivitetIkkeMuligItem({
                                 <ul>
                                     {arbeidsrelatertArsak.arbeidsrelaterteArsaker.map((arsak) => (
                                         <li key={arsak}>
-                                            {arsak === 'TILRETTELEGGING_IKKE_MULIG' && 'Tilrettelegging er ikke mulig'}
+                                            {arsak === 'MANGLENDE_TILRETTELEGGING' && 'Tilrettelegging er ikke mulig'}
                                             {arsak === 'ANNET' &&
                                                 `Annen arbeidsrelatert årsak: ${
                                                     arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? 'Ikke oppgitt'

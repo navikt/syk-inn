@@ -140,7 +140,7 @@ export function resolverInputToSykInnApiPayload(
                       startdato: values.tilbakedatering.startdato,
                   }
                 : null,
-            utdypendeSporsmalAnswerOptions: mapUtdypendeSporsmalToSykInnApiMap(values.utdypendeSporsmal),
+            utdypendeSporsmal: mapUtdypendeSporsmalToSykInnApiMap(values.utdypendeSporsmal),
             annenFravarsgrunn: values.annenFravarsgrunn ?? null,
         },
     }
@@ -148,14 +148,14 @@ export function resolverInputToSykInnApiPayload(
 
 function mapUtdypendeSporsmalToSykInnApiMap(
     utdypendeSporsmal?: InputMaybe<InputUtdypendeSporsmal> | undefined,
-): OpprettSykmeldingPayload['values']['utdypendeSporsmalAnswerOptions'] {
-    const result: OpprettSykmeldingPayload['values']['utdypendeSporsmalAnswerOptions'] = {
+): OpprettSykmeldingPayload['values']['utdypendeSporsmal'] {
+    const result: OpprettSykmeldingPayload['values']['utdypendeSporsmal'] = {
         utfordringerMedArbeid: null,
         medisinskOppsummering: null,
         hensynPaArbeidsplassen: null,
         sykdomsutvikling: null,
         arbeidsrelaterteUtfordringer: null,
-        behandlingOgFremtidigArbeidArbeid: null,
+        behandlingOgFremtidigArbeid: null,
         uavklarteForhold: null,
         oppdatertMedisinskStatus: null,
         realistiskMestringArbeid: null,
@@ -208,7 +208,7 @@ function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingA
                 arbeidsrelaterteArsaker:
                     aktivitet.aktivitetIkkeMulig.arbeidsrelatertArsak?.arbeidsrelaterteArsaker.map((it) => {
                         switch (it) {
-                            case 'TILRETTELEGGING_IKKE_MULIG':
+                            case 'MANGLENDE_TILRETTELEGGING':
                             case 'ANNET':
                                 return it
                             default:

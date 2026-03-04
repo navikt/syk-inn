@@ -20,7 +20,7 @@ const AktivitetIkkeMuligSchema = BaseAktivitetSchema.extend({
     arbeidsrelatertArsak: z
         .object({
             isArbeidsrelatertArsak: z.boolean(),
-            arbeidsrelaterteArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])),
+            arbeidsrelaterteArsaker: z.array(z.enum(['MANGLENDE_TILRETTELEGGING', 'ANNET'])),
             annenArbeidsrelatertArsak: z.string().nullable(),
         })
         .optional(),

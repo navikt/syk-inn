@@ -44,7 +44,7 @@ test('multiple bidiagnoser from server suggestion shall be used', () => {
             hensynPaArbeidsplassen: null,
             sykdomsutvikling: null,
             arbeidsrelaterteUtfordringer: null,
-            behandlingOgFremtidigArbeidArbeid: null,
+            behandlingOgFremtidigArbeid: null,
             uavklarteForhold: null,
             oppdatertMedisinskStatus: null,
             realistiskMestringArbeid: null,

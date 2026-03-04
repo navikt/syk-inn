@@ -103,7 +103,7 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
 }
 
 export const ArbeidsrelaterteArsaker: Record<ArbeidsrelatertArsakType, string> = {
-    TILRETTELEGGING_IKKE_MULIG: 'Tilrettelegging ikke mulig',
+    MANGLENDE_TILRETTELEGGING: 'Tilrettelegging ikke mulig',
     ANNET: 'Annet',
 }
 

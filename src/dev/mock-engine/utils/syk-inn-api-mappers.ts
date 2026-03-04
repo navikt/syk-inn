@@ -84,14 +84,11 @@ export function sykInnApiPayloadToResponse(
                 : null,
             tilbakedatering: payload.values.tilbakedatering ?? null,
             utdypendeSporsmal: null,
-            utdypendeSporsmalSvar: payload.values.utdypendeSporsmalAnswerOptions
+            utdypendeSporsmalSvar: payload.values.utdypendeSporsmal
                 ? {
-                      utfordringerMedArbeid:
-                          payload.values.utdypendeSporsmalAnswerOptions.utfordringerMedArbeid ?? null,
-                      medisinskOppsummering:
-                          payload.values.utdypendeSporsmalAnswerOptions.medisinskOppsummering ?? null,
-                      hensynPaArbeidsplassen:
-                          payload.values.utdypendeSporsmalAnswerOptions.hensynPaArbeidsplassen ?? null,
+                      utfordringerMedArbeid: payload.values.utdypendeSporsmal.utfordringerMedArbeid ?? null,
+                      medisinskOppsummering: payload.values.utdypendeSporsmal.medisinskOppsummering ?? null,
+                      hensynPaArbeidsplassen: payload.values.utdypendeSporsmal.hensynPaArbeidsplassen ?? null,
                   }
                 : null,
             annenFravarsgrunn: payload.values.annenFravarsgrunn,

@@ -26,7 +26,7 @@ export const DraftValuesSchema = z.object({
                 arbeidsrelatertArsak: z
                     .object({
                         isArbeidsrelatertArsak: z.boolean().nullable(),
-                        arbeidsrelaterteArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])).nullable(),
+                        arbeidsrelaterteArsaker: z.array(z.enum(['MANGLENDE_TILRETTELEGGING', 'ANNET'])).nullable(),
                         annenArbeidsrelatertArsak: z.string().nullable(),
                     })
                     .nullable(),
@@ -78,7 +78,7 @@ export const DraftValuesSchema = z.object({
             hensynPaArbeidsplassen: z.string().nullable(),
             sykdomsutvikling: z.string().nullable(),
             arbeidsrelaterteUtfordringer: z.string().nullable(),
-            behandlingOgFremtidigArbeidArbeid: z.string().nullable(),
+            behandlingOgFremtidigArbeid: z.string().nullable(),
             uavklarteForhold: z.string().nullable(),
             oppdatertMedisinskStatus: z.string().nullable(),
             realistiskMestringArbeid: z.string().nullable(),

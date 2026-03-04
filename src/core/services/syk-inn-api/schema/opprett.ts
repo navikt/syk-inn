@@ -33,7 +33,7 @@ const OpprettSykmeldingAktivitetSchema = z.discriminatedUnion('type', [
         }),
         arbeidsrelatertArsak: z.object({
             isArbeidsrelatertArsak: z.boolean(),
-            arbeidsrelaterteArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])),
+            arbeidsrelaterteArsaker: z.array(z.enum(['MANGLENDE_TILRETTELEGGING', 'ANNET'])),
             annenArbeidsrelatertArsak: z.string().nullable(),
         }),
     }),
@@ -94,14 +94,14 @@ export const OpprettSykmeldingPayloadSchema = z.object({
                 begrunnelse: z.string(),
             })
             .nullable(),
-        utdypendeSporsmalAnswerOptions: z
+        utdypendeSporsmal: z
             .object({
                 utfordringerMedArbeid: UtdypendeSporsmalSchema.nullable(),
                 medisinskOppsummering: UtdypendeSporsmalSchema.nullable(),
                 hensynPaArbeidsplassen: UtdypendeSporsmalSchema.nullable(),
                 sykdomsutvikling: UtdypendeSporsmalSchema.nullable(),
                 arbeidsrelaterteUtfordringer: UtdypendeSporsmalSchema.nullable(),
-                behandlingOgFremtidigArbeidArbeid: UtdypendeSporsmalSchema.nullable(),
+                behandlingOgFremtidigArbeid: UtdypendeSporsmalSchema.nullable(),
                 uavklarteForhold: UtdypendeSporsmalSchema.nullable(),
                 oppdatertMedisinskStatus: UtdypendeSporsmalSchema.nullable(),
                 realistiskMestringArbeid: UtdypendeSporsmalSchema.nullable(),
