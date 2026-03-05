@@ -18,9 +18,9 @@ interface SporsmalForUke {
 }
 
 const getTitleForUtdypendeSporsmal = (skalViseSporsmal: SporsmalForUke): string => {
-    if (skalViseSporsmal.uke39) return 'Utdypende spørsmål uke 37'
-    if (skalViseSporsmal.uke17) return 'Utdypende spørsmål uke 17'
-    if (skalViseSporsmal.uke7) return 'Utdypende spørsmål uke 7'
+    if (skalViseSporsmal.uke39) return 'Utdypende spørsmål uke 40'
+    if (skalViseSporsmal.uke17) return 'Utdypende spørsmål uke 18'
+    if (skalViseSporsmal.uke7) return 'Utdypende spørsmål uke 8'
     return ''
 }
 
