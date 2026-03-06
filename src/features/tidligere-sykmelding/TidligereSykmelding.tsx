@@ -2,8 +2,8 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 import { useParams } from 'next/navigation'
 import { useQuery } from '@apollo/client/react'
 import { Skeleton } from '@navikt/ds-react'
-import Link from 'next/link'
 
+import { AkselNextLink } from '@components/links/AkselNextLink'
 import { SykmeldingByIdDocument, SykmeldingFragment } from '@queries'
 import { toReadableDate } from '@lib/date'
 import { ValuesSection } from '@components/sykmelding/ValuesSection'
@@ -75,7 +75,7 @@ function TidligereSykmeldingShell({ children, className }: PropsWithChildren<{ c
         <div className={cn('p-4 bg-ax-bg-default', className)}>
             <TwoPaneGrid tag="div">{children}</TwoPaneGrid>
             <div className="mx-4 flex justify-end p-4 pb-0">
-                <Link href={mode.paths.root}>Lukk</Link>
+                <AkselNextLink href={mode.paths.root}>Lukk</AkselNextLink>
             </div>
         </div>
     )

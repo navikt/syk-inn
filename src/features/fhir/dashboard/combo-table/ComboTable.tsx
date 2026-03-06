@@ -12,7 +12,6 @@ import {
 import { isTodayOrInTheFuture, isWithinWeeksOldSykmelding, latestTom } from '@data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import Redaction from '@components/misc/Redaction'
-import { Utfall } from '@components/sykmelding/Utfall'
 
 import DashboardTable from '../table/DashboardTable'
 
@@ -90,10 +89,7 @@ export function ComboTableHeader({ className }: { className?: string }): ReactEl
                 </Table.HeaderCell>
                 <Table.HeaderCell scope="col">Grad</Table.HeaderCell>
                 <Table.HeaderCell scope="col">Arbeidsgiver</Table.HeaderCell>
-                <Table.HeaderCell scope="col">Utfall</Table.HeaderCell>
-                <Table.HeaderCell scope="col" className="w-32 max-w-32">
-                    Status
-                </Table.HeaderCell>
+                <Table.HeaderCell scope="col" className="w-32 max-w-32" />
                 {/* Action buttons */}
                 <Table.HeaderCell scope="col" className="w-44 max-w-44" />
             </Table.Row>
@@ -120,7 +116,6 @@ function DraftTableRow({ draft }: { draft: DraftFragment }): ReactElement {
             diagnose={draftDiagnoseText(values?.hoveddiagnose)}
             grad={draftAktivitetText(values?.perioder)}
             arbeidsgiver={draftArbeidsforholdText(values?.arbeidsforhold)}
-            utfall={null}
             status="draft"
             actions={<DraftActions draftId={draft.draftId} />}
         />
@@ -144,7 +139,6 @@ function FullTableRow({
             diagnose={sykmeldingDiagnoseText(sykmelding.values.hoveddiagnose)}
             grad={sykmeldingGradText(sykmelding.values.aktivitet)}
             arbeidsgiver={sykmeldingArbeidsgiverText(sykmelding.values.arbeidsgiver)}
-            utfall={<Utfall utfall={sykmelding.utfall} />}
             status={status}
             actions={
                 <SykmeldingActions
@@ -174,7 +168,6 @@ function LightTableRow({
             diagnose={sykmeldingDiagnoseText(sykmelding.values.hoveddiagnose)}
             grad={sykmeldingGradText(sykmelding.values.aktivitet)}
             arbeidsgiver={null}
-            utfall={<Utfall utfall={sykmelding.utfall} />}
             status={status}
             actions={
                 <SykmeldingActions
@@ -204,7 +197,6 @@ function RedactedTableRow({
             diagnose={<Redaction className="w-42" title="Diagnose skjult" />}
             grad={<Redaction className="w-8" title="Sykmeldingsgrad skjult" />}
             arbeidsgiver={<Redaction className="w-2/3" title="Arbeidsgiver skjult" />}
-            utfall={<Utfall utfall={sykmelding.utfall} />}
             status={status}
             actions={
                 <SykmeldingActions
@@ -222,7 +214,6 @@ function TableRow(props: {
     diagnose: string | ReactNode | null
     grad: string | ReactNode | null
     arbeidsgiver: string | ReactNode | null
-    utfall: ReactNode | null
     status: 'draft' | 'previous' | 'current'
     actions: ReactElement | null
 }): ReactElement {
@@ -232,7 +223,6 @@ function TableRow(props: {
             <Table.DataCell>{props.diagnose}</Table.DataCell>
             <Table.DataCell>{props.grad}</Table.DataCell>
             <Table.DataCell>{props.arbeidsgiver}</Table.DataCell>
-            <Table.DataCell>{props.utfall}</Table.DataCell>
             <Table.DataCell>
                 <StatusTag status={props.status} />
             </Table.DataCell>
