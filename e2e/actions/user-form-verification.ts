@@ -51,9 +51,6 @@ export function expectTilbakedatering({ daysAgo: daysAgoValue, reason }: { daysA
         await test.step(`Verify tilbakedatering: ${inputDate(daysAgo(daysAgoValue))}, reason: ${reason}`, async () => {
             const tilbakedateringRegion = page.getByRole('region', { name: 'Tilbakedatering' })
             await expect(
-                tilbakedateringRegion.getByRole('textbox', { name: 'Når tok pasienten først kontakt' }),
-            ).toHaveValue(inputDate(daysAgo(daysAgoValue)))
-            await expect(
                 tilbakedateringRegion.getByRole('combobox', { name: 'Velg årsak for tilbakedatering' }),
             ).toHaveValue(reason)
         })
@@ -183,7 +180,7 @@ export function expectArbeidsforhold({
             const arbeidsforholdRegion = page.getByRole('region', { name: 'Arbeidsgiver' })
 
             const harFlereArbeidsforholdGroup = arbeidsforholdRegion.getByRole('group', {
-                name: 'Har pasienten flere arbeidsforhold?',
+                name: 'Har pasienten flere arbeidsgivere?',
             })
             if (harFlereArbeidsforhold) {
                 await expect(harFlereArbeidsforholdGroup.getByRole('radio', { name: 'Ja' })).toBeChecked()
@@ -194,7 +191,7 @@ export function expectArbeidsforhold({
             if (sykmeldtFraArbeidsforhold) {
                 await expect(
                     arbeidsforholdRegion.getByRole('textbox', {
-                        name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?',
+                        name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?',
                     }),
                 ).toHaveValue(sykmeldtFraArbeidsforhold)
             }

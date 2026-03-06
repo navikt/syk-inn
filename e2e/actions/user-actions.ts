@@ -162,14 +162,14 @@ export function fillArbeidsforhold({
     sykmeldtFraArbeidsforhold?: string | null
 }) {
     return async (page: Page) => {
-        await test.step(`Set flere arbeidsforhold to ${harFlereArbeidsforhold ? 'Ja' : 'Nei'}`, async () => {
+        await test.step(`Set flere arbeidsgivere to ${harFlereArbeidsforhold ? 'Ja' : 'Nei'}`, async () => {
             if (harFlereArbeidsforhold) {
-                await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Ja').click()
+                await page.getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' }).getByText('Ja').click()
                 await page
-                    .getByRole('textbox', { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?' })
+                    .getByRole('textbox', { name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?' })
                     .fill(sykmeldtFraArbeidsforhold || '')
             } else {
-                await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Nei').click()
+                await page.getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' }).getByText('Nei').click()
             }
         })
     }
@@ -202,13 +202,13 @@ export function fillPeriodeRelative({
             if (typeof type === 'string' && type === '100%') {
                 await periodeRegion
                     .getByRole('combobox', { name: 'Mulighet for arbeid' })
-                    .selectOption('Aktivitet ikke mulig')
+                    .selectOption('Kan ikke være i arbeid')
             }
 
             if (typeof type !== 'string' && 'grad' in type) {
                 await periodeRegion
                     .getByRole('combobox', { name: 'Mulighet for arbeid' })
-                    .selectOption('Gradert sykmelding')
+                    .selectOption('Kan være delvis i arbeid')
 
                 await periodeRegion.getByRole('textbox', { name: 'Sykmeldingsgrad (%)' }).fill(`${type.grad}`)
             }
@@ -219,7 +219,6 @@ export function fillPeriodeRelative({
 }
 
 export function fillArsakerTilAktivitetIkkeMulig({
-    isMedisinsk = true,
     isArbeidsrelatert = false,
     arbeidsrelaterteArsaker = [],
     arbeidsrelatertArsakBegrunnelse = null,
@@ -233,15 +232,6 @@ export function fillArsakerTilAktivitetIkkeMulig({
         await test.step('Input årsaker til aktivitet ikke mulig', async () => {
             const periodeRegion = page.getByRole('region', { name: 'Periode' })
             await expect(periodeRegion).toBeVisible()
-
-            const medisinskCheckbox = periodeRegion.getByRole('checkbox', {
-                name: 'Medisinske årsaker forhindrer arbeidsaktivitet',
-            })
-            if (isMedisinsk) {
-                await expect(medisinskCheckbox).toBeChecked()
-            } else {
-                await medisinskCheckbox.uncheck()
-            }
 
             const arbeidsrelatertArsakCheckbox = periodeRegion.getByRole('checkbox', {
                 name: 'Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet',
@@ -268,21 +258,12 @@ export function fillArsakerTilAktivitetIkkeMulig({
     }
 }
 
-export function fillTilbakedatering({
-    contact,
-    reason,
-    otherReason,
-}: {
-    contact: string
-    reason: string
-    otherReason?: string
-}) {
+export function fillTilbakedatering({ reason, otherReason }: { reason: string; otherReason?: string }) {
     return async (page: Page) => {
-        await test.step(`Input tilbakedateringsdato to ${contact}`, async () => {
+        await test.step(`Input tilbakedatering`, async () => {
             const region = page.getByRole('region', { name: 'Tilbakedatering' })
             await expect(region).toBeVisible()
 
-            await region.getByRole('textbox', { name: 'Når tok pasienten først kontakt' }).fill(inputDate(contact))
             await region.getByRole('combobox', { name: 'Velg årsak for tilbakedatering' }).selectOption(reason)
             if (reason === 'Annet' && otherReason) {
                 await region.getByRole('textbox', { name: 'Oppgi årsak for tilbakedatering' }).fill(otherReason)
@@ -341,7 +322,7 @@ export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | nu
 
             if (tilArbeidsgiver) {
                 await region.getByRole('checkbox', { name: 'Melding til arbeidsgiver' }).check()
-                await region.getByRole('textbox', { name: 'Innspill til arbeidsgiver' }).fill(tilArbeidsgiver)
+                await region.getByRole('textbox', { name: 'Melding til arbeidsgiver' }).fill(tilArbeidsgiver)
             }
         })
     }

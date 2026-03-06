@@ -163,7 +163,7 @@ modes.forEach(({ mode }) => {
         await launchAndStart(mode)(page)
 
         await fillPeriodeRelative({ type: '100%', fromRelative: -5, days: 5 })(page)
-        await fillTilbakedatering({ contact: daysAgo(2), reason: 'Ventetid på legetime' })(page)
+        await fillTilbakedatering({ reason: 'Ventetid på legetime' })(page)
         await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
 
         await nextStep()(page)
@@ -180,7 +180,7 @@ modes.forEach(({ mode }) => {
                       values: ['Ola Nordmann Hansen', '21037712323'],
                   },
             {
-                name: 'Har pasienten flere arbeidsforhold?',
+                name: 'Har pasienten flere arbeidsgivere?',
                 values: ['Nei'],
             },
             {
@@ -194,10 +194,6 @@ modes.forEach(({ mode }) => {
             {
                 name: 'Hoveddiagnose',
                 values: ['Angstlidelse (P74)ICPC2'], // TODO: Hvorfor kommer denne som en linje?
-            },
-            {
-                name: 'Dato for tilbakedatering',
-                values: [toReadableDate(daysAgo(2))],
             },
             {
                 name: 'Grunn for tilbakedatering',
@@ -235,7 +231,6 @@ modes.forEach(({ mode }) => {
 
         await fillPeriodeRelative({ type: '100%', fromRelative: -5, days: 5 })(page)
         await fillTilbakedatering({
-            contact: daysAgo(2),
             reason: 'Annet',
             otherReason: 'Annen årsak til tilbakedatering',
         })(page)
@@ -301,7 +296,6 @@ modes.forEach(({ mode }) => {
         await launchAndStart(mode)(page)
         await fillPeriodeRelative({ type: '100%', days: 3 })(page)
         await fillArsakerTilAktivitetIkkeMulig({
-            isMedisinsk: true,
             isArbeidsrelatert: true,
             arbeidsrelaterteArsaker: ['tilrettelegging ikke mulig', 'annet'],
             arbeidsrelatertArsakBegrunnelse: 'Annen årsak til aktivitet ikke mulig',

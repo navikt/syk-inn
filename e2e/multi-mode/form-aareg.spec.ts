@@ -28,11 +28,11 @@ modes.forEach(({ mode }) => {
         await test.step('Fill out the new AAREG-backed arbeidsforhold-picker', async () => {
             const arbeidsforholdSection = page.getByRole('region', { name: 'Arbeidsgiver' })
             await arbeidsforholdSection
-                .getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' })
+                .getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' })
                 .getByText('Ja')
                 .click()
             await arbeidsforholdSection
-                .getByRole('combobox', { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?' })
+                .getByRole('combobox', { name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?' })
                 .selectOption('Eksempel 2 AS (987654321)')
         })
 
@@ -43,7 +43,7 @@ modes.forEach(({ mode }) => {
             verifySignerendeBehandlerFillIfNeeded(mode),
             verifySummaryPage([
                 {
-                    name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?',
+                    name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?',
                     values: ['Eksempel 2 AS'],
                 },
             ]),
@@ -72,11 +72,11 @@ modes.forEach(({ mode }) => {
         await test.step('Fill out the new AAREG-backed arbeidsforhold-picker', async () => {
             const arbeidsforholdSection = page.getByRole('region', { name: 'Arbeidsgiver' })
             await arbeidsforholdSection
-                .getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' })
+                .getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' })
                 .getByText('Ja')
                 .click()
             await arbeidsforholdSection
-                .getByRole('combobox', { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?' })
+                .getByRole('combobox', { name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?' })
                 .selectOption('Eksempel 2 AS (987654321)')
         })
 
@@ -92,12 +92,12 @@ modes.forEach(({ mode }) => {
             const arbeidsforholdSection = page.getByRole('region', { name: 'Arbeidsgiver' })
             await expect(
                 arbeidsforholdSection
-                    .getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' })
+                    .getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' })
                     .getByRole('radio', { name: 'Ja' }),
             ).toBeChecked()
             await expect(
                 arbeidsforholdSection.getByRole('combobox', {
-                    name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?',
+                    name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?',
                 }),
             ).toHaveValue('Eksempel 2 AS')
         })
@@ -113,11 +113,11 @@ modes.forEach(({ mode }) => {
         await test.step('Fill out the new AAREG-backed arbeidsforhold-picker', async () => {
             const arbeidsforholdSection = page.getByRole('region', { name: 'Arbeidsgiver' })
             await arbeidsforholdSection
-                .getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' })
+                .getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' })
                 .getByText('Ja')
                 .click()
             await arbeidsforholdSection
-                .getByRole('combobox', { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?' })
+                .getByRole('combobox', { name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?' })
                 .selectOption('Eksempel 2 AS (987654321)')
         })
 
@@ -153,12 +153,12 @@ modes.forEach(({ mode }) => {
             const arbeidsforholdSection = page.getByRole('region', { name: 'Arbeidsgiver' })
             await expect(
                 arbeidsforholdSection
-                    .getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' })
+                    .getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' })
                     .getByRole('radio', { name: 'Ja' }),
             ).toBeChecked()
             await expect(
                 arbeidsforholdSection.getByRole('combobox', {
-                    name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?',
+                    name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?',
                 }),
             ).toHaveValue('Eksempel 2 AS')
         })

@@ -28,12 +28,12 @@ function DynamicTilbakedateringSection(): ReactElement | null {
                         title="Tilbakedatering"
                         helpText={
                             <HelpText>
-                                Hva menes med{' '}
+                                Les mer om tilbakedatering på{' '}
                                 <Link
                                     href="https://www.nav.no/samarbeidspartner/om-sykmeldingen#tilbakedatering"
                                     target="_blank"
                                 >
-                                    tilbakedatering
+                                    nav.no
                                 </Link>
                             </HelpText>
                         }

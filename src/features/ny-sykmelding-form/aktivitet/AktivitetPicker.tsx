@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Select } from '@navikt/ds-react'
+import { BodyShort, Button, HelpText, Label, Link, Select, Tooltip } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
 
 import { SimpleReveal } from '@components/animation/Reveal'
@@ -21,7 +21,21 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
     return (
         <div className="grid grid-cols-1 ax-md:grid-cols-[30ch_1fr] gap-4 mt-2">
             <Select
-                label="Mulighet for arbeid"
+                label={
+                    <div className="flex gap-1">
+                        Mulighet for arbeid{' '}
+                        <HelpText title="Les mer om ulike typer sykmelding">
+                            Les mer om ulike typer sykmelding på{' '}
+                            <Link
+                                href="https://www.nav.no/samarbeidspartner/om-sykmeldingen#ulike-typer-sykmelding"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                nav.no
+                            </Link>
+                        </HelpText>
+                    </div>
+                }
                 className="max-w-sm flex flex-col"
                 value={aktivitetField.field.value}
                 onChange={(event) => {
@@ -31,13 +45,21 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
                     }
                 }}
             >
-                <option value={'GRADERT' satisfies AktivitetIkkeMuligType}>Gradert sykmelding</option>
-                <option value={'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType}>Aktivitet ikke mulig</option>
+                <option value={'GRADERT' satisfies AktivitetIkkeMuligType}>Kan være delvis i arbeid</option>
+                <option value={'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType}>Kan ikke være i arbeid</option>
             </Select>
             <AnimatePresence initial={false}>
                 {aktivitetField.field.value === 'GRADERT' && (
                     <SimpleReveal>
                         <GradertGradPicker index={index} />
+                    </SimpleReveal>
+                )}
+                {aktivitetField.field.value === 'AKTIVITET_IKKE_MULIG' && (
+                    <SimpleReveal>
+                        <div className="flex flex-col gap-1">
+                            <Label>Sykmeldingsgrad (%)</Label>
+                            <BodyShort>100%</BodyShort>
+                        </div>
                     </SimpleReveal>
                 )}
                 {aktivitetField.field.value === 'AKTIVITET_IKKE_MULIG' && (

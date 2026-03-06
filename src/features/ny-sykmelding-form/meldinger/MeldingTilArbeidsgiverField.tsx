@@ -16,7 +16,7 @@ function MeldingTilNavField(): ReactElement {
 
             {showTilArbeidsgiver && (
                 <Textarea
-                    label="Innspill til arbeidsgiver"
+                    label={<p className="sr-only">Melding til arbeidsgiver</p>}
                     description="For eksempel tilrettelegging som bør gjøres på arbeidsplassen"
                     {...form.register('meldinger.tilArbeidsgiver')}
                     className="mb-2"

@@ -76,8 +76,8 @@ test('should be able to dupliser (from dashboard) an existing sykmelding with co
     await userInteractionsGroup(nextStep(), verifySignerendeBehandler())(page)
 
     await verifySummaryPage([
-        { name: 'Har pasienten flere arbeidsforhold?', values: ['Ja'] },
-        { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?', values: ['The Other One AB'] },
+        { name: 'Har pasienten flere arbeidsgivere?', values: ['Ja'] },
+        { name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?', values: ['The Other One AB'] },
     ])(page)
 
     await submitSykmelding()(page)
@@ -144,7 +144,6 @@ test('should not be possible to dupliser (from dashboard) old sykmelding', async
     await userInteractionsGroup(
         fillPeriodeRelative({ type: '100%', fromRelative: -35, days: 5 }),
         fillTilbakedatering({
-            contact: daysAgo(4),
             reason: 'Ventetid på legetime',
         }),
         pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),

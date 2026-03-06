@@ -186,39 +186,42 @@ function AktivitetSummaryAnswer({
                             aktivitet.medisinskArsak.isMedisinskArsak,
                             aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak,
                         ].some(R.isTruthy) && (
-                            <List className="my-4">
-                                {aktivitet.medisinskArsak.isMedisinskArsak && (
-                                    <List.Item>Medisinske årsaker forhindrer arbeidsaktivitet</List.Item>
-                                )}
+                            <>
                                 {aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak && (
-                                    <List.Item>
-                                        <BodyShort>Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet</BodyShort>
-                                        <List className="py-4" size="small">
-                                            {aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker?.map((arsak) => {
-                                                if (arsak === 'ANNET') {
-                                                    return (
-                                                        <List.Item key={arsak}>
-                                                            <BodyShort>{ArbeidsrelaterteArsaker[arsak]}</BodyShort>
-                                                            <BodyShort size="small" className="italic">
-                                                                {
-                                                                    aktivitet.arbeidsrelatertArsak
-                                                                        .annenArbeidsrelatertArsak
-                                                                }
-                                                            </BodyShort>
-                                                        </List.Item>
-                                                    )
-                                                }
+                                    <List className="my-4">
+                                        <List.Item>
+                                            <BodyShort>Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet</BodyShort>
+                                            <List className="py-4" size="small">
+                                                {aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker?.map(
+                                                    (arsak) => {
+                                                        if (arsak === 'ANNET') {
+                                                            return (
+                                                                <List.Item key={arsak}>
+                                                                    <BodyShort>
+                                                                        {ArbeidsrelaterteArsaker[arsak]}
+                                                                    </BodyShort>
+                                                                    <BodyShort size="small" className="italic">
+                                                                        {
+                                                                            aktivitet.arbeidsrelatertArsak
+                                                                                .annenArbeidsrelatertArsak
+                                                                        }
+                                                                    </BodyShort>
+                                                                </List.Item>
+                                                            )
+                                                        }
 
-                                                return (
-                                                    <List.Item key={arsak}>
-                                                        <BodyShort>{ArbeidsrelaterteArsaker[arsak]}</BodyShort>
-                                                    </List.Item>
-                                                )
-                                            })}
-                                        </List>
-                                    </List.Item>
+                                                        return (
+                                                            <List.Item key={arsak}>
+                                                                <BodyShort>{ArbeidsrelaterteArsaker[arsak]}</BodyShort>
+                                                            </List.Item>
+                                                        )
+                                                    },
+                                                )}
+                                            </List>
+                                        </List.Item>
+                                    </List>
                                 )}
-                            </List>
+                            </>
                         )}
                     </>
                 )}
@@ -237,10 +240,6 @@ function TilbakedateringSummaryAnswers({
     }
     return (
         <>
-            <FormSummary.Answer>
-                <FormSummary.Label>Dato for tilbakedatering</FormSummary.Label>
-                <FormSummary.Value>{toReadableDate(tilbakedatering.fom)}</FormSummary.Value>
-            </FormSummary.Answer>
             <FormSummary.Answer>
                 <FormSummary.Label>Grunn for tilbakedatering</FormSummary.Label>
                 <FormSummary.Value>{tilbakedateringGrunnToReadable(tilbakedatering.grunn)}</FormSummary.Value>
@@ -449,12 +448,12 @@ function ArbeidsforholdSummaryAnswers({
     return (
         <>
             <FormSummary.Answer>
-                <FormSummary.Label>Har pasienten flere arbeidsforhold?</FormSummary.Label>
+                <FormSummary.Label>Har pasienten flere arbeidsgivere?</FormSummary.Label>
                 <FormSummary.Value>{arbeidsforhold?.harFlereArbeidsforhold ? 'Ja' : 'Nei'}</FormSummary.Value>
             </FormSummary.Answer>
             {arbeidsforhold?.harFlereArbeidsforhold && (
                 <FormSummary.Answer>
-                    <FormSummary.Label>Hvilket arbeidsforhold skal pasienten sykmeldes fra?</FormSummary.Label>
+                    <FormSummary.Label>Hvilken arbeidsgiver skal pasienten sykmeldes fra?</FormSummary.Label>
                     <FormSummary.Value>{arbeidsforhold?.sykmeldtFraArbeidsforhold}</FormSummary.Value>
                 </FormSummary.Answer>
             )}

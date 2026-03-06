@@ -4,11 +4,10 @@ import { expectTermToHaveDefinitions } from '../utils/assertions'
 
 type SectionTitle =
     | 'Sykmeldingen gjelder'
-    | 'Har pasienten flere arbeidsforhold?'
-    | 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?'
+    | 'Har pasienten flere arbeidsgivere?'
+    | 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?'
     | 'Periode'
     | 'Perioder'
-    | 'Dato for tilbakedatering'
     | 'Grunn for tilbakedatering'
     | 'Hoveddiagnose'
     | 'Til NAV'

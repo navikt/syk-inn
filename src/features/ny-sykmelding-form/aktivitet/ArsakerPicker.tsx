@@ -7,25 +7,8 @@ import { ArbeidsrelatertArsakType } from '@queries'
 import { useController } from '../form/types'
 
 function ArsakerPicker({ index }: { index: number }): ReactElement {
-    const isMedisinskArsak = useController({
-        name: `perioder.${index}.medisinskArsak.isMedisinskArsak`,
-        rules: {
-            validate: (value) => {
-                if (!isArbeidsrelatertArsak.field.value && !value) {
-                    return 'Du må velge minst én årsak'
-                }
-            },
-        },
-    })
     const isArbeidsrelatertArsak = useController({
         name: `perioder.${index}.arbeidsrelatertArsak.isArbeidsrelatertArsak`,
-        rules: {
-            validate: (value) => {
-                if (!isMedisinskArsak.field.value && !value) {
-                    return 'Du må velge minst én årsak'
-                }
-            },
-        },
     })
 
     const arbeidsrelaterteArsaker = useController({
@@ -58,15 +41,6 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
 
     return (
         <div className="flex gap-1 flex-col">
-            <CheckboxGroup
-                legend="Medisinsk årsak"
-                hideLegend
-                value={isMedisinskArsak.field.value ? ['MEDISINSK'] : []}
-                onChange={(value) => isMedisinskArsak.field.onChange(value.includes('MEDISINSK'))}
-                error={isMedisinskArsak.fieldState.error?.message}
-            >
-                <Checkbox value="MEDISINSK">Medisinske årsaker forhindrer arbeidsaktivitet</Checkbox>
-            </CheckboxGroup>
             <CheckboxGroup
                 legend="Arbeidsrelatert årsak"
                 hideLegend

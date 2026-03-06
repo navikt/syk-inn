@@ -76,8 +76,8 @@ test('should be able to forlenge an existing sykmelding with correct values', as
     await userInteractionsGroup(nextStep(), verifySignerendeBehandler())(page)
 
     await verifySummaryPage([
-        { name: 'Har pasienten flere arbeidsforhold?', values: ['Ja'] },
-        { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?', values: ['Duplicatiore AS'] },
+        { name: 'Har pasienten flere arbeidsgivere?', values: ['Ja'] },
+        { name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?', values: ['Duplicatiore AS'] },
         { name: 'Periode', values: [new RegExp(toReadableDatePeriod(inDays(15), inDays(28)))] },
     ])(page)
 

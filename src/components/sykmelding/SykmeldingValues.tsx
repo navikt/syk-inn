@@ -51,23 +51,16 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
     return (
         <>
             <SykmeldingAktivitetValues aktivitet={sykmelding.values.aktivitet} />
-            <ValueItem title="Har pasienten flere arbeidsforhold?">
+            <ValueItem title="Har pasienten flere arbeidsgivere?">
                 {sykmelding.values.arbeidsgiver?.harFlere ? 'Ja' : 'Nei'}
             </ValueItem>
             {sykmelding.values.arbeidsgiver?.harFlere && (
-                <ValueItem title="Hvilket arbeidsforhold skal pasienten sykmeldes fra?">
+                <ValueItem title="Hvilken arbeidsgiver skal pasienten sykmeldes fra?">
                     {sykmelding.values.arbeidsgiver.arbeidsgivernavn}
                 </ValueItem>
             )}
             {sykmelding.values.tilbakedatering && (
-                <>
-                    <ValueItem title="Dato for tilbakedatering">
-                        {toReadableDate(sykmelding.values.tilbakedatering.startdato)}
-                    </ValueItem>
-                    <ValueItem title="Grunn for tilbakedatering">
-                        {sykmelding.values.tilbakedatering.begrunnelse}
-                    </ValueItem>
-                </>
+                <ValueItem title="Grunn for tilbakedatering">{sykmelding.values.tilbakedatering.begrunnelse}</ValueItem>
             )}
             <SykmeldingDiagnoseValues
                 hoveddiagnose={sykmelding.values.hoveddiagnose}
@@ -153,11 +146,9 @@ function SykmeldingAktivitetValues({ aktivitet }: { aktivitet: AktivitetFragment
                     {it.__typename === 'AktivitetIkkeMulig' && (
                         <>
                             <BodyShort>100% sykmelding</BodyShort>
-                            <ul className="list-disc pl-6">
-                                {it.medisinskArsak?.isMedisinskArsak && (
-                                    <li>Det er medisinske årsaker som forhindrer arbeidsrelatert aktivitet</li>
-                                )}
-                                {it.arbeidsrelatertArsak?.isArbeidsrelatertArsak && (
+
+                            {it.arbeidsrelatertArsak?.isArbeidsrelatertArsak && (
+                                <ul className="list-disc pl-6">
                                     <li>
                                         Det er arbeidsrelaterte årsaker som forhindrer arbeidsrelatert aktivitet
                                         <ul className="list-disc pl-6">
@@ -177,8 +168,8 @@ function SykmeldingAktivitetValues({ aktivitet }: { aktivitet: AktivitetFragment
                                             )}
                                         </ul>
                                     </li>
-                                )}
-                            </ul>
+                                </ul>
+                            )}
                         </>
                     )}
                     {it.__typename === 'Gradert' && <BodyShort>{it.grad}% gradert sykmelding</BodyShort>}
