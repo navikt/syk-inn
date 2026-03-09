@@ -383,7 +383,6 @@ export type RuleOutcome = {
     message: Scalars['String']['output']
     rule: Scalars['String']['output']
     status: RuleOutcomeStatus
-    tree: Scalars['String']['output']
 }
 
 export type RuleOutcomeStatus = 'INVALID' | 'MANUAL_PROCESSING'
@@ -1118,7 +1117,6 @@ export type RuleOutcomeResolvers<
     message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     rule?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     status?: Resolver<ResolversTypes['RuleOutcomeStatus'], ParentType, ContextType>
-    tree?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
