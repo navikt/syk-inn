@@ -166,7 +166,6 @@ export const SykInnApiRuleOutcomeSchema = z.object({
     status: z.union([z.literal('INVALID'), z.literal('MANUAL_PROCESSING')]),
     message: z.string(),
     rule: z.string(),
-    tree: z.string(),
 })
 
 export type SykInnApiPersonDoesNotExist = z.infer<typeof SykInnApiPersonDoesNotExistSchema>

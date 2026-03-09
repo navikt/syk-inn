@@ -27,7 +27,6 @@ fragment RuleOutcome on RuleOutcome {
     status
     message
     rule
-    tree
 }
 
 fragment SykmeldingRedacted on SykmeldingRedacted {
