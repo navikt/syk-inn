@@ -381,7 +381,6 @@ export type RuleOutcome = {
     message: Scalars['String']['output']
     rule: Scalars['String']['output']
     status: RuleOutcomeStatus
-    tree: Scalars['String']['output']
 }
 
 export type RuleOutcomeStatus = 'INVALID' | 'MANUAL_PROCESSING'
@@ -1350,7 +1349,7 @@ export type OpprettSykmeldingMutation = {
     __typename: 'Mutation'
     opprettSykmelding:
         | { __typename: 'OtherSubmitOutcomes'; cause: OtherSubmitOutcomesEnum }
-        | { __typename: 'RuleOutcome'; status: RuleOutcomeStatus; message: string; rule: string; tree: string }
+        | { __typename: 'RuleOutcome'; status: RuleOutcomeStatus; message: string; rule: string }
         | {
               __typename: 'SykmeldingFull'
               sykmeldingId: string
@@ -1483,7 +1482,6 @@ export type RuleOutcomeFragment = {
     status: RuleOutcomeStatus
     message: string
     rule: string
-    tree: string
 }
 
 export type SykmeldingRedactedFragment = {
@@ -1984,7 +1982,6 @@ export const RuleOutcomeFragmentDoc = {
                     { kind: 'Field', name: { kind: 'Name', value: 'status' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'message' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'rule' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'tree' } },
                 ],
             },
         },
@@ -5680,7 +5677,6 @@ export const OpprettSykmeldingDocument = {
                     { kind: 'Field', name: { kind: 'Name', value: 'status' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'message' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'rule' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'tree' } },
                 ],
             },
         },
