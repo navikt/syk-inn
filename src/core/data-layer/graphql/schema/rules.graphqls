@@ -7,7 +7,6 @@ type RuleOutcome {
     status: RuleOutcomeStatus!
     message: String!
     rule: String!
-    tree: String!
 }
 
 type RuleOK {

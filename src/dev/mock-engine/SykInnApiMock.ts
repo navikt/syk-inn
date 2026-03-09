@@ -82,7 +82,6 @@ export class SykInnApiMock {
                 status: status,
                 rule: ruleName,
                 message: 'This is a local development rule hit',
-                tree: 'Local Mock Fake Tree',
             }
         }
 
