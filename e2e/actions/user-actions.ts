@@ -248,12 +248,12 @@ export function fillArbeidsforhold({
     return async (page: Page) => {
         await test.step(`Set flere arbeidsforhold to ${harFlereArbeidsforhold ? 'Ja' : 'Nei'}`, async () => {
             if (harFlereArbeidsforhold) {
-                await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Ja').click()
+                await page.getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' }).getByText('Ja').click()
                 await page
-                    .getByRole('textbox', { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?' })
+                    .getByRole('textbox', { name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?' })
                     .fill(sykmeldtFraArbeidsforhold || '')
             } else {
-                await page.getByRole('group', { name: 'Har pasienten flere arbeidsforhold?' }).getByText('Nei').click()
+                await page.getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' }).getByText('Nei').click()
             }
         })
     }

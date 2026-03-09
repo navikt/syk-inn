@@ -180,7 +180,7 @@ modes.forEach(({ mode }) => {
                       values: ['Ola Nordmann Hansen', '21037712323'],
                   },
             {
-                name: 'Har pasienten flere arbeidsforhold?',
+                name: 'Har pasienten flere arbeidsgivere?',
                 values: ['Nei'],
             },
             {

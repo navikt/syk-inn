@@ -51,11 +51,11 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
     return (
         <>
             <SykmeldingAktivitetValues aktivitet={sykmelding.values.aktivitet} />
-            <ValueItem title="Har pasienten flere arbeidsforhold?">
+            <ValueItem title="Har pasienten flere arbeidsgivere?">
                 {sykmelding.values.arbeidsgiver?.harFlere ? 'Ja' : 'Nei'}
             </ValueItem>
             {sykmelding.values.arbeidsgiver?.harFlere && (
-                <ValueItem title="Hvilket arbeidsforhold skal pasienten sykmeldes fra?">
+                <ValueItem title="Hvilken arbeidsgiver skal pasienten sykmeldes fra?">
                     {sykmelding.values.arbeidsgiver.arbeidsgivernavn}
                 </ValueItem>
             )}

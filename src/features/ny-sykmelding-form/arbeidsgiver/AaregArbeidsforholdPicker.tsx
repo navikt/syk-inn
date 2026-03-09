@@ -14,14 +14,14 @@ export function AaregArbeidsforholdPicker(): ReactElement {
         name: 'arbeidsforhold.harFlereArbeidsforhold',
         defaultValue: null,
         rules: {
-            required: 'Du må svare på om pasienten har flere arbeidsforhold',
+            required: 'Du må svare på om pasienten har flere arbeidsgivere',
         },
     })
 
     return (
         <div>
             <RadioGroup
-                legend="Har pasienten flere arbeidsforhold?"
+                legend="Har pasienten flere arbeidsgivere?"
                 error={harFlereArbeidsforhold.fieldState.error?.message}
                 {...harFlereArbeidsforhold.field}
             >
@@ -62,7 +62,7 @@ function ArbeidsforholdFromAaregPicker({
     const sykmeldtFraArbeidsforhold = useController({
         name: 'arbeidsforhold.aaregArbeidsforhold',
         rules: {
-            required: hasAnyArbeidsgivere && 'Du må fylle inn hvilket arbeidsforhold pasienten skal sykmeldes fra',
+            required: hasAnyArbeidsgivere && 'Du må fylle inn hvilken arbeidsgiver pasienten skal sykmeldes fra',
         },
     })
     const annetArbeidsforhold = useController({
@@ -70,7 +70,7 @@ function ArbeidsforholdFromAaregPicker({
         rules: {
             validate: (value) => {
                 if ((sykmeldtFraArbeidsforhold.field.value === 'annet' || !hasAnyArbeidsgivere) && !value) {
-                    return 'Du må fylle inn hvilket arbeidsforhold pasienten skal sykmeldes fra'
+                    return 'Du må fylle inn hvilken arbeidsgiver pasienten skal sykmeldes fra'
                 }
             },
         },
@@ -81,7 +81,7 @@ function ArbeidsforholdFromAaregPicker({
             {arbeidsforhold.length > 1 ? (
                 <Select
                     className="&>.onavds-select__container:w-64"
-                    label="Hvilket arbeidsforhold skal pasienten sykmeldes fra?"
+                    label="Hvilken arbeidsgiver skal pasienten sykmeldes fra?"
                     value={sykmeldtFraArbeidsforhold.field.value ?? ''}
                     onChange={(event) => {
                         sykmeldtFraArbeidsforhold.field.onChange(event)
@@ -109,11 +109,11 @@ function ArbeidsforholdFromAaregPicker({
             ) : (
                 <InfoCard data-color="info" className="mt-4" size="small">
                     <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
-                        <InfoCard.Title>Fant ingen arbeidsforhold</InfoCard.Title>
+                        <InfoCard.Title>Fant ingen arbeidsgivere</InfoCard.Title>
                     </InfoCard.Header>
                     <InfoCard.Content>
                         <BodyShort spacing>
-                            Arbeidsgiverregisteret har ingen registrerte arbeidsforhold for pasienten.
+                            Arbeidsgiverregisteret har ingen registrerte arbeidsgivere for pasienten.
                         </BodyShort>
                         <BodyShort>
                             Pasienten må be arbeidsgiveren sin om å registrere ansettelsesforholdet i A-meldingen som
@@ -130,7 +130,7 @@ function ArbeidsforholdFromAaregPicker({
                             ref={annetArbeidsforhold.field.ref}
                             className="mt-2"
                             label=""
-                            description="Siden vi ikke fant rett arbeidsforhold i arbeidsgiverregisteret, må du fylle inn hvilket arbeidsforhold pasienten skal sykmeldes fra."
+                            description="Siden vi ikke fant rett arbeidsgiver i arbeidsgiverregisteret, må du fylle inn hvilken arbeidsgiver pasienten skal sykmeldes fra."
                             error={annetArbeidsforhold.fieldState.error?.message}
                             value={annetArbeidsforhold.field.value || ''}
                         />
@@ -146,7 +146,7 @@ function AaregLoading(): ReactElement {
     return (
         <div>
             <BodyShort id="aareg-loading-text" spacing>
-                {!tookALongTime ? 'Henter arbeidsforhold...' : 'Arbeidsgiverregisterene er litt trege i dag...'}
+                {!tookALongTime ? 'Henter arbeidsgivere...' : 'Arbeidsgiverregisterene er litt trege i dag...'}
             </BodyShort>
             <ProgressBar
                 simulated={{ seconds: 3, onTimeout: () => setSlow(true) }}

@@ -76,8 +76,8 @@ test('should be able to dupliser (from dashboard) an existing sykmelding with co
     await userInteractionsGroup(nextStep(), verifySignerendeBehandler())(page)
 
     await verifySummaryPage([
-        { name: 'Har pasienten flere arbeidsforhold?', values: ['Ja'] },
-        { name: 'Hvilket arbeidsforhold skal pasienten sykmeldes fra?', values: ['The Other One AB'] },
+        { name: 'Har pasienten flere arbeidsgivere?', values: ['Ja'] },
+        { name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?', values: ['The Other One AB'] },
     ])(page)
 
     await submitSykmelding()(page)

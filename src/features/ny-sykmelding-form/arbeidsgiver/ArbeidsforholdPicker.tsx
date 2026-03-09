@@ -8,7 +8,7 @@ function ArbeidsforholdPicker(): ReactElement {
         name: 'arbeidsforhold.harFlereArbeidsforhold',
         defaultValue: null,
         rules: {
-            required: 'Du må svare på om pasienten har flere arbeidsforhold',
+            required: 'Du må svare på om pasienten har flere arbeidsgivere',
         },
     })
 
@@ -17,7 +17,7 @@ function ArbeidsforholdPicker(): ReactElement {
         rules: {
             validate: (value) => {
                 if (harFlereArbeidsforhold.field.value === 'JA' && !value) {
-                    return 'Du må fylle inn hvilket arbeidsforhold pasienten skal sykmeldes fra'
+                    return 'Du må fylle inn hvilken arbeidsgiver pasienten skal sykmeldes fra'
                 }
             },
         },
@@ -26,7 +26,7 @@ function ArbeidsforholdPicker(): ReactElement {
     return (
         <div className="flex flex-col gap-3">
             <RadioGroup
-                legend="Har pasienten flere arbeidsforhold?"
+                legend="Har pasienten flere arbeidsgivere?"
                 error={harFlereArbeidsforhold.fieldState.error?.message}
                 {...harFlereArbeidsforhold.field}
             >
@@ -37,7 +37,7 @@ function ArbeidsforholdPicker(): ReactElement {
             </RadioGroup>
             {harFlereArbeidsforhold.field.value === 'JA' && (
                 <TextField
-                    label="Hvilket arbeidsforhold skal pasienten sykmeldes fra?"
+                    label="Hvilken arbeidsgiver skal pasienten sykmeldes fra?"
                     error={sykmeldtFraArbeidsforhold.fieldState.error?.message}
                     {...sykmeldtFraArbeidsforhold.field}
                     value={sykmeldtFraArbeidsforhold.field.value || ''}

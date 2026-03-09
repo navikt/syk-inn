@@ -26,7 +26,7 @@ test('should be able to view previous sykmelding', async ({ page }) => {
     const valuesSection = page.getByRole('region', { name: 'Innsendt sykmelding' })
     await expect(valuesSection).toBeVisible()
     await expect(valuesSection.getByText('Hoveddiagnose')).toBeVisible()
-    await expect(valuesSection.getByText('Har pasienten flere arbeidsforhold?')).toBeVisible()
+    await expect(valuesSection.getByText('Har pasienten flere arbeidsgivere?')).toBeVisible()
 
     // Should show signerende behandler
     const behandlerSection = page.getByRole('region', { name: 'Signerende Behandler' })
@@ -47,7 +47,7 @@ test('previous sykmelding within 4 days should still show as a full sykmelding',
     const valuesSection = page.getByRole('region', { name: 'Innsendt sykmelding' })
     await expect(valuesSection).toBeVisible()
     await expect(valuesSection.getByText('Hoveddiagnose')).toBeVisible()
-    await expect(valuesSection.getByText('Har pasienten flere arbeidsforhold?')).toBeVisible()
+    await expect(valuesSection.getByText('Har pasienten flere arbeidsgivere?')).toBeVisible()
 
     // Should show signerende behandler
     const behandlerSection = page.getByRole('region', { name: 'Signerende Behandler' })
@@ -71,7 +71,7 @@ test('previous sykmelding older than 4 days should display less values', async (
     await expect(valuesSection).toBeVisible()
     await expect(valuesSection.getByText('Hoveddiagnose')).toBeVisible()
     await expect(valuesSection.getByRole('heading', { name: /Denne sykmeldingen er eldre enn 4 dager/ })).toBeVisible()
-    await expect(valuesSection.getByText('Har pasienten flere arbeidsforhold?')).not.toBeVisible()
+    await expect(valuesSection.getByText('Har pasienten flere arbeidsgivere?')).not.toBeVisible()
 
     // Should show signerende behandler
     const behandlerSection = page.getByRole('region', { name: 'Signerende Behandler' })

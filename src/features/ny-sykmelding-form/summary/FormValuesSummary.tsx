@@ -435,12 +435,12 @@ function ArbeidsforholdSummaryAnswers({
     return (
         <>
             <FormSummary.Answer>
-                <FormSummary.Label>Har pasienten flere arbeidsforhold?</FormSummary.Label>
+                <FormSummary.Label>Har pasienten flere arbeidsgivere?</FormSummary.Label>
                 <FormSummary.Value>{arbeidsforhold?.harFlereArbeidsforhold ? 'Ja' : 'Nei'}</FormSummary.Value>
             </FormSummary.Answer>
             {arbeidsforhold?.harFlereArbeidsforhold && (
                 <FormSummary.Answer>
-                    <FormSummary.Label>Hvilket arbeidsforhold skal pasienten sykmeldes fra?</FormSummary.Label>
+                    <FormSummary.Label>Hvilken arbeidsgiver skal pasienten sykmeldes fra?</FormSummary.Label>
                     <FormSummary.Value>{arbeidsforhold?.sykmeldtFraArbeidsforhold}</FormSummary.Value>
                 </FormSummary.Answer>
             )}
