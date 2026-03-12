@@ -49,6 +49,14 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
         name: 'SYK_INN_REQUIRE_BRUKSVILKAR',
         ...off,
     },
+    SYK_INN_STRUCTURED_FHIR: {
+        name: 'SYK_INN_STRUCTURED_FHIR',
+        ...off,
+    },
+    SYK_INN_STRUCTURED_FHIR_INLINE: {
+        name: 'SYK_INN_STRUCTURED_FHIR_INLINE',
+        ...off,
+    },
 }
 
 for (const [key, value] of Object.entries(devToggles)) {
