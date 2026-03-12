@@ -1,6 +1,6 @@
 import { logger } from '@navikt/next-logger'
 import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
-import { FhirDocumentReference, FhirQuestionnaireResponse } from '@navikt/smart-on-fhir/zod'
+import { FhirDocumentReference, FhirPractitioner, FhirQuestionnaireResponse } from '@navikt/smart-on-fhir/zod'
 import { GraphQLError } from 'graphql/error'
 
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
@@ -14,6 +14,7 @@ import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett
 import { gotenbergService } from '@data-layer/pdf/gotenberg-service'
 import { getSimpleSykmeldingDescription } from '@data-layer/common/sykmelding-utils'
 import { sykmeldingToQuestionnaireResponse } from '@data-layer/fhir/mappers/questionnaire-response'
+import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
 
 import { getHpr } from './mappers/practitioner'
 import { createNewDocumentReferencePayload } from './mappers/document-reference'
@@ -91,37 +92,19 @@ export async function getAllSykmeldingMetaFromFhir(
  */
 export async function createDocumentReference(
     client: ReadyClient,
-    sykmeldingId: string,
+    sykmelding: SykInnApiSykmelding,
+    practitioner: FhirPractitioner,
 ): Promise<FhirDocumentReference | { error: 'API_ERROR' } | { error: 'PARSING_ERROR' }> {
     return spanServerAsync('FhirService.createDocumentReference', async (span) => {
-        const practitioner = await client.user.request()
-        if ('error' in practitioner) {
-            failSpan(span, practitioner.error)
-            return { error: 'API_ERROR' }
-        }
-
         const hpr = getHpr(practitioner.identifier)
         if (hpr == null) {
             failSpan(span, 'Missing HPR identifier in practitioner resource')
             return { error: 'PARSING_ERROR' }
         }
 
-        const [sykmelding, pdfBuffer] = await Promise.all([
-            sykInnApiService.getSykmelding(sykmeldingId, hpr),
-            sykInnApiService.getSykmeldingPdf(sykmeldingId, hpr),
-        ])
-
-        if ('errorType' in pdfBuffer || 'errorType' in sykmelding) {
-            if ('errorType' in pdfBuffer) failSpan(span, `Failed fetching PDF: ${pdfBuffer.errorType}`)
-            if ('errorType' in sykmelding) failSpan(span, `Failed fetching sykmelding: ${sykmelding.errorType}`)
-
-            return { error: 'API_ERROR' }
-        }
-
-        if (sykmelding.kind === 'redacted') {
-            logger.warn(
-                `Tried creating document reference for redacted sykmelding with id ${sykmeldingId}, this is owned by ${sykmelding.meta.sykmelder.hprNummer}, not ${hpr}`,
-            )
+        const pdfBuffer = await sykInnApiService.getSykmeldingPdf(sykmelding.sykmeldingId, hpr)
+        if ('errorType' in pdfBuffer) {
+            failSpan(span, `Failed fetching PDF: ${pdfBuffer.errorType}`)
             return { error: 'API_ERROR' }
         }
 
@@ -134,10 +117,10 @@ export async function createDocumentReference(
         const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.update(
             'DocumentReference',
             {
-                id: sykmeldingId,
+                id: sykmelding.sykmeldingId,
                 payload: createNewDocumentReferencePayload(
                     {
-                        sykmeldingId,
+                        sykmeldingId: sykmelding.sykmeldingId,
                         patientId: client.patient.id,
                         encounterId: client.encounter.id,
                         practitionerId: client.user.id,
@@ -153,12 +136,12 @@ export async function createDocumentReference(
             return { error: 'API_ERROR' }
         }
 
-        if (createdDocumentReference.id !== sykmeldingId) {
+        if (createdDocumentReference.id !== sykmelding.sykmeldingId) {
             failSpan(
                 span,
                 'DocumentReference ID create mismatch',
                 new Error(
-                    `Created DocumentReference ID (${createdDocumentReference.id}) does not match the sykmelding ID (${sykmeldingId})`,
+                    `Created DocumentReference ID (${createdDocumentReference.id}) does not match the sykmelding ID (${sykmelding.sykmeldingId})`,
                 ),
             )
         }
@@ -169,37 +152,19 @@ export async function createDocumentReference(
 
 export async function createQuestionnaireResponse(
     client: ReadyClient,
-    sykmeldingId: string,
+    sykmelding: SykInnApiSykmelding,
+    practitioner: FhirPractitioner,
 ): Promise<FhirQuestionnaireResponse | { error: 'API_ERROR' } | { error: 'PARSING_ERROR' }> {
     return spanServerAsync('FhirService.createQuestionnaireResponse', async (span) => {
-        const practitioner = await client.user.request()
-        if ('error' in practitioner) {
-            failSpan(span, practitioner.error)
-            return { error: 'API_ERROR' }
-        }
-
         const hpr = getHpr(practitioner.identifier)
         if (hpr == null) {
             failSpan(span, 'Missing HPR identifier in practitioner resource')
             return { error: 'PARSING_ERROR' }
         }
 
-        const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
-        if ('errorType' in sykmelding) {
-            failSpan(span, `Failed fetching sykmelding: ${sykmelding.errorType}`)
-            return { error: 'API_ERROR' }
-        }
-
-        if (sykmelding.kind === 'redacted') {
-            logger.warn(
-                `Tried creating QuestionnaireResponse for redacted sykmelding with id ${sykmeldingId}, this is owned by ${sykmelding.meta.sykmelder.hprNummer}, not ${hpr}`,
-            )
-            return { error: 'API_ERROR' }
-        }
-
         const payload: FhirQuestionnaireResponse = sykmeldingToQuestionnaireResponse(sykmelding)
         const createdQuestionnaireResponse = await client.update('QuestionnaireResponse', {
-            id: sykmeldingId,
+            id: sykmelding.sykmeldingId,
             payload: payload,
         })
 

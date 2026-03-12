@@ -8,7 +8,7 @@ import { createSchema } from '@data-layer/graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
 import { practitionerToBehandler } from '@data-layer/fhir/mappers/practitioner'
-import { createDocumentReference, getAllSykmeldingMetaFromFhir } from '@data-layer/fhir/fhir-service'
+import { getAllSykmeldingMetaFromFhir } from '@data-layer/fhir/fhir-service'
 import {
     getOrganisasjonsnummerFromFhir,
     getOrganisasjonstelefonnummerFromFhir,
@@ -33,6 +33,7 @@ import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
 import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
 import { countDiagnoses } from '@data-layer/common/diagnose-counting'
 import metrics from '@lib/prometheus/metrics'
+import { fhirWriteService } from '@data-layer/fhir/fhir-write-service'
 
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
@@ -325,28 +326,33 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             return sykInnApiSykmeldingToResolverSykmeldingFull(result, 'PENDING')
         },
-        synchronizeSykmelding: async (_, { id: sykmeldingId }, { client }) => {
-            const existingDocument = await client.request(`DocumentReference/${sykmeldingId}`, { expectNotFound: true })
-            if ('resourceType' in existingDocument) {
-                return {
-                    navStatus: 'COMPLETE',
-                    documentStatus: 'COMPLETE',
-                }
+        synchronizeSykmelding: async (_, { id: sykmeldingId }, { client, hpr, practitioner }) => {
+            const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
+            if ('errorType' in sykmelding) {
+                throw new GraphQLError('API_ERROR')
             }
 
-            if ('error' in existingDocument && existingDocument.error === 'REQUEST_FAILED_RESOURCE_NOT_FOUND') {
-                const createResult = await createDocumentReference(client, sykmeldingId)
-                if ('error' in createResult) {
-                    throw new GraphQLError('API_ERROR')
-                }
-
-                return {
-                    navStatus: 'COMPLETE',
-                    documentStatus: 'COMPLETE',
-                }
+            if (sykmelding.kind === 'redacted') {
+                logger.error(`User ${hpr} tried to synchronize sykmelding ${sykmeldingId} - This should not happen.`)
+                throw new GraphQLError('API_ERROR')
             }
 
-            throw new GraphQLError('API_ERROR')
+            const writeService = fhirWriteService(client)
+            const [documentReference] = await Promise.allSettled([
+                writeService.writeDocumentReference(sykmelding, practitioner),
+            ])
+
+            if (documentReference.status === 'rejected') {
+                logger.error(new Error(`Creating document reference failed`, { cause: documentReference.reason }))
+                throw new GraphQLError('API_ERROR')
+            }
+
+            if ('error' in documentReference.value) {
+                // Already logged and failed span in in service
+                throw new GraphQLError('API_ERROR')
+            }
+
+            return { navStatus: 'COMPLETE', documentStatus: 'COMPLETE' }
         },
         requestAccessToSykmeldinger: async (_, __, { client, practitioner }) => {
             const pasient = await client.patient.request()
