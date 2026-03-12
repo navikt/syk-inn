@@ -52,6 +52,7 @@ function baseFormData(): FormData {
     formdata.append('marginTop', '26mm')
     formdata.append('pdfa', 'PDF/A-3b')
     formdata.append('pdfua', 'true')
+    formdata.append('skipNetworkIdleEvent', 'true')
     return formdata
 }
 
