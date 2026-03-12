@@ -1,6 +1,6 @@
 import { logger } from '@navikt/next-logger'
 import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
-import { FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
+import { FhirDocumentReference, FhirQuestionnaireResponse } from '@navikt/smart-on-fhir/zod'
 import { GraphQLError } from 'graphql/error'
 
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
@@ -13,6 +13,7 @@ import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
 import { gotenbergService } from '@data-layer/pdf/gotenberg-service'
 import { getSimpleSykmeldingDescription } from '@data-layer/common/sykmelding-utils'
+import { sykmeldingToQuestionnaireResponse } from '@data-layer/fhir/mappers/questionnaire-response'
 
 import { getHpr } from './mappers/practitioner'
 import { createNewDocumentReferencePayload } from './mappers/document-reference'
@@ -163,5 +164,50 @@ export async function createDocumentReference(
         }
 
         return createdDocumentReference
+    })
+}
+
+export async function createQuestionnaireResponse(
+    client: ReadyClient,
+    sykmeldingId: string,
+): Promise<FhirQuestionnaireResponse | { error: 'API_ERROR' } | { error: 'PARSING_ERROR' }> {
+    return spanServerAsync('FhirService.createQuestionnaireResponse', async (span) => {
+        const practitioner = await client.user.request()
+        if ('error' in practitioner) {
+            failSpan(span, practitioner.error)
+            return { error: 'API_ERROR' }
+        }
+
+        const hpr = getHpr(practitioner.identifier)
+        if (hpr == null) {
+            failSpan(span, 'Missing HPR identifier in practitioner resource')
+            return { error: 'PARSING_ERROR' }
+        }
+
+        const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
+        if ('errorType' in sykmelding) {
+            failSpan(span, `Failed fetching sykmelding: ${sykmelding.errorType}`)
+            return { error: 'API_ERROR' }
+        }
+
+        if (sykmelding.kind === 'redacted') {
+            logger.warn(
+                `Tried creating QuestionnaireResponse for redacted sykmelding with id ${sykmeldingId}, this is owned by ${sykmelding.meta.sykmelder.hprNummer}, not ${hpr}`,
+            )
+            return { error: 'API_ERROR' }
+        }
+
+        const payload: FhirQuestionnaireResponse = sykmeldingToQuestionnaireResponse(sykmelding)
+        const createdQuestionnaireResponse = await client.update('QuestionnaireResponse', {
+            id: sykmeldingId,
+            payload: payload,
+        })
+
+        if ('error' in createdQuestionnaireResponse) {
+            failSpan(span, `Failed to create QuestionnaireResponse ${createdQuestionnaireResponse.error}`)
+            return { error: 'API_ERROR' }
+        }
+
+        return createdQuestionnaireResponse
     })
 }
