@@ -2,12 +2,12 @@ import { Hono } from 'hono'
 import { FhirBundle, FhirCondition } from '@navikt/smart-on-fhir/zod'
 
 import { withAuthed } from '../../auth/verify-authed'
-import { getServerSession } from '../../config'
+import { getMockSessionStore } from '../../config'
 
 export const conditionRouter = new Hono()
     .use('*', withAuthed)
     .get('/:conditionId', async (c) => {
-        const launchedPatient = getServerSession().getSession(c.req.header('Authorization')!)
+        const launchedPatient = getMockSessionStore().getSession(c.req.header('Authorization')!)
 
         const condition = launchedPatient?.conditions.find((it) => it.id === c.req.param('conditionId'))
         if (!condition) {
@@ -21,7 +21,7 @@ export const conditionRouter = new Hono()
             return new Response('Only encounter search is implemented', { status: 501 })
         }
 
-        const launchedPatient = getServerSession().getSession(c.req.header('Authorization')!)
+        const launchedPatient = getMockSessionStore().getSession(c.req.header('Authorization')!)
         if (encounterId !== launchedPatient?.encounter.id) {
             return new Response('Patient was launched, but encounterId was not of the patient', { status: 404 })
         }

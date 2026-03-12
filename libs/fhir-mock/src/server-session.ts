@@ -1,4 +1,4 @@
-import { FhirOrganization, FhirPatient, FhirPractitioner } from '@navikt/smart-on-fhir/zod'
+import { FhirDocumentReference, FhirOrganization, FhirPatient, FhirPractitioner } from '@navikt/smart-on-fhir/zod'
 
 import { createPatientSession, PatientSession } from './data/patient-session'
 import { createPatientEspenEksempel, createPatientKariNormann, MockPatients } from './data/patients'
@@ -73,8 +73,36 @@ export class FhirMockSession {
         return this.sessions[accessToken]
     }
 
-    getSession(accessToken: string): PatientSession | null {
-        return this.sessions[accessToken.replace('Bearer ', '')] ?? null
+    getSession(authorizationOrBearer: string): PatientSession | null {
+        return this.sessions[authorizationOrBearer.replace('Bearer ', '')] ?? null
+    }
+
+    getDocumentReference(token: string, id: string): FhirDocumentReference | null {
+        const session = this.getSession(token)
+        if (!session) throw new Error(`No session found for access token ${token}`)
+
+        return session.documentReferences.find((it) => it.id === id) ?? null
+    }
+
+    createDocumentReference(
+        token: string,
+        documentReference: Partial<FhirDocumentReference> &
+            Pick<FhirDocumentReference, 'subject' | 'author' | 'context' | 'content' | 'type'>,
+    ): void {
+        const session = this.getSession(token)
+        if (!session) throw new Error(`No session found for access token ${token}`)
+
+        const fullDocumentReference: FhirDocumentReference = {
+            id: crypto.randomUUID(),
+            resourceType: 'DocumentReference',
+            status: 'current',
+            meta: {
+                lastUpdated: new Date().toISOString(),
+            },
+            ...documentReference,
+        }
+
+        session.documentReferences.push(fullDocumentReference)
     }
 
     getOrganization(organizationId: string): FhirOrganization | null {

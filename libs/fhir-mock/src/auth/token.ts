@@ -2,7 +2,7 @@ import { HonoRequest } from 'hono'
 
 import { createAccessToken, createIdToken } from '../jwt/jwt'
 import { fhirServerTestData } from '../meta/data/fhir-server'
-import { FhirClient, getConfig, getServerSession } from '../config'
+import { FhirClient, getConfig, getMockSessionStore } from '../config'
 import { fhirLogger } from '../logger'
 
 export async function tokenExchange(request: HonoRequest): Promise<Response> {
@@ -39,7 +39,7 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
     }
 
     const accessToken = await createAccessToken(fhirServerTestData.wellKnown().issuer, code)
-    const session = getServerSession().completeLaunch(code, accessToken)
+    const session = getMockSessionStore().completeLaunch(code, accessToken)
     const idToken = await createIdToken(session.practitioner.id, {
         'https://helseid.nhn.no': {
             access_token: await createAccessToken('https://helseid.nhn.no', crypto.randomUUID()),

@@ -55,7 +55,7 @@ export function getConfig(): FhirMockConfig {
     return config
 }
 
-export const getServerSession = (): FhirMockSession => {
+export const getMockSessionStore = (): FhirMockSession => {
     const config = getConfig()
 
     return typeof config.store === 'function' ? config.store() : config.store

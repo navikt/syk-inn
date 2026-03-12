@@ -1,5 +1,6 @@
 import {
     FhirCondition,
+    FhirDocumentReference,
     FhirEncounter,
     FhirOrganization,
     FhirPatient,
@@ -21,6 +22,7 @@ export type PatientSession = {
     conditions: FhirCondition[]
     practitioner: FhirPractitioner
     organization: FhirOrganization
+    documentReferences: FhirDocumentReference[]
 }
 
 export function createPatientSession(
@@ -40,5 +42,6 @@ export function createPatientSession(
         conditions: conditions,
         practitioner: practitioner,
         organization: organization,
+        documentReferences: [],
     }
 }

@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { FhirPatient } from '@navikt/smart-on-fhir/zod'
 
 import { withAuthed } from '../../auth/verify-authed'
-import { getServerSession } from '../../config'
+import { getMockSessionStore } from '../../config'
 
 export const patientRouter = new Hono()
     .use('*', withAuthed)
@@ -10,7 +10,7 @@ export const patientRouter = new Hono()
         return new Response('Not implemented', { status: 501 })
     })
     .get('/:id', async (c) => {
-        const launchedPatient = getServerSession().getSession(c.req.header('Authorization')!)
+        const launchedPatient = getMockSessionStore().getSession(c.req.header('Authorization')!)
 
         if (!launchedPatient) {
             return new Response('Not found', { status: 404 })

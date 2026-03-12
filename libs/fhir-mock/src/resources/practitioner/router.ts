@@ -2,12 +2,12 @@ import { Hono } from 'hono'
 import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
 
 import { withAuthed } from '../../auth/verify-authed'
-import { getServerSession } from '../../config'
+import { getMockSessionStore } from '../../config'
 
 export const practitionerRouter = new Hono()
     .use('*', withAuthed)
     .get('/:id', async (c) => {
-        const practitioner = getServerSession().getPractitioner(c.req.param('id'))
+        const practitioner = getMockSessionStore().getPractitioner(c.req.param('id'))
         if (!practitioner) {
             return new Response('Not found', { status: 404 })
         }

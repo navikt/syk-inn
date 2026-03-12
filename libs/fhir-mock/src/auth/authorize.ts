@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 
 import { HonoRequest } from 'hono'
 
-import { getConfig, getServerSession } from '../config'
+import { getConfig, getMockSessionStore } from '../config'
 import { MockPatients } from '../data/patients'
 import { MockLaunchType } from '../server-launch-types'
 import { MockPractitioners } from '../data/practitioner'
@@ -56,7 +56,7 @@ export function authorize(request: HonoRequest): Response {
     }
 
     const notATokenCode = randomUUID()
-    getServerSession().initializeLaunch(notATokenCode, {
+    getMockSessionStore().initializeLaunch(notATokenCode, {
         patient: launchPatient,
         practitioner: launchPractitioner,
         organization: launchOrganization,
