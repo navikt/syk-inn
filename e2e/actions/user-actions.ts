@@ -286,13 +286,13 @@ export function fillPeriodeRelative({
             if (typeof type === 'string' && type === '100%') {
                 await periodeRegion
                     .getByRole('combobox', { name: 'Mulighet for arbeid' })
-                    .selectOption('Aktivitet ikke mulig')
+                    .selectOption('Kan ikke være i arbeid')
             }
 
             if (typeof type !== 'string' && 'grad' in type) {
                 await periodeRegion
                     .getByRole('combobox', { name: 'Mulighet for arbeid' })
-                    .selectOption('Gradert sykmelding')
+                    .selectOption('Kan være delvis i arbeid')
 
                 await periodeRegion.getByRole('textbox', { name: 'Sykmeldingsgrad (%)' }).fill(`${type.grad}`)
             }
@@ -314,7 +314,7 @@ export function fillArsakerTilAktivitetIkkeMulig({
     arbeidsrelatertArsakBegrunnelse?: string | null
 }) {
     return async (page: Page) => {
-        await test.step('Input årsaker til aktivitet ikke mulig', async () => {
+        await test.step('Input årsaker til kan ikke være i arbeid', async () => {
             const periodeRegion = page.getByRole('region', { name: 'Periode' })
             await expect(periodeRegion).toBeVisible()
 
