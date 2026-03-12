@@ -14,6 +14,11 @@ export function getLocalKnownFhirServers(): KnownFhirServer[] {
             method: 'client_secret_basic',
             clientSecret: 'dev-mode-client-secret',
         },
+        {
+            name: 'Local NAV EPJ server',
+            issuer: 'http://localhost:8080',
+            type: 'public',
+        },
     ]
 }
 
