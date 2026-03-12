@@ -73,7 +73,11 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                 const alreadyExists = resourceAlreadyExists(client, { type: 'QuestionnaireResponse', id: sykmeldingId })
                 if ('error' in alreadyExists) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
 
-                const payload: FhirQuestionnaireResponse = sykmeldingToQuestionnaireResponse(sykmelding)
+                const payload: FhirQuestionnaireResponse = sykmeldingToQuestionnaireResponse(sykmelding, {
+                    encounterId: client.encounter.id,
+                    patientId: client.patient.id,
+                    practitionerId: client.user.id,
+                })
                 const createdQuestionnaireResponse = await client.update('QuestionnaireResponse', {
                     id: sykmelding.sykmeldingId,
                     payload: payload,

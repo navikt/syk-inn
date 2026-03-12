@@ -78,6 +78,17 @@ function diagnosisUrnToOidType(urn: string): DiagnoseSystem | null {
     }
 }
 
+export function diagnosisSystemToUrn(system: DiagnoseSystem): `urn:oid:${string}` {
+    switch (system) {
+        case 'ICD10':
+            return `urn:oid:${ICD10_OID_VALUE}`
+        case 'ICPC2':
+            return `urn:oid:${ICPC2_OID_VALUE}`
+        case 'ICPC2B':
+            return `urn:oid:${ICPC2B_OID_VALUE}`
+    }
+}
+
 /**
  * Temporary log based analysis of differences between FHIR diagnosis texts and the actual texts
  */

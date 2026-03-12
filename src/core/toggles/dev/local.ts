@@ -51,11 +51,11 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
     },
     SYK_INN_STRUCTURED_FHIR: {
         name: 'SYK_INN_STRUCTURED_FHIR',
-        ...off,
+        ...on,
     },
     SYK_INN_STRUCTURED_FHIR_INLINE: {
         name: 'SYK_INN_STRUCTURED_FHIR_INLINE',
-        ...off,
+        ...on,
     },
 }
 

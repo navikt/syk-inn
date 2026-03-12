@@ -11,6 +11,7 @@ import { patientRouter } from './resources/patient/router'
 import { practitionerRouter } from './resources/practitioner/router'
 import { encounterRouter } from './resources/encounter/router'
 import { debugRouter } from './debug'
+import { questionnaireResponseRouter } from './resources/questionnaire-response/router'
 
 export { setConfig, type FhirMockConfig } from './config'
 
@@ -23,6 +24,7 @@ export function createMockFhirApp(config: FhirMockConfig): Hono {
 
     app.route('/auth', authRouter)
     app.route('/DocumentReference', documentReferenceRouter)
+    app.route('/QuestionnaireResponse', questionnaireResponseRouter)
     app.route('/Condition', conditionRouter)
     app.route('/Organization', organizationRouter)
     app.route('/Patient', patientRouter)
