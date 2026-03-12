@@ -14,7 +14,7 @@ export const unleashLogger = pinoLogger.child({}, { msgPrefix: '[UNLEASH-TOGGLES
 
 const unleashEnvironment = bundledEnv.runtimeEnv === 'prod-gcp' ? 'production' : 'development'
 
-type UnleashClient = ReturnType<typeof flagsClient>
+export type UnleashClient = ReturnType<typeof flagsClient>
 
 export async function getUserlessToggles(): Promise<UnleashClient> {
     return getUserToggles(true)

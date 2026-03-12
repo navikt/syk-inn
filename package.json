@@ -46,7 +46,7 @@
         "@navikt/next-api-proxy": "^5.0.2",
         "@navikt/next-logger": "^4.5.2-20260217111611",
         "@navikt/pino-logger": "^4.5.2-20260217111611",
-        "@navikt/smart-on-fhir": "1.5.22",
+        "@navikt/smart-on-fhir": "1.5.23",
         "@navikt/syk-zara": "workspace:*",
         "@navikt/texas": "^4.1.4",
         "@navikt/tsm-diagnoser": "^2026.1.13",

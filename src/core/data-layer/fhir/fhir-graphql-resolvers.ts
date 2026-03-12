@@ -33,7 +33,7 @@ import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
 import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
 import { countDiagnoses } from '@data-layer/common/diagnose-counting'
 import metrics from '@lib/prometheus/metrics'
-import { fhirWriteService } from '@data-layer/fhir/fhir-write-service'
+import { fhirWriteService } from '@data-layer/fhir/write/fhir-write-service'
 
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
@@ -326,7 +326,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             return sykInnApiSykmeldingToResolverSykmeldingFull(result, 'PENDING')
         },
-        synchronizeSykmelding: async (_, { id: sykmeldingId }, { client, hpr, practitioner }) => {
+        synchronizeSykmelding: async (_, { id: sykmeldingId }, { client, hpr }) => {
             const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
             if ('errorType' in sykmelding) {
                 throw new GraphQLError('API_ERROR')
@@ -337,9 +337,10 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const writeService = fhirWriteService(client)
+            const writeService = fhirWriteService(client, await getUserToggles(hpr))
             const [documentReference] = await Promise.allSettled([
-                writeService.writeDocumentReference(sykmelding, practitioner),
+                writeService.writeDocumentReference(sykmelding, hpr),
+                writeService.writeQuestionnaireResponse(sykmelding),
             ])
 
             if (documentReference.status === 'rejected') {

@@ -1,9 +1,6 @@
-import { logger } from '@navikt/next-logger'
-import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
-import { FhirDocumentReference, FhirPractitioner, FhirQuestionnaireResponse } from '@navikt/smart-on-fhir/zod'
+import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { GraphQLError } from 'graphql/error'
 
-import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 import {
     getOrganisasjonsnummerFromFhir,
@@ -11,13 +8,6 @@ import {
 } from '@data-layer/fhir/mappers/organization'
 import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
-import { gotenbergService } from '@data-layer/pdf/gotenberg-service'
-import { getSimpleSykmeldingDescription } from '@data-layer/common/sykmelding-utils'
-import { sykmeldingToQuestionnaireResponse } from '@data-layer/fhir/mappers/questionnaire-response'
-import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
-
-import { getHpr } from './mappers/practitioner'
-import { createNewDocumentReferencePayload } from './mappers/document-reference'
 
 /**
  * Chonky boi. Fetches the FHIR resources: Practitioner, Patient, Encounter and Organization, and extracts the relevant
@@ -84,95 +74,5 @@ export async function getAllSykmeldingMetaFromFhir(
             legekontorOrgnr,
             legekontorTlf,
         }
-    })
-}
-
-/**
- * Fetches corresponding info from syk-inn-api and creates a new DocumentReference resource in the FHIR server.
- */
-export async function createDocumentReference(
-    client: ReadyClient,
-    sykmelding: SykInnApiSykmelding,
-    practitioner: FhirPractitioner,
-): Promise<FhirDocumentReference | { error: 'API_ERROR' } | { error: 'PARSING_ERROR' }> {
-    return spanServerAsync('FhirService.createDocumentReference', async (span) => {
-        const hpr = getHpr(practitioner.identifier)
-        if (hpr == null) {
-            failSpan(span, 'Missing HPR identifier in practitioner resource')
-            return { error: 'PARSING_ERROR' }
-        }
-
-        const pdfBuffer = await sykInnApiService.getSykmeldingPdf(sykmelding.sykmeldingId, hpr)
-        if ('errorType' in pdfBuffer) {
-            failSpan(span, `Failed fetching PDF: ${pdfBuffer.errorType}`)
-            return { error: 'API_ERROR' }
-        }
-
-        // Also generate PDF with gotenberg to compare speed
-        await gotenbergService.generateGotenbergPdf(sykmelding).catch((err) => {
-            // Ignore error while shadow-generating PDF
-            logger.error(new Error('Shadow-gotenberg failed', { cause: err }))
-        })
-
-        const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.update(
-            'DocumentReference',
-            {
-                id: sykmelding.sykmeldingId,
-                payload: createNewDocumentReferencePayload(
-                    {
-                        sykmeldingId: sykmelding.sykmeldingId,
-                        patientId: client.patient.id,
-                        encounterId: client.encounter.id,
-                        practitionerId: client.user.id,
-                        description: getSimpleSykmeldingDescription(sykmelding.values.aktivitet),
-                    },
-                    Buffer.from(pdfBuffer).toString('base64'),
-                ),
-            },
-        )
-
-        if ('error' in createdDocumentReference) {
-            failSpan(span, `Failed to create DocumentReference: ${createdDocumentReference.error}`)
-            return { error: 'API_ERROR' }
-        }
-
-        if (createdDocumentReference.id !== sykmelding.sykmeldingId) {
-            failSpan(
-                span,
-                'DocumentReference ID create mismatch',
-                new Error(
-                    `Created DocumentReference ID (${createdDocumentReference.id}) does not match the sykmelding ID (${sykmelding.sykmeldingId})`,
-                ),
-            )
-        }
-
-        return createdDocumentReference
-    })
-}
-
-export async function createQuestionnaireResponse(
-    client: ReadyClient,
-    sykmelding: SykInnApiSykmelding,
-    practitioner: FhirPractitioner,
-): Promise<FhirQuestionnaireResponse | { error: 'API_ERROR' } | { error: 'PARSING_ERROR' }> {
-    return spanServerAsync('FhirService.createQuestionnaireResponse', async (span) => {
-        const hpr = getHpr(practitioner.identifier)
-        if (hpr == null) {
-            failSpan(span, 'Missing HPR identifier in practitioner resource')
-            return { error: 'PARSING_ERROR' }
-        }
-
-        const payload: FhirQuestionnaireResponse = sykmeldingToQuestionnaireResponse(sykmelding)
-        const createdQuestionnaireResponse = await client.update('QuestionnaireResponse', {
-            id: sykmelding.sykmeldingId,
-            payload: payload,
-        })
-
-        if ('error' in createdQuestionnaireResponse) {
-            failSpan(span, `Failed to create QuestionnaireResponse ${createdQuestionnaireResponse.error}`)
-            return { error: 'API_ERROR' }
-        }
-
-        return createdQuestionnaireResponse
     })
 }
