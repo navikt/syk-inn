@@ -8,6 +8,7 @@ import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { LoadablePageHeader } from '@components/layout/Page'
 import PatientStats from '@features/fhir/dashboard/top-card/dumb-stats/PatientStats'
 import StartSykmelding from '@features/fhir/dashboard/top-card/StartSykmelding'
+import { InfoNySykmeldingCard } from '@features/fhir/dashboard/top-card/InfoNySykmeldingCard'
 
 import DashboardCard from '../card/DashboardCard'
 
@@ -41,6 +42,8 @@ function DashboardTopCard({ className }: { className?: string }): ReactElement {
                 <StartSykmelding />
                 <div className="w-1 mt-2 mb-2 mx-2 ax-lg:mx-8 bg-ax-bg-neutral-soft shrink-0 self-stretch hidden ax-md:block"></div>
                 <PatientStats />
+                <div className="w-1 mt-2 mb-2 mx-2 ax-lg:mx-8 bg-ax-bg-neutral-soft shrink-0 self-stretch hidden ax-md:block"></div>
+                <InfoNySykmeldingCard />
             </div>
         </DashboardCard>
     )
