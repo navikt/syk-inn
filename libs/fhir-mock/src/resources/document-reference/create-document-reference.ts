@@ -21,7 +21,7 @@ export function createDocumentReference(): FhirDocumentReference {
         content: [
             {
                 attachment: {
-                    contentType: 'text/plain; charset=utf-8',
+                    contentType: 'application/pdf',
                     language: 'en',
                     title: 'Sykmelding',
                     data: '',
