@@ -1,4 +1,10 @@
-import { FhirDocumentReference, FhirOrganization, FhirPatient, FhirPractitioner } from '@navikt/smart-on-fhir/zod'
+import {
+    FhirDocumentReference,
+    FhirOrganization,
+    FhirPatient,
+    FhirPractitioner,
+    FhirQuestionnaireResponse,
+} from '@navikt/smart-on-fhir/zod'
 
 import { createPatientSession, PatientSession } from './data/patient-session'
 import { createPatientEspenEksempel, createPatientKariNormann, MockPatients } from './data/patients'
@@ -103,6 +109,30 @@ export class FhirMockSession {
         }
 
         session.documentReferences.push(fullDocumentReference)
+    }
+
+    getQuestionnaireResponse(token: string, id: string): FhirQuestionnaireResponse | null {
+        const session = this.getSession(token)
+        if (!session) throw new Error(`No session found for access token ${token}`)
+
+        return session.questionnaireResponse.find((it) => it.id === id) ?? null
+    }
+
+    createQuestionnaireResponse(
+        token: string,
+        response: Partial<FhirQuestionnaireResponse> & Pick<FhirQuestionnaireResponse, 'item'>,
+    ): void {
+        const session = this.getSession(token)
+        if (!session) throw new Error(`No session found for access token ${token}`)
+
+        const fullQuestionnaireResponse: FhirQuestionnaireResponse = {
+            id: crypto.randomUUID(),
+            resourceType: 'QuestionnaireResponse',
+            status: 'completed',
+            ...response,
+        }
+
+        session.questionnaireResponse.push(fullQuestionnaireResponse)
     }
 
     getOrganization(organizationId: string): FhirOrganization | null {

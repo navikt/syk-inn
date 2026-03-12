@@ -5,6 +5,7 @@ import {
     FhirOrganization,
     FhirPatient,
     FhirPractitioner,
+    FhirQuestionnaireResponse,
 } from '@navikt/smart-on-fhir/zod'
 
 import { getConditionsFor } from './condition'
@@ -23,6 +24,7 @@ export type PatientSession = {
     practitioner: FhirPractitioner
     organization: FhirOrganization
     documentReferences: FhirDocumentReference[]
+    questionnaireResponse: FhirQuestionnaireResponse[]
 }
 
 export function createPatientSession(
@@ -43,5 +45,6 @@ export function createPatientSession(
         practitioner: practitioner,
         organization: organization,
         documentReferences: [],
+        questionnaireResponse: [],
     }
 }
