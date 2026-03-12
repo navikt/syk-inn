@@ -175,6 +175,10 @@ export class FhirMockSession {
         return organization[1]
     }
 
+    getSessions(): Record<string, PatientSession> {
+        return this.sessions
+    }
+
     dump(): unknown {
         return {
             organizations: this.organizations,

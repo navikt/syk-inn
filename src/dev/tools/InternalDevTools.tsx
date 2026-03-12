@@ -5,6 +5,7 @@ import { XMarkIcon } from '@navikt/aksel-icons'
 import { useApolloClient } from '@apollo/client/react'
 
 import { pathWithBasePath } from '@lib/url'
+import { AkselNextLink } from '@components/links/AkselNextLink'
 
 import { scenarios } from '../mock-engine/scenarios/scenarios'
 
@@ -32,6 +33,9 @@ export function InternalDevToolsPanel({ onClose }: Props): ReactElement {
                 Collection of actions and utilities used for local development only.
             </BodyShort>
             <div className="grid grid-cols-1 gap-6 mt-6">
+                <DevToolItem title="Debug mock state" description="Dig around mock state">
+                    <AkselNextLink href="/dev/mock">FHIR Mock session debugger</AkselNextLink>
+                </DevToolItem>
                 <ScenarioPicker />
                 <OtherStuff />
                 <FeatureToggles />
