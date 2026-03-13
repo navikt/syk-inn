@@ -1,4 +1,4 @@
-import { Radio, RadioGroup, TextField } from '@navikt/ds-react'
+import { HelpText, Radio, RadioGroup, TextField } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 
 import { useController } from '../form/types'
@@ -26,7 +26,15 @@ function ArbeidsforholdPicker(): ReactElement {
     return (
         <div className="flex flex-col gap-3">
             <RadioGroup
-                legend="Har pasienten flere arbeidsgivere?"
+                legend={
+                    <div className="flex gap-1">
+                        Har pasienten flere arbeidsgivere?
+                        <HelpText>
+                            Har pasienten en arbeidsgiver skal du svare nei. Ved flere arbeidsgivere, må du lage en
+                            sykmelding for hver arbeidsgiver.
+                        </HelpText>
+                    </div>
+                }
                 error={harFlereArbeidsforhold.fieldState.error?.message}
                 {...harFlereArbeidsforhold.field}
             >
