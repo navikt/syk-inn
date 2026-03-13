@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { BodyShort, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { BodyShort, HelpText, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
 import FormSection from '@components/form/form-section/FormSection'
 import { useController, useFormContext } from '@features/ny-sykmelding-form/form/types'
@@ -149,8 +149,12 @@ function UtfordringerMedArbeidUke17(): ReactElement {
 
     return (
         <Textarea
-            label={questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.label}
-            description={questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.description}
+            label={
+                <div className="flex gap-1">
+                    {questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.label}
+                    <HelpText>{questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.description}</HelpText>
+                </div>
+            }
             onChange={arbeidsrelaterteUtfordringer.field.onChange}
             value={arbeidsrelaterteUtfordringer.field.value ?? ''}
             error={arbeidsrelaterteUtfordringer.fieldState.error?.message}
@@ -166,14 +170,20 @@ function UtfordringerMedArbeidUke39(): ReactElement {
 
     return (
         <Textarea
-            label={questionTexts.utdypendeSporsmal.realistiskMestringArbeid.label}
-            description={
-                <>
-                    <BodyShort spacing>
-                        {questionTexts.utdypendeSporsmal.realistiskMestringArbeid.descriptionSomatisk}
-                    </BodyShort>
-                    <BodyShort>{questionTexts.utdypendeSporsmal.realistiskMestringArbeid.descriptionPsykisk}</BodyShort>
-                </>
+            label={
+                <div className="flex gap-1">
+                    {questionTexts.utdypendeSporsmal.realistiskMestringArbeid.label}
+                    <HelpText>
+                        <>
+                            <BodyShort spacing>
+                                {questionTexts.utdypendeSporsmal.realistiskMestringArbeid.descriptionSomatisk}
+                            </BodyShort>
+                            <BodyShort>
+                                {questionTexts.utdypendeSporsmal.realistiskMestringArbeid.descriptionPsykisk}
+                            </BodyShort>
+                        </>
+                    </HelpText>{' '}
+                </div>
             }
             onChange={realistiskMestringArbeid.field.onChange}
             value={realistiskMestringArbeid.field.value ?? ''}
@@ -189,8 +199,12 @@ function HensynPaArbeidsplassen(): ReactElement {
 
     return (
         <Textarea
-            label={questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.label}
-            description={questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.description}
+            label={
+                <div className="flex gap-1">
+                    {questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.label}
+                    <HelpText>{questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.description}</HelpText>
+                </div>
+            }
             onChange={hensynPaArbeidsplassen.field.onChange}
             value={hensynPaArbeidsplassen.field.value ?? ''}
             error={hensynPaArbeidsplassen.fieldState.error?.message}
