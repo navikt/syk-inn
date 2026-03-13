@@ -20,9 +20,6 @@ const smartClientScopes = [
     'patient/Condition.read',
     'patient/DocumentReference.read',
     'patient/DocumentReference.write',
-    // Perchance?
-    'patient/QuestionnaireResponse.write',
-    'patient/QuestionnaireResponse.write',
 ]
 
 if (isDemo || isLocal) {
