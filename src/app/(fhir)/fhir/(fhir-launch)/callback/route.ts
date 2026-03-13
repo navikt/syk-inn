@@ -13,6 +13,13 @@ const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
  */
 export async function GET(request: Request): Promise<Response> {
     const url = new URL(request.url)
+
+    if (url.searchParams.get('error')) {
+        // If authorization server redirects back here with an error, lets redirect the user directly to our error-pages
+        const error = url.searchParams.get('error')
+        redirect(pathWithBasePath(`/fhir/error?reason=${error}`))
+    }
+
     /**
      * PKCE STEP 4
      * Authorization server stores the code_challenge and redirects the user back to the application with an authorization code, which is good for one use.

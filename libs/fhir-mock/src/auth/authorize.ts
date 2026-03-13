@@ -1,6 +1,8 @@
 import { randomUUID } from 'node:crypto'
 
+import * as R from 'remeda'
 import { HonoRequest } from 'hono'
+import { logger } from '@navikt/pino-logger'
 
 import { getConfig, getMockSessionStore } from '../config'
 import { MockPatients } from '../data/patients'
@@ -21,6 +23,11 @@ export function authorize(request: HonoRequest): Response {
     const redirectUri = url.searchParams.get('redirect_uri')
     if (!redirectUri) {
         return new Response('Missing redirect_uri', { status: 400 })
+    }
+
+    const validScopes = onlyValidScopes(url.searchParams.get('scope') || '')
+    if (!validScopes) {
+        return Response.redirect(`${redirectUri}?error=invalid_scope&error_description=Invalid scopes`)
     }
 
     const clientId = url.searchParams.get('client_id')
@@ -65,4 +72,36 @@ export function authorize(request: HonoRequest): Response {
     const redirectUrl = `${redirectUri}?code=${notATokenCode}&state=${state}`
     fhirLogger.info(`/auth/authorize good, redirecting to ${redirectUrl}`)
     return Response.redirect(redirectUrl, 302)
+}
+
+/**
+ * These are the currently supported scopes in the production app, any new scopes should be added carefully.
+ */
+const allowedScopes = [
+    'openid',
+    'profile',
+    'launch',
+    'fhirUser',
+    'offline_access',
+    'patient/Patient.read',
+    'patient/Encounter.read',
+    'patient/Condition.read',
+    'patient/DocumentReference.read',
+    'patient/DocumentReference.write',
+]
+
+const knownLocalOnlyScopes = ['https://helseid.nhn.no']
+
+function onlyValidScopes(scope: string): boolean {
+    const actualScopes = scope.split(' ')
+
+    logger.info(`Launch has ${actualScopes.length} scopes!`)
+
+    const diff = R.difference(actualScopes, [...allowedScopes, ...knownLocalOnlyScopes])
+    if (diff.length > 0) {
+        logger.warn(`Invalid scopes found: \n - ${diff.join('\n -')}`)
+        return false
+    }
+
+    return true
 }
