@@ -55,17 +55,17 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
                     </SimpleReveal>
                 )}
                 {aktivitetField.field.value === 'AKTIVITET_IKKE_MULIG' && (
-                    <SimpleReveal>
-                        <div className="flex flex-col gap-1">
-                            <Label>Sykmeldingsgrad (%)</Label>
-                            <BodyShort>100%</BodyShort>
-                        </div>
-                    </SimpleReveal>
-                )}
-                {aktivitetField.field.value === 'AKTIVITET_IKKE_MULIG' && (
-                    <SimpleReveal className="col-span-2">
-                        <ArsakerPicker index={index} />
-                    </SimpleReveal>
+                    <>
+                        <SimpleReveal>
+                            <div className="flex flex-col gap-1">
+                                <Label>Sykmeldingsgrad (%)</Label>
+                                <BodyShort>100%</BodyShort>
+                            </div>
+                        </SimpleReveal>
+                        <SimpleReveal className="col-span-2">
+                            <ArsakerPicker index={index} />
+                        </SimpleReveal>
+                    </>
                 )}
             </AnimatePresence>
         </div>
