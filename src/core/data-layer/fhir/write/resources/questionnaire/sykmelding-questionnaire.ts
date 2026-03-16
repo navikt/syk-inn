@@ -1,0 +1,124 @@
+export const sykmeldingQuestionnaireV1 = {
+    resourceType: 'Questionnaire',
+    url: 'http://nav.no/samarbeidspartner/sykmelding/fhir/R4/Questionnaire/v1',
+    status: 'draft',
+    item: [
+        {
+            linkId: 'hoveddiagnose',
+            text: 'Hoveddiagnose',
+            type: 'open-choice',
+            required: true,
+        },
+        {
+            linkId: 'bidiagnose',
+            text: 'Bidiagnose(r)',
+            type: 'open-choice',
+            repeats: true,
+        },
+        {
+            linkId: 'aktivitet',
+            text: 'Sykmeldingsperiode',
+            type: 'group',
+            required: true,
+            repeats: true,
+            item: [
+                {
+                    linkId: 'aktivitet-type',
+                    text: 'Aktivitetstype',
+                    type: 'choice',
+                    required: true,
+                    answerOption: [
+                        { valueCoding: { code: 'AKTIVITET_IKKE_MULIG', display: 'Aktivitet ikke mulig' } },
+                        { valueCoding: { code: 'GRADERT', display: 'Gradert' } },
+                        { valueCoding: { code: 'AVVENTENDE', display: 'Avventende' } },
+                        { valueCoding: { code: 'BEHANDLINGSDAGER', display: 'Behandlingsdager' } },
+                        { valueCoding: { code: 'REISETILSKUDD', display: 'Reisetilskudd' } },
+                    ],
+                },
+                {
+                    linkId: 'aktivitet-fom',
+                    text: 'Fra og med dato',
+                    type: 'date',
+                    required: true,
+                },
+                {
+                    linkId: 'aktivitet-tom',
+                    text: 'Til og med dato',
+                    type: 'date',
+                    required: true,
+                },
+                {
+                    linkId: 'aktivitet-grad',
+                    text: 'Sykmeldingsgrad (prosent)',
+                    type: 'integer',
+                },
+            ],
+        },
+        {
+            linkId: 'svangerskapsrelatert',
+            text: 'Sykdommen er svangerskapsrelatert',
+            type: 'boolean',
+            required: true,
+        },
+        {
+            linkId: 'annen-fravarsgrunn',
+            text: 'Annen lovfestet fraværsgrunn',
+            type: 'choice',
+            answerOption: [
+                { valueCoding: { code: 'ABORT', display: 'Abort' } },
+                { valueCoding: { code: 'ARBEIDSRETTET_TILTAK', display: 'Arbeidsrettet tiltak' } },
+                {
+                    valueCoding: { code: 'BEHANDLING_FORHINDRER_ARBEID', display: 'Behandling forhindrer arbeid' },
+                },
+                { valueCoding: { code: 'BEHANDLING_STERILISERING', display: 'Behandling sterilisering' } },
+                { valueCoding: { code: 'DONOR', display: 'Donor' } },
+                { valueCoding: { code: 'GODKJENT_HELSEINSTITUSJON', display: 'Godkjent helseinstitusjon' } },
+                {
+                    valueCoding: {
+                        code: 'MOTTAR_TILSKUDD_GRUNNET_HELSETILSTAND',
+                        display: 'Mottar tilskudd grunnet helsetilstand',
+                    },
+                },
+                {
+                    valueCoding: {
+                        code: 'NODVENDIG_KONTROLLUNDENRSOKELSE',
+                        display: 'Nødvendig kontrollundersøkelse',
+                    },
+                },
+                { valueCoding: { code: 'SMITTEFARE', display: 'Smittefare' } },
+                { valueCoding: { code: 'UFOR_GRUNNET_BARNLOSHET', display: 'Ufør grunnet barnløshet' } },
+            ],
+        },
+        {
+            linkId: 'yrkesskade',
+            text: 'Yrkesskade',
+            type: 'group',
+            item: [
+                {
+                    linkId: 'yrkesskade-er-yrkesskade',
+                    text: 'Sykmeldingen kan skyldes en yrkesskade eller yrkessykdom',
+                    type: 'boolean',
+                    required: true,
+                },
+                {
+                    linkId: 'yrkesskade-skadedato',
+                    text: 'Skadedato',
+                    type: 'date',
+                },
+            ],
+        },
+        {
+            linkId: 'arbeidsforhold',
+            text: 'Arbeidsforhold',
+            type: 'group',
+            item: [
+                {
+                    linkId: 'arbeidsforhold-arbeidsgivernavn',
+                    text: 'Navn på arbeidsgiver',
+                    type: 'string',
+                    required: true,
+                },
+            ],
+        },
+    ],
+} as const
