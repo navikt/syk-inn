@@ -16,6 +16,7 @@ export function sykmeldingToQuestionnaireResponse(
         resourceType: 'QuestionnaireResponse',
         id: sykmelding.sykmeldingId,
         status: 'completed',
+        questionnaire: 'https://www.nav.no/samarbeidspartner/sykmelding/fhir/R4/Questionnaire/V1',
         subject: { reference: `Patient/${references.patientId}` },
         author: { reference: `Practitioner/${references.practitionerId}` },
         encounter: { reference: `Encounter/${references.encounterId}` },
