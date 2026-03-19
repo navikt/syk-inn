@@ -148,7 +148,7 @@ modes.forEach(({ mode }) => {
         await fillPeriodeRelative({ type: '100%', days: 280 })(page)
         await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
         await addUtdypendeSporsmal({
-            uke: '40',
+            uke: '39',
             realistiskMestringArbeid: 'Utfordringer',
             oppdatertMedisinskStatus: 'Sykdomsutvikling',
             hensynPaArbeidsplassen: 'Hensyn på arbeidsplassen',
@@ -198,7 +198,7 @@ modes.forEach(({ mode }) => {
         await fillPeriodeRelative({ type: '100%', days: 100 })(page)
         await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
         await addUtdypendeSporsmal({
-            uke: '18',
+            uke: '17',
             arbeidsrelaterteUtfordringer: 'Utfordringer',
             sykdomsutvikling: 'Sykdomsutvikling',
             behandlingOgFremtidigArbeid: 'Behandling og fremtidig arbeid',

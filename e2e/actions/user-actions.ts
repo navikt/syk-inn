@@ -109,7 +109,7 @@ export function editBidiagnose({
 }
 
 export function addUtdypendeSporsmal({
-    uke = '8',
+    uke = '7',
     utfordringerMedArbeid,
     medisinskOppsummering,
     hensynPaArbeidsplassen,
@@ -122,7 +122,7 @@ export function addUtdypendeSporsmal({
     forventetHelsetilstandUtvikling,
     medisinskeHensyn,
 }: {
-    uke?: '8' | '18' | '40'
+    uke?: '7' | '17' | '39'
     utfordringerMedArbeid?: string
     medisinskOppsummering?: string
     hensynPaArbeidsplassen?: string
