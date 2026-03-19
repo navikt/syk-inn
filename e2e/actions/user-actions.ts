@@ -425,7 +425,7 @@ export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | nu
 
             if (tilArbeidsgiver) {
                 await region.getByRole('checkbox', { name: 'Melding til arbeidsgiver' }).check()
-                await region.getByRole('textbox', { name: 'Innspill til arbeidsgiver' }).fill(tilArbeidsgiver)
+                await region.getByRole('textbox', { name: 'Melding til arbeidsgiver' }).fill(tilArbeidsgiver)
             }
         })
     }
