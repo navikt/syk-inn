@@ -32,23 +32,25 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
             ariaBusy={initialLoad || isRefetching}
             fetching={isRefetching}
         >
-            <ReadMore header="Visning av pågående og tidligere sykmeldinger">
-                <BodyShort spacing>
-                    Her viser vi foreløpig kun sykmeldinger som er skrevet av deg i denne løsningen på denne pasienten
-                    begrenset til:
-                </BodyShort>
+            <ReadMore header="Pågående sykmeldinger og begrensninger i visningen">
+                <div className="max-w-[90ch]">
+                    <BodyShort spacing>
+                        Her viser vi foreløpig kun sykmeldinger som er skrevet av deg i denne løsningen på denne
+                        pasienten begrenset til:
+                    </BodyShort>
 
-                <ul className="list-disc pl-6 mb-3">
-                    <li>pågående sykmeldinger</li>
-                    <li>sykmeldinger som ble avsluttet for 14 dager siden</li>
-                </ul>
+                    <ul className="list-disc pl-6 mb-3">
+                        <li>pågående sykmeldinger</li>
+                        <li>sykmeldinger som ble avsluttet for 14 dager siden</li>
+                    </ul>
 
-                <BodyShort spacing>
-                    Disse kan enkelt forlenges eller dupliseres. Inntil videre vil ikke tidligere sykmeldinger som er
-                    skrevet i denne løsningen vises i WebMeds sykmeldingsoversikt, kun i løpende journal som PDF. Vi
-                    jobber med å utvide hvor langt tilbake i tid vi kan vise avsluttede sykmeldinger, samt å vise
-                    sykmeldinger som er skrevet av andre leger på ditt legekontor.
-                </BodyShort>
+                    <BodyShort spacing>
+                        Disse kan enkelt forlenges eller dupliseres. Inntil videre vil ikke tidligere sykmeldinger som
+                        er skrevet i denne løsningen vises i WebMeds sykmeldingsoversikt, kun i løpende journal som PDF.
+                        Vi jobber med å utvide hvor langt tilbake i tid vi kan vise avsluttede sykmeldinger, samt å vise
+                        sykmeldinger som er skrevet av andre leger på ditt legekontor.
+                    </BodyShort>
+                </div>
             </ReadMore>
             {hasData && dashboardQuery.data && (
                 <ComboTable
