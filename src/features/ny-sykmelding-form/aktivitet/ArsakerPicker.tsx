@@ -78,7 +78,7 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
             </CheckboxGroup>
             {isArbeidsrelatertArsak.field.value && (
                 <CheckboxGroup
-                    legend="Arbeidsrelaterte årsaker"
+                    legend="Arbeidsrelaterte årsaker (Vises for arbeidsgiver)"
                     value={arbeidsrelaterteArsaker.field.value ?? []}
                     onChange={(value) => arbeidsrelaterteArsaker.field.onChange(value)}
                     error={arbeidsrelaterteArsaker.fieldState.error?.message}

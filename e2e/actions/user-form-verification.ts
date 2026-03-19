@@ -161,7 +161,7 @@ export function expectMeldinger({
             }
 
             if (tilArbeidsgiver) {
-                await expect(meldingerRegion.getByRole('textbox', { name: 'Innspill til arbeidsgiver' })).toHaveValue(
+                await expect(meldingerRegion.getByRole('textbox', { name: 'Melding til arbeidsgiver' })).toHaveValue(
                     tilArbeidsgiver,
                 )
             } else {
