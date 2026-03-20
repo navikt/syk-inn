@@ -51,14 +51,14 @@ Structured upload must adhere to the following rules:
 1. Structured upload is an optional benefit for those who want it.
 2. Structured upload must **NOT** be burdensome for Nav or EHR vendors.
 3. Nav must **NOT** use the EHR as a database for its own data.
-4. Nav must **NOT** pollute FHIR resources, and must use them as intended.
+4. Nav must **NOT** pollute FHIR resources and must use them as intended.
 
 Based on these rules, it has been decided that the following FHIR resources and structure shall be used for structured
 upload:
 
-- **QuestionnaireResponse** - written as a standalone resource to the FHIR server, containing all structured sick note
+- **QuestionnaireResponse** – written as a standalone resource to the FHIR server, containing all structured sick note
   data as items.
-- **DocumentReference** - written as a standalone resource containing the PDF and a reference to the
+- **DocumentReference** – written as a standalone resource containing the PDF and a reference to the
   QuestionnaireResponse via `context.related`.
 - **Questionnaire** - defines the form schema, published publicly in the syk-inn repository.
 
@@ -89,7 +89,7 @@ upload:
 
 **Nav**
 
-- Requires 2 FHIR calls per sick note (idempotency check + transaction bundle PUT)
+- Requires two FHIR calls per sick note (idempotency check and transaction bundle PUT)
 - Requires extended access scopes in SMART on FHIR for the sick note
 
 ## Questionnaire Definition
@@ -373,7 +373,7 @@ flowchart TD
 
 ### Step-by-Step Guide
 
-1. Front-end sends POST to back-end with sick note payload.
+1. Front-end sends POST to back-end with a sick note payload.
 2. Front-end receives `201 Created` with sick note ID.
 3. Front-end performs `GET /DocumentReference/{sykmeldingId}` as an idempotency check:
     - `2xx` → `log.error` (duplicate, abort)
@@ -676,7 +676,7 @@ Alternative solutions and FHIR resources that were considered and rejected:
 
 ### Still Viable Alternatives
 
-Alternatives not currently used, but kept open pending EHR feedback:
+Alternatives not currently used but kept open pending EHR feedback:
 
 | #   | FHIR approach                                                                                                                                    | Notes                                                                                                                                                                                                                                                                                                                                                                                 |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -706,7 +706,7 @@ With a standalone QuestionnaireResponse:
 
 - The EHR can index and search on QuestionnaireResponse independently of DocumentReference
 - The resource is used as the FHIR specification intends
-- DocumentReference remains clean - it only contains PDF and metadata, which is its purpose
+- DocumentReference remains clean – it only contains PDF and metadata, which is its purpose
 - The reference via `context.related` is the FHIR R4 field designed for this linkage
 
 ### Reference Direction
