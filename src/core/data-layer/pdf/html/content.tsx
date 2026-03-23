@@ -139,7 +139,7 @@ function AndresporsmalItem({ values }: { values: SykInnApiSykmelding['values'] }
                             Sykmeldingen kan skyldes en yrkesskade/yrkessykdom
                             {values.yrkesskade.skadedato && (
                                 <ul>
-                                    <li>Dato for yrkesskade: {toReadableDate(values.yrkesskade.skadedato)}</li>
+                                    <li>Eventuell skadedato: {toReadableDate(values.yrkesskade.skadedato)}</li>
                                 </ul>
                             )}
                         </li>

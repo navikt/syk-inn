@@ -402,7 +402,7 @@ export function fillAndreSporsmal({
             }
 
             if (yrkesskadeDato) {
-                await region.getByRole('textbox', { name: 'Dato for yrkesskade' }).fill(inputDate(yrkesskadeDato))
+                await region.getByRole('textbox', { name: 'Eventuell skadedato' }).fill(inputDate(yrkesskadeDato))
             }
         })
     }

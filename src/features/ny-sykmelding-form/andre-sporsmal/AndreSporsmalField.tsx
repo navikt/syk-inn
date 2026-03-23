@@ -1,6 +1,6 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
-import { BodyShort, Checkbox, CheckboxGroup, DatePicker, useDatepicker } from '@navikt/ds-react'
+import { BodyShort, Checkbox, CheckboxGroup, DatePicker, HelpText, Link, useDatepicker } from '@navikt/ds-react'
 import { parseISO } from 'date-fns'
 import { AnimatePresence } from 'motion/react'
 import { CheckmarkCircleIcon } from '@navikt/aksel-icons'
@@ -37,7 +37,21 @@ export function AndreSporsmalField(): ReactElement {
                 value={fieldValue}
             >
                 <Checkbox value="svangerskapsrelatert">Sykdommen er svangerskapsrelatert</Checkbox>
-                <Checkbox value="yrkesskade">Sykmeldingen kan skyldes en yrkesskade/yrkessykdom</Checkbox>
+                <div className="flex gap-1 items-center">
+                    <Checkbox value="yrkesskade">Sykmeldingen kan skyldes en yrkesskade/yrkessykdom </Checkbox>
+                    <HelpText>
+                        Kryss av hvis en ny eller tidligere yrkesskade eller yrkessykdom kan være årsaken til
+                        arbeidsuførheten. Du trenger ikke å vite om skaden eller sykdommen er godkjent av Nav. Les mer
+                        om yrkesskade og yrkessykdom på{' '}
+                        <Link
+                            href="https://www.nav.no/samarbeidspartner/yrkesskade"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            nav.no
+                        </Link>
+                    </HelpText>
+                </div>
             </CheckboxGroup>
             {andreSporsmal.field.value?.yrkesskade?.yrkesskade && <YrkesskadeDatoPicker />}
         </>
@@ -70,7 +84,15 @@ function YrkesskadeDatoPicker(): ReactElement {
                     {...inputProps}
                     disabled={field.disabled}
                     onBlur={field.onBlur}
-                    label="Dato for yrkesskade"
+                    label={
+                        <div className="flex gap-1 items-center">
+                            Eventuell skadedato{' '}
+                            <HelpText>
+                                Oppgi dato for når yrkesskaden skjedde. Hvis du er usikker, oppgi omtrentlig tidspunkt.
+                                Ved yrkessykdom kan du oppgi datoen for legekonsultasjonen når sykdommen ble konstatert.
+                            </HelpText>
+                        </div>
+                    }
                 />
             </DatePicker>
             <AnimatePresence initial={false}>

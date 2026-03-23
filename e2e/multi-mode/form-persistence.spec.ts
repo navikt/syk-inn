@@ -139,7 +139,7 @@ modes.forEach(({ mode }) => {
             { name: 'Til arbeidsgiver', values: ['Trenger sev-henk pult'] },
             { name: 'Annen info', values: ['Sykdommen er svangerskapsrelatert'] },
             { name: 'Kan skyldes yrkesskade', values: ['Ja'] },
-            { name: 'Dato for yrkesskade', values: [toReadableDate(daysAgo(2))] },
+            { name: 'Eventuell skadedato', values: [toReadableDate(daysAgo(2))] },
         ])(page)
     })
 })

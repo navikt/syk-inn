@@ -132,7 +132,7 @@ export function expectAndreSporsmal({
             } else {
                 await expect(yrkesskadeCheckbox).not.toBeChecked()
             }
-            await expect(andreSporsmalRegion.getByRole('textbox', { name: 'Dato for yrkesskade' })).toHaveValue(
+            await expect(andreSporsmalRegion.getByRole('textbox', { name: 'Eventuell skadedato' })).toHaveValue(
                 inputDate(yrkesskadeDato),
             )
         })

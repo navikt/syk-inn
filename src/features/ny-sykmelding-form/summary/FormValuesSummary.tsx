@@ -368,7 +368,7 @@ function AnderSporsmalSummaryAnswers({
             )}
             {andreSporsmal?.yrkesskadeDato && (
                 <FormSummary.Answer>
-                    <FormSummary.Label>Dato for yrkesskade</FormSummary.Label>
+                    <FormSummary.Label>Eventuell skadedato</FormSummary.Label>
                     <FormSummary.Value>{toReadableDate(andreSporsmal.yrkesskadeDato)}</FormSummary.Value>
                 </FormSummary.Answer>
             )}

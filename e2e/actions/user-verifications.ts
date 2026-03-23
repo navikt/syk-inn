@@ -15,7 +15,7 @@ type SectionTitle =
     | 'Til arbeidsgiver'
     | 'Annen info'
     | 'Kan skyldes yrkesskade'
-    | 'Dato for yrkesskade'
+    | 'Eventuell skadedato'
 
 interface SummarySection {
     name: SectionTitle

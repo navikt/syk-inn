@@ -117,7 +117,7 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                     <BodyShort>Kan skyldes yrkesskade? Ja</BodyShort>
                     {sykmelding.values.yrkesskade?.skadedato && (
                         <BodyShort>
-                            Dato for yrkesskade: {toReadableDate(sykmelding.values.yrkesskade?.skadedato)}
+                            Eventuell skadedato: {toReadableDate(sykmelding.values.yrkesskade?.skadedato)}
                         </BodyShort>
                     )}
                 </ValueItem>
