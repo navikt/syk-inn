@@ -30,8 +30,9 @@ function ArbeidsforholdPicker(): ReactElement {
                     <div className="flex gap-1">
                         Har pasienten flere arbeidsgivere?
                         <HelpText>
-                            Har pasienten en arbeidsgiver skal du svare nei. Ved flere arbeidsgivere, må du lage en
-                            sykmelding for hver arbeidsgiver.
+                            Hvis pasienten har flere arbeidsgivere og trenger flere sykmeldinger, må du svare JA og
+                            skrive inn navnet på arbeidsgiveren. Hvis pasienten bare har en arbeidsgiver trenger du ikke
+                            oppgi arbeidsgiverens navn.
                         </HelpText>
                     </div>
                 }
