@@ -76,29 +76,6 @@ export function filterSykmeldingerWithinDaysGap(
     return filteredSykmeldinger
 }
 
-export function __filterSykmeldingerWithinDaysGap(sykmeldinger: SykmeldingDateRange[]): SykmeldingDateRange[] {
-    const ISYFO_MAX_DAYS_GAP = 16
-
-    const sortedSykmeldinger = R.sortBy(sykmeldinger, [(it) => it.latestTom, 'desc'])
-
-    const filteredSykmeldinger: SykmeldingDateRange[] = []
-    for (const [i, sykmelding] of sortedSykmeldinger.entries()) {
-        if (i === 0) {
-            filteredSykmeldinger.push(sykmelding)
-            continue
-        }
-        const prev = sortedSykmeldinger[i - 1]
-        const prevFom = prev.earliestFom
-
-        const currentTom = sykmelding.latestTom
-
-        const diff = differenceInDays(prevFom, currentTom)
-        if (diff < ISYFO_MAX_DAYS_GAP) filteredSykmeldinger.push(sykmelding)
-        else break
-    }
-    return filteredSykmeldinger
-}
-
 export function calculateTotalLengthOfSykmeldinger(ranges: SykmeldingDateRange[]): number {
     if (ranges.length === 0) {
         return 0

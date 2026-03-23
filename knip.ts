@@ -12,11 +12,8 @@ const config: KnipConfig = {
         'libs/helseid-mock/buntry-point.ts',
         'next-logger.config.cjs',
         'postcss.config.mjs',
-        'scripts/**',
-        // Not automatically picked up by knip nextjs plugin yet
-        'src/app/global-not-found.tsx',
     ],
-    ignoreDependencies: ['pino-pretty', '@opentelemetry/core'],
+    ignoreDependencies: ['@opentelemetry/core'],
 }
 
 export default config
