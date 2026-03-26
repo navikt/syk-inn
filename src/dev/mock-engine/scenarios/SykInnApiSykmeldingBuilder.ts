@@ -17,7 +17,7 @@ export class SykmeldingBuilder {
         sykmeldingId: 'sykmelding-id',
         utfall: {
             result: 'OK',
-            melding: null,
+            cause: null,
         },
         meta: {
             mottatt: this.mottatt,
@@ -25,10 +25,8 @@ export class SykmeldingBuilder {
             legekontorTlf: '+47 123 45 678',
             pasientIdent: '21037712323',
             sykmelder: {
-                hprNummer: '123456',
-                fornavn: 'Kari',
-                mellomnavn: 'Nordmann',
-                etternavn: 'Lege',
+                hpr: '123456',
+                navn: `Kari Nordmann Legesson`,
             },
         },
         values: {
@@ -52,7 +50,6 @@ export class SykmeldingBuilder {
                 tilArbeidsgiver: null,
             },
             utdypendeSporsmal: null,
-            utdypendeSporsmalSvar: null,
             annenFravarsgrunn: null,
         },
     }
@@ -75,8 +72,8 @@ export class SykmeldingBuilder {
         return this
     }
 
-    utdypendeSporsmal(sporsmal: SykInnApiSykmelding['values']['utdypendeSporsmalSvar']): SykmeldingBuilder {
-        this._sykmelding.values.utdypendeSporsmalSvar = sporsmal
+    utdypendeSporsmal(sporsmal: SykInnApiSykmelding['values']['utdypendeSporsmal']): SykmeldingBuilder {
+        this._sykmelding.values.utdypendeSporsmal = sporsmal
 
         return this
     }
@@ -111,7 +108,7 @@ export class SykmeldingBuilder {
     }
 
     uke7Answered(): SykmeldingBuilder {
-        const utdypendeSporsmal: SykInnApiSykmelding['values']['utdypendeSporsmalSvar'] = {
+        const utdypendeSporsmal: SykInnApiSykmelding['values']['utdypendeSporsmal'] = {
             utfordringerMedArbeid: {
                 sporsmalstekst: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
                 svar: 'Utfordringer med arbeid',
@@ -139,7 +136,7 @@ export class SykmeldingBuilder {
     }
 
     uke17Answered(): SykmeldingBuilder {
-        const utdypendeSporsmal: SykInnApiSykmelding['values']['utdypendeSporsmalSvar'] = {
+        const utdypendeSporsmal: SykInnApiSykmelding['values']['utdypendeSporsmal'] = {
             utfordringerMedArbeid: null,
             medisinskOppsummering: null,
             hensynPaArbeidsplassen: null,

@@ -59,18 +59,12 @@ const AktivitetSchema = z.discriminatedUnion('type', [
 export type RuleResult = z.infer<typeof RuleResultSchema>
 const RuleResultSchema = z.object({
     result: z.union([z.literal('OK'), z.literal('PENDING'), z.literal('INVALID')]),
-    melding: z.string().nullable(),
+    cause: z.string().nullable(),
 })
 
 const TilbakedateringSchema = z.object({
     startdato: z.string(),
     begrunnelse: z.string(),
-})
-
-const UtdypendeSporsmalSchema = z.object({
-    utfordringerMedArbeid: z.string().nullable(),
-    medisinskOppsummering: z.string().nullable(),
-    hensynPaArbeidsplassen: z.string().nullable(),
 })
 
 const SporsmalSvarSchema = z.object({
@@ -108,10 +102,8 @@ const MeldingerSchema = z.object({
 })
 
 const SykmelderSchema = z.object({
-    hprNummer: z.string(),
-    fornavn: z.string().nullable(),
-    mellomnavn: z.string().nullable(),
-    etternavn: z.string().nullable(),
+    hpr: z.string(),
+    navn: z.string(),
 })
 
 const SykInnApiSykmeldingMeta = z.object({
@@ -133,12 +125,11 @@ export const SykInnApiSykmeldingSchema = z
             aktivitet: z.array(AktivitetSchema),
             svangerskapsrelatert: z.boolean(),
             pasientenSkalSkjermes: z.boolean(),
-            meldinger: MeldingerSchema,
+            meldinger: MeldingerSchema.nullable(),
             yrkesskade: YrkesskadeSchema.nullable(),
             arbeidsgiver: ArbeidsgiverSchema.nullable(),
             tilbakedatering: TilbakedateringSchema.nullable(),
-            utdypendeSporsmal: UtdypendeSporsmalSchema.nullable(),
-            utdypendeSporsmalSvar: UtdypendeSporsmalSvarSchema.nullable(),
+            utdypendeSporsmal: UtdypendeSporsmalSvarSchema.nullable(),
             annenFravarsgrunn: z.string().nullable(),
         }),
         utfall: RuleResultSchema,

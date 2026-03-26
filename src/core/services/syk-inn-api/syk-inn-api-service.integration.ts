@@ -144,7 +144,7 @@ describe('SykInnApi integration', () => {
         expect(opprettResult.values.hoveddiagnose?.code).toEqual(payload.values.hoveddiagnose.code)
         expect(opprettResult.values.arbeidsgiver).toBeNull()
         expect(opprettResult.values.yrkesskade).toBeNull()
-        expect(opprettResult.values.utdypendeSporsmalSvar).toBeNull()
+        expect(opprettResult.values.utdypendeSporsmal).toBeNull()
         expect(opprettResult.values.tilbakedatering).toBeNull()
     })
 
