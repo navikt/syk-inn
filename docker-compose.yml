@@ -4,23 +4,3 @@ services:
     container_name: syk-inn-dev-valkey
     ports:
       - '6379:6379'
-
-  gotenberg:
-    build:
-      context: gotenberg
-      dockerfile: Dockerfile
-    container_name: syk-inn-dev-gotenberg
-    ports:
-      - '6900:3000'
-    command:
-      - gotenberg
-      - --log-format=json
-      - --chromium-auto-start
-      - --chromium-disable-javascript
-      - --api-disable-health-check-logging
-      - --prometheus-disable-route-logging
-      - --webhook-disable
-      - --libreoffice-disable-routes
-      - --pdfengines-disable-routes
-      - --prometheus-namespace=tsm-gotenberg
-      - --gotenberg-hide-banner
