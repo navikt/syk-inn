@@ -17,10 +17,8 @@ export function sykInnApiPayloadToResponse(
         meta: {
             pasientIdent: payload.meta.pasientIdent,
             sykmelder: {
-                hprNummer: payload.meta.sykmelderHpr,
-                fornavn: 'Koman',
-                mellomnavn: null,
-                etternavn: 'Magnar',
+                hpr: payload.meta.sykmelderHpr,
+                navn: 'Koman Magnar',
             },
             legekontorOrgnr: payload.meta.legekontorOrgnr,
             legekontorTlf: payload.meta.legekontorTlf ?? null,

@@ -419,7 +419,7 @@ export type SykmeldingFullValues = {
     arbeidsgiver: Maybe<Arbeidsgiver>
     bidiagnoser: Maybe<Array<Diagnose>>
     hoveddiagnose: Maybe<Diagnose>
-    meldinger: SykmeldingMelding
+    meldinger: Maybe<SykmeldingMelding>
     pasientenSkalSkjermes: Scalars['Boolean']['output']
     svangerskapsrelatert: Scalars['Boolean']['output']
     tilbakedatering: Maybe<Tilbakedatering>
@@ -627,7 +627,7 @@ export type AllDashboardQuery = {
                           __typename: 'SykmeldingMelding'
                           tilNav: string | null
                           tilArbeidsgiver: string | null
-                      }
+                      } | null
                       yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
                       tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
                       utdypendeSporsmal: {
@@ -843,7 +843,7 @@ export type AllDashboardQuery = {
                           __typename: 'SykmeldingMelding'
                           tilNav: string | null
                           tilArbeidsgiver: string | null
-                      }
+                      } | null
                       yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
                       tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
                       utdypendeSporsmal: {
@@ -1196,7 +1196,11 @@ export type SykmeldingByIdQuery = {
                       | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
                   >
                   arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
-                  meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null }
+                  meldinger: {
+                      __typename: 'SykmeldingMelding'
+                      tilNav: string | null
+                      tilArbeidsgiver: string | null
+                  } | null
                   yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
                   tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
                   utdypendeSporsmal: {
@@ -1406,7 +1410,11 @@ export type OpprettSykmeldingMutation = {
                       | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
                   >
                   arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
-                  meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null }
+                  meldinger: {
+                      __typename: 'SykmeldingMelding'
+                      tilNav: string | null
+                      tilArbeidsgiver: string | null
+                  } | null
                   yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
                   tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
                   utdypendeSporsmal: {
@@ -1552,7 +1560,7 @@ export type SykmeldingFullFragment = {
             | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
         >
         arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
-        meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null }
+        meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null } | null
         yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
         tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
         utdypendeSporsmal: {
@@ -1695,7 +1703,7 @@ type Sykmelding_SykmeldingFull_Fragment = {
             | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
         >
         arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
-        meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null }
+        meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null } | null
         yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
         tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
         utdypendeSporsmal: {

@@ -29,7 +29,7 @@ export function sykInnApiSykmeldingRedactedToResolverSykmelding(
             pasientIdent: sykmelding.meta.pasientIdent,
             legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
             mottatt: sykmelding.meta.mottatt,
-            sykmelderHpr: sykmelding.meta.sykmelder.hprNummer,
+            sykmelderHpr: sykmelding.meta.sykmelder.hpr,
         },
         values: {
             aktivitet: sykmelding.values.aktivitet.map((it) => ({
@@ -58,7 +58,7 @@ export function sykInnApiSykmeldingToResolverSykmelding(
                 pasientIdent: sykmelding.meta.pasientIdent,
                 legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
                 mottatt: sykmelding.meta.mottatt,
-                sykmelderHpr: sykmelding.meta.sykmelder.hprNummer,
+                sykmelderHpr: sykmelding.meta.sykmelder.hpr,
             },
             values: {
                 aktivitet: sykmelding.values.aktivitet,
@@ -84,7 +84,7 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
             pasientIdent: sykmelding.meta.pasientIdent,
             legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
             mottatt: sykmelding.meta.mottatt,
-            sykmelderHpr: sykmelding.meta.sykmelder.hprNummer,
+            sykmelderHpr: sykmelding.meta.sykmelder.hpr,
         },
         values: {
             aktivitet: sykmelding.values.aktivitet,
@@ -96,7 +96,7 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
             yrkesskade: sykmelding.values.yrkesskade,
             arbeidsgiver: sykmelding.values.arbeidsgiver,
             tilbakedatering: sykmelding.values.tilbakedatering,
-            utdypendeSporsmalSvar: sykmelding.values.utdypendeSporsmalSvar,
+            utdypendeSporsmalSvar: sykmelding.values.utdypendeSporsmal,
             annenFravarsgrunn: sykmelding.values.annenFravarsgrunn as AnnenFravarsgrunnArsak,
         },
         utfall: sykmelding.utfall,
