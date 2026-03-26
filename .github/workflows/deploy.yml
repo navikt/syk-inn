@@ -9,6 +9,7 @@ on:
 env:
   APP: syk-inn
   BASE_PATH: /samarbeidspartner/sykmelding
+  TYPST_VERSION: 0.14.2
 
 permissions:
   contents: read
@@ -55,6 +56,12 @@ jobs:
     name: Build for dev
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+      - uses: typst-community/setup-typst@v5
+        with:
+          typst-version: ${{ env.TYPST_VERSION }}
+      - run: cp $(which typst) ./typst-pdf/typst
+      - run: ls -al ./typst-pdf
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
@@ -71,6 +78,10 @@ jobs:
     name: Build for demo
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+      - uses: typst-community/setup-typst@v5
+        with:
+          typst-version: ${{ env.TYPST_VERSION }}
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
@@ -87,6 +98,10 @@ jobs:
     name: Build for prod
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+      - uses: typst-community/setup-typst@v5
+        with:
+          typst-version: ${{ env.TYPST_VERSION }}
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
@@ -133,7 +148,7 @@ jobs:
 
   deploy-dev:
     name: Deploy main to dev
-    if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev/')
+    if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev/')  || startsWith(github.ref_name, 'feat/typst')
     environment:
       name: dev
       url: https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding
@@ -186,6 +201,10 @@ jobs:
     name: Build for playwright
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+      - uses: typst-community/setup-typst@v5
+        with:
+          typst-version: ${{ env.TYPST_VERSION }}
       - uses: navikt/tsm-workflows/actions/playwright/build@main
         id: playwright-build
         with:
