@@ -1,2 +1,3 @@
 [tools]
 node = { version = "24", postinstall = "corepack enable" }
+typst = "0.14.2"
