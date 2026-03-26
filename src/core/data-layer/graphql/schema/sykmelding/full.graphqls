@@ -19,7 +19,7 @@ type SykmeldingFullValues {
     aktivitet: [Aktivitet!]!
     svangerskapsrelatert: Boolean!
     pasientenSkalSkjermes: Boolean!
-    meldinger: SykmeldingMelding!
+    meldinger: SykmeldingMelding
     yrkesskade: Yrkesskade
     arbeidsgiver: Arbeidsgiver
     tilbakedatering: Tilbakedatering
