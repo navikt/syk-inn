@@ -47,6 +47,7 @@ export async function GET(
 
         const body = await createTypstSykmelding(sykmelding)
         if (!body.ok) {
+            logger.error(`Unable to generate PDF, typst says: ${body.error}`)
             return new Response('Internal server error', { status: 500 })
         }
 
