@@ -6,6 +6,8 @@ import { getApi } from '@core/services/api-fetcher'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
+import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
+import { createTypstSykmelding } from '@core/pdf/typst-service'
 
 /**
  * Proxies the PDF request to the syk-inn-api service, to the PDF is viewable from the users browser.
@@ -31,6 +33,28 @@ export async function GET(
     }
 
     request.headers.set('HPR', hpr)
+
+    if (request.nextUrl.searchParams.get('typst') != null) {
+        const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
+        if ('errorType' in sykmelding) {
+            logger.error(`Failed to fetch sykmelding ${sykmeldingId}: ${sykmelding.errorType}`)
+            return new Response('Internal server error', { status: 500 })
+        }
+        if (sykmelding.kind === 'redacted') {
+            logger.error(`Cannot generate PDF via Gotenberg for redacted sykmelding ${sykmeldingId}`)
+            return new Response('Internal server error', { status: 500 })
+        }
+
+        const body = await createTypstSykmelding(sykmelding)
+        if (!body.ok) {
+            return new Response('Internal server error', { status: 500 })
+        }
+
+        return new Response(body.pdf, {
+            headers: { 'Content-Type': 'application/pdf' },
+            status: 200,
+        })
+    }
 
     if (shouldUseMockEngine()) {
         const mockEngine = await mockEngineForSession()
