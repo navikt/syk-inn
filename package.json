@@ -117,7 +117,6 @@
         "tailwindcss": "^4.2.2",
         "testcontainers": "^11.13.0",
         "typescript": "^5.9.3",
-        "vite-tsconfig-paths": "^6.1.1",
         "vitest": "^4.1.0"
     },
     "prettier": "@navikt/tsm-prettier",
