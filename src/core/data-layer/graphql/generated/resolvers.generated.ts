@@ -421,7 +421,7 @@ export type SykmeldingFullValues = {
     arbeidsgiver?: Maybe<Arbeidsgiver>
     bidiagnoser?: Maybe<Array<Diagnose>>
     hoveddiagnose?: Maybe<Diagnose>
-    meldinger: SykmeldingMelding
+    meldinger?: Maybe<SykmeldingMelding>
     pasientenSkalSkjermes: Scalars['Boolean']['output']
     svangerskapsrelatert: Scalars['Boolean']['output']
     tilbakedatering?: Maybe<Tilbakedatering>
@@ -1164,7 +1164,7 @@ export type SykmeldingFullValuesResolvers<
     arbeidsgiver?: Resolver<Maybe<ResolversTypes['Arbeidsgiver']>, ParentType, ContextType>
     bidiagnoser?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
     hoveddiagnose?: Resolver<Maybe<ResolversTypes['Diagnose']>, ParentType, ContextType>
-    meldinger?: Resolver<ResolversTypes['SykmeldingMelding'], ParentType, ContextType>
+    meldinger?: Resolver<Maybe<ResolversTypes['SykmeldingMelding']>, ParentType, ContextType>
     pasientenSkalSkjermes?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     svangerskapsrelatert?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     tilbakedatering?: Resolver<Maybe<ResolversTypes['Tilbakedatering']>, ParentType, ContextType>

@@ -2627,11 +2627,7 @@
                         "name": "meldinger",
                         "description": null,
                         "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "OBJECT", "name": "SykmeldingMelding", "ofType": null }
-                        },
+                        "type": { "kind": "OBJECT", "name": "SykmeldingMelding", "ofType": null },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },

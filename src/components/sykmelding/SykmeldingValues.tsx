@@ -134,10 +134,10 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                     </List>
                 </ValueItem>
             )}
-            {sykmelding.values.meldinger.tilNav && (
+            {sykmelding.values.meldinger?.tilNav && (
                 <ValueItem title="Meldinger til Nav">{sykmelding.values.meldinger.tilNav}</ValueItem>
             )}
-            {sykmelding.values.meldinger.tilArbeidsgiver && (
+            {sykmelding.values.meldinger?.tilArbeidsgiver && (
                 <ValueItem title="Meldinger til arbeidsgiver">{sykmelding.values.meldinger.tilArbeidsgiver}</ValueItem>
             )}
         </>
