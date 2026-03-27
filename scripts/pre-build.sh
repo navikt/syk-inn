@@ -29,8 +29,6 @@ fi
 if ! command -v ./typst-pdf/typst &> /dev/null; then
   printf "\e[31mError: typst binary not found in ./typst-pdf/typst. Please ensure it is correctly loaded.\e[0m\n"
 
-  ls -al ./typst-pdf
-
   exit 1
 else
   # Verify that typst binary is the same as one defined in .mise.toml
