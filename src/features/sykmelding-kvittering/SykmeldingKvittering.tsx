@@ -122,6 +122,12 @@ function SykmeldingKvitteringSummary({ sykmeldingId }: { sykmeldingId: string })
                         <AkselLink href={pathWithBasePath(mode.paths.pdf(sykmelding.sykmeldingId))} target="_blank">
                             Se innsendt dokument
                         </AkselLink>
+                        <AkselLink
+                            href={pathWithBasePath(mode.paths.pdf(sykmelding.sykmeldingId)) + '?typst=true'}
+                            target="_blank"
+                        >
+                            Se innsendt dokument (ny)
+                        </AkselLink>
                     </>
                 ) : (
                     <Skeleton width={240} />
