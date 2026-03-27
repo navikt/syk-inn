@@ -81,6 +81,7 @@ jobs:
       - uses: typst-community/setup-typst@v5
         with:
           typst-version: ${{ env.TYPST_VERSION }}
+      - run: cp $(which typst) ./typst-pdf/typst
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
@@ -101,6 +102,7 @@ jobs:
       - uses: typst-community/setup-typst@v5
         with:
           typst-version: ${{ env.TYPST_VERSION }}
+      - run: cp $(which typst) ./typst-pdf/typst
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
