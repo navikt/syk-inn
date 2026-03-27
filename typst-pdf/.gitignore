@@ -1,1 +1,5 @@
+# The binary, don't check this in, locally we use mise, in GHA we use setup-typst
 typst
+
+# The development output PDF
+sykmelding.pdf

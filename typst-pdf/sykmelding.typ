@@ -1,6 +1,6 @@
-#let data = json(bytes(sys.inputs.at("data")))
-#let meta = data.meta
-#let values = data.values
+#let sykmelding = json(bytes(sys.inputs.at("sykmelding")))
+#let meta = sykmelding.meta
+#let values = sykmelding.values
 
 #set text(font: ("Source Sans 3"), lang: "nb", size: 10pt)
 #set par(leading: 4pt)
@@ -18,7 +18,7 @@
       columns: (auto, 1fr),
       column-gutter: 8mm,
       align: (horizon, horizon),
-      image("nav-logo.svg", height: 20pt),
+      image("images/nav-logo.svg", height: 20pt),
       text(size: 14pt, weight: "bold")[Innsendt sykmelding],
     )
   ],
@@ -27,7 +27,7 @@
     #let total = counter(page).final().first()
     #grid(
       columns: (1fr, auto),
-      text(fill: gray, size: 8pt)[#data.sykmeldingId],
+      text(fill: gray, size: 8pt)[#sykmelding.sykmeldingId],
       text(size: 8pt)[Side #page-num av #total],
     )
   ],
@@ -39,6 +39,6 @@
   row-gutter: 8mm,
 )
 
-hei #data.sykmeldingId!
+hei #sykmelding.sykmeldingId!
 
 Passient: #meta.pasientIdent

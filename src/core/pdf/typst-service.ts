@@ -10,7 +10,7 @@ const execFileAsync = promisify(execFile)
 
 type TypstPdfResult = { ok: true; pdf: ArrayBuffer } | { ok: false; error: string }
 
-export async function createTypstSykmelding(data: SykInnApiSykmelding): Promise<TypstPdfResult> {
+export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding): Promise<TypstPdfResult> {
     return spanServerAsync('typst-service.createTypstSykmelding', async (span) => {
         try {
             const start = performance.now()
@@ -20,7 +20,7 @@ export async function createTypstSykmelding(data: SykInnApiSykmelding): Promise<
                     'compile',
                     '--pdf-standard=a-2a',
                     '--font-path=./typst-pdf/fonts',
-                    `--input=data=${JSON.stringify(data)}`,
+                    `--input=sykmelding=${JSON.stringify(sykmelding)}`,
                     'typst-pdf/sykmelding.typ',
                     '-',
                 ],
