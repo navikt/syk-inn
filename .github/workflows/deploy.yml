@@ -61,7 +61,6 @@ jobs:
         with:
           typst-version: ${{ env.TYPST_VERSION }}
       - run: cp $(which typst) ./typst-pdf/typst
-      - run: ls -al ./typst-pdf
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
@@ -148,7 +147,7 @@ jobs:
 
   deploy-dev:
     name: Deploy main to dev
-    if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev/')  || startsWith(github.ref_name, 'feat/typst')
+    if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev/')
     environment:
       name: dev
       url: https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding
