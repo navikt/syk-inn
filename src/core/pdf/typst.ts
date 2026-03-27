@@ -3,15 +3,21 @@ import { promisify } from 'node:util'
 
 import { logger } from '@navikt/next-logger'
 
-import type { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
+import { PdfResult, TypstPdfSykmelding } from '@core/pdf/types'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 
 const execFileAsync = promisify(execFile)
 
-type TypstPdfResult = { ok: true; pdf: ArrayBuffer } | { ok: false; error: string }
+type Modules = {
+    module: 'sykmelding.typ'
+    payload: TypstPdfSykmelding
+}
 
-export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding): Promise<TypstPdfResult> {
-    return spanServerAsync('typst-service.createTypstSykmelding', async (span) => {
+export function execTypst(module: Modules): Promise<PdfResult> {
+    return spanServerAsync('typst.execTypst', async (span) => {
+        span.setAttributes({
+            'typst.module': module.module,
+        })
         try {
             const start = performance.now()
             const { stdout } = await execFileAsync(
@@ -20,7 +26,7 @@ export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding): Pr
                     'compile',
                     '--pdf-standard=a-2a',
                     '--font-path=./typst-pdf/fonts',
-                    `--input=sykmelding=${JSON.stringify(sykmelding)}`,
+                    `--input=sykmelding=${JSON.stringify(module.payload)}`,
                     'typst-pdf/sykmelding.typ',
                     '-',
                 ],
@@ -28,7 +34,7 @@ export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding): Pr
             )
 
             logger.info(
-                `Seems like PDF generation was OK, ${stdout.buffer.byteLength}, it took ${(performance.now() - start).toFixed(2)}ms`,
+                `PDF created - typst module ${module.module} (${stdout.buffer.byteLength} bytes), it took ${(performance.now() - start).toFixed(2)}ms`,
             )
 
             return { ok: true, pdf: stdout.buffer }

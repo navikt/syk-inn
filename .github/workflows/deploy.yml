@@ -205,6 +205,7 @@ jobs:
       - uses: typst-community/setup-typst@v5
         with:
           typst-version: ${{ env.TYPST_VERSION }}
+      - run: cp $(which typst) ./typst-pdf/typst
       - uses: navikt/tsm-workflows/actions/playwright/build@main
         id: playwright-build
         with:

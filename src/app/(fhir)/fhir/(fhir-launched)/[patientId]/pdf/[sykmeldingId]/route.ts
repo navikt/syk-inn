@@ -7,7 +7,8 @@ import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { createTypstSykmelding } from '@core/pdf/typst-service'
+import { createTypstSykmelding } from '@core/pdf/pdf-service'
+import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 
 /**
  * Proxies the PDF request to the syk-inn-api service, to the PDF is viewable from the users browser.
@@ -45,7 +46,15 @@ export async function GET(
             return new Response('Internal server error', { status: 500 })
         }
 
-        const body = await createTypstSykmelding(sykmelding)
+        const person = await pdlApiService.getPdlPerson(sykmelding.meta.pasientIdent)
+        if ('errorType' in person) {
+            logger.error(
+                `Failed to fetch person with ident ${sykmelding.meta.pasientIdent} for PDF generation: ${person.errorType}`,
+            )
+            return new Response('Internal server error', { status: 500 })
+        }
+
+        const body = await createTypstSykmelding(sykmelding, person)
         if (!body.ok) {
             logger.error(`Unable to generate PDF, typst says: ${body.error}`)
             return new Response('Internal server error', { status: 500 })

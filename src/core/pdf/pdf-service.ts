@@ -1,0 +1,127 @@
+import * as fs from 'node:fs'
+
+import * as R from 'remeda'
+
+import type { SykInnApiAktivitet, SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
+import { spanServerAsync } from '@lib/otel/server'
+import { PdlPerson } from '@core/services/pdl/pdl-api-schema'
+import { toReadableDate, toReadableDatePeriod } from '@lib/date'
+import { PdfResult, TypstPdfSykmelding } from '@core/pdf/types'
+import { execTypst } from '@core/pdf/typst'
+import { isLocal } from '@lib/env'
+
+export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding, person: PdlPerson): Promise<PdfResult> {
+    return spanServerAsync('pdf-service.createTypstSykmelding', async () => {
+        const payload: TypstPdfSykmelding = mapSykInnToPdfPayload(sykmelding, person)
+
+        // Update our local test data
+        if (isLocal) {
+            fs.writeFileSync('./typst-pdf/test-data/big.json', JSON.stringify(payload, null, 2))
+        }
+
+        return await execTypst({
+            module: 'sykmelding.typ',
+            payload: payload,
+        })
+    })
+}
+
+function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding, person: PdlPerson): TypstPdfSykmelding {
+    return {
+        id: sykmelding.sykmeldingId,
+        meta: {
+            mottatt: toReadableDate(sykmelding.meta.mottatt),
+            behandler: {
+                hpr: sykmelding.meta.sykmelder.hprNummer,
+                // TODO: This will be better in Ktor rewrite
+                navn: [
+                    sykmelding.meta.sykmelder.fornavn,
+                    sykmelding.meta.sykmelder.mellomnavn,
+                    sykmelding.meta.sykmelder.etternavn,
+                ]
+                    .filter(R.isNonNull)
+                    .join(' '),
+            },
+            pasient: {
+                ident: sykmelding.meta.pasientIdent,
+                // TODO: This will be better in Ktor rewrite
+                navn: [person.navn.fornavn, person.navn.mellomnavn, person.navn.etternavn]
+                    .filter(R.isNonNull)
+                    .join(' '),
+            },
+            legekontor: {
+                orgnr: sykmelding.meta.legekontorOrgnr,
+                tlf: sykmelding.meta.legekontorTlf,
+            },
+        },
+        values: {
+            diagnose: {
+                hoved: sykmelding.values.hoveddiagnose,
+                bi: sykmelding.values.bidiagnoser ?? [],
+            },
+            aktivitet: sykmelding.values.aktivitet.map((it) => ({
+                periode: toReadableDatePeriod(it.fom, it.tom),
+                type: toPeriodeText(it),
+                details: toPeriodeDetails(it),
+            })),
+            utdypendeSporsmal: sykmelding.values.utdypendeSporsmalSvar
+                ? R.values(sykmelding.values.utdypendeSporsmalSvar)
+                      .filter(R.isNonNull)
+                      .map((it) => ({
+                          text: it.sporsmalstekst ?? 'Utdypende spørsmål',
+                          answer: it.svar,
+                      }))
+                : [],
+        },
+    }
+}
+
+function toPeriodeDetails(aktivitet: SykInnApiAktivitet): string[] {
+    switch (aktivitet.type) {
+        case 'AVVENTENDE':
+        case 'BEHANDLINGSDAGER':
+        case 'REISETILSKUDD':
+        case 'GRADERT':
+            return []
+        case 'AKTIVITET_IKKE_MULIG':
+            const details: string[] = []
+
+            if (aktivitet.medisinskArsak?.isMedisinskArsak == true) {
+                details.push('Medisinske årsaker forhindrer arbeidsaktivitet')
+            }
+
+            if (aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak == true) {
+                details.push('Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet')
+
+                if (aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker.length > 0) {
+                    details.push(
+                        ...aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker.map((it) => {
+                            switch (it) {
+                                case 'TILRETTELEGGING_IKKE_MULIG':
+                                    return 'Tilrettelegging ikke mulig'
+                                case 'ANNET':
+                                    return `Annet: ${aktivitet.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? 'Grunn mangler'}`
+                            }
+                        }),
+                    )
+                }
+            }
+
+            return details
+    }
+}
+
+function toPeriodeText(it: SykInnApiAktivitet): string {
+    switch (it.type) {
+        case 'AKTIVITET_IKKE_MULIG':
+            return '100% sykmeldt (aktivitet ikke mulig)'
+        case 'GRADERT':
+            return `${it.grad}% sykmeldt, gradert sykmelding`
+        case 'REISETILSKUDD':
+            return 'Reisetilskudd'
+        case 'BEHANDLINGSDAGER':
+            return `${it.antallBehandlingsdager} behandlingsdager`
+        case 'AVVENTENDE':
+            return 'Avventende'
+    }
+}
