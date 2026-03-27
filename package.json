@@ -13,6 +13,7 @@
     "scripts": {
         "dev": "./scripts/pre-dev.sh && concurrently --names 'next,gen'  --prefix-colors 'blue,magenta' 'yarn dev:next' 'yarn gen:watch'",
         "dev:next": "next dev --turbo | pino-pretty --messageKey=message",
+        "dev:pdf": "./scripts/typst-dev.sh",
         "build": "./scripts/pre-build.sh && next build",
         "build:e2e": "./scripts/build-e2e.sh",
         "test": "vitest --project unit --run",
