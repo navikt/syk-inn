@@ -1,14 +1,17 @@
 {
-    "id": "c47ef500-6ab4-4f76-ba77-9f72120fc002",
+    "id": "c3a6aa1c-b7ea-4cb4-ab0b-1f3d5781f0e0",
+    "title": "Innsendt sykmelding",
+    "author": "Kari Nordmann Lege (123456)",
+    "description": "100% sykmelding, 19. - 26. januar 2026",
     "meta": {
-        "mottatt": "16. januar 2026",
+        "mottatt": "19. januar 2026",
         "behandler": {
             "hpr": "123456",
             "navn": "Kari Nordmann Lege"
         },
         "pasient": {
             "ident": "21037712323",
-            "navn": "Ola Nordmann Hansen"
+            "navn": "Test Person"
         },
         "legekontor": {
             "orgnr": "123456789",
@@ -26,12 +29,12 @@
         },
         "aktivitet": [
             {
-                "periode": "16. - 23. januar 2026",
+                "periode": "19. - 26. januar 2026",
                 "type": "100% sykmeldt (aktivitet ikke mulig)",
                 "details": ["Medisinske årsaker forhindrer arbeidsaktivitet"]
             },
             {
-                "periode": "24. januar - 7. februar 2026",
+                "periode": "27. januar - 10. februar 2026",
                 "type": "100% sykmeldt (aktivitet ikke mulig)",
                 "details": ["Medisinske årsaker forhindrer arbeidsaktivitet"]
             }

@@ -45,6 +45,10 @@ jobs:
       - uses: navikt/tsm-workflows/actions/yarn@main
         with:
           READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      - uses: typst-community/setup-typst@v5
+        with:
+          typst-version: ${{ env.TYPST_VERSION }}
+      - run: cp $(which typst) ./typst-pdf/typst
       - run: yarn next typegen
       - name: Integration tests
         run: yarn test:integration
