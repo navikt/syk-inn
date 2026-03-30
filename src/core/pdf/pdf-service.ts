@@ -9,6 +9,7 @@ import { toReadableDate, toReadableDatePeriod } from '@lib/date'
 import { PdfResult, TypstPdfSykmelding } from '@core/pdf/types'
 import { execTypst } from '@core/pdf/typst'
 import { isLocal } from '@lib/env'
+import { getSimpleSykmeldingDescription } from '@data-layer/common/sykmelding-utils'
 
 export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding, person: PdlPerson): Promise<PdfResult> {
     return spanServerAsync('pdf-service.createTypstSykmelding', async () => {
@@ -27,27 +28,34 @@ export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding, per
 }
 
 function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding, person: PdlPerson): TypstPdfSykmelding {
+    // TODO: This will be better in Ktor rewrite
+    const sykmelderNavn = [
+        sykmelding.meta.sykmelder.fornavn,
+        sykmelding.meta.sykmelder.mellomnavn,
+        sykmelding.meta.sykmelder.etternavn,
+    ]
+        .filter(R.isNonNull)
+        .join(' ')
+
+    // TODO: This will be better in Ktor rewrite
+    const pasientNavn = [person.navn.fornavn, person.navn.mellomnavn, person.navn.etternavn]
+        .filter(R.isNonNull)
+        .join(' ')
+
     return {
         id: sykmelding.sykmeldingId,
+        title: 'Innsendt sykmelding',
+        author: `${sykmelderNavn} (${sykmelding.meta.sykmelder.hprNummer})`,
+        description: getSimpleSykmeldingDescription(sykmelding.values.aktivitet),
         meta: {
             mottatt: toReadableDate(sykmelding.meta.mottatt),
             behandler: {
                 hpr: sykmelding.meta.sykmelder.hprNummer,
-                // TODO: This will be better in Ktor rewrite
-                navn: [
-                    sykmelding.meta.sykmelder.fornavn,
-                    sykmelding.meta.sykmelder.mellomnavn,
-                    sykmelding.meta.sykmelder.etternavn,
-                ]
-                    .filter(R.isNonNull)
-                    .join(' '),
+                navn: sykmelderNavn,
             },
             pasient: {
                 ident: sykmelding.meta.pasientIdent,
-                // TODO: This will be better in Ktor rewrite
-                navn: [person.navn.fornavn, person.navn.mellomnavn, person.navn.etternavn]
-                    .filter(R.isNonNull)
-                    .join(' '),
+                navn: pasientNavn,
             },
             legekontor: {
                 orgnr: sykmelding.meta.legekontorOrgnr,

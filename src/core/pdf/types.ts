@@ -5,6 +5,9 @@ import { Diagnose } from '@data-layer/common/diagnose'
  */
 export type TypstPdfSykmelding = {
     id: string
+    title: string
+    description: string
+    author: string
     meta: {
         mottatt: string
         pasient: {
@@ -37,4 +40,7 @@ export type TypstPdfSykmelding = {
     }
 }
 
-export type PdfResult = { ok: true; pdf: ArrayBuffer } | { ok: false; error: string }
+export type PdfOK = { ok: true; pdf: ArrayBuffer }
+export type PdfError = { ok: false; error: string }
+
+export type PdfResult = PdfOK | PdfError

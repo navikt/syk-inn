@@ -50,6 +50,14 @@
   ],
 )
 
+// Document metadata
+#set document(
+  title: sykmelding.title,
+  author: sykmelding.author,
+  description: sykmelding.description,
+  date: datetime.today(),
+)
+
 // General metadata
 #let baseMeta = (
   info(
