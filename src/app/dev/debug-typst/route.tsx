@@ -1,8 +1,12 @@
+import fs from 'node:fs'
+
 import { logger } from '@navikt/next-logger'
 
-import { createTypstSykmelding } from '@core/pdf/pdf-service'
+import { createTypstSykmelding, mapSykInnToPdfPayload } from '@core/pdf/pdf-service'
 import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
+import { isLocal } from '@lib/env'
+import { TypstPdfSykmelding } from '@core/pdf/types'
 
 export async function GET(): Promise<Response> {
     const chonkySykmelding = new SykmeldingBuilder({ offset: -70 })
@@ -21,6 +25,12 @@ export async function GET(): Promise<Response> {
     if (!body.ok) {
         logger.error(`Unable to generate PDF, typst says: ${body.error}`)
         return new Response('Internal server error', { status: 500 })
+    }
+
+    // Update our local test data, used when developing with yarn dev:pdf
+    if (isLocal) {
+        const payload: TypstPdfSykmelding = mapSykInnToPdfPayload(chonkySykmelding, mockPerson)
+        fs.writeFileSync('./typst-pdf/test-data/big.json', JSON.stringify(payload, null, 2))
     }
 
     return new Response(body.pdf, {
