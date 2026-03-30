@@ -54,7 +54,7 @@ spec:
   resources:
     requests:
       cpu: 50m
-      memory: 200Mi
+      memory: 360Mi
   envFrom:
     - secret: tsm-syk-inn-epj-secrets
     - secret: tsm-syk-inn-slack-secrets
