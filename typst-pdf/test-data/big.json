@@ -1,5 +1,5 @@
 {
-    "id": "c3a6aa1c-b7ea-4cb4-ab0b-1f3d5781f0e0",
+    "id": "ed7d4db0-013d-4291-9f9e-64cab83d71b3",
     "title": "Innsendt sykmelding",
     "author": "Kari Nordmann Lege (123456)",
     "description": "100% sykmelding, 19. - 26. januar 2026",
@@ -11,7 +11,7 @@
         },
         "pasient": {
             "ident": "21037712323",
-            "navn": "Test Person"
+            "navn": "Ola Nordmann Hansen"
         },
         "legekontor": {
             "orgnr": "123456789",

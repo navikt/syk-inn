@@ -1,5 +1,3 @@
-import * as fs from 'node:fs'
-
 import * as R from 'remeda'
 
 import type { SykInnApiAktivitet, SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
@@ -8,17 +6,11 @@ import { PdlPerson } from '@core/services/pdl/pdl-api-schema'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
 import { PdfResult, TypstPdfSykmelding } from '@core/pdf/types'
 import { execTypst } from '@core/pdf/typst'
-import { isLocal } from '@lib/env'
 import { getSimpleSykmeldingDescription } from '@data-layer/common/sykmelding-utils'
 
 export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding, person: PdlPerson): Promise<PdfResult> {
     return spanServerAsync('pdf-service.createTypstSykmelding', async () => {
         const payload: TypstPdfSykmelding = mapSykInnToPdfPayload(sykmelding, person)
-
-        // Update our local test data
-        if (isLocal) {
-            fs.writeFileSync('./typst-pdf/test-data/big.json', JSON.stringify(payload, null, 2))
-        }
 
         return await execTypst({
             module: 'sykmelding.typ',
@@ -27,7 +19,7 @@ export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding, per
     })
 }
 
-function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding, person: PdlPerson): TypstPdfSykmelding {
+export function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding, person: PdlPerson): TypstPdfSykmelding {
     // TODO: This will be better in Ktor rewrite
     const sykmelderNavn = [
         sykmelding.meta.sykmelder.fornavn,
