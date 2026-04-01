@@ -61,7 +61,7 @@
         "clsx": "^2.1.1",
         "date-fns": "^4.1.0",
         "fuse.js": "^7.1.0",
-        "graphql": "^16.13.1",
+        "graphql": "^16.13.2",
         "graphql-yoga": "^5.18.1",
         "iovalkey": "^0.3.3",
         "jose": "^6.2.2",
