@@ -2382,49 +2382,49 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/aksel-icons@npm:^8.8.0":
-  version: 8.8.0
-  resolution: "@navikt/aksel-icons@npm:8.8.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F8.8.0%2F9b61d6181f2dec2ea5f721c40f24d10e8fb42d21"
-  checksum: 10c0/ad6cff65c7d1941c057a2ebef4471e10ccc47387320d8abef7c5feb44584865ce7b97a3994dafece5fd72adef875b1fa9ff984d6a6496c3cf427b0c0c98edeae
+"@navikt/aksel-icons@npm:^8.9.0":
+  version: 8.9.0
+  resolution: "@navikt/aksel-icons@npm:8.9.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F8.9.0%2F6aa76719a9783fd0de5c01291adc8b920d2cf065"
+  checksum: 10c0/0a0b7776fd09e554e5232d9f321878286781baf221cbad75412f874884c4a8de314ef2b48ee3cc3ed40cf9692f80419564ba0558f8458b0847089c5736176bf8
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^8.8.0":
-  version: 8.8.0
-  resolution: "@navikt/ds-css@npm:8.8.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F8.8.0%2Fa54b515f23598d8b8e5850625b64b3a800221bca"
-  checksum: 10c0/b44b263dd0c109e07624ff7c944154b74db8e586028cc80565b8060b67eeb2c50e2dc7c154b83d9724ddeae6fe1cfb90563a73ffedffdef084cb41dbffa0c2b8
+"@navikt/ds-css@npm:^8.9.0":
+  version: 8.9.0
+  resolution: "@navikt/ds-css@npm:8.9.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F8.9.0%2Fc2c6e77cb08c9433f12b9bb2b610ee74320a0495"
+  checksum: 10c0/c6cbd29dbff61090b44bc4d82a8e4ff2eb0b7a8a320bd7e591cae8b5e8cc171612d173630d0042590de001ea404a356c5863efa83b9d7700f5b82017d571e482
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^8.8.0":
-  version: 8.8.0
-  resolution: "@navikt/ds-react@npm:8.8.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F8.8.0%2F945a106df40892b38f4d25e473389daa4b2a2534"
+"@navikt/ds-react@npm:^8.9.0":
+  version: 8.9.0
+  resolution: "@navikt/ds-react@npm:8.9.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F8.9.0%2F702b26c818eee38d01777e541e5e419c314a0d60"
   dependencies:
     "@floating-ui/react": "npm:0.27.8"
     "@floating-ui/react-dom": "npm:^2.1.8"
-    "@navikt/aksel-icons": "npm:^8.8.0"
-    "@navikt/ds-tokens": "npm:^8.8.0"
+    "@navikt/aksel-icons": "npm:^8.9.0"
+    "@navikt/ds-tokens": "npm:^8.9.0"
     date-fns: "npm:^4.0.0"
     react-day-picker: "npm:9.7.0"
   peerDependencies:
     "@types/react": ^17.0.30 || ^18 || ^19
     react: ^17 || ^18 || ^19
     react-dom: ^17 || ^18 || ^19
-  checksum: 10c0/2bc5720f7799836f3612cd1cd1c6d034daab65de46ba14aee6762662a4a67e39058c21f6074de5be90c59709ff36b5fa8cae7acf90082437140f0d4932c564b5
+  checksum: 10c0/31ec0f3fff1638e556d8dfc08ce0446cc369866db9465a9e645c92d837061d2d9b48e929d1328b337b5cc34b765267c854bfb6cccf6fe42b20fbed5b658d035b
   languageName: node
   linkType: hard
 
-"@navikt/ds-tailwind@npm:^8.8.0":
-  version: 8.8.0
-  resolution: "@navikt/ds-tailwind@npm:8.8.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F8.8.0%2F5f4bd2a1773ace915d72a7f2626f2a56b2aebff8"
-  checksum: 10c0/2182e035722b9c25008c9828dff9e0a99b73c33dd3dbd11c076509aa9117a6e6a0bcfc7f006f1cfb80aaba6cb8f12c2a9e0568032fefa558f720186799e88753
+"@navikt/ds-tailwind@npm:^8.9.0":
+  version: 8.9.0
+  resolution: "@navikt/ds-tailwind@npm:8.9.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F8.9.0%2F55a855e85b1799d16384214a592d5fa1fd37068c"
+  checksum: 10c0/934ce593d6e6ea6b695bf088c35d5a179e3d9a94a5678dd7ab1992a896180a3cee14b52730da736be679ccafa85d561d78b44015371a8d965271833351a09ec8
   languageName: node
   linkType: hard
 
-"@navikt/ds-tokens@npm:^8.8.0":
-  version: 8.8.0
-  resolution: "@navikt/ds-tokens@npm:8.8.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F8.8.0%2F1b64643ec409921069ede0fc5eab1850afa23393"
-  checksum: 10c0/f54e9eccc93bd578f18dd7e8a20d147edc31b20640ac3e8b9abc54b4a6ea3dedb04a7c5fe692604f439f827a40b308873ad37f245feb4c37ed6aaae786ec4328
+"@navikt/ds-tokens@npm:^8.9.0":
+  version: 8.9.0
+  resolution: "@navikt/ds-tokens@npm:8.9.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F8.9.0%2Fc7f62f91df5fb35b063add5aad4636a7cfc4b802"
+  checksum: 10c0/c88eaf0f18f5896763959b1336ff406db6932eecf08f0f3b4265dac89342461a64ed18adadaec9f9986a09e35155bc94aaa5c552713f800a180c3e5797d7bd7f
   languageName: node
   linkType: hard
 
@@ -12192,10 +12192,10 @@ __metadata:
     "@limegrass/eslint-plugin-import-alias": "npm:^1.6.1"
     "@mdx-js/loader": "npm:^3.1.1"
     "@mdx-js/react": "npm:^3.1.1"
-    "@navikt/aksel-icons": "npm:^8.8.0"
-    "@navikt/ds-css": "npm:^8.8.0"
-    "@navikt/ds-react": "npm:^8.8.0"
-    "@navikt/ds-tailwind": "npm:^8.8.0"
+    "@navikt/aksel-icons": "npm:^8.9.0"
+    "@navikt/ds-css": "npm:^8.9.0"
+    "@navikt/ds-react": "npm:^8.9.0"
+    "@navikt/ds-tailwind": "npm:^8.9.0"
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/helseid-mock-server": "workspace:*"
     "@navikt/next-api-proxy": "npm:^5.0.2"
