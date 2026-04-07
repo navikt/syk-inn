@@ -4,7 +4,6 @@ import * as R from 'remeda'
 
 import { createTypstSykmelding } from '@core/pdf/pdf-service'
 import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
-import { PdlPerson } from '@core/services/pdl/pdl-api-schema'
 import { PdfOK, PdfResult } from '@core/pdf/types'
 
 describe('typst CLI integration', () => {
@@ -15,23 +14,7 @@ describe('typst CLI integration', () => {
             .uke17Answered()
             .build()
 
-        const mockPerson: PdlPerson = {
-            navn: {
-                fornavn: 'Test',
-                mellomnavn: null,
-                etternavn: 'Person',
-            },
-            foedselsdato: '1990-01-01',
-            identer: [
-                {
-                    ident: '12345678910',
-                    gruppe: 'FOLKEREGISTERIDENT',
-                    historisk: false,
-                },
-            ],
-        }
-
-        const typst = await createTypstSykmelding(chonkySykmelding, mockPerson)
+        const typst = await createTypstSykmelding(chonkySykmelding)
         expectPdfOk(typst)
 
         const pdf = new PDFParse({ data: typst.pdf })
@@ -49,29 +32,13 @@ describe('typst CLI integration', () => {
             .uke17Answered()
             .build()
 
-        const mockPerson: PdlPerson = {
-            navn: {
-                fornavn: 'Test',
-                mellomnavn: null,
-                etternavn: 'Person',
-            },
-            foedselsdato: '1990-01-01',
-            identer: [
-                {
-                    ident: '12345678910',
-                    gruppe: 'FOLKEREGISTERIDENT',
-                    historisk: false,
-                },
-            ],
-        }
-
         /**
          * Relying on OS-level multi-threading, exec'ing 100 PDF generations at the same time should be fine
          */
         expect.assertions(100)
         await Promise.all(
             R.range(0, 100).map(async () => {
-                const typst = await createTypstSykmelding(chonkySykmelding, mockPerson)
+                const typst = await createTypstSykmelding(chonkySykmelding)
                 expectPdfOk(typst)
 
                 const pdf = new PDFParse({ data: typst.pdf })
