@@ -77,11 +77,3 @@ export async function initializeSykInnApi(applog: boolean = false): Promise<{
 
     return { sykInnApi, kafka }
 }
-
-function getBaseUrl(container: StartedTestContainer, port: number = 8080): `http://${string}` {
-    return `http://${container.getHost()}:${container.getMappedPort(port)}`
-}
-
-export function getSykInnApiPath(container: StartedTestContainer, path: `/${string}`): `http://${string}/${string}` {
-    return `${getBaseUrl(container)}${path}`
-}
