@@ -1,3 +1,4 @@
+import * as R from 'remeda'
 import Fuse from 'fuse.js'
 import { ICD10, ICPC2, ICPC2B } from '@navikt/tsm-diagnoser'
 
@@ -9,10 +10,12 @@ const icpc2Fuse = new Fuse(ICPC2, { keys: ['code', 'text', 'system'], threshold:
 const icpc2bFuse = new Fuse(ICPC2B, { keys: ['code', 'text', 'system', 'parent_code', 'parent_text'], threshold: 0.2 })
 
 export function searchDiagnose(query: string, systems: DiagnoseSystem[]): Diagnose[] {
-    const fuseResult = systems
-        .map(getSystemFuse)
-        .flatMap((it) => it.search(query))
-        .map(
+    return R.pipe(
+        systems,
+        R.map(getSystemFuse),
+        R.map((it) => it.search(query)),
+        R.flat(),
+        R.map(
             (it) =>
                 ({
                     system: it.item.system as DiagnoseSystem,
@@ -20,10 +23,9 @@ export function searchDiagnose(query: string, systems: DiagnoseSystem[]): Diagno
                     text: it.item.text,
                     score: it.score ?? null,
                 }) satisfies Diagnose & { score: number | null },
-        )
-        .slice(0, 100)
-
-    return fuseResult
+        ),
+        R.take(100),
+    )
 }
 
 function getSystemFuse(system: DiagnoseSystem): typeof icd10Fuse | typeof icpc2Fuse | typeof icpc2bFuse {
