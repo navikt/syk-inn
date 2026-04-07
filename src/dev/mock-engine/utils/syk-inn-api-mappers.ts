@@ -15,7 +15,10 @@ export function sykInnApiPayloadToResponse(
         kind: 'full',
         sykmeldingId,
         meta: {
-            pasientIdent: payload.meta.pasientIdent,
+            pasient: {
+                ident: payload.meta.pasientIdent,
+                navn: 'Ola Nordmann',
+            },
             sykmelder: {
                 hpr: payload.meta.sykmelderHpr,
                 navn: 'Koman Magnar',
