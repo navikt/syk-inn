@@ -106,8 +106,13 @@ const SykmelderSchema = z.object({
     navn: z.string(),
 })
 
+const PasientSchema = z.object({
+    ident: z.string(),
+    navn: z.string(),
+})
+
 const SykInnApiSykmeldingMeta = z.object({
-    pasientIdent: z.string(),
+    pasient: PasientSchema,
     sykmelder: SykmelderSchema,
     legekontorOrgnr: z.string().nullable(),
     legekontorTlf: z.string().nullable(),

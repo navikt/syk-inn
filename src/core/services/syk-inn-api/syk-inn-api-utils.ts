@@ -26,7 +26,7 @@ export function sykInnApiSykmeldingRedactedToResolverSykmelding(
         kind: 'redacted',
         sykmeldingId: sykmelding.sykmeldingId,
         meta: {
-            pasientIdent: sykmelding.meta.pasientIdent,
+            pasientIdent: sykmelding.meta.pasient.ident,
             legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
             mottatt: sykmelding.meta.mottatt,
             sykmelderHpr: sykmelding.meta.sykmelder.hpr,
@@ -55,7 +55,7 @@ export function sykInnApiSykmeldingToResolverSykmelding(
             kind: 'light',
             sykmeldingId: sykmelding.sykmeldingId,
             meta: {
-                pasientIdent: sykmelding.meta.pasientIdent,
+                pasientIdent: sykmelding.meta.pasient.ident,
                 legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
                 mottatt: sykmelding.meta.mottatt,
                 sykmelderHpr: sykmelding.meta.sykmelder.hpr,
@@ -81,7 +81,7 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
         kind: 'full',
         sykmeldingId: sykmelding.sykmeldingId,
         meta: {
-            pasientIdent: sykmelding.meta.pasientIdent,
+            pasientIdent: sykmelding.meta.pasient.ident,
             legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
             mottatt: sykmelding.meta.mottatt,
             sykmelderHpr: sykmelding.meta.sykmelder.hpr,

@@ -23,7 +23,10 @@ export class SykmeldingBuilder {
             mottatt: this.mottatt,
             legekontorOrgnr: '123456789',
             legekontorTlf: '+47 123 45 678',
-            pasientIdent: '21037712323',
+            pasient: {
+                ident: '21037712323',
+                navn: 'Ola Normann',
+            },
             sykmelder: {
                 hpr: '123456',
                 navn: `Kari Nordmann Legesson`,
