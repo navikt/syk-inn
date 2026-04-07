@@ -20,7 +20,11 @@ export function InfoNySykmeldingCard(): ReactElement {
                 <BodyShort spacing>
                     For sykmeldinger hvor dette er aktuelt, må du inntil videre bruke gammel/eksisterende/ordinær
                     løsning. Les mer om ny sykmeldingsløsning på{' '}
-                    <Link href="https://www.nav.no/ny-sykmeldingslosning" target="_blank" rel="noopener noreferrer">
+                    <Link
+                        href="https://www.nav.no/samarbeidspartner/ny-sykmelding-informasjonsside"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         nav.no
                     </Link>
                 </BodyShort>
