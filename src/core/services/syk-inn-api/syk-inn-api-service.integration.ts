@@ -3,7 +3,7 @@ import { StartedTestContainer } from 'testcontainers'
 import { Kafka } from 'kafkajs'
 import * as R from 'remeda'
 
-import { getSykInnApiPath, initializeSykInnApi } from '@lib/test/syk-inn-api'
+import { initializeSykInnApi } from '@lib/test/syk-inn-api'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { OpprettSykmeldingMeta, OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
 import { initializeValkey } from '@lib/test/valkey'
@@ -21,15 +21,15 @@ describe('SykInnApi integration', () => {
     beforeAll(async () => {
         const sykInnContainers = await initializeSykInnApi(true)
         sykInnApi = sykInnContainers.sykInnApi
-        valkey = await initializeValkey()
         kafka = await initializeKafka(sykInnContainers.kafka)
+        valkey = await initializeValkey()
 
         process.env.LOCAL_SYK_INN_API_HOST = `${sykInnApi.getHost()}:${sykInnApi.getMappedPort(8080)}`
         process.env.VALKEY_HOST_SYK_INN = `${valkey.getHost()}:${valkey.getMappedPort(6379)}`
     }, 60_000)
 
     it('sanity check health endpoint', async () => {
-        const healthResponse = await fetch(getSykInnApiPath(sykInnApi, '/internal/health/alive'))
+        const healthResponse = await fetch(`http://${process.env.LOCAL_SYK_INN_API_HOST}/internal/health/alive`)
 
         expect(healthResponse.status).toEqual(200)
     })
