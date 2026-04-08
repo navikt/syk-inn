@@ -13,18 +13,29 @@ import { AnnenFravarsgrunnArsak } from '@resolvers'
 import { questionTexts } from '@data-layer/common/questions'
 import { KafkaAktivitetIkkeMulig, KafkaGradert } from '@lib/test/syk-inn-kafka-types'
 
+/**
+ * Does not work for kafka tests
+ */
+const useLocalSykInnApi = process.env.USE_LOCAL_SYK_INN_API === 'true'
+
 describe('SykInnApi integration', () => {
     let sykInnApi: StartedTestContainer
     let valkey: StartedTestContainer
     let kafka: Kafka
 
     beforeAll(async () => {
-        const sykInnContainers = await initializeSykInnApi(true)
-        sykInnApi = sykInnContainers.sykInnApi
-        kafka = await initializeKafka(sykInnContainers.kafka)
         valkey = await initializeValkey()
 
-        process.env.LOCAL_SYK_INN_API_HOST = `${sykInnApi.getHost()}:${sykInnApi.getMappedPort(8080)}`
+        if (useLocalSykInnApi) {
+            process.env.LOCAL_SYK_INN_API_HOST = `localhost:8080`
+        } else {
+            const sykInnContainers = await initializeSykInnApi(false)
+            sykInnApi = sykInnContainers.sykInnApi
+            kafka = await initializeKafka(sykInnContainers.kafka)
+
+            process.env.LOCAL_SYK_INN_API_HOST = `${sykInnApi.getHost()}:${sykInnApi.getMappedPort(8080)}`
+        }
+
         process.env.VALKEY_HOST_SYK_INN = `${valkey.getHost()}:${valkey.getMappedPort(6379)}`
     }, 60_000)
 
