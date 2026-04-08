@@ -15,8 +15,10 @@ import { KafkaAktivitetIkkeMulig, KafkaGradert } from '@lib/test/syk-inn-kafka-t
 
 /**
  * Does not work for kafka tests
+ *
+ * Can be manually toggled to run tests with local (already running syk-inn-api)
  */
-const useLocalSykInnApi = process.env.USE_LOCAL_SYK_INN_API === 'true'
+const useLocalSykInnApi = false
 
 describe('SykInnApi integration', () => {
     let sykInnApi: StartedTestContainer
@@ -163,7 +165,7 @@ describe('SykInnApi integration', () => {
         const payload = createFullOpprettSykmeldingPayload(undefined, {
             hoveddiagnose: { system: 'ICPC2B', code: 'T99.0084' },
             bidiagnoser: [{ system: 'ICPC2', code: 'D97' }],
-            utdypendeSporsmalAnswerOptions: {
+            utdypendeSporsmal: {
                 utfordringerMedArbeid: {
                     sporsmalstekst: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
                     svar: 'Kan ikke sitte lenge',
