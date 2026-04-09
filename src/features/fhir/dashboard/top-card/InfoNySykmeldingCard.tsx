@@ -3,7 +3,7 @@ import { ReactElement } from 'react'
 
 export function InfoNySykmeldingCard(): ReactElement {
     return (
-        <InfoCard data-color="info">
+        <InfoCard data-color="info" className="max-w-lg">
             <InfoCard.Header>
                 <InfoCard.Title>Velkommen til ny sykmeldingsløsning</InfoCard.Title>
             </InfoCard.Header>
