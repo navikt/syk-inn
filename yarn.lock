@@ -2435,7 +2435,7 @@ __metadata:
     "@navikt/pino-logger": "npm:^5.0.0"
     "@navikt/smart-on-fhir": "npm:1.5.25"
     "@types/node": "npm:^24.12.2"
-    hono: "npm:^4.12.10"
+    hono: "npm:^4.12.12"
     jose: "npm:^6.2.2"
     nextleton: "npm:^0.6.1"
     pino: "npm:^10.3.1"
@@ -2450,7 +2450,7 @@ __metadata:
   resolution: "@navikt/helseid-mock-server@workspace:libs/helseid-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^5.0.0"
-    hono: "npm:^4.12.10"
+    hono: "npm:^4.12.12"
     jose: "npm:^6.2.2"
     nextleton: "npm:^0.6.1"
     pino: "npm:^10.3.1"
@@ -7479,10 +7479,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hono@npm:^4.12.10":
-  version: 4.12.10
-  resolution: "hono@npm:4.12.10"
-  checksum: 10c0/3fed7c0c0847968ae51910dd06bc4b64cc336af24ee913efdc105de80b467ddaa9e4f03a2814cb73771622eabbe3e7699998dc0536fe35acb0bac9f5d0e67aa1
+"hono@npm:^4.12.12":
+  version: 4.12.12
+  resolution: "hono@npm:4.12.12"
+  checksum: 10c0/7e514cac7f0fde53a93b5344605a11bc944c55c7b68e586ab722269a60c2d78e81b91c298e934b232d44aa8fcbfd2584b7cd7e01fb3f0edaaba0597a584b2ead
   languageName: node
   linkType: hard
 
