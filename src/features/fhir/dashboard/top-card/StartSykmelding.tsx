@@ -7,13 +7,13 @@ import { PasientDocument } from '@queries'
 import { SimpleAlert } from '@components/help/GeneralErrors'
 import { useMode } from '@core/providers/Modes'
 
-function StartSykmelding(): ReactElement {
+function StartSykmelding({ className }: { className?: string }): ReactElement {
     const mode = useMode()
     const { data, loading, error, refetch } = useQuery(PasientDocument)
     const [hasLegged, setHasLegged] = useState(true)
 
     return (
-        <div className="pr-4 ax-lg:pr-16">
+        <div className={className}>
             <Heading size="small" level="3">
                 Pasientopplysninger
             </Heading>
