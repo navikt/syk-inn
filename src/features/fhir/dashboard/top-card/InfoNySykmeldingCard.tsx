@@ -20,15 +20,16 @@ export function InfoNySykmeldingCard({ className }: { className?: string }): Rea
                     </ul>
                     <BodyShort spacing>
                         For sykmeldinger hvor dette er aktuelt, må du inntil videre bruke gammel/eksisterende/ordinær
-                        løsning. Les mer om ny sykmeldingsløsning på{' '}
-                        <Link
-                            href="https://www.nav.no/samarbeidspartner/ny-sykmelding-informasjonsside"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            nav.no
-                        </Link>
+                        løsning.
                     </BodyShort>
+                    <Link
+                        href="https://www.nav.no/samarbeidspartner/ny-sykmelding-informasjonsside"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline"
+                    >
+                        Les mer om ny sykmeldingsløsning på nav.no (åpnes i ny fane)
+                    </Link>
                 </InfoCard.Content>
             </InfoCard>
         </div>
