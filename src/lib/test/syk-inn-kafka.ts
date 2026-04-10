@@ -1,6 +1,8 @@
 import { Consumer, Kafka, logLevel } from 'kafkajs'
 import { StartedKafkaContainer } from '@testcontainers/kafka'
 
+import { KafkaSykmeldingRecord } from '@lib/test/syk-inn-kafka-types'
+
 const INPUT_TOPIC_NAME = 'tsm.sykmeldinger-input'
 
 export async function initializeKafka(container: StartedKafkaContainer): Promise<Kafka> {
@@ -25,9 +27,8 @@ export async function initializeConsumer(kafka: Kafka): Promise<Consumer> {
     return consumer
 }
 
-// eslint-disable-next-line
-export async function consumeUntil(consumer: Consumer, sykmeldingId: string): Promise<any> {
-    return new Promise<unknown>((resolve, reject) => {
+export async function consumeUntil(consumer: Consumer, sykmeldingId: string): Promise<KafkaSykmeldingRecord> {
+    return new Promise<KafkaSykmeldingRecord>((resolve, reject) => {
         const timeout = setTimeout(() => {
             reject(new Error(`Timeout waiting for message with key ${sykmeldingId}`))
         }, 10_000)
