@@ -11,6 +11,7 @@ import { daysAgo, inDays, today } from '@lib/test/date-utils'
 import { consumeUntil, initializeConsumer, initializeKafka } from '@lib/test/syk-inn-kafka'
 import { AnnenFravarsgrunnArsak } from '@resolvers'
 import { questionTexts } from '@data-layer/common/questions'
+import { KafkaAktivitetIkkeMulig, KafkaGradert } from '@lib/test/syk-inn-kafka-types'
 
 describe('SykInnApi integration', () => {
     let sykInnApi: StartedTestContainer
@@ -151,6 +152,52 @@ describe('SykInnApi integration', () => {
         const payload = createFullOpprettSykmeldingPayload(undefined, {
             hoveddiagnose: { system: 'ICPC2B', code: 'T99.0084' },
             bidiagnoser: [{ system: 'ICPC2', code: 'D97' }],
+            utdypendeSporsmalAnswerOptions: {
+                utfordringerMedArbeid: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
+                    svar: 'Kan ikke sitte lenge',
+                },
+                medisinskOppsummering: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.medisinskOppsummering.label,
+                    svar: 'Pasienten har influensa',
+                },
+                hensynPaArbeidsplassen: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.label,
+                    svar: 'Trenger ro og hvile',
+                },
+                sykdomsutvikling: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.sykdomsutvikling.label,
+                    svar: 'Sykdommen har forverret seg',
+                },
+                arbeidsrelaterteUtfordringer: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.label,
+                    svar: 'Kan ikke utføre arbeidsoppgaver',
+                },
+                behandlingOgFremtidigArbeid: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.behandlingOgFremtidigArbeid.label,
+                    svar: 'Behandling pågår',
+                },
+                uavklarteForhold: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.uavklarteForhold.label,
+                    svar: 'Uavklarte sosiale forhold',
+                },
+                oppdatertMedisinskStatus: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.oppdatertMedisinskStatus.label,
+                    svar: 'Medisinsk status er uendret',
+                },
+                realistiskMestringArbeid: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.realistiskMestringArbeid.label,
+                    svar: 'Pasienten kan mestre noe arbeid',
+                },
+                forventetHelsetilstandUtvikling: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.forventetHelsetilstandUtvikling.label,
+                    svar: 'Forventet bedring innen tre måneder',
+                },
+                medisinskeHensyn: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.medisinskeHensyn.label,
+                    svar: 'Må unngå støy og stress',
+                },
+            },
         })
         const opprettResult = await sykInnApiService.opprettSykmelding(payload)
 
@@ -163,29 +210,101 @@ describe('SykInnApi integration', () => {
         const consumer = await initializeConsumer(kafka)
         const kafkaMessage = await consumeUntil(consumer, opprettResult.sykmeldingId)
 
-        expect(kafkaMessage.metadata.type).toEqual('DIGITAL')
-        expect(kafkaMessage.metadata.orgnummer).toEqual('987654321')
+        // metadata
+        expect.soft(kafkaMessage.metadata.type).toEqual('DIGITAL')
+        expect.soft(kafkaMessage.metadata.orgnummer).toEqual('987654321')
 
-        expect(kafkaMessage.sykmelding.metadata.avsenderSystem.navn).toEqual('syk-inn test')
-        expect(kafkaMessage.sykmelding.pasient.fnr).toEqual('01010112345')
-        expect(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.system).toEqual('ICPC2B')
-        expect(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.kode).toEqual('T99.0084')
-        expect(kafkaMessage.sykmelding.medisinskVurdering.biDiagnoser[0].system).toEqual('ICPC2')
-        expect(kafkaMessage.sykmelding.medisinskVurdering.biDiagnoser[0].kode).toEqual('D97')
-        expect(kafkaMessage.sykmelding.medisinskVurdering.biDiagnoser).toHaveLength(1)
+        // sykmelding metadata
+        expect.soft(kafkaMessage.sykmelding.metadata.avsenderSystem.navn).toEqual('syk-inn test')
 
-        // Assert that utdypende spørsmål are part of the kafka message
-        const utdypendeSporsmal: KafkaUtdypendeSporsmal[] = kafkaMessage.sykmelding.utdypendeSporsmal
-        expect(utdypendeSporsmal).toBeDefined()
-        expect(utdypendeSporsmal?.find((it) => it.type === 'MEDISINSK_OPPSUMMERING')?.svar).toEqual(
-            'Pasienten har influensa',
-        )
-        expect(utdypendeSporsmal?.find((it) => it.type === 'UTFORDRINGER_MED_GRADERT_ARBEID')?.svar).toEqual(
-            'Kan ikke sitte lenge',
-        )
-        expect(utdypendeSporsmal?.find((it) => it.type === 'HENSYN_PA_ARBEIDSPLASSEN')?.svar).toEqual(
-            'Trenger ro og hvile',
-        )
+        // pasient
+        expect.soft(kafkaMessage.sykmelding.pasient.fnr).toEqual('01010112345')
+
+        // medisinskVurdering - diagnoses
+        expect.soft(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.system).toEqual('ICPC2B')
+        expect.soft(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.kode).toEqual('T99.0084')
+        expect.soft(kafkaMessage.sykmelding.medisinskVurdering.biDiagnoser[0].system).toEqual('ICPC2')
+        expect.soft(kafkaMessage.sykmelding.medisinskVurdering.biDiagnoser[0].kode).toEqual('D97')
+        expect.soft(kafkaMessage.sykmelding.medisinskVurdering.biDiagnoser).toHaveLength(1)
+
+        // medisinskVurdering - remaining fields
+        expect.soft(kafkaMessage.sykmelding.medisinskVurdering.svangerskap).toBe(true)
+        expect.soft(kafkaMessage.sykmelding.medisinskVurdering.skjermetForPasient).toBe(true)
+        expect.soft(kafkaMessage.sykmelding.medisinskVurdering.yrkesskade).not.toBeNull()
+        expect.soft(kafkaMessage.sykmelding.medisinskVurdering.yrkesskade?.yrkesskadeDato).toBeDefined()
+        expect.soft(kafkaMessage.sykmelding.medisinskVurdering.annenFravarsgrunn).toEqual('BEHANDLING_STERILISERING')
+
+        // aktivitet
+        expect.soft(kafkaMessage.sykmelding.aktivitet).toHaveLength(2)
+        const aktivitetIkkeMulig = kafkaMessage.sykmelding.aktivitet.find(
+            (it) => it.type === 'AKTIVITET_IKKE_MULIG',
+        ) as KafkaAktivitetIkkeMulig
+        expect.soft(aktivitetIkkeMulig).toBeDefined()
+        expect.soft(aktivitetIkkeMulig.medisinskArsak).not.toBeNull()
+        expect.soft(aktivitetIkkeMulig.arbeidsrelatertArsak).not.toBeNull()
+        expect.soft(aktivitetIkkeMulig.arbeidsrelatertArsak?.arsak).toContain('MANGLENDE_TILRETTELEGGING')
+        expect.soft(aktivitetIkkeMulig.arbeidsrelatertArsak?.arsak).toContain('ANNET')
+        expect.soft(aktivitetIkkeMulig.arbeidsrelatertArsak?.beskrivelse).toEqual('Trenger tilrettelegging')
+        const gradert = kafkaMessage.sykmelding.aktivitet.find((it) => it.type === 'GRADERT') as KafkaGradert
+        expect.soft(gradert).toBeDefined()
+        expect.soft(gradert.grad).toEqual(60)
+        expect.soft(gradert.reisetilskudd).toBe(false)
+
+        // arbeidsgiver
+        expect.soft(kafkaMessage.sykmelding.arbeidsgiver.type).toEqual('FLERE_ARBEIDSGIVERE')
+        expect.soft(kafkaMessage.sykmelding.arbeidsgiver.navn).toEqual('Test Testere AS')
+        expect
+            .soft(kafkaMessage.sykmelding.arbeidsgiver.meldingTilArbeidsgiver)
+            .toEqual('Dette er en melding til arbeidsgiver')
+
+        // tilbakedatering
+        expect.soft(kafkaMessage.sykmelding.tilbakedatering).not.toBeNull()
+        expect.soft(kafkaMessage.sykmelding.tilbakedatering?.begrunnelse).toEqual('Vært i koma')
+        expect.soft(kafkaMessage.sykmelding.tilbakedatering?.kontaktDato).toBeDefined()
+
+        // bistandNav (melding til Nav)
+        expect.soft(kafkaMessage.sykmelding.bistandNav).not.toBeNull()
+        expect.soft(kafkaMessage.sykmelding.bistandNav?.beskrivBistand).toEqual('Dette er en melding til Nav')
+
+        // utdypendeSporsmal - all 11 entries (MEDISINSK_OPPSUMMERING and UTFORDRINGER_MED_ARBEID are shared by multiple fields)
+        const utdypendeSporsmal = kafkaMessage.sykmelding.utdypendeSporsmal
+        expect.soft(utdypendeSporsmal).toBeDefined()
+        expect.soft(utdypendeSporsmal).toHaveLength(11)
+
+        // Unique types
+        expect
+            .soft(utdypendeSporsmal?.find((it) => it.type === 'UTFORDRINGER_MED_GRADERT_ARBEID')?.svar)
+            .toEqual('Kan ikke sitte lenge')
+        expect
+            .soft(utdypendeSporsmal?.find((it) => it.type === 'HENSYN_PA_ARBEIDSPLASSEN')?.svar)
+            .toEqual('Trenger ro og hvile')
+        expect
+            .soft(utdypendeSporsmal?.find((it) => it.type === 'BEHANDLING_OG_FREMTIDIG_ARBEID')?.svar)
+            .toEqual('Behandling pågår')
+        expect
+            .soft(utdypendeSporsmal?.find((it) => it.type === 'UAVKLARTE_FORHOLD')?.svar)
+            .toEqual('Uavklarte sosiale forhold')
+        expect
+            .soft(utdypendeSporsmal?.find((it) => it.type === 'FORVENTET_HELSETILSTAND_UTVIKLING')?.svar)
+            .toEqual('Forventet bedring innen tre måneder')
+        expect
+            .soft(utdypendeSporsmal?.find((it) => it.type === 'MEDISINSKE_HENSYN')?.svar)
+            .toEqual('Må unngå støy og stress')
+
+        const medisinskOppsummeringer = utdypendeSporsmal
+            ?.filter((it) => it.type === 'MEDISINSK_OPPSUMMERING')
+            .map((it) => it.svar)
+        expect.soft(medisinskOppsummeringer).toHaveLength(3)
+        expect.soft(medisinskOppsummeringer).toContain('Pasienten har influensa')
+        expect.soft(medisinskOppsummeringer).toContain('Sykdommen har forverret seg')
+        expect.soft(medisinskOppsummeringer).toContain('Medisinsk status er uendret')
+
+        const utfordringerMedArbeidEntries = utdypendeSporsmal
+            ?.filter((it) => it.type === 'UTFORDRINGER_MED_ARBEID')
+            .map((it) => it.svar)
+        expect.soft(utfordringerMedArbeidEntries).toHaveLength(2)
+        expect.soft(utfordringerMedArbeidEntries).toContain('Kan ikke utføre arbeidsoppgaver')
+        expect.soft(utfordringerMedArbeidEntries).toContain('Pasienten kan mestre noe arbeid')
     }, 10_000)
 
     it('GET /sykmelding/<id> should fetch correctly', async () => {
@@ -398,9 +517,3 @@ const createFullOpprettSykmeldingPayload = (
         ...valueOverrides,
     },
 })
-
-export type KafkaUtdypendeSporsmal = {
-    svar: string
-    type: string
-    skjermetForArbeidsgiver: boolean
-}
