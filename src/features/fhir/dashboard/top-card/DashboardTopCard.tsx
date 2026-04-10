@@ -38,12 +38,15 @@ function DashboardTopCard({ className }: { className?: string }): ReactElement {
             }
             className={cn(className)}
         >
-            <div className="flex flex-col flex-wrap ax-md:flex-row gap-3">
-                <StartSykmelding />
-                <div className="w-1 mt-2 mb-2 mx-2 ax-lg:mx-8 bg-ax-bg-neutral-soft shrink-0 self-stretch hidden ax-md:block"></div>
+            <div
+                className={cn(
+                    'grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5 space-x-0 divide-ax-bg-neutral-soft',
+                )}
+            >
+                <StartSykmelding className="col-start-1 row-start-1" />
+                <div className="col-start-1 row-start-1 justify-self-end w-1 mt-2 mb-2 mx-2 ax-lg:mx-8 bg-ax-bg-neutral-soft shrink-0 self-stretch hidden ax-md:block" />
                 <PatientStats />
-                <div className="w-1 mt-2 mb-2 mx-2 ax-lg:mx-8 bg-ax-bg-neutral-soft shrink-0 self-stretch hidden ax-md:block"></div>
-                <InfoNySykmeldingCard />
+                <InfoNySykmeldingCard className="col-span-1 md:col-span-2 2xl:col-span-1" />
             </div>
         </DashboardCard>
     )
