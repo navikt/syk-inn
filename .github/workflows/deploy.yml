@@ -45,10 +45,9 @@ jobs:
       - uses: navikt/tsm-workflows/actions/yarn@main
         with:
           READER_TOKEN: ${{ secrets.READER_TOKEN }}
-      - uses: typst-community/setup-typst@v5
+      - uses: navikt/tsm-workflows/actions/typst@main
         with:
           typst-version: ${{ env.TYPST_VERSION }}
-      - run: cp $(which typst) ./typst-pdf/typst
       - run: yarn next typegen
       - name: Integration tests
         run: yarn test:integration
@@ -61,10 +60,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: typst-community/setup-typst@v5
+      - uses: navikt/tsm-workflows/actions/typst@main
         with:
           typst-version: ${{ env.TYPST_VERSION }}
-      - run: cp $(which typst) ./typst-pdf/typst
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
@@ -82,10 +80,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: typst-community/setup-typst@v5
+      - uses: navikt/tsm-workflows/actions/typst@main
         with:
           typst-version: ${{ env.TYPST_VERSION }}
-      - run: cp $(which typst) ./typst-pdf/typst
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
@@ -103,10 +100,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: typst-community/setup-typst@v5
+      - uses: navikt/tsm-workflows/actions/typst@main
         with:
           typst-version: ${{ env.TYPST_VERSION }}
-      - run: cp $(which typst) ./typst-pdf/typst
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
@@ -207,10 +203,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: typst-community/setup-typst@v5
+      - uses: navikt/tsm-workflows/actions/typst@main
         with:
           typst-version: ${{ env.TYPST_VERSION }}
-      - run: cp $(which typst) ./typst-pdf/typst
       - uses: navikt/tsm-workflows/actions/playwright/build@main
         id: playwright-build
         with:
