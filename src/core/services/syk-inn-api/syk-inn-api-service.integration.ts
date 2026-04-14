@@ -49,8 +49,7 @@ describe('SykInnApi integration', () => {
     it('POST /sykmelding/verify should be able to verify with all values', async () => {
         const opprettResult = await sykInnApiService.verifySykmelding(createFullOpprettSykmeldingPayload())
 
-        // If verify is OK, it returns true
-        expect(opprettResult).toBe(true)
+        expect(R.prop(opprettResult, 'status')).toBe('OK')
     })
 
     it('POST /sykmelding/verify should inform that patient does not exist', async () => {
@@ -60,7 +59,7 @@ describe('SykInnApi integration', () => {
             }),
         )
 
-        if (typeof opprettResult === 'boolean') {
+        if ('status' in opprettResult && opprettResult.status === 'OK') {
             throw Error(`Expected person not to exist, but got OK`)
         }
 
@@ -146,7 +145,6 @@ describe('SykInnApi integration', () => {
         })
 
         const opprettResult = await sykInnApiService.opprettSykmelding(payload)
-
         if ('errorType' in opprettResult) {
             throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
         }
@@ -211,8 +209,8 @@ describe('SykInnApi integration', () => {
                 },
             },
         })
-        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
 
+        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
         if ('errorType' in opprettResult) {
             throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
         }

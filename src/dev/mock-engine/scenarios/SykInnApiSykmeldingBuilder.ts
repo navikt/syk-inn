@@ -75,6 +75,22 @@ export class SykmeldingBuilder {
         return this
     }
 
+    aktivitetIkkeMulig(
+        periode: Omit<SykInnApiAktivitetIkkeMulig, 'arbeidsrelatertArsak'> &
+            Partial<Pick<SykInnApiAktivitetIkkeMulig, 'arbeidsrelatertArsak'>>,
+    ): SykmeldingBuilder {
+        this._sykmelding.values.aktivitet.push({
+            ...periode,
+            arbeidsrelatertArsak: periode.arbeidsrelatertArsak ?? {
+                isArbeidsrelatertArsak: false,
+                arbeidsrelaterteArsaker: [],
+                annenArbeidsrelatertArsak: null,
+            },
+        })
+
+        return this
+    }
+
     utdypendeSporsmal(sporsmal: SykInnApiSykmelding['values']['utdypendeSporsmal']): SykmeldingBuilder {
         this._sykmelding.values.utdypendeSporsmal = sporsmal
 
