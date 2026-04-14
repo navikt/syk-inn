@@ -31,7 +31,6 @@ test('multiple bidiagnoser from server suggestion shall be used', () => {
                 // Default periode is GRADERT from Today
                 periode: { fom: dateOnly(new Date()), tom: '' },
                 aktivitet: { type: 'GRADERT', grad: null },
-                medisinskArsak: null,
                 arbeidsrelatertArsak: null,
             },
         ],

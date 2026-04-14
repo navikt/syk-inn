@@ -37,7 +37,6 @@ export function sykInnApiPayloadToResponse(
                             type: 'AKTIVITET_IKKE_MULIG',
                             fom: it.fom,
                             tom: it.tom,
-                            medisinskArsak: it.medisinskArsak,
                             arbeidsrelatertArsak: it.arbeidsrelatertArsak,
                         }
                     case 'GRADERT':

@@ -194,9 +194,6 @@ fragment Aktivitet on Aktivitet {
             arbeidsrelaterteArsaker
             annenArbeidsrelatertArsak
         }
-        medisinskArsak {
-            isMedisinskArsak
-        }
     }
     ... on Avventende {
         type

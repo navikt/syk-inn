@@ -28,9 +28,6 @@ const OpprettSykmeldingAktivitetSchema = z.discriminatedUnion('type', [
         type: z.literal('AKTIVITET_IKKE_MULIG'),
         fom: DateOnly,
         tom: DateOnly,
-        medisinskArsak: z.object({
-            isMedisinskArsak: z.boolean(),
-        }),
         arbeidsrelatertArsak: z.object({
             isArbeidsrelatertArsak: z.boolean(),
             arbeidsrelaterteArsaker: z.array(z.enum(['MANGLENDE_TILRETTELEGGING', 'ANNET'])),
