@@ -232,6 +232,9 @@ describe('SykInnApi integration', () => {
         // pasient
         expect.soft(kafkaMessage.sykmelding.pasient.fnr).toEqual('01010112345')
 
+        // behandler
+        expect.soft(kafkaMessage.sykmelding.sykmelder.helsepersonellKategori).toEqual('LEGE')
+
         // medisinskVurdering - diagnoses
         expect.soft(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.system).toEqual('ICPC2B')
         expect.soft(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.kode).toEqual('T99.0084')
