@@ -10,17 +10,13 @@ const BaseAktivitetSchema = z.object({
 export type SykInnApiAktivitetIkkeMulig = z.infer<typeof AktivitetIkkeMuligSchema>
 const AktivitetIkkeMuligSchema = BaseAktivitetSchema.extend({
     type: z.literal('AKTIVITET_IKKE_MULIG'),
-    // TODO: Mark as non-nullable once data is migrated in syk-inn-api
-    arbeidsrelatertArsak: z
-        .object({
-            isArbeidsrelatertArsak: z.boolean(),
-            arbeidsrelaterteArsaker: z.array(z.enum(['MANGLENDE_TILRETTELEGGING', 'ANNET'])),
-            annenArbeidsrelatertArsak: z.string().nullable(),
-        })
-        .optional(),
+    arbeidsrelatertArsak: z.object({
+        isArbeidsrelatertArsak: z.boolean(),
+        arbeidsrelaterteArsaker: z.array(z.enum(['MANGLENDE_TILRETTELEGGING', 'ANNET'])),
+        annenArbeidsrelatertArsak: z.string().nullable(),
+    }),
 })
 
-export type SykInnApiAktivitetGradert = z.infer<typeof AktivitetGradertSchema>
 const AktivitetGradertSchema = BaseAktivitetSchema.extend({
     type: z.literal('GRADERT'),
     grad: z.number(),
@@ -161,9 +157,9 @@ export const SykInnApiSykmeldingRedactedSchema = z
 
 export type SykInnApiRuleOutcome = z.infer<typeof SykInnApiRuleOutcomeSchema>
 export const SykInnApiRuleOutcomeSchema = z.object({
-    status: z.union([z.literal('INVALID'), z.literal('MANUAL_PROCESSING')]),
-    message: z.string(),
-    rule: z.string(),
+    status: z.union([z.literal('OK'), z.literal('PENDING'), z.literal('INVALID')]),
+    message: z.string().nullable(),
+    rule: z.string().nullable(),
 })
 
 export type SykInnApiPersonDoesNotExist = z.infer<typeof SykInnApiPersonDoesNotExistSchema>

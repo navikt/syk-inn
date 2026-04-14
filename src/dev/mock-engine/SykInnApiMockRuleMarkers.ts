@@ -19,7 +19,7 @@ export function createBrowserRuleOverrideHeaders(): { [MockRuleMarkers.header]: 
         return { [MockRuleMarkers.header]: 'person-not-found' }
     }
 
-    const status = type.startsWith('invalid') ? 'INVALID' : 'MANUAL_PROCESSING'
+    const status = type.startsWith('invalid') ? 'INVALID' : 'PENDING'
     const rule = type.endsWith('unexpected') ? 'OVERRIDEN_UNEXPECTED_DEMO_RULE' : 'ICPC_2_Z_DIAGNOSE'
 
     return { [MockRuleMarkers.header]: MockRuleMarkers.createMarker(rule, status) }

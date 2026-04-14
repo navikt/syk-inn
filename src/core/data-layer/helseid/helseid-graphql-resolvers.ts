@@ -2,7 +2,7 @@ import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 
-import { QueriedPerson, Resolvers } from '@resolvers'
+import { QueriedPerson, Resolvers, RuleOutcome } from '@resolvers'
 import { commonObjectResolvers, commonQueryResolvers } from '@data-layer/graphql/common-resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { commonTypeResolvers } from '@data-layer/graphql/common-type-resolvers'
@@ -167,16 +167,20 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             if (!force) {
                 // When not forcing, we first verify the sykmelding
                 const verifyResult = await sykInnApiService.verifySykmelding(payload)
-                if (typeof verifyResult === 'object' && 'errorType' in verifyResult) {
+                if ('errorType' in verifyResult) {
                     throw new GraphQLError('API_ERROR')
                 }
 
-                if (typeof verifyResult === 'object' && 'status' in verifyResult) {
+                if ('status' in verifyResult && verifyResult.status !== 'OK') {
                     // There are rule outcomes, short circuit and return them
-                    return verifyResult
+                    return {
+                        status: verifyResult.status,
+                        rule: verifyResult.rule ?? raise(`Rule outcome ${verifyResult.status} without rule`),
+                        message: verifyResult.message ?? raise(`Rule outcome ${verifyResult.status} without message`),
+                    } satisfies RuleOutcome
                 }
 
-                if (typeof verifyResult === 'object' && verifyResult.message === 'Person does not exist') {
+                if (verifyResult.message === 'Person does not exist') {
                     return { cause: 'PATIENT_NOT_FOUND_IN_PDL' }
                 }
 

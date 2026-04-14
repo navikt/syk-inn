@@ -25,7 +25,7 @@ export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gra
 
 export type AktivitetIkkeMulig = FomTom & {
     __typename?: 'AktivitetIkkeMulig'
-    arbeidsrelatertArsak?: Maybe<ArbeidsrelatertArsak>
+    arbeidsrelatertArsak: ArbeidsrelatertArsak
     fom: Scalars['DateOnly']['output']
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
@@ -374,7 +374,7 @@ export type RuleOutcome = {
     status: RuleOutcomeStatus
 }
 
-export type RuleOutcomeStatus = 'INVALID' | 'MANUAL_PROCESSING'
+export type RuleOutcomeStatus = 'INVALID' | 'PENDING'
 
 export type SporsmalSvar = {
     __typename?: 'SporsmalSvar'
@@ -822,7 +822,7 @@ export type AktivitetIkkeMuligResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['AktivitetIkkeMulig'] = ResolversParentTypes['AktivitetIkkeMulig'],
 > = {
-    arbeidsrelatertArsak?: Resolver<Maybe<ResolversTypes['ArbeidsrelatertArsak']>, ParentType, ContextType>
+    arbeidsrelatertArsak?: Resolver<ResolversTypes['ArbeidsrelatertArsak'], ParentType, ContextType>
     fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
