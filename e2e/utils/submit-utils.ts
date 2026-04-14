@@ -65,7 +65,6 @@ export const defaultAktivitetIkkeMulig = ({
     fom: fom,
     tom: tom,
     aktivitetIkkeMulig: aktivitetIkkeMulig || {
-        medisinskArsak: { isMedisinskArsak: true },
         arbeidsrelatertArsak: {
             isArbeidsrelatertArsak: false,
             arbeidsrelaterteArsaker: [],

@@ -126,9 +126,6 @@ function toPeriodeFromDraftPeriode(
                     ...periode.aktivitet,
                     grad: null,
                 },
-                medisinskArsak: {
-                    isMedisinskArsak: draft.medisinskArsak?.isMedisinskArsak ?? false,
-                },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: draft.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
                     arbeidsrelaterteArsaker: draft.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? null,
@@ -145,7 +142,6 @@ function toPeriodeFromDraftPeriode(
                     type: draft.type,
                     grad: draft.grad ?? null,
                 },
-                medisinskArsak: null,
                 arbeidsrelatertArsak: null,
             }
     }

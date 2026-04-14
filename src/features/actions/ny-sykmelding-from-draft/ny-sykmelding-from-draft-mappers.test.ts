@@ -21,13 +21,11 @@ test('draft values shall be used as default if provided', () => {
             {
                 periode: { fom: '2025-01-01', tom: '2025-01-15' },
                 aktivitet: { type: 'GRADERT', grad: '50' },
-                medisinskArsak: null,
                 arbeidsrelatertArsak: null,
             },
             {
                 periode: { fom: '2025-01-16', tom: '2025-01-31' },
                 aktivitet: { type: 'AKTIVITET_IKKE_MULIG', grad: null },
-                medisinskArsak: { isMedisinskArsak: false },
                 arbeidsrelatertArsak: {
                     annenArbeidsrelatertArsak: 'Ingen tilretteleggingsmuligheter',
                     arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING'],
@@ -82,13 +80,11 @@ test('form values shall have higher presedence than draft values', () => {
             {
                 periode: { fom: '2025-02-01', tom: '2025-02-14' },
                 aktivitet: { type: 'GRADERT', grad: '40' },
-                medisinskArsak: null,
                 arbeidsrelatertArsak: null,
             },
             {
                 periode: { fom: '2025-02-15', tom: '2025-02-28' },
                 aktivitet: { type: 'AKTIVITET_IKKE_MULIG', grad: null },
-                medisinskArsak: { isMedisinskArsak: true },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: true,
                     arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
@@ -98,7 +94,6 @@ test('form values shall have higher presedence than draft values', () => {
             {
                 periode: { fom: '2025-03-01', tom: '2025-03-10' },
                 aktivitet: { type: 'GRADERT', grad: '20' },
-                medisinskArsak: null,
                 arbeidsrelatertArsak: null,
             },
         ],
@@ -149,7 +144,6 @@ test('server suggestions shall be used if no draft or form values are provided',
                 // Default periode is GRADERT from Today
                 periode: { fom: dateOnly(new Date()), tom: '' },
                 aktivitet: { type: 'GRADERT', grad: null },
-                medisinskArsak: null,
                 arbeidsrelatertArsak: null,
             },
         ],
@@ -187,16 +181,12 @@ const fullDraft: DraftValues = {
             fom: '2025-01-01',
             tom: '2025-01-15',
             grad: '50',
-            medisinskArsak: null,
             arbeidsrelatertArsak: null,
         },
         {
             type: 'AKTIVITET_IKKE_MULIG',
             fom: '2025-01-16',
             tom: '2025-01-31',
-            medisinskArsak: {
-                isMedisinskArsak: false,
-            },
             arbeidsrelatertArsak: {
                 isArbeidsrelatertArsak: true,
                 arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING'],
@@ -231,7 +221,6 @@ const fullExistingStateValues: NySykmeldingFormState = {
             type: 'AKTIVITET_IKKE_MULIG',
             fom: '2025-02-15',
             tom: '2025-02-28',
-            medisinskArsak: { isMedisinskArsak: true },
             arbeidsrelatertArsak: {
                 isArbeidsrelatertArsak: true,
                 arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],

@@ -36,12 +36,7 @@ export type AktivitetField = {
 export type AktivitetsPeriode = {
     periode: PeriodeField
     aktivitet: AktivitetField
-    medisinskArsak: MedisinskArsakField | null
     arbeidsrelatertArsak: ArbeidsrelatertArsakField | null
-}
-
-export type MedisinskArsakField = {
-    isMedisinskArsak: boolean | null
 }
 
 export type ArbeidsrelatertArsakField = {
