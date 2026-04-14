@@ -89,7 +89,6 @@ input GradertInput {
 }
 
 input AktivitetIkkeMuligInput {
-    medisinskArsak: MedisinskArsakInput!
     arbeidsrelatertArsak: ArbeidsrelatertArsakInput!
 }
 
@@ -103,10 +102,6 @@ input AvventendeInput {
 
 input BehandlingsdagerInput {
     antallBehandlingsdager: Int!
-}
-
-input MedisinskArsakInput {
-    isMedisinskArsak: Boolean!
 }
 
 input ArbeidsrelatertArsakInput {

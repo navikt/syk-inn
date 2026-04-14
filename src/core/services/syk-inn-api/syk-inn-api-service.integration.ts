@@ -8,17 +8,15 @@ import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service
 import { OpprettSykmeldingMeta, OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
 import { initializeValkey } from '@lib/test/valkey'
 import { daysAgo, inDays, today } from '@lib/test/date-utils'
-import { consumeUntil, initializeConsumer, initializeKafka } from '@lib/test/syk-inn-kafka'
+import { consumeUntil, initializeConsumer, initializeKafka, initializeLocalKafka } from '@lib/test/syk-inn-kafka'
 import { AnnenFravarsgrunnArsak } from '@resolvers'
 import { questionTexts } from '@data-layer/common/questions'
 import { KafkaAktivitetIkkeMulig, KafkaGradert } from '@lib/test/syk-inn-kafka-types'
 
 /**
- * Does not work for kafka tests
- *
  * Can be manually toggled to run tests with local (already running syk-inn-api)
  */
-const useLocalSykInnApi = false
+const useLocalSykInnApi = process.env.LOCAL_SYK != null
 
 describe('SykInnApi integration', () => {
     let sykInnApi: StartedTestContainer
@@ -30,6 +28,7 @@ describe('SykInnApi integration', () => {
 
         if (useLocalSykInnApi) {
             process.env.LOCAL_SYK_INN_API_HOST = `localhost:8080`
+            kafka = await initializeLocalKafka()
         } else {
             const sykInnContainers = await initializeSykInnApi(false)
             sykInnApi = sykInnContainers.sykInnApi
@@ -253,7 +252,8 @@ describe('SykInnApi integration', () => {
             (it) => it.type === 'AKTIVITET_IKKE_MULIG',
         ) as KafkaAktivitetIkkeMulig
         expect.soft(aktivitetIkkeMulig).toBeDefined()
-        expect.soft(aktivitetIkkeMulig.medisinskArsak).not.toBeNull()
+        // Deprecated value, defaults to null on kafka
+        expect.soft(aktivitetIkkeMulig.medisinskArsak).toBeNull()
         expect.soft(aktivitetIkkeMulig.arbeidsrelatertArsak).not.toBeNull()
         expect.soft(aktivitetIkkeMulig.arbeidsrelatertArsak?.arsak).toContain('MANGLENDE_TILRETTELEGGING')
         expect.soft(aktivitetIkkeMulig.arbeidsrelatertArsak?.arsak).toContain('ANNET')
@@ -456,7 +456,6 @@ const createFullOpprettSykmeldingPayload = (
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: today(),
                 tom: inDays(14),
-                medisinskArsak: { isMedisinskArsak: true },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: true,
                     arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],

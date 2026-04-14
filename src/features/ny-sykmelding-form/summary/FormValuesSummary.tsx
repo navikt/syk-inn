@@ -183,14 +183,8 @@ function AktivitetSummaryAnswer({
                 <BodyShort>{aktivitetDescription(aktivitet)}</BodyShort>
                 {aktivitet.type === 'AKTIVITET_IKKE_MULIG' && (
                     <>
-                        {[
-                            aktivitet.medisinskArsak.isMedisinskArsak,
-                            aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak,
-                        ].some(R.isTruthy) && (
+                        {aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak && (
                             <List className="my-4">
-                                {aktivitet.medisinskArsak.isMedisinskArsak && (
-                                    <List.Item>Medisinske årsaker forhindrer arbeidsaktivitet</List.Item>
-                                )}
                                 {aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak && (
                                     <List.Item>
                                         <BodyShort>Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet</BodyShort>

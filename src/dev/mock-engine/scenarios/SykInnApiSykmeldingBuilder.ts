@@ -99,7 +99,6 @@ export class SykmeldingBuilder {
     enkelAktivitet(relative: { offset: number; days: number } = { offset: 0, days: 7 }): SykmeldingBuilder {
         const aktivitet: Omit<SykInnApiAktivitetIkkeMulig, 'fom' | 'tom'> = {
             type: 'AKTIVITET_IKKE_MULIG',
-            medisinskArsak: { isMedisinskArsak: true },
             arbeidsrelatertArsak: {
                 isArbeidsrelatertArsak: false,
                 arbeidsrelaterteArsaker: [],

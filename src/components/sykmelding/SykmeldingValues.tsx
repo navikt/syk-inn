@@ -154,9 +154,6 @@ function SykmeldingAktivitetValues({ aktivitet }: { aktivitet: AktivitetFragment
                         <>
                             <BodyShort>100% sykmelding</BodyShort>
                             <ul className="list-disc pl-6">
-                                {it.medisinskArsak?.isMedisinskArsak && (
-                                    <li>Det er medisinske årsaker som forhindrer arbeidsrelatert aktivitet</li>
-                                )}
                                 {it.arbeidsrelatertArsak?.isArbeidsrelatertArsak && (
                                     <li>
                                         Det er arbeidsrelaterte årsaker som forhindrer arbeidsrelatert aktivitet

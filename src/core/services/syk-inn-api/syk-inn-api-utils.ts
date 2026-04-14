@@ -247,9 +247,6 @@ function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingA
             type: 'AKTIVITET_IKKE_MULIG',
             fom: aktivitet.fom,
             tom: aktivitet.tom,
-            medisinskArsak: {
-                isMedisinskArsak: aktivitet.aktivitetIkkeMulig.medisinskArsak?.isMedisinskArsak ?? false,
-            },
             arbeidsrelatertArsak: {
                 isArbeidsrelatertArsak:
                     aktivitet.aktivitetIkkeMulig.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
