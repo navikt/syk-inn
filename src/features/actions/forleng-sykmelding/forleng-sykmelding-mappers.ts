@@ -133,9 +133,6 @@ function forlengRedactedSykmelding(
                     type: 'AKTIVITET_IKKE_MULIG',
                     grad: null,
                 },
-                medisinskArsak: {
-                    isMedisinskArsak: true,
-                },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: false,
                     arbeidsrelaterteArsaker: null,
@@ -153,7 +150,6 @@ function forlengRedactedSykmelding(
                     type: 'GRADERT',
                     grad: null,
                 },
-                medisinskArsak: null,
                 arbeidsrelatertArsak: null,
             }
             break
@@ -173,7 +169,6 @@ function forlengRedactedSykmelding(
                     tom: null,
                 },
                 arbeidsrelatertArsak: null,
-                medisinskArsak: null,
             } satisfies AktivitetsPeriode
     }
 

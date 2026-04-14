@@ -6,10 +6,9 @@ import { SimpleReveal } from '@components/animation/Reveal'
 
 import ArsakerPicker from '../aktivitet/ArsakerPicker'
 import GradertGradPicker from '../aktivitet/GradertGradPicker'
-import { AktivitetIkkeMuligType, useController, useFormContext } from '../form/types'
+import { AktivitetIkkeMuligType, useController } from '../form/types'
 
 function AktivitetPicker({ index }: { index: number }): ReactElement {
-    const form = useFormContext()
     const aktivitetField = useController({
         name: `perioder.${index}.aktivitet.type`,
         defaultValue: 'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType,
@@ -40,9 +39,6 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
                 value={aktivitetField.field.value}
                 onChange={(event) => {
                     aktivitetField.field.onChange(event.target.value)
-                    if (event.target.value === 'AKTIVITET_IKKE_MULIG') {
-                        form.setValue(`perioder.${index}.medisinskArsak.isMedisinskArsak`, true)
-                    }
                 }}
             >
                 <option value={'GRADERT' satisfies AktivitetIkkeMuligType}>Kan være delvis i arbeid</option>

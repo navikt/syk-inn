@@ -21,6 +21,22 @@ export async function initializeKafka(container: StartedKafkaContainer): Promise
     return kafka
 }
 
+export async function initializeLocalKafka(): Promise<Kafka> {
+    const kafka = new Kafka({
+        clientId: 'syk-inn-test',
+        brokers: [`localhost:9092`],
+        logLevel: logLevel.ERROR,
+    })
+
+    const admin = kafka.admin()
+    await admin.connect()
+    await admin.createTopics({
+        topics: [{ topic: INPUT_TOPIC_NAME, numPartitions: 1 }],
+    })
+    await admin.disconnect()
+    return kafka
+}
+
 export async function initializeConsumer(kafka: Kafka): Promise<Consumer> {
     const consumer = kafka.consumer({ groupId: crypto.randomUUID() })
     await consumer.subscribe({ topic: INPUT_TOPIC_NAME, fromBeginning: true })

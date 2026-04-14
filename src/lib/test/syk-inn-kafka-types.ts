@@ -8,7 +8,7 @@ export type KafkaAktivitetIkkeMulig = {
     type: 'AKTIVITET_IKKE_MULIG'
     fom: string
     tom: string
-    medisinskArsak: { beskrivelse: string | null; arsak: string[] } | null
+    medisinskArsak: null
     arbeidsrelatertArsak: { beskrivelse: string | null; arsak: string[] } | null
 }
 

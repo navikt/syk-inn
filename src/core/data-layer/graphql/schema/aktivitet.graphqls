@@ -16,13 +16,7 @@ type AktivitetIkkeMulig implements FomTom {
     fom: DateOnly!
     tom: DateOnly!
     # TODO: Mark as non-nullable once data is migrated in syk-inn-api
-    medisinskArsak: MedisinskArsak
-    # TODO: Mark as non-nullable once data is migrated in syk-inn-api
     arbeidsrelatertArsak: ArbeidsrelatertArsak
-}
-
-type MedisinskArsak {
-    isMedisinskArsak: Boolean!
 }
 
 enum ArbeidsrelatertArsakType {

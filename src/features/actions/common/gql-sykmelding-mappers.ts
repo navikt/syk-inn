@@ -84,9 +84,6 @@ export function sykmeldingFragmentAktivitetToFormValue(
                     type: 'AKTIVITET_IKKE_MULIG',
                     grad: null,
                 },
-                medisinskArsak: {
-                    isMedisinskArsak: aktivitet.medisinskArsak?.isMedisinskArsak ?? false,
-                },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
                     arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? [],
@@ -104,7 +101,6 @@ export function sykmeldingFragmentAktivitetToFormValue(
                     type: 'GRADERT',
                     grad: aktivitet.grad.toFixed(0),
                 },
-                medisinskArsak: null,
                 arbeidsrelatertArsak: null,
             } satisfies AktivitetsPeriode
 
@@ -124,7 +120,6 @@ export function sykmeldingFragmentAktivitetToFormValue(
                     tom: null,
                 },
                 arbeidsrelatertArsak: null,
-                medisinskArsak: null,
             } satisfies AktivitetsPeriode
     }
 }

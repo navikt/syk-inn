@@ -87,10 +87,6 @@ function toPeriodeDetails(aktivitet: SykInnApiAktivitet): { text: string; items:
         case 'AKTIVITET_IKKE_MULIG':
             const details: { text: string; items: string[] }[] = []
 
-            if (aktivitet.medisinskArsak?.isMedisinskArsak == true) {
-                details.push({ text: 'Medisinske årsaker forhindrer arbeidsaktivitet', items: [] })
-            }
-
             if (aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak == true) {
                 details.push({
                     text: 'Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet',

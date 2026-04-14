@@ -99,10 +99,6 @@ function toDuplisertRedactedAktivitet(
                     type: 'AKTIVITET_IKKE_MULIG',
                     grad: null,
                 },
-                medisinskArsak: {
-                    // Default value used in form
-                    isMedisinskArsak: true,
-                },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: false,
                     arbeidsrelaterteArsaker: null,
@@ -119,7 +115,6 @@ function toDuplisertRedactedAktivitet(
                     type: 'GRADERT',
                     grad: null,
                 },
-                medisinskArsak: null,
                 arbeidsrelatertArsak: null,
             }
         case 'AVVENTENDE':

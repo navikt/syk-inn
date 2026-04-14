@@ -27,14 +27,12 @@ export type AktivitetIkkeMulig = FomTom & {
     __typename?: 'AktivitetIkkeMulig'
     arbeidsrelatertArsak?: Maybe<ArbeidsrelatertArsak>
     fom: Scalars['DateOnly']['output']
-    medisinskArsak?: Maybe<MedisinskArsak>
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
 }
 
 export type AktivitetIkkeMuligInput = {
     arbeidsrelatertArsak: ArbeidsrelatertArsakInput
-    medisinskArsak: MedisinskArsakInput
 }
 
 export type AktivitetRedacted = FomTom & {
@@ -220,15 +218,6 @@ export type Konsultasjon = {
     __typename?: 'Konsultasjon'
     diagnoser?: Maybe<Array<Diagnose>>
     hasRequestedAccessToSykmeldinger?: Maybe<Scalars['Boolean']['output']>
-}
-
-export type MedisinskArsak = {
-    __typename?: 'MedisinskArsak'
-    isMedisinskArsak: Scalars['Boolean']['output']
-}
-
-export type MedisinskArsakInput = {
-    isMedisinskArsak: Scalars['Boolean']['input']
 }
 
 export type Mutation = {
@@ -689,8 +678,6 @@ export type ResolversTypes = {
     Int: ResolverTypeWrapper<Scalars['Int']['output']>
     JSON: ResolverTypeWrapper<Scalars['JSON']['output']>
     Konsultasjon: ResolverTypeWrapper<Konsultasjon>
-    MedisinskArsak: ResolverTypeWrapper<MedisinskArsak>
-    MedisinskArsakInput: MedisinskArsakInput
     Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>
     OpprettSykmeldingDraft: ResolverTypeWrapper<OpprettSykmeldingDraft>
     OpprettSykmeldingInput: OpprettSykmeldingInput
@@ -776,8 +763,6 @@ export type ResolversParentTypes = {
     Int: Scalars['Int']['output']
     JSON: Scalars['JSON']['output']
     Konsultasjon: Konsultasjon
-    MedisinskArsak: MedisinskArsak
-    MedisinskArsakInput: MedisinskArsakInput
     Mutation: Record<PropertyKey, never>
     OpprettSykmeldingDraft: OpprettSykmeldingDraft
     OpprettSykmeldingInput: OpprettSykmeldingInput
@@ -839,7 +824,6 @@ export type AktivitetIkkeMuligResolvers<
 > = {
     arbeidsrelatertArsak?: Resolver<Maybe<ResolversTypes['ArbeidsrelatertArsak']>, ParentType, ContextType>
     fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
-    medisinskArsak?: Resolver<Maybe<ResolversTypes['MedisinskArsak']>, ParentType, ContextType>
     tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
@@ -962,13 +946,6 @@ export type KonsultasjonResolvers<
 > = {
     diagnoser?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
     hasRequestedAccessToSykmeldinger?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
-}
-
-export type MedisinskArsakResolvers<
-    ContextType = any,
-    ParentType extends ResolversParentTypes['MedisinskArsak'] = ResolversParentTypes['MedisinskArsak'],
-> = {
-    isMedisinskArsak?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
 }
 
 export type MutationResolvers<
@@ -1325,7 +1302,6 @@ export type Resolvers<ContextType = any> = {
     Gradert?: GradertResolvers<ContextType>
     JSON?: GraphQLScalarType
     Konsultasjon?: KonsultasjonResolvers<ContextType>
-    MedisinskArsak?: MedisinskArsakResolvers<ContextType>
     Mutation?: MutationResolvers<ContextType>
     OpprettSykmeldingDraft?: OpprettSykmeldingDraftResolvers<ContextType>
     OpprettetSykmelding?: OpprettetSykmeldingResolvers<ContextType>

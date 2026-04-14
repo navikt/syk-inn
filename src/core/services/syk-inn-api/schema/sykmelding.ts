@@ -11,12 +11,6 @@ export type SykInnApiAktivitetIkkeMulig = z.infer<typeof AktivitetIkkeMuligSchem
 const AktivitetIkkeMuligSchema = BaseAktivitetSchema.extend({
     type: z.literal('AKTIVITET_IKKE_MULIG'),
     // TODO: Mark as non-nullable once data is migrated in syk-inn-api
-    medisinskArsak: z
-        .object({
-            isMedisinskArsak: z.boolean(),
-        })
-        .optional(),
-    // TODO: Mark as non-nullable once data is migrated in syk-inn-api
     arbeidsrelatertArsak: z
         .object({
             isArbeidsrelatertArsak: z.boolean(),

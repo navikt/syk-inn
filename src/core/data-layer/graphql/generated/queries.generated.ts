@@ -25,14 +25,12 @@ export type AktivitetIkkeMulig = FomTom & {
     __typename: 'AktivitetIkkeMulig'
     arbeidsrelatertArsak: Maybe<ArbeidsrelatertArsak>
     fom: Scalars['DateOnly']['output']
-    medisinskArsak: Maybe<MedisinskArsak>
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
 }
 
 export type AktivitetIkkeMuligInput = {
     arbeidsrelatertArsak: ArbeidsrelatertArsakInput
-    medisinskArsak: MedisinskArsakInput
 }
 
 export type AktivitetRedacted = FomTom & {
@@ -218,15 +216,6 @@ export type Konsultasjon = {
     __typename: 'Konsultasjon'
     diagnoser: Maybe<Array<Diagnose>>
     hasRequestedAccessToSykmeldinger: Maybe<Scalars['Boolean']['output']>
-}
-
-export type MedisinskArsak = {
-    __typename: 'MedisinskArsak'
-    isMedisinskArsak: Scalars['Boolean']['output']
-}
-
-export type MedisinskArsakInput = {
-    isMedisinskArsak: Scalars['Boolean']['input']
 }
 
 export type Mutation = {
@@ -603,7 +592,6 @@ export type AllDashboardQuery = {
                                     arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
                                 } | null
-                                medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
                             }
                           | {
                                 __typename: 'Avventende'
@@ -734,7 +722,6 @@ export type AllDashboardQuery = {
                                     arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
                                 } | null
-                                medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
                             }
                           | {
                                 __typename: 'Avventende'
@@ -819,7 +806,6 @@ export type AllDashboardQuery = {
                                     arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
                                 } | null
-                                medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
                             }
                           | {
                                 __typename: 'Avventende'
@@ -950,7 +936,6 @@ export type AllDashboardQuery = {
                                     arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
                                 } | null
-                                medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
                             }
                           | {
                                 __typename: 'Avventende'
@@ -1176,7 +1161,6 @@ export type SykmeldingByIdQuery = {
                                 arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                 annenArbeidsrelatertArsak: string | null
                             } | null
-                            medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
                         }
                       | {
                             __typename: 'Avventende'
@@ -1302,7 +1286,6 @@ export type SykmeldingByIdQuery = {
                                 arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                 annenArbeidsrelatertArsak: string | null
                             } | null
-                            medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
                         }
                       | {
                             __typename: 'Avventende'
@@ -1390,7 +1373,6 @@ export type OpprettSykmeldingMutation = {
                                 arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                 annenArbeidsrelatertArsak: string | null
                             } | null
-                            medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
                         }
                       | {
                             __typename: 'Avventende'
@@ -1540,7 +1522,6 @@ export type SykmeldingFullFragment = {
                       arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
                   } | null
-                  medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
               }
             | {
                   __typename: 'Avventende'
@@ -1626,7 +1607,6 @@ export type SykmeldingLightFragment = {
                       arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
                   } | null
-                  medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
               }
             | {
                   __typename: 'Avventende'
@@ -1683,7 +1663,6 @@ type Sykmelding_SykmeldingFull_Fragment = {
                       arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
                   } | null
-                  medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
               }
             | {
                   __typename: 'Avventende'
@@ -1769,7 +1748,6 @@ type Sykmelding_SykmeldingLight_Fragment = {
                       arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
                   } | null
-                  medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
               }
             | {
                   __typename: 'Avventende'
@@ -1824,7 +1802,6 @@ type Aktivitet_AktivitetIkkeMulig_Fragment = {
         arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
         annenArbeidsrelatertArsak: string | null
     } | null
-    medisinskArsak: { __typename: 'MedisinskArsak'; isMedisinskArsak: boolean } | null
 }
 
 type Aktivitet_Avventende_Fragment = {
@@ -2096,16 +2073,6 @@ export const AktivitetFragmentDoc = {
                                                 kind: 'Field',
                                                 name: { kind: 'Name', value: 'annenArbeidsrelatertArsak' },
                                             },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'medisinskArsak' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
                                         ],
                                     },
                                 },
@@ -2511,16 +2478,6 @@ export const SykmeldingFullFragmentDoc = {
                                         ],
                                     },
                                 },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'medisinskArsak' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
-                                        ],
-                                    },
-                                },
                             ],
                         },
                     },
@@ -2701,16 +2658,6 @@ export const SykmeldingLightFragmentDoc = {
                                         ],
                                     },
                                 },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'medisinskArsak' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
-                                        ],
-                                    },
-                                },
                             ],
                         },
                     },
@@ -2826,16 +2773,6 @@ export const SykmeldingFragmentDoc = {
                                                 kind: 'Field',
                                                 name: { kind: 'Name', value: 'annenArbeidsrelatertArsak' },
                                             },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'medisinskArsak' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
                                         ],
                                     },
                                 },
@@ -3480,16 +3417,6 @@ export const AllDashboardDocument = {
                                                 kind: 'Field',
                                                 name: { kind: 'Name', value: 'annenArbeidsrelatertArsak' },
                                             },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'medisinskArsak' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
                                         ],
                                     },
                                 },
@@ -4573,16 +4500,6 @@ export const SykmeldingByIdDocument = {
                                         ],
                                     },
                                 },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'medisinskArsak' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
-                                        ],
-                                    },
-                                },
                             ],
                         },
                     },
@@ -5230,16 +5147,6 @@ export const OpprettSykmeldingDocument = {
                                                 kind: 'Field',
                                                 name: { kind: 'Name', value: 'annenArbeidsrelatertArsak' },
                                             },
-                                        ],
-                                    },
-                                },
-                                {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'medisinskArsak' },
-                                    selectionSet: {
-                                        kind: 'SelectionSet',
-                                        selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'isMedisinskArsak' } },
                                         ],
                                     },
                                 },
