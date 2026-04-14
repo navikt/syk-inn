@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 import { cookies } from 'next/headers'
 
-import { Behandler, QueriedPerson, Resolvers } from '@resolvers'
+import { Behandler, QueriedPerson, Resolvers, RuleOutcome } from '@resolvers'
 import { createSchema } from '@data-layer/graphql/create-schema'
 import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { fhirDiagnosisToRelevantDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
@@ -289,13 +289,17 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             if (!force) {
                 // When not forcing, we first verify the sykmelding
                 const verifyResult = await sykInnApiService.verifySykmelding(payload)
-                if (typeof verifyResult === 'object' && 'errorType' in verifyResult) {
+                if ('errorType' in verifyResult) {
                     throw new GraphQLError('API_ERROR')
                 }
 
-                if (typeof verifyResult === 'object' && 'status' in verifyResult) {
+                if ('status' in verifyResult && verifyResult.status !== 'OK') {
                     // There are rule outcomes, short circuit and return them
-                    return verifyResult
+                    return {
+                        status: verifyResult.status,
+                        rule: verifyResult.rule ?? raise(`Rule outcome ${verifyResult.status} without rule`),
+                        message: verifyResult.message ?? raise(`Rule outcome ${verifyResult.status} without message`),
+                    } satisfies RuleOutcome
                 }
 
                 if (typeof verifyResult === 'object' && verifyResult.message === 'Person does not exist') {

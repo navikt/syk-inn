@@ -1,6 +1,6 @@
 enum RuleOutcomeStatus {
+    PENDING
     INVALID
-    MANUAL_PROCESSING
 }
 
 type RuleOutcome {

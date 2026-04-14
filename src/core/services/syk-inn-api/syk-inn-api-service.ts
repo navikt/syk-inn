@@ -47,7 +47,7 @@ export const sykInnApiService = {
     },
     verifySykmelding: async (
         payload: OpprettSykmeldingPayload,
-    ): Promise<true | SykInnApiRuleOutcome | SykInnApiPersonDoesNotExist | ApiFetchErrors> => {
+    ): Promise<SykInnApiRuleOutcome | SykInnApiPersonDoesNotExist | ApiFetchErrors> => {
         if (shouldUseMockEngine()) {
             logger.warn(
                 `Running in ${bundledEnv.runtimeEnv}, faking rule execution for values: ${JSON.stringify(payload, null, 2)}`,
