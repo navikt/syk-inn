@@ -31,7 +31,11 @@
                         "name": "arbeidsrelatertArsak",
                         "description": null,
                         "args": [],
-                        "type": { "kind": "OBJECT", "name": "ArbeidsrelatertArsak", "ofType": null },
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "OBJECT", "name": "ArbeidsrelatertArsak", "ofType": null }
+                        },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
@@ -2279,12 +2283,7 @@
                 "interfaces": null,
                 "enumValues": [
                     { "name": "INVALID", "description": null, "isDeprecated": false, "deprecationReason": null },
-                    {
-                        "name": "MANUAL_PROCESSING",
-                        "description": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
+                    { "name": "PENDING", "description": null, "isDeprecated": false, "deprecationReason": null }
                 ],
                 "possibleTypes": null
             },

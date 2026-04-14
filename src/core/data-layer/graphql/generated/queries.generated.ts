@@ -23,7 +23,7 @@ export type Aktivitet = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gra
 
 export type AktivitetIkkeMulig = FomTom & {
     __typename: 'AktivitetIkkeMulig'
-    arbeidsrelatertArsak: Maybe<ArbeidsrelatertArsak>
+    arbeidsrelatertArsak: ArbeidsrelatertArsak
     fom: Scalars['DateOnly']['output']
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
@@ -372,7 +372,7 @@ export type RuleOutcome = {
     status: RuleOutcomeStatus
 }
 
-export type RuleOutcomeStatus = 'INVALID' | 'MANUAL_PROCESSING'
+export type RuleOutcomeStatus = 'INVALID' | 'PENDING'
 
 export type SporsmalSvar = {
     __typename: 'SporsmalSvar'
@@ -591,7 +591,7 @@ export type AllDashboardQuery = {
                                     isArbeidsrelatertArsak: boolean
                                     arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
-                                } | null
+                                }
                             }
                           | {
                                 __typename: 'Avventende'
@@ -721,7 +721,7 @@ export type AllDashboardQuery = {
                                     isArbeidsrelatertArsak: boolean
                                     arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
-                                } | null
+                                }
                             }
                           | {
                                 __typename: 'Avventende'
@@ -805,7 +805,7 @@ export type AllDashboardQuery = {
                                     isArbeidsrelatertArsak: boolean
                                     arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
-                                } | null
+                                }
                             }
                           | {
                                 __typename: 'Avventende'
@@ -935,7 +935,7 @@ export type AllDashboardQuery = {
                                     isArbeidsrelatertArsak: boolean
                                     arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
-                                } | null
+                                }
                             }
                           | {
                                 __typename: 'Avventende'
@@ -1160,7 +1160,7 @@ export type SykmeldingByIdQuery = {
                                 isArbeidsrelatertArsak: boolean
                                 arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                 annenArbeidsrelatertArsak: string | null
-                            } | null
+                            }
                         }
                       | {
                             __typename: 'Avventende'
@@ -1285,7 +1285,7 @@ export type SykmeldingByIdQuery = {
                                 isArbeidsrelatertArsak: boolean
                                 arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                 annenArbeidsrelatertArsak: string | null
-                            } | null
+                            }
                         }
                       | {
                             __typename: 'Avventende'
@@ -1372,7 +1372,7 @@ export type OpprettSykmeldingMutation = {
                                 isArbeidsrelatertArsak: boolean
                                 arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                                 annenArbeidsrelatertArsak: string | null
-                            } | null
+                            }
                         }
                       | {
                             __typename: 'Avventende'
@@ -1521,7 +1521,7 @@ export type SykmeldingFullFragment = {
                       isArbeidsrelatertArsak: boolean
                       arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
-                  } | null
+                  }
               }
             | {
                   __typename: 'Avventende'
@@ -1606,7 +1606,7 @@ export type SykmeldingLightFragment = {
                       isArbeidsrelatertArsak: boolean
                       arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
-                  } | null
+                  }
               }
             | {
                   __typename: 'Avventende'
@@ -1662,7 +1662,7 @@ type Sykmelding_SykmeldingFull_Fragment = {
                       isArbeidsrelatertArsak: boolean
                       arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
-                  } | null
+                  }
               }
             | {
                   __typename: 'Avventende'
@@ -1747,7 +1747,7 @@ type Sykmelding_SykmeldingLight_Fragment = {
                       isArbeidsrelatertArsak: boolean
                       arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
-                  } | null
+                  }
               }
             | {
                   __typename: 'Avventende'
@@ -1801,7 +1801,7 @@ type Aktivitet_AktivitetIkkeMulig_Fragment = {
         isArbeidsrelatertArsak: boolean
         arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
         annenArbeidsrelatertArsak: string | null
-    } | null
+    }
 }
 
 type Aktivitet_Avventende_Fragment = {
