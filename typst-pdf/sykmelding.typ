@@ -15,7 +15,7 @@
 ]
 
 #let aktivitet(aktivitet) = [
-  #aktivitet.periode - #aktivitet.type
+  #strong(aktivitet.periode) - #aktivitet.type
   #for detail in aktivitet.details {
     [- #detail.text]
     if detail.items.len() > 0 {
@@ -105,22 +105,16 @@
 // Diagnoser
 #let diagnoser = (
   grid.cell(
-    info("Diagnose", diagnose(values.diagnose.hoved)),
-  ),
-  grid.cell(
-    info(
-      "Bidiagnoser",
-      [
-        #if values.diagnose.bi.len() == 0 [
-          Ingen bidiagnoser oppgitt
-        ] else [
-          #for bi in values.diagnose.bi {
-            [ #diagnose(bi)\ ]
-          }
-        ]
-      ],
-      empty: values.diagnose.bi.len() == 0,
-    ),
+    info("Diagnose", [
+      #diagnose(values.diagnose.hoved)
+      #if values.diagnose.bi.len() > 0 [
+        === Bidiagnoser
+        #for bi in values.diagnose.bi {
+          [ #diagnose(bi)\ ]
+        }
+      ]
+    ]),
+    colspan: 2,
   ),
 )
 
