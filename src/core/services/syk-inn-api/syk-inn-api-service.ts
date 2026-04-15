@@ -112,31 +112,4 @@ export const sykInnApiService = {
             responseSchema: z.array(z.union([SykInnApiSykmeldingSchema, SykInnApiSykmeldingRedactedSchema])),
         })
     },
-    getSykmeldingPdf: async (
-        sykmeldingId: string,
-        hpr: string,
-    ): Promise<ArrayBuffer | ApiFetchErrors<'SYKMELDING_PDF_FORBIDDEN'>> => {
-        if (shouldUseMockEngine()) {
-            logger.warn(`Running in ${bundledEnv.runtimeEnv}, returning mocked PDF`)
-
-            const mockEngine = await mockEngineForSession()
-            return mockEngine.sykInnApi.getPdf()
-        }
-
-        return await fetchInternalAPI({
-            api: 'syk-inn-api',
-            path: `/api/sykmelding/${sykmeldingId}/pdf`,
-            method: 'GET',
-            headers: {
-                Accept: 'application/pdf',
-                HPR: hpr,
-            },
-            responseSchema: 'ArrayBuffer',
-            onApiError: (response) => {
-                if (response.status === 403) {
-                    return 'SYKMELDING_PDF_FORBIDDEN'
-                }
-            },
-        })
-    },
 }

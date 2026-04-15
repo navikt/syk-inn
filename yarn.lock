@@ -2457,15 +2457,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@navikt/next-api-proxy@npm:^5.0.2":
-  version: 5.0.2
-  resolution: "@navikt/next-api-proxy@npm:5.0.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-api-proxy%2F5.0.2%2Fb500c8a7e19829b6c84eaee2afc219f818363a9d"
-  peerDependencies:
-    next: 14 || 15 || 16
-  checksum: 10c0/6bf716aee2b4e765c4a1f4a01de6cd569cb140eaf453dcd952e7e46cb96548289c6c7725bca89dc376e1ce0d85a76798c139ab76849aeacfa082a4816ad65532
-  languageName: node
-  linkType: hard
-
 "@navikt/next-logger@npm:^5.0.0":
   version: 5.0.0
   resolution: "@navikt/next-logger@npm:5.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F5.0.0%2F510dccac519d1227515e4c8a8268570d90305b3e"
@@ -12240,7 +12231,6 @@ __metadata:
     "@navikt/ds-tailwind": "npm:^8.9.1"
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/helseid-mock-server": "workspace:*"
-    "@navikt/next-api-proxy": "npm:^5.0.2"
     "@navikt/next-logger": "npm:^5.0.0"
     "@navikt/pino-logger": "npm:^5.0.0"
     "@navikt/smart-on-fhir": "npm:1.5.25"

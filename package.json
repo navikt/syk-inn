@@ -45,7 +45,6 @@
         "@navikt/ds-tailwind": "^8.9.1",
         "@navikt/fhir-mock-server": "workspace:*",
         "@navikt/helseid-mock-server": "workspace:*",
-        "@navikt/next-api-proxy": "^5.0.2",
         "@navikt/next-logger": "^5.0.0",
         "@navikt/pino-logger": "^5.0.0",
         "@navikt/smart-on-fhir": "1.5.25",

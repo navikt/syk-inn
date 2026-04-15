@@ -418,40 +418,6 @@ describe('SykInnApi integration', () => {
         expect(onlyNew[0].kind).toEqual('full')
         expect(onlyNew[1].kind).toEqual('redacted')
     })
-
-    it('GET /sykmelding/<id>/pdf should get PDF', async () => {
-        const payload = createFullOpprettSykmeldingPayload()
-        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
-
-        if ('errorType' in opprettResult) {
-            throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
-        }
-
-        const pdf = await sykInnApiService.getSykmeldingPdf(opprettResult.sykmeldingId, payload.meta.sykmelderHpr)
-
-        if ('errorType' in pdf) {
-            throw Error(`Fetch PDF by ID failed, expected OK but had error: ${pdf.errorType}`)
-        }
-
-        expect(pdf.byteLength).toBeGreaterThan(1000)
-    }, 10_000)
-
-    it('GET /sykmelding/<id>/pdf not get PDF that does not belong to HPR', async () => {
-        const payload = createFullOpprettSykmeldingPayload()
-        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
-
-        if ('errorType' in opprettResult) {
-            throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
-        }
-
-        const pdf = await sykInnApiService.getSykmeldingPdf(opprettResult.sykmeldingId, 'wrong-hpr')
-
-        if (!('errorType' in pdf)) {
-            throw Error(`Expected error when trying to fetch PDF with wrong HPR, but got PDF of size ${pdf.byteLength}`)
-        }
-
-        expect(pdf.errorType).toEqual('SYKMELDING_PDF_FORBIDDEN')
-    })
 })
 
 const createFullOpprettSykmeldingPayload = (

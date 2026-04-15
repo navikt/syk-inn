@@ -1,18 +1,15 @@
-import { proxyRouteHandler } from '@navikt/next-api-proxy'
 import { NextRequest } from 'next/server'
-import { logger } from '@navikt/next-logger'
 
-import { getApi } from '@core/services/api-fetcher'
-import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
 import { validateHelseIdToken } from '@data-layer/helseid/token/validate'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
+import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
+import { pdlApiService } from '@core/services/pdl/pdl-api-service'
+import { createTypstSykmelding } from '@core/pdf/pdf-service'
 
-/**
- * Proxies the PDF request to the syk-inn-api service, to the PDF is viewable from the users browser.
- */
-export async function GET(request: NextRequest, { params }: RouteContext<'/pdf/[sykmeldingId]'>): Promise<Response> {
-    return spanServerAsync('HelseID.pdf-proxy-route', async (span) => {
+export async function GET(_: NextRequest, { params }: RouteContext<'/pdf/[sykmeldingId]'>): Promise<Response> {
+    return spanServerAsync('HelseID.pdf-route', async (span) => {
+        const { sykmeldingId } = await params
         const validToken = await validateHelseIdToken()
         if (!validToken) {
             failSpan(span, 'Invalid or missing HelseID token')
@@ -25,41 +22,32 @@ export async function GET(request: NextRequest, { params }: RouteContext<'/pdf/[
             return new Response('Internal server error', { status: 500 })
         }
 
-        request.headers.set('HPR', behandler.hpr)
-
-        if (shouldUseMockEngine()) {
-            const mockEngine = await mockEngineForSession()
-
-            return new Response(mockEngine.sykInnApi.getPdf(), {
-                headers: { 'Content-Type': 'application/pdf' },
-                status: 200,
-            })
-        }
-
-        const api = await getApi('syk-inn-api')
-        if ('errorType' in api) {
-            logger.error(`Failed to fetch 'syk-inn-api' configuration: ${api.errorType}`)
+        const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, behandler?.hpr)
+        if ('errorType' in sykmelding) {
+            failSpan(span, `Failed to get sykmelding: ${sykmelding.errorType}`)
             return new Response('Internal server error', { status: 500 })
         }
 
-        const proxyOptions = api.host.includes('localhost')
-            ? {
-                  hostname: api.host.split(':')[0],
-                  port: api.host.split(':')[1],
-              }
-            : {
-                  hostname: api.host,
-              }
+        if (sykmelding.kind === 'redacted') {
+            failSpan(span, `Sykmelding is redacted, cannot generate PDF`)
+            return new Response('Internal server error', { status: 500 })
+        }
 
-        const response = await proxyRouteHandler(request, {
-            ...proxyOptions,
-            path: `/api/sykmelding/${(await params).sykmeldingId}/pdf`,
-            bearerToken: api.token,
-            https: false,
+        const pdlPerson = await pdlApiService.getPdlPerson(sykmelding.meta.pasientIdent)
+        if ('errorType' in pdlPerson) {
+            failSpan(span, `Failed to fetch PDL person: ${pdlPerson.errorType}`)
+            return new Response('Internal server error', { status: 500 })
+        }
+
+        const pdf = await createTypstSykmelding(sykmelding, pdlPerson)
+        if (!pdf.ok) {
+            failSpan(span, `Failed to generate PDF: ${pdf.error}`)
+            return new Response('Internal server error', { status: 500 })
+        }
+
+        return new Response(pdf.pdf, {
+            headers: { 'Content-Type': 'application/pdf' },
+            status: 200,
         })
-
-        response.headers.set('X-Frame-Options', 'SAMEORIGIN')
-
-        return response
     })
 }

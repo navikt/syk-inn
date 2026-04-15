@@ -6,7 +6,8 @@ import { logger } from '@navikt/next-logger'
 import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 import { getFlag, UnleashClient } from '@core/toggles/unleash'
-import { generatePdf } from '@data-layer/fhir/write/pdf-service'
+import { createTypstSykmelding } from '@core/pdf/pdf-service'
+import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 
 import { sykmeldingToDocumentReference } from './mappers/document-reference'
 import { sykmeldingToQuestionnaireResponse } from './mappers/questionnaire-response'
@@ -21,20 +22,29 @@ type FhirWriteOutcomes =
 
 export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
     ({
-        writeDocumentReference: async (sykmelding: SykInnApiSykmelding, hpr: string): Promise<FhirWriteOutcomes> => {
+        writeDocumentReference: async (sykmelding: SykInnApiSykmelding): Promise<FhirWriteOutcomes> => {
             return spanServerAsync('FhirWriteService.writeDocumentReference', async (span) => {
                 const sykmeldingId = sykmelding.sykmeldingId
 
                 const alreadyExists = resourceAlreadyExists(client, { type: 'DocumentReference', id: sykmeldingId })
                 if ('error' in alreadyExists) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
 
-                const pdfBuffer = await generatePdf(sykmelding, hpr)
-                if ('error' in pdfBuffer) {
-                    failSpan(span, `Failed to generate PDF for DocumentReference(${sykmeldingId}): ${pdfBuffer.error}`)
+                const patient = await pdlApiService.getPdlPerson(sykmelding.meta.pasientIdent)
+                if ('errorType' in patient) {
+                    failSpan(
+                        span,
+                        `Failed to fetch PDL patient for DocumentReference ${sykmeldingId}: ${patient.errorType}`,
+                    )
                     return { error: 'UNABLE_TO_CREATE' }
                 }
 
-                const payload: FhirDocumentReference = sykmeldingToDocumentReference(sykmelding, pdfBuffer, {
+                const pdf = await createTypstSykmelding(sykmelding, patient)
+                if (!pdf.ok) {
+                    failSpan(span, `Failed to generate PDF for DocumentReference(${sykmeldingId}): ${pdf.error}`)
+                    return { error: 'UNABLE_TO_CREATE' }
+                }
+
+                const payload: FhirDocumentReference = sykmeldingToDocumentReference(sykmelding, pdf.pdf, {
                     encounterId: client.encounter.id,
                     patientId: client.patient.id,
                     practitionerId: client.user.id,

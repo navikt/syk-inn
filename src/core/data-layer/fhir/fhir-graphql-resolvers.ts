@@ -339,7 +339,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const writeService = fhirWriteService(client, await getUserToggles(hpr))
             const [documentReference] = await Promise.allSettled([
-                writeService.writeDocumentReference(sykmelding, hpr),
+                writeService.writeDocumentReference(sykmelding),
                 writeService.writeQuestionnaireResponse(sykmelding),
             ])
 

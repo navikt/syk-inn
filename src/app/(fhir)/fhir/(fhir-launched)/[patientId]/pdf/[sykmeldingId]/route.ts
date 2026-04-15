@@ -1,103 +1,78 @@
-import { proxyRouteHandler } from '@navikt/next-api-proxy'
 import { NextRequest } from 'next/server'
-import { logger } from '@navikt/next-logger'
 
-import { getApi } from '@core/services/api-fetcher'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
-import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { createTypstSykmelding } from '@core/pdf/pdf-service'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
+import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
+import { failSpan, spanServerAsync } from '@lib/otel/server'
 
-/**
- * Proxies the PDF request to the syk-inn-api service, to the PDF is viewable from the users browser.
- */
 export async function GET(
-    request: NextRequest,
+    _: NextRequest,
     { params }: RouteContext<'/fhir/[patientId]/pdf/[sykmeldingId]'>,
 ): Promise<Response> {
-    const { patientId, sykmeldingId } = await params
-    const client = await getReadyClient(patientId)
-    if ('error' in client) {
-        return new Response('Internal server error', { status: 500 })
-    }
-    const practitioner = await client.user.request()
-    if ('error' in practitioner) {
-        return new Response('Internal server error', { status: 500 })
-    }
+    return spanServerAsync('FHIR.pdf-route', async (span) => {
+        const { patientId, sykmeldingId } = await params
+        const client = await getReadyClient(patientId)
+        if ('error' in client) {
+            failSpan(span, `Failed to initialize client: ${client.error}`)
+            return new Response('Internal server error', { status: 500 })
+        }
 
-    const hpr = getHpr(practitioner.identifier)
-    if (hpr == null) {
-        logger.error(`Missing HPR identifier in practitioner resource, FHIR ID: ${practitioner.id}`)
-        return new Response('Internal server error', { status: 500 })
-    }
+        const practitioner = await client.user.request()
+        if ('error' in practitioner) {
+            failSpan(span, `Failed to fetch practitioner: ${practitioner.error}`)
+            return new Response('Internal server error', { status: 500 })
+        }
 
-    request.headers.set('HPR', hpr)
+        const hpr = getHpr(practitioner.identifier)
+        if (hpr == null) {
+            failSpan(span, `Missing HPR identifier in practitioner resource`)
+            return new Response('Internal server error', { status: 500 })
+        }
 
-    if (request.nextUrl.searchParams.get('typst') != null) {
-        const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
+        const patient = await client.patient.request()
+        if ('error' in patient) {
+            failSpan(span, `Failed to fetch patient: ${patient.error}`)
+            return new Response('Internal server error', { status: 500 })
+        }
+
+        const patientIdent = getValidPatientIdent(patient.identifier)
+        if (patientIdent == null) {
+            failSpan(span, `Missing valid patient identifier in patient resource`)
+            return new Response('Internal server error', { status: 500 })
+        }
+
+        const [sykmelding, pdlPerson] = await Promise.all([
+            sykInnApiService.getSykmelding(sykmeldingId, hpr),
+            pdlApiService.getPdlPerson(patientIdent),
+        ])
+
         if ('errorType' in sykmelding) {
-            logger.error(`Failed to fetch sykmelding ${sykmeldingId}: ${sykmelding.errorType}`)
+            failSpan(span, `Failed to get sykmelding: ${sykmelding.errorType}`)
             return new Response('Internal server error', { status: 500 })
         }
+
         if (sykmelding.kind === 'redacted') {
-            logger.error(`Cannot generate PDF via Gotenberg for redacted sykmelding ${sykmeldingId}`)
+            failSpan(span, `Sykmelding is redacted, cannot generate PDF`)
             return new Response('Internal server error', { status: 500 })
         }
 
-        const person = await pdlApiService.getPdlPerson(sykmelding.meta.pasientIdent)
-        if ('errorType' in person) {
-            logger.error(
-                `Failed to fetch person with ident ${sykmelding.meta.pasientIdent} for PDF generation: ${person.errorType}`,
-            )
+        if ('errorType' in pdlPerson) {
+            failSpan(span, `Failed to fetch PDL person: ${pdlPerson.errorType}`)
             return new Response('Internal server error', { status: 500 })
         }
 
-        const body = await createTypstSykmelding(sykmelding, person)
-        if (!body.ok) {
-            logger.error(`Unable to generate PDF, typst says: ${body.error}`)
+        const pdf = await createTypstSykmelding(sykmelding, pdlPerson)
+        if (!pdf.ok) {
+            failSpan(span, `Failed to generate PDF: ${pdf.error}`)
             return new Response('Internal server error', { status: 500 })
         }
 
-        return new Response(body.pdf, {
+        return new Response(pdf.pdf, {
             headers: { 'Content-Type': 'application/pdf' },
             status: 200,
         })
-    }
-
-    if (shouldUseMockEngine()) {
-        const mockEngine = await mockEngineForSession()
-
-        return new Response(mockEngine.sykInnApi.getPdf(), {
-            headers: { 'Content-Type': 'application/pdf' },
-            status: 200,
-        })
-    }
-
-    const api = await getApi('syk-inn-api')
-    if ('errorType' in api) {
-        logger.error(`Failed to fetch 'syk-inn-api' configuration: ${api.errorType}`)
-        return new Response('Internal server error', { status: 500 })
-    }
-
-    const proxyOptions = api.host.includes('localhost')
-        ? {
-              hostname: api.host.split(':')[0],
-              port: api.host.split(':')[1],
-          }
-        : {
-              hostname: api.host,
-          }
-
-    const response = await proxyRouteHandler(request, {
-        ...proxyOptions,
-        path: `/api/sykmelding/${sykmeldingId}/pdf`,
-        bearerToken: api.token,
-        https: false,
     })
-
-    response.headers.set('X-Frame-Options', 'SAMEORIGIN')
-
-    return response
 }
