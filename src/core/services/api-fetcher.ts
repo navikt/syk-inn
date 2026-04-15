@@ -21,13 +21,7 @@ export type ApiFetchErrors<AdditionalErrors extends string = never> = {
     errorType: ErrorTypes | AdditionalErrors
 }
 
-type NonZodResponses = {
-    ArrayBuffer: ArrayBuffer
-}
-
-type ValidNonZodResponses = keyof NonZodResponses
-
-type FetchInternalAPIOptionsWithSchema<T extends z.ZodType | ValidNonZodResponses, AdditionalErrors> = {
+type FetchInternalAPIOptionsWithSchema<T extends z.ZodType, AdditionalErrors> = {
     api: keyof typeof internalApis
     path: `/${string}`
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD'
@@ -39,13 +33,9 @@ type FetchInternalAPIOptionsWithSchema<T extends z.ZodType | ValidNonZodResponse
 }
 
 export async function fetchInternalAPI<
-    Schema extends z.ZodType | ValidNonZodResponses,
+    Schema extends z.ZodType,
     AdditionalErrors extends string = never,
-    InferredReturnValue = Schema extends z.ZodType
-        ? z.infer<Schema>
-        : Schema extends ValidNonZodResponses
-          ? NonZodResponses[Schema]
-          : never,
+    InferredReturnValue = z.infer<Schema>,
 >({
     api,
     path,
@@ -96,15 +86,6 @@ export async function fetchInternalAPI<
             )
 
             return { errorType: 'API_CALL_FAILED' }
-        }
-
-        const isPdfResponse: boolean = response.headers.get('Content-Type')?.includes('application/pdf') ?? false
-        if (typeof responseSchema === 'string' && responseSchema === 'ArrayBuffer') {
-            return (await response.arrayBuffer()) as InferredReturnValue
-        } else if (isPdfResponse && responseSchema !== 'ArrayBuffer') {
-            const error = new Error(`Got PDF but expected response was not ArrayBuffer, for ${api}${path}, whats up?`)
-            failSpan(span, 'Invalid PDF', error)
-            throw error
         }
 
         const isJsonResponse: boolean = response.headers.get('Content-Type')?.includes('application/json') ?? false
