@@ -70,6 +70,7 @@ export function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding, person: P
                 tilNav: sykmelding.values.meldinger.tilNav,
                 tilArbeidsgiver: sykmelding.values.meldinger.tilArbeidsgiver,
             },
+            pasientenSkalSkjermes: sykmelding.values.pasientenSkalSkjermes,
             diagnose: {
                 hoved: sykmelding.values.hoveddiagnose,
                 bi: sykmelding.values.bidiagnoser ?? [],

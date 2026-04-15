@@ -156,6 +156,11 @@
   ),
 )
 
+// Pasienten skal skjermes
+#let pasientenSkalSkjermes = if values.pasientenSkalSkjermes {
+  (grid.cell(info("Pasienten er skjermet for medisinske opplysninger", [Ja]), colspan: 2),)
+}
+
 // Utdypende spørsmål
 #let utdypende = values.utdypendeSporsmal.map(it => grid.cell(info(it.text, it.answer), colspan: 2))
 
@@ -171,5 +176,6 @@
   ..annenFravarsgrunn,
   ..andreSporsmal,
   ..meldinger,
+  ..pasientenSkalSkjermes,
   ..utdypende,
 )

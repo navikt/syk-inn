@@ -39,6 +39,17 @@ export async function GET(): Promise<Response> {
                         arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
                     },
                 },
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: inDays(15),
+                    tom: inDays(30),
+                    medisinskArsak: { isMedisinskArsak: true },
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: true,
+                        annenArbeidsrelatertArsak: 'noe annet ikke så lang grunn egt',
+                        arbeidsrelaterteArsaker: ['ANNET'],
+                    },
+                },
             ],
             hoveddiagnose: {
                 system: 'ICPC2',

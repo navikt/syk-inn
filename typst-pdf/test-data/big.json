@@ -1,5 +1,5 @@
 {
-    "id": "54f29f5d-24a3-4bfb-9bac-c5ab7bfb423b",
+    "id": "db7c2d22-0a03-452f-a175-b162d2a8521c",
     "title": "Innsendt sykmelding",
     "author": "Kari Nordmann Lege (123456)",
     "description": "100% sykmelding, 15. - 29. april 2026",
@@ -29,6 +29,7 @@
             "tilNav": "Hei NAV, dette er en melding til dere",
             "tilArbeidsgiver": "Hei arbeidsgiver, dette er en melding til dere. Det er veldig viktig at dere leser denne meldingen, for det står nemlig veldig viktige ting her som dere må ta hensyn til når dere skal legge til rette for arbeidstakeren sin retur til jobb etter sykefraværet."
         },
+        "pasientenSkalSkjermes": true,
         "diagnose": {
             "hoved": {
                 "system": "ICPC2",
@@ -57,6 +58,15 @@
                     "Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet",
                     "Tilrettelegging ikke mulig",
                     "Annet: Jadda neida så det"
+                ]
+            },
+            {
+                "periode": "30. april - 15. mai 2026",
+                "type": "100% sykmeldt (aktivitet ikke mulig)",
+                "details": [
+                    "Medisinske årsaker forhindrer arbeidsaktivitet",
+                    "Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet",
+                    "Annet: noe annet ikke så lang grunn egt"
                 ]
             }
         ],

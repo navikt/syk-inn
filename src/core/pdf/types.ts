@@ -31,6 +31,7 @@ export type TypstPdfSykmelding = {
             tilNav: string | null
             tilArbeidsgiver: string | null
         }
+        pasientenSkalSkjermes: boolean
         diagnose: {
             hoved: Diagnose | null
             bi: Diagnose[]
