@@ -1,5 +1,7 @@
 import * as R from 'remeda'
 
+import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
+import { AnnenFravarsgrunnArsak } from '@queries'
 import type { SykInnApiAktivitet, SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
 import { spanServerAsync } from '@lib/otel/server'
 import { PdlPerson } from '@core/services/pdl/pdl-api-schema'
@@ -58,6 +60,10 @@ export function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding, person: P
             arbeidsgiver:
                 sykmelding.values.arbeidsgiver?.harFlere === true
                     ? sykmelding.values.arbeidsgiver.arbeidsgivernavn
+                    : null,
+            annenFravarsgrunn:
+                sykmelding.values.annenFravarsgrunn != null
+                    ? annenFravarsgrunnToText(sykmelding.values.annenFravarsgrunn as AnnenFravarsgrunnArsak)
                     : null,
             diagnose: {
                 hoved: sykmelding.values.hoveddiagnose,

@@ -1,5 +1,5 @@
 {
-    "id": "f3b88a43-e7fd-463d-8298-9720d74d5090",
+    "id": "d347fa42-136d-4072-ba1b-0115622f2935",
     "title": "Innsendt sykmelding",
     "author": "Kari Nordmann Lege (123456)",
     "description": "100% sykmelding, 15. - 29. april 2026",
@@ -20,6 +20,7 @@
     },
     "values": {
         "arbeidsgiver": "Default AS",
+        "annenFravarsgrunn": null,
         "diagnose": {
             "hoved": {
                 "system": "ICPC2",

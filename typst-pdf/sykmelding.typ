@@ -121,8 +121,12 @@
   ),
 )
 
-// Utdypende spørsmål
+// Annen lovfestet fraværsgrunn
+#let annenFravarsgrunn = if values.annenFravarsgrunn != none {
+  (grid.cell(info("Annen lovfestet fraværsgrunn", values.annenFravarsgrunn), colspan: 2),)
+}
 
+// Utdypende spørsmål
 #let utdypende = values.utdypendeSporsmal.map(it => grid.cell(info(it.text, it.answer), colspan: 2))
 
 
@@ -134,5 +138,6 @@
   ..arbeidsgiver,
   aktivitet,
   ..diagnoser,
+  ..annenFravarsgrunn,
   ..utdypende,
 )
