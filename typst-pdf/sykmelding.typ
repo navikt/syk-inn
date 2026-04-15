@@ -17,7 +17,10 @@
 #let aktivitet(aktivitet) = [
   #aktivitet.periode - #aktivitet.type
   #for detail in aktivitet.details {
-    [- #detail]
+    [- #detail.text]
+    if detail.items.len() > 0 {
+      list(indent: 1em, ..detail.items)
+    }
   }
 ]
 

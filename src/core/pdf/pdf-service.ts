@@ -92,7 +92,7 @@ export function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding, person: P
     }
 }
 
-function toPeriodeDetails(aktivitet: SykInnApiAktivitet): string[] {
+function toPeriodeDetails(aktivitet: SykInnApiAktivitet): { text: string; items: string[] }[] {
     switch (aktivitet.type) {
         case 'AVVENTENDE':
         case 'BEHANDLINGSDAGER':
@@ -100,27 +100,24 @@ function toPeriodeDetails(aktivitet: SykInnApiAktivitet): string[] {
         case 'GRADERT':
             return []
         case 'AKTIVITET_IKKE_MULIG':
-            const details: string[] = []
+            const details: { text: string; items: string[] }[] = []
 
             if (aktivitet.medisinskArsak?.isMedisinskArsak == true) {
-                details.push('Medisinske årsaker forhindrer arbeidsaktivitet')
+                details.push({ text: 'Medisinske årsaker forhindrer arbeidsaktivitet', items: [] })
             }
 
             if (aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak == true) {
-                details.push('Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet')
-
-                if (aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker.length > 0) {
-                    details.push(
-                        ...aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker.map((it) => {
-                            switch (it) {
-                                case 'TILRETTELEGGING_IKKE_MULIG':
-                                    return 'Tilrettelegging ikke mulig'
-                                case 'ANNET':
-                                    return `Annet: ${aktivitet.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? 'Grunn mangler'}`
-                            }
-                        }),
-                    )
-                }
+                details.push({
+                    text: 'Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet',
+                    items: aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker.map((it) => {
+                        switch (it) {
+                            case 'TILRETTELEGGING_IKKE_MULIG':
+                                return 'Tilrettelegging ikke mulig'
+                            case 'ANNET':
+                                return `Annet: ${aktivitet.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? 'Grunn mangler'}`
+                        }
+                    }),
+                })
             }
 
             return details

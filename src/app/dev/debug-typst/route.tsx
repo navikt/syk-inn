@@ -50,6 +50,13 @@ export async function GET(): Promise<Response> {
                         arbeidsrelaterteArsaker: ['ANNET'],
                     },
                 },
+                {
+                    type: 'GRADERT',
+                    fom: inDays(31),
+                    tom: inDays(45),
+                    grad: 69,
+                    reisetilskudd: false,
+                },
             ],
             hoveddiagnose: {
                 system: 'ICPC2',

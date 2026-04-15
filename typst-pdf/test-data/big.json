@@ -1,5 +1,5 @@
 {
-    "id": "db7c2d22-0a03-452f-a175-b162d2a8521c",
+    "id": "82c6b832-cd66-4626-b802-c168ce9fd3a3",
     "title": "Innsendt sykmelding",
     "author": "Kari Nordmann Lege (123456)",
     "description": "100% sykmelding, 15. - 29. april 2026",
@@ -54,20 +54,34 @@
                 "periode": "15. - 29. april 2026",
                 "type": "100% sykmeldt (aktivitet ikke mulig)",
                 "details": [
-                    "Medisinske årsaker forhindrer arbeidsaktivitet",
-                    "Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet",
-                    "Tilrettelegging ikke mulig",
-                    "Annet: Jadda neida så det"
+                    {
+                        "text": "Medisinske årsaker forhindrer arbeidsaktivitet",
+                        "items": []
+                    },
+                    {
+                        "text": "Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet",
+                        "items": ["Tilrettelegging ikke mulig", "Annet: Jadda neida så det"]
+                    }
                 ]
             },
             {
                 "periode": "30. april - 15. mai 2026",
                 "type": "100% sykmeldt (aktivitet ikke mulig)",
                 "details": [
-                    "Medisinske årsaker forhindrer arbeidsaktivitet",
-                    "Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet",
-                    "Annet: noe annet ikke så lang grunn egt"
+                    {
+                        "text": "Medisinske årsaker forhindrer arbeidsaktivitet",
+                        "items": []
+                    },
+                    {
+                        "text": "Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet",
+                        "items": ["Annet: noe annet ikke så lang grunn egt"]
+                    }
                 ]
+            },
+            {
+                "periode": "16. - 30. mai 2026",
+                "type": "69% sykmeldt, gradert sykmelding",
+                "details": []
             }
         ],
         "utdypendeSporsmal": [

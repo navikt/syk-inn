@@ -39,7 +39,7 @@ export type TypstPdfSykmelding = {
         aktivitet: {
             periode: string
             type: string
-            details: string[]
+            details: { text: string; items: string[] }[]
         }[]
         utdypendeSporsmal: {
             text: string
