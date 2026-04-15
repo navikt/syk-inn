@@ -136,6 +136,26 @@
   ),)
 }
 
+// Meldinger
+#let meldinger = (
+  grid.cell(
+    info(
+      "Melding til Nav",
+      if values.meldinger.tilNav != none { values.meldinger.tilNav } else [ Ingen melding til Nav ],
+      empty: values.meldinger.tilNav == none,
+    ),
+    colspan: 2,
+  ),
+  grid.cell(
+    info(
+      "Innspill til arbeidsgiver",
+      if values.meldinger.tilArbeidsgiver != none { values.meldinger.tilArbeidsgiver } else [ Ingen melding til arbeidsgiver ],
+      empty: values.meldinger.tilArbeidsgiver == none,
+    ),
+    colspan: 2,
+  ),
+)
+
 // Utdypende spørsmål
 #let utdypende = values.utdypendeSporsmal.map(it => grid.cell(info(it.text, it.answer), colspan: 2))
 
@@ -150,5 +170,6 @@
   ..diagnoser,
   ..annenFravarsgrunn,
   ..andreSporsmal,
+  ..meldinger,
   ..utdypende,
 )

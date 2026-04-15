@@ -1,5 +1,5 @@
 {
-    "id": "7f7bf1db-0809-4277-b9cf-d75ce79025a9",
+    "id": "54f29f5d-24a3-4bfb-9bac-c5ab7bfb423b",
     "title": "Innsendt sykmelding",
     "author": "Kari Nordmann Lege (123456)",
     "description": "100% sykmelding, 15. - 29. april 2026",
@@ -25,6 +25,10 @@
             "Sykmeldingen er svangerskapsrelatert",
             "Sykmeldingen er relatert til yrkesskade, skadedato: 8. april 2026"
         ],
+        "meldinger": {
+            "tilNav": "Hei NAV, dette er en melding til dere",
+            "tilArbeidsgiver": "Hei arbeidsgiver, dette er en melding til dere. Det er veldig viktig at dere leser denne meldingen, for det står nemlig veldig viktige ting her som dere må ta hensyn til når dere skal legge til rette for arbeidstakeren sin retur til jobb etter sykefraværet."
+        },
         "diagnose": {
             "hoved": {
                 "system": "ICPC2",

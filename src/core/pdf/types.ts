@@ -27,6 +27,10 @@ export type TypstPdfSykmelding = {
         arbeidsgiver: string | null
         annenFravarsgrunn: string | null
         andreSporsmal: string[] | null
+        meldinger: {
+            tilNav: string | null
+            tilArbeidsgiver: string | null
+        }
         diagnose: {
             hoved: Diagnose | null
             bi: Diagnose[]
