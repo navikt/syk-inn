@@ -84,6 +84,11 @@
   ),
 )
 
+// Arbeidsgiver
+#let arbeidsgiver = if values.arbeidsgiver != none {
+  (grid.cell(info("Arbeidsgiver", values.arbeidsgiver), colspan: 2),)
+}
+
 // Aktivitet
 #let aktivitet = grid.cell(
   info("Sykmeldingsperiode", [
@@ -126,6 +131,7 @@
   row-gutter: 26pt,
   gutter: 3pt,
   ..baseMeta,
+  ..arbeidsgiver,
   aktivitet,
   ..diagnoser,
   ..utdypende,

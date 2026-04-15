@@ -1,10 +1,10 @@
 {
-    "id": "ed7d4db0-013d-4291-9f9e-64cab83d71b3",
+    "id": "f3b88a43-e7fd-463d-8298-9720d74d5090",
     "title": "Innsendt sykmelding",
     "author": "Kari Nordmann Lege (123456)",
-    "description": "100% sykmelding, 19. - 26. januar 2026",
+    "description": "100% sykmelding, 15. - 29. april 2026",
     "meta": {
-        "mottatt": "19. januar 2026",
+        "mottatt": "15. april 2026",
         "behandler": {
             "hpr": "123456",
             "navn": "Kari Nordmann Lege"
@@ -19,42 +19,82 @@
         }
     },
     "values": {
+        "arbeidsgiver": "Default AS",
         "diagnose": {
             "hoved": {
                 "system": "ICPC2",
                 "code": "K24",
                 "text": "Eksempeldiagnose 1"
             },
-            "bi": []
+            "bi": [
+                {
+                    "system": "ICPC2",
+                    "code": "K25",
+                    "text": "Eksempeldiagnose 1"
+                },
+                {
+                    "system": "ICPC2",
+                    "code": "K26",
+                    "text": "Veldig lang deosuatheunstaeo hunsaoethu aeonstu aeonstuaeo sn"
+                }
+            ]
         },
         "aktivitet": [
             {
-                "periode": "19. - 26. januar 2026",
+                "periode": "15. - 29. april 2026",
                 "type": "100% sykmeldt (aktivitet ikke mulig)",
-                "details": ["Medisinske årsaker forhindrer arbeidsaktivitet"]
-            },
-            {
-                "periode": "27. januar - 10. februar 2026",
-                "type": "100% sykmeldt (aktivitet ikke mulig)",
-                "details": ["Medisinske årsaker forhindrer arbeidsaktivitet"]
+                "details": [
+                    "Medisinske årsaker forhindrer arbeidsaktivitet",
+                    "Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet",
+                    "Tilrettelegging ikke mulig",
+                    "Annet: Jadda neida så det"
+                ]
             }
         ],
         "utdypendeSporsmal": [
             {
+                "text": "Hva er den viktigste medisinske grunnen til at pasienten ikke kan være i arbeidsrelatert aktivitet eller gradert  arbeid nå?",
+                "answer": "Det er mange utfordringer med arbeid, for eksempel at det er veldig langt å reise til jobb, og at det er tunge løft på arbeidsplassen som gjør det vanskelig å komme tilbake til jobb."
+            },
+            {
+                "text": "Gi en kort medisinsk oppsummering relevant for sykefraværet (hovedsymptomer og relevante funn, samt behandling/plan)",
+                "answer": "Medisinsk oppsummering: Pasienten har en kronisk sykdom som gjør det vanskelig å være i arbeid, spesielt når det er mye stress på jobben. Det er viktig at pasienten får tilrettelegging på arbeidsplassen for å kunne komme tilbake til jobb."
+            },
+            {
+                "text": "Hvis arbeidsrelatert aktivitet skal prøves: er det medisinske hensyn eller begrensninger som bør legges til grunn? (ikke obligatorisk)",
+                "answer": "Pasienten trenger mulighet for hyppige pauser, redusert tempo i perioder med smerter og adgang til ergonomisk tilpasset arbeidsutstyr for a kunne sta i arbeid."
+            },
+            {
                 "text": "Gi en kort oppdatering på sykdomsutviklingen siden uke 7, med vekt på endringer i symptomer og funn som er relevante for det videre sykefraværet",
-                "answer": "Sykdomsutvikling"
+                "answer": "Tilstanden har utviklet seg gradvis de siste ukene med okende smerter og utmattelse. Det forventes variasjon fra dag til dag, men samlet sett bedring med riktig behandling og avlastning."
             },
             {
                 "text": "Beskriv kort hvilke utfordringer helsetilstanden gir for arbeidsdeltakelse nå. Oppgi også kort hva pasienten likevel kan mestre",
-                "answer": "Arbeidsrelaterte utfordringer"
+                "answer": "Arbeidet inneholder flere oppgaver med hoy konsentrasjon, tidspress og enkelte tunge arbeidsoperasjoner, noe som forverrer symptomene og gjor full jobbbelasting vanskelig akkurat na."
             },
             {
                 "text": "Beskriv pågående og planlagt utredning/behandling, og om dette forventes å påvirke muligheten for økt arbeidsdeltakelse fremover",
-                "answer": "Behandling og fremtidig arbeid"
+                "answer": "Pasienten folges opp med behandling og forventes gradvis a kunne gjenoppta flere arbeidsoppgaver. Det anbefales tett oppfolging og trinnvis opptrapping i arbeidstiden."
             },
             {
                 "text": "Er det forhold som fortsatt er uavklarte eller hindrer videre arbeidsdeltakelse, som Nav bør være kjent med i sin oppfølging?",
-                "answer": "Uavklarte forhold"
+                "answer": "Det er fortsatt noe usikkerhet knyttet til belastningstoleranse og hvor raskt pasienten vil respondere pa behandling, sa funksjonsniva ma vurderes fortlopende."
+            },
+            {
+                "text": "Gi en kort oppdatering på sykdomsutviklingen siden uke 17, med vekt på endringer i symptomer og funn som er relevante for det videre sykefraværet",
+                "answer": "Pasienten er medisinsk vurdert pa nytt og har fortsatt nedsatt funksjonsevne. Symptomtrykket er vedvarende, men det er ingen tegn til alvorlig forverring eller behov for innleggelse."
+            },
+            {
+                "text": "Hva kan pasienten realistisk sett mestre av arbeidsdeltakelse nå, og hvilke helserelaterte forhold begrenser dette?",
+                "answer": "Det vurderes som realistisk at pasienten kan mestre avgrensede og mindre belastende arbeidsoppgaver i redusert omfang, forutsatt god tilrettelegging og fleksibilitet i arbeidshverdagen."
+            },
+            {
+                "text": "Hvordan forventes helsetilstanden å utvikle seg de neste 3-6 månedene med tanke på mulighet for økt arbeidsdeltakelse?",
+                "answer": "Helsetilstanden forventes a bedre seg gradvis over de neste ukene, men forlopet er avhengig av at behandlingen fungerer og at arbeidsbelastningen tilpasses symptomnivaet."
+            },
+            {
+                "text": "Er det medisinske hensyn eller avklaringsbehov Nav bør kjenne til i videre oppfølging?",
+                "answer": "Det bor tas medisinske hensyn ved a unnga tunge loft, langvarig statisk belastning og hoyt stressniva. Pasienten har ogsa behov for forutsigbarhet og mulighet for restitusjon i lopet av dagen."
             }
         ]
     }

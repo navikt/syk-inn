@@ -24,6 +24,7 @@ export type TypstPdfSykmelding = {
         }
     }
     values: {
+        arbeidsgiver: string | null
         diagnose: {
             hoved: Diagnose | null
             bi: Diagnose[]

@@ -3,18 +3,126 @@ import fs from 'node:fs'
 import { logger } from '@navikt/next-logger'
 
 import { createTypstSykmelding, mapSykInnToPdfPayload } from '@core/pdf/pdf-service'
-import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { isLocal } from '@lib/env'
 import { TypstPdfSykmelding } from '@core/pdf/types'
+import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
+import { daysAgo, inDays, today } from '@lib/test/date-utils'
+import { questionTexts } from '@data-layer/common/questions'
 
 export async function GET(): Promise<Response> {
-    const chonkySykmelding = new SykmeldingBuilder({ offset: -70 })
-        .enkelAktivitet({ offset: 0, days: 7 })
-        .enkelAktivitet({ offset: 8, days: 14 })
-        .uke17Answered()
-        .build()
-
+    const chonkySykmelding: SykInnApiSykmelding = {
+        sykmeldingId: crypto.randomUUID(),
+        kind: 'full',
+        utfall: { result: 'OK', melding: null },
+        meta: {
+            mottatt: new Date().toISOString(),
+            legekontorOrgnr: '123456789',
+            legekontorTlf: '+47 123 45 678',
+            pasientIdent: '21037712323',
+            sykmelder: { hprNummer: '123456', fornavn: 'Kari', mellomnavn: 'Nordmann', etternavn: 'Lege' },
+        },
+        values: {
+            arbeidsgiver: {
+                harFlere: true,
+                arbeidsgivernavn: 'Default AS',
+            },
+            aktivitet: [
+                {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    fom: today(),
+                    tom: inDays(14),
+                    medisinskArsak: { isMedisinskArsak: true },
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: true,
+                        annenArbeidsrelatertArsak: 'Jadda neida så det',
+                        arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                    },
+                },
+            ],
+            hoveddiagnose: {
+                system: 'ICPC2',
+                code: 'K24',
+                text: 'Eksempeldiagnose 1',
+            },
+            bidiagnoser: [
+                {
+                    system: 'ICPC2',
+                    code: 'K25',
+                    text: 'Eksempeldiagnose 1',
+                },
+                {
+                    system: 'ICPC2',
+                    code: 'K26',
+                    text: 'Veldig lang deosuatheunstaeo hunsaoethu aeonstu aeonstuaeo sn',
+                },
+            ],
+            svangerskapsrelatert: false,
+            yrkesskade: {
+                yrkesskade: true,
+                skadedato: daysAgo(7),
+            },
+            tilbakedatering: {
+                startdato: daysAgo(30),
+                begrunnelse: 'Pasienten var så syk at hen ikke klarte å kontakte legekontoret før nå',
+            },
+            pasientenSkalSkjermes: true,
+            meldinger: {
+                tilNav: 'Hei NAV, dette er en melding til dere',
+                tilArbeidsgiver:
+                    'Hei arbeidsgiver, dette er en melding til dere. Det er veldig viktig at dere leser denne meldingen, for det står nemlig veldig viktige ting her som dere må ta hensyn til når dere skal legge til rette for arbeidstakeren sin retur til jobb etter sykefraværet.',
+            },
+            // deprecated
+            utdypendeSporsmal: null,
+            utdypendeSporsmalSvar: {
+                utfordringerMedArbeid: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
+                    svar: 'Det er mange utfordringer med arbeid, for eksempel at det er veldig langt å reise til jobb, og at det er tunge løft på arbeidsplassen som gjør det vanskelig å komme tilbake til jobb.',
+                },
+                medisinskOppsummering: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.medisinskOppsummering.label,
+                    svar: 'Medisinsk oppsummering: Pasienten har en kronisk sykdom som gjør det vanskelig å være i arbeid, spesielt når det er mye stress på jobben. Det er viktig at pasienten får tilrettelegging på arbeidsplassen for å kunne komme tilbake til jobb.',
+                },
+                hensynPaArbeidsplassen: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.label,
+                    svar: 'Pasienten trenger mulighet for hyppige pauser, redusert tempo i perioder med smerter og adgang til ergonomisk tilpasset arbeidsutstyr for a kunne sta i arbeid.',
+                },
+                sykdomsutvikling: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.sykdomsutvikling.label,
+                    svar: 'Tilstanden har utviklet seg gradvis de siste ukene med okende smerter og utmattelse. Det forventes variasjon fra dag til dag, men samlet sett bedring med riktig behandling og avlastning.',
+                },
+                arbeidsrelaterteUtfordringer: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.label,
+                    svar: 'Arbeidet inneholder flere oppgaver med hoy konsentrasjon, tidspress og enkelte tunge arbeidsoperasjoner, noe som forverrer symptomene og gjor full jobbbelasting vanskelig akkurat na.',
+                },
+                behandlingOgFremtidigArbeid: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.behandlingOgFremtidigArbeid.label,
+                    svar: 'Pasienten folges opp med behandling og forventes gradvis a kunne gjenoppta flere arbeidsoppgaver. Det anbefales tett oppfolging og trinnvis opptrapping i arbeidstiden.',
+                },
+                uavklarteForhold: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.uavklarteForhold.label,
+                    svar: 'Det er fortsatt noe usikkerhet knyttet til belastningstoleranse og hvor raskt pasienten vil respondere pa behandling, sa funksjonsniva ma vurderes fortlopende.',
+                },
+                oppdatertMedisinskStatus: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.oppdatertMedisinskStatus.label,
+                    svar: 'Pasienten er medisinsk vurdert pa nytt og har fortsatt nedsatt funksjonsevne. Symptomtrykket er vedvarende, men det er ingen tegn til alvorlig forverring eller behov for innleggelse.',
+                },
+                realistiskMestringArbeid: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.realistiskMestringArbeid.label,
+                    svar: 'Det vurderes som realistisk at pasienten kan mestre avgrensede og mindre belastende arbeidsoppgaver i redusert omfang, forutsatt god tilrettelegging og fleksibilitet i arbeidshverdagen.',
+                },
+                forventetHelsetilstandUtvikling: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.forventetHelsetilstandUtvikling.label,
+                    svar: 'Helsetilstanden forventes a bedre seg gradvis over de neste ukene, men forlopet er avhengig av at behandlingen fungerer og at arbeidsbelastningen tilpasses symptomnivaet.',
+                },
+                medisinskeHensyn: {
+                    sporsmalstekst: questionTexts.utdypendeSporsmal.medisinskeHensyn.label,
+                    svar: 'Det bor tas medisinske hensyn ved a unnga tunge loft, langvarig statisk belastning og hoyt stressniva. Pasienten har ogsa behov for forutsigbarhet og mulighet for restitusjon i lopet av dagen.',
+                },
+            },
+            annenFravarsgrunn: 'GODKJENT_HELSEINSTITUSJON',
+        },
+    }
     const mockPerson = await pdlApiService.getPdlPerson('12345678910')
     if ('errorType' in mockPerson) {
         logger.error(`Failed to fetch mock person: ${mockPerson.errorType}`)

@@ -55,6 +55,10 @@ export function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding, person: P
             },
         },
         values: {
+            arbeidsgiver:
+                sykmelding.values.arbeidsgiver?.harFlere === true
+                    ? sykmelding.values.arbeidsgiver.arbeidsgivernavn
+                    : null,
             diagnose: {
                 hoved: sykmelding.values.hoveddiagnose,
                 bi: sykmelding.values.bidiagnoser ?? [],
