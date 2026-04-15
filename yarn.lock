@@ -2466,21 +2466,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^4.5.2-20260217111611":
-  version: 4.5.2-20260217111611
-  resolution: "@navikt/next-logger@npm:4.5.2-20260217111611::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.5.2-20260217111611%2F1e9838264dc5665b1e19f801013bdaf591dedf94"
+"@navikt/next-logger@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@navikt/next-logger@npm:5.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F5.0.0%2F510dccac519d1227515e4c8a8268570d90305b3e"
   dependencies:
-    "@navikt/pino-logger": "npm:^4.5.2-20260217111611"
+    "@navikt/pino-logger": "npm:^5.0.0"
   peerDependencies:
     next: 14 || 15 || 16
     pino: 8 || 9 || 10
-  checksum: 10c0/69d4364b90b5e697d849f02d29a4a7a51bbe7a6ccce6d521430904b50f7b244964b1360b3ccfbcca0667a29e188971a34b76fe0e801847b561dcb8fba801a5e6
+  checksum: 10c0/b27884bce219ef418a7e65a4888089438cf64af0b84881eb2c98799b15b4b3c1b70ad939c3e236099a4b13f9ae9ca9c7094a8faac254676771c86164108f7b19
   languageName: node
   linkType: hard
 
-"@navikt/pino-logger@npm:^4.5.2-20260217111611":
-  version: 4.5.2-20260217111611
-  resolution: "@navikt/pino-logger@npm:4.5.2-20260217111611::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.5.2-20260217111611%2F597c9c879346e4eedde1d1e759716c9622df7e11"
+"@navikt/pino-logger@npm:^4.5.1":
+  version: 4.5.1
+  resolution: "@navikt/pino-logger@npm:4.5.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.5.1%2F761f1f0fdc9c5274960c259c0a3213b3989b5927"
   dependencies:
     "@opentelemetry/api": "npm:^1.9.0"
     pino-socket: "npm:7.4.0"
@@ -2489,7 +2489,22 @@ __metadata:
   dependenciesMeta:
     pino-socket:
       optional: true
-  checksum: 10c0/6a289c1acb90a0bc93e10234fc582e6fc9009f8511e164a529c9f83f589ae5a3dd19e30c44ab5c60bc0d2ec42f0d417fe6beb76a3669ff4e2f7c46c0b299d056
+  checksum: 10c0/078542ebb06d3cdfb5b66742c71c5bfd0fea390bca1a76cee6d2bf529c0b3af7ab32d95226e8439d58c7c18d6ea6788fe6157def49774a1f1d6115573efc73a5
+  languageName: node
+  linkType: hard
+
+"@navikt/pino-logger@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@navikt/pino-logger@npm:5.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F5.0.0%2F5f799d5d37d66c8a80f8dcf0131ddb41466dc4f3"
+  dependencies:
+    "@opentelemetry/api": "npm:^1.9.0"
+    pino-socket: "npm:7.4.0"
+  peerDependencies:
+    pino: 8 || 9 || 10
+  dependenciesMeta:
+    pino-socket:
+      optional: true
+  checksum: 10c0/aaa6cff7f62bcabbfd3d067b5d14d6fff7881c5292b2d122ff36004057c636c0cdefee29e7c4d192aa0b4008e8a504f47d54af4a73284bf9c2f4917a80231e5f
   languageName: node
   linkType: hard
 

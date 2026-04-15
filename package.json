@@ -122,9 +122,5 @@
         "typescript": "^6.0.2",
         "vitest": "^4.1.4"
     },
-    "prettier": "@navikt/tsm-prettier",
-    "resolutions": {
-        "@navikt/next-logger": "^4.5.2-20260217111611",
-        "@navikt/pino-logger": "^4.5.2-20260217111611"
-    }
+    "prettier": "@navikt/tsm-prettier"
 }
