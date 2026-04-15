@@ -19,7 +19,7 @@
   #for detail in aktivitet.details {
     [- #detail.text]
     if detail.items.len() > 0 {
-      list(indent: 1em, ..detail.items)
+      block(above: 6pt, below: 0pt, list(indent: 1em, ..detail.items))
     }
   }
 ]
@@ -131,12 +131,14 @@
 
 // Andre spørsmål
 #let andreSporsmal = if values.andreSporsmal != none {
-  (grid.cell(
-    info("Andre spørsmål", [
-      #list(..values.andreSporsmal)
-    ]),
-    colspan: 2,
-  ),)
+  (
+    grid.cell(
+      info("Andre spørsmål", [
+        #list(..values.andreSporsmal)
+      ]),
+      colspan: 2,
+    ),
+  )
 }
 
 // Meldinger
@@ -152,7 +154,9 @@
   grid.cell(
     info(
       "Innspill til arbeidsgiver",
-      if values.meldinger.tilArbeidsgiver != none { values.meldinger.tilArbeidsgiver } else [ Ingen melding til arbeidsgiver ],
+      if values.meldinger.tilArbeidsgiver != none {
+        values.meldinger.tilArbeidsgiver
+      } else [ Ingen melding til arbeidsgiver ],
       empty: values.meldinger.tilArbeidsgiver == none,
     ),
     colspan: 2,
