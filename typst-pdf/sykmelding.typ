@@ -126,6 +126,16 @@
   (grid.cell(info("Annen lovfestet fraværsgrunn", values.annenFravarsgrunn), colspan: 2),)
 }
 
+// Andre spørsmål
+#let andreSporsmal = if values.andreSporsmal != none {
+  (grid.cell(
+    info("Andre spørsmål", [
+      #list(..values.andreSporsmal)
+    ]),
+    colspan: 2,
+  ),)
+}
+
 // Utdypende spørsmål
 #let utdypende = values.utdypendeSporsmal.map(it => grid.cell(info(it.text, it.answer), colspan: 2))
 
@@ -139,5 +149,6 @@
   aktivitet,
   ..diagnoser,
   ..annenFravarsgrunn,
+  ..andreSporsmal,
   ..utdypende,
 )

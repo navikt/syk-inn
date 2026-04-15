@@ -65,6 +65,7 @@ export function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding, person: P
                 sykmelding.values.annenFravarsgrunn != null
                     ? annenFravarsgrunnToText(sykmelding.values.annenFravarsgrunn as AnnenFravarsgrunnArsak)
                     : null,
+            andreSporsmal: toAndreSporsmal(sykmelding),
             diagnose: {
                 hoved: sykmelding.values.hoveddiagnose,
                 bi: sykmelding.values.bidiagnoser ?? [],
@@ -134,4 +135,22 @@ function toPeriodeText(it: SykInnApiAktivitet): string {
         case 'AVVENTENDE':
             return 'Avventende'
     }
+}
+
+function toAndreSporsmal(sykmelding: SykInnApiSykmelding): string[] | null {
+    const items: string[] = []
+
+    if (sykmelding.values.svangerskapsrelatert) {
+        items.push('Sykmeldingen er svangerskapsrelatert')
+    }
+
+    if (sykmelding.values.yrkesskade != null) {
+        const skadedato =
+            sykmelding.values.yrkesskade.skadedato != null
+                ? `, skadedato: ${toReadableDate(sykmelding.values.yrkesskade.skadedato)}`
+                : ''
+        items.push(`Sykmeldingen er relatert til yrkesskade${skadedato}`)
+    }
+
+    return items.length > 0 ? items : null
 }

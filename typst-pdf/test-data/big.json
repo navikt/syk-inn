@@ -1,5 +1,5 @@
 {
-    "id": "d347fa42-136d-4072-ba1b-0115622f2935",
+    "id": "7f7bf1db-0809-4277-b9cf-d75ce79025a9",
     "title": "Innsendt sykmelding",
     "author": "Kari Nordmann Lege (123456)",
     "description": "100% sykmelding, 15. - 29. april 2026",
@@ -20,7 +20,11 @@
     },
     "values": {
         "arbeidsgiver": "Default AS",
-        "annenFravarsgrunn": null,
+        "annenFravarsgrunn": "Pasienten er innlagt i en godkjent helseinstitusjon",
+        "andreSporsmal": [
+            "Sykmeldingen er svangerskapsrelatert",
+            "Sykmeldingen er relatert til yrkesskade, skadedato: 8. april 2026"
+        ],
         "diagnose": {
             "hoved": {
                 "system": "ICPC2",

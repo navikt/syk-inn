@@ -57,7 +57,7 @@ export async function GET(): Promise<Response> {
                     text: 'Veldig lang deosuatheunstaeo hunsaoethu aeonstu aeonstuaeo sn',
                 },
             ],
-            svangerskapsrelatert: false,
+            svangerskapsrelatert: true,
             yrkesskade: {
                 yrkesskade: true,
                 skadedato: daysAgo(7),
