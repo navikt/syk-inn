@@ -56,13 +56,8 @@ function StartSykmelding({ className }: { className?: string }): ReactElement {
             )}
 
             <div className="flex flex-col gap-3">
-                <div className="grow">
-                    <Checkbox
-                        checked={hasLegged}
-                        onChange={() => setHasLegged((x) => !x)}
-                        size="small"
-                        className="p-4 pl-0"
-                    >
+                <div className="grow pt-4">
+                    <Checkbox checked={hasLegged} onChange={() => setHasLegged((x) => !x)} size="small">
                         Pasienten er kjent eller har vist legitimasjon
                     </Checkbox>
                 </div>
