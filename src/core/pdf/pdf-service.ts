@@ -52,8 +52,8 @@ export function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding): TypstPdf
                     : null,
             andreSporsmal: toAndreSporsmal(sykmelding),
             meldinger: {
-                tilNav: sykmelding.values.meldinger.tilNav,
-                tilArbeidsgiver: sykmelding.values.meldinger.tilArbeidsgiver,
+                tilNav: sykmelding.values.meldinger?.tilNav ?? null,
+                tilArbeidsgiver: sykmelding.values.meldinger?.tilArbeidsgiver ?? null,
             },
             pasientenSkalSkjermes: sykmelding.values.pasientenSkalSkjermes,
             diagnose: {
