@@ -59,7 +59,7 @@ export async function initializeSykInnApi(applog: boolean = false): Promise<{
     const sykInnApi = await new GenericContainer(SYK_INN_API_IMAGE)
         .withNetwork(network)
         .withEnvironment({
-            DB_JDBC_URL: `jdbc:postgresql://${POSTGRES_ALIAS}:5432/${postgres.getDatabase()}?reWriteBatchedInserts=true`,
+            DB_JDBC_URL: `jdbc:postgresql://${POSTGRES_ALIAS}:5432/${postgres.getDatabase()}`,
             DB_USERNAME: postgres.getUsername(),
             DB_PASSWORD: postgres.getPassword(),
             BOOTSTRAP_SERVERS: `${KAFKA_ALIAS}:9092`,
