@@ -7,7 +7,6 @@ import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmeldin
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 import { getFlag, UnleashClient } from '@core/toggles/unleash'
 import { createTypstSykmelding } from '@core/pdf/pdf-service'
-import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 
 import { sykmeldingToDocumentReference } from './mappers/document-reference'
 import { sykmeldingToQuestionnaireResponse } from './mappers/questionnaire-response'
@@ -29,16 +28,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                 const alreadyExists = resourceAlreadyExists(client, { type: 'DocumentReference', id: sykmeldingId })
                 if ('error' in alreadyExists) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
 
-                const patient = await pdlApiService.getPdlPerson(sykmelding.meta.pasientIdent)
-                if ('errorType' in patient) {
-                    failSpan(
-                        span,
-                        `Failed to fetch PDL patient for DocumentReference ${sykmeldingId}: ${patient.errorType}`,
-                    )
-                    return { error: 'UNABLE_TO_CREATE' }
-                }
-
-                const pdf = await createTypstSykmelding(sykmelding, patient)
+                const pdf = await createTypstSykmelding(sykmelding)
                 if (!pdf.ok) {
                     failSpan(span, `Failed to generate PDF for DocumentReference(${sykmeldingId}): ${pdf.error}`)
                     return { error: 'UNABLE_TO_CREATE' }
