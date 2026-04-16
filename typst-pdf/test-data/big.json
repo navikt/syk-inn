@@ -1,17 +1,17 @@
 {
-    "id": "e28b8dd1-3795-44fe-b0f3-bae669098513",
+    "id": "bc0bfe33-1f8b-43d6-85db-6fe0e7e1dafe",
     "title": "Innsendt sykmelding",
-    "author": "Kari Nordmann Lege (123456)",
-    "description": "100% sykmelding, 15. - 29. april 2026",
+    "author": "Kari Normann Lege (123456)",
+    "description": "100% sykmelding, 16. - 30. april 2026",
     "meta": {
-        "mottatt": "15. april 2026",
+        "mottatt": "16. april 2026",
         "behandler": {
             "hpr": "123456",
-            "navn": "Kari Nordmann Lege"
+            "navn": "Kari Normann Lege"
         },
         "pasient": {
             "ident": "21037712323",
-            "navn": "Ola Nordmann Hansen"
+            "navn": "Ola Normann"
         },
         "legekontor": {
             "orgnr": "123456789",
@@ -23,7 +23,7 @@
         "annenFravarsgrunn": "Pasienten er innlagt i en godkjent helseinstitusjon",
         "andreSporsmal": [
             "Sykmeldingen er svangerskapsrelatert",
-            "Sykmeldingen er relatert til yrkesskade, skadedato: 8. april 2026"
+            "Sykmeldingen er relatert til yrkesskade, skadedato: 9. april 2026"
         ],
         "meldinger": {
             "tilNav": "Hei NAV, dette er en melding til dere",
@@ -51,13 +51,9 @@
         },
         "aktivitet": [
             {
-                "periode": "15. - 29. april 2026",
+                "periode": "16. - 30. april 2026",
                 "type": "100% sykmeldt (aktivitet ikke mulig)",
                 "details": [
-                    {
-                        "text": "Medisinske årsaker forhindrer arbeidsaktivitet",
-                        "items": []
-                    },
                     {
                         "text": "Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet",
                         "items": ["Tilrettelegging ikke mulig", "Annet: Jadda neida så det"]
@@ -65,13 +61,9 @@
                 ]
             },
             {
-                "periode": "30. april - 15. mai 2026",
+                "periode": "1. - 16. mai 2026",
                 "type": "100% sykmeldt (aktivitet ikke mulig)",
                 "details": [
-                    {
-                        "text": "Medisinske årsaker forhindrer arbeidsaktivitet",
-                        "items": []
-                    },
                     {
                         "text": "Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet",
                         "items": ["Annet: noe annet ikke så lang grunn egt"]
@@ -79,7 +71,7 @@
                 ]
             },
             {
-                "periode": "16. - 30. mai 2026",
+                "periode": "17. - 31. mai 2026",
                 "type": "69% sykmeldt, gradert sykmelding",
                 "details": []
             }
