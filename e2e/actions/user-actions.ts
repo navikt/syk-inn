@@ -345,7 +345,7 @@ export function fillArsakerTilAktivitetIkkeMulig({
 
             if (arbeidsrelatertArsakBegrunnelse) {
                 await periodeRegion
-                    .getByRole('textbox', { name: 'Annen arbeidsrelatert årsak' })
+                    .getByRole('textbox', { name: 'Annen arbeidsrelatert årsak (Vises for arbeidsgiver)' })
                     .fill(arbeidsrelatertArsakBegrunnelse)
             }
         })

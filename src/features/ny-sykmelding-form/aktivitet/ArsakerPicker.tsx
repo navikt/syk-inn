@@ -92,7 +92,7 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
             )}
             {arbeidsrelaterteArsaker.field.value?.includes('ANNET') && (
                 <Textarea
-                    label="Annen arbeidsrelatert årsak"
+                    label="Annen arbeidsrelatert årsak (Vises for arbeidsgiver)"
                     value={annenArbeidsrelatertArsak.field.value ?? ''}
                     onChange={(e) => annenArbeidsrelatertArsak.field.onChange(e.target.value)}
                     error={annenArbeidsrelatertArsak.fieldState.error?.message}
