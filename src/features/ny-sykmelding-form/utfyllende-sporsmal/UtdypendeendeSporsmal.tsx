@@ -150,9 +150,11 @@ function UtfordringerMedArbeidUke17(): ReactElement {
     return (
         <Textarea
             label={
-                <div className="flex gap-1">
+                <div>
                     {questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.label}
-                    <HelpText>{questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.description}</HelpText>
+                    <span className="inline-flex">
+                        <HelpText>{questionTexts.utdypendeSporsmal.arbeidsrelaterteUtfordringer.description}</HelpText>
+                    </span>
                 </div>
             }
             onChange={arbeidsrelaterteUtfordringer.field.onChange}
@@ -171,18 +173,20 @@ function UtfordringerMedArbeidUke39(): ReactElement {
     return (
         <Textarea
             label={
-                <div className="flex gap-1">
+                <div>
                     {questionTexts.utdypendeSporsmal.realistiskMestringArbeid.label}
-                    <HelpText>
-                        <>
-                            <BodyShort spacing>
-                                {questionTexts.utdypendeSporsmal.realistiskMestringArbeid.descriptionSomatisk}
-                            </BodyShort>
-                            <BodyShort>
-                                {questionTexts.utdypendeSporsmal.realistiskMestringArbeid.descriptionPsykisk}
-                            </BodyShort>
-                        </>
-                    </HelpText>{' '}
+                    <span className="inline-flex">
+                        <HelpText>
+                            <>
+                                <BodyShort spacing>
+                                    {questionTexts.utdypendeSporsmal.realistiskMestringArbeid.descriptionSomatisk}
+                                </BodyShort>
+                                <BodyShort>
+                                    {questionTexts.utdypendeSporsmal.realistiskMestringArbeid.descriptionPsykisk}
+                                </BodyShort>
+                            </>
+                        </HelpText>
+                    </span>
                 </div>
             }
             onChange={realistiskMestringArbeid.field.onChange}
@@ -200,9 +204,11 @@ function HensynPaArbeidsplassen(): ReactElement {
     return (
         <Textarea
             label={
-                <div className="flex gap-1">
+                <div>
                     {questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.label}
-                    <HelpText>{questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.description}</HelpText>
+                    <span className="inline-flex">
+                        <HelpText>{questionTexts.utdypendeSporsmal.hensynPaArbeidsplassen.description}</HelpText>
+                    </span>
                 </div>
             }
             onChange={hensynPaArbeidsplassen.field.onChange}
