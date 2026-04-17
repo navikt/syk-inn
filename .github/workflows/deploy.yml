@@ -150,7 +150,7 @@ jobs:
 
   deploy-dev:
     name: Deploy main to dev
-    if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev/')
+    if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev/')  || startsWith(github.ref_name, 'ktor-tests')
     environment:
       name: dev
       url: https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding
