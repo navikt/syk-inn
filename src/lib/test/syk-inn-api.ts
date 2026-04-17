@@ -11,7 +11,9 @@ const KAFKA_ALIAS = 'kafka'
 /**
  * See README for local run with syk-inn-api-local docker image
  */
-const SYK_INN_API_IMAGE = process.env.SYK_INN_API_INTEGRATION_TESTS_IMAGE || 'ghcr.io/navikt/syk-inn-api-test:latest'
+const SYK_INN_API_IMAGE =
+    // TODO: This uses the branch specific image, should be cleaned up before go-live
+    process.env.SYK_INN_API_INTEGRATION_TESTS_IMAGE || 'ghcr.io/navikt/syk-inn-api-ktor-test:latest'
 if (!(SYK_INN_API_IMAGE.startsWith('ghcr.io/navikt') || SYK_INN_API_IMAGE.startsWith('syk-inn-api-local'))) {
     throw new Error("Oop! This image isn't under ghcr.io/navikt, that seems illegal 🤔")
 }
@@ -59,7 +61,7 @@ export async function initializeSykInnApi(applog: boolean = false): Promise<{
     const sykInnApi = await new GenericContainer(SYK_INN_API_IMAGE)
         .withNetwork(network)
         .withEnvironment({
-            DB_JDBC_URL: `jdbc:postgresql://${POSTGRES_ALIAS}:5432/${postgres.getDatabase()}`,
+            DB_URL: `postgresql://${POSTGRES_ALIAS}:5432/${postgres.getDatabase()}`,
             DB_USERNAME: postgres.getUsername(),
             DB_PASSWORD: postgres.getPassword(),
             BOOTSTRAP_SERVERS: `${KAFKA_ALIAS}:9092`,
