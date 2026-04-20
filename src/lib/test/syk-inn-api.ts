@@ -36,7 +36,7 @@ export async function initializeSykInnApi(applog: boolean = false): Promise<{
     })
 
     const [postgres, kafka] = await Promise.all([
-        new PostgreSqlContainer('postgres:16-alpine')
+        new PostgreSqlContainer('postgres:17-alpine')
             .withNetwork(network)
             .withNetworkAliases(POSTGRES_ALIAS)
             .withDatabase('syk-inn-db')
