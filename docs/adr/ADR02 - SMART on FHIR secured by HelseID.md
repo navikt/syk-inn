@@ -18,11 +18,11 @@
 
 ## Context
 
-Nav intends to verify the identity and authorization of the general practitioner who issues the sick leave certificate for the patient. To achieve this, Nav has decided to use HelseID to secure the SMART on FHIR flow with a trusted third-party. To ensure a secure authentication and authorization procedure, Nav has considered multiple options for how to achieve this in the best possible way. Out of the two best candidates we considered, the first one being double authentication by triggering a new login though single-sign-on (SSO) when the practitioner submits the sick leave certificate form. The second option is to exchange the user's HelseID access token for an access token with reduced privileges.
+Nav intends to verify the identity and authorization of the general practitioner who issues the sick leave certificate for the patient. To achieve this, Nav has decided to use HelseID to secure the SMART on FHIR flow with a trusted third-party. To ensure a secure authentication and authorization procedure, Nav has considered multiple options for how to achieve this in the best possible way. Out of the two best candidates we considered, the first one being double authentication by triggering a new login though single-sign-on (SSO) when the practitioner launches the app. The second option is to exchange the user's HelseID access token for an access token with reduced privileges.
 
 ## Decision
 
-The decision was made to approve the second alternative where we will exchange the user's token for a new token with reduced privileges to achieve zero-trust between the parties and to avoid having two active login sessions simultaneously. The user would log in as usual and during the SMART on FHIR launch the EHR-provider will add extra claims that will be used when authenticating and authorizing the user against HelseID. The SMART on FHIR application will be registered as a client (API-provider) in HelseID with a set of scopes to control authorization; the EHR will consume this API.
+The decision was made to choose the second alternative where Nav will exchange the user's token for a new token with reduced privileges to achieve zero-trust between the parties and to avoid having two active login sessions simultaneously. The user would log in as usual and during the SMART on FHIR launch the EHR-provider will add extra claims that will be used when authenticating and authorizing the user against HelseID. The SMART on FHIR application will be registered as a client (API-provider) in HelseID with a set of scopes to control authorization. The EHR is registered as a client that can request tokens for the syk-inn API scope in HelseID.
 
 ---
 
@@ -55,14 +55,14 @@ The decision was made to approve the second alternative where we will exchange t
 
 **EHR vendor**
 
-- Must add HelseID claims to the SMART access token
+- Must add HelseID claims to the ID-token
 
 **Nav**
 
 - More complex token flow
 - Must implement token exchange against HelseID
 - Requires registration as an API in NHN's self-service portal
-- EHR vendors must register the sykmelding backend API as a claim in their HelseID client
+- EHR vendors must register the syk-inn app as a claim in their HelseID client
 
 ## Implementation
 
@@ -101,9 +101,9 @@ In the current SMART on FHIR launch flow, we verify the user immediately after l
 
 With over 20 EHR vendors integrating with syk-inn, Nav benefits from a standardized approach to user verification. By leveraging HelseID as a common identity provider across the Norwegian health sector, we can offer a consistent and well-documented authentication flow that all vendors can implement uniformly. This reduces integration complexity and ensures that both Nav and EHR vendors can rely on the same trusted infrastructure for identity verification.
 
-SMART on FHIR with HelseID will follow the same steps 1-3 as described above, but as shown in step 3.5 in the diagram, before the user is verified, syk-inn will read the HelseID claim that is attached to the access token from the EHR authorization server. This will be used to exchange for an on-behalf-of (OBO) token containing information that can be used to verify the user.
+SMART on FHIR with HelseID will follow the same steps 1-3 as described above, but before the user is verified, syk-inn will read the HelseID claim that is attached to the access token from the EHR authorization server. This will be used to exchange for an on-behalf-of (OBO) token containing information that can be used to verify the user.
 
-The detailed steps included in step 3.5 are:
+The detailed steps after reading the HelseID claim are as follows:
 
 1. In the SMART flow after user login, but before user verification, the EHR authorization server must add a HelseID claim to the SMART ID token
 2. Sykmelding receives the SMART ID token with the additional HelseID claim
@@ -126,7 +126,7 @@ Two different alternatives were discussed for how Nav can use HelseID to verify 
 
 The user logs in as usual with HelseID in the EHR and writes the sick leave certificate. When the user clicks "submit", a new login with HelseID is performed. This happens via single-sign-on (SSO), and the user will experience a blank screen for a moment before being re-authenticated. This requires no further action from the user.
 
-Technically, this means there will be two active login sessions simultaneously in the app for a user. There will thus be two logins to perform one action: submitting a sick leave certificate. This approach is modeled after the "Førerrett" application, which has handled securing SMART on FHIR with HelseID in this way.
+Technically, this means there will be two active login sessions simultaneously in the app for a user. There will thus be two logins to perform one action: submitting a sick leave certificate.
 
 | Pros                                                                            | Cons                                                                                                 |
 | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
