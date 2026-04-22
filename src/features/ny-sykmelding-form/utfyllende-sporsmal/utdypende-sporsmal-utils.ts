@@ -43,7 +43,7 @@ export const totalDaysIsMoreThanDays = (
 
     const totalDays = differenceInDays(currentLatestTom, previousDate) + 1 + utdypendeSporsmal.days
 
-    return totalDays > days
+    return totalDays >= days
 }
 
 export const satisfiesGeneralConditions = (

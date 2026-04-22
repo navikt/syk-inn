@@ -182,8 +182,8 @@ export function expectArbeidsforhold({
         return test.step('Verify Arbeidsforhold section', async () => {
             const arbeidsforholdRegion = page.getByRole('region', { name: 'Arbeidsgiver' })
 
-            const harFlereArbeidsforholdGroup = arbeidsforholdRegion.getByRole('group', {
-                name: 'Har pasienten flere arbeidsgivere?',
+            const harFlereArbeidsforholdGroup = arbeidsforholdRegion.getByRole('radiogroup', {
+                name: /Har pasienten flere arbeidsgivere?/,
             })
             if (harFlereArbeidsforhold) {
                 await expect(harFlereArbeidsforholdGroup.getByRole('radio', { name: 'Ja' })).toBeChecked()

@@ -208,7 +208,7 @@ export function addUtdypendeSporsmal({
             }
             if (forventetHelsetilstandUtvikling) {
                 await utdypendeSporsmalRegion
-                    .getByRole('group', {
+                    .getByRole('radiogroup', {
                         name: questionTexts.utdypendeSporsmal.forventetHelsetilstandUtvikling.label,
                     })
                     .getByLabel(
@@ -248,12 +248,18 @@ export function fillArbeidsforhold({
     return async (page: Page) => {
         await test.step(`Set flere arbeidsforhold to ${harFlereArbeidsforhold ? 'Ja' : 'Nei'}`, async () => {
             if (harFlereArbeidsforhold) {
-                await page.getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' }).getByText('Ja').click()
+                await page
+                    .getByRole('radiogroup', { name: /Har pasienten flere arbeidsgivere?/ })
+                    .getByText('Ja')
+                    .click()
                 await page
                     .getByRole('textbox', { name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?' })
                     .fill(sykmeldtFraArbeidsforhold || '')
             } else {
-                await page.getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' }).getByText('Nei').click()
+                await page
+                    .getByRole('radiogroup', { name: /Har pasienten flere arbeidsgivere?/ })
+                    .getByText('Nei')
+                    .click()
             }
         })
     }

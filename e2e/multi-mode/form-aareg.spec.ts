@@ -28,7 +28,7 @@ modes.forEach(({ mode }) => {
         await test.step('Fill out the new AAREG-backed arbeidsforhold-picker', async () => {
             const arbeidsforholdSection = page.getByRole('region', { name: 'Arbeidsgiver' })
             await arbeidsforholdSection
-                .getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' })
+                .getByRole('radiogroup', { name: 'Har pasienten flere arbeidsgivere?' })
                 .getByText('Ja')
                 .click()
             await arbeidsforholdSection
@@ -72,7 +72,7 @@ modes.forEach(({ mode }) => {
         await test.step('Fill out the new AAREG-backed arbeidsforhold-picker', async () => {
             const arbeidsforholdSection = page.getByRole('region', { name: 'Arbeidsgiver' })
             await arbeidsforholdSection
-                .getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' })
+                .getByRole('radiogroup', { name: 'Har pasienten flere arbeidsgivere?' })
                 .getByText('Ja')
                 .click()
             await arbeidsforholdSection
@@ -92,7 +92,7 @@ modes.forEach(({ mode }) => {
             const arbeidsforholdSection = page.getByRole('region', { name: 'Arbeidsgiver' })
             await expect(
                 arbeidsforholdSection
-                    .getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' })
+                    .getByRole('radiogroup', { name: 'Har pasienten flere arbeidsgivere?' })
                     .getByRole('radio', { name: 'Ja' }),
             ).toBeChecked()
             await expect(
@@ -113,7 +113,7 @@ modes.forEach(({ mode }) => {
         await test.step('Fill out the new AAREG-backed arbeidsforhold-picker', async () => {
             const arbeidsforholdSection = page.getByRole('region', { name: 'Arbeidsgiver' })
             await arbeidsforholdSection
-                .getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' })
+                .getByRole('radiogroup', { name: 'Har pasienten flere arbeidsgivere?' })
                 .getByText('Ja')
                 .click()
             await arbeidsforholdSection
@@ -153,7 +153,7 @@ modes.forEach(({ mode }) => {
             const arbeidsforholdSection = page.getByRole('region', { name: 'Arbeidsgiver' })
             await expect(
                 arbeidsforholdSection
-                    .getByRole('group', { name: 'Har pasienten flere arbeidsgivere?' })
+                    .getByRole('radiogroup', { name: 'Har pasienten flere arbeidsgivere?' })
                     .getByRole('radio', { name: 'Ja' }),
             ).toBeChecked()
             await expect(
