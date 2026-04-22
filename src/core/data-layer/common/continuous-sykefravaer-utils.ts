@@ -69,10 +69,11 @@ export function filterSykmeldingerWithinDaysGap(
 
         const currentTom = sykmelding.values.aktivitet[0].tom
 
-        const diff = differenceInDays(new Date(prevFom), new Date(currentTom))
+        const diff = differenceInDays(prevFom, currentTom)
         if (diff < ISYFO_MAX_DAYS_GAP) filteredSykmeldinger.push(sykmelding)
         else break
     }
+
     return filteredSykmeldinger
 }
 

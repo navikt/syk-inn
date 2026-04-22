@@ -102,6 +102,7 @@
         "@types/node": "^24.12.2",
         "@types/react": "19.2.14",
         "@types/react-dom": "19.2.3",
+        "@typescript/native-preview": "^7.0.0-dev.20260421.2",
         "@vitest/eslint-plugin": "^1.6.15",
         "concurrently": "^9.2.1",
         "eslint": "^9.39.4",
