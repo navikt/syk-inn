@@ -6,7 +6,6 @@ metadata:
   labels:
     team: tsm
 spec:
-  image: {{image}}
   login:
     provider: openid
     enforce:

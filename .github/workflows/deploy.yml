@@ -161,7 +161,7 @@ jobs:
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-dev.yaml
-          VAR: image=${{ needs.build-dev.outputs.image }}
+          WORKLOAD_IMAGE: ${{ needs.build-dev.outputs.image }}
           NAIS_DEPLOY_SUMMARY: false
 
   deploy-demo:
@@ -178,7 +178,8 @@ jobs:
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-demo.yaml
-          VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }},appname=${{ env.APP }},replicas=1,branchState=alive
+          WORKLOAD_IMAGE: ${{ needs.build-demo.outputs.image }}
+          VAR: ingress=https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }},appname=${{ env.APP }}
           NAIS_DEPLOY_SUMMARY: false
 
   deploy-production:
@@ -195,7 +196,7 @@ jobs:
         env:
           CLUSTER: prod-gcp
           RESOURCE: .nais/nais-prod.yaml
-          VAR: image=${{ needs.build-prod.outputs.image }}
+          WORKLOAD_IMAGE: ${{ needs.build-prod.outputs.image }}
           NAIS_DEPLOY_SUMMARY: false
 
   build-for-playwright:

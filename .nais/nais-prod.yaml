@@ -6,7 +6,6 @@ metadata:
   labels:
     team: tsm
 spec:
-  image: {{image}}
   ingresses:
     - 'https://www.nav.no/samarbeidspartner/sykmelding'
   valkey:
