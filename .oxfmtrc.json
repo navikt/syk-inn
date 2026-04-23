@@ -1,0 +1,19 @@
+{
+    "$schema": "./node_modules/oxfmt/configuration_schema.json",
+    "semi": false,
+    "trailingComma": "all",
+    "singleQuote": true,
+    "printWidth": 120,
+    "tabWidth": 4,
+    "sortPackageJson": false,
+    "ignorePatterns": ["src/features/ny-sykmelding-form/summary/rules/rule-texts.ts"],
+    "overrides": [
+        {
+            "files": ["*.yml", "*.yaml"],
+            "options": {
+                "printWidth": 100,
+                "tabWidth": 2
+            }
+        }
+    ]
+}

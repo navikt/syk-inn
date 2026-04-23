@@ -26,4 +26,5 @@ _Relevante referanser:_
 ```
 
 ## Begrunnelse
-- Identifier/hpr-nummer benyttes som identifikator for sykmelder/helsepersonell. 
+
+- Identifier/hpr-nummer benyttes som identifikator for sykmelder/helsepersonell.

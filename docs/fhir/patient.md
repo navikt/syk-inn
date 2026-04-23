@@ -37,5 +37,6 @@ _Relevante referanser:_
 ```
 
 ## Begrunnelse
+
 - Identifier/fødslesnummer eller d-nummer er nødvendig for å identifisere pasienten
 - name vises i appen slik at behandler kan bekrefte at det skrives sykmelding for korrekt pasient.
