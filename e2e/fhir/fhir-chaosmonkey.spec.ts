@@ -7,6 +7,24 @@ import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/f
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
 
+test('should get welcome modal once, but not after reloading', async ({ page }) => {
+    await launchWithMock('empty', {
+        skipWelcomeModal: false,
+    })(page)
+
+    const dialog = page.getByRole('dialog', { name: 'Velkommen til ny sykmeldingsløsning' })
+    await expect(dialog).toBeVisible()
+
+    await dialog.getByRole('button', { name: 'Den er grei' }).click()
+    await expect(dialog).not.toBeVisible()
+
+    await page.reload()
+    await page.waitForLoadState('networkidle')
+    await wait(300, 0)
+
+    await expect(page.getByRole('dialog', { name: 'Velkommen til ny sykmeldingsløsning' })).not.toBeVisible()
+})
+
 test(`spamming 'Send'-button repeatedly should only submit 1 sykmelding`, async ({ page }) => {
     await launchWithMock('empty')(page)
     await startNewSykmelding()(page)
