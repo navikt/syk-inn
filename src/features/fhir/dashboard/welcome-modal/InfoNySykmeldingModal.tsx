@@ -64,11 +64,8 @@ export function InfoNySykmeldingModal(): ReactElement {
                     </Link>
                 </Dialog.Body>
                 <Dialog.Footer>
-                    <Button size="small" variant="secondary" onClick={() => dismiss()}>
-                        Ikke vis igjen
-                    </Button>
                     <Button size="small" onClick={() => dismiss()}>
-                        Ok
+                        Den er grei
                     </Button>
                 </Dialog.Footer>
             </Dialog.Popup>

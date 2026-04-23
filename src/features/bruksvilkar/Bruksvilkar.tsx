@@ -43,7 +43,7 @@ function Bruksvilkar({ patientId, accepter, accepted }: Props): ReactElement {
             >
                 <InfoCard data-color="info">
                     <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
-                        <InfoCard.Title>Velkommen til pilot</InfoCard.Title>
+                        <InfoCard.Title>Velkommen til ny sykemeldingsløsning</InfoCard.Title>
                     </InfoCard.Header>
                     <InfoCard.Content>
                         For å kunne begynne å bruke denne løsningen, må du godta bruksvilkårene for piloten. Det gjør du
