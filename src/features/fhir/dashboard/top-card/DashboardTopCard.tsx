@@ -8,7 +8,7 @@ import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { LoadablePageHeader } from '@components/layout/Page'
 import PatientStats from '@features/fhir/dashboard/top-card/dumb-stats/PatientStats'
 import StartSykmelding from '@features/fhir/dashboard/top-card/StartSykmelding'
-import { InfoNySykmeldingCard } from '@features/fhir/dashboard/top-card/InfoNySykmeldingCard'
+import { InfoNySykmeldingButton } from '@features/fhir/dashboard/welcome-modal/InfoNySykmeldingButton'
 
 import DashboardCard from '../card/DashboardCard'
 
@@ -29,24 +29,22 @@ function DashboardTopCard({ className }: { className?: string }): ReactElement {
         <DashboardCard
             headingId="dashboard-opprett-ny-sykmelding"
             heading={
-                <LoadablePageHeader
-                    id="dashboard-opprett-ny-sykmelding"
-                    lead="Oversikt over"
-                    value={data?.pasient?.navn ?? null}
-                    tail="sitt sykefravær"
-                />
+                <div className="grid grid-cols-[1fr_auto] gap-2">
+                    <LoadablePageHeader
+                        id="dashboard-opprett-ny-sykmelding"
+                        lead="Oversikt over"
+                        value={data?.pasient?.navn ?? null}
+                        tail="sitt sykefravær"
+                    />
+                    <InfoNySykmeldingButton />
+                </div>
             }
             className={cn(className)}
         >
-            <div
-                className={cn(
-                    'grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5 space-x-0 divide-ax-bg-neutral-soft',
-                )}
-            >
+            <div className={cn('grid grid-cols-1 md:grid-cols-2 gap-5 space-x-0 divide-ax-bg-neutral-soft')}>
                 <StartSykmelding className="col-start-1 row-start-1" />
                 <div className="col-start-1 row-start-1 justify-self-end w-1 mt-2 mb-2 mx-2 ax-lg:mx-8 bg-ax-bg-neutral-soft shrink-0 self-stretch hidden ax-md:block" />
                 <PatientStats />
-                <InfoNySykmeldingCard className="col-span-1 md:col-span-2 2xl:col-span-1" />
             </div>
         </DashboardCard>
     )
