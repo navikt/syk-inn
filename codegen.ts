@@ -33,7 +33,7 @@ const config: CodegenConfig = {
         },
     },
     hooks: {
-        afterOneFileWrite: ['prettier --write'],
+        afterOneFileWrite: ['oxfmt'],
     },
 }
 export default config

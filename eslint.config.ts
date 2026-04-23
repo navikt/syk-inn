@@ -2,7 +2,6 @@ import nextVitals from 'eslint-config-next/core-web-vitals'
 import nextTs from 'eslint-config-next/typescript'
 import importAlias from '@limegrass/eslint-plugin-import-alias'
 import { defineConfig } from 'eslint/config'
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import tsmEslintReact from '@navikt/tsm-eslint-react'
 import vitest from '@vitest/eslint-plugin'
 
@@ -10,10 +9,6 @@ const eslintConfig = defineConfig([
     ...nextVitals,
     ...nextTs,
     ...tsmEslintReact,
-    {
-        extends: [eslintPluginPrettierRecommended],
-        rules: { 'prettier/prettier': 'warn' },
-    },
     {
         rules: {
             // Look at enabling this, but it crashes with some react-hook-form internals atm
