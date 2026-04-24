@@ -40,7 +40,7 @@ describe('typst CLI integration', () => {
         const { info } = await pdf.getInfo()
 
         expect(info.Title).toEqual('Innsendt sykmelding')
-        expect(info.Author).toEqual('Kari Nordmann Lege (123456)')
+        expect(info.Author).toEqual('Kari Nordmann Legesson (123456)')
         expect(info.Language).toEqual('nb')
     })
 

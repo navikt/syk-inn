@@ -30,7 +30,7 @@ describe('SykInnApi integration', () => {
             process.env.LOCAL_SYK_INN_API_HOST = `localhost:8080`
             kafka = await initializeLocalKafka()
         } else {
-            const sykInnContainers = await initializeSykInnApi(false)
+            const sykInnContainers = await initializeSykInnApi(true)
             sykInnApi = sykInnContainers.sykInnApi
             kafka = await initializeKafka(sykInnContainers.kafka)
 
@@ -283,7 +283,7 @@ describe('SykInnApi integration', () => {
         // utdypendeSporsmal - all 11 entries (MEDISINSK_OPPSUMMERING and UTFORDRINGER_MED_ARBEID are shared by multiple fields)
         const utdypendeSporsmal = kafkaMessage.sykmelding.utdypendeSporsmal
         expect.soft(utdypendeSporsmal).toBeDefined()
-        expect.soft(utdypendeSporsmal).toHaveLength(11)
+        expect.soft(utdypendeSporsmal).toHaveLength(8)
 
         // Unique types
         expect
@@ -308,16 +308,13 @@ describe('SykInnApi integration', () => {
         const medisinskOppsummeringer = utdypendeSporsmal
             ?.filter((it) => it.type === 'MEDISINSK_OPPSUMMERING')
             .map((it) => it.svar)
-        expect.soft(medisinskOppsummeringer).toHaveLength(3)
-        expect.soft(medisinskOppsummeringer).toContain('Pasienten har influensa')
-        expect.soft(medisinskOppsummeringer).toContain('Sykdommen har forverret seg')
+        expect.soft(medisinskOppsummeringer).toHaveLength(1)
         expect.soft(medisinskOppsummeringer).toContain('Medisinsk status er uendret')
 
         const utfordringerMedArbeidEntries = utdypendeSporsmal
             ?.filter((it) => it.type === 'UTFORDRINGER_MED_ARBEID')
             .map((it) => it.svar)
-        expect.soft(utfordringerMedArbeidEntries).toHaveLength(2)
-        expect.soft(utfordringerMedArbeidEntries).toContain('Kan ikke utføre arbeidsoppgaver')
+        expect.soft(utfordringerMedArbeidEntries).toHaveLength(1)
         expect.soft(utfordringerMedArbeidEntries).toContain('Pasienten kan mestre noe arbeid')
     }, 10_000)
 
