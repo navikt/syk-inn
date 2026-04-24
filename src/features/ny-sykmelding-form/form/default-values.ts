@@ -66,7 +66,6 @@ export function defaultPeriode(): AktivitetsPeriode {
             type: 'GRADERT',
             grad: null,
         },
-        medisinskArsak: null,
         arbeidsrelatertArsak: null,
     }
 }

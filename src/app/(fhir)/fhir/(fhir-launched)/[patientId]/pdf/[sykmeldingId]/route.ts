@@ -4,7 +4,6 @@ import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { createTypstSykmelding } from '@core/pdf/pdf-service'
-import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 
@@ -44,10 +43,7 @@ export async function GET(
             return new Response('Internal server error', { status: 500 })
         }
 
-        const [sykmelding, pdlPerson] = await Promise.all([
-            sykInnApiService.getSykmelding(sykmeldingId, hpr),
-            pdlApiService.getPdlPerson(patientIdent),
-        ])
+        const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
 
         if ('errorType' in sykmelding) {
             failSpan(span, `Failed to get sykmelding: ${sykmelding.errorType}`)
@@ -59,12 +55,7 @@ export async function GET(
             return new Response('Internal server error', { status: 500 })
         }
 
-        if ('errorType' in pdlPerson) {
-            failSpan(span, `Failed to fetch PDL person: ${pdlPerson.errorType}`)
-            return new Response('Internal server error', { status: 500 })
-        }
-
-        const pdf = await createTypstSykmelding(sykmelding, pdlPerson)
+        const pdf = await createTypstSykmelding(sykmelding)
         if (!pdf.ok) {
             failSpan(span, `Failed to generate PDF: ${pdf.error}`)
             return new Response('Internal server error', { status: 500 })

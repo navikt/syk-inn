@@ -48,11 +48,11 @@ export class SykInnApiMock {
         const headersStore = await headers()
         const rule = headersStore.get(MockRuleMarkers.header)
 
-        const utfall: RuleResult = { result: 'OK', melding: null }
+        const utfall: RuleResult = { result: 'OK', cause: null }
         if (rule) {
             const [ruleName, status] = MockRuleMarkers.unwrapMarker(rule)
             utfall.result = status === 'INVALID' ? 'INVALID' : 'PENDING'
-            utfall.melding = `This is a local development rule hit for rule ${ruleName}`
+            utfall.cause = `This is a local development rule hit for rule ${ruleName}`
         }
 
         const newSykmelding: SykInnApiSykmelding = sykInnApiPayloadToResponse(crypto.randomUUID(), utfall, payload)
@@ -70,7 +70,7 @@ export class SykInnApiMock {
     async verifySykmelding(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         _: OpprettSykmeldingPayload,
-    ): Promise<true | SykInnApiRuleOutcome | SykInnApiPersonDoesNotExist> {
+    ): Promise<SykInnApiRuleOutcome | SykInnApiPersonDoesNotExist> {
         const headersStore = await headers()
 
         const rule = headersStore.get(MockRuleMarkers.header)
@@ -82,10 +82,9 @@ export class SykInnApiMock {
                 status: status,
                 rule: ruleName,
                 message: 'This is a local development rule hit',
-                tree: 'Local Mock Fake Tree',
             }
         }
 
-        return true
+        return { status: 'OK', rule: null, message: null }
     }
 }

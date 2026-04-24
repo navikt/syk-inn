@@ -4,7 +4,6 @@ import { validateHelseIdToken } from '@data-layer/helseid/token/validate'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { createTypstSykmelding } from '@core/pdf/pdf-service'
 
 export async function GET(_: NextRequest, { params }: RouteContext<'/pdf/[sykmeldingId]'>): Promise<Response> {
@@ -33,13 +32,7 @@ export async function GET(_: NextRequest, { params }: RouteContext<'/pdf/[sykmel
             return new Response('Internal server error', { status: 500 })
         }
 
-        const pdlPerson = await pdlApiService.getPdlPerson(sykmelding.meta.pasientIdent)
-        if ('errorType' in pdlPerson) {
-            failSpan(span, `Failed to fetch PDL person: ${pdlPerson.errorType}`)
-            return new Response('Internal server error', { status: 500 })
-        }
-
-        const pdf = await createTypstSykmelding(sykmelding, pdlPerson)
+        const pdf = await createTypstSykmelding(sykmelding)
         if (!pdf.ok) {
             failSpan(span, `Failed to generate PDF: ${pdf.error}`)
             return new Response('Internal server error', { status: 500 })

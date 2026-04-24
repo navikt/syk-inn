@@ -18,15 +18,10 @@ export const DraftValuesSchema = z.object({
                 fom: z.string().nullable(),
                 tom: z.string().nullable(),
                 grad: z.string().nullable().optional(),
-                medisinskArsak: z
-                    .object({
-                        isMedisinskArsak: z.boolean().nullable(),
-                    })
-                    .nullable(),
                 arbeidsrelatertArsak: z
                     .object({
                         isArbeidsrelatertArsak: z.boolean().nullable(),
-                        arbeidsrelaterteArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])).nullable(),
+                        arbeidsrelaterteArsaker: z.array(z.enum(['MANGLENDE_TILRETTELEGGING', 'ANNET'])).nullable(),
                         annenArbeidsrelatertArsak: z.string().nullable(),
                     })
                     .nullable(),

@@ -3,15 +3,20 @@ import { StartedTestContainer } from 'testcontainers'
 import { Kafka } from 'kafkajs'
 import * as R from 'remeda'
 
-import { getSykInnApiPath, initializeSykInnApi } from '@lib/test/syk-inn-api'
+import { initializeSykInnApi } from '@lib/test/syk-inn-api'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { OpprettSykmeldingMeta, OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
 import { initializeValkey } from '@lib/test/valkey'
 import { daysAgo, inDays, today } from '@lib/test/date-utils'
-import { consumeUntil, initializeConsumer, initializeKafka } from '@lib/test/syk-inn-kafka'
+import { consumeUntil, initializeConsumer, initializeKafka, initializeLocalKafka } from '@lib/test/syk-inn-kafka'
 import { AnnenFravarsgrunnArsak } from '@resolvers'
 import { questionTexts } from '@data-layer/common/questions'
 import { KafkaAktivitetIkkeMulig, KafkaGradert } from '@lib/test/syk-inn-kafka-types'
+
+/**
+ * Can be manually toggled to run tests with local (already running syk-inn-api)
+ */
+const useLocalSykInnApi = process.env.LOCAL_SYK != null
 
 describe('SykInnApi integration', () => {
     let sykInnApi: StartedTestContainer
@@ -19,26 +24,32 @@ describe('SykInnApi integration', () => {
     let kafka: Kafka
 
     beforeAll(async () => {
-        const sykInnContainers = await initializeSykInnApi(false)
-        sykInnApi = sykInnContainers.sykInnApi
         valkey = await initializeValkey()
-        kafka = await initializeKafka(sykInnContainers.kafka)
 
-        process.env.LOCAL_SYK_INN_API_HOST = `${sykInnApi.getHost()}:${sykInnApi.getMappedPort(8080)}`
+        if (useLocalSykInnApi) {
+            process.env.LOCAL_SYK_INN_API_HOST = `localhost:8080`
+            kafka = await initializeLocalKafka()
+        } else {
+            const sykInnContainers = await initializeSykInnApi(true)
+            sykInnApi = sykInnContainers.sykInnApi
+            kafka = await initializeKafka(sykInnContainers.kafka)
+
+            process.env.LOCAL_SYK_INN_API_HOST = `${sykInnApi.getHost()}:${sykInnApi.getMappedPort(8080)}`
+        }
+
         process.env.VALKEY_HOST_SYK_INN = `${valkey.getHost()}:${valkey.getMappedPort(6379)}`
     }, 60_000)
 
     it('sanity check health endpoint', async () => {
-        const healthResult = await fetch(getSykInnApiPath(sykInnApi, '/internal/health')).then((it) => it.json())
+        const healthResponse = await fetch(`http://${process.env.LOCAL_SYK_INN_API_HOST}/internal/health/alive`)
 
-        expect(healthResult.status).toEqual('UP')
+        expect(healthResponse.status).toEqual(200)
     })
 
     it('POST /sykmelding/verify should be able to verify with all values', async () => {
         const opprettResult = await sykInnApiService.verifySykmelding(createFullOpprettSykmeldingPayload())
 
-        // If verify is OK, it returns true
-        expect(opprettResult).toBe(true)
+        expect(R.prop(opprettResult, 'status')).toBe('OK')
     })
 
     it('POST /sykmelding/verify should inform that patient does not exist', async () => {
@@ -48,7 +59,7 @@ describe('SykInnApi integration', () => {
             }),
         )
 
-        if (typeof opprettResult === 'boolean') {
+        if ('status' in opprettResult && opprettResult.status === 'OK') {
             throw Error(`Expected person not to exist, but got OK`)
         }
 
@@ -127,14 +138,13 @@ describe('SykInnApi integration', () => {
             },
             arbeidsgiver: null,
             yrkesskade: null,
-            utdypendeSporsmalAnswerOptions: null,
+            utdypendeSporsmal: null,
             tilbakedatering: null,
             svangerskapsrelatert: false,
             pasientenSkalSkjermes: false,
         })
 
         const opprettResult = await sykInnApiService.opprettSykmelding(payload)
-
         if ('errorType' in opprettResult) {
             throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
         }
@@ -144,7 +154,7 @@ describe('SykInnApi integration', () => {
         expect(opprettResult.values.hoveddiagnose?.code).toEqual(payload.values.hoveddiagnose.code)
         expect(opprettResult.values.arbeidsgiver).toBeNull()
         expect(opprettResult.values.yrkesskade).toBeNull()
-        expect(opprettResult.values.utdypendeSporsmalSvar).toBeNull()
+        expect(opprettResult.values.utdypendeSporsmal).toBeNull()
         expect(opprettResult.values.tilbakedatering).toBeNull()
     })
 
@@ -152,7 +162,7 @@ describe('SykInnApi integration', () => {
         const payload = createFullOpprettSykmeldingPayload(undefined, {
             hoveddiagnose: { system: 'ICPC2B', code: 'T99.0084' },
             bidiagnoser: [{ system: 'ICPC2', code: 'D97' }],
-            utdypendeSporsmalAnswerOptions: {
+            utdypendeSporsmal: {
                 utfordringerMedArbeid: {
                     sporsmalstekst: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
                     svar: 'Kan ikke sitte lenge',
@@ -199,8 +209,8 @@ describe('SykInnApi integration', () => {
                 },
             },
         })
-        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
 
+        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
         if ('errorType' in opprettResult) {
             throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
         }
@@ -215,10 +225,13 @@ describe('SykInnApi integration', () => {
         expect.soft(kafkaMessage.metadata.orgnummer).toEqual('987654321')
 
         // sykmelding metadata
-        expect.soft(kafkaMessage.sykmelding.metadata.avsenderSystem.navn).toEqual('syk-inn test')
+        expect.soft(kafkaMessage.sykmelding.metadata.avsenderSystem.navn).toEqual('syk-inn test (FHIR)')
 
         // pasient
         expect.soft(kafkaMessage.sykmelding.pasient.fnr).toEqual('01010112345')
+
+        // behandler
+        expect.soft(kafkaMessage.sykmelding.sykmelder.helsepersonellKategori).toEqual('LEGE')
 
         // medisinskVurdering - diagnoses
         expect.soft(kafkaMessage.sykmelding.medisinskVurdering.hovedDiagnose.system).toEqual('ICPC2B')
@@ -240,7 +253,8 @@ describe('SykInnApi integration', () => {
             (it) => it.type === 'AKTIVITET_IKKE_MULIG',
         ) as KafkaAktivitetIkkeMulig
         expect.soft(aktivitetIkkeMulig).toBeDefined()
-        expect.soft(aktivitetIkkeMulig.medisinskArsak).not.toBeNull()
+        // Deprecated value, defaults to null on kafka
+        expect.soft(aktivitetIkkeMulig.medisinskArsak).toBeNull()
         expect.soft(aktivitetIkkeMulig.arbeidsrelatertArsak).not.toBeNull()
         expect.soft(aktivitetIkkeMulig.arbeidsrelatertArsak?.arsak).toContain('MANGLENDE_TILRETTELEGGING')
         expect.soft(aktivitetIkkeMulig.arbeidsrelatertArsak?.arsak).toContain('ANNET')
@@ -269,7 +283,7 @@ describe('SykInnApi integration', () => {
         // utdypendeSporsmal - all 11 entries (MEDISINSK_OPPSUMMERING and UTFORDRINGER_MED_ARBEID are shared by multiple fields)
         const utdypendeSporsmal = kafkaMessage.sykmelding.utdypendeSporsmal
         expect.soft(utdypendeSporsmal).toBeDefined()
-        expect.soft(utdypendeSporsmal).toHaveLength(11)
+        expect.soft(utdypendeSporsmal).toHaveLength(8)
 
         // Unique types
         expect
@@ -294,16 +308,13 @@ describe('SykInnApi integration', () => {
         const medisinskOppsummeringer = utdypendeSporsmal
             ?.filter((it) => it.type === 'MEDISINSK_OPPSUMMERING')
             .map((it) => it.svar)
-        expect.soft(medisinskOppsummeringer).toHaveLength(3)
-        expect.soft(medisinskOppsummeringer).toContain('Pasienten har influensa')
-        expect.soft(medisinskOppsummeringer).toContain('Sykdommen har forverret seg')
+        expect.soft(medisinskOppsummeringer).toHaveLength(1)
         expect.soft(medisinskOppsummeringer).toContain('Medisinsk status er uendret')
 
         const utfordringerMedArbeidEntries = utdypendeSporsmal
             ?.filter((it) => it.type === 'UTFORDRINGER_MED_ARBEID')
             .map((it) => it.svar)
-        expect.soft(utfordringerMedArbeidEntries).toHaveLength(2)
-        expect.soft(utfordringerMedArbeidEntries).toContain('Kan ikke utføre arbeidsoppgaver')
+        expect.soft(utfordringerMedArbeidEntries).toHaveLength(1)
         expect.soft(utfordringerMedArbeidEntries).toContain('Pasienten kan mestre noe arbeid')
     }, 10_000)
 
@@ -427,7 +438,7 @@ const createFullOpprettSykmeldingPayload = (
 ): OpprettSykmeldingPayload => ({
     submitId: submitId,
     meta: {
-        source: `syk-inn test`,
+        source: `syk-inn test (FHIR)`,
         sykmelderHpr: '123456',
         pasientIdent: '01010112345',
         legekontorOrgnr: '987654321',
@@ -443,10 +454,9 @@ const createFullOpprettSykmeldingPayload = (
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: today(),
                 tom: inDays(14),
-                medisinskArsak: { isMedisinskArsak: true },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: true,
-                    arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                    arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
                     annenArbeidsrelatertArsak: 'Trenger tilrettelegging',
                 },
             },
@@ -457,7 +467,7 @@ const createFullOpprettSykmeldingPayload = (
         yrkesskade: { yrkesskade: true, skadedato: daysAgo(3) },
         arbeidsgiver: { harFlere: true, arbeidsgivernavn: 'Test Testere AS' },
         tilbakedatering: { begrunnelse: 'Vært i koma', startdato: daysAgo(3) },
-        utdypendeSporsmalAnswerOptions: {
+        utdypendeSporsmal: {
             utfordringerMedArbeid: {
                 sporsmalstekst: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
                 svar: 'Kan ikke sitte lenge',

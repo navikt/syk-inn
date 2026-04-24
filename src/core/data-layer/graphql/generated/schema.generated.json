@@ -31,7 +31,11 @@
                         "name": "arbeidsrelatertArsak",
                         "description": null,
                         "args": [],
-                        "type": { "kind": "OBJECT", "name": "ArbeidsrelatertArsak", "ofType": null },
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "kind": "OBJECT", "name": "ArbeidsrelatertArsak", "ofType": null }
+                        },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
@@ -44,14 +48,6 @@
                             "name": null,
                             "ofType": { "kind": "SCALAR", "name": "DateOnly", "ofType": null }
                         },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "medisinskArsak",
-                        "description": null,
-                        "args": [],
-                        "type": { "kind": "OBJECT", "name": "MedisinskArsak", "ofType": null },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
@@ -99,18 +95,6 @@
                             "kind": "NON_NULL",
                             "name": null,
                             "ofType": { "kind": "INPUT_OBJECT", "name": "ArbeidsrelatertArsakInput", "ofType": null }
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "medisinskArsak",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "INPUT_OBJECT", "name": "MedisinskArsakInput", "ofType": null }
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -455,7 +439,7 @@
                 "enumValues": [
                     { "name": "ANNET", "description": null, "isDeprecated": false, "deprecationReason": null },
                     {
-                        "name": "TILRETTELEGGING_IKKE_MULIG",
+                        "name": "MANGLENDE_TILRETTELEGGING",
                         "description": null,
                         "isDeprecated": false,
                         "deprecationReason": null
@@ -1340,54 +1324,6 @@
                 ],
                 "inputFields": null,
                 "interfaces": [],
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "OBJECT",
-                "name": "MedisinskArsak",
-                "description": null,
-                "isOneOf": null,
-                "fields": [
-                    {
-                        "name": "isMedisinskArsak",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "SCALAR", "name": "Boolean", "ofType": null }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
-                ],
-                "inputFields": null,
-                "interfaces": [],
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "INPUT_OBJECT",
-                "name": "MedisinskArsakInput",
-                "description": null,
-                "isOneOf": false,
-                "fields": null,
-                "inputFields": [
-                    {
-                        "name": "isMedisinskArsak",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "SCALAR", "name": "Boolean", "ofType": null }
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
-                ],
-                "interfaces": null,
                 "enumValues": null,
                 "possibleTypes": null
             },
@@ -2330,18 +2266,6 @@
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
-                    },
-                    {
-                        "name": "tree",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
                     }
                 ],
                 "inputFields": null,
@@ -2359,12 +2283,7 @@
                 "interfaces": null,
                 "enumValues": [
                     { "name": "INVALID", "description": null, "isDeprecated": false, "deprecationReason": null },
-                    {
-                        "name": "MANUAL_PROCESSING",
-                        "description": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
+                    { "name": "PENDING", "description": null, "isDeprecated": false, "deprecationReason": null }
                 ],
                 "possibleTypes": null
             },
@@ -2639,11 +2558,7 @@
                         "name": "meldinger",
                         "description": null,
                         "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "kind": "OBJECT", "name": "SykmeldingMelding", "ofType": null }
-                        },
+                        "type": { "kind": "OBJECT", "name": "SykmeldingMelding", "ofType": null },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },

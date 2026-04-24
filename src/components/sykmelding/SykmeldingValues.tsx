@@ -134,10 +134,10 @@ function SykmeldingValues({ sykmelding }: Props): ReactElement {
                     </List>
                 </ValueItem>
             )}
-            {sykmelding.values.meldinger.tilNav && (
+            {sykmelding.values.meldinger?.tilNav && (
                 <ValueItem title="Meldinger til Nav">{sykmelding.values.meldinger.tilNav}</ValueItem>
             )}
-            {sykmelding.values.meldinger.tilArbeidsgiver && (
+            {sykmelding.values.meldinger?.tilArbeidsgiver && (
                 <ValueItem title="Meldinger til arbeidsgiver">{sykmelding.values.meldinger.tilArbeidsgiver}</ValueItem>
             )}
         </>
@@ -154,9 +154,6 @@ function SykmeldingAktivitetValues({ aktivitet }: { aktivitet: AktivitetFragment
                         <>
                             <BodyShort>100% sykmelding</BodyShort>
                             <ul className="list-disc pl-6">
-                                {it.medisinskArsak?.isMedisinskArsak && (
-                                    <li>Det er medisinske årsaker som forhindrer arbeidsrelatert aktivitet</li>
-                                )}
                                 {it.arbeidsrelatertArsak?.isArbeidsrelatertArsak && (
                                     <li>
                                         Det er arbeidsrelaterte årsaker som forhindrer arbeidsrelatert aktivitet

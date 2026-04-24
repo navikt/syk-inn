@@ -10,23 +10,13 @@ const BaseAktivitetSchema = z.object({
 export type SykInnApiAktivitetIkkeMulig = z.infer<typeof AktivitetIkkeMuligSchema>
 const AktivitetIkkeMuligSchema = BaseAktivitetSchema.extend({
     type: z.literal('AKTIVITET_IKKE_MULIG'),
-    // TODO: Mark as non-nullable once data is migrated in syk-inn-api
-    medisinskArsak: z
-        .object({
-            isMedisinskArsak: z.boolean(),
-        })
-        .optional(),
-    // TODO: Mark as non-nullable once data is migrated in syk-inn-api
-    arbeidsrelatertArsak: z
-        .object({
-            isArbeidsrelatertArsak: z.boolean(),
-            arbeidsrelaterteArsaker: z.array(z.enum(['TILRETTELEGGING_IKKE_MULIG', 'ANNET'])),
-            annenArbeidsrelatertArsak: z.string().nullable(),
-        })
-        .optional(),
+    arbeidsrelatertArsak: z.object({
+        isArbeidsrelatertArsak: z.boolean(),
+        arbeidsrelaterteArsaker: z.array(z.enum(['MANGLENDE_TILRETTELEGGING', 'ANNET'])),
+        annenArbeidsrelatertArsak: z.string().nullable(),
+    }),
 })
 
-export type SykInnApiAktivitetGradert = z.infer<typeof AktivitetGradertSchema>
 const AktivitetGradertSchema = BaseAktivitetSchema.extend({
     type: z.literal('GRADERT'),
     grad: z.number(),
@@ -59,18 +49,12 @@ const AktivitetSchema = z.discriminatedUnion('type', [
 export type RuleResult = z.infer<typeof RuleResultSchema>
 const RuleResultSchema = z.object({
     result: z.union([z.literal('OK'), z.literal('PENDING'), z.literal('INVALID')]),
-    melding: z.string().nullable(),
+    cause: z.string().nullable(),
 })
 
 const TilbakedateringSchema = z.object({
     startdato: z.string(),
     begrunnelse: z.string(),
-})
-
-const UtdypendeSporsmalSchema = z.object({
-    utfordringerMedArbeid: z.string().nullable(),
-    medisinskOppsummering: z.string().nullable(),
-    hensynPaArbeidsplassen: z.string().nullable(),
 })
 
 const SporsmalSvarSchema = z.object({
@@ -108,14 +92,17 @@ const MeldingerSchema = z.object({
 })
 
 const SykmelderSchema = z.object({
-    hprNummer: z.string(),
-    fornavn: z.string().nullable(),
-    mellomnavn: z.string().nullable(),
-    etternavn: z.string().nullable(),
+    hpr: z.string(),
+    navn: z.string(),
+})
+
+const PasientSchema = z.object({
+    ident: z.string(),
+    navn: z.string(),
 })
 
 const SykInnApiSykmeldingMeta = z.object({
-    pasientIdent: z.string(),
+    pasient: PasientSchema,
     sykmelder: SykmelderSchema,
     legekontorOrgnr: z.string().nullable(),
     legekontorTlf: z.string().nullable(),
@@ -133,12 +120,11 @@ export const SykInnApiSykmeldingSchema = z
             aktivitet: z.array(AktivitetSchema),
             svangerskapsrelatert: z.boolean(),
             pasientenSkalSkjermes: z.boolean(),
-            meldinger: MeldingerSchema,
+            meldinger: MeldingerSchema.nullable(),
             yrkesskade: YrkesskadeSchema.nullable(),
             arbeidsgiver: ArbeidsgiverSchema.nullable(),
             tilbakedatering: TilbakedateringSchema.nullable(),
-            utdypendeSporsmal: UtdypendeSporsmalSchema.nullable(),
-            utdypendeSporsmalSvar: UtdypendeSporsmalSvarSchema.nullable(),
+            utdypendeSporsmal: UtdypendeSporsmalSvarSchema.nullable(),
             annenFravarsgrunn: z.string().nullable(),
         }),
         utfall: RuleResultSchema,
@@ -171,10 +157,9 @@ export const SykInnApiSykmeldingRedactedSchema = z
 
 export type SykInnApiRuleOutcome = z.infer<typeof SykInnApiRuleOutcomeSchema>
 export const SykInnApiRuleOutcomeSchema = z.object({
-    status: z.union([z.literal('INVALID'), z.literal('MANUAL_PROCESSING')]),
-    message: z.string(),
-    rule: z.string(),
-    tree: z.string(),
+    status: z.union([z.literal('OK'), z.literal('PENDING'), z.literal('INVALID')]),
+    message: z.string().nullable(),
+    rule: z.string().nullable(),
 })
 
 export type SykInnApiPersonDoesNotExist = z.infer<typeof SykInnApiPersonDoesNotExistSchema>

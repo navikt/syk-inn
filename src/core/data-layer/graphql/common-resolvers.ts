@@ -53,23 +53,23 @@ export const commonObjectResolvers: Resolvers<CommonGraphqlContext> = {
             const previouslyAnsweredSporsmal: UtdypendeSporsmalOptions[] = []
             // TODO: Only run for sykmeldinger inside of date
             sykmeldinger.forEach((sykmelding) => {
-                if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmalSvar) {
-                    if (sykmelding.values.utdypendeSporsmalSvar.utfordringerMedArbeid?.svar) {
+                if (sykmelding.kind === 'full' && sykmelding.values.utdypendeSporsmal) {
+                    if (sykmelding.values.utdypendeSporsmal.utfordringerMedArbeid?.svar) {
                         previouslyAnsweredSporsmal.push('UTFORDRINGER_MED_ARBEID')
                     }
-                    if (sykmelding.values.utdypendeSporsmalSvar.medisinskOppsummering?.svar) {
+                    if (sykmelding.values.utdypendeSporsmal.medisinskOppsummering?.svar) {
                         previouslyAnsweredSporsmal.push('MEDISINSK_OPPSUMMERING')
                     }
-                    if (sykmelding.values.utdypendeSporsmalSvar.behandlingOgFremtidigArbeid?.svar) {
+                    if (sykmelding.values.utdypendeSporsmal.behandlingOgFremtidigArbeid?.svar) {
                         previouslyAnsweredSporsmal.push('BEHANDLING_OG_FREMTIDIG_ARBEID')
                     }
-                    if (sykmelding.values.utdypendeSporsmalSvar.uavklarteForhold?.svar) {
+                    if (sykmelding.values.utdypendeSporsmal.uavklarteForhold?.svar) {
                         previouslyAnsweredSporsmal.push('UAVKLARTE_FORHOLD')
                     }
-                    if (sykmelding.values.utdypendeSporsmalSvar.forventetHelsetilstandUtvikling?.svar) {
+                    if (sykmelding.values.utdypendeSporsmal.forventetHelsetilstandUtvikling?.svar) {
                         previouslyAnsweredSporsmal.push('FORVENTET_HELSETILSTAND_UTVIKLING')
                     }
-                    if (sykmelding.values.utdypendeSporsmalSvar.medisinskeHensyn?.svar) {
+                    if (sykmelding.values.utdypendeSporsmal.medisinskeHensyn?.svar) {
                         previouslyAnsweredSporsmal.push('MEDISINSKE_HENSYN')
                     }
                 }

@@ -51,9 +51,6 @@ function toPeriodeFromStatePeriode(aktivitet: NySykmeldingAktivitet): NySykmeldi
                     ...periode.aktivitet,
                     grad: null,
                 },
-                medisinskArsak: {
-                    isMedisinskArsak: aktivitet.medisinskArsak.isMedisinskArsak,
-                },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
                     arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker ?? null,
@@ -67,7 +64,6 @@ function toPeriodeFromStatePeriode(aktivitet: NySykmeldingAktivitet): NySykmeldi
                     ...periode.aktivitet,
                     grad: aktivitet.grad ? aktivitet.grad.toFixed(0) : null,
                 },
-                medisinskArsak: null,
                 arbeidsrelatertArsak: null,
             }
     }

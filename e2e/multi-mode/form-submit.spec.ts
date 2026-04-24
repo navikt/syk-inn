@@ -301,7 +301,6 @@ modes.forEach(({ mode }) => {
         await launchAndStart(mode)(page)
         await fillPeriodeRelative({ type: '100%', days: 3 })(page)
         await fillArsakerTilAktivitetIkkeMulig({
-            isMedisinsk: true,
             isArbeidsrelatert: true,
             arbeidsrelaterteArsaker: ['tilrettelegging ikke mulig', 'annet'],
             arbeidsrelatertArsakBegrunnelse: 'Annen årsak til aktivitet ikke mulig',
@@ -324,10 +323,9 @@ modes.forEach(({ mode }) => {
                         fom: today(),
                         tom: inDays(3),
                         aktivitetIkkeMulig: {
-                            medisinskArsak: { isMedisinskArsak: true },
                             arbeidsrelatertArsak: {
                                 isArbeidsrelatertArsak: true,
-                                arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                                arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
                                 annenArbeidsrelatertArsak: 'Annen årsak til aktivitet ikke mulig',
                             },
                         },

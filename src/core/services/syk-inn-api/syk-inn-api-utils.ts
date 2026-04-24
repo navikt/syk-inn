@@ -26,10 +26,10 @@ export function sykInnApiSykmeldingRedactedToResolverSykmelding(
         kind: 'redacted',
         sykmeldingId: sykmelding.sykmeldingId,
         meta: {
-            pasientIdent: sykmelding.meta.pasientIdent,
+            pasientIdent: sykmelding.meta.pasient.ident,
             legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
             mottatt: sykmelding.meta.mottatt,
-            sykmelderHpr: sykmelding.meta.sykmelder.hprNummer,
+            sykmelderHpr: sykmelding.meta.sykmelder.hpr,
         },
         values: {
             aktivitet: sykmelding.values.aktivitet.map((it) => ({
@@ -55,10 +55,10 @@ export function sykInnApiSykmeldingToResolverSykmelding(
             kind: 'light',
             sykmeldingId: sykmelding.sykmeldingId,
             meta: {
-                pasientIdent: sykmelding.meta.pasientIdent,
+                pasientIdent: sykmelding.meta.pasient.ident,
                 legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
                 mottatt: sykmelding.meta.mottatt,
-                sykmelderHpr: sykmelding.meta.sykmelder.hprNummer,
+                sykmelderHpr: sykmelding.meta.sykmelder.hpr,
             },
             values: {
                 aktivitet: sykmelding.values.aktivitet,
@@ -81,10 +81,10 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
         kind: 'full',
         sykmeldingId: sykmelding.sykmeldingId,
         meta: {
-            pasientIdent: sykmelding.meta.pasientIdent,
+            pasientIdent: sykmelding.meta.pasient.ident,
             legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
             mottatt: sykmelding.meta.mottatt,
-            sykmelderHpr: sykmelding.meta.sykmelder.hprNummer,
+            sykmelderHpr: sykmelding.meta.sykmelder.hpr,
         },
         values: {
             aktivitet: sykmelding.values.aktivitet,
@@ -96,7 +96,7 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
             yrkesskade: sykmelding.values.yrkesskade,
             arbeidsgiver: sykmelding.values.arbeidsgiver,
             tilbakedatering: sykmelding.values.tilbakedatering,
-            utdypendeSporsmalSvar: sykmelding.values.utdypendeSporsmalSvar,
+            utdypendeSporsmalSvar: sykmelding.values.utdypendeSporsmal,
             annenFravarsgrunn: sykmelding.values.annenFravarsgrunn as AnnenFravarsgrunnArsak,
         },
         utfall: sykmelding.utfall,
@@ -140,7 +140,7 @@ export function resolverInputToSykInnApiPayload(
                       startdato: values.tilbakedatering.startdato,
                   }
                 : null,
-            utdypendeSporsmalAnswerOptions: mapUtdypendeSporsmalToSykInnApiMap(values.utdypendeSporsmal),
+            utdypendeSporsmal: mapUtdypendeSporsmalToSykInnApiMap(values.utdypendeSporsmal),
             annenFravarsgrunn: values.annenFravarsgrunn ?? null,
         },
     }
@@ -148,8 +148,8 @@ export function resolverInputToSykInnApiPayload(
 
 function mapUtdypendeSporsmalToSykInnApiMap(
     utdypendeSporsmal?: InputMaybe<InputUtdypendeSporsmal> | undefined,
-): OpprettSykmeldingPayload['values']['utdypendeSporsmalAnswerOptions'] {
-    const result: OpprettSykmeldingPayload['values']['utdypendeSporsmalAnswerOptions'] = {
+): OpprettSykmeldingPayload['values']['utdypendeSporsmal'] {
+    const result: OpprettSykmeldingPayload['values']['utdypendeSporsmal'] = {
         utfordringerMedArbeid: null,
         medisinskOppsummering: null,
         hensynPaArbeidsplassen: null,
@@ -247,16 +247,13 @@ function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingA
             type: 'AKTIVITET_IKKE_MULIG',
             fom: aktivitet.fom,
             tom: aktivitet.tom,
-            medisinskArsak: {
-                isMedisinskArsak: aktivitet.aktivitetIkkeMulig.medisinskArsak?.isMedisinskArsak ?? false,
-            },
             arbeidsrelatertArsak: {
                 isArbeidsrelatertArsak:
                     aktivitet.aktivitetIkkeMulig.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
                 arbeidsrelaterteArsaker:
                     aktivitet.aktivitetIkkeMulig.arbeidsrelatertArsak?.arbeidsrelaterteArsaker.map((it) => {
                         switch (it) {
-                            case 'TILRETTELEGGING_IKKE_MULIG':
+                            case 'MANGLENDE_TILRETTELEGGING':
                             case 'ANNET':
                                 return it
                             default:
