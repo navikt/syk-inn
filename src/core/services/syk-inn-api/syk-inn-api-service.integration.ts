@@ -225,7 +225,7 @@ describe('SykInnApi integration', () => {
         expect.soft(kafkaMessage.metadata.orgnummer).toEqual('987654321')
 
         // sykmelding metadata
-        expect.soft(kafkaMessage.sykmelding.metadata.avsenderSystem.navn).toEqual('syk-inn test')
+        expect.soft(kafkaMessage.sykmelding.metadata.avsenderSystem.navn).toEqual('syk-inn test (FHIR)')
 
         // pasient
         expect.soft(kafkaMessage.sykmelding.pasient.fnr).toEqual('01010112345')
@@ -441,7 +441,7 @@ const createFullOpprettSykmeldingPayload = (
 ): OpprettSykmeldingPayload => ({
     submitId: submitId,
     meta: {
-        source: `syk-inn test`,
+        source: `syk-inn test (FHIR)`,
         sykmelderHpr: '123456',
         pasientIdent: '01010112345',
         legekontorOrgnr: '987654321',
