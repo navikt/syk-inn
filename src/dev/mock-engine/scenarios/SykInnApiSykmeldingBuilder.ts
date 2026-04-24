@@ -185,6 +185,13 @@ export class SykmeldingBuilder {
     }
 
     meldinger(meldinger: { tilNav?: string; tilArbeidsgiver?: string }): SykmeldingBuilder {
+        if (this._sykmelding.values.meldinger == null) {
+            this._sykmelding.values.meldinger = {
+                tilNav: null,
+                tilArbeidsgiver: null,
+            }
+        }
+
         this._sykmelding.values.meldinger.tilNav = meldinger.tilNav ?? null
         this._sykmelding.values.meldinger.tilArbeidsgiver = meldinger.tilArbeidsgiver ?? null
 
