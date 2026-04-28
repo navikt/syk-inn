@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { parseISO } from 'date-fns'
 
-import { AktivitetsPeriode } from '../form/types'
+import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
 
-import { isTilbakedatering } from './tilbakedatering-utils'
+import { isTilbakedatering } from './tilbakedatering'
 
 describe('isTilbakedatering', () => {
     it('should return true if the only period is older than 4 days before sykmeldingsdato', () => {

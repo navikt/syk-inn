@@ -4,6 +4,7 @@ import { type AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny
 import { NySykmeldingAktivitet, NySykmeldingFormPayload } from '@core/redux/reducers/ny-sykmelding/form'
 import { raise } from '@lib/ts'
 import { Diagnose } from '@data-layer/common/diagnose'
+import { isTilbakedatering } from '@data-layer/common/tilbakedatering'
 
 export function formValuesToStatePayload(values: NySykmeldingMainFormValues): NySykmeldingFormPayload {
     return {
@@ -22,7 +23,9 @@ export function formValuesToStatePayload(values: NySykmeldingMainFormValues): Ny
         },
         aktiviteter: values.perioder.map(formAktivitetToStepAktivitet),
         tilbakedatering:
-            values.tilbakedatering?.fom && values.tilbakedatering?.grunn
+            isTilbakedatering(values.perioder, new Date()) &&
+            values.tilbakedatering?.fom &&
+            values.tilbakedatering?.grunn
                 ? {
                       fom: values.tilbakedatering.fom,
                       grunn: values.tilbakedatering.grunn,

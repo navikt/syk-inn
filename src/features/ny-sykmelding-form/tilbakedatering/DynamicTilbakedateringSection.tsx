@@ -3,10 +3,10 @@ import { AnimatePresence, motion } from 'motion/react'
 import { HelpText, Link } from '@navikt/ds-react'
 
 import FormSection from '@components/form/form-section/FormSection'
+import { isTilbakedatering } from '@data-layer/common/tilbakedatering'
 
 import { useFormContext } from '../form/types'
 
-import { isTilbakedatering } from './tilbakedatering-utils'
 import TilbakedateringSection from './TilbakedateringSection'
 
 function DynamicTilbakedateringSection(): ReactElement | null {

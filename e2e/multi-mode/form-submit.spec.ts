@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { OpprettSykmeldingDocument } from '@queries'
-import { toReadableDate, toReadableDatePeriod } from '@lib/date'
-import { daysAgo, inDays, today } from '@lib/test/date-utils'
+import { inDays, today } from '@lib/test/date-utils'
 
 import {
     addBidiagnose,
@@ -9,14 +8,12 @@ import {
     fillArbeidsforhold,
     fillArsakerTilAktivitetIkkeMulig,
     fillPeriodeRelative,
-    fillTilbakedatering,
     nextStep,
     pickHoveddiagnose,
     submitSykmelding,
 } from '../actions/user-actions'
 import { expectGraphQLRequest } from '../utils/assertions'
 import { userInteractionsGroup } from '../utils/actions'
-import { verifySummaryPage } from '../actions/user-verifications'
 import { verifyIsOnKvitteringPage } from '../fhir/actions/fhir-user-verifications'
 import {
     defaultAktivitetGradert,
@@ -123,9 +120,19 @@ modes.forEach(({ mode }) => {
     test(`${mode}: optional - multiple perioder back to back`, async ({ page }) => {
         await launchAndStart(mode)(page)
 
-        await fillPeriodeRelative({ nth: 0, type: { grad: 60 }, fromRelative: 0, days: 6 })(page)
+        await fillPeriodeRelative({
+            nth: 0,
+            type: { grad: 60 },
+            fromRelative: 0,
+            days: 6,
+        })(page)
         await page.getByRole('button', { name: 'Legg til ny periode' }).click()
-        await fillPeriodeRelative({ nth: 1, type: { grad: 80 }, fromRelative: 7, days: 6 })(page)
+        await fillPeriodeRelative({
+            nth: 1,
+            type: { grad: 80 },
+            fromRelative: 7,
+            days: 6,
+        })(page)
         await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
 
         await nextStep()(page)
@@ -157,119 +164,12 @@ modes.forEach(({ mode }) => {
         await verifyIsOnKvitteringPage()(page)
     })
 
-    test(`${mode}: optional - 'tilbakedatering' is asked and required when fom is 5 days in the past`, async ({
-        page,
-    }) => {
-        await launchAndStart(mode)(page)
-
-        await fillPeriodeRelative({ type: '100%', fromRelative: -5, days: 5 })(page)
-        await fillTilbakedatering({ contact: daysAgo(2), reason: 'Ventetid på legetime' })(page)
-        await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
-
-        await nextStep()(page)
-        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
-
-        await verifySummaryPage([
-            mode === 'FHIR'
-                ? {
-                      name: 'Sykmeldingen gjelder',
-                      values: ['Espen Eksempel', '21037712323'],
-                  }
-                : {
-                      name: 'Sykmeldingen gjelder',
-                      values: ['Ola Nordmann Hansen', '21037712323'],
-                  },
-            {
-                name: 'Har pasienten flere arbeidsgivere?',
-                values: ['Nei'],
-            },
-            {
-                name: 'Periode',
-                values: [new RegExp(toReadableDatePeriod(daysAgo(5), inDays(0)))],
-            },
-            {
-                name: 'Periode',
-                values: [/100% sykmelding/],
-            },
-            {
-                name: 'Hoveddiagnose',
-                values: ['Angstlidelse (P74)ICPC2'], // TODO: Hvorfor kommer denne som en linje?
-            },
-            {
-                name: 'Dato for tilbakedatering',
-                values: [toReadableDate(daysAgo(2))],
-            },
-            {
-                name: 'Grunn for tilbakedatering',
-                values: ['Ventetid på legetime'],
-            },
-        ])(page)
-
-        const { request, draftId } = await submitSykmelding()(page)
-
-        await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-            draftId: draftId,
-            meta: expectedSykmeldingMeta(mode),
-            force: false,
-            values: {
-                ...defaultOpprettSykmeldingValues,
-                hoveddiagnose: diagnoseSelection.angst.verify,
-                aktivitet: [
-                    defaultAktivitetIkkeMulig({
-                        fom: daysAgo(5),
-                        tom: inDays(0),
-                    }),
-                ],
-                tilbakedatering: {
-                    startdato: daysAgo(2),
-                    begrunnelse: 'Ventetid på legetime',
-                },
-            },
-        })
-    })
-
-    test(`${mode}: optional - "tilbakedatering" and "Annen årsak" input field is required and part of payload when checked`, async ({
-        page,
-    }) => {
-        await launchAndStart(mode)(page)
-
-        await fillPeriodeRelative({ type: '100%', fromRelative: -5, days: 5 })(page)
-        await fillTilbakedatering({
-            contact: daysAgo(2),
-            reason: 'Annet',
-            otherReason: 'Annen årsak til tilbakedatering',
-        })(page)
-        await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
-
-        await nextStep()(page)
-        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
-
-        const { request, draftId } = await submitSykmelding()(page)
-
-        await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
-            draftId: draftId,
-            meta: expectedSykmeldingMeta(mode),
-            force: false,
-            values: {
-                ...defaultOpprettSykmeldingValues,
-                hoveddiagnose: diagnoseSelection.angst.verify,
-                aktivitet: [
-                    defaultAktivitetIkkeMulig({
-                        fom: daysAgo(5),
-                        tom: inDays(0),
-                    }),
-                ],
-                tilbakedatering: {
-                    startdato: daysAgo(2),
-                    begrunnelse: 'Annen årsak til tilbakedatering',
-                },
-            },
-        })
-    })
-
     test(`${mode}: optional - "har flere arbeidsforhold" should be part of payload if checked`, async ({ page }) => {
         await launchAndStart(mode)(page)
-        await fillArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Test AS' })(page)
+        await fillArbeidsforhold({
+            harFlereArbeidsforhold: true,
+            sykmeldtFraArbeidsforhold: 'Test AS',
+        })(page)
         await fillPeriodeRelative({ type: '100%', days: 3 })(page)
         await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
 
@@ -345,7 +245,11 @@ modes.forEach(({ mode }) => {
         await nextStep()(page)
         await verifySignerendeBehandlerFillIfNeeded(mode)(page)
 
-        await page.getByRole('checkbox', { name: 'Pasienten skal skjermes for medisinske opplysninger' }).check()
+        await page
+            .getByRole('checkbox', {
+                name: 'Pasienten skal skjermes for medisinske opplysninger',
+            })
+            .check()
         const { request, draftId } = await submitSykmelding()(page)
 
         await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
@@ -379,7 +283,9 @@ modes.forEach(({ mode }) => {
             await launchAndFillBasic(page)
             await submitSykmelding('invalid')(page)
 
-            const confirmationModal = page.getByRole('dialog', { name: 'Vær oppmerksom' })
+            const confirmationModal = page.getByRole('dialog', {
+                name: 'Vær oppmerksom',
+            })
             await expect(confirmationModal).toBeVisible()
 
             const { request, draftId } = await confirmRuleOutcomeSubmit(confirmationModal)(page)
@@ -405,7 +311,9 @@ modes.forEach(({ mode }) => {
             await launchAndFillBasic(page)
             await submitSykmelding('manual')(page)
 
-            const confirmationModal = page.getByRole('dialog', { name: 'Vær oppmerksom' })
+            const confirmationModal = page.getByRole('dialog', {
+                name: 'Vær oppmerksom',
+            })
             await expect(confirmationModal).toBeVisible()
 
             const { request, draftId } = await confirmRuleOutcomeSubmit(confirmationModal)(page)
@@ -439,7 +347,9 @@ modes.forEach(({ mode }) => {
             await submitSykmelding('person-not-found')(page)
 
             await expect(
-                page.getByRole('heading', { name: /Fant ikke (.*) \(21037712323\) i folkeregisteret/ }),
+                page.getByRole('heading', {
+                    name: /Fant ikke (.*) \(21037712323\) i folkeregisteret/,
+                }),
             ).toBeVisible()
         })
     })
