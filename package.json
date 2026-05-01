@@ -113,7 +113,7 @@
         "knip": "^6.6.0",
         "lint-staged": "^16.4.0",
         "nock": "^14.0.13",
-        "oxfmt": "^0.46.0",
+        "oxfmt": "^0.47.0",
         "pdf-parse": "^2.4.5",
         "postcss": "^8.5.10",
         "tailwindcss": "^4.2.4",
