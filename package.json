@@ -106,7 +106,7 @@
         "@typescript/native-preview": "^7.0.0-dev.20260421.2",
         "@vitest/eslint-plugin": "^1.6.16",
         "concurrently": "^9.2.1",
-        "eslint": "^9.39.4",
+        "eslint": "^10.2.1",
         "eslint-config-next": "^16.2.4",
         "husky": "^9.1.7",
         "kafkajs": "^2.2.4",
