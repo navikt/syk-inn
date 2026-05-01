@@ -33,12 +33,12 @@
         "postinstall": "husky"
     },
     "dependencies": {
-        "@apollo/client": "^4.1.7",
+        "@apollo/client": "^4.1.9",
         "@envelop/core": "^5.5.1",
         "@envelop/opentelemetry": "^9.1.1",
         "@grafana/faro-web-sdk": "^2.3.1",
         "@grafana/faro-web-tracing": "^2.3.1",
-        "@graphql-tools/schema": "^10.0.32",
+        "@graphql-tools/schema": "^10.0.33",
         "@mdx-js/loader": "^3.1.1",
         "@mdx-js/react": "^3.1.1",
         "@navikt/aksel-icons": "^8.10.2",
