@@ -12,7 +12,6 @@ export type NySykmeldingAktivitet =
           type: 'AKTIVITET_IKKE_MULIG'
           fom: string
           tom: string | null
-          medisinskArsak: NySykmeldingMedisinskArsak
           arbeidsrelatertArsak: NySykmeldingArbeidsrelatertArsak
       }
     | {
@@ -21,10 +20,6 @@ export type NySykmeldingAktivitet =
           tom: string | null
           grad: number | null
       }
-
-type NySykmeldingMedisinskArsak = {
-    isMedisinskArsak: boolean | null
-}
 
 type NySykmeldingArbeidsrelatertArsak = {
     isArbeidsrelatertArsak: boolean | null

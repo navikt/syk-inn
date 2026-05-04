@@ -206,9 +206,6 @@ function aktivitetStepToInputAktivitet(value: NySykmeldingAktivitet): InputAktiv
                 fom: value.fom,
                 tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
                 aktivitetIkkeMulig: {
-                    medisinskArsak: {
-                        isMedisinskArsak: value.medisinskArsak.isMedisinskArsak ?? false,
-                    },
                     arbeidsrelatertArsak: {
                         isArbeidsrelatertArsak: value.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
                         arbeidsrelaterteArsaker: value.arbeidsrelatertArsak.arbeidsrelaterteArsaker ?? [],

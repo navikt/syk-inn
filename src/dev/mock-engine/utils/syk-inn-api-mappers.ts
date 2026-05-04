@@ -15,12 +15,13 @@ export function sykInnApiPayloadToResponse(
         kind: 'full',
         sykmeldingId,
         meta: {
-            pasientIdent: payload.meta.pasientIdent,
+            pasient: {
+                ident: payload.meta.pasientIdent,
+                navn: 'Ola Nordmann',
+            },
             sykmelder: {
-                hprNummer: payload.meta.sykmelderHpr,
-                fornavn: 'Koman',
-                mellomnavn: null,
-                etternavn: 'Magnar',
+                hpr: payload.meta.sykmelderHpr,
+                navn: 'Koman Magnar',
             },
             legekontorOrgnr: payload.meta.legekontorOrgnr,
             legekontorTlf: payload.meta.legekontorTlf ?? null,
@@ -36,7 +37,6 @@ export function sykInnApiPayloadToResponse(
                             type: 'AKTIVITET_IKKE_MULIG',
                             fom: it.fom,
                             tom: it.tom,
-                            medisinskArsak: it.medisinskArsak,
                             arbeidsrelatertArsak: it.arbeidsrelatertArsak,
                         }
                     case 'GRADERT':
@@ -84,29 +84,6 @@ export function sykInnApiPayloadToResponse(
                 : null,
             tilbakedatering: payload.values.tilbakedatering ?? null,
             utdypendeSporsmal: null,
-            utdypendeSporsmalSvar: payload.values.utdypendeSporsmalAnswerOptions
-                ? {
-                      utfordringerMedArbeid:
-                          payload.values.utdypendeSporsmalAnswerOptions.utfordringerMedArbeid ?? null,
-                      medisinskOppsummering:
-                          payload.values.utdypendeSporsmalAnswerOptions.medisinskOppsummering ?? null,
-                      hensynPaArbeidsplassen:
-                          payload.values.utdypendeSporsmalAnswerOptions.hensynPaArbeidsplassen ?? null,
-                      sykdomsutvikling: payload.values.utdypendeSporsmalAnswerOptions.sykdomsutvikling ?? null,
-                      arbeidsrelaterteUtfordringer:
-                          payload.values.utdypendeSporsmalAnswerOptions.arbeidsrelaterteUtfordringer ?? null,
-                      behandlingOgFremtidigArbeid:
-                          payload.values.utdypendeSporsmalAnswerOptions.behandlingOgFremtidigArbeid ?? null,
-                      uavklarteForhold: payload.values.utdypendeSporsmalAnswerOptions.uavklarteForhold ?? null,
-                      oppdatertMedisinskStatus:
-                          payload.values.utdypendeSporsmalAnswerOptions.oppdatertMedisinskStatus ?? null,
-                      realistiskMestringArbeid:
-                          payload.values.utdypendeSporsmalAnswerOptions.realistiskMestringArbeid ?? null,
-                      forventetHelsetilstandUtvikling:
-                          payload.values.utdypendeSporsmalAnswerOptions.forventetHelsetilstandUtvikling ?? null,
-                      medisinskeHensyn: payload.values.utdypendeSporsmalAnswerOptions.medisinskeHensyn ?? null,
-                  }
-                : null,
             annenFravarsgrunn: payload.values.annenFravarsgrunn,
         },
         utfall: utfall,

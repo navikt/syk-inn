@@ -27,7 +27,6 @@ fragment RuleOutcome on RuleOutcome {
     status
     message
     rule
-    tree
 }
 
 fragment SykmeldingRedacted on SykmeldingRedacted {
@@ -194,9 +193,6 @@ fragment Aktivitet on Aktivitet {
             isArbeidsrelatertArsak
             arbeidsrelaterteArsaker
             annenArbeidsrelatertArsak
-        }
-        medisinskArsak {
-            isMedisinskArsak
         }
     }
     ... on Avventende {

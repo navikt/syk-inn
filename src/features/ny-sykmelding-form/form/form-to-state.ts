@@ -75,9 +75,6 @@ function formAktivitetToStepAktivitet(value: AktivitetsPeriode): NySykmeldingAkt
                 type: 'AKTIVITET_IKKE_MULIG',
                 fom: value.periode.fom ?? raise('FOM is required for AKTIVITET_IKKE_MULIG'),
                 tom: value.periode.tom ?? raise('TOM is required for AKTIVITET_IKKE_MULIG'),
-                medisinskArsak: {
-                    isMedisinskArsak: value.medisinskArsak?.isMedisinskArsak ?? null,
-                },
                 arbeidsrelatertArsak: {
                     isArbeidsrelatertArsak: value.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
                     arbeidsrelaterteArsaker: value.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? null,

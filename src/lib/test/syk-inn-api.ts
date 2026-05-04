@@ -11,7 +11,9 @@ const KAFKA_ALIAS = 'kafka'
 /**
  * See README for local run with syk-inn-api-local docker image
  */
-const SYK_INN_API_IMAGE = process.env.SYK_INN_API_INTEGRATION_TESTS_IMAGE || 'ghcr.io/navikt/syk-inn-api-test:latest'
+const SYK_INN_API_IMAGE =
+    // TODO: This uses the branch specific image, should be cleaned up before go-live
+    process.env.SYK_INN_API_INTEGRATION_TESTS_IMAGE || 'ghcr.io/navikt/syk-inn-api-ktor-test:latest'
 if (!(SYK_INN_API_IMAGE.startsWith('ghcr.io/navikt') || SYK_INN_API_IMAGE.startsWith('syk-inn-api-local'))) {
     throw new Error("Oop! This image isn't under ghcr.io/navikt, that seems illegal 🤔")
 }
@@ -34,7 +36,7 @@ export async function initializeSykInnApi(applog: boolean = false): Promise<{
     })
 
     const [postgres, kafka] = await Promise.all([
-        new PostgreSqlContainer('postgres:16-alpine')
+        new PostgreSqlContainer('postgres:17-alpine')
             .withNetwork(network)
             .withNetworkAliases(POSTGRES_ALIAS)
             .withDatabase('syk-inn-db')
@@ -59,17 +61,14 @@ export async function initializeSykInnApi(applog: boolean = false): Promise<{
     const sykInnApi = await new GenericContainer(SYK_INN_API_IMAGE)
         .withNetwork(network)
         .withEnvironment({
-            SPRING_PROFILES_ACTIVE: 'local',
-            DB_URL: `jdbc:postgresql://${POSTGRES_ALIAS}:5432/${postgres.getDatabase()}?reWriteBatchedInserts=true`,
-            DB_USER: postgres.getUsername(),
+            DB_URL: `postgresql://${POSTGRES_ALIAS}:5432/${postgres.getDatabase()}`,
+            DB_USERNAME: postgres.getUsername(),
             DB_PASSWORD: postgres.getPassword(),
             BOOTSTRAP_SERVERS: `${KAFKA_ALIAS}:9092`,
-            JOBS_SYKMELDING_INITIAL_DELAY: '1',
-            JOBS_SYKMELDING_FIXED_DELAY: '1',
-            JOBS_SYKMELDING_RESET_TIMEOUT_DELAY: '10',
         })
+        .withCommand(['app.jar', '-config=application-local.conf'])
         .withExposedPorts(8080)
-        .withWaitStrategy(Wait.forHttp('/internal/health', 8080))
+        .withWaitStrategy(Wait.forHttp('/internal/health/alive', 8080))
         .withStartupTimeout(30_000)
         .withLogConsumer(applog ? streamToStdout : () => void 0)
         .start()
@@ -79,12 +78,4 @@ export async function initializeSykInnApi(applog: boolean = false): Promise<{
         })
 
     return { sykInnApi, kafka }
-}
-
-function getBaseUrl(container: StartedTestContainer, port: number = 8080): `http://${string}` {
-    return `http://${container.getHost()}:${container.getMappedPort(port)}`
-}
-
-export function getSykInnApiPath(container: StartedTestContainer, path: `/${string}`): `http://${string}/${string}` {
-    return `${getBaseUrl(container)}${path}`
 }

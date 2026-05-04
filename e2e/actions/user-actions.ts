@@ -309,12 +309,10 @@ export function fillPeriodeRelative({
 }
 
 export function fillArsakerTilAktivitetIkkeMulig({
-    isMedisinsk = true,
     isArbeidsrelatert = false,
     arbeidsrelaterteArsaker = [],
     arbeidsrelatertArsakBegrunnelse = null,
 }: {
-    isMedisinsk?: boolean
     isArbeidsrelatert?: boolean
     arbeidsrelaterteArsaker?: ('tilrettelegging ikke mulig' | 'annet')[]
     arbeidsrelatertArsakBegrunnelse?: string | null
@@ -323,15 +321,6 @@ export function fillArsakerTilAktivitetIkkeMulig({
         await test.step('Input årsaker til kan ikke være i arbeid', async () => {
             const periodeRegion = page.getByRole('region', { name: 'Periode' })
             await expect(periodeRegion).toBeVisible()
-
-            const medisinskCheckbox = periodeRegion.getByRole('checkbox', {
-                name: 'Medisinske årsaker forhindrer arbeidsaktivitet',
-            })
-            if (isMedisinsk) {
-                await expect(medisinskCheckbox).toBeChecked()
-            } else {
-                await medisinskCheckbox.uncheck()
-            }
 
             const arbeidsrelatertArsakCheckbox = periodeRegion.getByRole('checkbox', {
                 name: 'Arbeidsrelaterte årsaker forhindrer arbeidsaktivitet',

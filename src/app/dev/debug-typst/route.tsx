@@ -3,7 +3,6 @@ import fs from 'node:fs'
 import { logger } from '@navikt/next-logger'
 
 import { createTypstSykmelding, mapSykInnToPdfPayload } from '@core/pdf/pdf-service'
-import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { isLocal } from '@lib/env'
 import { TypstPdfSykmelding } from '@core/pdf/types'
 import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
@@ -14,13 +13,13 @@ export async function GET(): Promise<Response> {
     const chonkySykmelding: SykInnApiSykmelding = {
         sykmeldingId: crypto.randomUUID(),
         kind: 'full',
-        utfall: { result: 'OK', melding: null },
+        utfall: { result: 'OK', cause: null },
         meta: {
             mottatt: new Date().toISOString(),
             legekontorOrgnr: '123456789',
             legekontorTlf: '+47 123 45 678',
-            pasientIdent: '21037712323',
-            sykmelder: { hprNummer: '123456', fornavn: 'Kari', mellomnavn: 'Nordmann', etternavn: 'Lege' },
+            pasient: { ident: '21037712323', navn: 'Ola Normann' },
+            sykmelder: { hpr: '123456', navn: 'Kari Normann Lege' },
         },
         values: {
             arbeidsgiver: {
@@ -32,18 +31,16 @@ export async function GET(): Promise<Response> {
                     type: 'AKTIVITET_IKKE_MULIG',
                     fom: today(),
                     tom: inDays(14),
-                    medisinskArsak: { isMedisinskArsak: true },
                     arbeidsrelatertArsak: {
                         isArbeidsrelatertArsak: true,
                         annenArbeidsrelatertArsak: 'Jadda neida så det',
-                        arbeidsrelaterteArsaker: ['TILRETTELEGGING_IKKE_MULIG', 'ANNET'],
+                        arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
                     },
                 },
                 {
                     type: 'AKTIVITET_IKKE_MULIG',
                     fom: inDays(15),
                     tom: inDays(30),
-                    medisinskArsak: { isMedisinskArsak: true },
                     arbeidsrelatertArsak: {
                         isArbeidsrelatertArsak: true,
                         annenArbeidsrelatertArsak: 'noe annet ikke så lang grunn egt',
@@ -90,9 +87,7 @@ export async function GET(): Promise<Response> {
                 tilArbeidsgiver:
                     'Hei arbeidsgiver, dette er en melding til dere. Det er veldig viktig at dere leser denne meldingen, for det står nemlig veldig viktige ting her som dere må ta hensyn til når dere skal legge til rette for arbeidstakeren sin retur til jobb etter sykefraværet.',
             },
-            // deprecated
-            utdypendeSporsmal: null,
-            utdypendeSporsmalSvar: {
+            utdypendeSporsmal: {
                 utfordringerMedArbeid: {
                     sporsmalstekst: questionTexts.utdypendeSporsmal.utfordringerMedArbeid.label,
                     svar: 'Det er mange utfordringer med arbeid, for eksempel at det er veldig langt å reise til jobb, og at det er tunge løft på arbeidsplassen som gjør det vanskelig å komme tilbake til jobb.',
@@ -141,13 +136,8 @@ export async function GET(): Promise<Response> {
             annenFravarsgrunn: 'GODKJENT_HELSEINSTITUSJON',
         },
     }
-    const mockPerson = await pdlApiService.getPdlPerson('12345678910')
-    if ('errorType' in mockPerson) {
-        logger.error(`Failed to fetch mock person: ${mockPerson.errorType}`)
-        return new Response('Internal server error', { status: 500 })
-    }
 
-    const body = await createTypstSykmelding(chonkySykmelding, mockPerson)
+    const body = await createTypstSykmelding(chonkySykmelding)
     if (!body.ok) {
         logger.error(`Unable to generate PDF, typst says: ${body.error}`)
         return new Response('Internal server error', { status: 500 })
@@ -155,7 +145,7 @@ export async function GET(): Promise<Response> {
 
     // Update our local test data, used when developing with yarn dev:pdf
     if (isLocal) {
-        const payload: TypstPdfSykmelding = mapSykInnToPdfPayload(chonkySykmelding, mockPerson)
+        const payload: TypstPdfSykmelding = mapSykInnToPdfPayload(chonkySykmelding)
         fs.writeFileSync('./typst-pdf/test-data/big.json', JSON.stringify(payload, null, 2))
     }
 

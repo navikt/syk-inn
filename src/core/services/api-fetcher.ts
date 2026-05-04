@@ -1,5 +1,6 @@
 import texas from '@navikt/texas'
 import * as z from 'zod'
+import { logger } from '@navikt/next-logger'
 
 import { bundledEnv, getServerEnv } from '@lib/env'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
@@ -101,6 +102,7 @@ export async function fetchInternalAPI<
         const parsed = responseSchema.safeParse(result)
 
         if (!parsed.success) {
+            logger.info(result)
             failSpan(
                 span,
                 'Invalid API response body',

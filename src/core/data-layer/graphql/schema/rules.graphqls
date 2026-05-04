@@ -1,13 +1,12 @@
 enum RuleOutcomeStatus {
+    PENDING
     INVALID
-    MANUAL_PROCESSING
 }
 
 type RuleOutcome {
     status: RuleOutcomeStatus!
     message: String!
     rule: String!
-    tree: String!
 }
 
 type RuleOK {
