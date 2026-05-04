@@ -7,7 +7,7 @@ const config: CodegenConfig = {
     documents: ['./src/core/data-layer/graphql/queries/**/*.graphql'],
     generates: {
         './src/core/data-layer/graphql/generated/queries.generated.ts': {
-            plugins: ['typescript', 'typescript-operations', 'typed-document-node', eslintDisabler],
+            plugins: [eslintDisabler, 'typescript', 'typescript-operations', 'typed-document-node'],
             config: {
                 enumsAsTypes: true,
                 avoidOptionals: true,
@@ -16,7 +16,7 @@ const config: CodegenConfig = {
             },
         },
         './src/core/data-layer/graphql/generated/resolvers.generated.ts': {
-            plugins: ['typescript', 'typescript-resolvers', eslintDisabler],
+            plugins: [eslintDisabler, 'typescript', 'typescript-resolvers'],
             config: {
                 enumsAsTypes: true,
                 scalars: { DateTime: 'string', DateOnly: 'string', JSON: 'unknown' },
