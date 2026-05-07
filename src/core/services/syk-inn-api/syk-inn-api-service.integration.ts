@@ -1,7 +1,10 @@
+/* eslint-disable no-console */
+
 import { beforeAll, describe, it, expect } from 'vitest'
 import { StartedTestContainer } from 'testcontainers'
 import { Kafka } from 'kafkajs'
 import * as R from 'remeda'
+import * as ac from 'asciichart'
 
 import { initializeSykInnApi } from '@lib/test/syk-inn-api'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
@@ -30,7 +33,7 @@ describe('SykInnApi integration', () => {
             process.env.LOCAL_SYK_INN_API_HOST = `localhost:8080`
             kafka = await initializeLocalKafka()
         } else {
-            const sykInnContainers = await initializeSykInnApi(true)
+            const sykInnContainers = await initializeSykInnApi(false)
             sykInnApi = sykInnContainers.sykInnApi
             kafka = await initializeKafka(sykInnContainers.kafka)
 
@@ -429,6 +432,54 @@ describe('SykInnApi integration', () => {
         expect(onlyNew[0].kind).toEqual('full')
         expect(onlyNew[1].kind).toEqual('redacted')
     })
+
+    it(`Load test - Create ${process.env.CI ? '1000' : '5000'} sykmeldinger`, async () => {
+        const requestTimes: number[] = []
+        const getTotalRPS = (): number => {
+            const totalTimeSeconds = (Math.max(...requestTimes) - Math.min(...requestTimes)) / 1000
+            return Math.round(requestTimes.length / totalTimeSeconds)
+        }
+
+        const createAndVerifySingleSykmelding = async (): Promise<string> => {
+            const payload = createFullOpprettSykmeldingPayload()
+            const opprettResult = await sykInnApiService.opprettSykmelding(payload)
+
+            requestTimes.push(performance.now())
+
+            if ('errorType' in opprettResult) {
+                throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
+            }
+
+            expect(opprettResult.sykmeldingId).toBeDefined()
+            expect(opprettResult.values.hoveddiagnose?.system).toEqual(payload.values.hoveddiagnose.system)
+            expect(opprettResult.values.hoveddiagnose?.code).toEqual(payload.values.hoveddiagnose.code)
+
+            return opprettResult.sykmeldingId
+        }
+
+        const ATTACK_TOTAL: number = process.env.CI ? 1000 : 5000
+        const ATTACK_BURST_SIZE = 50
+
+        const attackMatrix: number[][] = R.chunk(R.range(0, ATTACK_TOTAL), ATTACK_BURST_SIZE)
+
+        let [goodTotal, badTotal] = [0, 0]
+        for (const matrix of attackMatrix) {
+            console.info(`Starting burst attack of ${matrix.length}`)
+            const createPromises: Promise<string>[] = matrix.map(createAndVerifySingleSykmelding)
+
+            const results = await Promise.allSettled(createPromises)
+            const [good, bad] = R.partition(results, (it) => it.status === 'fulfilled')
+
+            console.info(
+                `Attack burst complete, ${good.length} good / ${bad.length} bad, current RPS: ${getTotalRPS()}`,
+            )
+            goodTotal += good.length
+            badTotal += bad.length
+        }
+
+        console.info(`Burst complete! ${goodTotal} good / ${badTotal} bad, overall RPS: ${getTotalRPS()}r/s`)
+        rpsUtils.createRPSAsciiGraph(requestTimes)
+    }, 120_000)
 })
 
 const createFullOpprettSykmeldingPayload = (
@@ -493,3 +544,60 @@ const createFullOpprettSykmeldingPayload = (
         ...valueOverrides,
     },
 })
+
+const rpsUtils = {
+    createRPSAsciiGraph(requestTimes: number[]): void {
+        const rpsPerSecond = rpsUtils.convertRequestTimesToRPS(requestTimes)
+        const horizontalScale = 2
+        const plotData = rpsUtils.stretchPlotData(rpsPerSecond, horizontalScale)
+
+        console.log(
+            `${ac.plot(plotData, {
+                height: 20,
+                offset: 6,
+                padding: '      ',
+                format: (value) => `${Math.round(value)}`.padStart(5, ' '),
+            })}\n${rpsUtils.createSecondsAxis(rpsPerSecond.length, horizontalScale)}`,
+        )
+    },
+
+    convertRequestTimesToRPS(requestTimes: number[]): number[] {
+        if (requestTimes.length === 0) {
+            return []
+        }
+
+        const firstRequestTime = Math.min(...requestTimes)
+        const lastRequestTime = Math.max(...requestTimes)
+        const bucketCount = Math.floor((lastRequestTime - firstRequestTime) / 1000) + 1
+        const requestsPerSecond = Array.from({ length: bucketCount }, () => 0)
+
+        for (const requestTime of requestTimes) {
+            const secondIndex = Math.floor((requestTime - firstRequestTime) / 1000)
+            requestsPerSecond[secondIndex] += 1
+        }
+
+        return requestsPerSecond
+    },
+
+    stretchPlotData(data: number[], horizontalScale: number): number[] {
+        return data.flatMap((value) => Array.from({ length: horizontalScale }, () => value))
+    },
+
+    createSecondsAxis(bucketCount: number, horizontalScale: number): string {
+        const axisWidth = bucketCount * horizontalScale
+        const axis = Array.from({ length: axisWidth }, () => ' ')
+
+        for (let second = 0; second < bucketCount; second += 5) {
+            const label = `${second}s`
+            const labelStart = second * horizontalScale
+
+            for (const [index, char] of Array.from(label).entries()) {
+                if (labelStart + index < axis.length) {
+                    axis[labelStart + index] = char
+                }
+            }
+        }
+
+        return `${' '.repeat(6)}${axis.join('')}`
+    },
+}

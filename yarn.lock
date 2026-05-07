@@ -4022,6 +4022,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/asciichart@npm:^1":
+  version: 1.5.8
+  resolution: "@types/asciichart@npm:1.5.8"
+  checksum: 10c0/e304c0f75ea5a3d292243620bd0598421f46837d6a8c076b14e4392e3abc75b678bd7c0663809105eed3cef990086d82eee3c410f0b1d623a5f5fa6aaee3ca94
+  languageName: node
+  linkType: hard
+
 "@types/chai@npm:^5.2.2":
   version: 5.2.2
   resolution: "@types/chai@npm:5.2.2"
@@ -5093,6 +5100,13 @@ __metadata:
     get-intrinsic: "npm:^1.2.6"
     is-array-buffer: "npm:^3.0.4"
   checksum: 10c0/2f2459caa06ae0f7f615003f9104b01f6435cc803e11bd2a655107d52a1781dc040532dc44d93026b694cc18793993246237423e13a5337e86b43ed604932c06
+  languageName: node
+  linkType: hard
+
+"asciichart@npm:^1.5.25":
+  version: 1.5.25
+  resolution: "asciichart@npm:1.5.25"
+  checksum: 10c0/65b7e941a2af4330545f834e9d61508398e1c40c7d6280530ad61836d0ed28f24f5ced63a13a2f29b669da59a3626521c09f56fa7d2242ca561bb451f2fb4202
   languageName: node
   linkType: hard
 
@@ -12464,6 +12478,7 @@ __metadata:
     "@tailwindcss/postcss": "npm:^4.2.4"
     "@testcontainers/kafka": "npm:^11.14.0"
     "@testcontainers/postgresql": "npm:^11.14.0"
+    "@types/asciichart": "npm:^1"
     "@types/mdx": "npm:^2.0.13"
     "@types/node": "npm:^24.12.2"
     "@types/react": "npm:19.2.14"
@@ -12471,6 +12486,7 @@ __metadata:
     "@typescript/native-preview": "npm:^7.0.0-dev.20260421.2"
     "@unleash/nextjs": "npm:^1.6.4"
     "@vitest/eslint-plugin": "npm:^1.6.16"
+    asciichart: "npm:^1.5.25"
     clsx: "npm:^2.1.1"
     concurrently: "npm:^9.2.1"
     date-fns: "npm:^4.1.0"
