@@ -25,7 +25,7 @@
 ]
 
 // Global configuration
-#set text(font: "Source Sans 3", lang: "nb", size: 10pt)
+#set text(font: "Source Sans 3", lang: "nb", size: 10pt, fallback: false)
 
 #set page(
   paper: "a4",

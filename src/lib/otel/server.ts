@@ -25,10 +25,12 @@ interface FailSpan {
 }
 
 /**
- * Marks the span as failed, as well as logs the exception.
+ * Marks the span as failed, as well as logs the exception (if defined).
  */
 export const failSpan: FailSpan = ((span, what, error): void => {
-    logger.error(error)
+    if (error) {
+        logger.error(error)
+    }
 
     if (error) {
         span.recordException(error)
