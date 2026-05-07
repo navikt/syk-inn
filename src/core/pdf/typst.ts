@@ -56,7 +56,7 @@ export function execTypst(module: Modules): Promise<PdfResult> {
 
             failSpan(span, 'PDF generation with typst', cleanError)
 
-            return { ok: false, error: "typst-cli invocation failed" }
+            return { ok: false, error: 'typst-cli invocation failed' }
         }
     })
 }

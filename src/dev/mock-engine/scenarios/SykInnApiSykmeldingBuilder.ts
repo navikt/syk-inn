@@ -169,6 +169,13 @@ export class SykmeldingBuilder {
         return this
     }
 
+    meldinger(meldinger: { tilNav?: string; tilArbeidsgiver?: string }): SykmeldingBuilder {
+        this._sykmelding.values.meldinger.tilNav = meldinger.tilNav ?? null
+        this._sykmelding.values.meldinger.tilArbeidsgiver = meldinger.tilArbeidsgiver ?? null
+
+        return this
+    }
+
     build(): SykInnApiSykmelding {
         if (this._sykmelding.values.aktivitet.length === 0) {
             throw new Error('Sykmelding må ha minst en aktivitet! Dumbass >:(')
