@@ -441,7 +441,9 @@ describe('SykInnApi integration', () => {
         }
 
         const createAndVerifySingleSykmelding = async (): Promise<string> => {
-            const payload = createFullOpprettSykmeldingPayload()
+            const payload = createFullOpprettSykmeldingPayload({
+                pasientIdent: `010101${Math.floor(Math.random() * 90000 + 10000)}`,
+            })
             const opprettResult = await sykInnApiService.opprettSykmelding(payload)
 
             requestTimes.push(performance.now())
