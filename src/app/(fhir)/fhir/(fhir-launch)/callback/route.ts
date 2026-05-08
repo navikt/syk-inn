@@ -7,6 +7,9 @@ import { getSessionId } from '@core/session/session'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
 
+// TODO
+const HAR_TATT_HELG = true
+
 /**
  * Third step in launch process, after the user followed the authorization_url and is redirected here with a code and
  * our state param. We exchange this together with PKCE for tokens and update the users session.
@@ -44,6 +47,10 @@ export async function GET(request: Request): Promise<Response> {
         logger.error(`Callback failed with error ${callback.error}`)
 
         redirect(pathWithBasePath('/fhir/error?reason=callback-failed'))
+    }
+
+    if (HAR_TATT_HELG) {
+        redirect(pathWithBasePath('/fhir/error?reason=oppgradering'))
     }
 
     /**
