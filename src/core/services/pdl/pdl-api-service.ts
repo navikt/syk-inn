@@ -26,7 +26,7 @@ export const pdlApiService = {
             onApiError: (response) => {
                 if (response.status === 404) {
                     logger.error(
-                        `Unable to fetch person with ident ${ident} (${response.status} ${response.statusText}`,
+                        `Unable to fetch person with ident (${response.status} ${response.statusText}`,
                     )
 
                     return 'PERSON_NOT_FOUND'
