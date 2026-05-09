@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import { CallbackError, InvalidCode, UnknownError, WeUpgradinError } from '../launch-errors'
+import { CallbackError, InvalidCode, UnknownError } from '../launch-errors'
 
 type Props = {
     searchParams: Promise<{
@@ -15,8 +15,6 @@ async function Page({ searchParams }: Props): Promise<ReactElement> {
         return <InvalidCode />
     } else if (launchError === 'callback-failed') {
         return <CallbackError />
-    } else if (launchError === 'oppgradering') {
-        return <WeUpgradinError />
     }
 
     return <UnknownError />
