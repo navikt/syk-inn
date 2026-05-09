@@ -81,21 +81,6 @@ export function CallbackError(): ReactElement {
     )
 }
 
-export function WeUpgradinError(): ReactElement {
-    return (
-        <LaunchError>
-            <Heading size="large" spacing>
-                Hei pilotlege!
-            </Heading>
-            <BodyShort spacing>
-                Vi gjør en liten oppgradering akkurat nå. Trenger du å sende inn en sykmelding er det fint om du bruker
-                den eksisterende løsningen i WebMed. :)
-            </BodyShort>
-            <BodyShort>Veldig fint om du fortsetter piloteringen over helgen! Vi setter stor pris på det.</BodyShort>
-        </LaunchError>
-    )
-}
-
 function LaunchError({ children }: PropsWithChildren): ReactElement {
     return (
         <PageBlock as="main" width="xl" gutters className="mt-4 pt-4 bg-ax-bg-default p-8 rounded-md max-w-prose">
