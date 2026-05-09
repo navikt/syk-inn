@@ -13,7 +13,7 @@ const KAFKA_ALIAS = 'kafka'
  */
 const SYK_INN_API_IMAGE =
     // TODO: This uses the branch specific image, should be cleaned up before go-live
-    process.env.SYK_INN_API_INTEGRATION_TESTS_IMAGE || 'ghcr.io/navikt/syk-inn-api-ktor-test:latest'
+    process.env.SYK_INN_API_INTEGRATION_TESTS_IMAGE || 'ghcr.io/navikt/syk-inn-api-test:latest'
 if (!(SYK_INN_API_IMAGE.startsWith('ghcr.io/navikt') || SYK_INN_API_IMAGE.startsWith('syk-inn-api-local'))) {
     throw new Error("Oop! This image isn't under ghcr.io/navikt, that seems illegal 🤔")
 }
