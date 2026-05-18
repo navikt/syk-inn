@@ -133,9 +133,11 @@ export async function getApi(
         const apiConfig = internalApis[api]
         const cluster = bundledEnv.runtimeEnv === 'prod-gcp' ? 'prod-gcp' : 'dev-gcp'
         const target = `api://${cluster}.${apiConfig.namespace}.${api}/.default` as const
+        const host = `${api}${apiConfig.namespace !== 'tsm' ? `.${apiConfig.namespace}` : ''}`
 
         span.setAttributes({
             'InternalApi.api': api,
+            'InternalApi.host': host,
             'InternalApi.cluster': cluster,
             'InternalApi.namespace': apiConfig.namespace,
             'InternalApi.identity_provider': 'azuread',
@@ -147,7 +149,7 @@ export async function getApi(
                 target: target,
             })
 
-            return { host: api, token: tokenResult.access_token }
+            return { host: host, token: tokenResult.access_token }
         } catch (e) {
             failSpan(
                 span,
