@@ -1,9 +1,9 @@
 {
     "name": "e2e",
     "dependencies": {
-        "@playwright/test": "^1.59.1",
+        "@playwright/test": "^1.60.0",
         "date-fns": "^4.1.0",
-        "remeda": "^2.34.0"
+        "remeda": "^2.34.1"
     },
     "scripts": {
         "e2e": "playwright test",
