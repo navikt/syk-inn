@@ -11,7 +11,9 @@ spec:
     enforce:
       enabled: true
       excludePaths:
-        - /samarbeidspartner/sykmelding/fhir/**
+        - /samarbeidspartner/sykmelding/fhir/launch
+        - /samarbeidspartner/sykmelding/fhir/callback
+        - /samarbeidspartner/sykmelding/fhir/error/**
         - /samarbeidspartner/sykmelding/api/**
   ingresses:
     - 'https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
