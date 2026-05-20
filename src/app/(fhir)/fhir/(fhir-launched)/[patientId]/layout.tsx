@@ -20,6 +20,7 @@ import { FhirModeProvider } from '@core/providers/Modes'
 import { createFhirPaths } from '@core/providers/ModePaths'
 import FeedbackButton from '@components/feedback/FeedbackButton'
 import { hasAcceptedBruksvilkar } from '@core/services/bruksvilkar/bruksvilkar-service'
+import { getHelseIdAccessToken, getHelseIdIdToken } from '@data-layer/helseid/token/tokens'
 
 import { NoPractitionerSession, NoValidPatient } from './launched-errors'
 
@@ -95,6 +96,16 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
         if ('error' in readyClient) {
             failSpan.silently(span, readyClient.error)
             return { error: 'NO_SESSION' }
+        }
+
+        try {
+            const helseIdAccessToken = await getHelseIdAccessToken()
+            const helseIdIdToken = await getHelseIdIdToken()
+            logger.info(
+                `[HelseID-double-auth-exp] HelseID tokens on FHIR path. access_token length: ${helseIdAccessToken.length}, id_token length: ${helseIdIdToken.length}`,
+            )
+        } catch (e) {
+            logger.warn(`[HelseID-double-auth-exp] No HelseID tokens on FHIR path: ${(e as Error).message}`)
         }
 
         const [practitioner, patient] = await Promise.all([readyClient.user.request(), readyClient.patient.request()])
