@@ -1,5 +1,5 @@
-import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form/types'
 import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form/types'
 import { precedence } from '@features/ny-sykmelding-form/form/utils'
 import {
     defaultAndreSporsmal,
