@@ -37,10 +37,6 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
         name: 'SYK_INN_REQUEST_HISTORISKE',
         ...on,
     },
-    SYK_INN_FEEDBACK_V2: {
-        name: 'SYK_INN_FEEDBACK_V2',
-        ...on,
-    },
     SYK_INN_FEEDBACK_KVITTERING: {
         name: 'SYK_INN_FEEDBACK_KVITTERING',
         ...on,

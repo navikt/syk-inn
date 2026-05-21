@@ -5,7 +5,7 @@ import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
 import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { getNameFromFhir } from '@data-layer/fhir/mappers/patient'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
-import { handleV2Feedback } from '@core/services/feedback/feedback-service'
+import { handleFeedback } from '@core/services/feedback/feedback-service'
 
 export async function POST(
     request: NextRequest,
@@ -31,20 +31,20 @@ export async function POST(
         }
         const behandlerName = getNameFromFhir(practitioner.name)
 
-        logger.info('Received V2 feedback with HPR and name!')
+        logger.info('Received feedback with HPR and name!')
         const json = await request.json()
-        const feedback = await handleV2Feedback(json, {
+        const feedback = await handleFeedback(json, {
             hpr: hpr,
             name: behandlerName,
             system: client.issuerName,
         })
 
         if (!('feedbackId' in feedback)) {
-            failSpan(span, 'Failed to handle V2 feedback', new Error(feedback.message))
+            failSpan(span, 'Failed to handle feedback', new Error(feedback.message))
             return Response.json({ message: feedback.message }, { status: feedback.code })
         }
 
-        logger.info('Successfully handled V2 feedback')
+        logger.info('Successfully handled feedback')
         return Response.json({ feedbackId: feedback.feedbackId })
     })
 }

@@ -2,8 +2,8 @@ import React, { ReactElement } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import dynamic from 'next/dynamic'
 
-import { AllFormVariantsProps } from './variants/form-props'
 import { NormalSykmeldigForm, NormalSykmeldingFormProps } from './variants/normal/NormalSykmelding'
+import { AllFormVariantsProps } from './variants/form-props'
 import { NySykmeldingMainFormValues } from './form/types'
 import { FormDraftSync } from './draft/FormDraftSync'
 

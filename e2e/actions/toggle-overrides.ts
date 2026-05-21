@@ -1,5 +1,4 @@
 import { Page, test } from '@playwright/test'
-
 import { ExpectedToggles } from '@core/toggles/toggles'
 
 export type ToggleOverrides = Partial<Record<ExpectedToggles, boolean>>

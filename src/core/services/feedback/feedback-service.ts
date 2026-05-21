@@ -11,11 +11,11 @@ import {
 } from './feedback-payload'
 import { getFeedbackClient } from './feedback-client'
 
-export async function handleV2Feedback(
+export async function handleFeedback(
     json: unknown,
     meta: { name: string; hpr: string; system: string },
 ): Promise<{ feedbackId: string } | { message: string; code: number }> {
-    return spanServerAsync('Feedback.handleV2Feedback', async (span) => {
+    return spanServerAsync('Feedback.handleFeedback', async (span) => {
         const payload = z
             .discriminatedUnion('feedbackType', [
                 fullFeedbackPayloadSchema,

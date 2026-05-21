@@ -77,9 +77,7 @@ test('submitting feedback on kvittering page should work', async ({ page }) => {
 
 function openFeedbackDialog() {
     return async (page: Page): Promise<Locator> => {
-        await launchWithMock('normal', {
-            SYK_INN_FEEDBACK_V2: true,
-        })(page)
+        await launchWithMock('normal')(page)
 
         await page.getByRole('button', { name: 'Tilbakemelding' }).click()
 

@@ -14,7 +14,7 @@ import { FullFeedback, FullFeedbackSentimentFollowUp } from './full-feedback/Ful
 import { useFeedback } from './useFeedback'
 
 /**
- * This is a fixed button that will align itself in the bottom right corne.r
+ * This is a fixed button that will align itself in the bottom right corner.
  *
  * For inline feedback, use the 'in situ'-form.
  */
@@ -96,7 +96,7 @@ function FeedbackButton(): ReactElement {
                                     Avbryt tilbakemelding
                                 </Button>
                             </Dialog.CloseTrigger>
-                            <Button form="feedback-form-v2" type="submit" loading={feedback.submitting}>
+                            <Button form="feedback-form" type="submit" loading={feedback.submitting}>
                                 Send tilbakemelding
                             </Button>
                         </Dialog.Footer>

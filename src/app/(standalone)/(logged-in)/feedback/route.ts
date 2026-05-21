@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 import { logger } from '@navikt/next-logger'
 
 import { failSpan, spanServerAsync } from '@lib/otel/server'
-import { handleV2Feedback } from '@core/services/feedback/feedback-service'
+import { handleFeedback } from '@core/services/feedback/feedback-service'
 import { validateHelseIdToken } from '@data-layer/helseid/token/validate'
 import { NoHelseIdSession } from '@data-layer/helseid/error/Errors'
 import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest): Promise<Response> {
 
         logger.info('Received HelseID feedback with HPR and name!')
         const json = await request.json()
-        const feedback = await handleV2Feedback(json, {
+        const feedback = await handleFeedback(json, {
             hpr: behandler.hpr,
             name: behandler.navn,
             system: 'HelseID',

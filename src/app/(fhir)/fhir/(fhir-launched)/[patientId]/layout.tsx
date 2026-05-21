@@ -62,8 +62,6 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
         }
     }
 
-    const feedbackToggle = getFlag('SYK_INN_FEEDBACK_V2', rootFhirData.toggles)
-
     return (
         <FhirModeProvider activePatientId={patientId}>
             <Providers patient={rootFhirData.pasient} graphqlPath={createFhirPaths(patientId).graphql}>
@@ -72,7 +70,7 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
                     {children}
                     <LoggedOutWarning />
                     {(isLocal || isDemo) && <LazyDevTools />}
-                    {feedbackToggle && <FeedbackButton />}
+                    <FeedbackButton />
                 </ToggleProvider>
             </Providers>
         </FhirModeProvider>
