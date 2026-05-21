@@ -74,7 +74,7 @@ export async function GET(request: Request): Promise<Response> {
             logger.info(`[HelseID-double-auth-exp] redirecting to wonderwall and return to ${patientRedirectUrl}`)
 
             // Go to wonderwall and return to patient url
-            redirect(pathWithBasePath(`/oauth2/login/redirect_url=${patientRedirectUrl}`))
+            redirect(pathWithBasePath(`/oauth2/login?redirect=${patientRedirectUrl}`))
         }
 
         redirect(patientRedirectUrl)
