@@ -2,7 +2,8 @@ import { createContext, PropsWithChildren, ReactElement, useContext, useMemo } f
 import { useMutation } from '@apollo/client/react'
 
 import { SaveDraftMutation, SaveDraftMutationVariables } from '@queries'
-import { useFormDraftSyncInternals } from '@features/ny-sykmelding-form/draft/internals/FormDraftSyncInternals'
+
+import { useFormDraftSyncInternals } from './internals/FormDraftSyncInternals'
 
 type FormDraftSync = {
     /**

@@ -2,10 +2,11 @@ import React, { ReactElement, useEffect } from 'react'
 import { Skeleton } from '@navikt/ds-react'
 import { useMutation } from '@apollo/client/react'
 
-import { DocumentStatusSuccess } from '@features/sykmelding-kvittering/DocumentStatus'
 import { SynchronizeSykmeldingDocument } from '@queries'
 import { spanBrowserAsync } from '@lib/otel/browser'
 import { SimpleAlert } from '@components/help/GeneralErrors'
+
+import { DocumentStatusSuccess } from './DocumentStatus'
 
 type Props = {
     sykmeldingId: string

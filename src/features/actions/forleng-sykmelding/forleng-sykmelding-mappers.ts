@@ -9,14 +9,8 @@ import {
     SykmeldingLightFragment,
     SykmeldingRedactedFragment,
 } from '@queries'
-import {
-    sykmeldingFragmentAktivitetToFormValue,
-    fullSykmeldingFragmentToNySykmeldingFormValues,
-    sykmeldingDiagnoserFragmentToSykmeldingFormValues,
-} from '@features/actions/common/gql-sykmelding-mappers'
 import { raise } from '@lib/ts'
 import { dateOnly } from '@lib/date'
-import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sykmelding-mappers'
 import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import {
     defaultAndreSporsmal,
@@ -26,6 +20,13 @@ import {
     defaultTilbakedatering,
     defaultUtdypendeSporsmal,
 } from '@features/ny-sykmelding-form/form/default-values'
+
+import { nySykmeldingDefaultValues } from '../ny-sykmelding/ny-sykmelding-mappers'
+import {
+    sykmeldingFragmentAktivitetToFormValue,
+    fullSykmeldingFragmentToNySykmeldingFormValues,
+    sykmeldingDiagnoserFragmentToSykmeldingFormValues,
+} from '../common/gql-sykmelding-mappers'
 
 /**
  * Creates a set of default form values specifically for 'forlenging' a sykmelding. Does NOT take

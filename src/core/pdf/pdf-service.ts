@@ -1,13 +1,15 @@
 import * as R from 'remeda'
 
-import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
 import { AnnenFravarsgrunnArsak } from '@queries'
-import type { SykInnApiAktivitet, SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
 import { spanServerAsync } from '@lib/otel/server'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
-import { PdfResult, TypstPdfSykmelding } from '@core/pdf/types'
-import { execTypst } from '@core/pdf/typst'
-import { getSimpleSykmeldingDescription } from '@data-layer/common/sykmelding-utils'
+
+import { annenFravarsgrunnToText } from '../data-layer/common/annen-fravarsgrunn'
+import { getSimpleSykmeldingDescription } from '../data-layer/common/sykmelding-utils'
+import type { SykInnApiAktivitet, SykInnApiSykmelding } from '../services/syk-inn-api/schema/sykmelding'
+
+import { PdfResult, TypstPdfSykmelding } from './types'
+import { execTypst } from './typst'
 
 export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding): Promise<PdfResult> {
     return spanServerAsync('pdf-service.createTypstSykmelding', async () => {

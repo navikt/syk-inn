@@ -7,7 +7,7 @@ import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { Arbeidsforhold, ArbeidsforholdDocument } from '@queries'
 import { SimpleReveal } from '@components/animation/Reveal'
 
-import { useController, useFormContext } from '../form/types'
+import { useController, useFormContext } from '../../form/types'
 
 export function AaregArbeidsforholdPicker(): ReactElement {
     const harFlereArbeidsforhold = useController({

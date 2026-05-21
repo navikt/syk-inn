@@ -2,7 +2,7 @@ import { Faro, getWebInstrumentations, initializeFaro, OTELApi } from '@grafana/
 import { TracingInstrumentation } from '@grafana/faro-web-tracing'
 import { lazyNextleton } from 'nextleton'
 
-import { bundledEnv, isLocal, isDemo } from '@lib/env'
+import { bundledEnv, isLocal, isDemo } from '../env'
 
 import { APP_NAME } from './common'
 

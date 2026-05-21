@@ -3,8 +3,7 @@ import { Button } from '@navikt/ds-react'
 import { TrashIcon } from '@navikt/aksel-icons'
 
 import { cn } from '@lib/tw'
-
-import { useFieldArray } from '../../form/types'
+import { useFieldArray } from '@features/ny-sykmelding-form/form/types'
 
 import BidiagnosePicker from './BidiagnosePicker'
 

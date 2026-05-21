@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 
-import { searchDiagnose } from '@data-layer/common/diagnose-search'
+import { searchDiagnose } from './diagnose-search'
 
 describe('diagnose search', () => {
     test('should only return 100 max', () => {

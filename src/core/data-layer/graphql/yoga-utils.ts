@@ -1,6 +1,6 @@
 import { YogaServerOptions } from 'graphql-yoga'
 
-import { CurrentPatientExtension } from '@data-layer/graphql/apollo/current-patient-link'
+import { CurrentPatientExtension } from './apollo/current-patient-link'
 
 export interface NextContext {
     params: Promise<Record<string, string>>

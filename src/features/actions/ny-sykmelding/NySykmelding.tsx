@@ -5,10 +5,11 @@ import { useQuery } from '@apollo/client/react'
 
 import { PasientDocument } from '@queries'
 import { useAppSelector } from '@core/redux/hooks'
-import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
+import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/sections/diagnose/useDiagnoseSuggestions'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
-import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sykmelding-mappers'
+
+import { nySykmeldingDefaultValues } from './ny-sykmelding-mappers'
 
 export function NySykmeldingFormWithDefaultValues(): ReactElement {
     const suggestionsQuery = useDiagnoseSuggestions()

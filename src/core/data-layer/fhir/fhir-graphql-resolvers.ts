@@ -4,16 +4,6 @@ import * as R from 'remeda'
 import { cookies } from 'next/headers'
 
 import { Behandler, QueriedPerson, Resolvers, RuleOutcome } from '@resolvers'
-import { createSchema } from '@data-layer/graphql/create-schema'
-import { getNameFromFhir, getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
-import { fhirDiagnosisToRelevantDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
-import { practitionerToBehandler } from '@data-layer/fhir/mappers/practitioner'
-import { getAllSykmeldingMetaFromFhir } from '@data-layer/fhir/fhir-service'
-import {
-    getOrganisasjonsnummerFromFhir,
-    getOrganisasjonstelefonnummerFromFhir,
-} from '@data-layer/fhir/mappers/organization'
-import { commonTypeResolvers } from '@data-layer/graphql/common-type-resolvers'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { getFnrIdent, formatPdlName } from '@core/services/pdl/pdl-api-utils'
@@ -26,17 +16,25 @@ import {
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
 import { getFlag, getUserToggles } from '@core/toggles/unleash'
 import { raise } from '@lib/ts'
-import { commonObjectResolvers, commonQueryResolvers } from '@data-layer/graphql/common-resolvers'
-import { FhirGraphqlContext } from '@data-layer/fhir/fhir-graphql-context'
 import { getHasRequestedAccessToSykmeldinger } from '@core/session/session'
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
-import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
-import { countDiagnoses } from '@data-layer/common/diagnose-counting'
 import metrics from '@lib/prometheus/metrics'
-import { fhirWriteService } from '@data-layer/fhir/write/fhir-write-service'
 
+import { byCurrentOrPreviousWithOffset } from '../common/sykmelding-utils'
+import { countDiagnoses } from '../common/diagnose-counting'
+import { commonObjectResolvers, commonQueryResolvers } from '../graphql/common-resolvers'
+import { commonTypeResolvers } from '../graphql/common-type-resolvers'
+import { createSchema } from '../graphql/create-schema'
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
+
+import { FhirGraphqlContext } from './fhir-graphql-context'
+import { fhirWriteService } from './write/fhir-write-service'
+import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from './mappers/organization'
+import { getAllSykmeldingMetaFromFhir } from './fhir-service'
+import { practitionerToBehandler } from './mappers/practitioner'
+import { fhirDiagnosisToRelevantDiagnosis } from './mappers/diagnosis'
+import { getNameFromFhir, getValidPatientIdent } from './mappers/patient'
 
 const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     Query: {

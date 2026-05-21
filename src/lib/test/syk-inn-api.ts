@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 import { PostgreSqlContainer } from '@testcontainers/postgresql'
 import { KafkaContainer, StartedKafkaContainer } from '@testcontainers/kafka'
 
-import { streamToStdout } from '@lib/test/testcontainers-utils'
+import { streamToStdout } from './testcontainers-utils'
 
 const POSTGRES_ALIAS = 'db'
 const KAFKA_ALIAS = 'kafka'

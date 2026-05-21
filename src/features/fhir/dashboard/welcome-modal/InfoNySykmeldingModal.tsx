@@ -4,7 +4,8 @@ import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { metadataActions } from '@core/redux/reducers/metadata'
-import { hasSeenModal, setModalDismissed } from '@features/fhir/dashboard/welcome-modal/state'
+
+import { hasSeenModal, setModalDismissed } from './state'
 
 /**
  * This modal is always client-side only and is responsible for hydrating the local storage

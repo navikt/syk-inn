@@ -6,11 +6,12 @@ import { PasientDocument } from '@queries'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
 import { LoadablePageHeader } from '@components/layout/Page'
-import PatientStats from '@features/fhir/dashboard/top-card/dumb-stats/PatientStats'
-import StartSykmelding from '@features/fhir/dashboard/top-card/StartSykmelding'
-import { InfoNySykmeldingButton } from '@features/fhir/dashboard/welcome-modal/InfoNySykmeldingButton'
 
+import { InfoNySykmeldingButton } from '../welcome-modal/InfoNySykmeldingButton'
 import DashboardCard from '../card/DashboardCard'
+
+import PatientStats from './dumb-stats/PatientStats'
+import StartSykmelding from './StartSykmelding'
 
 function DashboardTopCard({ className }: { className?: string }): ReactElement {
     const { data } = useQuery(PasientDocument)

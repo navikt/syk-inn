@@ -1,7 +1,7 @@
 import * as z from 'zod'
 import { logger } from '@navikt/next-logger'
 
-import { TilbakedateringGrunnSchema } from '@data-layer/common/tilbakedatering'
+import { TilbakedateringGrunnSchema } from '../common/tilbakedatering'
 
 export type DraftValues = z.infer<typeof DraftValuesSchema>
 export const DraftValuesSchema = z.object({

@@ -1,10 +1,10 @@
-import * as R from 'remeda'
 import { Checkbox, CheckboxGroup, Textarea } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 
 import { ArbeidsrelatertArsakType } from '@queries'
+import { arbeidsrelaterteArsakerToText } from '@data-layer/common/arbeidsrelaterte-arsaker'
 
-import { useController } from '../form/types'
+import { useController } from '../../form/types'
 
 function ArsakerPicker({ index }: { index: number }): ReactElement {
     const isArbeidsrelatertArsak = useController({
@@ -57,11 +57,12 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
                     onChange={(value) => arbeidsrelaterteArsaker.field.onChange(value)}
                     error={arbeidsrelaterteArsaker.fieldState.error?.message}
                 >
-                    {R.keys(ArbeidsrelaterteArsaker).map((key) => (
-                        <Checkbox key={key} value={key}>
-                            {ArbeidsrelaterteArsaker[key]}
-                        </Checkbox>
-                    ))}
+                    <Checkbox value={'MANGLENDE_TILRETTELEGGING' satisfies ArbeidsrelatertArsakType}>
+                        {arbeidsrelaterteArsakerToText('MANGLENDE_TILRETTELEGGING')}
+                    </Checkbox>
+                    <Checkbox value={'ANNET' satisfies ArbeidsrelatertArsakType}>
+                        {arbeidsrelaterteArsakerToText('ANNET')}
+                    </Checkbox>
                 </CheckboxGroup>
             )}
             {arbeidsrelaterteArsaker.field.value?.includes('ANNET') && (
@@ -74,11 +75,6 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
             )}
         </div>
     )
-}
-
-export const ArbeidsrelaterteArsaker: Record<ArbeidsrelatertArsakType, string> = {
-    MANGLENDE_TILRETTELEGGING: 'Tilrettelegging ikke mulig',
-    ANNET: 'Annet',
 }
 
 export default ArsakerPicker

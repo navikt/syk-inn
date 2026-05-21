@@ -1,4 +1,4 @@
-import { Diagnose } from '@data-layer/common/diagnose'
+import { Diagnose } from '../data-layer/common/diagnose'
 
 /**
  * The PDF generation receives well formatted values and dates, instead of rawdogging SykInnApiSykmelding

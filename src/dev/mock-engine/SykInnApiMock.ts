@@ -9,9 +9,10 @@ import {
     SykInnApiSykmeldingRedacted,
 } from '@core/services/syk-inn-api/schema/sykmelding'
 import { OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
-import { sykInnApiPayloadToResponse } from '@dev/mock-engine/utils/syk-inn-api-mappers'
 import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
-import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
+
+import { sykInnApiPayloadToResponse } from './utils/syk-inn-api-mappers'
+import { MockRuleMarkers } from './SykInnApiMockRuleMarkers'
 
 export class SykInnApiMock {
     /**

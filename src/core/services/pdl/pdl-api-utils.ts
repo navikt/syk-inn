@@ -1,6 +1,6 @@
 import * as R from 'remeda'
 
-import { PdlPerson } from '@core/services/pdl/pdl-api-schema'
+import { PdlPerson } from './pdl-api-schema'
 
 export function getFnrIdent(identer: PdlPerson['identer']): string | null {
     return (

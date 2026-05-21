@@ -2,9 +2,10 @@ import { describe, test, expect } from 'vitest'
 import { PDFParse } from 'pdf-parse'
 import * as R from 'remeda'
 
-import { createTypstSykmelding } from '@core/pdf/pdf-service'
 import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
-import { PdfOK, PdfResult } from '@core/pdf/types'
+
+import { createTypstSykmelding } from './pdf-service'
+import { PdfOK, PdfResult } from './types'
 
 describe('typst CLI integration', () => {
     test('should work', async () => {

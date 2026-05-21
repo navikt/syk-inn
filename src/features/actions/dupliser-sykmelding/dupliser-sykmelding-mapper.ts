@@ -8,13 +8,7 @@ import {
     SykmeldingRedactedFragment,
 } from '@queries'
 import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
-import {
-    sykmeldingFragmentAktivitetToFormValue,
-    fullSykmeldingFragmentToNySykmeldingFormValues,
-    sykmeldingDiagnoserFragmentToSykmeldingFormValues,
-} from '@features/actions/common/gql-sykmelding-mappers'
 import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
-import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sykmelding-mappers'
 import {
     defaultAndreSporsmal,
     defaultAnnenfravarsgrunn,
@@ -23,6 +17,13 @@ import {
     defaultTilbakedatering,
     defaultUtdypendeSporsmal,
 } from '@features/ny-sykmelding-form/form/default-values'
+
+import {
+    sykmeldingFragmentAktivitetToFormValue,
+    fullSykmeldingFragmentToNySykmeldingFormValues,
+    sykmeldingDiagnoserFragmentToSykmeldingFormValues,
+} from '../common/gql-sykmelding-mappers'
+import { nySykmeldingDefaultValues } from '../ny-sykmelding/ny-sykmelding-mappers'
 
 export function dupliserSykmeldingDefaultValues(
     sykmelding: SykmeldingFragment,

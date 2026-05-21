@@ -3,9 +3,10 @@ import { useQueryState } from 'nuqs'
 import { ActionMenu, Button } from '@navikt/ds-react'
 import { MenuElipsisVerticalIcon, TerminalIcon } from '@navikt/aksel-icons'
 
-import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
 import { cn } from '@lib/tw'
 import { UseOpprettSykmeldingMutation } from '@features/ny-sykmelding-form/useOpprettSykmeldingMutation'
+
+import { MockRuleMarkers } from '../mock-engine/SykInnApiMockRuleMarkers'
 
 export function LocalAndDemoBonusActionMenu({
     mutation,

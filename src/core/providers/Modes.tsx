@@ -2,7 +2,7 @@
 
 import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { createFhirPaths, HelseIdPaths, ModePaths, ModeType } from '@core/providers/ModePaths'
+import { createFhirPaths, HelseIdPaths, ModePaths, ModeType } from './ModePaths'
 
 const ModeContext = React.createContext<{ type: ModeType; paths: ModePaths } | null>(null)
 

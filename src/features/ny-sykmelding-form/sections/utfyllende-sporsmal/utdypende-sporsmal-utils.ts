@@ -7,7 +7,7 @@ import {
 } from '@data-layer/common/continuous-sykefravaer-utils'
 import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
 import { raise } from '@lib/ts'
-import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolvers.generated'
+import { UtdypendeOpplysningerHint } from '@resolvers'
 
 const ISYFO_MAX_DAYS_GAP = 16
 

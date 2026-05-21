@@ -1,9 +1,10 @@
 import { logger } from '@navikt/next-logger'
 
-import { ApiFetchErrors, fetchInternalAPI } from '@core/services/api-fetcher'
 import { isE2E, isLocal, isDemo } from '@lib/env'
-import { createPdlPersonMock } from '@core/services/pdl/pdl-api-mock-data'
 
+import { ApiFetchErrors, fetchInternalAPI } from '../api-fetcher'
+
+import { createPdlPersonMock } from './pdl-api-mock-data'
 import { PdlPerson, PdlPersonSchema } from './pdl-api-schema'
 
 export const pdlApiService = {

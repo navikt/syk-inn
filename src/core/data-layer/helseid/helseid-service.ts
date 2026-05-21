@@ -1,5 +1,6 @@
-import { getHelseIdIdTokenInfo } from '@data-layer/helseid/helseid-user'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
+
+import { getHelseIdIdTokenInfo } from './helseid-user'
 
 type HelseIdBehandler = {
     /**

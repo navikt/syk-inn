@@ -4,13 +4,15 @@ import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 
 import { GetDraftDocument, PasientDocument } from '@queries'
-import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
+import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/sections/diagnose/useDiagnoseSuggestions'
 import { useAppSelector } from '@core/redux/hooks'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
-import { SykmeldingDraftFormErrors } from '@features/actions/common/SykmeldingFormErrors'
-import { nySykmeldingFromDraftDefaultValues } from '@features/actions/ny-sykmelding-from-draft/ny-sykmelding-from-draft-mappers'
+
+import { SykmeldingDraftFormErrors } from '../common/SykmeldingFormErrors'
+
+import { nySykmeldingFromDraftDefaultValues } from './ny-sykmelding-from-draft-mappers'
 
 type Props = {
     draftId: string

@@ -2,12 +2,14 @@ import React, { ReactElement, useState } from 'react'
 import { BodyShort, Heading, Link, Modal } from '@navikt/ds-react'
 import { ExclamationmarkTriangleIcon, InformationSquareIcon, PaperplaneIcon } from '@navikt/aksel-icons'
 
-import { UseOpprettSykmeldingMutation } from '@features/ny-sykmelding-form/useOpprettSykmeldingMutation'
-import { getRuleText } from '@features/ny-sykmelding-form/summary/rules/rule-texts'
-import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { RuleOutcomeFragment } from '@queries'
+import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { UnknownSystemError } from '@components/help/GeneralErrors'
-import { useFormStep } from '@features/ny-sykmelding-form/steps/useFormStep'
+
+import { UseOpprettSykmeldingMutation } from '../../useOpprettSykmeldingMutation'
+import { useFormStep } from '../../useFormStep'
+
+import { getRuleText } from './rule-texts'
 
 /**
  * Annoyingly complex flow:

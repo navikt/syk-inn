@@ -5,8 +5,9 @@ import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { BehandlerDocument } from '@queries'
 import { SimpleAlert } from '@components/help/GeneralErrors'
-import BehandlerOrganisasjonsnummerAnswer from '@features/ny-sykmelding-form/summary/behandler/BehandlerOrganisasjonsnummerAnswer'
-import BehandlerTelefonnummerAnswer from '@features/ny-sykmelding-form/summary/behandler/BehandlerTelefonnummerAnswer'
+
+import BehandlerOrganisasjonsnummerAnswer from './BehandlerOrganisasjonsnummerAnswer'
+import BehandlerTelefonnummerAnswer from './BehandlerTelefonnummerAnswer'
 
 type Props = {
     className?: string

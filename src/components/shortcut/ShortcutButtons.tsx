@@ -2,10 +2,11 @@ import React, { PropsWithChildren, ReactElement, useCallback, useRef } from 'rea
 import { Button, ButtonProps, Popover } from '@navikt/ds-react'
 import { useRouter } from 'next/navigation'
 
-import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
 import { Shortcut, useShortcut } from '@lib/hooks/shortcuts/useShortcut'
 import { useCurrentModifier } from '@lib/hooks/shortcuts/useCurrentModifier'
 import { cn } from '@lib/tw'
+
+import { SlowNextLinkButton } from '../links/SlowNextLinkButton'
 
 type BaseShortcutButtonProps = {
     shortcut: Shortcut

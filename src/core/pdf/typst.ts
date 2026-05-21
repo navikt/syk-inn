@@ -3,8 +3,9 @@ import { promisify } from 'node:util'
 
 import { logger } from '@navikt/next-logger'
 
-import { PdfResult, TypstPdfSykmelding } from '@core/pdf/types'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
+
+import { PdfResult, TypstPdfSykmelding } from './types'
 
 const execFileAsync = promisify(execFile)
 

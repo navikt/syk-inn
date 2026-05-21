@@ -3,9 +3,10 @@
 import { useLayoutEffect } from 'react'
 
 import { ManualPatient } from '@core/redux/reducers/ny-sykmelding/patient'
-import { getPersistentUser } from '@data-layer/helseid/persistent-user/persistent-user'
 import { useAppDispatch } from '@core/redux/hooks'
 import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+
+import { getPersistentUser } from './persistent-user'
 
 function HydratePersistedUserFromSession(): null {
     const dispatch = useAppDispatch()

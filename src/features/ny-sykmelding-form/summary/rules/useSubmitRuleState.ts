@@ -1,7 +1,8 @@
 import { useReducer } from 'react'
 
 import { RuleOutcomeFragment } from '@queries'
-import { getRuleType } from '@features/ny-sykmelding-form/summary/rules/rule-texts'
+
+import { getRuleType } from './rule-texts'
 
 type State =
     | {

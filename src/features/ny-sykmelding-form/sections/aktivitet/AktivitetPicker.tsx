@@ -4,9 +4,10 @@ import { AnimatePresence } from 'motion/react'
 
 import { SimpleReveal } from '@components/animation/Reveal'
 
-import ArsakerPicker from '../aktivitet/ArsakerPicker'
-import GradertGradPicker from '../aktivitet/GradertGradPicker'
-import { AktivitetIkkeMuligType, useController } from '../form/types'
+import { AktivitetIkkeMuligType, useController } from '../../form/types'
+
+import ArsakerPicker from './ArsakerPicker'
+import GradertGradPicker from './GradertGradPicker'
 
 function AktivitetPicker({ index }: { index: number }): ReactElement {
     const aktivitetField = useController({

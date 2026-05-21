@@ -2,8 +2,9 @@ import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { Page, PageBlock } from '@navikt/ds-react/Page'
 import { Heading } from '@navikt/ds-react'
 
-import LoadableHeader, { LoadableHeaderProps } from '@components/animation/LoadableHeader'
 import { cn } from '@lib/tw'
+
+import LoadableHeader, { LoadableHeaderProps } from '../animation/LoadableHeader'
 
 type Props = {
     heading: ReactNode | 'none'

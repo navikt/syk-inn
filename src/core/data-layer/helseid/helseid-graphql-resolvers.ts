@@ -3,9 +3,6 @@ import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 
 import { QueriedPerson, Resolvers, RuleOutcome } from '@resolvers'
-import { commonObjectResolvers, commonQueryResolvers } from '@data-layer/graphql/common-resolvers'
-import { createSchema } from '@data-layer/graphql/create-schema'
-import { commonTypeResolvers } from '@data-layer/graphql/common-type-resolvers'
 import { raise } from '@lib/ts'
 import { pdlApiService } from '@core/services/pdl/pdl-api-service'
 import { getFnrIdent, formatPdlName } from '@core/services/pdl/pdl-api-utils'
@@ -18,12 +15,16 @@ import {
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
 import { getFlag, getUserToggles } from '@core/toggles/unleash'
-import { DraftValuesSchema } from '@data-layer/draft/draft-schema'
-import { getDraftClient } from '@data-layer/draft/draft-client'
-import { NoHelseIdCurrentPatient } from '@data-layer/helseid/error/Errors'
 import metrics from '@lib/prometheus/metrics'
-import { countDiagnoses } from '@data-layer/common/diagnose-counting'
 
+import { getDraftClient } from '../draft/draft-client'
+import { DraftValuesSchema } from '../draft/draft-schema'
+import { commonObjectResolvers, commonQueryResolvers } from '../graphql/common-resolvers'
+import { commonTypeResolvers } from '../graphql/common-type-resolvers'
+import { createSchema } from '../graphql/create-schema'
+import { countDiagnoses } from '../common/diagnose-counting'
+
+import { NoHelseIdCurrentPatient } from './error/Errors'
 import { HelseIdGraphqlContext } from './helseid-graphql-context'
 
 const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {

@@ -22,8 +22,13 @@ const eslintConfig = defineConfig([
             'import-alias/import-alias': [
                 'error',
                 {
+                    isRelativeImportOverridesEnforced: true,
                     relativeImportOverrides: [
-                        { depth: 1, path: '.' },
+                        { path: 'src/features', depth: 1 },
+                        { path: 'src/components', depth: 1 },
+                        { path: 'src/lib', depth: 1 },
+                        { path: 'src/dev', depth: 1 },
+                        { pattern: '^src/core/.+', depth: 1 },
                         { pattern: '^src/features/ny-sykmelding-form/.+', depth: 2 },
                         { pattern: '^src/features/fhir/dashboard/.+', depth: 2 },
                     ],

@@ -1,9 +1,10 @@
 import { YogaInitialContext } from 'graphql-yoga'
 
-import { assertIsPilotUser } from '@data-layer/common/pilot-user-utils'
-import { getCurrentPatientFromExtension } from '@data-layer/graphql/yoga-utils'
-import { CommonGraphqlContext } from '@data-layer/graphql/common-context'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
+
+import { assertIsPilotUser } from '../common/pilot-user-utils'
+import { getCurrentPatientFromExtension } from '../graphql/yoga-utils'
+import { CommonGraphqlContext } from '../graphql/common-context'
 
 import { getHelseIdBehandler } from './helseid-service'
 import { NoHelseIdSession } from './error/Errors'

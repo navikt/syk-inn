@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-import { getHelseIdUrl } from '@data-layer/helseid/config/envs'
+import { getHelseIdUrl } from '../config/envs'
 
 type HelseIdWellKnown = z.infer<typeof HelseIdWellKnownSchema>
 const HelseIdWellKnownSchema = z.object({

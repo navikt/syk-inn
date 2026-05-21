@@ -6,11 +6,11 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { Toaster } from 'sonner'
 import { ApolloProvider } from '@apollo/client/react'
 
-import { makeApolloClient } from '@data-layer/graphql/apollo/apollo-client'
-import { AutoPatient } from '@core/redux/reducers/ny-sykmelding/patient'
-import { useMode } from '@core/providers/Modes'
-
+import { makeApolloClient } from '../data-layer/graphql/apollo/apollo-client'
+import { AutoPatient } from '../redux/reducers/ny-sykmelding/patient'
 import useStoreRef from '../redux/useStoreRef'
+
+import { useMode } from './Modes'
 
 function Providers({
     children,

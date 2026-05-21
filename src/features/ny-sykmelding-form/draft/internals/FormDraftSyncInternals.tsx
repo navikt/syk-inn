@@ -7,9 +7,9 @@ import { useMutation } from '@apollo/client/react'
 import { SaveDraftMutation, SaveDraftMutationVariables } from '@queries'
 import { bundledEnv, isLocal } from '@lib/env'
 import { DraftValues, safeParseDraft } from '@data-layer/draft/draft-schema'
-import { useDraftId } from '@features/ny-sykmelding-form/draft/useDraftId'
 
 import { NySykmeldingMainFormValues, useFormContext } from '../../form/types'
+import { useDraftId } from '../useDraftId'
 
 import { mapFormValuesToDraftValues, useSaveDraft } from './useSaveDraft'
 

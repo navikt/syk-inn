@@ -5,7 +5,7 @@ import { HelpText, Link } from '@navikt/ds-react'
 import FormSection from '@components/form/form-section/FormSection'
 import { isTilbakedatering } from '@data-layer/common/tilbakedatering'
 
-import { useFormContext } from '../form/types'
+import { useFormContext } from '../../form/types'
 
 import TilbakedateringSection from './TilbakedateringSection'
 

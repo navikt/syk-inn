@@ -5,11 +5,12 @@ import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { AktivitetFragment, SykmeldingFragment } from '@queries'
 import { toReadableDate, toReadableDatePeriod } from '@lib/date'
-import { ValueItem } from '@components/sykmelding/ValuesSection'
-import { ArbeidsrelaterteArsaker } from '@features/ny-sykmelding-form/aktivitet/ArsakerPicker'
+import { arbeidsrelaterteArsakerToText } from '@data-layer/common/arbeidsrelaterte-arsaker'
 import { Diagnose } from '@data-layer/common/diagnose'
 import { PREVIOUS_OFFSET_DAYS } from '@data-layer/common/sykmelding-utils'
 import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
+
+import { ValueItem } from './ValuesSection'
 
 type Props = {
     sykmelding: SykmeldingFragment
@@ -161,7 +162,7 @@ function SykmeldingAktivitetValues({ aktivitet }: { aktivitet: AktivitetFragment
                                             {it.arbeidsrelatertArsak?.arbeidsrelaterteArsaker.map(
                                                 (arsak, arsakIndex) => (
                                                     <li key={arsakIndex}>
-                                                        {ArbeidsrelaterteArsaker[arsak]}
+                                                        {arbeidsrelaterteArsakerToText(arsak)}
                                                         {arsak === 'ANNET' && (
                                                             <ul className="list-disc pl-6">
                                                                 <li>

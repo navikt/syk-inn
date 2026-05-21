@@ -3,8 +3,8 @@ import Valkey from 'iovalkey'
 import { createBruksvilkarClient, type BruksvilkarClient } from '@navikt/syk-zara/bruksvilkar'
 import type { AaregArbeidsforhold } from '@core/services/aareg/aareg-schema'
 import { createDraftClient, type DraftClient } from '@data-layer/draft/draft-client'
-import { SykInnApiMock } from '@dev/mock-engine/SykInnApiMock'
 
+import { SykInnApiMock } from './SykInnApiMock'
 import { createInMemoryValkey } from './valkey/InMemValkey'
 import { Scenario } from './scenarios/scenarios'
 

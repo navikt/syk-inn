@@ -2,12 +2,10 @@ import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { GraphQLError } from 'graphql/error'
 
 import { failSpan, spanServerAsync } from '@lib/otel/server'
-import {
-    getOrganisasjonsnummerFromFhir,
-    getOrganisasjonstelefonnummerFromFhir,
-} from '@data-layer/fhir/mappers/organization'
-import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
+
+import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from './mappers/organization'
+import { getValidPatientIdent } from './mappers/patient'
 
 /**
  * Chonky boi. Fetches the FHIR resources: Practitioner, Patient, Encounter and Organization, and extracts the relevant

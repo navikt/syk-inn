@@ -5,9 +5,10 @@ import { AnimatePresence } from 'motion/react'
 
 import { createFhirPaths } from '@core/providers/ModePaths'
 import { pathWithBasePath } from '@lib/url'
-import { BRUKSVILKAR_VERSION } from '@features/bruksvilkar/BruksvilkarSection'
 import { SimpleReveal } from '@components/animation/Reveal'
 import { SimpleAlert } from '@components/help/GeneralErrors'
+
+import { BRUKSVILKAR_VERSION } from './BruksvilkarSection'
 
 type Props = {
     patientId: string

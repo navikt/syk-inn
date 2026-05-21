@@ -1,9 +1,10 @@
 import { logger as pinoLogger } from '@navikt/next-logger'
 
-import { AaregArbeidsforhold } from '@core/services/aareg/aareg-schema'
 import { raise } from '@lib/ts'
 import { bundledEnv } from '@lib/env'
 import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
+
+import { AaregArbeidsforhold } from './aareg-schema'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[AAREG Service]: ' })
 

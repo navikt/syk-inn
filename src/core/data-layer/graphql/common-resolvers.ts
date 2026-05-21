@@ -4,15 +4,17 @@ import * as R from 'remeda'
 
 import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
 import { QueryResolvers, Resolvers, UtdypendeSporsmalOptions } from '@resolvers'
-import { CommonGraphqlContext } from '@data-layer/graphql/common-context'
-import { searchDiagnose } from '@data-layer/common/diagnose-search'
 import { aaregService } from '@core/services/aareg/aareg-service'
 import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
+
+import { searchDiagnose } from '../common/diagnose-search'
 import {
     calculateTotalLengthOfSykmeldinger,
     filterSykmeldingerWithinDaysGap,
     mapSykInnApiSykmeldingerToDateRanges,
-} from '@data-layer/common/continuous-sykefravaer-utils'
+} from '../common/continuous-sykefravaer-utils'
+
+import { CommonGraphqlContext } from './common-context'
 
 export const commonQueryResolvers: QueryResolvers<CommonGraphqlContext> = {
     diagnose: (_, { query, systems }) => searchDiagnose(query, systems),

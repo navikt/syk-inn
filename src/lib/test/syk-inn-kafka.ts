@@ -1,7 +1,7 @@
 import { Consumer, Kafka, logLevel } from 'kafkajs'
 import { StartedKafkaContainer } from '@testcontainers/kafka'
 
-import { KafkaSykmeldingRecord } from '@lib/test/syk-inn-kafka-types'
+import { KafkaSykmeldingRecord } from './syk-inn-kafka-types'
 
 const INPUT_TOPIC_NAME = 'tsm.sykmeldinger-input'
 

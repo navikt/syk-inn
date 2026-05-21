@@ -1,9 +1,11 @@
 import { cookies } from 'next/headers'
 import { IToggle } from '@unleash/nextjs'
 
-import { unleashLogger } from '@core/toggles/unleash'
 import { bundledEnv } from '@lib/env'
-import { localDevelopmentToggles } from '@core/toggles/dev/local'
+
+import { unleashLogger } from '../unleash'
+
+import { localDevelopmentToggles } from './local'
 
 /**
  * Will reset each hot-reload, but thats fine.

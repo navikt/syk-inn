@@ -1,10 +1,11 @@
 import { jwtVerify, errors } from 'jose'
 import { logger } from '@navikt/next-logger'
 
-import { getHelseIdWellKnown } from '@data-layer/helseid/token/well-known'
-import { getJwkSet } from '@data-layer/helseid/token/jwk'
 import { spanServerAsync } from '@lib/otel/server'
-import { getHelseIdAccessToken } from '@data-layer/helseid/token/tokens'
+
+import { getHelseIdWellKnown } from './well-known'
+import { getJwkSet } from './jwk'
+import { getHelseIdAccessToken } from './tokens'
 
 export async function validateHelseIdToken(): Promise<boolean> {
     return spanServerAsync('HelseID.token-validation', async (span) => {

@@ -5,8 +5,8 @@ import { HandHeartIcon } from '@navikt/aksel-icons'
 
 import { BehandlerFragment } from '@queries'
 import SessionIdInfo from '@components/help/SessionIdInfo'
-import { SentimentPicker } from '@components/feedback/sentiment/SentimentPicker'
 
+import { SentimentPicker } from '../sentiment/SentimentPicker'
 import { TypeField } from '../fields/TypeField'
 import { ContactField } from '../fields/ContactField'
 import { FeedbackField } from '../fields/FeedbackField'

@@ -7,8 +7,8 @@ import { UseFieldArrayAppend } from 'react-hook-form'
 import { dateOnly } from '@lib/date'
 import FormSection from '@components/form/form-section/FormSection'
 
-import { AktivitetsPeriode, NySykmeldingMainFormValues, useFieldArray, useFormContext } from '../form/types'
-import { defaultPeriode } from '../form/default-values'
+import { AktivitetsPeriode, NySykmeldingMainFormValues, useFieldArray, useFormContext } from '../../form/types'
+import { defaultPeriode } from '../../form/default-values'
 
 import AktivitetPicker from './AktivitetPicker'
 import PeriodePicker from './PeriodePicker'

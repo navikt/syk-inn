@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { BodyShort, Detail, Popover } from '@navikt/ds-react'
 
-import { getRangeDescription } from '@features/ny-sykmelding-form/aktivitet/periode/periode-utils'
+import { getRangeDescription } from './periode/periode-utils'
 
 type Props = {
     focused: boolean

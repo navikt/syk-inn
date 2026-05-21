@@ -3,14 +3,15 @@ import { logger } from '@navikt/next-logger'
 import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
 import { YogaInitialContext } from 'graphql-yoga'
 
-import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
-import { NoSmartSession } from '@data-layer/fhir/error/Errors'
-import { getHpr } from '@data-layer/fhir/mappers/practitioner'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
-import { getCurrentPatientFromExtension } from '@data-layer/graphql/yoga-utils'
-import { CommonGraphqlContext } from '@data-layer/graphql/common-context'
 
+import { getCurrentPatientFromExtension } from '../graphql/yoga-utils'
+import { CommonGraphqlContext } from '../graphql/common-context'
 import { assertIsPilotUser } from '../common/pilot-user-utils'
+
+import { getHpr } from './mappers/practitioner'
+import { NoSmartSession } from './error/Errors'
+import { getReadyClient } from './smart/ready-client'
 
 const OtelNamespace = 'GraphQL(FHIR).context'
 

@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 
-import { HAS_REQUESTED_ACCESS_COOKIE_NAME, SESSION_COOKIE_NAME } from '@core/session/cookies'
+import { HAS_REQUESTED_ACCESS_COOKIE_NAME, SESSION_COOKIE_NAME } from './cookies'
 
 export async function getSessionId(): Promise<string | null> {
     const cookieStore = await cookies()
