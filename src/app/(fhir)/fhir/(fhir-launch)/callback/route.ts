@@ -1,80 +1,82 @@
-import {redirect} from "next/navigation";
-import {logger as pinoLogger} from "@navikt/next-logger";
+import { redirect } from 'next/navigation'
+import { logger as pinoLogger } from '@navikt/next-logger'
 
-import {pathWithBasePath} from "@lib/url";
-import {getSmartClient} from "@data-layer/fhir/smart/smart-client";
-import {getSessionId} from "@core/session/session";
-import {getFlag, getUserlessToggles} from "@core/toggles/unleash";
-import {spanServerAsync} from "@lib/otel/server";
+import { pathWithBasePath } from '@lib/url'
+import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
+import { getSessionId } from '@core/session/session'
+import { getFlag, getUserlessToggles } from '@core/toggles/unleash'
+import { spanServerAsync } from '@lib/otel/server'
 
-const logger = pinoLogger.child({}, {msgPrefix: "[Secure FHIR (callback)] "});
+const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
 
 /**
  * Third step in launch process, after the user followed the authorization_url and is redirected here with a code and
  * our state param. We exchange this together with PKCE for tokens and update the users session.
  */
 export async function GET(request: Request): Promise<Response> {
-  return spanServerAsync("FHIR.callback", async (span) => {
-    const url = new URL(request.url);
+    return spanServerAsync('FHIR.callback', async (span) => {
+        const url = new URL(request.url)
 
-    if (url.searchParams.get("error")) {
-      // If authorization server redirects back here with an error, lets redirect the user directly to our error-pages
-      const error = url.searchParams.get("error");
-      redirect(pathWithBasePath(`/fhir/error?reason=${error}`));
-    }
+        if (url.searchParams.get('error')) {
+            // If authorization server redirects back here with an error, lets redirect the user directly to our error-pages
+            const error = url.searchParams.get('error')
+            redirect(pathWithBasePath(`/fhir/error?reason=${error}`))
+        }
 
-    /**
-     * PKCE STEP 4
-     * Authorization server stores the code_challenge and redirects the user back to the application with an authorization code, which is good for one use.
-     */
-    const code = url.searchParams.get("code");
-    const state = url.searchParams.get("state");
+        /**
+         * PKCE STEP 4
+         * Authorization server stores the code_challenge and redirects the user back to the application with an authorization code, which is good for one use.
+         */
+        const code = url.searchParams.get('code')
+        const state = url.searchParams.get('state')
 
-    if (code == null || state == null) {
-      logger.warn(`Missing code or state parameter in callback request code: ${code == null} state: ${state == null}`);
-      redirect(pathWithBasePath("/fhir/error?reason=invalid-code"));
-    }
+        if (code == null || state == null) {
+            logger.warn(
+                `Missing code or state parameter in callback request code: ${code == null} state: ${state == null}`,
+            )
+            redirect(pathWithBasePath('/fhir/error?reason=invalid-code'))
+        }
 
-    const sessionId = await getSessionId();
-    if (sessionId == null) {
-      logger.error(`Missing sessionId cookie, session expired or middleware not middlewaring?`);
+        const sessionId = await getSessionId()
+        if (sessionId == null) {
+            logger.error(`Missing sessionId cookie, session expired or middleware not middlewaring?`)
 
-      redirect(pathWithBasePath("/fhir/error?reason=unknown"));
-    }
+            redirect(pathWithBasePath('/fhir/error?reason=unknown'))
+        }
 
-    const callback = await getSmartClient(sessionId, null).callback({code, state});
-    if ("error" in callback) {
-      logger.error(`Callback failed with error ${callback.error}`);
+        const callback = await getSmartClient(sessionId, null).callback({ code, state })
+        if ('error' in callback) {
+            logger.error(`Callback failed with error ${callback.error}`)
 
-      redirect(pathWithBasePath("/fhir/error?reason=callback-failed"));
-    }
+            redirect(pathWithBasePath('/fhir/error?reason=callback-failed'))
+        }
 
-    /**
-     * With multiLaunch enabled, @navikt/smart-on-fhir gives us the patient id as a query param.
-     *
-     * Let's rebuild the final redirect URL to be /fhir/<patientId>.
-     */
-    const redirectUrl = new URL(callback.redirectUrl);
-    const patientId = redirectUrl.searchParams.get("patient");
-    if (patientId == null) {
-      logger.error("Seems like we launched without multiLaunch=true");
-      redirect(pathWithBasePath("/fhir/error?reason=callback-failed"));
-    }
-    const patientRedirectUrl = `${redirectUrl.origin}${redirectUrl.pathname}/${patientId}`;
+        /**
+         * With multiLaunch enabled, @navikt/smart-on-fhir gives us the patient id as a query param.
+         *
+         * Let's rebuild the final redirect URL to be /fhir/<patientId>.
+         */
+        const redirectUrl = new URL(callback.redirectUrl)
+        const patientId = redirectUrl.searchParams.get('patient')
+        if (patientId == null) {
+            logger.error('Seems like we launched without multiLaunch=true')
+            redirect(pathWithBasePath('/fhir/error?reason=callback-failed'))
+        }
+        const patientRedirectUrl = `${redirectUrl.origin}${redirectUrl.pathname}/${patientId}`
 
-    const flag = getFlag("SYK_INN_HELSEID_DOUBLE_AUTH_EXP", await getUserlessToggles());
+        const flag = getFlag('SYK_INN_HELSEID_DOUBLE_AUTH_EXP', await getUserlessToggles())
 
-    span.setAttributes({
-      "helseid.toggle.exp.enabled": flag
-    });
+        span.setAttributes({
+            'helseid.toggle.exp.enabled': flag,
+        })
 
-    if (flag) {
-      logger.info(`[HelseID-double-auth-exp] redirecting to wonderwall and return to ${patientRedirectUrl}`)
+        if (flag) {
+            logger.info(`[HelseID-double-auth-exp] redirecting to wonderwall and return to ${patientRedirectUrl}`)
 
-      // Go to wonderwall and return to patient url
-      redirect(`/oauth2/login/redirect_url=${patientRedirectUrl}`);
-    }
+            // Go to wonderwall and return to patient url
+            redirect(`/oauth2/login/redirect_url=${patientRedirectUrl}`)
+        }
 
-    redirect(patientRedirectUrl);
-  });
+        redirect(patientRedirectUrl)
+    })
 }
