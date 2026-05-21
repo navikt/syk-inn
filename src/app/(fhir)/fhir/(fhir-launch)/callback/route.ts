@@ -4,7 +4,7 @@ import { logger as pinoLogger } from '@navikt/next-logger'
 import { pathWithBasePath } from '@lib/url'
 import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
 import { getSessionId } from '@core/session/session'
-import { getUserlessToggles } from '@core/toggles/unleash'
+import {getFlag, getUserlessToggles} from "@core/toggles/unleash";
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
@@ -70,6 +70,11 @@ export async function GET(request: Request): Promise<Response> {
         }
         const patientRedirectUrl = `${redirectUrl.origin}${redirectUrl.pathname}/${patientId}`
 
-        redirect(patientRedirectUrl)
-    })
+    const flag = getFlag("SYK_INN_HELSEID_DOUBLE_AUTH_EXP", await getUserlessToggles());
+    if(flag) {
+        // Go to wonderwall and return to patient url
+        redirect(`/oauth2/login/redirect_url=${patientRedirectUrl}`)
+    }
+
+    redirect(patientRedirectUrl)
 }
