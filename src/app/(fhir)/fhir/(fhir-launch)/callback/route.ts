@@ -4,6 +4,7 @@ import { logger as pinoLogger } from '@navikt/next-logger'
 import { pathWithBasePath } from '@lib/url'
 import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
 import { getSessionId } from '@core/session/session'
+import {getFlag, getUserlessToggles} from "@core/toggles/unleash";
 
 const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
 
@@ -58,6 +59,12 @@ export async function GET(request: Request): Promise<Response> {
         redirect(pathWithBasePath('/fhir/error?reason=callback-failed'))
     }
     const patientRedirectUrl = `${redirectUrl.origin}${redirectUrl.pathname}/${patientId}`
+
+    const flag = getFlag("SYK_INN_HELSEID_DOUBLE_AUTH_EXP", await getUserlessToggles());
+    if(flag) {
+        // Go to wonderwall and return to patient url
+        redirect(`/oauth2/login/redirect_url=${patientRedirectUrl}`)
+    }
 
     redirect(patientRedirectUrl)
 }
