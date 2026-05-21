@@ -1,15 +1,19 @@
 import React, { ReactElement, useState } from 'react'
 import { ActionMenu, BodyShort, Checkbox, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
-import { CarIcon, ChevronDownIcon, FirstAidIcon, GavelSoundBlockIcon } from '@navikt/aksel-icons'
-import { logger } from '@navikt/next-logger'
+import { ChevronDownIcon, FirstAidIcon } from '@navikt/aksel-icons'
 
 import { ShortcutButton, ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
 import { PasientDocument } from '@queries'
 import { SimpleAlert } from '@components/help/GeneralErrors'
 import { useMode } from '@core/providers/Modes'
+import { useFlag } from '@core/toggles/context'
+import { AssableNextLink } from '@components/links/AssableNextLink'
 
 function StartSykmelding({ className }: { className?: string }): ReactElement {
+    const mode = useMode()
+    const behandlingsdagerEnabled = useFlag('SYK_INN_SYKMELDING_BEHANDLINGSDAGER')
+
     const { data, loading, error, refetch } = useQuery(PasientDocument)
     const [hasLegged, setHasLegged] = useState(true)
 
@@ -62,10 +66,26 @@ function StartSykmelding({ className }: { className?: string }): ReactElement {
                         Pasienten er kjent eller har vist legitimasjon
                     </Checkbox>
                 </div>
-                <FancyMultiOptionStartButton
-                    disabled={loading || !hasLegged || data?.pasient == null}
-                    loading={loading}
-                />
+                {!behandlingsdagerEnabled ? (
+                    <ShortcutButtonLink
+                        href={mode.paths.ny}
+                        variant="primary"
+                        disabled={loading || !hasLegged || data?.pasient == null}
+                        loading={loading}
+                        size="medium"
+                        shortcut={{
+                            modifier: 'alt',
+                            code: 'KeyN',
+                        }}
+                    >
+                        Opprett sykmelding
+                    </ShortcutButtonLink>
+                ) : (
+                    <FancyMultiOptionStartButton
+                        disabled={loading || !hasLegged || data?.pasient == null}
+                        loading={loading}
+                    />
+                )}
             </div>
         </div>
     )
@@ -79,9 +99,10 @@ export function FancyMultiOptionStartButton({
     disabled: boolean
 }): ReactElement {
     const mode = useMode()
+    const [isLinkPending, setLinkPending] = useState(false)
 
     return (
-        <div className="flex gap-[2px]">
+        <div className="flex gap-0.5">
             <ShortcutButtonLink
                 href={mode.paths.ny}
                 variant="primary"
@@ -104,35 +125,18 @@ export function FancyMultiOptionStartButton({
                         variant="primary"
                         buttonClassName="rounded-l-none"
                         icon={<ChevronDownIcon title="Andre handlinger" />}
+                        loading={isLinkPending}
                     />
                 </ActionMenu.Trigger>
                 <ActionMenu.Content>
                     <ActionMenu.Group label="Andre sykmeldingstyper">
                         <ActionMenu.Item
                             icon={<FirstAidIcon aria-hidden />}
-                            onSelect={() => {
-                                logger.info('First item!')
-                            }}
+                            as={AssableNextLink}
+                            href={`${mode.paths.ny}?variant=behandlingsdager`}
+                            onSelect={() => setLinkPending(true)}
                         >
                             Behandlingsdager
-                        </ActionMenu.Item>
-                        <ActionMenu.Item
-                            icon={<CarIcon aria-hidden />}
-                            onSelect={() => {
-                                logger.info('Second item!')
-                            }}
-                        >
-                            Reisetilskudd
-                        </ActionMenu.Item>
-                    </ActionMenu.Group>
-                    <ActionMenu.Group label="Andre andre andre ting">
-                        <ActionMenu.Item
-                            icon={<GavelSoundBlockIcon aria-hidden />}
-                            onSelect={() => {
-                                logger.info('Third item!')
-                            }}
-                        >
-                            Annen lovfestet fraværsgrunn
                         </ActionMenu.Item>
                     </ActionMenu.Group>
                 </ActionMenu.Content>
