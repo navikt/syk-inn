@@ -7,8 +7,8 @@ import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
 import { ShortcutButtons } from '@components/shortcut/ShortcutButtons'
 import { spanBrowserAsync } from '@lib/otel/browser'
 import { useMode } from '@core/providers/Modes'
-import { useFormDraftSync } from '@features/ny-sykmelding-form/draft/FormDraftSync'
 
+import { useFormDraftSync } from './FormDraftSync'
 import { useDraftId } from './useDraftId'
 
 export function LagreDraftButton({ className }: { className?: string }): ReactElement {

@@ -3,13 +3,10 @@ import { BodyShort, HelpText, Radio, RadioGroup, Textarea } from '@navikt/ds-rea
 
 import FormSection from '@components/form/form-section/FormSection'
 import { useController, useFormContext } from '@features/ny-sykmelding-form/form/types'
-import {
-    shouldShowUke17Sporsmal,
-    shouldShowUke39Sporsmal,
-    shouldShowUke7Sporsmal,
-} from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-utils'
-import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolvers.generated'
+import { UtdypendeOpplysningerHint } from '@resolvers'
 import { questionTexts } from '@data-layer/common/questions'
+
+import { shouldShowUke17Sporsmal, shouldShowUke39Sporsmal, shouldShowUke7Sporsmal } from './utdypende-sporsmal-utils'
 
 interface SporsmalForUke {
     uke7: boolean

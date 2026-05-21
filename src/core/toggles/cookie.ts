@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 
-import { unleashLogger } from '@core/toggles/unleash'
-import { UNLEASH_COOKIE_NAME } from '@core/toggles/const'
+import { unleashLogger } from './unleash'
+import { UNLEASH_COOKIE_NAME } from './const'
 
 export async function getUnleashSessionId(): Promise<string> {
     const existingUnleashId = (await cookies()).get(UNLEASH_COOKIE_NAME)

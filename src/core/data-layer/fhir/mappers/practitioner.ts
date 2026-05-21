@@ -1,8 +1,9 @@
 import { logger } from '@navikt/next-logger'
 import { FhirPractitioner, GeneralIdentifier } from '@navikt/smart-on-fhir/zod'
 
-import { getNameFromFhir } from '@data-layer/fhir/mappers/patient'
 import { Behandler } from '@resolvers'
+
+import { getNameFromFhir } from './patient'
 
 const FNR_OID = '2.16.578.1.12.4.1.4.1'
 const DNR_OID = '2.16.578.1.12.4.1.4.2'

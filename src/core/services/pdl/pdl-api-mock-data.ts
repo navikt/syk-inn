@@ -1,4 +1,4 @@
-import { PdlPerson } from '@core/services/pdl/pdl-api-schema'
+import { PdlPerson } from './pdl-api-schema'
 
 export function createPdlPersonMock(ident?: string): PdlPerson {
     return {

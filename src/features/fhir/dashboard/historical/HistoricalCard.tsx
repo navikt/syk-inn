@@ -4,12 +4,14 @@ import { useQuery } from '@apollo/client/react'
 import { NetworkStatus } from '@apollo/client'
 import { FlowerPetalsIcon } from '@navikt/aksel-icons'
 
-import DashboardCard from '@features/fhir/dashboard/card/DashboardCard'
 import { AllDashboardDocument, KonsultasjonDocument } from '@queries'
-import { ComboTable } from '@features/fhir/dashboard/combo-table/ComboTable'
-import { RequestSykmeldinger } from '@features/fhir/dashboard/historical/RequestSykmeldinger'
 import { cn } from '@lib/tw'
 import SessionIdInfo from '@components/help/SessionIdInfo'
+
+import DashboardCard from '../card/DashboardCard'
+import { ComboTable } from '../combo-table/ComboTable'
+
+import { RequestSykmeldinger } from './RequestSykmeldinger'
 
 function HistoricalCard({ className }: { className?: string }): ReactElement {
     const konsultasjon = useQuery(KonsultasjonDocument)

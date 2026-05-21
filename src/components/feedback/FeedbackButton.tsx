@@ -6,11 +6,12 @@ import { useQuery } from '@apollo/client/react'
 import { CheckmarkHeavyIcon, LightBulbIcon } from '@navikt/aksel-icons'
 
 import { BehandlerDocument } from '@queries'
-import SessionIdInfo from '@components/help/SessionIdInfo'
-import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
-import { useFeedback } from '@components/feedback/useFeedback'
+
+import SessionIdInfo from '../help/SessionIdInfo'
+import LegeOgBehandlerTelefonen from '../help/LegeOgBehandlerTelefonen'
 
 import { FullFeedback, FullFeedbackSentimentFollowUp } from './full-feedback/FullFeedbackForm'
+import { useFeedback } from './useFeedback'
 
 /**
  * This is a fixed button that will align itself in the bottom right corne.r

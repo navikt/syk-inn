@@ -4,7 +4,7 @@ import { parseISO } from 'date-fns'
 
 import { dateOnly } from '@lib/date'
 
-import { useController } from '../form/types'
+import { useController } from '../../form/types'
 
 function TilbakedateringDate(): ReactElement {
     const { field, fieldState } = useController({

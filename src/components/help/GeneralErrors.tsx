@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import { BodyShort, Button, LocalAlert } from '@navikt/ds-react'
 
-import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
-import SessionIdInfo from '@components/help/SessionIdInfo'
+import LegeOgBehandlerTelefonen from './LegeOgBehandlerTelefonen'
+import SessionIdInfo from './SessionIdInfo'
 
 export function UnknownSystemError({ className, retry }: { className?: string; retry?: () => void }): ReactElement {
     return (

@@ -5,17 +5,14 @@ import { BodyShort, Button, InfoCard, InlineMessage } from '@navikt/ds-react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { AnimatePresence } from 'motion/react'
 
-import {
-    BRUKSVILKAR_TIMESTAMP,
-    BRUKSVILKAR_VERSION,
-    BruksvilkarSection,
-} from '@features/bruksvilkar/BruksvilkarSection'
 import { toReadableDateTime } from '@lib/date'
 import { SimpleReveal } from '@components/animation/Reveal'
 import { AssableNextLink } from '@components/links/AssableNextLink'
 import { createFhirPaths } from '@core/providers/ModePaths'
 import { cn } from '@lib/tw'
-import { AcceptBruksvilkar } from '@features/bruksvilkar/BruksvilkarAccept'
+
+import { BRUKSVILKAR_TIMESTAMP, BRUKSVILKAR_VERSION, BruksvilkarSection } from './BruksvilkarSection'
+import { AcceptBruksvilkar } from './BruksvilkarAccept'
 
 type Props = {
     patientId: string

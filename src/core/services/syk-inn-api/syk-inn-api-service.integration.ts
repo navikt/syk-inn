@@ -7,14 +7,15 @@ import * as R from 'remeda'
 import * as ac from 'asciichart'
 
 import { initializeSykInnApi } from '@lib/test/syk-inn-api'
-import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { OpprettSykmeldingMeta, OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
 import { initializeValkey } from '@lib/test/valkey'
 import { daysAgo, inDays, today } from '@lib/test/date-utils'
 import { consumeUntil, initializeConsumer, initializeKafka, initializeLocalKafka } from '@lib/test/syk-inn-kafka'
 import { AnnenFravarsgrunnArsak } from '@resolvers'
 import { questionTexts } from '@data-layer/common/questions'
 import { KafkaAktivitetIkkeMulig, KafkaGradert } from '@lib/test/syk-inn-kafka-types'
+
+import { OpprettSykmeldingMeta, OpprettSykmeldingPayload } from './schema/opprett'
+import { sykInnApiService } from './syk-inn-api-service'
 
 /**
  * Can be manually toggled to run tests with local (already running syk-inn-api)

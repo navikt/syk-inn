@@ -4,8 +4,9 @@ import { BodyShort, Heading } from '@navikt/ds-react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { RuleOutcomeFragment } from '@queries'
-import { getRuleText } from '@features/ny-sykmelding-form/summary/rules/rule-texts'
 import { DetailedAlert } from '@components/help/GeneralErrors'
+
+import { getRuleText } from '../rules/rule-texts'
 
 type Props = {
     outcome: RuleOutcomeFragment

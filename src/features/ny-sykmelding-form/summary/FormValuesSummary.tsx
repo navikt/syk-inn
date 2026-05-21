@@ -22,9 +22,9 @@ import { useMode } from '@core/providers/Modes'
 import { DetailedAlert, InlineWarning, SimpleAlert } from '@components/help/GeneralErrors'
 import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
 import { questionTexts } from '@data-layer/common/questions'
+import { arbeidsrelaterteArsakerToText } from '@data-layer/common/arbeidsrelaterte-arsaker'
 
-import { ArbeidsrelaterteArsaker } from '../aktivitet/ArsakerPicker'
-import { useFormStep } from '../steps/useFormStep'
+import { useFormStep } from '../useFormStep'
 
 import { useFormValuesSummaryDraft } from './useFormValuesSummaryDraft'
 import { aktivitetDescription } from './summary-text-utils'
@@ -193,7 +193,9 @@ function AktivitetSummaryAnswer({
                                                 if (arsak === 'ANNET') {
                                                     return (
                                                         <List.Item key={arsak}>
-                                                            <BodyShort>{ArbeidsrelaterteArsaker[arsak]}</BodyShort>
+                                                            <BodyShort>
+                                                                {arbeidsrelaterteArsakerToText(arsak)}
+                                                            </BodyShort>
                                                             <BodyShort size="small" className="italic">
                                                                 {
                                                                     aktivitet.arbeidsrelatertArsak
@@ -206,7 +208,7 @@ function AktivitetSummaryAnswer({
 
                                                 return (
                                                     <List.Item key={arsak}>
-                                                        <BodyShort>{ArbeidsrelaterteArsaker[arsak]}</BodyShort>
+                                                        <BodyShort>{arbeidsrelaterteArsakerToText(arsak)}</BodyShort>
                                                     </List.Item>
                                                 )
                                             })}

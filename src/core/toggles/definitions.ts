@@ -4,8 +4,9 @@ import QuickLRU from 'quick-lru'
 
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 import { raise } from '@lib/ts'
-import { EXPECTED_TOGGLES } from '@core/toggles/toggles'
-import { unleashLogger } from '@core/toggles/unleash'
+
+import { EXPECTED_TOGGLES } from './toggles'
+import { unleashLogger } from './unleash'
 
 type ToggleDefinitions = Awaited<ReturnType<typeof getDefinitions>>
 

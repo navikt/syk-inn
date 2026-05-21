@@ -1,4 +1,4 @@
-import { SentimentLevels } from '@components/feedback/sentiment/SentimentPicker'
+import { SentimentLevels } from '../sentiment/SentimentPicker'
 
 export type InSituFeedbackFormValues = {
     sentiment: SentimentLevels | null

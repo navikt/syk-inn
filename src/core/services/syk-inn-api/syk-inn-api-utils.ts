@@ -9,15 +9,12 @@ import {
     SykmeldingLight,
     SykmeldingRedacted,
 } from '@resolvers'
-import {
-    OpprettSykmeldingAktivitet,
-    OpprettSykmeldingMeta,
-    OpprettSykmeldingPayload,
-} from '@core/services/syk-inn-api/schema/opprett'
-import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '@core/services/syk-inn-api/schema/sykmelding'
 import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
 import { AnnenFravarsgrunnArsak } from '@queries'
 import { questionTexts } from '@data-layer/common/questions'
+
+import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from './schema/sykmelding'
+import { OpprettSykmeldingAktivitet, OpprettSykmeldingMeta, OpprettSykmeldingPayload } from './schema/opprett'
 
 export function sykInnApiSykmeldingRedactedToResolverSykmelding(
     sykmelding: SykInnApiSykmeldingRedacted,

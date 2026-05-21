@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react'
 
 import { SykmeldingFragment } from '@queries'
-import { ValueItem } from '@components/sykmelding/ValuesSection'
+
+import { ValueItem } from './ValuesSection'
 
 type Props = {
     sykmeldingMeta: SykmeldingFragment['meta']

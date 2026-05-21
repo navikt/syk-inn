@@ -5,6 +5,17 @@ import { DraftValues } from '@data-layer/draft/draft-schema'
 import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
 import { precedence } from '@features/ny-sykmelding-form/form/utils'
 import {
+    defaultAndreSporsmal,
+    defaultAnnenfravarsgrunn,
+    defaultArbeidsforhold,
+    defaultMeldinger,
+    defaultPeriode,
+    defaultTilbakedatering,
+    defaultUtdypendeSporsmal,
+} from '@features/ny-sykmelding-form/form/default-values'
+import { AnnenFravarsgrunnArsak } from '@queries'
+
+import {
     stateAndreSporsmalToFormValues,
     stateAnnenFravarsgrunnToFormValues,
     stateArbeidsforholdToFormValues,
@@ -14,18 +25,8 @@ import {
     statePerioderToFormValues,
     stateTilbakedateringToFormValues,
     stateUtdypendeSporsmalToFormValues,
-} from '@features/actions/common/state-sykmelding-mappers'
-import {
-    defaultAndreSporsmal,
-    defaultAnnenfravarsgrunn,
-    defaultArbeidsforhold,
-    defaultMeldinger,
-    defaultPeriode,
-    defaultTilbakedatering,
-    defaultUtdypendeSporsmal,
-} from '@features/ny-sykmelding-form/form/default-values'
-import { serverDiagnoseSuggestionToFormValue } from '@features/actions/common/gql-sykmelding-mappers'
-import { AnnenFravarsgrunnArsak } from '@queries'
+} from '../common/state-sykmelding-mappers'
+import { serverDiagnoseSuggestionToFormValue } from '../common/gql-sykmelding-mappers'
 
 export function nySykmeldingFromDraftDefaultValues(
     draft: DraftValues | null,

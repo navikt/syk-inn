@@ -14,18 +14,18 @@ import { UtdypendeOpplysningerHint } from '@data-layer/graphql/generated/resolve
 import TwoPaneGrid from '@components/layout/TwoPaneGrid'
 import { DetailedAlert } from '@components/help/GeneralErrors'
 
-import { formValuesToStatePayload } from './form/form-to-state'
-import { UtdypendeSporsmal } from './utfyllende-sporsmal/UtdypendeendeSporsmal'
+import AktivitetSection from './sections/aktivitet/AktivitetSection'
+import { UtdypendeSporsmal } from './sections/utfyllende-sporsmal/UtdypendeendeSporsmal'
+import DiagnoseSection from './sections/diagnose/DiagnoseSection'
+import DiagnoseInfoAlert from './sections/diagnose/DiagnoseInfoAlert'
+import BidiagnoseSection from './sections/diagnose/bidiagnose/BidiagnoseSection'
+import ArbeidsforholdSection from './sections/arbeidsgiver/ArbeidsforholdSection'
+import AndreSporsmalSection from './sections/andre-sporsmal/AndreSporsmalSection'
+import DynamicTilbakedateringSection from './sections/tilbakedatering/DynamicTilbakedateringSection'
+import MeldingerSection from './sections/meldinger/MeldingerSection'
+import { useFormStep } from './useFormStep'
 import { NySykmeldingMainFormValues, useFormContext } from './form/types'
-import { useFormStep } from './steps/useFormStep'
-import DiagnoseSection from './diagnose/DiagnoseSection'
-import DiagnoseInfoAlert from './diagnose/DiagnoseInfoAlert'
-import BidiagnoseSection from './diagnose/bidiagnose/BidiagnoseSection'
-import ArbeidsforholdSection from './arbeidsgiver/ArbeidsforholdSection'
-import AndreSporsmalSection from './andre-sporsmal/AndreSporsmalSection'
-import DynamicTilbakedateringSection from './tilbakedatering/DynamicTilbakedateringSection'
-import AktivitetSection from './aktivitet/AktivitetSection'
-import MeldingerSection from './meldinger/MeldingerSection'
+import { formValuesToStatePayload } from './form/form-to-state'
 import { ForkastDraftButtonInFormSync, LagreDraftButton } from './draft/DraftActions'
 import { FormDraftSync, useFormDraftSync } from './draft/FormDraftSync'
 
@@ -48,7 +48,7 @@ type NySykmeldingFormProps = {
         initialFom?: string
     }
     /**
-     * Used for contexctually relevant error messages
+     * Used for contextually relevant error messages
      */
     contextualErrors: {
         diagnose?: { error: 'FHIR_FAILED' }

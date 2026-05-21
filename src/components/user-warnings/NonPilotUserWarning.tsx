@@ -6,7 +6,8 @@ import { TestFlaskIcon } from '@navikt/aksel-icons'
 
 import { ComboTableSkeleton } from '@features/fhir/dashboard/ComboTableCard'
 import DashboardCard from '@features/fhir/dashboard/card/DashboardCard'
-import { PageLayout } from '@components/layout/Page'
+
+import { PageLayout } from '../layout/Page'
 
 function NonPilotUserWarning(): ReactElement | null {
     return (

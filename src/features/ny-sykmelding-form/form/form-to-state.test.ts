@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
-import { formValuesToStatePayload } from '@features/ny-sykmelding-form/form/form-to-state'
-import { NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
 import { daysAgo } from '@lib/test/date-utils'
+
+import { formValuesToStatePayload } from './form-to-state'
+import { NySykmeldingMainFormValues } from './types'
 
 const createFormValues = ({ fom, tom }: { fom: string; tom: string }): NySykmeldingMainFormValues => ({
     arbeidsforhold: {

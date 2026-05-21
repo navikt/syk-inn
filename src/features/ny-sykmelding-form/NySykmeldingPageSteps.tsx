@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'motion/react'
 
 import { PageLayout } from '@components/layout/Page'
 
-import { StepSection, useFormStep } from './steps/useFormStep'
+import { StepSection, useFormStep } from './useFormStep'
 import SummarySection from './summary/SummarySection'
 
 function NySykmeldingPageSteps({ heading, children }: PropsWithChildren<{ heading: ReactNode }>): ReactElement {

@@ -1,5 +1,6 @@
-import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
 import { dateOnly } from '@lib/date'
+
+import { AktivitetsPeriode, NySykmeldingMainFormValues } from './types'
 
 export function defaultArbeidsforhold(): NySykmeldingMainFormValues['arbeidsforhold'] {
     return {

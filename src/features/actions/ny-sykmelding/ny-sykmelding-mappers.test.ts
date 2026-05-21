@@ -3,7 +3,8 @@ import { DefaultValues } from 'react-hook-form'
 
 import { dateOnly } from '@lib/date'
 import { NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
-import { nySykmeldingDefaultValues } from '@features/actions/ny-sykmelding/ny-sykmelding-mappers'
+
+import { nySykmeldingDefaultValues } from './ny-sykmelding-mappers'
 
 test('multiple bidiagnoser from server suggestion shall be used', () => {
     const defaultValues = nySykmeldingDefaultValues(null, {

@@ -3,9 +3,9 @@ import { logger as pinoLogger } from '@navikt/next-logger'
 import { connection } from 'next/server'
 
 import { bundledEnv, isE2E, isLocal, isDemo } from '@lib/env'
-import { getAndValidateDefinitions } from '@core/toggles/definitions'
 import { raise } from '@lib/ts'
 
+import { getAndValidateDefinitions } from './definitions'
 import { developmentTogglesWithCookieOverrides } from './dev/cookie-override'
 import { EXPECTED_TOGGLES, ExpectedToggles } from './toggles'
 import { getUnleashSessionId } from './cookie'

@@ -1,8 +1,9 @@
 import { expect, test } from 'vitest'
 import { FhirCondition } from '@navikt/smart-on-fhir/zod'
 
-import { fhirDiagnosisToRelevantDiagnosis } from '@data-layer/fhir/mappers/diagnosis'
 import { ICPC2_OID_VALUE } from '@data-layer/common/diagnose'
+
+import { fhirDiagnosisToRelevantDiagnosis } from './diagnosis'
 
 test('diagnose differ analyisis: should log and match ICPC2B', () => {
     // Based on IRL log cose: [Diagnoseanalyse]: Stor diff - ICPC2:L03:Lumbal ryggsmerte:Korsrygg symptomer/plager:0.78

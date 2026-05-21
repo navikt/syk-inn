@@ -4,7 +4,6 @@ import { MockLink } from '@apollo/client/testing'
 import { execute, ExecutionResult } from 'graphql/execution'
 import { addTypenameToDocument } from '@apollo/client/utilities'
 
-import { createInMemoryCache } from '@data-layer/graphql/apollo/apollo-client-cache'
 import {
     AllDashboardDocument,
     AllDashboardQuery,
@@ -19,9 +18,12 @@ import {
     sykInnApiSykmeldingRedactedToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmelding,
 } from '@core/services/syk-inn-api/syk-inn-api-utils'
-import { createSchema } from '@data-layer/graphql/create-schema'
-import { commonTypeResolvers } from '@data-layer/graphql/common-type-resolvers'
 import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
+
+import { createSchema } from '../create-schema'
+import { commonTypeResolvers } from '../common-type-resolvers'
+
+import { createInMemoryCache } from './apollo-client-cache'
 
 describe('apollo cache normalization - draft', () => {
     const drafts: DraftFragment[] = [

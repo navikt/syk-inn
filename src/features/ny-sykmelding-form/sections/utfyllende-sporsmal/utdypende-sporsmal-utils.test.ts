@@ -1,7 +1,8 @@
 import { describe, expect, test } from 'vitest'
 
 import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
-import { shouldShowUke7Sporsmal } from '@features/ny-sykmelding-form/utfyllende-sporsmal/utdypende-sporsmal-utils'
+
+import { shouldShowUke7Sporsmal } from './utdypende-sporsmal-utils'
 
 describe('shouldShowUke7Sporsmal', () => {
     // TODO Need to add previously answered questions to graphql data to properly test this case

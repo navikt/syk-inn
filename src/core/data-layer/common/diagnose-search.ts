@@ -3,7 +3,8 @@ import Fuse from 'fuse.js'
 import { ICD10, ICPC2, ICPC2B } from '@navikt/tsm-diagnoser'
 
 import { raise } from '@lib/ts'
-import { Diagnose, DiagnoseSystem } from '@data-layer/common/diagnose'
+
+import { Diagnose, DiagnoseSystem } from './diagnose'
 
 const icd10Fuse = new Fuse(ICD10, { keys: ['code', 'text', 'system'], threshold: 0.2 })
 const icpc2Fuse = new Fuse(ICPC2, { keys: ['code', 'text', 'system'], threshold: 0.2 })

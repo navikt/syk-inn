@@ -6,7 +6,7 @@ import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { Diagnose, isSameDiagnose } from '@data-layer/common/diagnose'
 import { SimpleReveal } from '@components/animation/Reveal'
 
-import { useFormContext } from '../form/types'
+import { useFormContext } from '../../form/types'
 
 import { useDiagnoseSuggestions } from './useDiagnoseSuggestions'
 

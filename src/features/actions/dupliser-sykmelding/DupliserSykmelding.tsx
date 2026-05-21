@@ -5,11 +5,13 @@ import { useQuery } from '@apollo/client/react'
 
 import { PasientDocument, SykmeldingByIdDocument } from '@queries'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
-import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/diagnose/useDiagnoseSuggestions'
+import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/sections/diagnose/useDiagnoseSuggestions'
 import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
-import { SykmeldingFormErrors } from '@features/actions/common/SykmeldingFormErrors'
-import { dupliserSykmeldingDefaultValues } from '@features/actions/dupliser-sykmelding/dupliser-sykmelding-mapper'
 import { useAppSelector } from '@core/redux/hooks'
+
+import { SykmeldingFormErrors } from '../common/SykmeldingFormErrors'
+
+import { dupliserSykmeldingDefaultValues } from './dupliser-sykmelding-mapper'
 
 interface Props {
     sykmeldingId: string

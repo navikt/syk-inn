@@ -1,6 +1,6 @@
 import { nySykmeldingSlice } from './ny-sykmelding-slice'
 
-export type { ActivePatient } from '@core/redux/reducers/ny-sykmelding/patient'
+export type { ActivePatient } from './patient'
 export type {
     NySykmeldingFormState,
     NySykmeldingArbeidsforhold,
@@ -9,7 +9,7 @@ export type {
     NySykmeldingAktivitet,
     NySykmeldingMeldinger,
     NySykmeldingDiagnoser,
-} from '@core/redux/reducers/ny-sykmelding/form'
+} from './form'
 
 export type { NySykmeldingState } from './ny-sykmelding-slice'
 
