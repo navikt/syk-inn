@@ -1,13 +1,13 @@
-import { redirect } from 'next/navigation'
-import { logger as pinoLogger } from '@navikt/next-logger'
+import {redirect} from "next/navigation";
+import {logger as pinoLogger} from "@navikt/next-logger";
 
-import { pathWithBasePath } from '@lib/url'
-import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
-import { getSessionId } from '@core/session/session'
+import {pathWithBasePath} from "@lib/url";
+import {getSmartClient} from "@data-layer/fhir/smart/smart-client";
+import {getSessionId} from "@core/session/session";
 import {getFlag, getUserlessToggles} from "@core/toggles/unleash";
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 
-const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
+const logger = pinoLogger.child({}, {msgPrefix: "[Secure FHIR (callback)] "});
 
 /**
  * Third step in launch process, after the user followed the authorization_url and is redirected here with a code and
@@ -71,10 +71,18 @@ export async function GET(request: Request): Promise<Response> {
         const patientRedirectUrl = `${redirectUrl.origin}${redirectUrl.pathname}/${patientId}`
 
     const flag = getFlag("SYK_INN_HELSEID_DOUBLE_AUTH_EXP", await getUserlessToggles());
-    if(flag) {
-        // Go to wonderwall and return to patient url
-        redirect(`/oauth2/login/redirect_url=${patientRedirectUrl}`)
+
+    span.setAttributes({
+      "helseid.toggle.exp.enabled": flag
+    });
+
+    if (flag) {
+      logger.info(`[HelseID-double-auth-exp] redirecting to wonderwall and return to ${patientRedirectUrl}`)
+
+      // Go to wonderwall and return to patient url
+      redirect(`/oauth2/login/redirect_url=${patientRedirectUrl}`);
     }
 
-    redirect(patientRedirectUrl)
+    redirect(patientRedirectUrl);
+  });
 }
