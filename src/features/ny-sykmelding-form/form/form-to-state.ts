@@ -91,5 +91,11 @@ function formAktivitetToStepAktivitet(value: AktivitetsPeriode): NySykmeldingAkt
                     ? Number(value.aktivitet.grad)
                     : raise('Grad is required for GRADERT'),
             }
+        case 'BEHANDLINGSDAGER':
+            return {
+                type: 'BEHANDLINGSDAGER',
+                fom: value.periode.fom ?? raise('FOM is required for BEHANDLINGSDAGER'),
+                tom: value.periode.tom ?? raise('TOM is required for BEHANDLINGSDAGER'),
+            }
     }
 }

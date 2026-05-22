@@ -1,0 +1,41 @@
+import React, { ReactElement } from 'react'
+import { differenceInDays, format, isSameDay } from 'date-fns'
+import { nb } from 'date-fns/locale/nb'
+
+import PeriodePicker from '@features/ny-sykmelding-form/sections/aktivitet/PeriodePicker'
+import { toReadablePeriodLength } from '@lib/date'
+
+type Props = {
+    initialFom: string | null
+}
+
+function BehandlingsdagerPeriode({ initialFom }: Props): ReactElement {
+    return (
+        <div>
+            <PeriodePicker
+                index={0}
+                isLast={false}
+                initialFom={initialFom}
+                formatRangeDescription={behandlingsdagerDescription}
+            />
+        </div>
+    )
+}
+
+export function behandlingsdagerDescription(fom: Date | string, tom: Date | string): { main: string; detail: string } {
+    const numberOfDays = differenceInDays(tom, fom) + 1
+    const antallBehandlingsdager = Math.ceil(numberOfDays / 7)
+
+    const isFomToday = isSameDay(fom, new Date())
+    const isTomToday = isSameDay(tom, new Date())
+
+    const behandlingsdagerText = `behandlingsdag${antallBehandlingsdager > 1 ? 'er' : ''}`
+    const ukerText = `uke${antallBehandlingsdager > 1 ? 'r' : ''}`
+
+    return {
+        main: `${antallBehandlingsdager} ${behandlingsdagerText} over ${toReadablePeriodLength(fom, tom)} (${antallBehandlingsdager} ${ukerText})`,
+        detail: `Fra ${format(fom, 'EEEE d. MMMM', { locale: nb })}${isFomToday ? ' (i dag)' : ''} til ${format(tom, 'EEEE d. MMMM', { locale: nb })}${isTomToday ? ' (i dag)' : ''}`,
+    }
+}
+
+export default BehandlingsdagerPeriode

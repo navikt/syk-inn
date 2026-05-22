@@ -6,5 +6,7 @@ export function aktivitetDescription(aktivitet: NySykmeldingAktivitet): string {
             return `100% sykmelding`
         case 'GRADERT':
             return `Gradert sykmelding (${aktivitet.grad}%)`
+        case 'BEHANDLINGSDAGER':
+            return `Sykmelding med behandlingsdager`
     }
 }

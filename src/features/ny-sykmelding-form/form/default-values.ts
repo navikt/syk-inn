@@ -1,5 +1,7 @@
 import { dateOnly } from '@lib/date'
 
+import { NySykmeldingFormVariantType } from '../useFormVariant'
+
 import { AktivitetsPeriode, NySykmeldingMainFormValues } from './types'
 
 export function defaultArbeidsforhold(): NySykmeldingMainFormValues['arbeidsforhold'] {
@@ -57,7 +59,21 @@ export function defaultMeldinger(): NySykmeldingMainFormValues['meldinger'] {
     }
 }
 
-export function defaultPeriode(): AktivitetsPeriode {
+export function defaultPeriode(variant: NySykmeldingFormVariantType): AktivitetsPeriode {
+    if (variant === 'BEHANDLINGSDAGER') {
+        return {
+            periode: {
+                fom: dateOnly(new Date()),
+                tom: '',
+            },
+            aktivitet: {
+                type: 'BEHANDLINGSDAGER',
+                grad: null,
+                arbeidsrelatertArsak: null,
+            },
+        }
+    }
+
     return {
         periode: {
             fom: dateOnly(new Date()),

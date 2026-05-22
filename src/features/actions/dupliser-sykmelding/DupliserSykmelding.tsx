@@ -4,6 +4,7 @@ import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 
 import { PasientDocument, SykmeldingByIdDocument } from '@queries'
+import { inferSykmeldingType } from '@features/ny-sykmelding-form/useFormVariant'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/sections/diagnose/useDiagnoseSuggestions'
 import NySykmeldingFormVariants from '@features/ny-sykmelding-form/NySykmeldingFormVariants'
@@ -33,11 +34,16 @@ export function DupliserSykmeldingFormWithDefaultValues({ sykmeldingId }: Props)
         return <SykmeldingFormErrors refetch={sykmeldingQuery.refetch} />
     }
 
-    const derivedDefaultValues = dupliserSykmeldingDefaultValues(sykmeldingQuery.data.sykmelding, valuesInState)
+    const variantToBeDuplisert = inferSykmeldingType(sykmeldingQuery.data.sykmelding)
+    const derivedDefaultValues = dupliserSykmeldingDefaultValues(
+        sykmeldingQuery.data.sykmelding,
+        valuesInState,
+        variantToBeDuplisert,
+    )
 
     return (
         <NySykmeldingFormVariants
-            variant="NORMAL"
+            variant={variantToBeDuplisert}
             defaultValues={derivedDefaultValues}
             context={{
                 utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,

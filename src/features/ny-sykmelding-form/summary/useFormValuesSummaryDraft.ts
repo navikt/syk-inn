@@ -5,7 +5,7 @@ import { logger } from '@navikt/next-logger'
 import { useAppDispatch } from '@core/redux/hooks'
 import { GetDraftDocument } from '@queries'
 import { nySykmeldingActions, NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
-import { safeParseDraft } from '@data-layer/draft/draft-schema'
+import { inferSykmeldingTypeFromDraft, safeParseDraft } from '@data-layer/draft/draft-schema'
 import { nySykmeldingFromDraftDefaultValues } from '@features/actions/ny-sykmelding-from-draft/ny-sykmelding-from-draft-mappers'
 
 import { useDraftId } from '../draft/useDraftId'
@@ -35,10 +35,16 @@ export function useFormValuesSummaryDraft(values: NySykmeldingFormState | null):
         if (!draftQuery.loading && values == null && draftQuery.data?.draft != null) {
             logger.info('Found existing draft when loading Summary page! Trying to load it into form state. :-)')
 
+            const parsedDraft = safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values)
+            const variantInDraft = inferSykmeldingTypeFromDraft(parsedDraft)
             const formValuesFromDraft = nySykmeldingFromDraftDefaultValues(
-                safeParseDraft(draftQuery.data?.draft?.draftId, draftQuery.data?.draft?.values),
+                parsedDraft,
                 null,
-                { diagnose: { value: null }, bidiagnoser: null },
+                {
+                    diagnose: { value: null },
+                    bidiagnoser: null,
+                },
+                variantInDraft,
             )
 
             try {

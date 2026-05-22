@@ -7,15 +7,19 @@ import { NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/ty
 import { nySykmeldingDefaultValues } from './ny-sykmelding-mappers'
 
 test('multiple bidiagnoser from server suggestion shall be used', () => {
-    const defaultValues = nySykmeldingDefaultValues(null, {
-        diagnose: {
-            value: { __typename: 'Diagnose', system: 'ICPC2', code: 'A01', text: 'Influensa' },
+    const defaultValues = nySykmeldingDefaultValues(
+        null,
+        {
+            diagnose: {
+                value: { __typename: 'Diagnose', system: 'ICPC2', code: 'A01', text: 'Influensa' },
+            },
+            bidiagnoser: [
+                { system: 'ICPC2', code: 'A01', text: 'Influensa', __typename: 'Diagnose' },
+                { system: 'ICPC2', code: 'B02', text: 'Forkjølelse', __typename: 'Diagnose' },
+            ],
         },
-        bidiagnoser: [
-            { system: 'ICPC2', code: 'A01', text: 'Influensa', __typename: 'Diagnose' },
-            { system: 'ICPC2', code: 'B02', text: 'Forkjølelse', __typename: 'Diagnose' },
-        ],
-    })
+        'NORMAL',
+    )
 
     expect(defaultValues).toEqual({
         arbeidsforhold: { harFlereArbeidsforhold: 'NEI', sykmeldtFraArbeidsforhold: null, aaregArbeidsforhold: null },

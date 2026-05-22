@@ -180,6 +180,7 @@ function SykmeldingAktivitetValues({ aktivitet }: { aktivitet: AktivitetFragment
                         </>
                     )}
                     {it.__typename === 'Gradert' && <BodyShort>{it.grad}% gradert sykmelding</BodyShort>}
+                    {it.__typename === 'Behandlingsdager' && <BodyShort>Periode med behandlingsdager</BodyShort>}
                 </ValueItem>
             ))}
         </>

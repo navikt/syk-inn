@@ -10,6 +10,7 @@ import {
     defaultTilbakedatering,
     defaultUtdypendeSporsmal,
 } from '@features/ny-sykmelding-form/form/default-values'
+import { NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
 
 import {
     stateAndreSporsmalToFormValues,
@@ -27,13 +28,14 @@ import { serverDiagnoseSuggestionToFormValue } from '../common/gql-sykmelding-ma
 export function nySykmeldingDefaultValues(
     state: NySykmeldingFormState | null,
     serverSuggestions: NySykmeldingSuggestions | null,
+    variant: NySykmeldingFormVariantType,
 ): NySykmeldingMainFormValues {
     return {
         arbeidsforhold: precedence([
             stateArbeidsforholdToFormValues(state?.arbeidsforhold ?? null),
             defaultArbeidsforhold(),
         ]),
-        perioder: precedence([statePerioderToFormValues(state?.aktiviteter ?? null), [defaultPeriode()]]),
+        perioder: precedence([statePerioderToFormValues(state?.aktiviteter ?? null), [defaultPeriode(variant)]]),
         diagnoser: {
             hoved: precedence([
                 stateHoveddiagnoseToFormValues(state?.diagnose?.hoved ?? null),

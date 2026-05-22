@@ -276,7 +276,7 @@ function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingA
             tom: aktivitet.avventende.tom,
             innspillTilArbeidsgiver: aktivitet.avventende?.innspillTilArbeidsgiver,
         }
-    } else if (aktivitet.behandlingsdager) {
+    } else if (aktivitet.behandlingsdager != null) {
         return {
             type: 'BEHANDLINGSDAGER',
             fom: aktivitet.behandlingsdager.fom,

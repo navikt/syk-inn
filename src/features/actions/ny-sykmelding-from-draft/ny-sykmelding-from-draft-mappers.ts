@@ -1,5 +1,6 @@
 import { isValid, toDate } from 'date-fns'
 
+import { NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
 import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form/types'
 import { DraftValues } from '@data-layer/draft/draft-schema'
 import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
@@ -32,6 +33,7 @@ export function nySykmeldingFromDraftDefaultValues(
     draft: DraftValues | null,
     state: NySykmeldingFormState | null,
     serverSuggestions: NySykmeldingSuggestions,
+    variant: NySykmeldingFormVariantType,
 ): NySykmeldingMainFormValues {
     return {
         arbeidsforhold: precedence([
@@ -42,7 +44,7 @@ export function nySykmeldingFromDraftDefaultValues(
         perioder: precedence([
             statePerioderToFormValues(state?.aktiviteter ?? null),
             draftPerioderToFormValues(draft?.perioder ?? null),
-            [defaultPeriode()],
+            [defaultPeriode(variant)],
         ]),
         diagnoser: {
             hoved: precedence([
@@ -142,6 +144,18 @@ function toPeriodeFromDraftPeriode(
                 aktivitet: {
                     type: draft.type,
                     grad: draft.grad ?? null,
+                    arbeidsrelatertArsak: null,
+                },
+            }
+        case 'BEHANDLINGSDAGER':
+            return {
+                periode: {
+                    fom: draft.fom ?? '',
+                    tom: draft.tom ?? '',
+                },
+                aktivitet: {
+                    type: draft.type,
+                    grad: null,
                     arbeidsrelatertArsak: null,
                 },
             }

@@ -11,7 +11,7 @@ import { SimpleReveal } from '@components/animation/Reveal'
 import { useController, useFormContext } from '../../form/types'
 
 import { parseShorthandFom, parseShorthandTom } from './periode/periode-shorthand'
-import { getRangeDescription } from './periode/periode-utils'
+import { defaultRangeDescription } from './periode/periode-utils'
 import { ShorthandHint } from './ShorthandHint'
 import styles from './PeriodePicker.module.css'
 
@@ -23,9 +23,18 @@ type Props = {
      * and for special shorthand parsing.
      */
     initialFom: string | null
+    /**
+     * When both dates are set, how should the range be described to the user?
+     */
+    formatRangeDescription?: (fom: Date | string, tom: Date | string) => { main: string; detail: string }
 }
 
-function PeriodePicker({ index, isLast, initialFom }: Props): ReactElement {
+function PeriodePicker({
+    index,
+    isLast,
+    initialFom,
+    formatRangeDescription = defaultRangeDescription,
+}: Props): ReactElement {
     const [rangeError, setRangeError] = useState<RangeValidationT | null>(null)
     const { clearErrors } = useFormContext()
     const previousTomPlusOne = useNextFomFromPreviousPeriode(initialFom, index)
@@ -133,12 +142,15 @@ function PeriodePicker({ index, isLast, initialFom }: Props): ReactElement {
 
     const { focusState, handleFocusState, handleBlurState } = useFocusState()
     const { fomFieldRef, tomFieldRef } = useFieldRefs(fomField.field.ref, tomField.field.ref)
-    const rangeDescription = getRangeDescription(fomField.field.value, tomField.field.value)
+    const rangeDescription =
+        fomField.field.value && tomField.field.value
+            ? formatRangeDescription(fomField.field.value, tomField.field.value)
+            : null
 
     return (
         <div className="flex flex-col gap-1">
             <div className={cn(styles.periodePicker)}>
-                <DatePicker {...datepickerProps} wrapperClassName={styles.dateRangePicker}>
+                <DatePicker {...datepickerProps} wrapperClassName={styles.dateRangePicker} showWeekNumber>
                     <DatePicker.Input
                         className={styles.dateRangeInput}
                         ref={fomFieldRef}
@@ -193,8 +205,8 @@ function PeriodePicker({ index, isLast, initialFom }: Props): ReactElement {
             <AnimatePresence initial={false}>
                 {rangeDescription && (
                     <SimpleReveal>
-                        <BodyShort size="small">{rangeDescription.top}</BodyShort>
-                        <Detail>{rangeDescription.bottom}</Detail>
+                        <BodyShort size="small">{rangeDescription.main}</BodyShort>
+                        <Detail>{rangeDescription.detail}</Detail>
                     </SimpleReveal>
                 )}
             </AnimatePresence>

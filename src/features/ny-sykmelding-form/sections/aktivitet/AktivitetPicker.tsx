@@ -4,7 +4,7 @@ import { AnimatePresence } from 'motion/react'
 
 import { SimpleReveal } from '@components/animation/Reveal'
 
-import { AktivitetIkkeMuligType, useController } from '../../form/types'
+import { AktiviteFieldType, useController } from '../../form/types'
 
 import ArsakerPicker from './ArsakerPicker'
 import GradertGradPicker from './GradertGradPicker'
@@ -12,7 +12,7 @@ import GradertGradPicker from './GradertGradPicker'
 function AktivitetPicker({ index }: { index: number }): ReactElement {
     const aktivitetField = useController({
         name: `perioder.${index}.aktivitet.type`,
-        defaultValue: 'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType,
+        defaultValue: 'AKTIVITET_IKKE_MULIG' satisfies AktiviteFieldType,
         rules: {
             required: 'Du må velge en aktivitetstype',
         },
@@ -42,8 +42,8 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
                     aktivitetField.field.onChange(event.target.value)
                 }}
             >
-                <option value={'GRADERT' satisfies AktivitetIkkeMuligType}>Kan være delvis i arbeid</option>
-                <option value={'AKTIVITET_IKKE_MULIG' satisfies AktivitetIkkeMuligType}>Kan ikke være i arbeid</option>
+                <option value={'GRADERT' satisfies AktiviteFieldType}>Kan være delvis i arbeid</option>
+                <option value={'AKTIVITET_IKKE_MULIG' satisfies AktiviteFieldType}>Kan ikke være i arbeid</option>
             </Select>
             <AnimatePresence initial={false}>
                 {aktivitetField.field.value === 'GRADERT' && (
