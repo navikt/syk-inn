@@ -242,8 +242,8 @@ function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingA
     if (aktivitet.aktivitetIkkeMulig != null) {
         return {
             type: 'AKTIVITET_IKKE_MULIG',
-            fom: aktivitet.fom,
-            tom: aktivitet.tom,
+            fom: aktivitet.aktivitetIkkeMulig.fom,
+            tom: aktivitet.aktivitetIkkeMulig.tom,
             arbeidsrelatertArsak: {
                 isArbeidsrelatertArsak:
                     aktivitet.aktivitetIkkeMulig.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
@@ -264,30 +264,29 @@ function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingA
     } else if (aktivitet.gradert != null) {
         return {
             type: 'GRADERT',
-            fom: aktivitet.fom,
-            tom: aktivitet.tom,
+            fom: aktivitet.gradert.fom,
+            tom: aktivitet.gradert.tom,
             grad: aktivitet.gradert.grad,
             reisetilskudd: aktivitet.gradert.reisetilskudd,
         }
     } else if (aktivitet.avventende) {
         return {
             type: 'AVVENTENDE',
-            fom: aktivitet.fom,
-            tom: aktivitet.tom,
+            fom: aktivitet.avventende.fom,
+            tom: aktivitet.avventende.tom,
             innspillTilArbeidsgiver: aktivitet.avventende?.innspillTilArbeidsgiver,
         }
     } else if (aktivitet.behandlingsdager) {
         return {
             type: 'BEHANDLINGSDAGER',
-            fom: aktivitet.fom,
-            tom: aktivitet.tom,
-            antallBehandlingsdager: aktivitet.behandlingsdager.antallBehandlingsdager,
+            fom: aktivitet.behandlingsdager.fom,
+            tom: aktivitet.behandlingsdager.tom,
         }
     } else if (aktivitet.reisetilskudd) {
         return {
             type: 'REISETILSKUDD',
-            fom: aktivitet.fom,
-            tom: aktivitet.tom,
+            fom: aktivitet.reisetilskudd.fom,
+            tom: aktivitet.reisetilskudd.tom,
         }
     }
 

@@ -222,12 +222,10 @@ modes.forEach(({ mode }) => {
                     defaultAktivitetIkkeMulig({
                         fom: today(),
                         tom: inDays(3),
-                        aktivitetIkkeMulig: {
-                            arbeidsrelatertArsak: {
-                                isArbeidsrelatertArsak: true,
-                                arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
-                                annenArbeidsrelatertArsak: 'Annen årsak til aktivitet ikke mulig',
-                            },
+                        arbeidsrelatertArsak: {
+                            isArbeidsrelatertArsak: true,
+                            arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
+                            annenArbeidsrelatertArsak: 'Annen årsak til aktivitet ikke mulig',
                         },
                     }),
                 ],

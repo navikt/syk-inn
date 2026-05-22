@@ -66,46 +66,45 @@ input InputUtdypendeSporsmal {
     medisinskeHensyn: String
 }
 
-"""
-An ugly approach because the limitations of GraphQL
-input types where union types are not supported.
-
-See: https://github.com/graphql/graphql-wg/blob/main/rfcs/InputUnion.md
-"""
-input InputAktivitet {
-    type: AktivitetType!
-    fom: String!
-    tom: String!
-    gradert: GradertInput
+input InputAktivitet @oneOf {
     aktivitetIkkeMulig: AktivitetIkkeMuligInput
+    gradert: GradertInput
+    reisetilskudd: ReisetilskuddInput
     avventende: AvventendeInput
     behandlingsdager: BehandlingsdagerInput
-    reisetilskudd: ReisetilskuddInput
-}
-
-input GradertInput {
-    grad: Int!
-    reisetilskudd: Boolean!
 }
 
 input AktivitetIkkeMuligInput {
+    fom: String!
+    tom: String!
     arbeidsrelatertArsak: ArbeidsrelatertArsakInput!
 }
 
-input ReisetilskuddInput {
-    dummy: Boolean!
-}
-
-input AvventendeInput {
-    innspillTilArbeidsgiver: String!
-}
-
-input BehandlingsdagerInput {
-    antallBehandlingsdager: Int!
+input GradertInput {
+    fom: String!
+    tom: String!
+    grad: Int!
+    reisetilskudd: Boolean!
 }
 
 input ArbeidsrelatertArsakInput {
     isArbeidsrelatertArsak: Boolean!
     arbeidsrelaterteArsaker: [String!]!
     annenArbeidsrelatertArsak: String
+}
+
+input ReisetilskuddInput {
+    fom: String!
+    tom: String!
+}
+
+input AvventendeInput {
+    fom: String!
+    tom: String!
+    innspillTilArbeidsgiver: String!
+}
+
+input BehandlingsdagerInput {
+    fom: String!
+    tom: String!
 }

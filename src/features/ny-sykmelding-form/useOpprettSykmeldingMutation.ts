@@ -202,35 +202,25 @@ function aktivitetStepToInputAktivitet(value: NySykmeldingAktivitet): InputAktiv
     switch (value.type) {
         case 'AKTIVITET_IKKE_MULIG':
             return {
-                type: 'AKTIVITET_IKKE_MULIG',
-                fom: value.fom,
-                tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
                 aktivitetIkkeMulig: {
+                    fom: value.fom,
+                    tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
                     arbeidsrelatertArsak: {
                         isArbeidsrelatertArsak: value.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
                         arbeidsrelaterteArsaker: value.arbeidsrelatertArsak.arbeidsrelaterteArsaker ?? [],
                         annenArbeidsrelatertArsak: value.arbeidsrelatertArsak.annenArbeidsrelatertArsak ?? null,
                     },
                 },
-                avventende: null,
-                gradert: null,
-                behandlingsdager: null,
-                reisetilskudd: null,
             } satisfies InputAktivitet
         case 'GRADERT':
             return {
-                type: 'GRADERT',
-                fom: value.fom,
-                tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
                 gradert: {
+                    fom: value.fom,
+                    tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
                     grad: value.grad ? +value.grad : raise("Aktivitet of type GRADERT without 'grad'"),
                     // TODO: Implement in form
                     reisetilskudd: false,
                 },
-                aktivitetIkkeMulig: null,
-                avventende: null,
-                behandlingsdager: null,
-                reisetilskudd: null,
             } satisfies InputAktivitet
     }
 }
