@@ -50,11 +50,11 @@ function toPeriodeFromStatePeriode(aktivitet: NySykmeldingAktivitet): NySykmeldi
                 aktivitet: {
                     ...periode.aktivitet,
                     grad: null,
-                },
-                arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
-                    arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker ?? null,
-                    annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak.annenArbeidsrelatertArsak ?? null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
+                        arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker ?? null,
+                        annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak.annenArbeidsrelatertArsak ?? null,
+                    },
                 },
             }
         case 'GRADERT':
@@ -63,8 +63,8 @@ function toPeriodeFromStatePeriode(aktivitet: NySykmeldingAktivitet): NySykmeldi
                 aktivitet: {
                     ...periode.aktivitet,
                     grad: aktivitet.grad ? aktivitet.grad.toFixed(0) : null,
+                    arbeidsrelatertArsak: null,
                 },
-                arbeidsrelatertArsak: null,
             }
     }
 }

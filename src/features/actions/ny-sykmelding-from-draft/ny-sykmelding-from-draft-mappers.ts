@@ -125,12 +125,12 @@ function toPeriodeFromDraftPeriode(
                 ...periode,
                 aktivitet: {
                     ...periode.aktivitet,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: draft.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
+                        arbeidsrelaterteArsaker: draft.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? null,
+                        annenArbeidsrelatertArsak: draft.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
+                    },
                     grad: null,
-                },
-                arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: draft.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
-                    arbeidsrelaterteArsaker: draft.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? null,
-                    annenArbeidsrelatertArsak: draft.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
                 },
             }
         case 'GRADERT':
@@ -142,8 +142,8 @@ function toPeriodeFromDraftPeriode(
                 aktivitet: {
                     type: draft.type,
                     grad: draft.grad ?? null,
+                    arbeidsrelatertArsak: null,
                 },
-                arbeidsrelatertArsak: null,
             }
     }
 }

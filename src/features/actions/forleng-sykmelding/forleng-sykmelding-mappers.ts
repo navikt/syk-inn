@@ -133,11 +133,11 @@ function forlengRedactedSykmelding(
                 aktivitet: {
                     type: 'AKTIVITET_IKKE_MULIG',
                     grad: null,
-                },
-                arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: false,
-                    arbeidsrelaterteArsaker: null,
-                    annenArbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             }
             break
@@ -150,8 +150,8 @@ function forlengRedactedSykmelding(
                 aktivitet: {
                     type: 'GRADERT',
                     grad: null,
+                    arbeidsrelatertArsak: null,
                 },
-                arbeidsrelatertArsak: null,
             }
             break
         case 'AVVENTENDE':
@@ -164,12 +164,12 @@ function forlengRedactedSykmelding(
                 aktivitet: {
                     type: 'GRADERT',
                     grad: null,
+                    arbeidsrelatertArsak: null,
                 },
                 periode: {
                     fom: dateOnly(new Date()),
                     tom: null,
                 },
-                arbeidsrelatertArsak: null,
             } satisfies AktivitetsPeriode
     }
 

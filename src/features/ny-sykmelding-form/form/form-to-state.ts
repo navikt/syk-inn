@@ -77,9 +77,9 @@ function formAktivitetToStepAktivitet(value: AktivitetsPeriode): NySykmeldingAkt
                 fom: value.periode.fom ?? raise('FOM is required for AKTIVITET_IKKE_MULIG'),
                 tom: value.periode.tom ?? raise('TOM is required for AKTIVITET_IKKE_MULIG'),
                 arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: value.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
-                    arbeidsrelaterteArsaker: value.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? null,
-                    annenArbeidsrelatertArsak: value.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
+                    isArbeidsrelatertArsak: value.aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
+                    arbeidsrelaterteArsaker: value.aktivitet.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? null,
+                    annenArbeidsrelatertArsak: value.aktivitet.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
                 },
             }
         case 'GRADERT':

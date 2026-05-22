@@ -99,11 +99,11 @@ function toDuplisertRedactedAktivitet(
                 aktivitet: {
                     type: 'AKTIVITET_IKKE_MULIG',
                     grad: null,
-                },
-                arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: false,
-                    arbeidsrelaterteArsaker: null,
-                    annenArbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             }
         case 'GRADERT':
@@ -115,8 +115,8 @@ function toDuplisertRedactedAktivitet(
                 aktivitet: {
                     type: 'GRADERT',
                     grad: null,
+                    arbeidsrelatertArsak: null,
                 },
-                arbeidsrelatertArsak: null,
             }
         case 'AVVENTENDE':
         case 'BEHANDLINGSDAGER':
