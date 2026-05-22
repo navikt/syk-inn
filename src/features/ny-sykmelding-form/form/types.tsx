@@ -27,9 +27,10 @@ export type PeriodeField = {
     tom: string | null
 }
 
-export type AktivitetIkkeMuligType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT'
+export type AktiviteFieldType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT' | 'BEHANDLINGSDAGER'
+
 export type AktivitetField = {
-    type: AktivitetIkkeMuligType
+    type: AktiviteFieldType
     grad: string | null
     arbeidsrelatertArsak: ArbeidsrelatertArsakField | null
 }

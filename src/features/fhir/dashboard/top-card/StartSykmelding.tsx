@@ -3,6 +3,7 @@ import { ActionMenu, BodyShort, Checkbox, Detail, Heading, Skeleton } from '@nav
 import { useQuery } from '@apollo/client/react'
 import { ChevronDownIcon, FirstAidIcon } from '@navikt/aksel-icons'
 
+import { FORM_VARIANT_KEY, NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
 import { ShortcutButton, ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
 import { PasientDocument } from '@queries'
 import { SimpleAlert } from '@components/help/GeneralErrors'
@@ -133,7 +134,7 @@ export function FancyMultiOptionStartButton({
                         <ActionMenu.Item
                             icon={<FirstAidIcon aria-hidden />}
                             as={AssableNextLink}
-                            href={`${mode.paths.ny}?variant=behandlingsdager`}
+                            href={`${mode.paths.ny}?${FORM_VARIANT_KEY}=${'BEHANDLINGSDAGER' satisfies NySykmeldingFormVariantType}`}
                             onSelect={() => setLinkPending(true)}
                         >
                             Behandlingsdager

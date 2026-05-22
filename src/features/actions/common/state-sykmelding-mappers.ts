@@ -66,6 +66,15 @@ function toPeriodeFromStatePeriode(aktivitet: NySykmeldingAktivitet): NySykmeldi
                     arbeidsrelatertArsak: null,
                 },
             }
+        case 'BEHANDLINGSDAGER':
+            return {
+                ...periode,
+                aktivitet: {
+                    ...periode.aktivitet,
+                    grad: null,
+                    arbeidsrelatertArsak: null,
+                },
+            }
     }
 }
 

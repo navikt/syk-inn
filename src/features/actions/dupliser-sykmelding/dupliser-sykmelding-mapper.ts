@@ -17,6 +17,7 @@ import {
     defaultTilbakedatering,
     defaultUtdypendeSporsmal,
 } from '@features/ny-sykmelding-form/form/default-values'
+import { NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
 
 import {
     sykmeldingFragmentAktivitetToFormValue,
@@ -28,13 +29,14 @@ import { nySykmeldingDefaultValues } from '../ny-sykmelding/ny-sykmelding-mapper
 export function dupliserSykmeldingDefaultValues(
     sykmelding: SykmeldingFragment,
     stateValues: NySykmeldingFormState | null,
+    variant: NySykmeldingFormVariantType,
 ): NySykmeldingMainFormValues {
     /**
      * If we already have values in state, we are returning to the form after having filled out
      * a duplisert sykmelding, in this case we want to initialize the form with the state values.
      */
     if (stateValues != null) {
-        return nySykmeldingDefaultValues(stateValues, null)
+        return nySykmeldingDefaultValues(stateValues, null, variant)
     }
 
     return sykmelding.__typename === 'SykmeldingRedacted'

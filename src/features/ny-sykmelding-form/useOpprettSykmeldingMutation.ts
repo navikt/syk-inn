@@ -222,5 +222,12 @@ function aktivitetStepToInputAktivitet(value: NySykmeldingAktivitet): InputAktiv
                     reisetilskudd: false,
                 },
             } satisfies InputAktivitet
+        case 'BEHANDLINGSDAGER':
+            return {
+                behandlingsdager: {
+                    fom: value.fom,
+                    tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
+                },
+            }
     }
 }

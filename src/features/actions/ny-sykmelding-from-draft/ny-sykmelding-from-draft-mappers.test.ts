@@ -9,7 +9,7 @@ import { dateOnly } from '@lib/date'
 import { nySykmeldingFromDraftDefaultValues } from './ny-sykmelding-from-draft-mappers'
 
 test('draft values shall be used as default if provided', () => {
-    const defaultValues = nySykmeldingFromDraftDefaultValues(fullDraft, null, fullServerSuggestions)
+    const defaultValues = nySykmeldingFromDraftDefaultValues(fullDraft, null, fullServerSuggestions, 'NORMAL')
 
     expect(defaultValues).toEqual({
         arbeidsforhold: {
@@ -74,7 +74,12 @@ test('draft values shall be used as default if provided', () => {
 })
 
 test('form values shall have higher presedence than draft values', () => {
-    const defaultValues = nySykmeldingFromDraftDefaultValues(fullDraft, fullExistingStateValues, fullServerSuggestions)
+    const defaultValues = nySykmeldingFromDraftDefaultValues(
+        fullDraft,
+        fullExistingStateValues,
+        fullServerSuggestions,
+        'NORMAL',
+    )
 
     expect(defaultValues).toEqual({
         arbeidsforhold: {
@@ -140,7 +145,7 @@ test('form values shall have higher presedence than draft values', () => {
 })
 
 test('server suggestions shall be used if no draft or form values are provided', () => {
-    const defaultValues = nySykmeldingFromDraftDefaultValues(null, null, fullServerSuggestions)
+    const defaultValues = nySykmeldingFromDraftDefaultValues(null, null, fullServerSuggestions, 'NORMAL')
 
     expect(defaultValues).toEqual({
         arbeidsforhold: { harFlereArbeidsforhold: 'NEI', sykmeldtFraArbeidsforhold: null, aaregArbeidsforhold: null },

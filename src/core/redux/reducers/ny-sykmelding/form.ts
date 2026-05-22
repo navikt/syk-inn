@@ -20,6 +20,11 @@ export type NySykmeldingAktivitet =
           tom: string | null
           grad: number | null
       }
+    | {
+          type: 'BEHANDLINGSDAGER'
+          fom: string
+          tom: string | null
+      }
 
 type NySykmeldingArbeidsrelatertArsak = {
     isArbeidsrelatertArsak: boolean | null

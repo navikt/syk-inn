@@ -2,16 +2,18 @@ import React, { ReactElement } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import dynamic from 'next/dynamic'
 
+import { type NySykmeldingFormVariantType } from './useFormVariant'
 import { NormalSykmeldigForm, NormalSykmeldingFormProps } from './variants/normal/NormalSykmelding'
 import { AllFormVariantsProps } from './variants/form-props'
 import { NySykmeldingMainFormValues } from './form/types'
 import { FormDraftSync } from './draft/FormDraftSync'
+import BehandlingdagerSykmeldingForm from './variants/behandlingsdager/BehandlingdagerSykmeldingForm'
 
 const FormDevTools = dynamic(() => import('@dev/tools/NySykmeldingFormDevTools'), { ssr: false })
 
 type NySykmeldingFormProps = AllFormVariantsProps &
     NormalSykmeldingFormProps & {
-        variant: 'NORMAL'
+        variant: NySykmeldingFormVariantType
         /**
          * Any form rendered NEEDS to come provided with default values. The form can be rendered in different
          * contexts, some that care about existing values/drafts/suggestions differently. This should be controlled
@@ -23,7 +25,7 @@ type NySykmeldingFormProps = AllFormVariantsProps &
 /**
  * The form root has two responsibilities:
  *  - Own the root form state and provide it
- *  - Select the correct 'variant' of the form
+ *  - Select the correct 'variant' of the form based on the query parameter
  */
 function NySykmeldingFormVariants({
     variant,
@@ -45,6 +47,9 @@ function NySykmeldingFormVariants({
                         context={context}
                         contextualErrors={contextualErrors}
                     />
+                )}
+                {variant === 'BEHANDLINGSDAGER' && (
+                    <BehandlingdagerSykmeldingForm initialFom={initialFom} contextualErrors={contextualErrors} />
                 )}
             </FormDraftSync>
             <FormDevTools />

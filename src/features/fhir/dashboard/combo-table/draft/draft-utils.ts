@@ -52,6 +52,8 @@ export function draftAktivitetText(perioder: DraftValues['perioder'] | undefined
             return firstPeriod.grad ? `${firstPeriod.grad}%` : null
         case 'AKTIVITET_IKKE_MULIG':
             return '100%'
+        case 'BEHANDLINGSDAGER':
+            return 'Behandlingsdager'
     }
 }
 

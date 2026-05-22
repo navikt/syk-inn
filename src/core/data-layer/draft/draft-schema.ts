@@ -1,6 +1,8 @@
 import * as z from 'zod'
 import { logger } from '@navikt/next-logger'
 
+import { NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
+
 import { TilbakedateringGrunnSchema } from '../common/tilbakedatering'
 
 export type DraftValues = z.infer<typeof DraftValuesSchema>
@@ -14,7 +16,7 @@ export const DraftValuesSchema = z.object({
     perioder: z
         .array(
             z.object({
-                type: z.enum(['GRADERT', 'AKTIVITET_IKKE_MULIG']),
+                type: z.enum(['GRADERT', 'AKTIVITET_IKKE_MULIG', 'BEHANDLINGSDAGER']),
                 fom: z.string().nullable(),
                 tom: z.string().nullable(),
                 grad: z.string().nullable().optional(),
@@ -109,4 +111,12 @@ export function safeParseDraft(
         )
         return null
     }
+}
+
+export function inferSykmeldingTypeFromDraft(parsedDraft: DraftValues | null): NySykmeldingFormVariantType {
+    if (parsedDraft == null) return 'NORMAL'
+
+    const hasBehandlingsdagerAktivitet = parsedDraft?.perioder?.find((it) => it.type === 'BEHANDLINGSDAGER')
+
+    return hasBehandlingsdagerAktivitet ? 'BEHANDLINGSDAGER' : 'NORMAL'
 }

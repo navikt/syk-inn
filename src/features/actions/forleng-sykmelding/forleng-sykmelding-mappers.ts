@@ -20,6 +20,7 @@ import {
     defaultTilbakedatering,
     defaultUtdypendeSporsmal,
 } from '@features/ny-sykmelding-form/form/default-values'
+import { NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
 
 import { nySykmeldingDefaultValues } from '../ny-sykmelding/ny-sykmelding-mappers'
 import {
@@ -35,6 +36,7 @@ import {
 export function forlengSykmeldingDefaultValues(
     sykmelding: SykmeldingFragment,
     stateValues: NySykmeldingFormState | null,
+    variant: NySykmeldingFormVariantType,
 ): [values: NySykmeldingMainFormValues, nextFom: string] {
     const [forlengetSykmeldingFormValues, nextFom] =
         sykmelding.__typename === 'SykmeldingRedacted'
@@ -48,7 +50,7 @@ export function forlengSykmeldingDefaultValues(
      * a forlenged sykmelding, in this case we want to initialize the form with the state values.
      */
     if (stateValues != null) {
-        return [nySykmeldingDefaultValues(stateValues, null), nextFom]
+        return [nySykmeldingDefaultValues(stateValues, null, variant), nextFom]
     }
 
     return [forlengetSykmeldingFormValues, nextFom]

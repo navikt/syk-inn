@@ -88,7 +88,7 @@ function AddNewPeriodButton({
                  * Fom should be N+1 previous period's tom.
                  */
                 const nyPeriode: AktivitetsPeriode = {
-                    ...defaultPeriode(),
+                    ...defaultPeriode('NORMAL'),
                     periode: {
                         fom: lastPeriode.periode.tom ? dateOnly(addDays(lastPeriode.periode.tom, 1)) : null,
                         tom: null,
