@@ -1,4 +1,4 @@
-import { AktivitetIkkeMuligInput, InputAktivitet, OpprettSykmeldingInput } from '@queries'
+import { ArbeidsrelatertArsakInput, InputAktivitet, OpprettSykmeldingInput } from '@queries'
 
 import { anything } from './assertions'
 
@@ -55,26 +55,21 @@ export const defaultOpprettSykmeldingValues: Omit<OpprettSykmeldingInput, 'aktiv
 export const defaultAktivitetIkkeMulig = ({
     fom,
     tom,
-    aktivitetIkkeMulig,
+    arbeidsrelatertArsak,
 }: {
     fom: string
     tom: string
-    aktivitetIkkeMulig?: AktivitetIkkeMuligInput
+    arbeidsrelatertArsak?: ArbeidsrelatertArsakInput
 }): InputAktivitet => ({
-    type: 'AKTIVITET_IKKE_MULIG',
-    fom: fom,
-    tom: tom,
-    aktivitetIkkeMulig: aktivitetIkkeMulig || {
-        arbeidsrelatertArsak: {
+    aktivitetIkkeMulig: {
+        fom: fom,
+        tom: tom,
+        arbeidsrelatertArsak: arbeidsrelatertArsak || {
             isArbeidsrelatertArsak: false,
             arbeidsrelaterteArsaker: [],
             annenArbeidsrelatertArsak: null,
         },
     },
-    avventende: null,
-    gradert: null,
-    behandlingsdager: null,
-    reisetilskudd: null,
 })
 
 export const defaultAktivitetGradert = ({
@@ -86,12 +81,10 @@ export const defaultAktivitetGradert = ({
     tom: string
     grad: number
 }): InputAktivitet => ({
-    type: 'GRADERT',
-    fom: fom,
-    tom: tom,
-    gradert: { grad: grad, reisetilskudd: false },
-    aktivitetIkkeMulig: null,
-    avventende: null,
-    behandlingsdager: null,
-    reisetilskudd: null,
+    gradert: {
+        fom: fom,
+        tom: tom,
+        grad: grad,
+        reisetilskudd: false,
+    },
 })

@@ -31,6 +31,8 @@ export type AktivitetIkkeMulig = FomTom & {
 
 export type AktivitetIkkeMuligInput = {
     arbeidsrelatertArsak: ArbeidsrelatertArsakInput
+    fom: Scalars['String']['input']
+    tom: Scalars['String']['input']
 }
 
 export type AktivitetRedacted = FomTom & {
@@ -104,7 +106,9 @@ export type Avventende = FomTom & {
 }
 
 export type AvventendeInput = {
+    fom: Scalars['String']['input']
     innspillTilArbeidsgiver: Scalars['String']['input']
+    tom: Scalars['String']['input']
 }
 
 export type Behandler = {
@@ -125,7 +129,8 @@ export type Behandlingsdager = FomTom & {
 }
 
 export type BehandlingsdagerInput = {
-    antallBehandlingsdager: Scalars['Int']['input']
+    fom: Scalars['String']['input']
+    tom: Scalars['String']['input']
 }
 
 export type Diagnose = {
@@ -153,26 +158,48 @@ export type Gradert = FomTom & {
 }
 
 export type GradertInput = {
+    fom: Scalars['String']['input']
     grad: Scalars['Int']['input']
     reisetilskudd: Scalars['Boolean']['input']
+    tom: Scalars['String']['input']
 }
 
-/**
- * An ugly approach because the limitations of GraphQL
- * input types where union types are not supported.
- *
- * See: https://github.com/graphql/graphql-wg/blob/main/rfcs/InputUnion.md
- */
-export type InputAktivitet = {
-    aktivitetIkkeMulig: InputMaybe<AktivitetIkkeMuligInput>
-    avventende: InputMaybe<AvventendeInput>
-    behandlingsdager: InputMaybe<BehandlingsdagerInput>
-    fom: Scalars['String']['input']
-    gradert: InputMaybe<GradertInput>
-    reisetilskudd: InputMaybe<ReisetilskuddInput>
-    tom: Scalars['String']['input']
-    type: AktivitetType
-}
+export type InputAktivitet =
+    | {
+          aktivitetIkkeMulig: AktivitetIkkeMuligInput
+          avventende?: never
+          behandlingsdager?: never
+          gradert?: never
+          reisetilskudd?: never
+      }
+    | {
+          aktivitetIkkeMulig?: never
+          avventende: AvventendeInput
+          behandlingsdager?: never
+          gradert?: never
+          reisetilskudd?: never
+      }
+    | {
+          aktivitetIkkeMulig?: never
+          avventende?: never
+          behandlingsdager: BehandlingsdagerInput
+          gradert?: never
+          reisetilskudd?: never
+      }
+    | {
+          aktivitetIkkeMulig?: never
+          avventende?: never
+          behandlingsdager?: never
+          gradert: GradertInput
+          reisetilskudd?: never
+      }
+    | {
+          aktivitetIkkeMulig?: never
+          avventende?: never
+          behandlingsdager?: never
+          gradert?: never
+          reisetilskudd: ReisetilskuddInput
+      }
 
 export type InputArbeidsforhold = {
     arbeidsgivernavn: Scalars['String']['input']
@@ -357,7 +384,8 @@ export type Reisetilskudd = FomTom & {
 }
 
 export type ReisetilskuddInput = {
-    dummy: Scalars['Boolean']['input']
+    fom: Scalars['String']['input']
+    tom: Scalars['String']['input']
 }
 
 export type RuleOk = {

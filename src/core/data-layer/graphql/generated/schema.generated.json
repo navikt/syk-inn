@@ -99,6 +99,30 @@
                         "defaultValue": null,
                         "isDeprecated": false,
                         "deprecationReason": null
+                    },
+                    {
+                        "name": "fom",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "tom",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
                     }
                 ],
                 "interfaces": null,
@@ -515,7 +539,31 @@
                 "fields": null,
                 "inputFields": [
                     {
+                        "name": "fom",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "innspillTilArbeidsgiver",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "tom",
                         "description": null,
                         "type": {
                             "kind": "NON_NULL",
@@ -659,12 +707,24 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "antallBehandlingsdager",
+                        "name": "fom",
                         "description": null,
                         "type": {
                             "kind": "NON_NULL",
                             "name": null,
-                            "ofType": { "name": "Int", "kind": "SCALAR", "ofType": null }
+                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "tom",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -897,6 +957,18 @@
                 "fields": null,
                 "inputFields": [
                     {
+                        "name": "fom",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "grad",
                         "description": null,
                         "type": {
@@ -919,6 +991,18 @@
                         "defaultValue": null,
                         "isDeprecated": false,
                         "deprecationReason": null
+                    },
+                    {
+                        "name": "tom",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
                     }
                 ],
                 "interfaces": null,
@@ -928,8 +1012,8 @@
             {
                 "kind": "INPUT_OBJECT",
                 "name": "InputAktivitet",
-                "description": "An ugly approach because the limitations of GraphQL\ninput types where union types are not supported.\n\nSee: https://github.com/graphql/graphql-wg/blob/main/rfcs/InputUnion.md",
-                "isOneOf": false,
+                "description": null,
+                "isOneOf": true,
                 "fields": null,
                 "inputFields": [
                     {
@@ -957,18 +1041,6 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "fom",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "gradert",
                         "description": null,
                         "type": { "kind": "INPUT_OBJECT", "name": "GradertInput", "ofType": null },
@@ -980,30 +1052,6 @@
                         "name": "reisetilskudd",
                         "description": null,
                         "type": { "kind": "INPUT_OBJECT", "name": "ReisetilskuddInput", "ofType": null },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "tom",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "type",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": { "name": "AktivitetType", "kind": "ENUM", "ofType": null }
-                        },
                         "defaultValue": null,
                         "isDeprecated": false,
                         "deprecationReason": null
@@ -2185,12 +2233,24 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "dummy",
+                        "name": "fom",
                         "description": null,
                         "type": {
                             "kind": "NON_NULL",
                             "name": null,
-                            "ofType": { "name": "Boolean", "kind": "SCALAR", "ofType": null }
+                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "tom",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "name": "String", "kind": "SCALAR", "ofType": null }
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
