@@ -8,11 +8,11 @@ import { useController } from '../../form/types'
 
 function ArsakerPicker({ index }: { index: number }): ReactElement {
     const isArbeidsrelatertArsak = useController({
-        name: `perioder.${index}.arbeidsrelatertArsak.isArbeidsrelatertArsak`,
+        name: `perioder.${index}.aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak`,
     })
 
     const arbeidsrelaterteArsaker = useController({
-        name: `perioder.${index}.arbeidsrelatertArsak.arbeidsrelaterteArsaker`,
+        name: `perioder.${index}.aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker`,
         defaultValue: [],
         rules: {
             validate: (value) => {
@@ -24,7 +24,7 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
     })
 
     const annenArbeidsrelatertArsak = useController({
-        name: `perioder.${index}.arbeidsrelatertArsak.annenArbeidsrelatertArsak`,
+        name: `perioder.${index}.aktivitet.arbeidsrelatertArsak.annenArbeidsrelatertArsak`,
         defaultValue: '',
         rules: {
             validate: (value) => {

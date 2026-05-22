@@ -51,7 +51,7 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
             fom: periode.periode.fom,
             tom: periode.periode.tom,
             grad: periode.aktivitet.grad ?? null,
-            arbeidsrelatertArsak: periode.arbeidsrelatertArsak,
+            arbeidsrelatertArsak: periode.aktivitet.arbeidsrelatertArsak,
         })),
         hoveddiagnose: values.diagnoser.hoved ? values.diagnoser.hoved : null,
         bidiagnoser: (values.diagnoser.bidiagnoser ?? []).filter(R.isNonNull).map((it) => ({

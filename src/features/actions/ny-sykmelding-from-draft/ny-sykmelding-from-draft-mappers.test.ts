@@ -20,16 +20,22 @@ test('draft values shall be used as default if provided', () => {
         perioder: [
             {
                 periode: { fom: '2025-01-01', tom: '2025-01-15' },
-                aktivitet: { type: 'GRADERT', grad: '50' },
-                arbeidsrelatertArsak: null,
+                aktivitet: {
+                    type: 'GRADERT',
+                    grad: '50',
+                    arbeidsrelatertArsak: null,
+                },
             },
             {
                 periode: { fom: '2025-01-16', tom: '2025-01-31' },
-                aktivitet: { type: 'AKTIVITET_IKKE_MULIG', grad: null },
-                arbeidsrelatertArsak: {
-                    annenArbeidsrelatertArsak: 'Ingen tilretteleggingsmuligheter',
-                    arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING'],
-                    isArbeidsrelatertArsak: true,
+                aktivitet: {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    arbeidsrelatertArsak: {
+                        annenArbeidsrelatertArsak: 'Ingen tilretteleggingsmuligheter',
+                        arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING'],
+                        isArbeidsrelatertArsak: true,
+                    },
+                    grad: null,
                 },
             },
         ],
@@ -79,22 +85,23 @@ test('form values shall have higher presedence than draft values', () => {
         perioder: [
             {
                 periode: { fom: '2025-02-01', tom: '2025-02-14' },
-                aktivitet: { type: 'GRADERT', grad: '40' },
-                arbeidsrelatertArsak: null,
+                aktivitet: { type: 'GRADERT', grad: '40', arbeidsrelatertArsak: null },
             },
             {
                 periode: { fom: '2025-02-15', tom: '2025-02-28' },
-                aktivitet: { type: 'AKTIVITET_IKKE_MULIG', grad: null },
-                arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: true,
-                    arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
-                    annenArbeidsrelatertArsak: 'Ingen mulighet for hjemmekontor',
+                aktivitet: {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    grad: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: true,
+                        arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
+                        annenArbeidsrelatertArsak: 'Ingen mulighet for hjemmekontor',
+                    },
                 },
             },
             {
                 periode: { fom: '2025-03-01', tom: '2025-03-10' },
-                aktivitet: { type: 'GRADERT', grad: '20' },
-                arbeidsrelatertArsak: null,
+                aktivitet: { type: 'GRADERT', grad: '20', arbeidsrelatertArsak: null },
             },
         ],
         diagnoser: {
@@ -143,8 +150,7 @@ test('server suggestions shall be used if no draft or form values are provided',
             {
                 // Default periode is GRADERT from Today
                 periode: { fom: dateOnly(new Date()), tom: '' },
-                aktivitet: { type: 'GRADERT', grad: null },
-                arbeidsrelatertArsak: null,
+                aktivitet: { type: 'GRADERT', grad: null, arbeidsrelatertArsak: null },
             },
         ],
         tilbakedatering: null,

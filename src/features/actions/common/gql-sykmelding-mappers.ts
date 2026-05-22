@@ -83,11 +83,11 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 aktivitet: {
                     type: 'AKTIVITET_IKKE_MULIG',
                     grad: null,
-                },
-                arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
-                    arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? [],
-                    annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
+                        arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? [],
+                        annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
+                    },
                 },
             } satisfies AktivitetsPeriode
 
@@ -100,13 +100,13 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 aktivitet: {
                     type: 'GRADERT',
                     grad: aktivitet.grad.toFixed(0),
+                    arbeidsrelatertArsak: null,
                 },
-                arbeidsrelatertArsak: null,
             } satisfies AktivitetsPeriode
-
+        // TODO: Will be supported soon (behandlingsdager)
+        case 'Behandlingsdager':
         case 'Reisetilskudd':
         case 'Avventende':
-        case 'Behandlingsdager':
             logger.info(`Forlengelse with aktivitet of type ${aktivitet.type} is not supported yet`)
             return {
                 // This should not happen unless the user forlengs sykmeldinger from a non-syk-inn source, but
@@ -114,12 +114,12 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 aktivitet: {
                     type: 'GRADERT',
                     grad: null,
+                    arbeidsrelatertArsak: null,
                 },
                 periode: {
                     fom: dateOnly(new Date()),
                     tom: null,
                 },
-                arbeidsrelatertArsak: null,
             } satisfies AktivitetsPeriode
     }
 }
