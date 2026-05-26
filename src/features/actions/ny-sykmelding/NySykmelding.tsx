@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client/react'
 import { PasientDocument } from '@queries'
 import { useAppSelector } from '@core/redux/hooks'
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/sections/diagnose/useDiagnoseSuggestions'
-import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
+import NySykmeldingFormVariants from '@features/ny-sykmelding-form/NySykmeldingFormVariants'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 
 import { nySykmeldingDefaultValues } from './ny-sykmelding-mappers'
@@ -23,7 +23,8 @@ export function NySykmeldingFormWithDefaultValues(): ReactElement {
     const defaultValues = nySykmeldingDefaultValues(valuesInState, suggestionsQuery.suggestions)
 
     return (
-        <NySykmeldingForm
+        <NySykmeldingFormVariants
+            variant="NORMAL"
             defaultValues={defaultValues}
             context={{
                 utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,

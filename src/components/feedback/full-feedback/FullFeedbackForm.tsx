@@ -34,7 +34,7 @@ export function FullFeedback({ behandler, onSubmit }: Props): ReactElement {
     return (
         <section aria-labelledby="Tilbakemeldingsskjema">
             <FormProvider {...form}>
-                <form id="feedback-form-v2" className="grid gap-6" onSubmit={form.handleSubmit(onSubmit)}>
+                <form id="feedback-form" className="grid gap-6" onSubmit={form.handleSubmit(onSubmit)}>
                     <TypeField />
                     <FeedbackField />
                     <ContactField />

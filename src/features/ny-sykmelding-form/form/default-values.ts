@@ -66,7 +66,7 @@ export function defaultPeriode(): AktivitetsPeriode {
         aktivitet: {
             type: 'GRADERT',
             grad: null,
+            arbeidsrelatertArsak: null,
         },
-        arbeidsrelatertArsak: null,
     }
 }

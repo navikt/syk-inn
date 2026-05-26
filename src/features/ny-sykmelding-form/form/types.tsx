@@ -31,12 +31,12 @@ export type AktivitetIkkeMuligType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT'
 export type AktivitetField = {
     type: AktivitetIkkeMuligType
     grad: string | null
+    arbeidsrelatertArsak: ArbeidsrelatertArsakField | null
 }
 
 export type AktivitetsPeriode = {
     periode: PeriodeField
     aktivitet: AktivitetField
-    arbeidsrelatertArsak: ArbeidsrelatertArsakField | null
 }
 
 export type ArbeidsrelatertArsakField = {

@@ -25,6 +25,10 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
         name: 'SYK_INN_AAREG',
         ...on,
     },
+    SYK_INN_SYKMELDING_BEHANDLINGSDAGER: {
+        name: 'SYK_INN_SYKMELDING_BEHANDLINGSDAGER',
+        ...on,
+    },
     SYK_INN_SHOW_REDACTED: {
         name: 'SYK_INN_SHOW_REDACTED',
         ...on,
@@ -35,10 +39,6 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
     },
     SYK_INN_REQUEST_HISTORISKE: {
         name: 'SYK_INN_REQUEST_HISTORISKE',
-        ...on,
-    },
-    SYK_INN_FEEDBACK_V2: {
-        name: 'SYK_INN_FEEDBACK_V2',
         ...on,
     },
     SYK_INN_FEEDBACK_KVITTERING: {

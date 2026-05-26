@@ -25,11 +25,14 @@ function NySykmeldingFormDevTools(): ReactElement {
             [
                 {
                     periode: { fom: dateOnly(new Date()), tom: dateOnly(addDays(new Date(), 7)) },
-                    aktivitet: { type: 'AKTIVITET_IKKE_MULIG', grad: null },
-                    arbeidsrelatertArsak: {
-                        isArbeidsrelatertArsak: false,
-                        arbeidsrelaterteArsaker: null,
-                        annenArbeidsrelatertArsak: null,
+                    aktivitet: {
+                        type: 'AKTIVITET_IKKE_MULIG',
+                        grad: null,
+                        arbeidsrelatertArsak: {
+                            isArbeidsrelatertArsak: false,
+                            arbeidsrelaterteArsaker: null,
+                            annenArbeidsrelatertArsak: null,
+                        },
                     },
                 },
             ],
@@ -41,11 +44,14 @@ function NySykmeldingFormDevTools(): ReactElement {
         setValue('perioder', [
             {
                 periode: { fom: dateOnly(subDays(new Date(), 10)), tom: dateOnly(subDays(new Date(), 2)) },
-                aktivitet: { type: 'AKTIVITET_IKKE_MULIG', grad: null },
-                arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: false,
-                    arbeidsrelaterteArsaker: null,
-                    annenArbeidsrelatertArsak: null,
+                aktivitet: {
+                    type: 'AKTIVITET_IKKE_MULIG',
+                    grad: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             },
         ])

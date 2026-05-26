@@ -8,7 +8,7 @@ import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/sections/di
 import { useAppSelector } from '@core/redux/hooks'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 import { safeParseDraft } from '@data-layer/draft/draft-schema'
-import NySykmeldingForm from '@features/ny-sykmelding-form/NySykmeldingForm'
+import NySykmeldingFormVariants from '@features/ny-sykmelding-form/NySykmeldingFormVariants'
 
 import { SykmeldingDraftFormErrors } from '../common/SykmeldingFormErrors'
 
@@ -40,7 +40,8 @@ export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactE
     const defaultValues = nySykmeldingFromDraftDefaultValues(parsedDraft, valuesInState, suggestionsQuery.suggestions)
 
     return (
-        <NySykmeldingForm
+        <NySykmeldingFormVariants
+            variant="NORMAL"
             defaultValues={defaultValues}
             context={{
                 utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,

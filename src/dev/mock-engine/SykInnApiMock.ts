@@ -11,7 +11,7 @@ import {
 import { OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
 import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
 
-import { sykInnApiPayloadToResponse } from './utils/syk-inn-api-mappers'
+import { sykInnApiPayloadToResponse } from './utils/syk-inn-api-mock-mappers'
 import { MockRuleMarkers } from './SykInnApiMockRuleMarkers'
 
 export class SykInnApiMock {

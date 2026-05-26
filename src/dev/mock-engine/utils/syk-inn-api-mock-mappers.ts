@@ -1,4 +1,4 @@
-import { formatISO } from 'date-fns'
+import { differenceInWeeks, formatISO } from 'date-fns'
 import * as R from 'remeda'
 
 import { RuleResult, SykInnApiAktivitet, SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
@@ -65,7 +65,7 @@ export function sykInnApiPayloadToResponse(
                             type: 'BEHANDLINGSDAGER',
                             fom: it.fom,
                             tom: it.tom,
-                            antallBehandlingsdager: it.antallBehandlingsdager,
+                            antallBehandlingsdager: Math.floor(differenceInWeeks(it.fom, it.tom) / 7),
                         }
                 }
             }),

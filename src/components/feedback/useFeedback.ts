@@ -38,7 +38,7 @@ export function useFeedback(): UseFeedback & UpdateSentiment {
         try {
             await spanBrowserAsync('Feedback.onSubmit', async () => {
                 const payload = 'contact' in values ? mappers.full(values) : mappers.inSitu(values)
-                const response = await fetch(pathWithBasePath(mode.paths.feedback) + '?variant=v2', {
+                const response = await fetch(pathWithBasePath(mode.paths.feedback), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
@@ -75,7 +75,7 @@ export function useFeedback(): UseFeedback & UpdateSentiment {
                 sentiment: sentiment,
             }
 
-            const response = await fetch(pathWithBasePath(mode.paths.feedback) + '?variant=v2', {
+            const response = await fetch(pathWithBasePath(mode.paths.feedback), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
