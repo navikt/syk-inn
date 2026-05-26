@@ -8,7 +8,7 @@ export async function getHelseIdAccessToken(): Promise<string> {
     const bearerToken = (await headers()).get('Authorization')
 
     if (!bearerToken) {
-        throw new Error('No HelseID access_token found')
+        throw new Error('No HelseID access_token was found')
     }
 
     return bearerToken.replace('Bearer ', '')
@@ -17,7 +17,7 @@ export async function getHelseIdAccessToken(): Promise<string> {
 export async function getHelseIdIdToken(): Promise<string> {
     const idToken = (await headers()).get('X-Wonderwall-Id-Token')
     if (!idToken) {
-        throw new Error('No HelseID id_token found')
+        throw new Error('No HelseID id_token was found')
     }
 
     return idToken
