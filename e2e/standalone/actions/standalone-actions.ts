@@ -3,7 +3,7 @@ import { ExpectedToggles } from '@core/toggles/toggles'
 import { Scenarios } from '@dev/mock-engine/scenarios/scenarios'
 import { MockBehandlere } from '@navikt/helseid-mock-server'
 
-import { applyToggleOverrides } from '../../actions/toggle-overrides'
+import { applyToggleOverrides, defaultE2EToggles } from '../../actions/toggle-overrides'
 
 const startPath = '/api/mocks/helseid/dev/start-user'
 
@@ -17,10 +17,8 @@ export function launchWithMock(
     scenario: Scenarios = 'empty',
     { behandler = 'Johan Johansson', ...toggleOverrides }: ToggleOverrides & AdditionalOptions,
 ) {
-    const actualToggleOverrides = {
-        SYK_INN_AAREG: false,
-        SYK_INN_SHOW_REDACTED: false,
-        SYK_INN_AUTO_BIDIAGNOSER: false,
+    const actualToggleOverrides: ToggleOverrides = {
+        ...defaultE2EToggles,
         ...toggleOverrides,
     }
 

@@ -3,7 +3,7 @@ import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } fr
 import { Scenarios } from '@dev/mock-engine/scenarios/scenarios'
 import { WELCOME_MODAL_LOCAL_STORAGE_KEY } from '@features/fhir/dashboard/welcome-modal/state'
 
-import { applyToggleOverrides, ToggleOverrides } from '../../actions/toggle-overrides'
+import { applyToggleOverrides, defaultE2EToggles, ToggleOverrides } from '../../actions/toggle-overrides'
 
 export const launchPath = '/fhir/launch'
 
@@ -39,10 +39,8 @@ export function launchWithMock(
         skipWelcomeModal: true,
     },
 ) {
-    const actualToggleOverrides = {
-        SYK_INN_AAREG: false,
-        SYK_INN_SHOW_REDACTED: false,
-        SYK_INN_AUTO_BIDIAGNOSER: false,
+    const actualToggleOverrides: ToggleOverrides = {
+        ...defaultE2EToggles,
         ...toggleOverrides,
     }
     return async (page: Page): Promise<void> => {
