@@ -17,3 +17,12 @@ export async function applyToggleOverrides(page: Page, toggleOverrides: ToggleOv
         )
     })
 }
+
+/**
+ * Set of toggles that are enabled by default in local/demo, but disabled in E2E.
+ */
+export const defaultE2EToggles: ToggleOverrides = {
+    SYK_INN_AAREG: false,
+    SYK_INN_SHOW_REDACTED: false,
+    SYK_INN_SYKMELDING_BEHANDLINGSDAGER: false,
+}

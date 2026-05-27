@@ -18,7 +18,7 @@ import { startNewAlternateSykmelding } from './actions/fhir-user-actions'
 import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 test('simple full behandlingsdager sykmelding @feature-toggle ', async ({ page }) => {
-    await launchWithMock('empty')(page)
+    await launchWithMock('empty', { SYK_INN_SYKMELDING_BEHANDLINGSDAGER: true })(page)
     await startNewAlternateSykmelding('BEHANDLINGSDAGER', {
         name: 'Espen Eksempel',
         fnr: '21037712323',
