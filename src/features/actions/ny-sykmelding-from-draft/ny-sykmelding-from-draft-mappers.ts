@@ -68,7 +68,7 @@ export function nySykmeldingFromDraftDefaultValues(
         meldinger: precedence([
             stateMeldingerToFormValues(state?.meldinger ?? null),
             draftMeldingerToFormValues(draft?.meldinger ?? null),
-            defaultMeldinger(),
+            defaultMeldinger(variant),
         ]),
         andreSporsmal: precedence([
             stateAndreSporsmalToFormValues(state?.andreSporsmal ?? null),

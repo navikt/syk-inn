@@ -308,6 +308,37 @@ export function fillPeriodeRelative({
     }
 }
 
+export function fillBehandlingsdagerPeriode(
+    params: { days: number; nth?: number } | { fromRelative: number; days: number; nth?: number },
+) {
+    const [fomRelativeToToday, tomRelativeToToday] =
+        'fromRelative' in params ? [params.fromRelative, params.fromRelative + params.days] : [0, params.days]
+
+    const fom = add(new Date(), { days: fomRelativeToToday })
+    const tom = add(new Date(), { days: tomRelativeToToday })
+    const nth = params.nth ?? 0
+
+    return async (page: Page) => {
+        const periodeRegion = page.getByRole('region', { name: 'Periode for behandlingsdager' }).nth(nth)
+        await expect(periodeRegion).toBeVisible()
+
+        const fomField = periodeRegion.getByRole('textbox', { name: 'Fra og med' })
+        await fomField.fill(inputDate(fom))
+        const tomField = periodeRegion.getByRole('textbox', { name: 'Til og med' })
+        await tomField.fill(inputDate(tom))
+    }
+}
+
+export function fillBehandlingsdagerExplanation(explanation: string) {
+    return async (page: Page) => {
+        await test.step('Input explanation for behandlingsdager', async () => {
+            await page
+                .getByRole('textbox', { name: 'Beskrivelse av behov for behandlingsdager (ikke påkrevd)' })
+                .fill(explanation)
+        })
+    }
+}
+
 export function fillArsakerTilAktivitetIkkeMulig({
     isArbeidsrelatert = false,
     arbeidsrelaterteArsaker = [],

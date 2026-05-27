@@ -52,7 +52,7 @@ export function nySykmeldingDefaultValues(
             stateTilbakedateringToFormValues(state?.tilbakedatering ?? null),
             defaultTilbakedatering(),
         ]),
-        meldinger: precedence([stateMeldingerToFormValues(state?.meldinger ?? null), defaultMeldinger()]),
+        meldinger: precedence([stateMeldingerToFormValues(state?.meldinger ?? null), defaultMeldinger(variant)]),
         andreSporsmal: precedence([
             stateAndreSporsmalToFormValues(state?.andreSporsmal ?? null),
             defaultAndreSporsmal(),
