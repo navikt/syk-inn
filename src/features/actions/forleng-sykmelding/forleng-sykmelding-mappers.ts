@@ -40,10 +40,10 @@ export function forlengSykmeldingDefaultValues(
 ): [values: NySykmeldingMainFormValues, nextFom: string] {
     const [forlengetSykmeldingFormValues, nextFom] =
         sykmelding.__typename === 'SykmeldingRedacted'
-            ? forlengRedactedSykmelding(sykmelding)
+            ? forlengRedactedSykmelding(sykmelding, variant)
             : sykmelding.__typename === 'SykmeldingLight'
-              ? forlengLightSykmelding(sykmelding)
-              : forlengFullSykmelding(sykmelding)
+              ? forlengLightSykmelding(sykmelding, variant)
+              : forlengFullSykmelding(sykmelding, variant)
 
     /**
      * If we already have values in state, we are returning to the form after having filled out
@@ -58,6 +58,7 @@ export function forlengSykmeldingDefaultValues(
 
 function forlengFullSykmelding(
     sykmelding: SykmeldingFullFragment,
+    variant: NySykmeldingFormVariantType,
 ): [values: NySykmeldingMainFormValues, nextFom: string] {
     const [forlengetPeriode, nextFom] = toForlengelsesAktivitet(sykmelding.values.aktivitet)
 
@@ -66,7 +67,7 @@ function forlengFullSykmelding(
             ...fullSykmeldingFragmentToNySykmeldingFormValues(sykmelding),
             perioder: [forlengetPeriode],
             // Meldinger are specifically not part of the forlenging
-            meldinger: defaultMeldinger(),
+            meldinger: defaultMeldinger(variant),
         },
         nextFom,
     ]
@@ -74,6 +75,7 @@ function forlengFullSykmelding(
 
 function forlengLightSykmelding(
     sykmelding: SykmeldingLightFragment,
+    variant: NySykmeldingFormVariantType,
 ): [values: NySykmeldingMainFormValues, nextFom: string] {
     const [forlengetPeriode, nextFom] = toForlengelsesAktivitet(sykmelding.values.aktivitet)
 
@@ -81,7 +83,7 @@ function forlengLightSykmelding(
         {
             diagnoser: sykmeldingDiagnoserFragmentToSykmeldingFormValues(sykmelding.values),
             perioder: [forlengetPeriode],
-            meldinger: defaultMeldinger(),
+            meldinger: defaultMeldinger(variant),
             andreSporsmal: defaultAndreSporsmal(),
             arbeidsforhold: defaultArbeidsforhold(),
             utdypendeSporsmal: defaultUtdypendeSporsmal(),
@@ -116,6 +118,7 @@ function toForlengelsesAktivitet(
 
 function forlengRedactedSykmelding(
     sykmelding: SykmeldingRedactedFragment,
+    variant: NySykmeldingFormVariantType,
 ): [values: NySykmeldingMainFormValues, nextFom: string] {
     const latestPeriode = R.firstBy(sykmelding.values.aktivitet, [(it) => it.fom, 'desc'])
     if (!latestPeriode) {
@@ -184,7 +187,7 @@ function forlengRedactedSykmelding(
             },
             arbeidsforhold: defaultArbeidsforhold(),
             tilbakedatering: defaultTilbakedatering(),
-            meldinger: defaultMeldinger(),
+            meldinger: defaultMeldinger(variant),
             andreSporsmal: defaultAndreSporsmal(),
             annenFravarsgrunn: defaultAnnenfravarsgrunn(),
             utdypendeSporsmal: defaultUtdypendeSporsmal(),

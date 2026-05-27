@@ -36,6 +36,10 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 - [previous sykmelding older than 4 days should display less values](./fhir/dashboard/sykmelding.spec.ts#L62)
 - [sykmelding with multiple periods should show full period in link and all other periods in helptext](./fhir/dashboard/sykmelding.spec.ts#L86)
 
+## [fhir/fhir-behandlingsdager.spec.ts](./fhir/fhir-behandlingsdager.spec.ts)
+
+- [simple full behandlingsdager sykmelding @feature-toggle ](./fhir/fhir-behandlingsdager.spec.ts#L20)
+
 ## [fhir/fhir-bruksvilkar.spec.ts](./fhir/fhir-bruksvilkar.spec.ts)
 
 - [when bruksvilkår toggle is on, user should be automatically redirected to bruksvilkår page](./fhir/fhir-bruksvilkar.spec.ts#L5)

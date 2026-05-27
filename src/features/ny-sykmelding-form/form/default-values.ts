@@ -50,7 +50,16 @@ export function defaultTilbakedatering(): NySykmeldingMainFormValues['tilbakedat
     return null
 }
 
-export function defaultMeldinger(): NySykmeldingMainFormValues['meldinger'] {
+export function defaultMeldinger(variant: NySykmeldingFormVariantType): NySykmeldingMainFormValues['meldinger'] {
+    if (variant === 'BEHANDLINGSDAGER') {
+        return {
+            showTilNav: true,
+            tilNav: null,
+            showTilArbeidsgiver: false,
+            tilArbeidsgiver: null,
+        }
+    }
+
     return {
         showTilNav: false,
         tilNav: null,

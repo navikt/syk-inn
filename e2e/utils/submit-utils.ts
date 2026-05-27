@@ -88,3 +88,10 @@ export const defaultAktivitetGradert = ({
         reisetilskudd: false,
     },
 })
+
+export const defaultBehandlingsdager = ({ fom, tom }: { fom: string; tom: string }): InputAktivitet => ({
+    behandlingsdager: {
+        fom: fom,
+        tom: tom,
+    },
+})

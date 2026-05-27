@@ -40,30 +40,36 @@ export function dupliserSykmeldingDefaultValues(
     }
 
     return sykmelding.__typename === 'SykmeldingRedacted'
-        ? dupliserRedactedSykmelding(sykmelding)
+        ? dupliserRedactedSykmelding(sykmelding, variant)
         : sykmelding.__typename === 'SykmeldingLight'
-          ? dupliserLightSykmelding(sykmelding)
-          : dupliserFullSykmelding(sykmelding)
+          ? dupliserLightSykmelding(sykmelding, variant)
+          : dupliserFullSykmelding(sykmelding, variant)
 }
 
-function dupliserFullSykmelding(sykmelding: SykmeldingFullFragment): NySykmeldingMainFormValues {
+function dupliserFullSykmelding(
+    sykmelding: SykmeldingFullFragment,
+    variant: NySykmeldingFormVariantType,
+): NySykmeldingMainFormValues {
     return {
         ...fullSykmeldingFragmentToNySykmeldingFormValues(sykmelding),
         perioder: sykmelding.values.aktivitet
             .map((it) => sykmeldingFragmentAktivitetToFormValue({ fom: it.fom, tom: it.tom }, it))
             .filter(R.isNonNull),
         // Meldinger are specifically not part of the duplisering
-        meldinger: defaultMeldinger(),
+        meldinger: defaultMeldinger(variant),
     }
 }
 
-function dupliserLightSykmelding(sykmelding: SykmeldingLightFragment): NySykmeldingMainFormValues {
+function dupliserLightSykmelding(
+    sykmelding: SykmeldingLightFragment,
+    variant: NySykmeldingFormVariantType,
+): NySykmeldingMainFormValues {
     return {
         diagnoser: sykmeldingDiagnoserFragmentToSykmeldingFormValues(sykmelding.values),
         perioder: sykmelding.values.aktivitet
             .map((it) => sykmeldingFragmentAktivitetToFormValue({ fom: it.fom, tom: it.tom }, it))
             .filter(R.isNonNull),
-        meldinger: defaultMeldinger(),
+        meldinger: defaultMeldinger(variant),
         andreSporsmal: defaultAndreSporsmal(),
         arbeidsforhold: defaultArbeidsforhold(),
         utdypendeSporsmal: defaultUtdypendeSporsmal(),
@@ -72,7 +78,10 @@ function dupliserLightSykmelding(sykmelding: SykmeldingLightFragment): NySykmeld
     }
 }
 
-function dupliserRedactedSykmelding(sykmelding: SykmeldingRedactedFragment): NySykmeldingMainFormValues {
+function dupliserRedactedSykmelding(
+    sykmelding: SykmeldingRedactedFragment,
+    variant: NySykmeldingFormVariantType,
+): NySykmeldingMainFormValues {
     return {
         perioder: sykmelding.values.aktivitet.map(toDuplisertRedactedAktivitet).filter(R.isNonNull),
         diagnoser: {
@@ -81,7 +90,7 @@ function dupliserRedactedSykmelding(sykmelding: SykmeldingRedactedFragment): NyS
         },
         arbeidsforhold: defaultArbeidsforhold(),
         tilbakedatering: defaultTilbakedatering(),
-        meldinger: defaultMeldinger(),
+        meldinger: defaultMeldinger(variant),
         andreSporsmal: defaultAndreSporsmal(),
         annenFravarsgrunn: defaultAnnenfravarsgrunn(),
         utdypendeSporsmal: defaultUtdypendeSporsmal(),
