@@ -103,11 +103,21 @@ export function sykmeldingFragmentAktivitetToFormValue(
                     arbeidsrelatertArsak: null,
                 },
             } satisfies AktivitetsPeriode
-        // TODO: Will be supported soon (behandlingsdager)
         case 'Behandlingsdager':
+            return {
+                periode: {
+                    fom: periode.fom,
+                    tom: periode.tom,
+                },
+                aktivitet: {
+                    type: 'BEHANDLINGSDAGER',
+                    grad: null,
+                    arbeidsrelatertArsak: null,
+                },
+            } satisfies AktivitetsPeriode
         case 'Reisetilskudd':
         case 'Avventende':
-            logger.info(`Forlengelse with aktivitet of type ${aktivitet.type} is not supported yet`)
+            logger.error(`Forlengelse with aktivitet of type ${aktivitet.type} is not supported yet`)
             return {
                 // This should not happen unless the user forlengs sykmeldinger from a non-syk-inn source, but
                 // this is in essence duplicated getDefaultPeriode from form-default-values.ts
