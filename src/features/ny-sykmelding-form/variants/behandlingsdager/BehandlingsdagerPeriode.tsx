@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react'
-import { differenceInDays, format, isSameDay } from 'date-fns'
+import { format, isSameDay } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
 import PeriodePicker from '@features/ny-sykmelding-form/sections/aktivitet/PeriodePicker'
 import { toReadablePeriodLength } from '@lib/date'
+import { getNumberOfBehandlingsdager } from '@data-layer/common/behandlingsdager'
 
 type Props = {
     initialFom: string | null
@@ -23,8 +24,7 @@ function BehandlingsdagerPeriode({ initialFom }: Props): ReactElement {
 }
 
 export function behandlingsdagerDescription(fom: Date | string, tom: Date | string): { main: string; detail: string } {
-    const numberOfDays = differenceInDays(tom, fom) + 1
-    const antallBehandlingsdager = Math.ceil(numberOfDays / 7)
+    const antallBehandlingsdager = getNumberOfBehandlingsdager(fom, tom)
 
     const isFomToday = isSameDay(fom, new Date())
     const isTomToday = isSameDay(tom, new Date())

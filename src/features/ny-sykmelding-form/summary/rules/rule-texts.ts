@@ -10,6 +10,7 @@ const softRules: Record<string, string | null> = {
     MINDRE_ENN_1_MAANED_MED_BEGRUNNELSE: "Sykmeldingen er tilbakedatert mindre enn 1 måned",
     OVER_1_MND: 'Sykmeldingen er tilbakedatert over 1 måned uten at den er tilstrekkelig begrunnet. Ved lengre tilbakedatering må du gi en lang og god begrunnelse.',
     OVER_1_MND_MED_BEGRUNNELSE: 'Sykmeldingen er tilbakedatert over 1 måned uten at den er tilstrekkelig begrunnet. Ved lengre tilbakedatering må du gi en lang og god begrunnelse.',
+    SYKMELDING_MED_BEHANDLINGSDAGER: "Sykmeldinger med behandlingsdager vurderes manuelt av Nav.",
 }
 
 /**
@@ -47,7 +48,6 @@ const hardRules: Record<string, string | null> = {
     BEHANDLER_SUSPENDERT: null,
     // Impossible in syk-inn
     BEHANDLINGSDATO_ETTER_MOTTATTDATO: null,
-    SYKMELDING_MED_BEHANDLINGSDAGER: null,
     UGYLDIG_REGELSETTVERSJON: null,
 }
 
