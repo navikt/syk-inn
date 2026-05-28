@@ -12,6 +12,7 @@ import {
 import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
 import { AnnenFravarsgrunnArsak } from '@queries'
 import { questionTexts } from '@data-layer/common/questions'
+import { getNumberOfBehandlingsdager } from '@data-layer/common/behandlingsdager'
 
 import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from './schema/sykmelding'
 import { OpprettSykmeldingAktivitet, OpprettSykmeldingMeta, OpprettSykmeldingPayload } from './schema/opprett'
@@ -113,7 +114,7 @@ export function resolverInputToSykInnApiPayload(
             pasientenSkalSkjermes: values.pasientenSkalSkjermes,
             hoveddiagnose: values.hoveddiagnose,
             bidiagnoser: values.bidiagnoser,
-            aktivitet: values.aktivitet.map(uglyGqlToSykInnAktivitet),
+            aktivitet: values.aktivitet.map(gqlInputAktivitetToSykInnAktivitet),
             meldinger: {
                 tilNav: values.meldinger.tilNav ?? null,
                 tilArbeidsgiver: values.meldinger.tilArbeidsgiver ?? null,
@@ -238,7 +239,7 @@ function mapUtdypendeSporsmalToSykInnApiMap(
 /**
  * Ugly because: https://github.com/graphql/graphql-wg/blob/main/rfcs/InputUnion.md
  */
-function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingAktivitet {
+function gqlInputAktivitetToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingAktivitet {
     if (aktivitet.aktivitetIkkeMulig != null) {
         return {
             type: 'AKTIVITET_IKKE_MULIG',
@@ -281,6 +282,10 @@ function uglyGqlToSykInnAktivitet(aktivitet: InputAktivitet): OpprettSykmeldingA
             type: 'BEHANDLINGSDAGER',
             fom: aktivitet.behandlingsdager.fom,
             tom: aktivitet.behandlingsdager.tom,
+            antallBehandlingsdager: getNumberOfBehandlingsdager(
+                aktivitet.behandlingsdager.fom,
+                aktivitet.behandlingsdager.tom,
+            ),
         }
     } else if (aktivitet.reisetilskudd) {
         return {

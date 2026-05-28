@@ -51,6 +51,7 @@ const OpprettSykmeldingAktivitetSchema = z.discriminatedUnion('type', [
         type: z.literal('BEHANDLINGSDAGER'),
         fom: DateOnly,
         tom: DateOnly,
+        antallBehandlingsdager: z.number().min(1),
     }),
     z.object({
         type: z.literal('REISETILSKUDD'),
