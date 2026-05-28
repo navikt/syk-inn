@@ -80,7 +80,7 @@ export function RuleHitSendAnywayModal({
             </Modal.Body>
             <Modal.Footer>
                 <ShortcutButton
-                    variant="danger"
+                    variant="primary"
                     icon={<PaperplaneIcon aria-hidden />}
                     iconPosition="right"
                     loading={nySykmelding.mutation.result.loading}
