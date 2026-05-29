@@ -40,9 +40,7 @@ export const sykInnApiService = {
             api: 'syk-inn-api',
             path: '/api/sykmelding',
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(OpprettSykmeldingPayloadSchema.parse(payload)),
             responseSchema: z.union([SykInnApiSykmeldingSchema, SykInnApiRuleOutcomeSchema]),
         })
@@ -84,10 +82,7 @@ export const sykInnApiService = {
             api: 'syk-inn-api',
             path: `/api/sykmelding/${sykmeldingId}`,
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                HPR: hpr,
-            },
+            headers: { 'Content-Type': 'application/json', HPR: hpr },
             responseSchema: z.union([SykInnApiSykmeldingSchema, SykInnApiSykmeldingRedactedSchema]),
         })
     },
@@ -106,11 +101,7 @@ export const sykInnApiService = {
             api: 'syk-inn-api',
             path: `/api/sykmelding`,
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Ident: pasientIdent,
-                HPR: hpr,
-            },
+            headers: { 'Content-Type': 'application/json', Ident: pasientIdent, HPR: hpr },
             responseSchema: z.array(z.union([SykInnApiSykmeldingSchema, SykInnApiSykmeldingRedactedSchema])),
         })
     },

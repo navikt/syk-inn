@@ -17,7 +17,10 @@ export function expectPatient(patient: { name: string; fnr: string }) {
 export function expectPeriode({
     type,
     ...params
-}: { type: '100%' | { grad: number } } & ({ days: number } | { fromRelative: number; days: number })) {
+}: { type: '100%' | { behandlingsdager: number } | { grad: number } } & (
+    | { days: number }
+    | { fromRelative: number; days: number }
+)) {
     const [fomRelativeToToday, tomRelativeToToday] =
         'fromRelative' in params ? [params.fromRelative, params.fromRelative + params.days] : [0, params.days]
 
@@ -25,8 +28,14 @@ export function expectPeriode({
     const tom = add(new Date(), { days: tomRelativeToToday })
 
     return async (page: Page) => {
-        await test.step(`Verify aktivitet to be ${toReadableDatePeriod(fom, tom)} (${typeof type === 'string' && type === '100%' ? '100%' : `${type.grad}%`})`, async () => {
-            const periodeRegion = page.getByRole('region', { name: 'Periode' })
+        const stepDescription =
+            typeof type === 'string' && type === '100%' ? '100%' : 'grad' in type ? `${type.grad}%` : 'behandlingsdager'
+
+        await test.step(`Verify aktivitet to be ${toReadableDatePeriod(fom, tom)} (${stepDescription})`, async () => {
+            const periodeTitle =
+                typeof type !== 'string' && 'behandlingsdager' in type ? 'Periode for behandlingsdager' : 'Periode'
+
+            const periodeRegion = page.getByRole('region', { name: periodeTitle })
             await expect(periodeRegion.getByRole('textbox', { name: 'Fra og med' })).toHaveValue(inputDate(fom))
             await expect(periodeRegion.getByRole('textbox', { name: 'Til og med' })).toHaveValue(inputDate(tom))
 
@@ -34,12 +43,16 @@ export function expectPeriode({
                 await expect(periodeRegion.getByRole('combobox', { name: 'Mulighet for arbeid' })).toHaveValue(
                     'AKTIVITET_IKKE_MULIG',
                 )
-            } else {
+            } else if ('grad' in type) {
                 await expect(periodeRegion.getByRole('combobox', { name: 'Mulighet for arbeid' })).toHaveValue(
                     'GRADERT',
                 )
                 await expect(periodeRegion.getByRole('textbox', { name: 'Sykmeldingsgrad (%)\n' })).toHaveValue(
                     `${type.grad}`,
+                )
+            } else {
+                await expect(periodeRegion).toHaveText(
+                    new RegExp(`${type.behandlingsdager} behandlingsdag${type.behandlingsdager > 1 ? 'er' : ''}`),
                 )
             }
         })
@@ -143,7 +156,7 @@ export function expectMeldinger({
     tilNav,
     tilArbeidsgiver,
 }: {
-    tilNav: string | null
+    tilNav?: string | null
     tilArbeidsgiver: string | null
 }) {
     return async (page: Page) => {
@@ -156,7 +169,8 @@ export function expectMeldinger({
 
             if (tilNav) {
                 await expect(meldingerRegion.getByRole('textbox', { name: 'Melding til Nav' })).toHaveValue(tilNav)
-            } else {
+                // Only check toggle state if provided, undefined means we don't care
+            } else if (tilNav !== undefined) {
                 await expect(meldingerRegion.getByRole('checkbox', { name: 'Melding til Nav' })).not.toBeChecked()
             }
 
@@ -165,7 +179,9 @@ export function expectMeldinger({
                     tilArbeidsgiver,
                 )
             } else {
-                await expect(meldingerRegion.getByRole('checkbox', { name: 'Melding til Nav' })).not.toBeChecked()
+                await expect(
+                    meldingerRegion.getByRole('checkbox', { name: 'Melding til arbeidsgiver' }),
+                ).not.toBeChecked()
             }
         })
     }

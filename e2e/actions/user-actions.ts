@@ -434,7 +434,13 @@ export function fillAndreSporsmal({
     }
 }
 
-export function fillMeldinger({ tilNav, tilArbeidsgiver }: { tilNav: string | null; tilArbeidsgiver: string | null }) {
+export function fillMeldinger({
+    tilNav,
+    tilArbeidsgiver,
+}: {
+    tilNav?: string | null
+    tilArbeidsgiver?: string | null
+}) {
     return async (page: Page) => {
         await test.step(`Input meldinger to Nav and arbeidsgiver`, async () => {
             const region = page.getByRole('region', { name: 'Meldinger' })

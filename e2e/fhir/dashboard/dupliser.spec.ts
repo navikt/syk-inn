@@ -1,19 +1,21 @@
 import { expect, test } from '@playwright/test'
-import { daysAgo } from '@lib/test/date-utils'
+import { daysAgo, inDays } from '@lib/test/date-utils'
+import { toReadableDatePeriod } from '@lib/date'
 
 import { launchWithMock } from '../actions/fhir-actions'
-import { startNewSykmelding } from '../actions/fhir-user-actions'
+import { startNewAlternateSykmelding, startNewSykmelding } from '../actions/fhir-user-actions'
 import { userInteractionsGroup } from '../../utils/actions'
 import {
     fillAndreSporsmal,
     fillArbeidsforhold,
+    fillBehandlingsdagerExplanation,
+    fillBehandlingsdagerPeriode,
     fillMeldinger,
     fillPeriodeRelative,
     fillTilbakedatering,
     nextStep,
     pickHoveddiagnose,
     previousStep,
-    requestAccessToSykmeldinger,
     submitSykmelding,
 } from '../../actions/user-actions'
 import { verifySignerendeBehandler } from '../actions/fhir-user-verifications'
@@ -29,7 +31,6 @@ import { verifyNoHorizontalScroll } from '../../utils/assertions'
 
 test('should be able to dupliser (from dashboard) an existing sykmelding with correct values', async ({ page }) => {
     await launchWithMock('empty')(page)
-    await requestAccessToSykmeldinger()(page)
     await startNewSykmelding()(page)
 
     await userInteractionsGroup(
@@ -83,11 +84,52 @@ test('should be able to dupliser (from dashboard) an existing sykmelding with co
     await submitSykmelding()(page)
 })
 
+test('should be able to dupliser behandlingsdager (from dashboard) @feature-toggle', async ({ page }) => {
+    await launchWithMock('empty', { SYK_INN_SYKMELDING_BEHANDLINGSDAGER: true })(page)
+    await startNewAlternateSykmelding('BEHANDLINGSDAGER')(page)
+
+    await userInteractionsGroup(
+        fillBehandlingsdagerPeriode({ fromRelative: -1, days: 14 }),
+        fillBehandlingsdagerExplanation('Kort test-forklaring'),
+        pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
+        fillMeldinger({ tilArbeidsgiver: 'Dobbelt så mange sykmeldinger!' }),
+        fillAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        verifyNoHorizontalScroll(),
+        nextStep(),
+        verifySignerendeBehandler(),
+        verifyNoHorizontalScroll(),
+        submitSykmelding(),
+    )(page)
+
+    await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
+    await page.getByRole('button', { name: 'Dupliser' }).click()
+
+    await userInteractionsGroup(
+        expectPeriode({ type: { behandlingsdager: 3 }, fromRelative: -1, days: 14 }),
+        expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
+        expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        // Don't copy tilArbeidsgiver during duplication
+        expectMeldinger({ tilArbeidsgiver: null }),
+        verifyNoHorizontalScroll(),
+    )(page)
+
+    await fillBehandlingsdagerExplanation('Annen forklaring')(page)
+
+    await userInteractionsGroup(nextStep(), verifySignerendeBehandler())(page)
+
+    await verifySummaryPage([
+        { name: 'Periode', values: [new RegExp(toReadableDatePeriod(inDays(-1), inDays(13)))] },
+        { name: 'Periode', values: [/Sykmelding med behandlingsdager/] },
+        { name: 'Til NAV', values: ['Annen forklaring'] },
+    ])(page)
+
+    await submitSykmelding()(page)
+})
+
 test('should be able to dupliser (from dashboard) an existing sykmelding, go to summary, and return to form without losing values', async ({
     page,
 }) => {
     await launchWithMock('empty')(page)
-    await requestAccessToSykmeldinger()(page)
     await startNewSykmelding()(page)
 
     await userInteractionsGroup(
@@ -138,7 +180,6 @@ test('should be able to dupliser (from dashboard) an existing sykmelding, go to 
 
 test('should not be possible to dupliser (from dashboard) old sykmelding', async ({ page }) => {
     await launchWithMock('empty')(page)
-
     await startNewSykmelding()(page)
 
     await userInteractionsGroup(

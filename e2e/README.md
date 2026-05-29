@@ -15,14 +15,16 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [fhir/dashboard/dupliser.spec.ts](./fhir/dashboard/dupliser.spec.ts)
 
-- [should be able to dupliser (from dashboard) an existing sykmelding with correct values](./fhir/dashboard/dupliser.spec.ts#L30)
-- [should be able to dupliser (from dashboard) an existing sykmelding, go to summary, and return to form without losing values](./fhir/dashboard/dupliser.spec.ts#L86)
-- [should not be possible to dupliser (from dashboard) old sykmelding](./fhir/dashboard/dupliser.spec.ts#L139)
+- [should be able to dupliser (from dashboard) an existing sykmelding with correct values](./fhir/dashboard/dupliser.spec.ts#L32)
+- [should be able to dupliser behandlingsdager (from dashboard) @feature-toggle](./fhir/dashboard/dupliser.spec.ts#L87)
+- [should be able to dupliser (from dashboard) an existing sykmelding, go to summary, and return to form without losing values](./fhir/dashboard/dupliser.spec.ts#L129)
+- [should not be possible to dupliser (from dashboard) old sykmelding](./fhir/dashboard/dupliser.spec.ts#L181)
 
 ## [fhir/dashboard/forleng.spec.ts](./fhir/dashboard/forleng.spec.ts)
 
-- [should be able to forlenge an existing sykmelding with correct values](./fhir/dashboard/forleng.spec.ts#L30)
-- [should be able to forleng a sykmelding, go to summary, and return to form without losing values](./fhir/dashboard/forleng.spec.ts#L87)
+- [should be able to forlenge an existing sykmelding with correct values](./fhir/dashboard/forleng.spec.ts#L32)
+- [should be able to forlenge an existing behandlingsdager-sykmelding with correct values @feature-toggle](./fhir/dashboard/forleng.spec.ts#L81)
+- [should be able to forleng a sykmelding, go to summary, and return to form without losing values](./fhir/dashboard/forleng.spec.ts#L130)
 
 ## [fhir/dashboard/redacted.spec.ts](./fhir/dashboard/redacted.spec.ts)
 

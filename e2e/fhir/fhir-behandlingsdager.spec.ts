@@ -33,14 +33,8 @@ test('simple full behandlingsdager sykmelding @feature-toggle ', async ({ page }
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
     await verifySummaryPage([
-        {
-            name: 'Periode',
-            values: [new RegExp(toReadableDatePeriod(inDays(0), inDays(7)))],
-        },
-        {
-            name: 'Periode',
-            values: [/Sykmelding med behandlingsdager/],
-        },
+        { name: 'Periode', values: [new RegExp(toReadableDatePeriod(inDays(0), inDays(7)))] },
+        { name: 'Periode', values: [/Sykmelding med behandlingsdager/] },
         { name: 'Til NAV', values: [testExplanation] },
     ])(page)
 
