@@ -320,7 +320,9 @@ export function fillBehandlingsdagerPeriode(
 
     return async (page: Page) => {
         return test.step('Fill periode for behandlingsdager', async () => {
-            const periodeRegion = page.getByRole('region', { name: 'Periode for behandlingsdager' }).nth(nth)
+            const periodeRegion = page
+                .getByRole('region', { name: 'Periode for enkeltstående behandlingsdager' })
+                .nth(nth)
             await expect(periodeRegion).toBeVisible()
 
             const fomField = periodeRegion.getByRole('textbox', { name: 'Fra og med' })

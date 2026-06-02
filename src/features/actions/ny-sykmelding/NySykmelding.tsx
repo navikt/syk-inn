@@ -10,7 +10,7 @@ import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/sections/di
 import NySykmeldingFormVariants from '@features/ny-sykmelding-form/NySykmeldingFormVariants'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
-import { useFormVariant } from '@features/ny-sykmelding-form/useFormVariant'
+import { NySykmeldingFormVariantType, useFormVariant } from '@features/ny-sykmelding-form/useFormVariant'
 
 import { nySykmeldingDefaultValues } from './ny-sykmelding-mappers'
 
@@ -21,14 +21,14 @@ export function NySykmeldingFormWithDefaultValues(): ReactElement {
     const variant = useFormVariant()
 
     if (suggestionsQuery.loading || pasient.loading) {
-        return <NySykmeldingFormSkeleton lead="Sykmelding for" />
+        return <NySykmeldingFormSkeleton lead={getPageLead(variant)} />
     }
 
     const defaultValues = nySykmeldingDefaultValues(valuesInState, suggestionsQuery.suggestions, variant)
 
     return (
         <NySykmeldingPageSteps
-            heading={<LoadablePageHeader lead="Sykmelding for" value={pasient.data?.pasient?.navn ?? null} />}
+            heading={<LoadablePageHeader lead={getPageLead(variant)} value={pasient.data?.pasient?.navn ?? null} />}
         >
             <NySykmeldingFormVariants
                 variant={variant}
@@ -40,4 +40,13 @@ export function NySykmeldingFormWithDefaultValues(): ReactElement {
             />
         </NySykmeldingPageSteps>
     )
+}
+
+function getPageLead(variant: NySykmeldingFormVariantType): string {
+    switch (variant) {
+        case 'NORMAL':
+            return 'Sykmelding for'
+        case 'BEHANDLINGSDAGER':
+            return 'Sykemelding enkeltstående behandlingsdager for'
+    }
 }
