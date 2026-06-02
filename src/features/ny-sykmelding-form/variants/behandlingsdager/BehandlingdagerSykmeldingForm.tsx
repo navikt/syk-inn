@@ -33,7 +33,7 @@ function BehandlingdagerSykmeldingForm({ initialFom, contextualErrors }: AllForm
         <TwoPaneGrid tag="form" onSubmit={form.handleSubmit(onSubmit)}>
             <FormSheet className="relative">
                 {!selectedPasient && <NoActivePasientWarning />}
-                <FormSection title="Periode for behandlingsdager">
+                <FormSection title="Periode for enkeltstående behandlingsdager">
                     <BehandlingsdagerPeriode initialFom={initialFom ?? null} />
                 </FormSection>
                 <BehandlingsdagerDescriptionField />
@@ -52,7 +52,7 @@ function BehandlingdagerSykmeldingForm({ initialFom, contextualErrors }: AllForm
                 <FormSection title="Andre spørsmål" hideTitle>
                     <AndreSporsmalSection />
                 </FormSection>
-                <FormSection title="Meldinger" hideBorder>
+                <FormSection title="Meldinger" hideBorder hideTitle>
                     <MeldingTilArbeidsgiverField />
                 </FormSection>
                 <div className="flex flex-row flex-wrap ax-md:grid-cols-3 gap-3 p-2 ax-lg:justify-end">

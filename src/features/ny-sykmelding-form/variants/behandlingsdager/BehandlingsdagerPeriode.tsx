@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react'
+import { BodyShort } from '@navikt/ds-react'
 import { format, isSameDay } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
@@ -13,6 +14,10 @@ type Props = {
 function BehandlingsdagerPeriode({ initialFom }: Props): ReactElement {
     return (
         <div>
+            <BodyShort spacing>
+                Gjelder kun enkeltdager med behandling som foregår over tid. Ved sammenhengende sykefravær over flere
+                dager kreves ordinær sykmelding.
+            </BodyShort>
             <PeriodePicker
                 index={0}
                 isLast={false}

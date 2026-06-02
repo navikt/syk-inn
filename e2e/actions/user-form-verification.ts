@@ -33,7 +33,9 @@ export function expectPeriode({
 
         await test.step(`Verify aktivitet to be ${toReadableDatePeriod(fom, tom)} (${stepDescription})`, async () => {
             const periodeTitle =
-                typeof type !== 'string' && 'behandlingsdager' in type ? 'Periode for behandlingsdager' : 'Periode'
+                typeof type !== 'string' && 'behandlingsdager' in type
+                    ? 'Periode for enkeltstående behandlingsdager'
+                    : 'Periode'
 
             const periodeRegion = page.getByRole('region', { name: periodeTitle })
             await expect(periodeRegion.getByRole('textbox', { name: 'Fra og med' })).toHaveValue(inputDate(fom))
