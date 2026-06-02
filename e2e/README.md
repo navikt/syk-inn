@@ -50,8 +50,7 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [fhir/fhir-chaosmonkey.spec.ts](./fhir/fhir-chaosmonkey.spec.ts)
 
-- [should get welcome modal once, but not after reloading](./fhir/fhir-chaosmonkey.spec.ts#L10)
-- [spamming 'Send'-button repeatedly should only submit 1 sykmelding](./fhir/fhir-chaosmonkey.spec.ts#L28)
+- [spamming 'Send'-button repeatedly should only submit 1 sykmelding](./fhir/fhir-chaosmonkey.spec.ts#L10)
 
 ## [fhir/fhir-feedback.spec.ts](./fhir/fhir-feedback.spec.ts)
 

@@ -1,7 +1,6 @@
 import { test, Page } from '@playwright/test'
 import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
 import { Scenarios } from '@dev/mock-engine/scenarios/scenarios'
-import { WELCOME_MODAL_LOCAL_STORAGE_KEY } from '@features/fhir/dashboard/welcome-modal/state'
 
 import { applyToggleOverrides, defaultE2EToggles, ToggleOverrides } from '../../actions/toggle-overrides'
 
@@ -32,11 +31,9 @@ export function launchWithMock(
         patient = 'Espen Eksempel',
         practitioner = null,
         organization = null,
-        skipWelcomeModal = true,
         ...toggleOverrides
-    }: ToggleOverrides & AdditionalOptions & { skipWelcomeModal?: boolean } = {
+    }: ToggleOverrides & AdditionalOptions = {
         patient: 'Espen Eksempel',
-        skipWelcomeModal: true,
     },
 ) {
     const actualToggleOverrides: ToggleOverrides = {
@@ -57,12 +54,6 @@ export function launchWithMock(
         } else {
             await test.step(`Launch FHIR mock with default scenario (normal, ${patient})`, async () => {
                 await page.goto(`${launchUrl}&launch=${buildLaunchParam(patient, practitioner, organization)}`)
-            })
-        }
-
-        if (skipWelcomeModal) {
-            await test.step('Set welcome modal localStorage state', async () => {
-                await page.evaluate((key) => localStorage.setItem(key, 'true'), WELCOME_MODAL_LOCAL_STORAGE_KEY)
             })
         }
     }
