@@ -4,6 +4,7 @@ import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
 import { metadataActions } from '@core/redux/reducers/metadata'
+import { bundledEnv } from '@lib/env'
 
 import { hasSeenModal, setModalDismissed } from './state'
 
@@ -21,6 +22,12 @@ export function InfoNySykmeldingModal(): ReactElement {
     }
 
     useEffect(() => {
+        /**
+         * Because of this feature's late initialization, and no tests
+         * want to care about it, just disable it in tests completely.
+         */
+        if (bundledEnv.runtimeEnv === 'e2e') return
+
         const hasSeen = hasSeenModal()
         if (!hasSeen) {
             dispatch(metadataActions.openWelcome())

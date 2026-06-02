@@ -1,7 +1,6 @@
 'use client'
 
-import React, { PropsWithChildren, ReactElement, ReactNode, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 
 import { PageLayout } from '@components/layout/Page'
 
@@ -12,11 +11,9 @@ function NySykmeldingPageSteps({ heading, children }: PropsWithChildren<{ headin
     const [step] = useFormStep()
 
     return (
-        <AnimateSectionChanges step={step}>
-            <Sections heading={heading} section={step}>
-                {children}
-            </Sections>
-        </AnimateSectionChanges>
+        <Sections heading={heading} section={step}>
+            {children}
+        </Sections>
     )
 }
 
@@ -39,35 +36,6 @@ function Sections({
                 </PageLayout>
             )
     }
-}
-
-function AnimateSectionChanges({ step, children }: PropsWithChildren<{ step: string }>): ReactElement {
-    const [prevStep, setPrevStep] = useState(step)
-    const [direction, setDirection] = useState<-1 | 1>(1)
-
-    if (step !== prevStep) {
-        setPrevStep(step)
-        setDirection(step > prevStep ? 1 : -1)
-    }
-
-    const goingLeft = direction === 1
-
-    return (
-        <div className="overflow-hidden">
-            <AnimatePresence initial={false} custom={goingLeft} mode="popLayout">
-                <motion.div
-                    className="relative"
-                    key={step}
-                    initial={{ opacity: 0, x: !goingLeft ? -100 : 100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: !goingLeft ? 100 : -100 }}
-                    transition={{ duration: 0.35 }}
-                >
-                    {children}
-                </motion.div>
-            </AnimatePresence>
-        </div>
-    )
 }
 
 export default NySykmeldingPageSteps
