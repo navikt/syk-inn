@@ -217,3 +217,13 @@ export function expectArbeidsforhold({
         })
     }
 }
+
+export function expectBehandlingsdagerForklaring(description: string) {
+    return async (page: Page) => {
+        await test.step('Verify Behandlingsdager description', async () => {
+            await expect(
+                page.getByRole('textbox', { name: 'Beskrivelse av behov for behandlingsdager (ikke påkrevd)' }),
+            ).toHaveValue(description)
+        })
+    }
+}

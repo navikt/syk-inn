@@ -10,8 +10,9 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [fhir/dashboard/drafts.spec.ts](./fhir/dashboard/drafts.spec.ts)
 
-- [should be able to quickly delete a lot of drafts](./fhir/dashboard/drafts.spec.ts#L11)
-- [should be able to open and edit a draft from the dashboard](./fhir/dashboard/drafts.spec.ts#L31)
+- [quickly delete a lot of drafts](./fhir/dashboard/drafts.spec.ts#L18)
+- [open and edit a draft from the dashboard](./fhir/dashboard/drafts.spec.ts#L38)
+- [save and continue editing a behandlingsdager draft](./fhir/dashboard/drafts.spec.ts#L64)
 
 ## [fhir/dashboard/dupliser.spec.ts](./fhir/dashboard/dupliser.spec.ts)
 

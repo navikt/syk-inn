@@ -1,14 +1,21 @@
 import { expect, test } from '@playwright/test'
 
 import { launchWithMock } from '../actions/fhir-actions'
-import { startNewSykmelding } from '../actions/fhir-user-actions'
-import { fillPeriodeRelative, nextStep, saveDraft, submitSykmelding } from '../../actions/user-actions'
-import { expectPeriode } from '../../actions/user-form-verification'
+import { startNewAlternateSykmelding, startNewSykmelding } from '../actions/fhir-user-actions'
+import {
+    fillBehandlingsdagerExplanation,
+    fillBehandlingsdagerPeriode,
+    fillPeriodeRelative,
+    nextStep,
+    saveDraft,
+    submitSykmelding,
+} from '../../actions/user-actions'
+import { expectBehandlingsdagerForklaring, expectPeriode } from '../../actions/user-form-verification'
 import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from '../actions/fhir-user-verifications'
 import { userInteractionsGroup } from '../../utils/actions'
 import { verifyNoHorizontalScroll } from '../../utils/assertions'
 
-test('should be able to quickly delete a lot of drafts', async ({ page }) => {
+test('quickly delete a lot of drafts', async ({ page }) => {
     await launchWithMock('plenty-of-drafts')(page)
 
     // Verify that we have a lot of drafts
@@ -28,7 +35,7 @@ test('should be able to quickly delete a lot of drafts', async ({ page }) => {
     await expect(page.getByText('Tilgang til sykmeldingshistorikk vil bli logget av Nav.')).toBeVisible()
 })
 
-test('should be able to open and edit a draft from the dashboard', async ({ page }) => {
+test('open and edit a draft from the dashboard', async ({ page }) => {
     await launchWithMock('empty')(page)
     await startNewSykmelding()(page)
     await fillPeriodeRelative({
@@ -45,6 +52,35 @@ test('should be able to open and edit a draft from the dashboard', async ({ page
 
     await userInteractionsGroup(
         expectPeriode({ type: '100%', days: 3, fromRelative: 0 }),
+        verifyNoHorizontalScroll(),
+        nextStep(),
+        verifySignerendeBehandler(),
+        verifyNoHorizontalScroll(),
+        submitSykmelding(),
+        verifyIsOnKvitteringPage(),
+    )(page)
+})
+
+test('save and continue editing a behandlingsdager draft', async ({ page }) => {
+    await launchWithMock('empty', { SYK_INN_SYKMELDING_BEHANDLINGSDAGER: true })(page)
+    await startNewAlternateSykmelding('BEHANDLINGSDAGER')(page)
+    await fillBehandlingsdagerPeriode({ days: 6 })(page)
+    await fillBehandlingsdagerExplanation('Foo bar baz')(page)
+    await saveDraft()(page)
+
+    // Lets reload so we make sure the draft we verify is not from the apollo cache
+    await expect(page.getByRole('region', { name: 'Pågående sykmeldinger og utkast' })).toBeVisible()
+    await page.reload()
+
+    await test.step('Open the draft', async () => {
+        const region = page.getByRole('region', { name: 'Pågående sykmeldinger og utkast' })
+        const rows = region.getByRole('row')
+        await rows.nth(1).getByRole('link').click()
+    })
+
+    await userInteractionsGroup(
+        expectPeriode({ type: { behandlingsdager: 1 }, days: 6, fromRelative: 0 }),
+        expectBehandlingsdagerForklaring('Foo bar baz'),
         verifyNoHorizontalScroll(),
         nextStep(),
         verifySignerendeBehandler(),

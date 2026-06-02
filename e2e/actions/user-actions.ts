@@ -319,13 +319,15 @@ export function fillBehandlingsdagerPeriode(
     const nth = params.nth ?? 0
 
     return async (page: Page) => {
-        const periodeRegion = page.getByRole('region', { name: 'Periode for behandlingsdager' }).nth(nth)
-        await expect(periodeRegion).toBeVisible()
+        return test.step('Fill periode for behandlingsdager', async () => {
+            const periodeRegion = page.getByRole('region', { name: 'Periode for behandlingsdager' }).nth(nth)
+            await expect(periodeRegion).toBeVisible()
 
-        const fomField = periodeRegion.getByRole('textbox', { name: 'Fra og med' })
-        await fomField.fill(inputDate(fom))
-        const tomField = periodeRegion.getByRole('textbox', { name: 'Til og med' })
-        await tomField.fill(inputDate(tom))
+            const fomField = periodeRegion.getByRole('textbox', { name: 'Fra og med' })
+            await fomField.fill(inputDate(fom))
+            const tomField = periodeRegion.getByRole('textbox', { name: 'Til og med' })
+            await tomField.fill(inputDate(tom))
+        })
     }
 }
 
