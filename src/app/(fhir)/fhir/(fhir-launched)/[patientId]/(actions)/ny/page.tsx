@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react'
 import { redirect } from 'next/navigation'
 
 import { NySykmeldingFormWithDefaultValues } from '@features/actions/ny-sykmelding/NySykmelding'
-import NySykmeldingPagesWithContextPatientHeader from '@features/fhir/common/NySykmeldingPagesWithContextPatientHeader'
 import { createFhirPaths } from '@core/providers/ModePaths'
 
 async function NySykmeldingPage({ params, searchParams }: PageProps<'/fhir/[patientId]/ny'>): Promise<ReactElement> {
@@ -22,11 +21,7 @@ async function NySykmeldingPage({ params, searchParams }: PageProps<'/fhir/[pati
         redirect(`${createFhirPaths(patientId).utkast(draftId)}?step=${currentStep}`)
     }
 
-    return (
-        <NySykmeldingPagesWithContextPatientHeader lead="Sykmelding for">
-            <NySykmeldingFormWithDefaultValues />
-        </NySykmeldingPagesWithContextPatientHeader>
-    )
+    return <NySykmeldingFormWithDefaultValues />
 }
 
 export default NySykmeldingPage

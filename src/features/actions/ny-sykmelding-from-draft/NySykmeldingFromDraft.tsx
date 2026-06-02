@@ -9,6 +9,8 @@ import { useAppSelector } from '@core/redux/hooks'
 import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
 import { inferSykmeldingTypeFromDraft, safeParseDraft } from '@data-layer/draft/draft-schema'
 import NySykmeldingFormVariants from '@features/ny-sykmelding-form/NySykmeldingFormVariants'
+import { LoadablePageHeader } from '@components/layout/Page'
+import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
 
 import { SykmeldingDraftFormErrors } from '../common/SykmeldingFormErrors'
 
@@ -29,7 +31,7 @@ export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactE
     const suggestionsQuery = useDiagnoseSuggestions()
 
     if (suggestionsQuery.loading || draftQuery.loading || pasient.loading) {
-        return <NySykmeldingFormSkeleton />
+        return <NySykmeldingFormSkeleton lead="Ny sykmelding for" />
     }
 
     if (draftQuery.error || draftQuery.data?.draft == null) {
@@ -46,13 +48,17 @@ export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactE
     )
 
     return (
-        <NySykmeldingFormVariants
-            variant={variantInDraft}
-            defaultValues={defaultValues}
-            context={{
-                utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,
-            }}
-            contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
-        />
+        <NySykmeldingPageSteps
+            heading={<LoadablePageHeader lead="Ny sykmelding for" value={pasient.data?.pasient?.navn ?? null} />}
+        >
+            <NySykmeldingFormVariants
+                variant={variantInDraft}
+                defaultValues={defaultValues}
+                context={{
+                    utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,
+                }}
+                contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
+            />
+        </NySykmeldingPageSteps>
     )
 }

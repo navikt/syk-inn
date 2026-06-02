@@ -9,6 +9,8 @@ import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingF
 import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/sections/diagnose/useDiagnoseSuggestions'
 import NySykmeldingFormVariants from '@features/ny-sykmelding-form/NySykmeldingFormVariants'
 import { useAppSelector } from '@core/redux/hooks'
+import { LoadablePageHeader } from '@components/layout/Page'
+import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
 
 import { SykmeldingFormErrors } from '../common/SykmeldingFormErrors'
 
@@ -27,7 +29,7 @@ export function DupliserSykmeldingFormWithDefaultValues({ sykmeldingId }: Props)
     const valuesInState = useAppSelector((state) => state.nySykmelding.values)
 
     if (suggestionsQuery.loading || sykmeldingQuery.loading || pasient.loading) {
-        return <NySykmeldingFormSkeleton />
+        return <NySykmeldingFormSkeleton lead="Dupliser sykmelding for" />
     }
 
     if (sykmeldingQuery.data?.sykmelding == null) {
@@ -42,13 +44,17 @@ export function DupliserSykmeldingFormWithDefaultValues({ sykmeldingId }: Props)
     )
 
     return (
-        <NySykmeldingFormVariants
-            variant={variantToBeDuplisert}
-            defaultValues={derivedDefaultValues}
-            context={{
-                utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,
-            }}
-            contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
-        />
+        <NySykmeldingPageSteps
+            heading={<LoadablePageHeader lead="Dupliser sykmelding for" value={pasient.data?.pasient?.navn ?? null} />}
+        >
+            <NySykmeldingFormVariants
+                variant={variantToBeDuplisert}
+                defaultValues={derivedDefaultValues}
+                context={{
+                    utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,
+                }}
+                contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
+            />
+        </NySykmeldingPageSteps>
     )
 }

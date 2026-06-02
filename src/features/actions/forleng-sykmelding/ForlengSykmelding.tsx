@@ -9,6 +9,8 @@ import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/sections/di
 import NySykmeldingFormVariants from '@features/ny-sykmelding-form/NySykmeldingFormVariants'
 import { useAppSelector } from '@core/redux/hooks'
 import { inferSykmeldingType } from '@features/ny-sykmelding-form/useFormVariant'
+import { LoadablePageHeader } from '@components/layout/Page'
+import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
 
 import { SykmeldingFormErrors } from '../common/SykmeldingFormErrors'
 
@@ -27,7 +29,7 @@ export function ForlengSykmeldingFormWithDefaultValues({ sykmeldingId }: Props):
     const valuesInState = useAppSelector((state) => state.nySykmelding.values)
 
     if (suggestionsQuery.loading || sykmeldingQuery.loading || pasient.loading) {
-        return <NySykmeldingFormSkeleton />
+        return <NySykmeldingFormSkeleton lead="Forleng sykmelding for" />
     }
 
     if (sykmeldingQuery.data?.sykmelding == null) {
@@ -42,14 +44,18 @@ export function ForlengSykmeldingFormWithDefaultValues({ sykmeldingId }: Props):
     )
 
     return (
-        <NySykmeldingFormVariants
-            variant={variantToBeForlenged}
-            defaultValues={derivedDefaultValues}
-            context={{
-                utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,
-            }}
-            contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
-            initialFom={nextFom}
-        />
+        <NySykmeldingPageSteps
+            heading={<LoadablePageHeader lead="Forleng sykmelding for" value={pasient.data?.pasient?.navn ?? null} />}
+        >
+            <NySykmeldingFormVariants
+                variant={variantToBeForlenged}
+                defaultValues={derivedDefaultValues}
+                context={{
+                    utdypendeSporsmal: pasient.data?.pasient?.utdypendeSporsmal,
+                }}
+                contextualErrors={{ diagnose: suggestionsQuery.suggestions.diagnose.error }}
+                initialFom={nextFom}
+            />
+        </NySykmeldingPageSteps>
     )
 }

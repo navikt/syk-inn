@@ -3,18 +3,27 @@ import { Skeleton } from '@navikt/ds-react'
 
 import FormSheet from '@components/form/form-section/FormSheet'
 import TwoPaneGrid from '@components/layout/TwoPaneGrid'
+import { LoadablePageHeader } from '@components/layout/Page'
 
-function NySykmeldingFormSkeleton(): ReactElement {
+import NySykmeldingPageSteps from './NySykmeldingPageSteps'
+
+type Props = {
+    lead: string
+}
+
+function NySykmeldingFormSkeleton({ lead }: Props): ReactElement {
     return (
-        <TwoPaneGrid tag="div">
-            <FormSheet className="relative">
-                <Skeleton className="w-full" height={600} variant="rounded" />
-                <div className="bg-ax-bg-neutral-soft w-4 h-[calc(100%-2rem)] absolute -right-6 rounded hidden ax-lg:block" />
-            </FormSheet>
-            <FormSheet>
-                <Skeleton className="w-full" height={600} variant="rounded" />
-            </FormSheet>
-        </TwoPaneGrid>
+        <NySykmeldingPageSteps heading={<LoadablePageHeader lead={lead} value={null} />}>
+            <TwoPaneGrid tag="div">
+                <FormSheet className="relative">
+                    <Skeleton className="w-full" height={600} variant="rounded" />
+                    <div className="bg-ax-bg-neutral-soft w-4 h-[calc(100%-2rem)] absolute -right-6 rounded hidden ax-lg:block" />
+                </FormSheet>
+                <FormSheet>
+                    <Skeleton className="w-full" height={600} variant="rounded" />
+                </FormSheet>
+            </TwoPaneGrid>
+        </NySykmeldingPageSteps>
     )
 }
 
