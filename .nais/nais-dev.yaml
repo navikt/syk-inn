@@ -53,6 +53,7 @@ spec:
         - host: 'fhir-api-auth.public.webmedepj.no'
         - host: 'helseid-sts.test.nhn.no'
         - host: 'slack.com'
+        - host: 'samsvarstesting-sts-test.helseid.sky.nhn.no'
       rules:
         - application: syk-inn-api
         - application: tsm-pdl-cache
