@@ -30,7 +30,7 @@ function DynamicTilbakedateringSection(): ReactElement | null {
                             <HelpText>
                                 Hva menes med{' '}
                                 <Link
-                                    href="https://www.nav.no/samarbeidspartner/om-sykmeldingen#tilbakedatering"
+                                    href="https://nav.no/samarbeidspartner/om-sykmeldingen#tilbakedatering"
                                     target="_blank"
                                 >
                                     tilbakedatering
