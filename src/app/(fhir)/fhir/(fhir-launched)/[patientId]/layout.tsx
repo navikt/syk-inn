@@ -123,7 +123,7 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
                 const helseIdAccessToken = await getHelseIdAccessToken()
                 const helseIdIdToken = await getHelseIdIdToken()
                 logger.info(
-                    `[HelseID-double-auth-exp] HelseID tokens on FHIR path. access_token length: ${helseIdAccessToken.length}, id_token length: ${helseIdIdToken.length}`,
+                    `[HelseID-double-auth-exp] HelseID tokens on FHIR path! access_token length: ${helseIdAccessToken.length}, id_token length: ${helseIdIdToken.length}`,
                 )
 
                 // Match HPR-number in HelseID token with FHIR-resource HPR-number
@@ -134,7 +134,9 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
                     logger.info(`[HelseID-double-auth-exp] HelseID HPR matches FHIR HPR`)
                 }
             } catch (e) {
-                logger.warn(`[HelseID-double-auth-exp] Error while getting HelseID auth info: ${(e as Error).message}`)
+                logger.warn(
+                    `[HelseID-double-auth-exp] Error while getting HelseID auth information: ${(e as Error).message}`,
+                )
             }
         }
 
