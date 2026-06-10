@@ -15,8 +15,8 @@ function BehandlingsdagerPeriode({ initialFom }: Props): ReactElement {
     return (
         <div>
             <BodyShort spacing>
-                Gjelder kun enkeltdager med behandling. Ved sammenhengende sykefravær over flere dager kreves ordinær
-                sykmelding.
+                Gjelder sykefravær på én arbeidsdag per uke. Ved sammenhengende sykefravær over flere arbeidsdager
+                kreves ordinær sykemelding.
             </BodyShort>
             <PeriodePicker
                 index={0}

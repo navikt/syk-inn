@@ -31,7 +31,7 @@ function BehandlingsdagerDescriptionField(): ReactElement {
                         </HelpText>
                     </div>
                 }
-                description="Beskriv kort hvilken behandling pasienten skal få og hvorfor det er nødvendig med fravær fra jobb."
+                description="Beskriv kort hvilken behandling pasienten skal få og hvorfor det er nødvendig med fravær fra jobb hele arbeidsdagen."
                 {...form.register('meldinger.tilNav')}
                 maxLength={500}
             />
