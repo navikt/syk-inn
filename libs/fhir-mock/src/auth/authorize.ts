@@ -88,6 +88,8 @@ const allowedScopes = [
     'patient/Condition.read',
     'patient/DocumentReference.read',
     'patient/DocumentReference.write',
+    'patient/QuestionnaireResponse.read',
+    'patient/QuestionnaireResponse.write',
 ]
 
 const knownLocalOnlyScopes = ['https://helseid.nhn.no']
