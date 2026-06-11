@@ -4,6 +4,7 @@ import { redirect, RedirectType, unauthorized } from 'next/navigation'
 
 import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
 import { getSessionId } from '@core/session/session'
+import { getUserlessToggles } from '@core/toggles/unleash'
 
 import { InvalidIssuer, MissingLaunchParams } from '../launch-errors'
 
@@ -35,7 +36,8 @@ async function LaunchPage({ searchParams }: Props): Promise<ReactElement> {
         return <MissingLaunchParams />
     }
 
-    const launchResult = await getSmartClient(sessionId, null).launch({
+    const toggles = await getUserlessToggles()
+    const launchResult = await getSmartClient(sessionId, null, toggles).launch({
         iss: issuerParam,
         launch,
     })

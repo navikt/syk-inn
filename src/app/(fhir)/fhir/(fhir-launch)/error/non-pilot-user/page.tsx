@@ -12,6 +12,7 @@ import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
 import { getOrganisasjonstelefonnummerFromFhir } from '@data-layer/fhir/mappers/organization'
 import { getSessionId } from '@core/session/session'
 import metrics from '@lib/prometheus/metrics'
+import { getUserlessToggles } from '@core/toggles/unleash'
 
 async function Page(): Promise<ReactElement> {
     const sessionId = await getSessionId()
@@ -34,7 +35,8 @@ async function Page(): Promise<ReactElement> {
                 return
             }
 
-            const client = await getSmartClient(sessionId, null).ready()
+            const toggles = await getUserlessToggles()
+            const client = await getSmartClient(sessionId, null, toggles).ready()
             if ('error' in client) {
                 failSpan(span, `Non-pilot-user failed ready: ${client.error}`)
                 span.setAttribute('non-pilot-user.dry-run.outcome', 'fail')

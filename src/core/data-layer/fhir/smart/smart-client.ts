@@ -6,6 +6,7 @@ import { globalInMemoryValkey } from '@dev/mock-engine/valkey/global-inmem-valke
 import { productionValkey } from '@core/services/valkey/client'
 import { getAbsoluteURL } from '@lib/url'
 import { getServerEnv, isDemo, isE2E, isLocal } from '@lib/env'
+import { getFlag, UnleashClient } from '@core/toggles/unleash'
 
 import { getKnownFhirServers } from './issuers'
 
@@ -22,14 +23,26 @@ const smartClientScopes = [
     'patient/DocumentReference.write',
 ]
 
+const structuredScopes = ['patient/QuestionnaireResponse.read', 'patient/QuestionnaireResponse.write']
+
 if (isDemo || isLocal) {
     smartClientScopes.push('https://helseid.nhn.no')
 }
 
-export function getSmartClient(sessionId: string | null, activePatient: string | null): SmartClient {
+export function getSmartClient(
+    sessionId: string | null,
+    activePatient: string | null,
+    toggles: UnleashClient,
+): SmartClient {
+    const structuredEnabled = getFlag('SYK_INN_STRUCTURED_FHIR', toggles)
+
+    const scopes = structuredEnabled
+        ? [...smartClientScopes, ...structuredScopes].join(' ')
+        : smartClientScopes.join(' ')
+
     const smartClientConfig: SmartClientConfiguration = {
         clientId: 'syk-inn',
-        scope: smartClientScopes.join(' '),
+        scope: scopes,
         redirectUrl: `${getAbsoluteURL()}/fhir`,
         callbackUrl: `${getAbsoluteURL()}/fhir/callback`,
         knownFhirServers: getKnownFhirServers(),

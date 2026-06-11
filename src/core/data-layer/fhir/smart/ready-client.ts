@@ -2,13 +2,15 @@ import { ReadyClient, SmartClientReadyErrors } from '@navikt/smart-on-fhir/clien
 import { logger } from '@navikt/next-logger'
 
 import { getSessionId } from '@core/session/session'
+import { getUserlessToggles } from '@core/toggles/unleash'
 
 import { HelseIdClaimSchema } from './helseid'
 import { getSmartClient } from './smart-client'
 
 export async function getReadyClient(activePatient: string): Promise<ReadyClient | SmartClientReadyErrors> {
     const actualSessionId = await getSessionId()
-    const readyClient = await getSmartClient(actualSessionId, activePatient).ready()
+    const toggles = await getUserlessToggles()
+    const readyClient = await getSmartClient(actualSessionId, activePatient, toggles).ready()
 
     // ReadyClient errors has higher precedence
     if ('error' in readyClient) return readyClient

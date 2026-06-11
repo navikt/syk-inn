@@ -4,6 +4,7 @@ import { logger as pinoLogger } from '@navikt/next-logger'
 import { pathWithBasePath } from '@lib/url'
 import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
 import { getSessionId } from '@core/session/session'
+import { getUserlessToggles } from '@core/toggles/unleash'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
 
@@ -39,7 +40,8 @@ export async function GET(request: Request): Promise<Response> {
         redirect(pathWithBasePath('/fhir/error?reason=unknown'))
     }
 
-    const callback = await getSmartClient(sessionId, null).callback({ code, state })
+    const toggles = await getUserlessToggles()
+    const callback = await getSmartClient(sessionId, null, toggles).callback({ code, state })
     if ('error' in callback) {
         logger.error(`Callback failed with error ${callback.error}`)
 
