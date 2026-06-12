@@ -19,6 +19,7 @@ export function sykmeldingToQuestionnaireResponse(
         questionnaire: 'https://www.nav.no/samarbeidspartner/sykmelding/fhir/R4/Questionnaire/V1',
         subject: { reference: `Patient/${references.patientId}` },
         author: { reference: `Practitioner/${references.practitionerId}` },
+        authored: new Date().toISOString(),
         encounter: { reference: `Encounter/${references.encounterId}` },
         item: sykmeldingValuesToItems(sykmelding.values),
     }
