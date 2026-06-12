@@ -2,7 +2,11 @@ import { addDays } from 'date-fns'
 
 import {
     SykInnApiAktivitet,
+    SykInnApiAktivitetAvventende,
+    SykInnApiAktivitetBehandlingsdager,
+    SykInnApiAktivitetGradert,
     SykInnApiAktivitetIkkeMulig,
+    SykInnApiAktivitetReisetilskudd,
     SykInnApiSykmelding,
     SykInnApiSykmeldingRedacted,
     SykInnApiSykmeldingRedactedSchema,
@@ -98,7 +102,13 @@ export class SykmeldingBuilder {
     }
 
     relativeAktivitet(
-        aktivitet: Omit<SykInnApiAktivitet, 'fom' | 'tom'>,
+        aktivitet:
+            // We can't omit directly on a discriminated union, typescript doesn't like it
+            | Omit<SykInnApiAktivitetIkkeMulig, 'fom' | 'tom'>
+            | Omit<SykInnApiAktivitetGradert, 'fom' | 'tom'>
+            | Omit<SykInnApiAktivitetBehandlingsdager, 'fom' | 'tom'>
+            | Omit<SykInnApiAktivitetAvventende, 'fom' | 'tom'>
+            | Omit<SykInnApiAktivitetReisetilskudd, 'fom' | 'tom'>,
         time: { offset: number; days: number },
     ): SykmeldingBuilder {
         const periodeWithDates = {

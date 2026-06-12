@@ -17,22 +17,26 @@ const AktivitetIkkeMuligSchema = BaseAktivitetSchema.extend({
     }),
 })
 
+export type SykInnApiAktivitetGradert = z.infer<typeof AktivitetGradertSchema>
 const AktivitetGradertSchema = BaseAktivitetSchema.extend({
     type: z.literal('GRADERT'),
     grad: z.number(),
     reisetilskudd: z.boolean(),
 })
 
+export type SykInnApiAktivitetBehandlingsdager = z.infer<typeof AktivitetBehandlingsdagerSchema>
 const AktivitetBehandlingsdagerSchema = BaseAktivitetSchema.extend({
     type: z.literal('BEHANDLINGSDAGER'),
     antallBehandlingsdager: z.number(),
 })
 
+export type SykInnApiAktivitetAvventende = z.infer<typeof AktivitetAvventendeSchema>
 const AktivitetAvventendeSchema = BaseAktivitetSchema.extend({
     type: z.literal('AVVENTENDE'),
     innspillTilArbeidsgiver: z.string(),
 })
 
+export type SykInnApiAktivitetReisetilskudd = z.infer<typeof AktivitetReisetilskuddSchema>
 const AktivitetReisetilskuddSchema = BaseAktivitetSchema.extend({
     type: z.literal('REISETILSKUDD'),
 })
