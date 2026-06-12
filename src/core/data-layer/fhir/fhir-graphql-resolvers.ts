@@ -339,8 +339,9 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const writeService = fhirWriteService(client, await getUserToggles(hpr))
-            const [documentReference] = await Promise.allSettled([
+            const userToggles = await getUserToggles(hpr)
+            const writeService = fhirWriteService(client, userToggles)
+            const [documentReference, questionnaireResponse] = await Promise.allSettled([
                 writeService.writeDocumentReference(sykmelding),
                 writeService.writeQuestionnaireResponse(sykmelding),
             ])
@@ -353,6 +354,19 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             if ('error' in documentReference.value) {
                 // Already logged and failed span in in service
                 throw new GraphQLError('API_ERROR')
+            }
+
+            if (userToggles.isEnabled('SYK_INN_STRUCTURED_FHIR')) {
+                if (questionnaireResponse.status === 'rejected') {
+                    logger.error(
+                        new Error(`Creating questionnaire response failed`, { cause: questionnaireResponse.reason }),
+                    )
+                    throw new GraphQLError('API_ERROR')
+                }
+
+                if ('error' in questionnaireResponse.value) {
+                    throw new GraphQLError('API_ERROR')
+                }
             }
 
             return { navStatus: 'COMPLETE', documentStatus: 'COMPLETE' }
