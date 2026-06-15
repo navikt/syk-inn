@@ -1,7 +1,7 @@
 import { CodeableConcept, FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
 
 import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
-import { getSimpleSykmeldingDescription } from '@data-layer/common/sykmelding-utils'
+import { earliestFom, getSimpleSykmeldingDescription, latestTom } from '@data-layer/common/sykmelding-utils'
 
 const SykmeldingDocumentTypeCodeableConcept: CodeableConcept = {
     system: 'urn:oid:2.16.578.1.12.4.1.1.9602',
@@ -17,6 +17,7 @@ export function sykmeldingToDocumentReference(
         encounterId: string
         practitionerId: string
     },
+    relatedQuestionnaireResponse?: string,
 ): FhirDocumentReference {
     const description = getSimpleSykmeldingDescription(sykmelding.values.aktivitet)
     const base64Pdf = Buffer.from(pdfBytes).toString('base64')
@@ -28,7 +29,20 @@ export function sykmeldingToDocumentReference(
         type: { coding: [SykmeldingDocumentTypeCodeableConcept] },
         subject: { reference: `Patient/${references.patientId}` },
         author: [{ reference: `Practitioner/${references.practitionerId}` }],
-        context: { encounter: [{ reference: `Encounter/${references.encounterId}` }] },
+        context: {
+            encounter: [
+                {
+                    reference: `Encounter/${references.encounterId}`,
+                },
+            ],
+            period: {
+                start: earliestFom(sykmelding),
+                end: latestTom(sykmelding),
+            },
+            ...(relatedQuestionnaireResponse === null
+                ? { related: [{ reference: relatedQuestionnaireResponse }] }
+                : {}),
+        },
         meta: { lastUpdated: new Date().toISOString() },
         description: description,
         content: [

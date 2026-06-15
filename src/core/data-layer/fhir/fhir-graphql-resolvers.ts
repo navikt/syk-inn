@@ -341,9 +341,27 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const userToggles = await getUserToggles(hpr)
             const writeService = fhirWriteService(client, userToggles)
-            const [documentReference, questionnaireResponse] = await Promise.allSettled([
-                writeService.writeDocumentReference(sykmelding),
-                writeService.writeQuestionnaireResponse(sykmelding),
+            const questionnaireResponseSubmitted = await (async () => {
+                if (userToggles.isEnabled('SYK_INN_STRUCTURED_FHIR')) {
+                    const [questionnaireResponse] = await Promise.allSettled([
+                        writeService.writeQuestionnaireResponse(sykmelding),
+                    ])
+
+                    if (questionnaireResponse.status === 'rejected') {
+                        logger.error(
+                            new Error('Creating questionnaire response failed', {
+                                cause: questionnaireResponse.reason,
+                            }),
+                        )
+                        return false
+                    }
+                    return !('error' in questionnaireResponse.value)
+                }
+                return false
+            })()
+
+            const [documentReference] = await Promise.allSettled([
+                writeService.writeDocumentReference(sykmelding, questionnaireResponseSubmitted),
             ])
 
             if (documentReference.status === 'rejected') {
@@ -352,21 +370,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             }
 
             if ('error' in documentReference.value) {
-                // Already logged and failed span in in service
+                // Already logged and failed span in service
                 throw new GraphQLError('API_ERROR')
-            }
-
-            if (userToggles.isEnabled('SYK_INN_STRUCTURED_FHIR')) {
-                if (questionnaireResponse.status === 'rejected') {
-                    logger.error(
-                        new Error(`Creating questionnaire response failed`, { cause: questionnaireResponse.reason }),
-                    )
-                    throw new GraphQLError('API_ERROR')
-                }
-
-                if ('error' in questionnaireResponse.value) {
-                    throw new GraphQLError('API_ERROR')
-                }
             }
 
             return { navStatus: 'COMPLETE', documentStatus: 'COMPLETE' }

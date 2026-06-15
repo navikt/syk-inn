@@ -21,7 +21,10 @@ type FhirWriteOutcomes =
 
 export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
     ({
-        writeDocumentReference: async (sykmelding: SykInnApiSykmelding): Promise<FhirWriteOutcomes> => {
+        writeDocumentReference: async (
+            sykmelding: SykInnApiSykmelding,
+            questionnaireResponseSubmitted: boolean,
+        ): Promise<FhirWriteOutcomes> => {
             return spanServerAsync('FhirWriteService.writeDocumentReference', async (span) => {
                 const sykmeldingId = sykmelding.sykmeldingId
 
@@ -34,11 +37,19 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                     return { error: 'UNABLE_TO_CREATE' }
                 }
 
-                const payload: FhirDocumentReference = sykmeldingToDocumentReference(sykmelding, pdf.pdf, {
-                    encounterId: client.encounter.id,
-                    patientId: client.patient.id,
-                    practitionerId: client.user.id,
-                })
+                const relatedRef = questionnaireResponseSubmitted
+                    ? `QuestionnaireResponse/${sykmelding.sykmeldingId}`
+                    : undefined
+                const payload: FhirDocumentReference = sykmeldingToDocumentReference(
+                    sykmelding,
+                    pdf.pdf,
+                    {
+                        encounterId: client.encounter.id,
+                        patientId: client.patient.id,
+                        practitionerId: client.user.id,
+                    },
+                    relatedRef,
+                )
                 const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.update(
                     'DocumentReference',
                     { id: sykmelding.sykmeldingId, payload: payload },

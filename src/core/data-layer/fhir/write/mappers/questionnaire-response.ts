@@ -4,7 +4,7 @@ import {
     FhirQuestionnaireResponseItem,
 } from '@navikt/smart-on-fhir/zod'
 
-import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
+import { SykInnApiAktivitet, SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
 import { Diagnose } from '@data-layer/common/diagnose'
 import { diagnosisSystemToUrn } from '@data-layer/fhir/mappers/diagnosis'
 
@@ -56,6 +56,26 @@ function sykmeldingValuesToItems(values: SykInnApiSykmelding['values']): FhirQue
         })
     }
 
+    if (values.aktivitet && values.aktivitet.length > 0) {
+        items.push(...values.aktivitet.map(toAktivitetItem))
+    }
+
+    if (values.svangerskapsrelatert) {
+        items.push({
+            linkId: 'svangerskapsrelatert',
+            text: 'Svangerskapsrelatert',
+            answer: [
+                {
+                    valueBoolean: values.svangerskapsrelatert,
+                },
+            ],
+        })
+    }
+
+    if (values.yrkesskade) {
+        items.push(toYrkesskadeItem(values.yrkesskade))
+    }
+
     return items
 }
 
@@ -66,5 +86,72 @@ function toDiagnoseValueAnswer(diagnose: Diagnose): FhirQuestionnaireResponseAns
             code: diagnose.code,
             display: diagnose.text,
         },
+    }
+}
+
+const aktivitetTypeDisplay: Record<SykInnApiAktivitet['type'], string> = {
+    AKTIVITET_IKKE_MULIG: 'Aktivitet ikke mulig',
+    GRADERT: 'Gradert',
+    AVVENTENDE: 'Avventende',
+    BEHANDLINGSDAGER: 'Behandlingsdager',
+    REISETILSKUDD: 'Reisetilskudd',
+}
+
+function toAktivitetItem(aktivitet: SykInnApiAktivitet): FhirQuestionnaireResponseItem {
+    const aktivitetItems: FhirQuestionnaireResponseItem[] = [
+        {
+            linkId: 'aktivitet-type',
+            text: 'Aktivetstype',
+            answer: [{ valueCoding: { code: aktivitet.type, display: aktivitetTypeDisplay[aktivitet.type] } }],
+        },
+        {
+            linkId: 'aktivitet-fom',
+            text: 'Fra og med dato',
+            answer: [{ valueDate: aktivitet.fom }],
+        },
+        {
+            linkId: 'aktivitet-tom',
+            text: 'Til og med dato',
+            answer: [{ valueDate: aktivitet.tom }],
+        },
+    ]
+
+    if (aktivitet.type === 'GRADERT') {
+        aktivitetItems.push({
+            linkId: 'aktivitet-grad',
+            text: 'Sykmeldingsgrad (prosent)',
+            answer: [{ valueInteger: aktivitet.grad }],
+        })
+    }
+
+    return {
+        linkId: 'aktivitet',
+        text: 'Sykmeldingsperiode',
+        item: aktivitetItems,
+    }
+}
+
+function toYrkesskadeItem(
+    yrkesskade: NonNullable<SykInnApiSykmelding['values']['yrkesskade']>,
+): FhirQuestionnaireResponseItem {
+    return {
+        linkId: 'yrkesskade',
+        text: 'Yrkesskade',
+        item: [
+            {
+                linkId: 'yrkesskade-er-yrkesskade',
+                text: 'Sykmelding kan skyldes en yrkesskade eller yrkessykdom',
+                answer: [{ valueBoolean: yrkesskade.yrkesskade }],
+                ...(yrkesskade.skadedato !== null
+                    ? [
+                          {
+                              linkId: 'yrkesskade-skadedato',
+                              text: 'Skadedato',
+                              answer: [{ valueDate: yrkesskade.skadedato }],
+                          },
+                      ]
+                    : []),
+            },
+        ],
     }
 }
