@@ -9,21 +9,31 @@ import LegeOgBehandlerTelefonen from '#components/help/LegeOgBehandlerTelefonen'
 import SessionIdInfo from '#components/help/SessionIdInfo'
 import useOnFocus from '#lib/hooks/useOnFocus'
 import { cn } from '#lib/tw'
-import { AllDashboardDocument } from '#queries'
+import { AllDashboardDocument, KonsultasjonDocument } from '#queries'
 
 import DashboardCard from './card/DashboardCard'
 import { ComboTable, ComboTableFullCell, ComboTableHeader } from './combo-table/ComboTable'
 import DashboardTable from './table/DashboardTable'
+import { RequestSykmeldinger } from './historical/RequestSykmeldinger'
+import { useFlag } from '#core/toggles/context'
 
 function ComboTableCard({ className }: { className?: string }): ReactElement {
+    const konsultasjon = useQuery(KonsultasjonDocument)
     const dashboardQuery = useQuery(AllDashboardDocument)
     useOnFocus(dashboardQuery.refetch)
 
+    const historiskeToggle = useFlag('SYK_INN_REQUEST_HISTORISKE')
+
+    const hasRequested = konsultasjon.data?.konsultasjon?.hasRequestedAccessToSykmeldinger
     const isRefetching = dashboardQuery.networkStatus === NetworkStatus.refetch
     const initialLoad = dashboardQuery.networkStatus === NetworkStatus.loading
     const hasDrafts = !!dashboardQuery.data?.drafts?.length
     const hasSykmeldinger = !!dashboardQuery.data?.sykmeldinger?.current.length
     const hasData = hasSykmeldinger || hasDrafts
+
+    const current = dashboardQuery.data?.sykmeldinger?.current ?? []
+    const historical = dashboardQuery.data?.sykmeldinger?.historical ?? []
+    const allSykmeldinger = [...current, ...historical]
 
     return (
         <DashboardCard
@@ -48,6 +58,9 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
             {initialLoad && <ComboTableSkeleton />}
             {!initialLoad && !dashboardQuery.error && !hasData && <ComboTableEmptyState />}
             {!initialLoad && dashboardQuery.error && !hasData && <EverythingError refetch={dashboardQuery.refetch} />}
+            {historiskeToggle && !dashboardQuery.error && !hasRequested && (
+                <RequestSykmeldinger loading={initialLoad} />
+            )}
         </DashboardCard>
     )
 }
