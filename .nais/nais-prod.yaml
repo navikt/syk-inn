@@ -18,7 +18,7 @@ spec:
   observability:
     autoInstrumentation:
       enabled: true
-      runtime: nodejs<<<<
+      runtime: nodejs
     logging:
       destinations:
         - id: loki
