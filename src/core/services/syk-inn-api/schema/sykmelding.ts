@@ -85,7 +85,6 @@ const ArbeidsgiverSchema = z.object({
     arbeidsgivernavn: z.string(),
 })
 
-// export type SykInnApiYrkesskade = z.infer<typeof YrkesskadeSchema>
 const YrkesskadeSchema = z.object({
     yrkesskade: z.boolean(),
     skadedato: z.string().nullable(),
