@@ -142,16 +142,10 @@ function toYrkesskadeItem(
                 linkId: 'yrkesskade-er-yrkesskade',
                 text: 'Sykmelding kan skyldes en yrkesskade eller yrkessykdom',
                 answer: [{ valueBoolean: yrkesskade.yrkesskade }],
-                ...(yrkesskade.skadedato !== null
-                    ? [
-                          {
-                              linkId: 'yrkesskade-skadedato',
-                              text: 'Skadedato',
-                              answer: [{ valueDate: yrkesskade.skadedato }],
-                          },
-                      ]
-                    : []),
             },
+            ...(yrkesskade.skadedato !== null
+                ? [{ linkId: 'yrkesskade-skadedato', text: 'Skadedato', answer: [{ valueDate: yrkesskade.skadedato }] }]
+                : []),
         ],
     }
 }

@@ -39,9 +39,7 @@ export function sykmeldingToDocumentReference(
                 start: earliestFom(sykmelding),
                 end: latestTom(sykmelding),
             },
-            ...(relatedQuestionnaireResponse === null
-                ? { related: [{ reference: relatedQuestionnaireResponse }] }
-                : {}),
+            ...(relatedQuestionnaireResponse ? { related: [{ reference: relatedQuestionnaireResponse }] } : {}),
         },
         meta: { lastUpdated: new Date().toISOString() },
         description: description,
