@@ -14,6 +14,7 @@ import { sykmeldingToQuestionnaireResponse } from './mappers/questionnaire-respo
 type FhirWriteOutcomes =
     | {
           result: 'ALREADY_CREATED' | 'CREATED'
+          related: string | null
       }
     | {
           error: 'UNABLE_TO_VERIFY_IF_EXISTS' | 'UNABLE_TO_CREATE'
@@ -23,7 +24,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
     ({
         writeDocumentReference: async (
             sykmelding: SykInnApiSykmelding,
-            questionnaireResponseSubmitted: boolean,
+            related: string | null,
         ): Promise<FhirWriteOutcomes> => {
             return spanServerAsync('FhirWriteService.writeDocumentReference', async (span) => {
                 const sykmeldingId = sykmelding.sykmeldingId
@@ -36,10 +37,6 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                     failSpan(span, `Failed to generate PDF for DocumentReference(${sykmeldingId}): ${pdf.error}`)
                     return { error: 'UNABLE_TO_CREATE' }
                 }
-
-                const relatedRef = questionnaireResponseSubmitted
-                    ? `QuestionnaireResponse/${sykmelding.sykmeldingId}`
-                    : undefined
                 const payload: FhirDocumentReference = sykmeldingToDocumentReference(
                     sykmelding,
                     pdf.pdf,
@@ -48,7 +45,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                         patientId: client.patient.id,
                         practitionerId: client.user.id,
                     },
-                    relatedRef,
+                    related,
                 )
                 const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.update(
                     'DocumentReference',
@@ -65,7 +62,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
 
                 sanityCheckDocumentReferenceId(span, sykmelding, createdDocumentReference)
 
-                return { result: 'CREATED' }
+                return { result: 'CREATED', related: `DocumentReference/${createdDocumentReference.id}` }
             })
         },
         writeQuestionnaireResponse: async (sykmelding: SykInnApiSykmelding): Promise<FhirWriteOutcomes> => {
@@ -77,7 +74,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                     logger.info('QuestionnaireResponse creation is toggled off. Skipping.')
 
                     // Pretend everything went fine if toggle is off
-                    return { result: 'ALREADY_CREATED' }
+                    return { result: 'ALREADY_CREATED', related: null }
                 }
 
                 const sykmeldingId = sykmelding.sykmeldingId
@@ -96,10 +93,10 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
 
                 if ('error' in createdQuestionnaireResponse) {
                     failSpan(span, `Failed to create QuestionnaireResponse ${createdQuestionnaireResponse.error}`)
-                    return { error: 'UNABLE_TO_CREATE' }
+                    return { error: 'UNABLE_TO_CREATE', related: null }
                 }
 
-                return { result: 'CREATED' }
+                return { result: 'CREATED', related: `QuestionnaireResponse/${createdQuestionnaireResponse.id}` }
             })
         },
     }) as const

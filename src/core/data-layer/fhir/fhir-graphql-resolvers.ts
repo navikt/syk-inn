@@ -19,6 +19,7 @@ import { raise } from '@lib/ts'
 import { getHasRequestedAccessToSykmeldinger } from '@core/session/session'
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
 import metrics from '@lib/prometheus/metrics'
+import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
 
 import { byCurrentOrPreviousWithOffset } from '../common/sykmelding-utils'
 import { countDiagnoses } from '../common/diagnose-counting'
@@ -341,27 +342,10 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const userToggles = await getUserToggles(hpr)
             const writeService = fhirWriteService(client, userToggles)
-            const questionnaireResponseSubmitted = await (async () => {
-                if (userToggles.isEnabled('SYK_INN_STRUCTURED_FHIR')) {
-                    const [questionnaireResponse] = await Promise.allSettled([
-                        writeService.writeQuestionnaireResponse(sykmelding),
-                    ])
-
-                    if (questionnaireResponse.status === 'rejected') {
-                        logger.error(
-                            new Error('Creating questionnaire response failed', {
-                                cause: questionnaireResponse.reason,
-                            }),
-                        )
-                        return false
-                    }
-                    return !('error' in questionnaireResponse.value)
-                }
-                return false
-            })()
+            const questionnaireRef = await writeQuestionnaireResponseWithFallback(writeService, sykmelding)
 
             const [documentReference] = await Promise.allSettled([
-                writeService.writeDocumentReference(sykmelding, questionnaireResponseSubmitted),
+                writeService.writeDocumentReference(sykmelding, questionnaireRef),
             ])
 
             if (documentReference.status === 'rejected') {
@@ -423,6 +407,21 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     },
     ...commonObjectResolvers,
     ...commonTypeResolvers,
+}
+
+async function writeQuestionnaireResponseWithFallback(
+    writeService: ReturnType<typeof fhirWriteService>,
+    sykmelding: SykInnApiSykmelding,
+): Promise<string | null> {
+    const fhirWriteOutcome = await writeService.writeQuestionnaireResponse(sykmelding).catch((err) => {
+        logger.error(new Error('Creating questionnaire response failed', { cause: err }))
+        return null
+    })
+
+    if (fhirWriteOutcome === null || 'error' in fhirWriteOutcome) {
+        return null
+    }
+    return fhirWriteOutcome.related
 }
 
 export const fhirSchema = createSchema(fhirResolvers)

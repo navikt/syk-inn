@@ -17,7 +17,7 @@ export function sykmeldingToDocumentReference(
         encounterId: string
         practitionerId: string
     },
-    relatedQuestionnaireResponse?: string,
+    relatedQuestionnaireResponse?: string | null,
 ): FhirDocumentReference {
     const description = getSimpleSykmeldingDescription(sykmelding.values.aktivitet)
     const base64Pdf = Buffer.from(pdfBytes).toString('base64')

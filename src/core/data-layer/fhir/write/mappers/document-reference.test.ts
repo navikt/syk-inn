@@ -36,4 +36,23 @@ describe('sykmeldingToDocumentReference', () => {
         expect(result.context.period?.start).toBe('2026-01-01')
         expect(result.context.period?.end).toBe('2026-02-01')
     })
+
+    it('includes context.related when a questionnaire response reference is provided', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        const result = sykmeldingToDocumentReference(
+            sykmelding,
+            EMPTY_PDF,
+            REFS,
+            `QuestionnaireResponse/${sykmelding.sykmeldingId}`,
+        )
+
+        expect(result.context.related?.[0].reference).toBe(`QuestionnaireResponse/${sykmelding.sykmeldingId}`)
+    })
+
+    it('omits context.related when related is null', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        const result = sykmeldingToDocumentReference(sykmelding, EMPTY_PDF, REFS, null)
+
+        expect(result.context.related).toBeUndefined()
+    })
 })
