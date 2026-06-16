@@ -21,7 +21,7 @@ import { gotoExistingSykmelding } from '../actions/fhir-user-actions'
 test('should be able to view previous sykmelding', async ({ page }) => {
     await launchWithMock('plenty-of-previous')(page)
 
-    await gotoExistingSykmelding('current', 1)(page)
+    await gotoExistingSykmelding(1)(page)
 
     // Should have non light/redacted sykmelding:
     const valuesSection = page.getByRole('region', { name: 'Innsendt sykmelding' })
@@ -42,7 +42,7 @@ test('should be able to view previous sykmelding', async ({ page }) => {
 test('previous sykmelding within 4 days should still show as a full sykmelding', async ({ page }) => {
     await launchWithMock('plenty-of-previous')(page)
 
-    await gotoExistingSykmelding('current', 4)(page)
+    await gotoExistingSykmelding(4)(page)
 
     // Should have non light/redacted sykmelding:
     const valuesSection = page.getByRole('region', { name: 'Innsendt sykmelding' })
@@ -65,7 +65,7 @@ test('previous sykmelding older than 4 days should display less values', async (
 
     await requestAccessToSykmeldinger()(page)
 
-    await gotoExistingSykmelding('previous', 1)(page)
+    await gotoExistingSykmelding(5)(page)
 
     // Should have non light/redacted sykmelding:
     const valuesSection = page.getByRole('region', { name: 'Innsendt sykmelding' })

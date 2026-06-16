@@ -57,7 +57,7 @@ export function startNewAlternateSykmelding(variant: 'BEHANDLINGSDAGER', patient
     }
 }
 
-export function gotoExistingSykmelding(when: 'current' | 'previous', nth: number) {
+export function gotoExistingSykmelding(nth: number) {
     return async (page: Page) => {
         await test.step('Go to existing sykmelding', async () => {
             const region = page.getByRole('region', {
