@@ -1,6 +1,5 @@
 import { evaluateFlags, flagsClient } from '@unleash/nextjs'
 import { logger as pinoLogger } from '@navikt/next-logger'
-import { connection } from 'next/server'
 
 import { bundledEnv, isE2E, isLocal, isDemo } from '@lib/env'
 import { raise } from '@lib/ts'
@@ -32,8 +31,6 @@ export async function getUserToggles(noUser: true): Promise<UnleashClient>
  * Fetches a specific users toggles, based an the HPR number.
  */
 export async function getUserToggles(userId: string | true): Promise<UnleashClient> {
-    await connection()
-
     if (isLocal || isDemo || isE2E) return flagsClient(await developmentTogglesWithCookieOverrides())
 
     try {
