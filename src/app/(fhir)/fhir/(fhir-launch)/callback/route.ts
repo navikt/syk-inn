@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation'
 import { logger as pinoLogger } from '@navikt/next-logger'
 
-import {pathWithBasePath} from "@lib/url";
-import {getSmartClient} from "@data-layer/fhir/smart/smart-client";
-import {getSessionId} from "@core/session/session";
-import {getFlag, getUserlessToggles} from "@core/toggles/unleash";
+import { pathWithBasePath } from '@lib/url'
+import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
+import { getSessionId } from '@core/session/session'
+import { getFlag, getUserlessToggles } from '@core/toggles/unleash'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[Secure FHIR (callback)] ' })
