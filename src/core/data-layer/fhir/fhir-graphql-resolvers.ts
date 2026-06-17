@@ -421,7 +421,7 @@ async function writeQuestionnaireResponseWithFallback(
     if (fhirWriteOutcome === null || 'error' in fhirWriteOutcome) {
         return null
     }
-    return fhirWriteOutcome.related
+    return fhirWriteOutcome.selfRef
 }
 
 export const fhirSchema = createSchema(fhirResolvers)

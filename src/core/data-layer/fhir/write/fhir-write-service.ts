@@ -11,10 +11,16 @@ import { createTypstSykmelding } from '@core/pdf/pdf-service'
 import { sykmeldingToDocumentReference } from './mappers/document-reference'
 import { sykmeldingToQuestionnaireResponse } from './mappers/questionnaire-response'
 
+/**
+ * Outcomes of writing to the FHIR server
+ *
+ * selfRef: the FHIR resource and id of the created record.
+ * For example "DocumentReference/<id>" | "QuestionnaireResponse/<id>"
+ */
 type FhirWriteOutcomes =
     | {
           result: 'ALREADY_CREATED' | 'CREATED'
-          related: string | null
+          selfRef: string | null
       }
     | {
           error: 'UNABLE_TO_VERIFY_IF_EXISTS' | 'UNABLE_TO_CREATE'
@@ -24,7 +30,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
     ({
         writeDocumentReference: async (
             sykmelding: SykInnApiSykmelding,
-            related: string | null,
+            reference: string | null,
         ): Promise<FhirWriteOutcomes> => {
             return spanServerAsync('FhirWriteService.writeDocumentReference', async (span) => {
                 const sykmeldingId = sykmelding.sykmeldingId
@@ -45,7 +51,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                         patientId: client.patient.id,
                         practitionerId: client.user.id,
                     },
-                    related,
+                    reference,
                 )
                 const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.update(
                     'DocumentReference',
@@ -62,7 +68,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
 
                 sanityCheckDocumentReferenceId(span, sykmelding, createdDocumentReference)
 
-                return { result: 'CREATED', related: `DocumentReference/${createdDocumentReference.id}` }
+                return { result: 'CREATED', selfRef: `DocumentReference/${createdDocumentReference.id}` }
             })
         },
         writeQuestionnaireResponse: async (sykmelding: SykInnApiSykmelding): Promise<FhirWriteOutcomes> => {
@@ -74,7 +80,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                     logger.info('QuestionnaireResponse creation is toggled off. Skipping.')
 
                     // Pretend everything went fine if toggle is off
-                    return { result: 'ALREADY_CREATED', related: null }
+                    return { result: 'ALREADY_CREATED', selfRef: null }
                 }
 
                 const sykmeldingId = sykmelding.sykmeldingId
@@ -96,7 +102,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                     return { error: 'UNABLE_TO_CREATE', related: null }
                 }
 
-                return { result: 'CREATED', related: `QuestionnaireResponse/${createdQuestionnaireResponse.id}` }
+                return { result: 'CREATED', selfRef: `QuestionnaireResponse/${createdQuestionnaireResponse.id}` }
             })
         },
     }) as const
