@@ -20,6 +20,8 @@ import { FhirModeProvider } from '@core/providers/Modes'
 import { createFhirPaths } from '@core/providers/ModePaths'
 import FeedbackButton from '@components/feedback/FeedbackButton'
 import { hasAcceptedBruksvilkar } from '@core/services/bruksvilkar/bruksvilkar-service'
+import { getHelseIdAccessToken, getHelseIdIdToken } from '@data-layer/helseid/token/tokens'
+import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
 
 import { NoPractitionerSession, NoValidPatient } from './launched-errors'
 
@@ -114,6 +116,29 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
         }
 
         const toggles = await spanServerAsync('FHIR.getRootFhirData.toggles', async () => await getUserToggles(hpr))
+
+        const flag = getFlag('SYK_INN_HELSEID_DOUBLE_AUTH_EXP', toggles)
+        if (flag) {
+            try {
+                const helseIdAccessToken = await getHelseIdAccessToken()
+                const helseIdIdToken = await getHelseIdIdToken()
+                logger.info(
+                    `[HelseID-double-auth-exp] HelseID tokens on FHIR path! access_token length: ${helseIdAccessToken.length}, id_token length: ${helseIdIdToken.length}`,
+                )
+
+                // Match HPR-number in HelseID token with FHIR-resource HPR-number
+                const helseIdUserInfo = await getHelseIdBehandler()
+                const helseIdHpr = helseIdUserInfo?.hpr
+
+                if (helseIdHpr && helseIdHpr === hpr) {
+                    logger.info(`[HelseID-double-auth-exp] HelseID HPR matches FHIR HPR`)
+                }
+            } catch (e) {
+                logger.warn(
+                    `[HelseID-double-auth-exp] Error while getting HelseID auth information: ${(e as Error).message}`,
+                )
+            }
+        }
 
         metrics.appLoadsTotal.inc({ hpr: hpr, mode: 'FHIR' })
         if (!getFlag('PILOT_USER', toggles)) {
