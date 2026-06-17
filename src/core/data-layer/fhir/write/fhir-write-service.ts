@@ -35,8 +35,11 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
             return spanServerAsync('FhirWriteService.writeDocumentReference', async (span) => {
                 const sykmeldingId = sykmelding.sykmeldingId
 
-                const alreadyExists = resourceAlreadyExists(client, { type: 'DocumentReference', id: sykmeldingId })
-                if ('error' in alreadyExists) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
+                const alreadyExists = await resourceAlreadyExists(client, {
+                    type: 'DocumentReference',
+                    id: sykmeldingId,
+                })
+                if (alreadyExists !== true) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
 
                 const pdf = await createTypstSykmelding(sykmelding)
                 if (!pdf.ok) {
@@ -84,8 +87,11 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                 }
 
                 const sykmeldingId = sykmelding.sykmeldingId
-                const alreadyExists = resourceAlreadyExists(client, { type: 'QuestionnaireResponse', id: sykmeldingId })
-                if ('error' in alreadyExists) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
+                const alreadyExists = await resourceAlreadyExists(client, {
+                    type: 'QuestionnaireResponse',
+                    id: sykmeldingId,
+                })
+                if (alreadyExists !== true) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
 
                 const payload: FhirQuestionnaireResponse = sykmeldingToQuestionnaireResponse(sykmelding, {
                     encounterId: client.encounter.id,
@@ -99,7 +105,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
 
                 if ('error' in createdQuestionnaireResponse) {
                     failSpan(span, `Failed to create QuestionnaireResponse ${createdQuestionnaireResponse.error}`)
-                    return { error: 'UNABLE_TO_CREATE', related: null }
+                    return { error: 'UNABLE_TO_CREATE' }
                 }
 
                 return { result: 'CREATED', selfRef: `QuestionnaireResponse/${createdQuestionnaireResponse.id}` }
