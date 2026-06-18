@@ -11,9 +11,16 @@ import { createTypstSykmelding } from '@core/pdf/pdf-service'
 import { sykmeldingToDocumentReference } from './mappers/document-reference'
 import { sykmeldingToQuestionnaireResponse } from './mappers/questionnaire-response'
 
+/**
+ * Outcomes of writing to the FHIR server
+ *
+ * selfRef: the FHIR resource and id of the created record.
+ * For example "DocumentReference/<id>" | "QuestionnaireResponse/<id>"
+ */
 type FhirWriteOutcomes =
     | {
           result: 'ALREADY_CREATED' | 'CREATED'
+          selfRef: string | null
       }
     | {
           error: 'UNABLE_TO_VERIFY_IF_EXISTS' | 'UNABLE_TO_CREATE'
@@ -21,24 +28,34 @@ type FhirWriteOutcomes =
 
 export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
     ({
-        writeDocumentReference: async (sykmelding: SykInnApiSykmelding): Promise<FhirWriteOutcomes> => {
+        writeDocumentReference: async (
+            sykmelding: SykInnApiSykmelding,
+            reference: string | null,
+        ): Promise<FhirWriteOutcomes> => {
             return spanServerAsync('FhirWriteService.writeDocumentReference', async (span) => {
                 const sykmeldingId = sykmelding.sykmeldingId
 
-                const alreadyExists = resourceAlreadyExists(client, { type: 'DocumentReference', id: sykmeldingId })
-                if ('error' in alreadyExists) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
+                const alreadyExists = await resourceAlreadyExists(client, {
+                    type: 'DocumentReference',
+                    id: sykmeldingId,
+                })
+                if (alreadyExists !== true) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
 
                 const pdf = await createTypstSykmelding(sykmelding)
                 if (!pdf.ok) {
                     failSpan(span, `Failed to generate PDF for DocumentReference(${sykmeldingId}): ${pdf.error}`)
                     return { error: 'UNABLE_TO_CREATE' }
                 }
-
-                const payload: FhirDocumentReference = sykmeldingToDocumentReference(sykmelding, pdf.pdf, {
-                    encounterId: client.encounter.id,
-                    patientId: client.patient.id,
-                    practitionerId: client.user.id,
-                })
+                const payload: FhirDocumentReference = sykmeldingToDocumentReference(
+                    sykmelding,
+                    pdf.pdf,
+                    {
+                        encounterId: client.encounter.id,
+                        patientId: client.patient.id,
+                        practitionerId: client.user.id,
+                    },
+                    reference,
+                )
                 const createdDocumentReference: FhirDocumentReference | ResourceCreateErrors = await client.update(
                     'DocumentReference',
                     { id: sykmelding.sykmeldingId, payload: payload },
@@ -54,7 +71,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
 
                 sanityCheckDocumentReferenceId(span, sykmelding, createdDocumentReference)
 
-                return { result: 'CREATED' }
+                return { result: 'CREATED', selfRef: `DocumentReference/${createdDocumentReference.id}` }
             })
         },
         writeQuestionnaireResponse: async (sykmelding: SykInnApiSykmelding): Promise<FhirWriteOutcomes> => {
@@ -66,12 +83,15 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                     logger.info('QuestionnaireResponse creation is toggled off. Skipping.')
 
                     // Pretend everything went fine if toggle is off
-                    return { result: 'ALREADY_CREATED' }
+                    return { result: 'ALREADY_CREATED', selfRef: null }
                 }
 
                 const sykmeldingId = sykmelding.sykmeldingId
-                const alreadyExists = resourceAlreadyExists(client, { type: 'QuestionnaireResponse', id: sykmeldingId })
-                if ('error' in alreadyExists) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
+                const alreadyExists = await resourceAlreadyExists(client, {
+                    type: 'QuestionnaireResponse',
+                    id: sykmeldingId,
+                })
+                if (alreadyExists !== true) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
 
                 const payload: FhirQuestionnaireResponse = sykmeldingToQuestionnaireResponse(sykmelding, {
                     encounterId: client.encounter.id,
@@ -88,7 +108,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                     return { error: 'UNABLE_TO_CREATE' }
                 }
 
-                return { result: 'CREATED' }
+                return { result: 'CREATED', selfRef: `QuestionnaireResponse/${createdQuestionnaireResponse.id}` }
             })
         },
     }) as const
