@@ -11,27 +11,27 @@ _Relevante referanser:_
 
 ```json
 {
-    "resourceType": "Organization",
-    "id": "unik Organization id",
-    "meta": {
-        "profile": ["http://hl7.no/fhir/StructureDefinition/no-basis-Organization"]
+  "resourceType": "Organization",
+  "id": "unik Organization id",
+  "meta": {
+    "profile": ["http://hl7.no/fhir/StructureDefinition/no-basis-Organization"]
+  },
+  "identifier": [
+    {
+      "system": "urn:oid:2.16.578.1.12.4.1.4.101",
+      "value": "organisasjonsnummer / ENH"
     },
-    "identifier": [
-        {
-            "system": "urn:oid:2.16.578.1.12.4.1.4.101",
-            "value": "organisasjonsnummer / ENH"
-        },
-        {
-            "system": "urn:oid:2.16.578.1.12.4.1.2",
-            "value": "her-id"
-        }
-    ],
-    "telecom": [
-        {
-            "system": "phone",
-            "value": "12345678"
-        }
-    ]
+    {
+      "system": "urn:oid:2.16.578.1.12.4.1.2",
+      "value": "her-id"
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "12345678"
+    }
+  ]
 }
 ```
 

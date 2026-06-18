@@ -48,13 +48,13 @@ look like this:
 
 ```json
 {
-    "id_token": "<FHIR ID token>",
-    "access_token": "<FHIR access token>",
-    "token_type": "Bearer",
-    "expires_in": 3600,
-    "scope": "<SoF Scopes>",
-    "patient": "317d1bb5-a3dc-4569-8440-93771f75b6c2",
-    "encounter": "bbd4a2f7-3d42-41da-bf05-30d21cd2c12e"
+  "id_token": "<FHIR ID token>",
+  "access_token": "<FHIR access token>",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "scope": "<SoF Scopes>",
+  "patient": "317d1bb5-a3dc-4569-8440-93771f75b6c2",
+  "encounter": "bbd4a2f7-3d42-41da-bf05-30d21cd2c12e"
 }
 ```
 
@@ -62,15 +62,15 @@ Where the ID-token deserialized will look like this:
 
 ```json
 {
-    "profile": "Practitioner/4f82641e-bec4-4f2d-874c-159e20f0c7c4",
-    "fhirUser": "Practitioner/4f82641e-bec4-4f2d-874c-159e20f0c7c4",
-    "https://helseid.nhn.no": {
-        "access_token": "<HelseID OBO token>",
-        "token_type": "Bearer",
-        "issuer": "https://helseid-sts.nhn.no",
-        "expires_in": 300,
-        "scope": "<HelseID OBO token scopes>"
-    }
+  "profile": "Practitioner/4f82641e-bec4-4f2d-874c-159e20f0c7c4",
+  "fhirUser": "Practitioner/4f82641e-bec4-4f2d-874c-159e20f0c7c4",
+  "https://helseid.nhn.no": {
+    "access_token": "<HelseID OBO token>",
+    "token_type": "Bearer",
+    "issuer": "https://helseid-sts.nhn.no",
+    "expires_in": 300,
+    "scope": "<HelseID OBO token scopes>"
+  }
 }
 ```
 

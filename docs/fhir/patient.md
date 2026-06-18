@@ -12,27 +12,27 @@ _Relevante referanser:_
 
 ```json
 {
-    "resourceType": "Patient",
-    "meta": {
-        "profile": ["http://hl7.no/fhir/StructureDefinition/no-basis-Patient"]
+  "resourceType": "Patient",
+  "meta": {
+    "profile": ["http://hl7.no/fhir/StructureDefinition/no-basis-Patient"]
+  },
+  "id": "unik Patient ident",
+  "identifier": [
+    {
+      "system": "urn:oid:2.16.578.1.12.4.1.4.1",
+      "value": "fødselsnummer"
     },
-    "id": "unik Patient ident",
-    "identifier": [
-        {
-            "system": "urn:oid:2.16.578.1.12.4.1.4.1",
-            "value": "fødselsnummer"
-        },
-        {
-            "system": "urn:oid:2.16.578.1.12.4.1.4.2",
-            "value": "d-nummer"
-        }
-    ],
-    "name": [
-        {
-            "family": "Etternavn",
-            "given": ["Fornavn"]
-        }
-    ]
+    {
+      "system": "urn:oid:2.16.578.1.12.4.1.4.2",
+      "value": "d-nummer"
+    }
+  ],
+  "name": [
+    {
+      "family": "Etternavn",
+      "given": ["Fornavn"]
+    }
+  ]
 }
 ```
 

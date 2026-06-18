@@ -7,8 +7,8 @@ This application will be used by health care professionals to send "sykmeldinger
 ## High level decisions
 
 - This is a monolithic application that will handle users:
-    - Launching the application in a Smart on FHIR context
-    - Uses the application directly using HelseID login (referered to as "standalone")
+  - Launching the application in a Smart on FHIR context
+  - Uses the application directly using HelseID login (referered to as "standalone")
 - Any asynchronous data loading or actions are using tanstack/query, and **should** have both loading **and** error state.
 - Users sessions are stored in Valkey, any action will validate the token using the appropriate issuer.
 
@@ -157,26 +157,26 @@ We'll use the power of TypeScript to automatically update all the mappings.
 ### Data flow and mappings
 
 1. GraphQL: Update `OpprettSykmeldingInput` with a new nullable field and run `yarn gen`
-    - You will now have 20-30 TSC errors in misc mapping and test files.
-    - Fix these. Once you hit real application code move to the next step.
-    - Update any queries/mutation that request the parent object, and add your new field to the query.
+   - You will now have 20-30 TSC errors in misc mapping and test files.
+   - Fix these. Once you hit real application code move to the next step.
+   - Update any queries/mutation that request the parent object, and add your new field to the query.
 2. Draft: Update draft schema in `DraftValuesSchema` with your new value
-    - Update any TS-errors, mapping _from_ draft to default form values will only be possible after step 3.
+   - Update any TS-errors, mapping _from_ draft to default form values will only be possible after step 3.
 3. Form: Once you need the form value to complete the mapping, add your new types to:
-    - `NySykmeldingFormState` (Redux) and `NySykmeldingFormValues` (Form)
-    - Continue fixing (simple) TS-errors and update mappings
-    - Update all the form mappings
-        - Default values for all variants with correct precedence (see other mappings)
-        - Mappings for forleng/duplicate with multiple variants (light/full/redacted)
+   - `NySykmeldingFormState` (Redux) and `NySykmeldingFormValues` (Form)
+   - Continue fixing (simple) TS-errors and update mappings
+   - Update all the form mappings
+     - Default values for all variants with correct precedence (see other mappings)
+     - Mappings for forleng/duplicate with multiple variants (light/full/redacted)
 4. API: Update the payload for the data to syk-inn-api
-    - Add new value to `OpprettSykmeldingPayloadSchema` (Zod)
-    - Fix 2-3 TS-errors, you should have all you need to map from GQL payload.
+   - Add new value to `OpprettSykmeldingPayloadSchema` (Zod)
+   - Fix 2-3 TS-errors, you should have all you need to map from GQL payload.
 5. Playwright: Run all playwright tests and update any payload verifications
-    - use `anything()` where applicable, or `null` for unaffected payloads.
-    - Write new tests that verify your new interaction, assert that the values are provided to the API.
+   - use `anything()` where applicable, or `null` for unaffected payloads.
+   - Write new tests that verify your new interaction, assert that the values are provided to the API.
 6. API Integration tests: Update syk-inn-api integration tests
-    - Prerequisite: Actually have implemented your new value in syk-inn-api
-    - Update or write new tests that verify that your payload data is received and returned correctly.
+   - Prerequisite: Actually have implemented your new value in syk-inn-api
+   - Update or write new tests that verify that your payload data is received and returned correctly.
 
 Following these simple 69 steps and resolving TypeScript-errors (pro tip: use "Project errors" in IntelliJ) you should
 not be able to 'lose' any data in the mapping steps due to the strict typing. The next step is updating any visual

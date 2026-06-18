@@ -17,43 +17,43 @@ I eksemplet fordi den er påkrevd i R4 FHIR spesifikasjonen, men det er ikke et 
 
 ```json
 {
-    "resourceType": "Encounter",
-    "id": "unik encounter ident",
-    "subject": {
-        "reference": "Patient/<Pasienten encounter gjelder for>"
-    },
-    "participant": [
-        {
-            "individual": {
-                "reference": "Practitioner/<Lege som startet encounteret>"
-            }
-        }
-    ],
-    "diagnosis": [
-        {
-            "condition": {
-                "reference": "Condition/<Referanse til Condition i FHIR API>"
-            }
-        }
-    ],
-    "serviceProvider": {
-        "reference": "Organization/<Helseforetaket som utfører konsultasjonen>"
-    },
-    "status": "in-progress",
-    "type": [
-        {
-            "coding": [
-                {
-                    "system": "urn:oid:2.16.578.1.12.4.1.1.8432",
-                    "code": "kontakttype"
-                }
-            ]
-        }
-    ],
-    "class": {
-        "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-        "code": "AMB | VR"
+  "resourceType": "Encounter",
+  "id": "unik encounter ident",
+  "subject": {
+    "reference": "Patient/<Pasienten encounter gjelder for>"
+  },
+  "participant": [
+    {
+      "individual": {
+        "reference": "Practitioner/<Lege som startet encounteret>"
+      }
     }
+  ],
+  "diagnosis": [
+    {
+      "condition": {
+        "reference": "Condition/<Referanse til Condition i FHIR API>"
+      }
+    }
+  ],
+  "serviceProvider": {
+    "reference": "Organization/<Helseforetaket som utfører konsultasjonen>"
+  },
+  "status": "in-progress",
+  "type": [
+    {
+      "coding": [
+        {
+          "system": "urn:oid:2.16.578.1.12.4.1.1.8432",
+          "code": "kontakttype"
+        }
+      ]
+    }
+  ],
+  "class": {
+    "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    "code": "AMB | VR"
+  }
 }
 ```
 

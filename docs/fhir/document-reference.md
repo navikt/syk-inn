@@ -19,44 +19,44 @@ et felt som Nav bruker i dag.
 
 ```json
 {
-    "resourceType": "DocumentReference",
-    "id": "unik DocumentReference id",
-    "description": "Menneskelig lesbar forklaring av dokumentet",
-    "type": {
-        "coding": [
-            {
-                "system": "urn:oid:2.16.578.1.12.4.1.1.9602",
-                "code": "J01-2",
-                "display": "Sykmeldinger og trygdesaker"
-            }
-        ]
-    },
-    "content": [
-        {
-            "attachment": {
-                "title": "Tittel generert av Nav",
-                "language": "NO-nb",
-                "contentType": "application/pdf",
-                "data": "base64 PDF"
-            }
-        }
-    ],
-    "subject": {
-        "reference": "Patient/<Pasient ID dokumentet gjelder for>"
-    },
-    "author": [
-        {
-            "reference": "Practitioner/<Behandler ID som autoriserte dokumentet>"
-        }
-    ],
-    "context": {
-        "encounter": [
-            {
-                "reference": "Encounter/<Referanse til encounter fordi Nav loven krever konsultasjon for sykmelding>"
-            }
-        ]
-    },
-    "status": "current"
+  "resourceType": "DocumentReference",
+  "id": "unik DocumentReference id",
+  "description": "Menneskelig lesbar forklaring av dokumentet",
+  "type": {
+    "coding": [
+      {
+        "system": "urn:oid:2.16.578.1.12.4.1.1.9602",
+        "code": "J01-2",
+        "display": "Sykmeldinger og trygdesaker"
+      }
+    ]
+  },
+  "content": [
+    {
+      "attachment": {
+        "title": "Tittel generert av Nav",
+        "language": "NO-nb",
+        "contentType": "application/pdf",
+        "data": "base64 PDF"
+      }
+    }
+  ],
+  "subject": {
+    "reference": "Patient/<Pasient ID dokumentet gjelder for>"
+  },
+  "author": [
+    {
+      "reference": "Practitioner/<Behandler ID som autoriserte dokumentet>"
+    }
+  ],
+  "context": {
+    "encounter": [
+      {
+        "reference": "Encounter/<Referanse til encounter fordi Nav loven krever konsultasjon for sykmelding>"
+      }
+    ]
+  },
+  "status": "current"
 }
 ```
 

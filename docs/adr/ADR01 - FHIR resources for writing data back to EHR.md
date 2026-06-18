@@ -5,18 +5,18 @@
 - [Context](#context)
 - [Decision](#decision)
 - [Consequences](#consequences)
-    - [Positive](#positive)
-    - [Negative](#negative)
+  - [Positive](#positive)
+  - [Negative](#negative)
 - [Questionnaire Definition](#questionnaire-definition)
 - [Implementation](#implementation)
-    - [Requirements](#requirements)
-    - [Access Scopes](#access-scopes)
-    - [Data for Write-Back](#data-for-write-back)
-    - [Flowchart (Happy Path)](#flowchart-happy-path)
-    - [Step-by-Step Guide](#step-by-step-guide)
-    - [Complete Example](#complete-example)
+  - [Requirements](#requirements)
+  - [Access Scopes](#access-scopes)
+  - [Data for Write-Back](#data-for-write-back)
+  - [Flowchart (Happy Path)](#flowchart-happy-path)
+  - [Step-by-Step Guide](#step-by-step-guide)
+  - [Complete Example](#complete-example)
 - [Alternatives](#alternatives)
-    - [Still Viable Alternatives](#still-viable-alternatives)
+  - [Still Viable Alternatives](#still-viable-alternatives)
 - [Analysis: FHIR Best Practices](#analysis-fhir-best-practices)
 - [Q & A](#q--a)
 - [Notes](#notes)
@@ -157,12 +157,12 @@ structured data as a QuestionnaireResponse:
 
 ```json
 {
-    "resourceType": "QuestionnaireResponse",
-    "questionnaire": "https://www.nav.no/samarbeidspartner/sykmelding/fhir/R4/Questionnaire/V1",
-    "status": "completed",
-    "encounter": {
-        "reference": "Encounter/ehr-encounter-001"
-    }
+  "resourceType": "QuestionnaireResponse",
+  "questionnaire": "https://www.nav.no/samarbeidspartner/sykmelding/fhir/R4/Questionnaire/V1",
+  "status": "completed",
+  "encounter": {
+    "reference": "Encounter/ehr-encounter-001"
+  }
 }
 ```
 
@@ -170,16 +170,16 @@ structured data as a QuestionnaireResponse:
 
 ```json
 {
-    "linkId": "hoveddiagnose",
-    "answer": [
-        {
-            "valueCoding": {
-                "system": "urn:oid:2.16.578.1.12.4.1.1.7110",
-                "code": "M54.5",
-                "display": "Korsryggsmerter"
-            }
-        }
-    ]
+  "linkId": "hoveddiagnose",
+  "answer": [
+    {
+      "valueCoding": {
+        "system": "urn:oid:2.16.578.1.12.4.1.1.7110",
+        "code": "M54.5",
+        "display": "Korsryggsmerter"
+      }
+    }
+  ]
 }
 ```
 
@@ -187,16 +187,16 @@ structured data as a QuestionnaireResponse:
 
 ```json
 {
-    "linkId": "bidiagnose",
-    "answer": [
-        {
-            "valueCoding": {
-                "system": "urn:oid:2.16.578.1.12.4.1.1.7110",
-                "code": "F32.0",
-                "display": "Mild depressiv episode"
-            }
-        }
-    ]
+  "linkId": "bidiagnose",
+  "answer": [
+    {
+      "valueCoding": {
+        "system": "urn:oid:2.16.578.1.12.4.1.1.7110",
+        "code": "F32.0",
+        "display": "Mild depressiv episode"
+      }
+    }
+  ]
 }
 ```
 
@@ -204,36 +204,36 @@ structured data as a QuestionnaireResponse:
 
 ```json
 {
-    "linkId": "aktivitet",
-    "item": [
+  "linkId": "aktivitet",
+  "item": [
+    {
+      "linkId": "aktivitet-type",
+      "answer": [
         {
-            "linkId": "aktivitet-type",
-            "answer": [
-                {
-                    "valueCoding": {
-                        "code": "AKTIVITET_IKKE_MULIG",
-                        "display": "Aktivitet ikke mulig"
-                    }
-                }
-            ]
-        },
-        {
-            "linkId": "aktivitet-fom",
-            "answer": [
-                {
-                    "valueDate": "2026-02-10"
-                }
-            ]
-        },
-        {
-            "linkId": "aktivitet-tom",
-            "answer": [
-                {
-                    "valueDate": "2026-02-24"
-                }
-            ]
+          "valueCoding": {
+            "code": "AKTIVITET_IKKE_MULIG",
+            "display": "Aktivitet ikke mulig"
+          }
         }
-    ]
+      ]
+    },
+    {
+      "linkId": "aktivitet-fom",
+      "answer": [
+        {
+          "valueDate": "2026-02-10"
+        }
+      ]
+    },
+    {
+      "linkId": "aktivitet-tom",
+      "answer": [
+        {
+          "valueDate": "2026-02-24"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -241,13 +241,13 @@ structured data as a QuestionnaireResponse:
 
 ```json
 {
-    "resourceType": "DocumentReference",
-    "context": {
-        "period": {
-            "start": "2026-02-10",
-            "end": "2026-02-24"
-        }
+  "resourceType": "DocumentReference",
+  "context": {
+    "period": {
+      "start": "2026-02-10",
+      "end": "2026-02-24"
     }
+  }
 }
 ```
 
@@ -255,15 +255,15 @@ structured data as a QuestionnaireResponse:
 
 ```json
 {
-    "linkId": "annen-fravarsgrunn",
-    "answer": [
-        {
-            "valueCoding": {
-                "code": "SMITTEFARE",
-                "display": "Smittefare"
-            }
-        }
-    ]
+  "linkId": "annen-fravarsgrunn",
+  "answer": [
+    {
+      "valueCoding": {
+        "code": "SMITTEFARE",
+        "display": "Smittefare"
+      }
+    }
+  ]
 }
 ```
 
@@ -271,12 +271,12 @@ structured data as a QuestionnaireResponse:
 
 ```json
 {
-    "linkId": "svangerskapsrelatert",
-    "answer": [
-        {
-            "valueBoolean": false
-        }
-    ]
+  "linkId": "svangerskapsrelatert",
+  "answer": [
+    {
+      "valueBoolean": false
+    }
+  ]
 }
 ```
 
@@ -284,25 +284,25 @@ structured data as a QuestionnaireResponse:
 
 ```json
 {
-    "linkId": "yrkesskade",
-    "item": [
+  "linkId": "yrkesskade",
+  "item": [
+    {
+      "linkId": "yrkesskade-er-yrkesskade",
+      "answer": [
         {
-            "linkId": "yrkesskade-er-yrkesskade",
-            "answer": [
-                {
-                    "valueBoolean": true
-                }
-            ]
-        },
-        {
-            "linkId": "yrkesskade-skadedato",
-            "answer": [
-                {
-                    "valueDate": "2025-06-15"
-                }
-            ]
+          "valueBoolean": true
         }
-    ]
+      ]
+    },
+    {
+      "linkId": "yrkesskade-skadedato",
+      "answer": [
+        {
+          "valueDate": "2025-06-15"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -310,17 +310,17 @@ structured data as a QuestionnaireResponse:
 
 ```json
 {
-    "linkId": "arbeidsforhold",
-    "item": [
+  "linkId": "arbeidsforhold",
+  "item": [
+    {
+      "linkId": "arbeidsforhold-arbeidsgivernavn",
+      "answer": [
         {
-            "linkId": "arbeidsforhold-arbeidsgivernavn",
-            "answer": [
-                {
-                    "valueString": "Arbeidsgiver AS"
-                }
-            ]
+          "valueString": "Arbeidsgiver AS"
         }
-    ]
+      ]
+    }
+  ]
 }
 ```
 
@@ -328,15 +328,15 @@ structured data as a QuestionnaireResponse:
 
 ```json
 {
-    "resourceType": "DocumentReference",
-    "content": [
-        {
-            "attachment": {
-                "contentType": "application/pdf",
-                "data": "JVBERi0xLbXBsZQ=="
-            }
-        }
-    ]
+  "resourceType": "DocumentReference",
+  "content": [
+    {
+      "attachment": {
+        "contentType": "application/pdf",
+        "data": "JVBERi0xLbXBsZQ=="
+      }
+    }
+  ]
 }
 ```
 
@@ -344,14 +344,14 @@ structured data as a QuestionnaireResponse:
 
 ```json
 {
-    "resourceType": "DocumentReference",
-    "context": {
-        "related": [
-            {
-                "reference": "QuestionnaireResponse/{id}"
-            }
-        ]
-    }
+  "resourceType": "DocumentReference",
+  "context": {
+    "related": [
+      {
+        "reference": "QuestionnaireResponse/{id}"
+      }
+    ]
+  }
 }
 ```
 
@@ -376,15 +376,15 @@ flowchart TD
 1. Front-end sends POST to back-end with a sick note payload.
 2. Front-end receives `201 Created` with sick note ID.
 3. Front-end performs `GET /DocumentReference/{sykmeldingId}` as an idempotency check:
-    - `2xx` → `log.error` (duplicate, abort)
-    - `!404 4xx` → `log.error` (missing access, abort)
-    - `5xx` → `log.error` (server error, abort)
-    - `404` → proceed
+   - `2xx` → `log.error` (duplicate, abort)
+   - `!404 4xx` → `log.error` (missing access, abort)
+   - `5xx` → `log.error` (server error, abort)
+   - `404` → proceed
 4. Front-end sends `PUT /` with a FHIR transaction bundle containing both DocumentReference (`id = sykmeldingId`) and
    QuestionnaireResponse (`id = uuid-v4`). The DocumentReference already contains `context.related` referencing the QR
    by the pre-assigned uuid-v4:
-    - `4xx`/`5xx` → `log.error` (abort — transaction is atomic, neither resource is persisted)
-    - `2xx` → `log.info` (success)
+   - `4xx`/`5xx` → `log.error` (abort — transaction is atomic, neither resource is persisted)
+   - `2xx` → `log.info` (success)
 
 ### Complete Example
 
@@ -392,269 +392,269 @@ flowchart TD
 
 ```json
 {
-    "resourceType": "Bundle",
-    "type": "transaction",
-    "entry": [
-        {
-            "fullUrl": "QuestionnaireResponse/e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038",
-            "resource": {
-                "resourceType": "QuestionnaireResponse",
-                "id": "e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038",
-                "questionnaire": "https://www.nav.no/samarbeidspartner/sykmelding/fhir/R4/Questionnaire/V1",
-                "status": "completed",
-                "subject": {
-                    "reference": "Patient/ehr-patient-001"
-                },
-                "encounter": {
-                    "reference": "Encounter/ehr-encounter-001"
-                },
-                "authored": "2026-02-10T09:30:00+01:00",
-                "author": {
-                    "reference": "Practitioner/ehr-practitioner-001"
-                },
-                "item": [
-                    {
-                        "linkId": "hoveddiagnose",
-                        "answer": [
-                            {
-                                "valueCoding": {
-                                    "system": "urn:oid:2.16.578.1.12.4.1.1.7110",
-                                    "code": "M54.5",
-                                    "display": "Korsryggsmerter"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "linkId": "bidiagnose",
-                        "answer": [
-                            {
-                                "valueCoding": {
-                                    "system": "urn:oid:2.16.578.1.12.4.1.1.7110",
-                                    "code": "F32.0",
-                                    "display": "Mild depressiv episode"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "linkId": "aktivitet",
-                        "item": [
-                            {
-                                "linkId": "aktivitet-type",
-                                "answer": [
-                                    {
-                                        "valueCoding": {
-                                            "code": "AKTIVITET_IKKE_MULIG",
-                                            "display": "Aktivitet ikke mulig"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "linkId": "aktivitet-fom",
-                                "answer": [
-                                    {
-                                        "valueDate": "2026-02-10"
-                                    }
-                                ]
-                            },
-                            {
-                                "linkId": "aktivitet-tom",
-                                "answer": [
-                                    {
-                                        "valueDate": "2026-02-24"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "linkId": "aktivitet",
-                        "item": [
-                            {
-                                "linkId": "aktivitet-type",
-                                "answer": [
-                                    {
-                                        "valueCoding": {
-                                            "code": "GRADERT",
-                                            "display": "Gradert"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "linkId": "aktivitet-fom",
-                                "answer": [
-                                    {
-                                        "valueDate": "2026-02-25"
-                                    }
-                                ]
-                            },
-                            {
-                                "linkId": "aktivitet-tom",
-                                "answer": [
-                                    {
-                                        "valueDate": "2026-03-24"
-                                    }
-                                ]
-                            },
-                            {
-                                "linkId": "aktivitet-grad",
-                                "answer": [
-                                    {
-                                        "valueInteger": 60
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "linkId": "aktivitet",
-                        "item": [
-                            {
-                                "linkId": "aktivitet-type",
-                                "answer": [
-                                    {
-                                        "valueCoding": {
-                                            "code": "GRADERT",
-                                            "display": "Gradert"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "linkId": "aktivitet-fom",
-                                "answer": [
-                                    {
-                                        "valueDate": "2026-03-25"
-                                    }
-                                ]
-                            },
-                            {
-                                "linkId": "aktivitet-tom",
-                                "answer": [
-                                    {
-                                        "valueDate": "2026-04-14"
-                                    }
-                                ]
-                            },
-                            {
-                                "linkId": "aktivitet-grad",
-                                "answer": [
-                                    {
-                                        "valueInteger": 20
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "linkId": "svangerskapsrelatert",
-                        "answer": [
-                            {
-                                "valueBoolean": false
-                            }
-                        ]
-                    },
-                    {
-                        "linkId": "yrkesskade",
-                        "item": [
-                            {
-                                "linkId": "yrkesskade-er-yrkesskade",
-                                "answer": [
-                                    {
-                                        "valueBoolean": true
-                                    }
-                                ]
-                            },
-                            {
-                                "linkId": "yrkesskade-skadedato",
-                                "answer": [
-                                    {
-                                        "valueDate": "2025-06-15"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "linkId": "arbeidsforhold",
-                        "item": [
-                            {
-                                "linkId": "arbeidsforhold-arbeidsgivernavn",
-                                "answer": [
-                                    {
-                                        "valueString": "Arbeidsgiver AS"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            "request": {
-                "method": "PUT",
-                "url": "QuestionnaireResponse/e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038"
-            }
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "QuestionnaireResponse/e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038",
+      "resource": {
+        "resourceType": "QuestionnaireResponse",
+        "id": "e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038",
+        "questionnaire": "https://www.nav.no/samarbeidspartner/sykmelding/fhir/R4/Questionnaire/V1",
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/ehr-patient-001"
         },
-        {
-            "fullUrl": "DocumentReference/{sykmelding-id}",
-            "resource": {
-                "resourceType": "DocumentReference",
-                "id": "{sykmelding-id}",
-                "status": "current",
-                "type": {
-                    "coding": [
-                        {
-                            "system": "urn:oid:2.16.578.1.12.4.1.1.9602",
-                            "code": "J01-2",
-                            "display": "Sykmeldinger og trygdesaker"
-                        }
-                    ],
-                    "text": "Sykmelding"
-                },
-                "subject": {
-                    "reference": "Patient/ehr-patient-001"
-                },
-                "author": [
-                    {
-                        "reference": "Practitioner/ehr-practitioner-001"
-                    }
-                ],
-                "content": [
-                    {
-                        "attachment": {
-                            "contentType": "application/pdf",
-                            "language": "NO-nb",
-                            "title": "Sykmelding",
-                            "data": "JVBERi0xLjQgZXhhbXBsZQ=="
-                        }
-                    }
-                ],
-                "context": {
-                    "encounter": [
-                        {
-                            "reference": "Encounter/ehr-encounter-001"
-                        }
-                    ],
-                    "period": {
-                        "start": "2026-02-10",
-                        "end": "2026-04-14"
-                    },
-                    "related": [
-                        {
-                            "reference": "QuestionnaireResponse/e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038"
-                        }
-                    ]
+        "encounter": {
+          "reference": "Encounter/ehr-encounter-001"
+        },
+        "authored": "2026-02-10T09:30:00+01:00",
+        "author": {
+          "reference": "Practitioner/ehr-practitioner-001"
+        },
+        "item": [
+          {
+            "linkId": "hoveddiagnose",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "urn:oid:2.16.578.1.12.4.1.1.7110",
+                  "code": "M54.5",
+                  "display": "Korsryggsmerter"
                 }
-            },
-            "request": {
-                "method": "PUT",
-                "url": "DocumentReference/{sykmelding-id}"
+              }
+            ]
+          },
+          {
+            "linkId": "bidiagnose",
+            "answer": [
+              {
+                "valueCoding": {
+                  "system": "urn:oid:2.16.578.1.12.4.1.1.7110",
+                  "code": "F32.0",
+                  "display": "Mild depressiv episode"
+                }
+              }
+            ]
+          },
+          {
+            "linkId": "aktivitet",
+            "item": [
+              {
+                "linkId": "aktivitet-type",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "AKTIVITET_IKKE_MULIG",
+                      "display": "Aktivitet ikke mulig"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "aktivitet-fom",
+                "answer": [
+                  {
+                    "valueDate": "2026-02-10"
+                  }
+                ]
+              },
+              {
+                "linkId": "aktivitet-tom",
+                "answer": [
+                  {
+                    "valueDate": "2026-02-24"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "linkId": "aktivitet",
+            "item": [
+              {
+                "linkId": "aktivitet-type",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "GRADERT",
+                      "display": "Gradert"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "aktivitet-fom",
+                "answer": [
+                  {
+                    "valueDate": "2026-02-25"
+                  }
+                ]
+              },
+              {
+                "linkId": "aktivitet-tom",
+                "answer": [
+                  {
+                    "valueDate": "2026-03-24"
+                  }
+                ]
+              },
+              {
+                "linkId": "aktivitet-grad",
+                "answer": [
+                  {
+                    "valueInteger": 60
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "linkId": "aktivitet",
+            "item": [
+              {
+                "linkId": "aktivitet-type",
+                "answer": [
+                  {
+                    "valueCoding": {
+                      "code": "GRADERT",
+                      "display": "Gradert"
+                    }
+                  }
+                ]
+              },
+              {
+                "linkId": "aktivitet-fom",
+                "answer": [
+                  {
+                    "valueDate": "2026-03-25"
+                  }
+                ]
+              },
+              {
+                "linkId": "aktivitet-tom",
+                "answer": [
+                  {
+                    "valueDate": "2026-04-14"
+                  }
+                ]
+              },
+              {
+                "linkId": "aktivitet-grad",
+                "answer": [
+                  {
+                    "valueInteger": 20
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "linkId": "svangerskapsrelatert",
+            "answer": [
+              {
+                "valueBoolean": false
+              }
+            ]
+          },
+          {
+            "linkId": "yrkesskade",
+            "item": [
+              {
+                "linkId": "yrkesskade-er-yrkesskade",
+                "answer": [
+                  {
+                    "valueBoolean": true
+                  }
+                ]
+              },
+              {
+                "linkId": "yrkesskade-skadedato",
+                "answer": [
+                  {
+                    "valueDate": "2025-06-15"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "linkId": "arbeidsforhold",
+            "item": [
+              {
+                "linkId": "arbeidsforhold-arbeidsgivernavn",
+                "answer": [
+                  {
+                    "valueString": "Arbeidsgiver AS"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "QuestionnaireResponse/e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038"
+      }
+    },
+    {
+      "fullUrl": "DocumentReference/{sykmelding-id}",
+      "resource": {
+        "resourceType": "DocumentReference",
+        "id": "{sykmelding-id}",
+        "status": "current",
+        "type": {
+          "coding": [
+            {
+              "system": "urn:oid:2.16.578.1.12.4.1.1.9602",
+              "code": "J01-2",
+              "display": "Sykmeldinger og trygdesaker"
             }
+          ],
+          "text": "Sykmelding"
+        },
+        "subject": {
+          "reference": "Patient/ehr-patient-001"
+        },
+        "author": [
+          {
+            "reference": "Practitioner/ehr-practitioner-001"
+          }
+        ],
+        "content": [
+          {
+            "attachment": {
+              "contentType": "application/pdf",
+              "language": "NO-nb",
+              "title": "Sykmelding",
+              "data": "JVBERi0xLjQgZXhhbXBsZQ=="
+            }
+          }
+        ],
+        "context": {
+          "encounter": [
+            {
+              "reference": "Encounter/ehr-encounter-001"
+            }
+          ],
+          "period": {
+            "start": "2026-02-10",
+            "end": "2026-04-14"
+          },
+          "related": [
+            {
+              "reference": "QuestionnaireResponse/e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038"
+            }
+          ]
         }
-    ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "DocumentReference/{sykmelding-id}"
+      }
+    }
+  ]
 }
 ```
 

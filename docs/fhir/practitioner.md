@@ -11,17 +11,17 @@ _Relevante referanser:_
 
 ```json
 {
-    "resourceType": "Practitioner",
-    "id": "unik Practitioner id",
-    "meta": {
-        "profile": ["http://hl7.no/fhir/StructureDefinition/no-basis-Practitioner"]
-    },
-    "identifier": [
-        {
-            "system": "urn:oid:2.16.578.1.12.4.1.4.4",
-            "value": "hpr-nummer"
-        }
-    ]
+  "resourceType": "Practitioner",
+  "id": "unik Practitioner id",
+  "meta": {
+    "profile": ["http://hl7.no/fhir/StructureDefinition/no-basis-Practitioner"]
+  },
+  "identifier": [
+    {
+      "system": "urn:oid:2.16.578.1.12.4.1.4.4",
+      "value": "hpr-nummer"
+    }
+  ]
 }
 ```
 
