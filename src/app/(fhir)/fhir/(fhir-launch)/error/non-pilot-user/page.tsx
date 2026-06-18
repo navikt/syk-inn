@@ -16,6 +16,7 @@ import { getUserlessToggles } from '@core/toggles/unleash'
 
 async function Page(): Promise<ReactElement> {
     const sessionId = await getSessionId()
+    const toggles = await getUserlessToggles()
 
     after(async () => {
         metrics.appLoadErrorsTotal.inc({ mode: 'FHIR', error_type: 'NON_PILOT_USER' })
@@ -35,7 +36,6 @@ async function Page(): Promise<ReactElement> {
                 return
             }
 
-            const toggles = await getUserlessToggles()
             const client = await getSmartClient(sessionId, null, toggles).ready()
             if ('error' in client) {
                 failSpan(span, `Non-pilot-user failed ready: ${client.error}`)
