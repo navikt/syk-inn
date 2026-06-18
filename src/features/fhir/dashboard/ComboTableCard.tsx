@@ -58,8 +58,14 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
             {initialLoad && <ComboTableSkeleton />}
             {!initialLoad && !dashboardQuery.error && !hasData && <ComboTableEmptyState />}
             {!initialLoad && dashboardQuery.error && !hasData && <EverythingError refetch={dashboardQuery.refetch} />}
+            {historiskeToggle && dashboardQuery.error && (
+                <HistoricalSykmeldingerError refetch={dashboardQuery.refetch} />
+            )}
             {historiskeToggle && !dashboardQuery.error && !hasRequested && (
                 <RequestSykmeldinger loading={initialLoad} />
+            )}
+            {historiskeToggle && !dashboardQuery.error && hasRequested && !hasSykmeldinger && !initialLoad && (
+                <HistoricalSykmeldingerEmptyState />
             )}
         </DashboardCard>
     )
@@ -160,6 +166,43 @@ function ComboTableEmptyState(): ReactElement {
         <div className="flex flex-col gap-6 items-center justify-center w-full h-64 text-ax-text-neutral-subtle">
             <FlowerPetalsIcon aria-hidden fontSize="4rem" className="opacity-75" />
             <BodyShort>Pasienten har ingen utkast eller pågående sykmeldinger</BodyShort>
+        </div>
+    )
+}
+
+function HistoricalSykmeldingerError({ refetch }: { refetch: () => void }): ReactElement {
+    return (
+        <div className="flex justify-center items-center h-full pb-8">
+            <GlobalAlert status="error">
+                <GlobalAlert.Header>
+                    <GlobalAlert.Title>Ukjent feil ved henting av historiske sykmeldinger</GlobalAlert.Title>
+                </GlobalAlert.Header>
+                <GlobalAlert.Content>
+                    <BodyShort spacing>
+                        Det skjedde en ukjent feil under henting av sykmeldinger. Du kan prøve å laste siden på nytt,
+                        eller prøve på nytt senere.
+                    </BodyShort>
+                    <Button
+                        data-color="neutral"
+                        type="button"
+                        size="small"
+                        variant="secondary"
+                        onClick={() => refetch()}
+                    >
+                        Prøv på nytt
+                    </Button>
+                    <SessionIdInfo />
+                </GlobalAlert.Content>
+            </GlobalAlert>
+        </div>
+    )
+}
+
+function HistoricalSykmeldingerEmptyState(): ReactElement {
+    return (
+        <div className="flex flex-col gap-6 items-center justify-center w-full h-64 text-ax-text-neutral-subtle">
+            <FlowerPetalsIcon aria-hidden fontSize="4rem" className="opacity-75" />
+            <BodyShort>Pasienten har ingen historiske sykmeldinger</BodyShort>
         </div>
     )
 }
