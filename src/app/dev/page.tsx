@@ -11,16 +11,18 @@ import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 import ScenarioLinksFhir from '@dev/tools/ScenarioLinksFhir'
 import ScenarioLinksStandalone from '@dev/tools/ScenarioLinksStandalone'
 import { MockLaunchType } from '@navikt/fhir-mock-server/types'
+import { getDemoFrameEnabled } from '@dev/demo-epj-frame/cookies'
 
 import DumbDevHeader from './dumb/DumbDevHeader'
 
-export default function Home(): ReactElement {
+export default async function Home(): Promise<ReactElement> {
     if (!(isLocal || isDemo)) {
         notFound()
     }
 
     const isSykInnApiIntegrationEnabled = getServerEnv().useLocalSykInnApi
     const isLocalValkeyEnabled = getServerEnv().useLocalValkey
+
     return (
         <Page className="bg-transparent">
             <PageBlock as="main" width="xl" gutters>
@@ -58,7 +60,7 @@ export default function Home(): ReactElement {
                                     <LinkCardTitle>
                                         <LinkCardAnchor
                                             href={pathWithBasePath(
-                                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel` satisfies MockLaunchType}`}`,
+                                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel:Magnar Koman:Magnar Legekontor:with-frame` satisfies MockLaunchType}`}`,
                                             )}
                                         >
                                             Launch with syk-inn-api!
@@ -86,7 +88,9 @@ export default function Home(): ReactElement {
                             </InfoCard>
                         )}
 
-                        {!isSykInnApiIntegrationEnabled && <ScenarioLinksFhir />}
+                        {!isSykInnApiIntegrationEnabled && (
+                            <ScenarioLinksFhir defaultFrameValue={await getDemoFrameEnabled()} />
+                        )}
 
                         <ScenarioLinksStandalone />
                     </div>

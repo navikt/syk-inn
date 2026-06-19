@@ -56,7 +56,7 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
         return (
             <>
                 {(isLocal || isDemo) && <DemoWarning />}
-                <NoValidHPR mode="HelseID" />
+                <NoValidHPR />
             </>
         )
     }

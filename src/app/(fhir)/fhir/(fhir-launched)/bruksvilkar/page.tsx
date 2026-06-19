@@ -2,8 +2,6 @@ import React, { ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
 
-import { isDemo, isLocal } from '@lib/env'
-import DemoWarning from '@components/user-warnings/DemoWarning'
 import { PageLayout } from '@components/layout/Page'
 import Bruksvilkar from '@features/bruksvilkar/Bruksvilkar'
 import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
@@ -16,14 +14,11 @@ async function Page({ searchParams }: PageProps<'/fhir/bruksvilkar'>): Promise<R
     const { returnTo } = await searchParams
 
     return (
-        <div>
-            {(isLocal || isDemo) && <DemoWarning />}
-            <PageLayout heading="Bruksvilkår" bg="white" size="fit">
-                <div className="p-4 bg-ax-bg-default rounded-md">
-                    {typeof returnTo === 'string' ? <BruksvilkarWithData patientId={returnTo} /> : <BruksvilkarError />}
-                </div>
-            </PageLayout>
-        </div>
+        <PageLayout heading="Bruksvilkår" bg="white" size="fit">
+            <div className="p-4 bg-ax-bg-default rounded-md">
+                {typeof returnTo === 'string' ? <BruksvilkarWithData patientId={returnTo} /> : <BruksvilkarError />}
+            </div>
+        </PageLayout>
     )
 }
 

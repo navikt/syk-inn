@@ -9,7 +9,6 @@ import { ToggleProvider } from '@core/toggles/context'
 import { failSpan, spanServerAsync } from '@lib/otel/server'
 import { isDemo, isLocal } from '@lib/env'
 import metrics from '@lib/prometheus/metrics'
-import DemoWarning from '@components/user-warnings/DemoWarning'
 import { LazyDevTools } from '@dev/tools/LazyDevTools'
 import Providers from '@core/providers/Providers'
 import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
@@ -41,26 +40,11 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
 
         switch (rootFhirData.error) {
             case 'NO_HPR':
-                return (
-                    <>
-                        {(isLocal || isDemo) && <DemoWarning />}
-                        <NoValidHPR mode="FHIR" />
-                    </>
-                )
+                return <NoValidHPR />
             case 'NO_SESSION':
-                return (
-                    <>
-                        {(isLocal || isDemo) && <DemoWarning />}
-                        <NoPractitionerSession />
-                    </>
-                )
+                return <NoPractitionerSession />
             case 'NO_PATIENT':
-                return (
-                    <>
-                        {(isLocal || isDemo) && <DemoWarning />}
-                        <NoValidPatient />
-                    </>
-                )
+                return <NoValidPatient />
         }
     }
 
@@ -68,7 +52,6 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
         <FhirModeProvider activePatientId={patientId}>
             <Providers patient={rootFhirData.pasient} graphqlPath={createFhirPaths(patientId).graphql}>
                 <ToggleProvider toggles={toToggleMap(rootFhirData.toggles)}>
-                    {(isLocal || isDemo) && <DemoWarning />}
                     {children}
                     <LoggedOutWarning />
                     {(isLocal || isDemo) && <LazyDevTools />}

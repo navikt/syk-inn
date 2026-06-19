@@ -1,9 +1,9 @@
 import '../globals.css'
-
-import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
+import React, { ReactElement } from 'react'
 
 import BuildInfo from '@components/misc/BuildInfo'
+import DemoFrame from '@dev/demo-epj-frame/DemoFrame'
 
 import Preload from '../preload'
 
@@ -24,8 +24,10 @@ export default function FhirLayout({ children }: LayoutProps<'/'>): ReactElement
             </head>
             <Preload />
             <body>
-                {children}
-                <BuildInfo />
+                <DemoFrame>
+                    {children}
+                    <BuildInfo />
+                </DemoFrame>
             </body>
         </html>
     )

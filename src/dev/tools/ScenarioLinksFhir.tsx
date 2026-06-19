@@ -1,17 +1,17 @@
 'use client'
 
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { Heading, LinkCard, Select, Link, Modal, Loader } from '@navikt/ds-react'
+import { Heading, LinkCard, Select, Link, Modal, Loader, Switch } from '@navikt/ds-react'
 import { FlowerPetalsIcon, PlayIcon } from '@navikt/aksel-icons'
 import Image from 'next/image'
-import { parseAsString, useQueryState } from 'nuqs'
+import { parseAsBoolean, parseAsString, useQueryState } from 'nuqs'
 
 import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
 import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
 
 import { scenarios } from '../mock-engine/scenarios/scenarios'
 
-function ScenarioLinksFhir(): ReactElement {
+function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: boolean }): ReactElement {
     const [isLaunching, setIsLaunching] = useState<string | null>(null)
 
     const [patient, setPatient] = useQueryState(
@@ -26,6 +26,10 @@ function ScenarioLinksFhir(): ReactElement {
         'organization',
         parseAsString.withDefault('').withOptions({ clearOnDefault: true }),
     )
+    const [frame, setFrame] = useQueryState(
+        'frame',
+        parseAsBoolean.withDefault(defaultFrameValue).withOptions({ clearOnDefault: true }),
+    )
 
     const justLaunchRef = useRef<HTMLAnchorElement>(null)
     useEffect(() => {
@@ -37,11 +41,11 @@ function ScenarioLinksFhir(): ReactElement {
     return (
         <div className="mt-2">
             <div className="flex flex-col ax-md:flex-row justify-between">
-                <Heading level="3" size="medium" spacing className="flex gap-1 items-center">
+                <Heading level="3" size="medium" className="flex gap-1 items-center">
                     <Image src="https://cdn.nav.no/tsm/syk-inn/dass.gif" alt="" width="48" height="48" unoptimized />
                     FHIR scenarioer
                 </Heading>
-                <div className="grid grid-cols-3 gap-2 mb-4 relative ax-md:max-w-2/3">
+                <div className="grid grid-cols-3 gap-2 relative ax-md:max-w-2/3">
                     <Select label="Pasient" size="small" onChange={(e) => setPatient(e.target.value)} value={patient}>
                         <option value={'Espen Eksempel' satisfies MockPatients}>Espen Eksempel</option>
                         <option value={'Kari Normann' satisfies MockPatients}>Kari Normann</option>
@@ -87,6 +91,11 @@ function ScenarioLinksFhir(): ReactElement {
                     </Link>
                 </div>
             </div>
+            <div className="flex justify-end">
+                <Switch checked={frame} onChange={() => setFrame((b) => !b)}>
+                    Bruk på en falsk EPJ-ramme
+                </Switch>
+            </div>
             <div className="grid ax-md:grid-cols-2 gap-3">
                 <LinkCard>
                     <LinkCard.Icon>
@@ -96,11 +105,7 @@ function ScenarioLinksFhir(): ReactElement {
                         <LinkCard.Anchor
                             ref={justLaunchRef}
                             href={pathWithBasePath(
-                                `${fhirLaunchUrl}&launch=${buildLaunchParam(
-                                    patient as MockPatients,
-                                    (practitioner || 'Magnar Koman') as MockPractitioners,
-                                    (organization || 'Magnar Legekontor') as MockOrganizations,
-                                )}`,
+                                `${fhirLaunchUrl}&launch=${buildLaunchParam(patient as MockPatients, (practitioner || 'Magnar Koman') as MockPractitioners, (organization || 'Magnar Legekontor') as MockOrganizations, frame)}`,
                             )}
                             onClick={() => setIsLaunching('keep previous')}
                         >
@@ -123,6 +128,7 @@ function ScenarioLinksFhir(): ReactElement {
                                     patient as MockPatients,
                                     (practitioner || 'Magnar Koman') as MockPractitioners,
                                     (organization || 'Magnar Legekontor') as MockOrganizations,
+                                    frame,
                                 )}
                                 onClick={() => setIsLaunching(scenarioKey)}
                             >
@@ -169,10 +175,11 @@ function createScenarioUrl(
     patient: MockPatients,
     practitioner: MockPractitioners,
     organization: MockOrganizations,
+    frame: boolean,
 ): string {
     return pathWithBasePath(
         `/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(
-            `${fhirLaunchUrl}&launch=${buildLaunchParam(patient as MockPatients, practitioner, organization)}`,
+            `${fhirLaunchUrl}&launch=${buildLaunchParam(patient as MockPatients, practitioner, organization, frame)}`,
         )}`,
     )
 }
@@ -181,8 +188,9 @@ function buildLaunchParam(
     patient: MockPatients,
     practitioner: MockPractitioners,
     organization: MockOrganizations,
+    frame: boolean,
 ): MockLaunchType {
-    return `local-dev-launch:${patient}:${practitioner}:${organization}`
+    return `local-dev-launch:${patient}:${practitioner}:${organization}:${frame ? 'with-frame' : 'no-frame'}`
 }
 
 export default ScenarioLinksFhir
