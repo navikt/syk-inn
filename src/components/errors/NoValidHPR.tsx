@@ -4,12 +4,7 @@ import React, { ReactElement } from 'react'
 import { PageBlock } from '@navikt/ds-react/Page'
 import { BodyShort, Button, Heading } from '@navikt/ds-react'
 
-import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
-import { isDemo, isLocal } from '@lib/env'
-import { MockLaunchType } from '@navikt/fhir-mock-server/types'
-import { ModeType } from '@core/providers/ModePaths'
-
-export function NoValidHPR({ mode }: { mode: ModeType }): ReactElement {
+export function NoValidHPR(): ReactElement {
     return (
         <PageBlock as="main" width="xl" gutters className="pt-4">
             <div className="max-w-prose">
@@ -36,19 +31,6 @@ export function NoValidHPR({ mode }: { mode: ModeType }): ReactElement {
                     >
                         Last siden på nytt
                     </Button>
-                    {(isLocal || isDemo) && mode === 'FHIR' && (
-                        <Button
-                            data-color="neutral"
-                            type="button"
-                            as="a"
-                            variant="secondary"
-                            href={pathWithBasePath(
-                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel` satisfies MockLaunchType}`}`,
-                            )}
-                        >
-                            Relaunch dev FHIR (Espen)
-                        </Button>
-                    )}
                 </div>
             </div>
         </PageBlock>

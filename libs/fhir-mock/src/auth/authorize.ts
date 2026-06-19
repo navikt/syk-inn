@@ -1,7 +1,8 @@
 import { randomUUID } from 'node:crypto'
 
 import * as R from 'remeda'
-import { HonoRequest } from 'hono'
+import { HonoRequest, Context } from 'hono'
+import { setCookie } from 'hono/cookie'
 import { logger } from '@navikt/pino-logger'
 
 import { getConfig, getMockSessionStore } from '../config'
@@ -11,7 +12,7 @@ import { MockPractitioners } from '../data/practitioner'
 import { MockOrganizations } from '../data/organization'
 import { fhirLogger } from '../logger'
 
-export function authorize(request: HonoRequest): Response {
+export function authorize(request: HonoRequest, context: Context): Response {
     const url = new URL(request.url)
 
     fhirLogger.info(
@@ -57,6 +58,7 @@ export function authorize(request: HonoRequest): Response {
     const launchPatient: MockPatients = launchParts[1] as MockPatients
     const launchPractitioner: MockPractitioners = (launchParts[2] as MockPractitioners) || 'Magnar Koman'
     const launchOrganization: MockOrganizations = (launchParts[3] as MockOrganizations) || 'Magnar Legekontor'
+    const withFrame: boolean = launchParts[4] === 'with-frame'
 
     if (!launchPatient || !launchOrganization || !launchPractitioner) {
         throw Error(`Unknown local dev launch, launch string: ${launch}?`)
@@ -69,8 +71,10 @@ export function authorize(request: HonoRequest): Response {
         organization: launchOrganization,
     })
 
+    setCookie(context, 'syk-inn-demo-frame', withFrame ? 'true' : 'false')
+
     const redirectUrl = `${redirectUri}?code=${notATokenCode}&state=${state}`
-    fhirLogger.info(`/auth/authorize good, redirecting to ${redirectUrl}`)
+    fhirLogger.info(`/auth/authorize good, redirecting to ${redirectUrl}, with frame: ${withFrame}`)
     return Response.redirect(redirectUrl, 302)
 }
 

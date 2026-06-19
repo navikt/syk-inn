@@ -4,6 +4,6 @@ import { authorize } from './authorize'
 import { tokenExchange } from './token'
 
 export const authRouter = new Hono()
-    .get('/authorize', (c) => authorize(c.req))
+    .get('/authorize', (c) => authorize(c.req, c))
     .post('/token', (c) => tokenExchange(c.req))
     .notFound((c) => c.text('Invalid auth path'))

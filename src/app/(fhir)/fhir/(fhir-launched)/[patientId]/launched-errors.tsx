@@ -5,9 +5,7 @@ import React, { ReactElement } from 'react'
 import { BodyShort, Button, Heading, List } from '@navikt/ds-react'
 import { TerminalIcon } from '@navikt/aksel-icons'
 
-import { isDemo, isDevGcp, isLocal } from '@lib/env'
-import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
-import { MockLaunchType } from '@navikt/fhir-mock-server/types'
+import { isDevGcp } from '@lib/env'
 import SessionIdInfo from '@components/help/SessionIdInfo'
 
 export function NoPractitionerSession(): ReactElement {
@@ -31,19 +29,6 @@ export function NoPractitionerSession(): ReactElement {
                     >
                         Last siden på nytt
                     </Button>
-                    {(isLocal || isDemo) && (
-                        <Button
-                            data-color="neutral"
-                            type="button"
-                            as="a"
-                            variant="secondary"
-                            href={pathWithBasePath(
-                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel` satisfies MockLaunchType}`}`,
-                            )}
-                        >
-                            Relaunch dev FHIR (Espen)
-                        </Button>
-                    )}
                 </div>
             </div>
             {isDevGcp && (
