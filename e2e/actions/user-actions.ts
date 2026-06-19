@@ -13,10 +13,7 @@ import { clickAndWait, getDraftId, waitForGqlRequest } from '../utils/request-ut
 export function pickHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
     return async (page: Page) => {
         return await test.step('Input hoveddiagnose', async () => {
-            const diagnoseRegion = page.getByRole('region', {
-                name: 'Hoveddiagnose',
-                exact: true,
-            })
+            const diagnoseRegion = page.getByRole('region', { name: 'Hoveddiagnose', exact: true })
             await expect(diagnoseRegion).toBeVisible()
 
             const endreButton = diagnoseRegion.getByRole('button', { name: 'Endre' })
@@ -34,10 +31,7 @@ export function pickHoveddiagnose({ search, select }: { search: string; select: 
 export function editHoveddiagnose({ search, select }: { search: string; select: RegExp }) {
     return async (page: Page) => {
         await test.step(`Edit hoveddiagnose to ${search}`, async () => {
-            const diagnoseRegion = page.getByRole('region', {
-                name: 'Diagnose',
-                exact: true,
-            })
+            const diagnoseRegion = page.getByRole('region', { name: 'Diagnose', exact: true })
             await expect(diagnoseRegion).toBeVisible()
 
             await diagnoseRegion.getByRole('button', { name: 'Endre' }).click()
@@ -50,10 +44,7 @@ export function editHoveddiagnose({ search, select }: { search: string; select: 
 export function addBidiagnose({ search, select }: { search: string; select: RegExp }) {
     return async (page: Page) => {
         return await test.step('Add new bidiagnose', async () => {
-            const bidiagnoseRegion = page.getByRole('region', {
-                name: 'Bidiagnoser',
-                exact: true,
-            })
+            const bidiagnoseRegion = page.getByRole('region', { name: 'Bidiagnoser', exact: true })
             await expect(bidiagnoseRegion).toBeVisible()
 
             const currentBiDiagnoseCount = await bidiagnoseRegion
@@ -82,10 +73,7 @@ export function deleteBidiagnose(
 ) {
     return async (page: Page) => {
         await test.step(`Delete bidiagnose at index ${index}`, async () => {
-            const bidiagnoseRegion = page.getByRole('region', {
-                name: 'Bidiagnoser',
-                exact: true,
-            })
+            const bidiagnoseRegion = page.getByRole('region', { name: 'Bidiagnoser', exact: true })
             await expect(bidiagnoseRegion).toBeVisible()
 
             const bidiagnoseGroup = bidiagnoseRegion.getByRole('group', {
@@ -110,15 +98,10 @@ export function editBidiagnose({
 }) {
     return async (page: Page) => {
         await test.step('Edit bidiagnose', async () => {
-            const bidiagnoseRegion = page.getByRole('region', {
-                name: 'Bidiagnoser',
-                exact: true,
-            })
+            const bidiagnoseRegion = page.getByRole('region', { name: 'Bidiagnoser', exact: true })
             await expect(bidiagnoseRegion).toBeVisible()
 
-            const bidiagnoseGroup = bidiagnoseRegion.getByRole('group', {
-                name: `Bidiagnose ${index}`,
-            })
+            const bidiagnoseGroup = bidiagnoseRegion.getByRole('group', { name: `Bidiagnose ${index}` })
             await bidiagnoseGroup.getByRole('button', { name: 'Endre' }).click()
             await bidiagnoseGroup.getByRole('combobox', { name: 'Bidiagnose' }).fill(search)
             await bidiagnoseGroup.getByRole('option', { name: select }).nth(0).click()
@@ -262,15 +245,9 @@ export function selectSvangerskapsrelatert(svangerskapsrelatert: boolean) {
 export function selectAnnenLovpalagtFravarsgrunn({ reason }: { reason: AnnenFravarsgrunnArsak }) {
     return async (page: Page) => {
         return test.step(`Select fravarsgrunn: ${reason}`, async () => {
-            const group = page.getByRole('group', {
-                name: 'Annen lovfestet fraværsgrunn',
-            })
+            const group = page.getByRole('group', { name: 'Annen lovfestet fraværsgrunn' })
 
-            await group
-                .getByRole('checkbox', {
-                    name: 'Sykmeldingen har en annen lovfestet fraværsgrunn',
-                })
-                .click()
+            await group.getByRole('checkbox', { name: 'Sykmeldingen har en annen lovfestet fraværsgrunn' }).click()
             await group.getByRole('combobox', { name: 'Velg lovfestet fraværsgrunn' }).selectOption(reason)
         })
     }
@@ -305,21 +282,15 @@ export function fillArbeidsforhold({
         await test.step(`Set flere arbeidsforhold to ${harFlereArbeidsforhold ? 'Ja' : 'Nei'}`, async () => {
             if (harFlereArbeidsforhold) {
                 await page
-                    .getByRole('radiogroup', {
-                        name: /Har pasienten flere arbeidsgivere?/,
-                    })
+                    .getByRole('radiogroup', { name: /Har pasienten flere arbeidsgivere?/ })
                     .getByText('Ja')
                     .click()
                 await page
-                    .getByRole('textbox', {
-                        name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?',
-                    })
+                    .getByRole('textbox', { name: 'Hvilken arbeidsgiver skal pasienten sykmeldes fra?' })
                     .fill(sykmeldtFraArbeidsforhold || '')
             } else {
                 await page
-                    .getByRole('radiogroup', {
-                        name: /Har pasienten flere arbeidsgivere?/,
-                    })
+                    .getByRole('radiogroup', { name: /Har pasienten flere arbeidsgivere?/ })
                     .getByText('Nei')
                     .click()
             }
@@ -346,13 +317,9 @@ export function fillPeriodeRelative({
             const periodeRegion = page.getByRole('region', { name: 'Periode' }).nth(nth)
             await expect(periodeRegion).toBeVisible()
 
-            const fomField = periodeRegion.getByRole('textbox', {
-                name: 'Fra og med',
-            })
+            const fomField = periodeRegion.getByRole('textbox', { name: 'Fra og med' })
             await fomField.fill(inputDate(fom))
-            const tomField = periodeRegion.getByRole('textbox', {
-                name: 'Til og med',
-            })
+            const tomField = periodeRegion.getByRole('textbox', { name: 'Til og med' })
             await tomField.fill(inputDate(tom))
 
             if (typeof type === 'string' && type === '100%') {
@@ -387,19 +354,13 @@ export function fillBehandlingsdagerPeriode(
     return async (page: Page) => {
         return test.step('Fill periode for behandlingsdager', async () => {
             const periodeRegion = page
-                .getByRole('region', {
-                    name: 'Periode for enkeltstående behandlingsdager',
-                })
+                .getByRole('region', { name: 'Periode for enkeltstående behandlingsdager' })
                 .nth(nth)
             await expect(periodeRegion).toBeVisible()
 
-            const fomField = periodeRegion.getByRole('textbox', {
-                name: 'Fra og med',
-            })
+            const fomField = periodeRegion.getByRole('textbox', { name: 'Fra og med' })
             await fomField.fill(inputDate(fom))
-            const tomField = periodeRegion.getByRole('textbox', {
-                name: 'Til og med',
-            })
+            const tomField = periodeRegion.getByRole('textbox', { name: 'Til og med' })
             await tomField.fill(inputDate(tom))
         })
     }
@@ -409,9 +370,7 @@ export function fillBehandlingsdagerExplanation(explanation: string) {
     return async (page: Page) => {
         await test.step('Input explanation for behandlingsdager', async () => {
             await page
-                .getByRole('textbox', {
-                    name: 'Beskrivelse av behov for behandlingsdager (ikke påkrevd)',
-                })
+                .getByRole('textbox', { name: 'Beskrivelse av behov for behandlingsdager (ikke påkrevd)' })
                 .fill(explanation)
         })
     }
@@ -449,9 +408,7 @@ export function fillArsakerTilAktivitetIkkeMulig({
 
             if (arbeidsrelatertArsakBegrunnelse) {
                 await periodeRegion
-                    .getByRole('textbox', {
-                        name: 'Annen arbeidsrelatert årsak (Vises for arbeidsgiver)',
-                    })
+                    .getByRole('textbox', { name: 'Annen arbeidsrelatert årsak (Vises for arbeidsgiver)' })
                     .fill(arbeidsrelatertArsakBegrunnelse)
             }
         })
