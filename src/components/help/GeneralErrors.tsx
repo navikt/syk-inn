@@ -34,7 +34,7 @@ export function UnknownSystemError({ className, retry }: { className?: string; r
 
 type AlertProps = {
     title: string
-    level: 'warning' | 'error'
+    level?: 'warning' | 'error'
     size?: 'small' | 'medium'
     className?: string
     retry?: () => void
@@ -63,8 +63,8 @@ export function DetailedAlert({
     level = 'error',
     size = 'medium',
     retry,
-    noCallToAction = undefined,
-    noSessionId = undefined,
+    noCallToAction,
+    noSessionId,
 }: AlertProps & { children: ReactElement | Iterable<ReactElement> }): ReactElement {
     return (
         <LocalAlert status={level} className={className} size={size}>

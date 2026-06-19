@@ -76,6 +76,7 @@ function SentimentButton({
 
     return (
         <Tooltip content={tooltip} placement="bottom">
+            {/* oxlint-disable-next-line jsx-a11y/interactive-supports-focus */}
             <Button
                 type="button"
                 onClick={() => onSentiment(level)}
@@ -98,6 +99,7 @@ function SentimentButton({
                 )}
                 variant="tertiary"
                 data-color="neutral"
+                // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role jsx-a11y/role-has-required-aria-props
                 role="radio"
             />
         </Tooltip>

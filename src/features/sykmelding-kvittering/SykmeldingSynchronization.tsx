@@ -18,9 +18,7 @@ export function SykmeldingSynchronization({ sykmeldingId }: Props): ReactElement
     })
 
     useEffect(() => {
-        spanBrowserAsync('SykmeldingSynchronization.mutation', async () => {
-            await mutation()
-        })
+        void spanBrowserAsync('SykmeldingSynchronization.mutation', () => mutation())
     }, [mutation])
 
     if (loading || !called) {

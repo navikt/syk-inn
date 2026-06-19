@@ -70,7 +70,7 @@ describe('apollo cache normalization - draft', () => {
                 query: GetDraftDocument,
                 variables: { draftId: 'draft-no-existy' },
             }),
-        ).rejects.toThrow()
+        ).rejects.toThrow(/No more mocked responses for the query/)
     })
 })
 
@@ -147,7 +147,7 @@ describe('apollo cache normalization - sykmelding', async () => {
                 query: SykmeldingByIdDocument,
                 variables: { id: 'sykme-3' },
             }),
-        ).rejects.toThrow()
+        ).rejects.toThrow(/No more mocked responses for the query/)
     })
 })
 

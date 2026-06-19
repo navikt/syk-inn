@@ -3,7 +3,7 @@ import { GraphQLError } from 'graphql/error'
 
 import { getFlag, getUserToggles } from '#core/toggles/unleash'
 
-export async function assertIsPilotUser(sykmelderHpr: string): Promise<void | never> {
+export async function assertIsPilotUser(sykmelderHpr: string): Promise<void> {
     const toggles = await getUserToggles(sykmelderHpr)
     const isPilotUser = getFlag('PILOT_USER', toggles)
 

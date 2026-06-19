@@ -145,7 +145,7 @@ export function resolverInputToSykInnApiPayload(
 }
 
 function mapUtdypendeSporsmalToSykInnApiMap(
-    utdypendeSporsmal?: InputMaybe<InputUtdypendeSporsmal> | undefined,
+    utdypendeSporsmal?: InputMaybe<InputUtdypendeSporsmal>,
 ): OpprettSykmeldingPayload['values']['utdypendeSporsmal'] {
     const result: OpprettSykmeldingPayload['values']['utdypendeSporsmal'] = {
         utfordringerMedArbeid: null,

@@ -49,7 +49,7 @@ export async function fetchInternalAPI<
 }: FetchInternalAPIOptionsWithSchema<Schema, AdditionalErrors>): Promise<
     InferredReturnValue | ApiFetchErrors<AdditionalErrors>
 > {
-    const pathWithoutIds = path.replace(/[a-f0-9\-]{36}/g, '<uuid>')
+    const pathWithoutIds = path.replace(/[a-f0-9-]{36}/g, '<uuid>')
 
     return spanServerAsync(`InternalAPIs.${api}${pathWithoutIds}`, async (span) => {
         const apiConfig = await getApi(api)

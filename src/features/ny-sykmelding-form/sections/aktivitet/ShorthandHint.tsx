@@ -18,7 +18,11 @@ export function ShorthandHint({ focused, suggestion, anchorEl }: Props): ReactEl
 
     return (
         <Popover anchorEl={anchorEl} open={isOpen} onClose={() => void 0} placement="top" aria-expanded={isOpen}>
-            <Popover.Content role="region" aria-labelledby="popover-shorthand-hint">
+            <Popover.Content
+                // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role
+                role="region"
+                aria-labelledby="popover-shorthand-hint"
+            >
                 <Detail className="font-ax-bold" id="popover-shorthand-hint">
                     Trykk <span className="font-mono px-1 bg-ax-bg-neutral-soft rounded-sm text-xs">Enter</span> for å
                     bruke følgende datoer

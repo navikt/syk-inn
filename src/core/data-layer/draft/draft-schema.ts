@@ -94,10 +94,7 @@ export const DraftValuesSchema = z.object({
 /**
  * The draft blob can be stale or broken, this will not throw in the draft is broken.
  */
-export function safeParseDraft(
-    draftId: string | null | undefined,
-    potentialDraft: unknown | undefined,
-): DraftValues | null {
+export function safeParseDraft(draftId: string | null | undefined, potentialDraft: unknown): DraftValues | null {
     if (potentialDraft == null) return null
 
     const result = DraftValuesSchema.safeParse(potentialDraft)

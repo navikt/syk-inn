@@ -23,7 +23,7 @@ function DashboardPage(): ReactElement {
     }, [dispatch])
 
     return (
-        <PageLayout heading="none" size="full" bg="transparent">
+        <PageLayout noHeading size="full" bg="transparent">
             <div className="grid grid-cols-2 gap-3 w-full">
                 <DashboardTopCard className="col-span-2" />
                 <ComboTableCard className="min-h-80 col-span-2" />

@@ -37,10 +37,10 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
                     sykmeldinger={dashboardQuery.data.sykmeldinger?.current ?? []}
                     drafts={dashboardQuery.data.drafts ?? []}
                 >
-                    {dashboardQuery.error && !dashboardQuery.data.drafts == null && (
+                    {dashboardQuery.error && dashboardQuery.data.drafts == null && (
                         <AllDraftsError refetch={dashboardQuery.refetch} />
                     )}
-                    {dashboardQuery.error && !dashboardQuery.data.sykmeldinger == null && (
+                    {dashboardQuery.error && dashboardQuery.data.sykmeldinger == null && (
                         <AllSykmeldingerError refetch={dashboardQuery.refetch} />
                     )}
                 </ComboTable>

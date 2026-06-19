@@ -6,23 +6,28 @@ import { cn } from '#lib/tw'
 
 import LoadableHeader, { LoadableHeaderProps } from '../animation/LoadableHeader'
 
-type Props = {
-    heading: ReactNode | 'none'
-    bg: 'transparent' | 'white'
-    size: 'full' | 'fit'
-}
+type Props =
+    | {
+          heading: ReactNode
+          bg: 'transparent' | 'white'
+          size: 'full' | 'fit'
+      }
+    | {
+          noHeading: true
+          bg: 'transparent' | 'white'
+          size: 'full' | 'fit'
+      }
 
-export function PageLayout({ heading, size, bg, children }: PropsWithChildren<Props>): ReactElement {
+export function PageLayout({ size, bg, children, ...props }: PropsWithChildren<Props>): ReactElement {
     return (
         <Page className="bg-transparent">
             <PageBlock as="main" gutters className="pt-4">
-                {typeof heading === 'string' ? (
-                    heading !== 'none' ? (
-                        <StaticPageHeading>{heading}</StaticPageHeading>
-                    ) : null
-                ) : (
-                    heading
-                )}
+                {!('noHeading' in props) &&
+                    (typeof props.heading === 'string' ? (
+                        <StaticPageHeading>{props.heading}</StaticPageHeading>
+                    ) : (
+                        props.heading
+                    ))}
                 <div className={cn('rounded-xl', { 'lg:w-fit': size !== 'full', 'bg-ax-bg-default': bg === 'white' })}>
                     {children}
                 </div>

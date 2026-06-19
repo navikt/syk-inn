@@ -13,7 +13,7 @@ export function getAbsoluteURL(): string {
         case 'prod-gcp':
             return 'https://nav.no/samarbeidspartner/sykmelding'
         default:
-            throw new Error(`Unknown runtime environment ${bundledEnv.runtimeEnv}`)
+            throw new Error(`Unknown runtime environment ${bundledEnv.runtimeEnv as string}`)
     }
 }
 

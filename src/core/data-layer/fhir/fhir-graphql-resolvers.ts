@@ -112,9 +112,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const ident = getValidPatientIdent(patientInContext.identifier)
             if (ident == null) {
-                logger.error(
-                    `Missing valid FNR/DNR in patient resource, found OIDs: ${patientInContext.identifier?.map((it) => it.system) ?? 'none'}`,
-                )
+                const oids = patientInContext.identifier?.map((it) => it.system).join(', ') ?? 'none'
+                logger.error(`Missing valid FNR/DNR in patient resource, found OIDs: ${oids}`)
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -169,9 +168,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             const ident = getValidPatientIdent(patient.identifier)
             if (ident == null) {
                 logger.error('Missing valid FNR/DNR in patient resource')
-                logger.error(
-                    `Missing valid FNR/DNR in patient resource, found OIDs: ${patient.identifier?.map((it) => it.system) ?? 'none'}`,
-                )
+                const oids = patient.identifier?.map((it) => it.system).join(', ') ?? 'none'
+                logger.error(`Missing valid FNR/DNR in patient resource, found OIDs: ${oids}`)
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -194,9 +192,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const ident = getValidPatientIdent(patient.identifier)
             if (ident == null) {
-                logger.error(
-                    `Missing valid FNR/DNR in patient resource, found OIDs: ${patient.identifier?.map((it) => it.system) ?? 'none'}`,
-                )
+                const oids = patient.identifier?.map((it) => it.system).join(', ') ?? 'none'
+                logger.error(`Missing valid FNR/DNR in patient resource, found OIDs: ${oids}`)
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -217,9 +214,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const ident = getValidPatientIdent(patient.identifier)
             if (ident == null) {
-                logger.error(
-                    `Missing valid FNR/DNR in patient resource, found OIDs: ${patient.identifier?.map((it) => it.system) ?? 'none'}`,
-                )
+                const oids = patient.identifier?.map((it) => it.system).join(', ') ?? 'none'
+                logger.error(`Missing valid FNR/DNR in patient resource, found OIDs: ${oids}`)
                 throw new GraphQLError('API_ERROR')
             }
 
@@ -252,9 +248,9 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const ident = getValidPatientIdent(patient.identifier)
             if (ident == null) {
-                logger.error(
-                    `Missing valid FNR/DNR in patient resource, found OIDs: ${patient.identifier?.map((it) => it.system) ?? 'none'}`,
-                )
+                const oids = patient.identifier?.map((it) => it.system).join(', ')
+
+                logger.error(`Missing valid FNR/DNR in patient resource, found OIDs: ${oids ?? 'none'}`)
                 throw new GraphQLError('API_ERROR')
             }
 

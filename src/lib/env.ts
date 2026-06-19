@@ -83,7 +83,7 @@ export function getServerEnv(): ServerEnv {
                       host: process.env.VALKEY_HOST_SYK_INN,
                       port: process.env.VALKEY_PORT_SYK_INN,
                   },
-              } satisfies Record<KeysOfUnion<ValkeyConfig>, unknown | undefined>)
+              } satisfies Record<KeysOfUnion<ValkeyConfig>, unknown>)
             : undefined
 
     const parsedEnv = ServerEnvSchema.parse({
@@ -92,7 +92,7 @@ export function getServerEnv(): ServerEnv {
         localSykInnApiHost: process.env.LOCAL_SYK_INN_API_HOST,
         useLocalValkey: process.env.USE_LOCAL_VALKEY === 'true',
         pilotFeedbackSlackWebhook: process.env.PILOT_FEEDBACK_SLACK_WEBHOOK,
-    } satisfies Record<keyof ServerEnv, unknown | undefined>)
+    } satisfies Record<keyof ServerEnv, unknown>)
 
     if (bundledEnv.runtimeEnv !== 'local' && parsedEnv.useLocalSykInnApi) {
         raise('USE_LOCAL_SYK_INN_API should only be set to true in local environment')

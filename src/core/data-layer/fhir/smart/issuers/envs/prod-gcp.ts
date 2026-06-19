@@ -9,7 +9,7 @@ const EhrConfigurationProdSchema = z.object({
 export const getProdFhirConfiguration = (): EhrConfigurationProd =>
     EhrConfigurationProdSchema.parse({
         webmedClientSecret: process.env.WEBMED_CLIENT_SECRET,
-    } satisfies Record<keyof EhrConfigurationProd, unknown | undefined>)
+    } satisfies Record<keyof EhrConfigurationProd, unknown>)
 
 export function getKnownProdFhirServers(): KnownFhirServer[] {
     const configuration = getProdFhirConfiguration()

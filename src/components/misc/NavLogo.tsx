@@ -13,7 +13,6 @@ export function NavLogo({ className }: Props): ReactElement {
             fill="none"
             viewBox="0 0 64 20"
             focusable="false"
-            role="img"
             aria-labelledby="logo-svg-title"
             className={className}
         >

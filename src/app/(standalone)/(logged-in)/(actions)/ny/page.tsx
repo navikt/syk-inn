@@ -7,7 +7,12 @@ import NySykmeldingPageSteps from '#features/ny-sykmelding-form/NySykmeldingPage
 
 async function Page({ searchParams }: PageProps<'/ny'>): Promise<ReactElement> {
     const search = await searchParams
-    if (search['draft']) {
+    const draftId = search['draft']
+
+    if (draftId && typeof draftId === 'string') {
+        const stepQuery = search['step']
+        const step = typeof stepQuery === 'string' ? stepQuery : 'main'
+
         /**
          * If this page is (re-)-loaded and this server-component runs, it means that it has already started
          * and saved a draft. For simplicity's sake we'll just redirect to the draft form and let it handle
@@ -15,7 +20,7 @@ async function Page({ searchParams }: PageProps<'/ny'>): Promise<ReactElement> {
          *
          * This should never run during normal client side navigation in the browser.
          */
-        redirect(`/draft/${search['draft']}?step=${search['step'] ?? 'main'}`)
+        redirect(`/draft/${draftId}?step=${step}`)
     }
 
     return (

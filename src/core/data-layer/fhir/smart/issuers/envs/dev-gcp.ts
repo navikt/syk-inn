@@ -9,7 +9,7 @@ const FhirConfigurationDevSchema = z.object({
 export const getDevFhirConfiguration = (): FhirConfigurationDev =>
     FhirConfigurationDevSchema.parse({
         webmedClientSecret: process.env.WEBMED_CLIENT_SECRET,
-    } satisfies Record<keyof FhirConfigurationDev, unknown | undefined>)
+    } satisfies Record<keyof FhirConfigurationDev, unknown>)
 
 export function getKnownDevFhirServers(): KnownFhirServer[] {
     const configuration = getDevFhirConfiguration()

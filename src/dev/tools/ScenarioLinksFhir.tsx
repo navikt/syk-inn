@@ -82,9 +82,9 @@ function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: boolean }
                         as="button"
                         type="button"
                         onClick={() => {
-                            setPatient('Espen Eksempel' satisfies MockPatients)
-                            setPractitioner('')
-                            setOrganization('')
+                            void setPatient('Espen Eksempel' satisfies MockPatients)
+                            void setPractitioner('')
+                            void setOrganization('')
                         }}
                     >
                         Reset

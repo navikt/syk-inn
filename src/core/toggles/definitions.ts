@@ -72,7 +72,7 @@ export async function getAndValidateDefinitions(): Promise<ToggleDefinitions> {
 
 async function fetchDefinitions(): Promise<ToggleDefinitions> {
     return spanServerAsync('unleash: fetch definitions', async (span) => {
-        const definitions = getDefinitions({
+        const definitions = await getDefinitions({
             appName: 'syk-inn',
             url: `${process.env.UNLEASH_SERVER_API_URL ?? raise('Missing UNLEASH_SERVER_API_URL')}/api/client/features`,
         })
@@ -81,7 +81,7 @@ async function fetchDefinitions(): Promise<ToggleDefinitions> {
             failSpan.andThrow(
                 span,
                 'Unleash Toggles,',
-                new Error(`Toggle was 200 OK, but server said: ${definitions.message}`),
+                new Error(`Toggle was 200 OK, but server said: ${definitions.message as string}`),
             )
         }
 

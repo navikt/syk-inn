@@ -47,7 +47,7 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                 metaDev: JSON.stringify(feedback.metaDev ?? {}),
             } satisfies Record<keyof Feedback, string | number | null>)
 
-            pub.new(id)
+            await pub.new(id)
         },
         all: async () => {
             const allkeys = await valkey.keys(`feedback:*`)
@@ -79,7 +79,7 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
 
             await valkey.del(key)
 
-            pub.deleted(id)
+            await pub.deleted(id)
         },
         redactFeedback: async (id, message, whom) => {
             const key = feedbackValkeyKey(id)
@@ -96,7 +96,7 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                 redactionLog: JSON.stringify(redactionLog),
             })
 
-            pub.update(id)
+            await pub.update(id)
         },
         mark: {
             verified: async (id, by) => {
@@ -111,7 +111,7 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                     verifiedContentBy: by,
                 })
 
-                pub.update(id)
+                await pub.update(id)
             },
             contacted: async (id, by) => {
                 const key = feedbackValkeyKey(id)
@@ -129,7 +129,7 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                     contactedBy: by,
                 })
 
-                pub.update(id)
+                await pub.update(id)
             },
             shared: async (id, by, link) => {
                 const key = feedbackValkeyKey(id)
@@ -144,7 +144,7 @@ export function createAdminFeedbackClient(valkey: Valkey): AdminFeedbackClient {
                     sharedLink: link,
                 })
 
-                pub.update(id)
+                await pub.update(id)
             },
         },
     }

@@ -10,7 +10,7 @@ function DumbDevHeader({ className }: { className?: string }): ReactElement {
     const containerRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        document.fonts.ready.then(() => {
+        void document.fonts.ready.then(() => {
             if (!containerRef.current) return
 
             const { chars } = splitTextA(containerRef.current.querySelector('.wavy')!)

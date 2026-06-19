@@ -62,7 +62,7 @@ export async function expectTermToHaveDefinitions(
             })
             if (!match) {
                 fail(
-                    `Definition "${definitionText}" for term "${term}" does not match any of the expected definitions: ${definitions}`,
+                    `Definition "${definitionText}" for term "${term}" does not match any of the expected definitions: ${definitions.toString()}`,
                 )
             }
         }

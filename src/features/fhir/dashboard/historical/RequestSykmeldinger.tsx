@@ -15,7 +15,7 @@ export function RequestSykmeldinger({ loading }: { loading: boolean }): ReactEle
             <Button
                 variant="secondary"
                 onClick={() => {
-                    requestAccessToSykmeldinger()
+                    void requestAccessToSykmeldinger()
                 }}
                 loading={loading || result.loading}
                 disabled={loading}

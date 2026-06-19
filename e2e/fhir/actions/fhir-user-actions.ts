@@ -43,7 +43,9 @@ export function startNewAlternateSykmelding(variant: 'BEHANDLINGSDAGER', patient
                                 .click()
                             return
                         default:
-                            raise(`No such variant ${variant} implemented in startNewAlternateSykmelding(...)`)
+                            raise(
+                                `No such variant ${variant as string} implemented in startNewAlternateSykmelding(...)`,
+                            )
                     }
                 })
             },

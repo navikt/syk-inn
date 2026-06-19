@@ -12,7 +12,7 @@ describe('in memory valkey proxy', () => {
         const draftKey = 'draft:123'
         const ownershipKey = `ownership:hpr:${hpr}:ident:${ident}`
 
-        valkey.hset(draftKey, {
+        await valkey.hset(draftKey, {
             draftId: '123',
             values: JSON.stringify({ title: 'Test Draft' }),
             lastUpdated: new Date().toISOString(),

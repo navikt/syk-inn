@@ -105,7 +105,7 @@ async function assertConfidentialClient(
             // client_secret_post is OK
             return
         default: {
-            throw new Error(`Unknown client method: "${client.method}"`)
+            throw new Error(`Unknown client method: "${client.method as string}"`)
         }
     }
 }

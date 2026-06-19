@@ -76,7 +76,7 @@ function FeedbackButton(): ReactElement {
                                 <div className="mt-16">
                                     <FullFeedbackSentimentFollowUp
                                         onSentiment={(sentiment) => {
-                                            feedback.updateSentiment(sentiment)
+                                            void feedback.updateSentiment(sentiment)
                                         }}
                                         hasUpdated={feedback.sentimentUpdated}
                                     />

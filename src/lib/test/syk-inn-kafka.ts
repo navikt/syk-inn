@@ -49,7 +49,7 @@ export async function consumeUntil(consumer: Consumer, sykmeldingId: string): Pr
             reject(new Error(`Timeout waiting for message with key ${sykmeldingId}`))
         }, 10_000)
 
-        consumer.run({
+        void consumer.run({
             eachMessage: async ({ message }) => {
                 const key = message.key?.toString()
                 if (key === sykmeldingId) {

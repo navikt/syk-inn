@@ -87,13 +87,7 @@ function Bruksvilkar({ patientId, accepter, accepted }: Props): ReactElement {
                 <AnimatePresence>
                     {acceptOk != null && !acceptOk.stale && (
                         <SimpleReveal>
-                            <Button
-                                role="link"
-                                href={paths.root}
-                                className="w-full mt-4"
-                                variant="secondary"
-                                as={AssableNextLink}
-                            >
+                            <Button href={paths.root} className="w-full mt-4" variant="secondary" as={AssableNextLink}>
                                 Gå tilbake til pasienten
                             </Button>
                         </SimpleReveal>

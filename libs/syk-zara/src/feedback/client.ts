@@ -121,7 +121,7 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
                     break
             }
 
-            pub.new(id)
+            await pub.new(id)
         },
         sentiment: async (id, sentiment) => {
             const key = feedbackValkeyKey(id)
@@ -134,7 +134,7 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
                 sentiment: sentiment,
             })
 
-            pub.update(id)
+            await pub.update(id)
         },
     }
 }

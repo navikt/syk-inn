@@ -97,8 +97,9 @@ export function useOpprettSykmeldingMutation(
 
             return createResult
         } catch (e) {
-            logger.error(`Sykmelding creation failed, errors ${e}`)
-            throw new Error(`Sykmelding creation failed`)
+            const error = new Error(`Sykmelding creation failed`, { cause: e })
+            logger.error(error)
+            throw error
         }
     })
 
@@ -194,7 +195,7 @@ function grunnToInputTilbakedateringBegrunnelse(
             }
             return annenGrunn
         default:
-            raise(`Ukjent grunn for tilbakedatering: ${grunn}`)
+            raise(`Ukjent grunn for tilbakedatering: ${grunn as string}`)
     }
 }
 

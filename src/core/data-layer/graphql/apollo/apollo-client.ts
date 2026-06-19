@@ -32,7 +32,7 @@ const inferOperationName = (body: string | undefined): string => {
         const parsedBody = JSON.parse(body)
         return parsedBody.operationName || 'UnknownOperation'
     } catch (e) {
-        logger.warn(`Failed to parse operation name from body: ${e}`)
+        logger.warn(`Failed to parse operation name from body: ${String(e)}`)
         return 'UnknownOperation'
     }
 }

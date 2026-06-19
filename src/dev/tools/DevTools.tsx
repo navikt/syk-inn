@@ -68,7 +68,7 @@ function useKeyboardShortcuts(closeAllDevTools: () => void, toggleInternalDevToo
             }
 
             if (e.altKey && e.key === 'r') {
-                client.resetStore()
+                void client.resetStore()
             }
         }
         document.addEventListener('keydown', handleKeydown)

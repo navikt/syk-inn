@@ -1,5 +1,5 @@
 import { FhirQuestionnaireResponse, FhirQuestionnaireResponseItem } from '@navikt/smart-on-fhir/zod'
-import { describe, expect, it } from 'vitest'
+import { assert, describe, expect, it } from 'vitest'
 
 import { SykmeldingBuilder } from '#dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 
@@ -171,7 +171,7 @@ function getRootItem(
     const item = items.find((item) => item.linkId === linkId) ?? null
 
     if (item == null) {
-        expect.fail(item, `Item with linkId '${linkId}' was not found among the ${items.length} items`)
+        assert.fail(item, `Item with linkId '${linkId}' was not found among the ${items.length} items`)
     }
 
     return item
@@ -185,7 +185,7 @@ function getChildItem(
         (parent.item as FhirQuestionnaireResponseItem[] | undefined)?.find((item) => item.linkId === linkId) ?? null
 
     if (item === null) {
-        expect.fail(item, `Child item '${linkId}' not found`)
+        assert.fail(item, `Child item '${linkId}' not found`)
     }
 
     return item

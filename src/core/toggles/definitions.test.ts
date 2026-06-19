@@ -1,23 +1,21 @@
 import nock from 'nock'
-import { vi, test, describe, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest'
+import { vi, test, describe, expect, beforeEach, afterEach, afterAll } from 'vitest'
+
+vi.mock('@navikt/next-logger', () => {
+    const loggerMock = {
+        info: vi.fn<never>(),
+        warn: vi.fn<never>(),
+        error: vi.fn<never>(),
+        debug: vi.fn<never>(),
+        fatal: vi.fn<never>(),
+        trace: vi.fn<never>(),
+        child: () => loggerMock,
+    }
+
+    return { logger: loggerMock }
+})
 
 describe('unleash definitions', () => {
-    beforeAll(() => {
-        vi.mock('@navikt/next-logger', () => {
-            const loggerMock = {
-                info: vi.fn(),
-                warn: vi.fn(),
-                error: vi.fn(),
-                debug: vi.fn(),
-                fatal: vi.fn(),
-                trace: vi.fn(),
-                child: () => loggerMock,
-            }
-
-            return { logger: loggerMock }
-        })
-    })
-
     afterAll(() => {
         vi.restoreAllMocks()
     })
