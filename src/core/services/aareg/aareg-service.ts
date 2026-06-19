@@ -10,7 +10,7 @@ const logger = pinoLogger.child({}, { msgPrefix: '[AAREG Service]: ' })
 
 export const aaregService = {
     getArbeidsforhold: async (
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // oxlint-disable-next-line no-unused-vars
         ident: string,
     ): Promise<AaregArbeidsforhold[]> => {
         if (shouldUseMockEngine()) {

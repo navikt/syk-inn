@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+// oxlint-disable typescript/explicit-function-return-type
 
 import { ApolloLink, TypedDocumentNode } from '@apollo/client'
 import { expect, Locator, Page, test } from '@playwright/test'
@@ -93,7 +93,7 @@ export function verifyNoHorizontalScroll() {
     }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 export function anything<T>(): any {
     return expect.anything() as T
 }

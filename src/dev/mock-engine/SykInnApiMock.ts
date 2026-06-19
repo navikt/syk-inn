@@ -68,10 +68,7 @@ export class SykInnApiMock {
         return pdfBuffer.buffer
     }
 
-    async verifySykmelding(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        _: OpprettSykmeldingPayload,
-    ): Promise<SykInnApiRuleOutcome | SykInnApiPersonDoesNotExist> {
+    async verifySykmelding(_: OpprettSykmeldingPayload): Promise<SykInnApiRuleOutcome | SykInnApiPersonDoesNotExist> {
         const headersStore = await headers()
 
         const rule = headersStore.get(MockRuleMarkers.header)

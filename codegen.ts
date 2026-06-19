@@ -1,13 +1,13 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
-const eslintDisabler = { add: { content: '/* eslint-disable */' } }
+const oxlintDisabler = { add: { content: '/* oxlint-disable */' } }
 
 const config: CodegenConfig = {
     schema: './src/core/data-layer/graphql/schema/**/*.graphqls',
     documents: ['./src/core/data-layer/graphql/queries/**/*.graphql'],
     generates: {
         './src/core/data-layer/graphql/generated/queries.generated.ts': {
-            plugins: [eslintDisabler, 'typescript', 'typescript-operations', 'typed-document-node'],
+            plugins: [oxlintDisabler, 'typescript', 'typescript-operations', 'typed-document-node'],
             config: {
                 enumsAsTypes: true,
                 avoidOptionals: true,
@@ -16,7 +16,7 @@ const config: CodegenConfig = {
             },
         },
         './src/core/data-layer/graphql/generated/resolvers.generated.ts': {
-            plugins: [eslintDisabler, 'typescript', 'typescript-resolvers'],
+            plugins: [oxlintDisabler, 'typescript', 'typescript-resolvers'],
             config: {
                 enumsAsTypes: true,
                 scalars: { DateTime: 'string', DateOnly: 'string', JSON: 'unknown' },

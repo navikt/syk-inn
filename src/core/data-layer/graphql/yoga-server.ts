@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+// oxlint-disable react-hooks/rules-of-hooks
 
 import { useOpenTelemetry } from '@envelop/opentelemetry'
 import { logger as pinoLogger } from '@navikt/next-logger'

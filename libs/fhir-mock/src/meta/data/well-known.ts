@@ -1,4 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+// oxlint-disable typescript/explicit-function-return-type
+
 export const createWellKnown = (baseUrl: string) => ({
     issuer: baseUrl,
     jwks_uri: `${baseUrl}/keys`,

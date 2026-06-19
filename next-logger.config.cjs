@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
+// oxlint-disable typescript/no-require-imports
 
 const { backendLogger } = require('@navikt/next-logger')
 

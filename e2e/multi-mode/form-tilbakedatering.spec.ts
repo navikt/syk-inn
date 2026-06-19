@@ -1,8 +1,8 @@
 import test from '@playwright/test'
 
-import { OpprettSykmeldingDocument } from '#core/data-layer/graphql/generated/queries.generated'
 import { toReadableDatePeriod, toReadableDate } from '#lib/date'
 import { inDays, daysAgo } from '#lib/test/date-utils'
+import { OpprettSykmeldingDocument } from '#queries'
 
 import {
     fillPeriodeRelative,

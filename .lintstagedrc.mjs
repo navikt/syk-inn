@@ -3,7 +3,8 @@
  */
 const config = {
     '*': () => 'yarn fmt --no-error-on-unmatched-pattern',
-    '*.{ts,tsx}': (staged) => ['yarn tsgo', `yarn eslint --fix --max-warnings=0 ${staged.join(' ')}`],
+    '*.{ts,tsx,js,ts,mjs,mts}': 'yarn lint',
+    '*.{ts,tsx}': () => 'yarn tsgo',
 }
 
 export default config

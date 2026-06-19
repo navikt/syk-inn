@@ -1,6 +1,6 @@
 import { test } from '@playwright/test'
 
-import { questionTexts } from '#core/data-layer/common/questions'
+import { questionTexts } from '#data-layer/common/questions'
 import { today, inDays } from '#lib/test/date-utils'
 import { OpprettSykmeldingDocument } from '#queries'
 
