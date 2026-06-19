@@ -1,9 +1,9 @@
+import { logger } from '@navikt/next-logger'
 import texas from '@navikt/texas'
 import * as z from 'zod'
-import { logger } from '@navikt/next-logger'
 
-import { bundledEnv, getServerEnv } from '@lib/env'
-import { failSpan, spanServerAsync } from '@lib/otel/server'
+import { bundledEnv, getServerEnv } from '#lib/env'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 type ValidAPI = 'syk-inn-api' | 'tsm-pdl-cache'
 

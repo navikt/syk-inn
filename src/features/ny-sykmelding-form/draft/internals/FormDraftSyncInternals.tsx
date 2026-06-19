@@ -1,12 +1,12 @@
+import { type ApolloClient } from '@apollo/client'
+import { useMutation } from '@apollo/client/react'
+import { logger } from '@navikt/next-logger'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import * as R from 'remeda'
-import { type ApolloClient } from '@apollo/client'
-import { logger } from '@navikt/next-logger'
-import { useMutation } from '@apollo/client/react'
 
-import { SaveDraftMutation, SaveDraftMutationVariables } from '@queries'
-import { bundledEnv, isLocal } from '@lib/env'
-import { DraftValues, safeParseDraft } from '@data-layer/draft/draft-schema'
+import { DraftValues, safeParseDraft } from '#data-layer/draft/draft-schema'
+import { bundledEnv, isLocal } from '#lib/env'
+import { SaveDraftMutation, SaveDraftMutationVariables } from '#queries'
 
 import { NySykmeldingMainFormValues, useFormContext } from '../../form/types'
 import { useDraftId } from '../useDraftId'

@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
-import { inDays, inputDate } from '@lib/test/date-utils'
+
+import { inDays, inputDate } from '#lib/test/date-utils'
 
 import {
     addBidiagnose,
@@ -10,8 +11,8 @@ import {
 } from '../actions/user-actions'
 import { expectBidagnoses, expectHoveddiagnose } from '../actions/user-form-verification'
 
-import { modes, onMode } from './modes'
 import { launchAndStart } from './actions/mode-user-actions'
+import { modes, onMode } from './modes'
 
 modes.forEach(({ mode }) => {
     test(`${mode}: hoveddiagnose - shall be able to edit diagnose`, async ({ page }) => {

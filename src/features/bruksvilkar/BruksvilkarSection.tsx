@@ -1,10 +1,10 @@
-import * as z from 'zod'
-import { ReactElement } from 'react'
 import { Detail, Heading } from '@navikt/ds-react'
+import { ReactElement } from 'react'
+import * as z from 'zod'
 
-import { toReadableDateTime } from '@lib/date'
-import BruksvilkarMarkdown, { metadata } from '@bruksvilkar.mdx'
-import { DateTime } from '@lib/zod'
+import BruksvilkarMarkdown, { metadata } from '#bruksvilkar.mdx'
+import { toReadableDateTime } from '#lib/date'
+import { DateTime } from '#lib/zod'
 
 export const BRUKSVILKAR_VERSION = metadata.version
 export const BRUKSVILKAR_TIMESTAMP = metadata.updated

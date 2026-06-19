@@ -1,19 +1,19 @@
-import React, { ReactElement, RefObject, useImperativeHandle, useRef, useState } from 'react'
 import { BodyShort, DatePicker, Detail, RangeValidationT, useRangeDatepicker } from '@navikt/ds-react'
 import { addDays, differenceInDays, parseISO, isBefore, toDate, subYears } from 'date-fns'
 import { AnimatePresence } from 'motion/react'
+import React, { ReactElement, RefObject, useImperativeHandle, useRef, useState } from 'react'
 import { RefCallBack } from 'react-hook-form'
 
-import { dateOnly } from '@lib/date'
-import { cn } from '@lib/tw'
-import { SimpleReveal } from '@components/animation/Reveal'
+import { SimpleReveal } from '#components/animation/Reveal'
+import { dateOnly } from '#lib/date'
+import { cn } from '#lib/tw'
 
 import { useController, useFormContext } from '../../form/types'
 
 import { parseShorthandFom, parseShorthandTom } from './periode/periode-shorthand'
 import { defaultRangeDescription } from './periode/periode-utils'
-import { ShorthandHint } from './ShorthandHint'
 import styles from './PeriodePicker.module.css'
+import { ShorthandHint } from './ShorthandHint'
 
 type Props = {
     index: number

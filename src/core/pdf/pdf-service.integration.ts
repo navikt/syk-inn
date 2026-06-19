@@ -1,8 +1,8 @@
-import { describe, test, expect } from 'vitest'
 import { PDFParse } from 'pdf-parse'
 import * as R from 'remeda'
+import { describe, test, expect } from 'vitest'
 
-import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
+import { SykmeldingBuilder } from '#dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 
 import { createTypstSykmelding } from './pdf-service'
 import { PdfOK, PdfResult } from './types'

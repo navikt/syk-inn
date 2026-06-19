@@ -1,18 +1,18 @@
 'use client'
 
-import { ReactElement, useState } from 'react'
-import { BodyShort, Button, InfoCard, InlineMessage } from '@navikt/ds-react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
+import { BodyShort, Button, InfoCard, InlineMessage } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
+import { ReactElement, useState } from 'react'
 
-import { toReadableDateTime } from '@lib/date'
-import { SimpleReveal } from '@components/animation/Reveal'
-import { AssableNextLink } from '@components/links/AssableNextLink'
-import { createFhirPaths } from '@core/providers/ModePaths'
-import { cn } from '@lib/tw'
+import { SimpleReveal } from '#components/animation/Reveal'
+import { AssableNextLink } from '#components/links/AssableNextLink'
+import { createFhirPaths } from '#core/providers/ModePaths'
+import { toReadableDateTime } from '#lib/date'
+import { cn } from '#lib/tw'
 
-import { BRUKSVILKAR_TIMESTAMP, BRUKSVILKAR_VERSION, BruksvilkarSection } from './BruksvilkarSection'
 import { AcceptBruksvilkar } from './BruksvilkarAccept'
+import { BRUKSVILKAR_TIMESTAMP, BRUKSVILKAR_VERSION, BruksvilkarSection } from './BruksvilkarSection'
 
 type Props = {
     patientId: string

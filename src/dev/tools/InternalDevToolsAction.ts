@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 
-import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
+import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '#core/session/cookies'
 
 export async function togglesChangedAction(): Promise<void> {
     revalidatePath('/fhir')

@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react'
-import { FormSummary, InfoCard, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
+import { FormSummary, InfoCard, Skeleton } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { BehandlerDocument } from '@queries'
-import { SimpleAlert } from '@components/help/GeneralErrors'
+import { SimpleAlert } from '#components/help/GeneralErrors'
+import { BehandlerDocument } from '#queries'
 
 import BehandlerOrganisasjonsnummerAnswer from './BehandlerOrganisasjonsnummerAnswer'
 import BehandlerTelefonnummerAnswer from './BehandlerTelefonnummerAnswer'

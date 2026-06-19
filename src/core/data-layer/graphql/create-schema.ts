@@ -1,8 +1,8 @@
 import { addResolversToSchema } from '@graphql-tools/schema'
-import { GraphQLSchema } from 'graphql/type'
 import { buildClientSchema, IntrospectionQuery } from 'graphql'
+import { GraphQLSchema } from 'graphql/type'
 
-import { Resolvers } from '@resolvers'
+import { Resolvers } from '#resolvers'
 
 import introspectionSchema from './generated/schema.generated.json'
 

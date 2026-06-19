@@ -1,4 +1,4 @@
-import { sykmeldingQuestionnaireV1 } from '@data-layer/fhir/write/resources/questionnaire/sykmelding-questionnaire'
+import { sykmeldingQuestionnaireV1 } from '#data-layer/fhir/write/resources/questionnaire/sykmelding-questionnaire'
 
 export const dynamic = 'force-static'
 

@@ -1,6 +1,6 @@
+import { PopoverProps } from '@navikt/ds-react'
 import { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
-import { PopoverProps } from '@navikt/ds-react'
 
 export type Shortcut = {
     modifier: 'alt' | 'shift'

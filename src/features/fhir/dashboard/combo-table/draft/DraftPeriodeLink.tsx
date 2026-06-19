@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react'
 import { Detail } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { DraftValues } from '@data-layer/draft/draft-schema'
-import { AkselNextLink } from '@components/links/AkselNextLink'
-import { useMode } from '@core/providers/Modes'
+import { AkselNextLink } from '#components/links/AkselNextLink'
+import { useMode } from '#core/providers/Modes'
+import { DraftValues } from '#data-layer/draft/draft-schema'
 
-import { draftPeriodeText } from './draft-utils'
 import { AutoUpdatingDistance } from './AutoUpdatingDistance'
+import { draftPeriodeText } from './draft-utils'
 
 type Props = {
     draftId: string

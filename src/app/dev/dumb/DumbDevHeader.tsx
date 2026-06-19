@@ -1,10 +1,10 @@
 'use client'
 
-import React, { ReactElement, useEffect, useRef } from 'react'
-import { AnimatePresence, stagger } from 'motion/react'
 import { animate } from 'motion'
+import { AnimatePresence, stagger } from 'motion/react'
+import React, { ReactElement, useEffect, useRef } from 'react'
 
-import { FastFadeReveal } from '@components/animation/Reveal'
+import { FastFadeReveal } from '#components/animation/Reveal'
 
 function DumbDevHeader({ className }: { className?: string }): ReactElement {
     const containerRef = useRef<HTMLDivElement>(null)

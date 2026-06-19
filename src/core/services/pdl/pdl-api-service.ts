@@ -1,6 +1,6 @@
 import { logger } from '@navikt/next-logger'
 
-import { isE2E, isLocal, isDemo } from '@lib/env'
+import { isE2E, isLocal, isDemo } from '#lib/env'
 
 import { ApiFetchErrors, fetchInternalAPI } from '../api-fetcher'
 

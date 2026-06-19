@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
-import { OpprettSykmeldingDocument } from '@queries'
+
+import { OpprettSykmeldingDocument } from '#queries'
 
 import {
     fillPeriodeRelative,
@@ -9,15 +10,15 @@ import {
     saveDraft,
     pickHoveddiagnose,
 } from '../actions/user-actions'
-import { anything, expectGraphQLRequest } from '../utils/assertions'
 import { verifySummaryPage } from '../actions/user-verifications'
-import { userInteractionsGroup } from '../utils/actions'
 import * as standaloneActions from '../standalone/actions/standalone-user-actions'
+import { userInteractionsGroup } from '../utils/actions'
+import { anything, expectGraphQLRequest } from '../utils/assertions'
 import { defaultOpprettSykmeldingValues } from '../utils/submit-utils'
 
-import { modes, onMode } from './modes'
 import { launchAndStart } from './actions/mode-user-actions'
 import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
+import { modes, onMode } from './modes'
 
 modes.forEach(({ mode }) => {
     test(`${mode}: aareg @feature-toggle - should be able to fill arbeidsforhold with AAREG data`, async ({ page }) => {

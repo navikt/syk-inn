@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
-import { OpprettSykmeldingDocument } from '@queries'
-import { inDays, today } from '@lib/test/date-utils'
+
+import { inDays, today } from '#lib/test/date-utils'
+import { OpprettSykmeldingDocument } from '#queries'
 
 import {
     addBidiagnose,
@@ -12,9 +13,9 @@ import {
     pickHoveddiagnose,
     submitSykmelding,
 } from '../actions/user-actions'
-import { expectGraphQLRequest } from '../utils/assertions'
-import { userInteractionsGroup } from '../utils/actions'
 import { verifyIsOnKvitteringPage } from '../fhir/actions/fhir-user-verifications'
+import { userInteractionsGroup } from '../utils/actions'
+import { expectGraphQLRequest } from '../utils/assertions'
 import {
     defaultAktivitetGradert,
     defaultAktivitetIkkeMulig,
@@ -22,8 +23,8 @@ import {
     diagnoseSelection,
 } from '../utils/submit-utils'
 
-import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 import { launchAndStart } from './actions/mode-user-actions'
+import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 import { modes } from './modes'
 
 modes.forEach(({ mode }) => {

@@ -1,7 +1,7 @@
 import { subMinutes } from 'date-fns'
 
-import { DraftOwnership } from '@data-layer/draft/draft-client'
-import { DraftValues } from '@data-layer/draft/draft-schema'
+import { DraftOwnership } from '#data-layer/draft/draft-client'
+import { DraftValues } from '#data-layer/draft/draft-schema'
 
 export class DraftBuilder {
     private _id: string

@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react'
 import { BodyShort, HelpText, ReadMore, Textarea } from '@navikt/ds-react'
 import { Link as AkselLink } from '@navikt/ds-react/Link'
+import React, { ReactElement } from 'react'
 
-import { useFormContext } from '@features/ny-sykmelding-form/form/types'
+import { useFormContext } from '#features/ny-sykmelding-form/form/types'
 
 function BehandlingsdagerDescriptionField(): ReactElement {
     const form = useFormContext()

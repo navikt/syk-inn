@@ -1,5 +1,5 @@
-import type { MDXComponents } from 'mdx/types'
 import { BodyLong, Heading, List, Table, Link as AkselLink } from '@navikt/ds-react'
+import type { MDXComponents } from 'mdx/types'
 
 import styles from './mdx-components.module.css'
 

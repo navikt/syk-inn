@@ -1,14 +1,13 @@
 import './globals.css'
-
-import React, { ReactElement } from 'react'
+import { BugIcon } from '@navikt/aksel-icons'
 import { BodyShort, Box, Heading, Link, List, VStack } from '@navikt/ds-react'
 import { ListItem } from '@navikt/ds-react/List'
-import { BugIcon } from '@navikt/aksel-icons'
 import { PageBlock } from '@navikt/ds-react/Page'
 import { Metadata } from 'next'
+import React, { ReactElement } from 'react'
 
-import DemoWarning from '@components/user-warnings/DemoWarning'
-import { isDemo, isLocal } from '@lib/env'
+import DemoWarning from '#components/user-warnings/DemoWarning'
+import { isDemo, isLocal } from '#lib/env'
 
 import Preload from './preload'
 

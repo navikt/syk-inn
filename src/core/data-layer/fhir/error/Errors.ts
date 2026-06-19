@@ -1,5 +1,5 @@
-import { GraphQLError } from 'graphql/error'
 import { CombinedGraphQLErrors, ErrorLike } from '@apollo/client'
+import { GraphQLError } from 'graphql/error'
 
 export const NoSmartSession = (): GraphQLError =>
     new GraphQLError('Du har blitt logget ut', {

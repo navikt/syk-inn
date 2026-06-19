@@ -1,8 +1,8 @@
-import { ReactElement } from 'react'
 import { BodyShort, TextField } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
+import { ReactElement } from 'react'
 
-import { SimpleReveal } from '@components/animation/Reveal'
+import { SimpleReveal } from '#components/animation/Reveal'
 
 import { useController } from '../../form/types'
 

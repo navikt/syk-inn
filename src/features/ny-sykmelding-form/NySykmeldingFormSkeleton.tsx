@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react'
 import { Skeleton } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import FormSheet from '@components/form/form-section/FormSheet'
-import TwoPaneGrid from '@components/layout/TwoPaneGrid'
-import { LoadablePageHeader } from '@components/layout/Page'
+import FormSheet from '#components/form/form-section/FormSheet'
+import { LoadablePageHeader } from '#components/layout/Page'
+import TwoPaneGrid from '#components/layout/TwoPaneGrid'
 
 import NySykmeldingPageSteps from './NySykmeldingPageSteps'
 

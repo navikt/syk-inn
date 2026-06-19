@@ -1,12 +1,12 @@
-import * as R from 'remeda'
-import React, { ReactElement } from 'react'
+import { CheckmarkCircleIcon } from '@navikt/aksel-icons'
 import { BodyShort, Checkbox, CheckboxGroup, DatePicker, HelpText, Link, useDatepicker } from '@navikt/ds-react'
 import { parseISO } from 'date-fns'
 import { AnimatePresence } from 'motion/react'
-import { CheckmarkCircleIcon } from '@navikt/aksel-icons'
+import React, { ReactElement } from 'react'
+import * as R from 'remeda'
 
-import { dateOnly, toReadableDate } from '@lib/date'
-import { SimpleReveal } from '@components/animation/Reveal'
+import { SimpleReveal } from '#components/animation/Reveal'
+import { dateOnly, toReadableDate } from '#lib/date'
 
 import { useController } from '../../form/types'
 

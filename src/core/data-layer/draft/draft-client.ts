@@ -1,12 +1,12 @@
-import * as R from 'remeda'
-import { addDays, addSeconds, differenceInSeconds, endOfDay } from 'date-fns'
 import { logger } from '@navikt/next-logger'
+import { addDays, addSeconds, differenceInSeconds, endOfDay } from 'date-fns'
 import Valkey from 'iovalkey'
+import * as R from 'remeda'
 
-import { productionValkey } from '@core/services/valkey/client'
-import { withSpanServerAsync } from '@lib/otel/server'
-import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
-import { getServerEnv } from '@lib/env'
+import { productionValkey } from '#core/services/valkey/client'
+import { mockEngineForSession, shouldUseMockEngine } from '#dev/mock-engine'
+import { getServerEnv } from '#lib/env'
+import { withSpanServerAsync } from '#lib/otel/server'
 
 import { DraftValues } from './draft-schema'
 

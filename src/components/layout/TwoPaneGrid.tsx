@@ -1,7 +1,7 @@
 import { ReactElement, PropsWithChildren, FormHTMLAttributes, DetailedHTMLProps } from 'react'
 import * as R from 'remeda'
 
-import { cn } from '@lib/tw'
+import { cn } from '#lib/tw'
 
 import styles from './TwoPaneGrid.module.css'
 

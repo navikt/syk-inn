@@ -1,17 +1,17 @@
 import { logger } from '@navikt/next-logger'
 import * as R from 'remeda'
 
-import { DiagnoseFragment, SykmeldingFullFragment } from '@queries'
-import { raise } from '@lib/ts'
+import { Diagnose } from '#data-layer/common/diagnose'
+import { TilbakedateringGrunn } from '#data-layer/common/tilbakedatering'
+import { defaultArbeidsforhold } from '#features/ny-sykmelding-form/form/default-values'
 import {
     AktivitetsPeriode,
     NySykmeldingMainFormValues,
     TilbakedateringField,
-} from '@features/ny-sykmelding-form/form/types'
-import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
-import { Diagnose } from '@data-layer/common/diagnose'
-import { dateOnly } from '@lib/date'
-import { defaultArbeidsforhold } from '@features/ny-sykmelding-form/form/default-values'
+} from '#features/ny-sykmelding-form/form/types'
+import { dateOnly } from '#lib/date'
+import { raise } from '#lib/ts'
+import { DiagnoseFragment, SykmeldingFullFragment } from '#queries'
 
 export function fullSykmeldingFragmentToNySykmeldingFormValues(
     sykmelding: SykmeldingFullFragment,

@@ -1,8 +1,8 @@
 import { Checkbox, CheckboxGroup, Textarea } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 
-import { ArbeidsrelatertArsakType } from '@queries'
-import { arbeidsrelaterteArsakerToText } from '@data-layer/common/arbeidsrelaterte-arsaker'
+import { arbeidsrelaterteArsakerToText } from '#data-layer/common/arbeidsrelaterte-arsaker'
+import { ArbeidsrelatertArsakType } from '#queries'
 
 import { useController } from '../../form/types'
 

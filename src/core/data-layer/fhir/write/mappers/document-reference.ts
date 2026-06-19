@@ -1,7 +1,7 @@
 import { CodeableConcept, FhirDocumentReference } from '@navikt/smart-on-fhir/zod'
 
-import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
-import { earliestFom, getSimpleSykmeldingDescription, latestTom } from '@data-layer/common/sykmelding-utils'
+import { SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
+import { earliestFom, getSimpleSykmeldingDescription, latestTom } from '#data-layer/common/sykmelding-utils'
 
 const SykmeldingDocumentTypeCodeableConcept: CodeableConcept = {
     system: 'urn:oid:2.16.578.1.12.4.1.1.9602',

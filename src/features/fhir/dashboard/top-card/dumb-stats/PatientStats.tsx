@@ -1,11 +1,11 @@
-import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
 import { BodyShort, Skeleton } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 
-import { AllDashboardDocument, GetAllDraftsDocument } from '@queries'
-import { useFlag } from '@core/toggles/context'
-import { cn } from '@lib/tw'
+import { useFlag } from '#core/toggles/context'
+import { cn } from '#lib/tw'
+import { AllDashboardDocument, GetAllDraftsDocument } from '#queries'
 
 import { continiousSykefravaer } from './sykefravaer-utils'
 

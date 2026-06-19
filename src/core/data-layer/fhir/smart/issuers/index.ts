@@ -1,10 +1,10 @@
 import { KnownFhirServer } from '@navikt/smart-on-fhir/client'
 
-import { bundledEnv } from '@lib/env'
+import { bundledEnv } from '#lib/env'
 
 import { getKnownDevFhirServers } from './envs/dev-gcp'
-import { getKnownProdFhirServers } from './envs/prod-gcp'
 import { getDemoKnownFhirServers, getLocalKnownFhirServers } from './envs/others'
+import { getKnownProdFhirServers } from './envs/prod-gcp'
 
 export function getKnownFhirServers(): KnownFhirServer[] {
     switch (bundledEnv.runtimeEnv) {

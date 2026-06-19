@@ -1,10 +1,10 @@
-import { expect, test } from 'vitest'
 import { DefaultValues } from 'react-hook-form'
+import { expect, test } from 'vitest'
 
-import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form/types'
-import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
-import { DraftValues } from '@data-layer/draft/draft-schema'
-import { dateOnly } from '@lib/date'
+import { NySykmeldingFormState } from '#core/redux/reducers/ny-sykmelding'
+import { DraftValues } from '#data-layer/draft/draft-schema'
+import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from '#features/ny-sykmelding-form/form/types'
+import { dateOnly } from '#lib/date'
 
 import { nySykmeldingFromDraftDefaultValues } from './ny-sykmelding-from-draft-mappers'
 

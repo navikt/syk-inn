@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 import { Page, PageBlock } from '@navikt/ds-react/Page'
-import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import React, { ReactElement } from 'react'
 
-import { getNameFromFhir } from '@data-layer/fhir/mappers/patient'
+import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
 
 import { getMockStore } from '../../../api/mocks/fhir/[[...path]]/mock-storage'
 

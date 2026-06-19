@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest'
 import { parseISO } from 'date-fns'
+import { describe, it, expect } from 'vitest'
 
-import { dateOnly } from '@lib/date'
+import { dateOnly } from '#lib/date'
 
 import { parseShorthand, parseShorthandFom, parseShorthandTom } from './periode-shorthand'
 

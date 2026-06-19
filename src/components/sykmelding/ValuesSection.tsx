@@ -1,7 +1,7 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
 import { BodyLong, Heading, Label, Skeleton } from '@navikt/ds-react'
+import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { cleanId } from '@lib/string'
+import { cleanId } from '#lib/string'
 
 type ValueSectionProps = {
     title: string

@@ -1,11 +1,11 @@
-import * as z from 'zod'
 import { logger } from '@navikt/next-logger'
 import { decodeJwt } from 'jose'
+import * as z from 'zod'
 
-import { spanServerAsync } from '@lib/otel/server'
+import { spanServerAsync } from '#lib/otel/server'
 
-import { getHelseIdWellKnown } from './token/well-known'
 import { getHelseIdAccessToken, getHelseIdIdToken } from './token/tokens'
+import { getHelseIdWellKnown } from './token/well-known'
 
 const HprDetailsSchema = z.object({
     approvals: z.array(

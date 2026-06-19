@@ -1,8 +1,8 @@
-import * as R from 'remeda'
 import { differenceInDays } from 'date-fns'
+import * as R from 'remeda'
 
-import { SykmeldingFragment } from '@queries'
-import { earliestFom, latestTom } from '@data-layer/common/sykmelding-utils'
+import { earliestFom, latestTom } from '#data-layer/common/sykmelding-utils'
+import { SykmeldingFragment } from '#queries'
 
 export function continiousSykefravaer(sykmeldinger: SykmeldingFragment[]): number {
     if (sykmeldinger.length === 0) {

@@ -1,4 +1,4 @@
-import { AnnenFravarsgrunnArsak } from '@queries'
+import { AnnenFravarsgrunnArsak } from '#queries'
 
 export function annenFravarsgrunnToText(grunn: AnnenFravarsgrunnArsak): string {
     switch (grunn) {

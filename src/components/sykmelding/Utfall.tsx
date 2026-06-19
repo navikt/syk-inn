@@ -1,8 +1,8 @@
-import React from 'react'
 import { BodyShort } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
+import React from 'react'
 
-import { SykmeldingFragment } from '@queries'
+import { SykmeldingFragment } from '#queries'
 
 export function Utfall({
     utfall,

@@ -1,5 +1,6 @@
 import { expect, Page, test } from '@playwright/test'
-import { raise } from '@lib/ts'
+
+import { raise } from '#lib/ts'
 
 import { expectPatient } from '../../actions/user-form-verification'
 import { verifyNoHorizontalScroll } from '../../utils/assertions'

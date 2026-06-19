@@ -1,4 +1,4 @@
-import { failSpan, spanServerAsync } from '@lib/otel/server'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 import { getHelseIdIdTokenInfo } from './helseid-user'
 

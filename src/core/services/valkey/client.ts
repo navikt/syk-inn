@@ -1,10 +1,10 @@
-import { lazyNextleton } from 'nextleton'
-import Valkey from 'iovalkey'
-import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
+import Valkey from 'iovalkey'
+import { lazyNextleton } from 'nextleton'
+import * as R from 'remeda'
 
-import { getServerEnv } from '@lib/env'
-import { raise } from '@lib/ts'
+import { getServerEnv } from '#lib/env'
+import { raise } from '#lib/ts'
 
 function initializeValkey(): Valkey {
     const valkeyConfig = getServerEnv().valkeyConfig ?? raise('Valkey config is not set! :(')

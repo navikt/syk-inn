@@ -1,4 +1,4 @@
-import { bundledEnv } from '@lib/env'
+import { bundledEnv } from '#lib/env'
 
 export function getHelseIdUrl(): string {
     switch (bundledEnv.runtimeEnv) {

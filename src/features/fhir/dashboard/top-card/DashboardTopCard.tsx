@@ -1,14 +1,14 @@
-import React, { ReactElement, useEffect } from 'react'
 import { useQuery } from '@apollo/client/react'
+import React, { ReactElement, useEffect } from 'react'
 
-import { cn } from '@lib/tw'
-import { PasientDocument } from '@queries'
-import { useAppDispatch } from '@core/redux/hooks'
-import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
-import { LoadablePageHeader } from '@components/layout/Page'
+import { LoadablePageHeader } from '#components/layout/Page'
+import { useAppDispatch } from '#core/redux/hooks'
+import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
+import { cn } from '#lib/tw'
+import { PasientDocument } from '#queries'
 
-import { InfoNySykmeldingButton } from '../welcome-modal/InfoNySykmeldingButton'
 import DashboardCard from '../card/DashboardCard'
+import { InfoNySykmeldingButton } from '../welcome-modal/InfoNySykmeldingButton'
 
 import PatientStats from './dumb-stats/PatientStats'
 import StartSykmelding from './StartSykmelding'

@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react'
 import { BodyShort } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { AkselNextLink } from '@components/links/AkselNextLink'
-import { DetailedAlert, SimpleAlert } from '@components/help/GeneralErrors'
-import { useMode } from '@core/providers/Modes'
+import { DetailedAlert, SimpleAlert } from '#components/help/GeneralErrors'
+import { AkselNextLink } from '#components/links/AkselNextLink'
+import { useMode } from '#core/providers/Modes'
 
 export function SykmeldingFormErrors({ refetch }: { refetch: () => void }): ReactElement {
     return (

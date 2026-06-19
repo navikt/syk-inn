@@ -1,6 +1,6 @@
-import { DiagnoseFragment } from '@queries'
-import { DiagnoseSystem } from '@data-layer/common/diagnose'
-import { getDiagnoseText } from '@data-layer/common/diagnose-search'
+import { DiagnoseSystem } from '#data-layer/common/diagnose'
+import { getDiagnoseText } from '#data-layer/common/diagnose-search'
+import { DiagnoseFragment } from '#queries'
 
 export function addDiagnoseText(
     diagnose: { system: DiagnoseSystem; code: string } | null,

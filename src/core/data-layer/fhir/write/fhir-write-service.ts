@@ -1,12 +1,12 @@
+import { logger } from '@navikt/next-logger'
 import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { FhirDocumentReference, FhirQuestionnaireResponse } from '@navikt/smart-on-fhir/zod'
 import { Span } from '@opentelemetry/api'
-import { logger } from '@navikt/next-logger'
 
-import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
-import { failSpan, spanServerAsync } from '@lib/otel/server'
-import { getFlag, UnleashClient } from '@core/toggles/unleash'
-import { createTypstSykmelding } from '@core/pdf/pdf-service'
+import { createTypstSykmelding } from '#core/pdf/pdf-service'
+import { SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
+import { getFlag, UnleashClient } from '#core/toggles/unleash'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 import { sykmeldingToDocumentReference } from './mappers/document-reference'
 import { sykmeldingToQuestionnaireResponse } from './mappers/questionnaire-response'

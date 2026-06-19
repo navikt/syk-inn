@@ -1,7 +1,7 @@
 import * as z from 'zod'
 
-import { DateOnly } from '@lib/zod'
-import { DiagnoseSystemSchema } from '@data-layer/common/diagnose'
+import { DiagnoseSystemSchema } from '#data-layer/common/diagnose'
+import { DateOnly } from '#lib/zod'
 
 export type OpprettSykmeldingMeta = z.infer<typeof OpprettSykmeldingMetaSchema>
 const OpprettSykmeldingMetaSchema = z.object({

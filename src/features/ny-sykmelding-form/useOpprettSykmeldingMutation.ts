@@ -1,9 +1,16 @@
-import { logger } from '@navikt/next-logger'
-import { startTransition } from 'react'
-import { useRouter } from 'next/navigation'
 import { useMutation } from '@apollo/client/react'
+import { logger } from '@navikt/next-logger'
+import { useRouter } from 'next/navigation'
+import { startTransition } from 'react'
 
-import { raise } from '@lib/ts'
+import { useMode } from '#core/providers/Modes'
+import { useAppSelector } from '#core/redux/hooks'
+import { NySykmeldingAktivitet, NySykmeldingTilbakedatering } from '#core/redux/reducers/ny-sykmelding'
+import { NySykmeldingState } from '#core/redux/reducers/ny-sykmelding/ny-sykmelding-slice'
+import { createBrowserRuleOverrideHeaders } from '#dev/mock-engine/SykInnApiMockRuleMarkers'
+import { isDemo, isE2E, isLocal } from '#lib/env'
+import { spanBrowserAsync, withSpanBrowserAsync } from '#lib/otel/browser'
+import { raise } from '#lib/ts'
 import {
     AllDashboardDocument,
     InputAktivitet,
@@ -15,14 +22,7 @@ import {
     OpprettSykmeldingMutationVariables,
     OpprettSykmeldingMetaInput,
     PasientDocument,
-} from '@queries'
-import { spanBrowserAsync, withSpanBrowserAsync } from '@lib/otel/browser'
-import { useAppSelector } from '@core/redux/hooks'
-import { useMode } from '@core/providers/Modes'
-import { NySykmeldingAktivitet, NySykmeldingTilbakedatering } from '@core/redux/reducers/ny-sykmelding'
-import { NySykmeldingState } from '@core/redux/reducers/ny-sykmelding/ny-sykmelding-slice'
-import { isDemo, isE2E, isLocal } from '@lib/env'
-import { createBrowserRuleOverrideHeaders } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
+} from '#queries'
 
 import { useDraftId } from './draft/useDraftId'
 

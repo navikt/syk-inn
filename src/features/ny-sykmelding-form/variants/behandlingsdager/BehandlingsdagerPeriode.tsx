@@ -1,11 +1,11 @@
-import React, { ReactElement } from 'react'
 import { BodyShort } from '@navikt/ds-react'
 import { format, isSameDay } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
+import React, { ReactElement } from 'react'
 
-import PeriodePicker from '@features/ny-sykmelding-form/sections/aktivitet/PeriodePicker'
-import { toReadablePeriodLength } from '@lib/date'
-import { getNumberOfBehandlingsdager } from '@data-layer/common/behandlingsdager'
+import { getNumberOfBehandlingsdager } from '#data-layer/common/behandlingsdager'
+import PeriodePicker from '#features/ny-sykmelding-form/sections/aktivitet/PeriodePicker'
+import { toReadablePeriodLength } from '#lib/date'
 
 type Props = {
     initialFom: string | null

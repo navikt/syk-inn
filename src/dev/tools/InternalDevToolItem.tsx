@@ -1,7 +1,7 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
+import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { cn } from '@lib/tw'
+import { cn } from '#lib/tw'
 
 type Props = {
     className?: string

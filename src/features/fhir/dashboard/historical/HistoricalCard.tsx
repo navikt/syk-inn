@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react'
-import { BodyShort, Button, GlobalAlert, Heading } from '@navikt/ds-react'
-import { useQuery } from '@apollo/client/react'
 import { NetworkStatus } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 import { FlowerPetalsIcon } from '@navikt/aksel-icons'
+import { BodyShort, Button, GlobalAlert, Heading } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { AllDashboardDocument, KonsultasjonDocument } from '@queries'
-import { cn } from '@lib/tw'
-import SessionIdInfo from '@components/help/SessionIdInfo'
+import SessionIdInfo from '#components/help/SessionIdInfo'
+import { cn } from '#lib/tw'
+import { AllDashboardDocument, KonsultasjonDocument } from '#queries'
 
 import DashboardCard from '../card/DashboardCard'
 import { ComboTable } from '../combo-table/ComboTable'

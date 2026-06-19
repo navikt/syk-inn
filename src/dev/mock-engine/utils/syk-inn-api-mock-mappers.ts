@@ -1,8 +1,8 @@
 import { differenceInWeeks, formatISO } from 'date-fns'
 import * as R from 'remeda'
 
-import { RuleResult, SykInnApiAktivitet, SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
-import { OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
+import { OpprettSykmeldingPayload } from '#core/services/syk-inn-api/schema/opprett'
+import { RuleResult, SykInnApiAktivitet, SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
 
 import { addDiagnoseText } from './diagnose'
 

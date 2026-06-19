@@ -1,6 +1,6 @@
 import { ApolloLink } from '@apollo/client'
 
-import { AppStore } from '@core/redux/store'
+import { AppStore } from '#core/redux/store'
 
 export type CurrentPatientExtension = {
     currentPatient: string | null

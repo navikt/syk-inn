@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react'
 import { BodyShort, Detail, Heading, Link } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { NavLogo } from '@components/misc/NavLogo'
-import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
-import { isCloud } from '@lib/env'
+import { NavLogo } from '#components/misc/NavLogo'
+import { isCloud } from '#lib/env'
+import { getAbsoluteURL, pathWithBasePath } from '#lib/url'
 
 type Props = {
     behandler: {

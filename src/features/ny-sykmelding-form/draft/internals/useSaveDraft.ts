@@ -2,9 +2,9 @@ import { useMutation } from '@apollo/client/react'
 import { useCallback } from 'react'
 import * as R from 'remeda'
 
-import { GetAllDraftsDocument, SaveDraftDocument, SaveDraftMutation, SaveDraftMutationVariables } from '@queries'
-import { spanBrowserAsync } from '@lib/otel/browser'
-import { DraftValues } from '@data-layer/draft/draft-schema'
+import { DraftValues } from '#data-layer/draft/draft-schema'
+import { spanBrowserAsync } from '#lib/otel/browser'
+import { GetAllDraftsDocument, SaveDraftDocument, SaveDraftMutation, SaveDraftMutationVariables } from '#queries'
 
 import { NySykmeldingMainFormValues } from '../../form/types'
 

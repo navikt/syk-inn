@@ -1,11 +1,11 @@
 import { logger } from '@navikt/next-logger'
-
-import { BRUKSVILKAR_VERSION } from '@features/bruksvilkar/BruksvilkarSection'
-import { spanServerAsync } from '@lib/otel/server'
-import { raise } from '@lib/ts'
-import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
-import { getServerEnv } from '@lib/env'
 import { type BruksvilkarClient, createBruksvilkarClient } from '@navikt/syk-zara/bruksvilkar'
+
+import { mockEngineForSession, shouldUseMockEngine } from '#dev/mock-engine'
+import { BRUKSVILKAR_VERSION } from '#features/bruksvilkar/BruksvilkarSection'
+import { getServerEnv } from '#lib/env'
+import { spanServerAsync } from '#lib/otel/server'
+import { raise } from '#lib/ts'
 
 import { productionValkey } from '../valkey/client'
 

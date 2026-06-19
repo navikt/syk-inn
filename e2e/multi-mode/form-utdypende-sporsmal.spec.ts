@@ -1,7 +1,8 @@
 import { test } from '@playwright/test'
-import { OpprettSykmeldingDocument } from '@queries'
-import { today, inDays } from '@lib/test/date-utils'
-import { questionTexts } from '@core/data-layer/common/questions'
+
+import { questionTexts } from '#core/data-layer/common/questions'
+import { today, inDays } from '#lib/test/date-utils'
+import { OpprettSykmeldingDocument } from '#queries'
 
 import {
     addUtdypendeSporsmal,
@@ -13,8 +14,8 @@ import {
 import { expectGraphQLRequest } from '../utils/assertions'
 import { defaultAktivitetIkkeMulig, defaultOpprettSykmeldingValues, diagnoseSelection } from '../utils/submit-utils'
 
-import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 import { launchAndStart } from './actions/mode-user-actions'
+import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 import { modes } from './modes'
 
 modes.forEach(({ mode }) => {

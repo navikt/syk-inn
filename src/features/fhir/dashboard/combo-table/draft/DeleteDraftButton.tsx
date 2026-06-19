@@ -1,13 +1,13 @@
-import React, { ReactElement } from 'react'
 import { useMutation } from '@apollo/client/react'
-import { Button, Tooltip } from '@navikt/ds-react'
 import { TrashIcon } from '@navikt/aksel-icons'
-import { toast } from 'sonner'
+import { Button, Tooltip } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
+import React, { ReactElement } from 'react'
+import { toast } from 'sonner'
 
-import { DeleteDraftDocument } from '@queries'
-import { spanBrowserAsync } from '@lib/otel/browser'
-import { deleteDraftIdFromList } from '@data-layer/graphql/apollo/apollo-client-utils'
+import { deleteDraftIdFromList } from '#data-layer/graphql/apollo/apollo-client-utils'
+import { spanBrowserAsync } from '#lib/otel/browser'
+import { DeleteDraftDocument } from '#queries'
 
 export function DeleteDraftButton({ draftId }: { draftId: string }): ReactElement {
     const [deleteDraft, deleteDraftResult] = useMutation(DeleteDraftDocument, {

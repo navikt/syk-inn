@@ -1,5 +1,5 @@
-import { NextConfig } from 'next'
 import createMDX from '@next/mdx'
+import { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
     output: 'standalone',

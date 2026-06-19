@@ -1,7 +1,7 @@
 import { ApolloLink, Observable } from '@apollo/client'
 import { logger } from '@navikt/next-logger'
 
-import { isLocal, isDemo } from '@lib/env'
+import { isLocal, isDemo } from '#lib/env'
 
 export const FailingLinkDev = (): ApolloLink =>
     new ApolloLink((operation, forward) => {

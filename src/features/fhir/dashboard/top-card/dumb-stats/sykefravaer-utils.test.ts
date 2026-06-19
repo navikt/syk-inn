@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 
-import { SykmeldingFragment } from '@queries'
+import { SykmeldingFragment } from '#queries'
 
 import { continiousSykefravaer } from './sykefravaer-utils'
 

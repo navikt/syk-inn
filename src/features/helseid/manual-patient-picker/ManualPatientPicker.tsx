@@ -1,21 +1,21 @@
 'use client'
 
-import React, { ReactElement, useEffect, useState } from 'react'
-import { LinkCard, Skeleton } from '@navikt/ds-react'
 import { useLazyQuery } from '@apollo/client/react'
-import Link from 'next/link'
+import { LinkCard, Skeleton } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
+import Link from 'next/link'
+import React, { ReactElement, useEffect, useState } from 'react'
 
-import { PersonByIdentDocument } from '@queries'
-import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
-import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
-import { setPersistentUser } from '@data-layer/helseid/persistent-user/persistent-user'
-import { SimpleReveal } from '@components/animation/Reveal'
-import TwoPaneGrid from '@components/layout/TwoPaneGrid'
-import { SimpleAlert } from '@components/help/GeneralErrors'
+import { SimpleReveal } from '#components/animation/Reveal'
+import { SimpleAlert } from '#components/help/GeneralErrors'
+import TwoPaneGrid from '#components/layout/TwoPaneGrid'
+import { useAppDispatch, useAppSelector } from '#core/redux/hooks'
+import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
+import { setPersistentUser } from '#data-layer/helseid/persistent-user/persistent-user'
+import { PersonByIdentDocument } from '#queries'
 
-import ManualPatientSearch from './ManualPatientSearch'
 import ManualPatientDrafts from './ManualPatientDrafts'
+import ManualPatientSearch from './ManualPatientSearch'
 
 function ManualPatientPicker(): ReactElement {
     const dispatch = useAppDispatch()

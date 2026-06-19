@@ -1,7 +1,7 @@
-import { expect, test } from 'vitest'
 import { FhirCondition } from '@navikt/smart-on-fhir/zod'
+import { expect, test } from 'vitest'
 
-import { ICPC2_OID_VALUE } from '@data-layer/common/diagnose'
+import { ICPC2_OID_VALUE } from '#data-layer/common/diagnose'
 
 import { fhirDiagnosisToRelevantDiagnosis } from './diagnosis'
 

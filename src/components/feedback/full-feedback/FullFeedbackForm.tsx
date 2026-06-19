@@ -1,15 +1,15 @@
+import { HandHeartIcon } from '@navikt/aksel-icons'
+import { BodyShort, Detail, Heading, InfoCard, LocalAlert } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { BodyShort, Detail, Heading, InfoCard, LocalAlert } from '@navikt/ds-react'
-import { HandHeartIcon } from '@navikt/aksel-icons'
 
-import { BehandlerFragment } from '@queries'
-import SessionIdInfo from '@components/help/SessionIdInfo'
+import SessionIdInfo from '#components/help/SessionIdInfo'
+import { BehandlerFragment } from '#queries'
 
-import { SentimentPicker } from '../sentiment/SentimentPicker'
-import { TypeField } from '../fields/TypeField'
 import { ContactField } from '../fields/ContactField'
 import { FeedbackField } from '../fields/FeedbackField'
+import { TypeField } from '../fields/TypeField'
+import { SentimentPicker } from '../sentiment/SentimentPicker'
 
 import { FeedbackFormValues } from './form'
 

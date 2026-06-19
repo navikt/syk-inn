@@ -1,7 +1,7 @@
 import { logger } from '@navikt/next-logger'
 import { FhirPractitioner, GeneralIdentifier } from '@navikt/smart-on-fhir/zod'
 
-import { Behandler } from '@resolvers'
+import { Behandler } from '#resolvers'
 
 import { getNameFromFhir } from './patient'
 

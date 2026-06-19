@@ -1,11 +1,12 @@
+import { ApolloLink } from '@apollo/client'
 import { expect, Locator, Page, test } from '@playwright/test'
 import { add } from 'date-fns'
-import { ApolloLink } from '@apollo/client'
-import { AnnenFravarsgrunnArsak, OpprettSykmeldingDocument } from '@queries'
-import { toReadableDatePeriod } from '@lib/date'
-import { MockRuleMarkers } from '@dev/mock-engine/SykInnApiMockRuleMarkers'
-import { inputDate } from '@lib/test/date-utils'
-import { questionTexts } from '@data-layer/common/questions'
+
+import { questionTexts } from '#data-layer/common/questions'
+import { MockRuleMarkers } from '#dev/mock-engine/SykInnApiMockRuleMarkers'
+import { toReadableDatePeriod } from '#lib/date'
+import { inputDate } from '#lib/test/date-utils'
+import { AnnenFravarsgrunnArsak, OpprettSykmeldingDocument } from '#queries'
 
 import { clickAndWait, getDraftId, waitForGqlRequest } from '../utils/request-utils'
 

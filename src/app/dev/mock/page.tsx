@@ -1,14 +1,14 @@
-import * as R from 'remeda'
-import React, { ReactElement } from 'react'
-import { notFound } from 'next/navigation'
 import { Heading } from '@navikt/ds-react'
-import { Page, PageBlock } from '@navikt/ds-react/Page'
 import { LinkCard, LinkCardAnchor, LinkCardDescription, LinkCardTitle } from '@navikt/ds-react/LinkCard'
+import { Page, PageBlock } from '@navikt/ds-react/Page'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import React, { ReactElement } from 'react'
+import * as R from 'remeda'
 
-import { isDemo, isLocal } from '@lib/env'
-import { getNameFromFhir } from '@data-layer/fhir/mappers/patient'
-import { pathWithBasePath } from '@lib/url'
+import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
+import { isDemo, isLocal } from '#lib/env'
+import { pathWithBasePath } from '#lib/url'
 
 import { getMockStore } from '../../api/mocks/fhir/[[...path]]/mock-storage'
 

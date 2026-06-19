@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react'
 import { Select, TextField } from '@navikt/ds-react'
-import { useController } from 'react-hook-form'
 import { AnimatePresence } from 'motion/react'
+import React, { ReactElement } from 'react'
+import { useController } from 'react-hook-form'
 
-import { SimpleReveal } from '@components/animation/Reveal'
+import { SimpleReveal } from '#components/animation/Reveal'
 
 import { FeedbackFormValues } from '../full-feedback/form'
 

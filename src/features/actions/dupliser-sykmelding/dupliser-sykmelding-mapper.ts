@@ -1,14 +1,7 @@
-import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
+import * as R from 'remeda'
 
-import {
-    SykmeldingFragment,
-    SykmeldingFullFragment,
-    SykmeldingLightFragment,
-    SykmeldingRedactedFragment,
-} from '@queries'
-import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
-import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingFormState } from '#core/redux/reducers/ny-sykmelding'
 import {
     defaultAndreSporsmal,
     defaultAnnenfravarsgrunn,
@@ -16,8 +9,15 @@ import {
     defaultMeldinger,
     defaultTilbakedatering,
     defaultUtdypendeSporsmal,
-} from '@features/ny-sykmelding-form/form/default-values'
-import { NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
+} from '#features/ny-sykmelding-form/form/default-values'
+import { AktivitetsPeriode, NySykmeldingMainFormValues } from '#features/ny-sykmelding-form/form/types'
+import { NySykmeldingFormVariantType } from '#features/ny-sykmelding-form/useFormVariant'
+import {
+    SykmeldingFragment,
+    SykmeldingFullFragment,
+    SykmeldingLightFragment,
+    SykmeldingRedactedFragment,
+} from '#queries'
 
 import {
     sykmeldingFragmentAktivitetToFormValue,

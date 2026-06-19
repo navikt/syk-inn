@@ -1,9 +1,9 @@
-import { Hono } from 'hono'
 import { FhirDocumentReferenceSchema } from '@navikt/smart-on-fhir/zod'
+import { Hono } from 'hono'
 
 import { withAuthed } from '../../auth/verify-authed'
-import { fhirLogger } from '../../logger'
 import { getMockSessionStore } from '../../config'
+import { fhirLogger } from '../../logger'
 
 import { createDocumentReference, getDocumentReferencesListResponse } from './create-document-reference'
 

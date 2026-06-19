@@ -1,13 +1,13 @@
 'use client'
 
-import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { Heading, LinkCard, Select, Link, Modal, Loader, Switch } from '@navikt/ds-react'
 import { FlowerPetalsIcon, PlayIcon } from '@navikt/aksel-icons'
+import { Heading, LinkCard, Select, Link, Modal, Loader, Switch } from '@navikt/ds-react'
+import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
 import Image from 'next/image'
 import { parseAsBoolean, parseAsString, useQueryState } from 'nuqs'
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
 
-import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
-import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
+import { getAbsoluteURL, pathWithBasePath } from '#lib/url'
 
 import { scenarios } from '../mock-engine/scenarios/scenarios'
 

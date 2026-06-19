@@ -1,7 +1,5 @@
 import { expect, test } from '@playwright/test'
 
-import { launchWithMock } from '../actions/fhir-actions'
-import { startNewAlternateSykmelding, startNewSykmelding } from '../actions/fhir-user-actions'
 import {
     fillBehandlingsdagerExplanation,
     fillBehandlingsdagerPeriode,
@@ -11,9 +9,11 @@ import {
     submitSykmelding,
 } from '../../actions/user-actions'
 import { expectBehandlingsdagerForklaring, expectPeriode } from '../../actions/user-form-verification'
-import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from '../actions/fhir-user-verifications'
 import { userInteractionsGroup } from '../../utils/actions'
 import { verifyNoHorizontalScroll } from '../../utils/assertions'
+import { launchWithMock } from '../actions/fhir-actions'
+import { startNewAlternateSykmelding, startNewSykmelding } from '../actions/fhir-user-actions'
+import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from '../actions/fhir-user-verifications'
 
 test('quickly delete a lot of drafts', async ({ page }) => {
     await launchWithMock('plenty-of-drafts')(page)

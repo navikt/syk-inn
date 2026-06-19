@@ -1,5 +1,5 @@
-import { createAccessToken, createIdToken } from './jwt/jwt'
 import { HelseIdBehandler, MockBehandlere } from './data/behandlere'
+import { createAccessToken, createIdToken } from './jwt/jwt'
 
 export type HelseIdTokens = {
     accessToken: string

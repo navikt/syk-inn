@@ -1,18 +1,18 @@
-import { headers } from 'next/headers'
+import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
 import { logger } from '@navikt/next-logger'
+import { headers } from 'next/headers'
 
+import { OpprettSykmeldingPayload } from '#core/services/syk-inn-api/schema/opprett'
 import {
     RuleResult,
     SykInnApiPersonDoesNotExist,
     SykInnApiRuleOutcome,
     SykInnApiSykmelding,
     SykInnApiSykmeldingRedacted,
-} from '@core/services/syk-inn-api/schema/sykmelding'
-import { OpprettSykmeldingPayload } from '@core/services/syk-inn-api/schema/opprett'
-import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
+} from '#core/services/syk-inn-api/schema/sykmelding'
 
-import { sykInnApiPayloadToResponse } from './utils/syk-inn-api-mock-mappers'
 import { MockRuleMarkers } from './SykInnApiMockRuleMarkers'
+import { sykInnApiPayloadToResponse } from './utils/syk-inn-api-mock-mappers'
 
 export class SykInnApiMock {
     /**

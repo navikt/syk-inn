@@ -1,17 +1,17 @@
-import { BodyShort, Detail, Heading, InfoCard } from '@navikt/ds-react'
-import { LinkCard, LinkCardAnchor, LinkCardIcon, LinkCardTitle } from '@navikt/ds-react/LinkCard'
 import { InformationSquareIcon, TerminalIcon, VirusIcon } from '@navikt/aksel-icons'
-import React, { ReactElement } from 'react'
-import { notFound } from 'next/navigation'
-import { Page, PageBlock } from '@navikt/ds-react/Page'
+import { BodyShort, Detail, Heading, InfoCard } from '@navikt/ds-react'
 import { InfoCardContent, InfoCardHeader, InfoCardTitle } from '@navikt/ds-react/InfoCard'
-
-import { isLocal, isDemo, getServerEnv } from '@lib/env'
-import { getAbsoluteURL, pathWithBasePath } from '@lib/url'
-import ScenarioLinksFhir from '@dev/tools/ScenarioLinksFhir'
-import ScenarioLinksStandalone from '@dev/tools/ScenarioLinksStandalone'
+import { LinkCard, LinkCardAnchor, LinkCardIcon, LinkCardTitle } from '@navikt/ds-react/LinkCard'
+import { Page, PageBlock } from '@navikt/ds-react/Page'
 import { MockLaunchType } from '@navikt/fhir-mock-server/types'
-import { getDemoFrameEnabled } from '@dev/demo-epj-frame/cookies'
+import { notFound } from 'next/navigation'
+import React, { ReactElement } from 'react'
+
+import { getDemoFrameEnabled } from '#dev/demo-epj-frame/cookies'
+import ScenarioLinksFhir from '#dev/tools/ScenarioLinksFhir'
+import ScenarioLinksStandalone from '#dev/tools/ScenarioLinksStandalone'
+import { isLocal, isDemo, getServerEnv } from '#lib/env'
+import { getAbsoluteURL, pathWithBasePath } from '#lib/url'
 
 import DumbDevHeader from './dumb/DumbDevHeader'
 

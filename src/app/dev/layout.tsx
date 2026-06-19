@@ -1,11 +1,10 @@
 import '../globals.css'
-
-import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import React, { ReactElement } from 'react'
 
-import { isDemo, isLocal } from '@lib/env'
-import DemoWarning from '@components/user-warnings/DemoWarning'
+import DemoWarning from '#components/user-warnings/DemoWarning'
+import { isDemo, isLocal } from '#lib/env'
 
 import Preload from '../preload'
 

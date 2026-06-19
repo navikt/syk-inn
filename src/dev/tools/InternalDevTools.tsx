@@ -1,18 +1,18 @@
-import * as R from 'remeda'
-import React, { ReactElement, startTransition } from 'react'
-import { BodyShort, Button, Checkbox, CheckboxGroup, Heading, Link, List } from '@navikt/ds-react'
-import { XMarkIcon } from '@navikt/aksel-icons'
 import { useApolloClient } from '@apollo/client/react'
+import { XMarkIcon } from '@navikt/aksel-icons'
+import { BodyShort, Button, Checkbox, CheckboxGroup, Heading, Link, List } from '@navikt/ds-react'
+import React, { ReactElement, startTransition } from 'react'
+import * as R from 'remeda'
 
-import { pathWithBasePath } from '@lib/url'
-import { AkselNextLink } from '@components/links/AkselNextLink'
+import { AkselNextLink } from '#components/links/AkselNextLink'
+import { pathWithBasePath } from '#lib/url'
 
 import { scenarios } from '../mock-engine/scenarios/scenarios'
 
-import { DevToolItem } from './InternalDevToolItem'
-import { useFeatureToggleOverride } from './useFeatureToggleOverride'
-import { togglesChangedAction, deleteRequestAccessCookie } from './InternalDevToolsAction'
 import { ToggleAPIFailures } from './api-fail-toggle/ToggleAPIFailures'
+import { DevToolItem } from './InternalDevToolItem'
+import { togglesChangedAction, deleteRequestAccessCookie } from './InternalDevToolsAction'
+import { useFeatureToggleOverride } from './useFeatureToggleOverride'
 
 type Props = { onClose: () => void }
 

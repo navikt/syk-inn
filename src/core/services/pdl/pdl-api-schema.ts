@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-import { DateOnly } from '@lib/zod'
+import { DateOnly } from '#lib/zod'
 
 export type PdlPerson = z.infer<typeof PdlPersonSchema>
 export const PdlPersonSchema = z.object({

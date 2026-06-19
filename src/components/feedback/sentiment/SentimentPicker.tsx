@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react'
-import { Button, Tooltip } from '@navikt/ds-react'
 import { FaceCryIcon, FaceFrownIcon, FaceIcon, FaceLaughIcon, FaceSmileIcon } from '@navikt/aksel-icons'
+import { Button, Tooltip } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { cn } from '@lib/tw'
+import { cn } from '#lib/tw'
 
 export type SentimentLevels = 1 | 2 | 3 | 4 | 5
 

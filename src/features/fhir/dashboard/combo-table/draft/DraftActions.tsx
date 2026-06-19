@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react'
-import { Tooltip } from '@navikt/ds-react'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
+import { Tooltip } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
-import { useMode } from '@core/providers/Modes'
+import { SlowNextLinkButton } from '#components/links/SlowNextLinkButton'
+import { useMode } from '#core/providers/Modes'
 
 import { DeleteDraftButton } from './DeleteDraftButton'
 

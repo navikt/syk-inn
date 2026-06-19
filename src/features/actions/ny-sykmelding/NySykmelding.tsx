@@ -1,16 +1,16 @@
 'use client'
 
-import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
+import React, { ReactElement } from 'react'
 
-import { PasientDocument } from '@queries'
-import { useAppSelector } from '@core/redux/hooks'
-import { LoadablePageHeader } from '@components/layout/Page'
-import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/sections/diagnose/useDiagnoseSuggestions'
-import NySykmeldingFormVariants from '@features/ny-sykmelding-form/NySykmeldingFormVariants'
-import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
-import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
-import { NySykmeldingFormVariantType, useFormVariant } from '@features/ny-sykmelding-form/useFormVariant'
+import { LoadablePageHeader } from '#components/layout/Page'
+import { useAppSelector } from '#core/redux/hooks'
+import NySykmeldingFormSkeleton from '#features/ny-sykmelding-form/NySykmeldingFormSkeleton'
+import NySykmeldingFormVariants from '#features/ny-sykmelding-form/NySykmeldingFormVariants'
+import NySykmeldingPageSteps from '#features/ny-sykmelding-form/NySykmeldingPageSteps'
+import { useDiagnoseSuggestions } from '#features/ny-sykmelding-form/sections/diagnose/useDiagnoseSuggestions'
+import { NySykmeldingFormVariantType, useFormVariant } from '#features/ny-sykmelding-form/useFormVariant'
+import { PasientDocument } from '#queries'
 
 import { nySykmeldingDefaultValues } from './ny-sykmelding-mappers'
 

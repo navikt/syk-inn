@@ -1,7 +1,8 @@
-import { Page, test } from '@playwright/test'
-import { ExpectedToggles } from '@core/toggles/toggles'
-import { Scenarios } from '@dev/mock-engine/scenarios/scenarios'
 import { MockBehandlere } from '@navikt/helseid-mock-server'
+import { Page, test } from '@playwright/test'
+
+import { ExpectedToggles } from '#core/toggles/toggles'
+import { Scenarios } from '#dev/mock-engine/scenarios/scenarios'
 
 import { applyToggleOverrides, defaultE2EToggles } from '../../actions/toggle-overrides'
 

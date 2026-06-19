@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react'
-import { InfoCard } from '@navikt/ds-react'
 import { CheckmarkCircleFillIcon } from '@navikt/aksel-icons'
+import { InfoCard } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
 export function DocumentStatusSuccess(): ReactElement {
     return (

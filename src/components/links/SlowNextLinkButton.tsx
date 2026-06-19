@@ -1,6 +1,6 @@
-import React, { ReactElement, Ref, useEffect, useState } from 'react'
 import { Button, ButtonProps } from '@navikt/ds-react'
 import { useLinkStatus } from 'next/link'
+import React, { ReactElement, Ref, useEffect, useState } from 'react'
 
 import { AssableNextLink } from './AssableNextLink'
 

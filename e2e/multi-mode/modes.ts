@@ -1,9 +1,10 @@
 import { Page } from '@playwright/test'
-import { Scenarios } from '@dev/mock-engine/scenarios/scenarios'
 
+import { Scenarios } from '#dev/mock-engine/scenarios/scenarios'
+
+import { ToggleOverrides } from '../actions/toggle-overrides'
 import { launchWithMock as launchFhirWithMock } from '../fhir/actions/fhir-actions'
 import { launchWithMock as launchStandaloneWithMock } from '../standalone/actions/standalone-actions'
-import { ToggleOverrides } from '../actions/toggle-overrides'
 
 export type Modes = 'FHIR' | 'Standalone'
 

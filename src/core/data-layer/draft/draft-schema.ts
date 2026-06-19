@@ -1,7 +1,7 @@
-import * as z from 'zod'
 import { logger } from '@navikt/next-logger'
+import * as z from 'zod'
 
-import { NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
+import { NySykmeldingFormVariantType } from '#features/ny-sykmelding-form/useFormVariant'
 
 import { TilbakedateringGrunnSchema } from '../common/tilbakedatering'
 

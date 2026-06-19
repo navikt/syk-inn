@@ -1,9 +1,9 @@
-import nextVitals from 'eslint-config-next/core-web-vitals'
-import nextTs from 'eslint-config-next/typescript'
 import importAlias from '@limegrass/eslint-plugin-import-alias'
-import { defineConfig } from 'eslint/config'
 import tsmEslintReact from '@navikt/tsm-eslint-react'
 import vitest from '@vitest/eslint-plugin'
+import nextVitals from 'eslint-config-next/core-web-vitals'
+import nextTs from 'eslint-config-next/typescript'
+import { defineConfig } from 'eslint/config'
 
 const eslintConfig = defineConfig([
     ...nextVitals,
@@ -11,6 +11,8 @@ const eslintConfig = defineConfig([
     ...tsmEslintReact,
     {
         rules: {
+            // oxfmt handles imports now
+            'import/order': 'off',
             // Look at enabling this, but it crashes with some react-hook-form internals atm
             'react-hooks/refs': 'off',
         },

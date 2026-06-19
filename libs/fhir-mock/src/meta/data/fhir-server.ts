@@ -1,8 +1,8 @@
 import { getConfig } from '../../config'
 
-import { createWellKnown } from './well-known'
 import { createKeys } from './keys'
 import metadata from './metadata.json'
+import { createWellKnown } from './well-known'
 
 export const fhirServerTestData = {
     wellKnown: () => {

@@ -1,8 +1,8 @@
 'use client'
 
-import React, { ReactElement } from 'react'
-import { PageBlock } from '@navikt/ds-react/Page'
 import { BodyShort, Button, Heading } from '@navikt/ds-react'
+import { PageBlock } from '@navikt/ds-react/Page'
+import React, { ReactElement } from 'react'
 
 export function NoBehandlerError(): ReactElement {
     return (

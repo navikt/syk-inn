@@ -1,11 +1,11 @@
 import { NextRequest } from 'next/server'
 
-import { getHpr } from '@data-layer/fhir/mappers/practitioner'
-import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
-import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { createTypstSykmelding } from '@core/pdf/pdf-service'
-import { getValidPatientIdent } from '@data-layer/fhir/mappers/patient'
-import { failSpan, spanServerAsync } from '@lib/otel/server'
+import { createTypstSykmelding } from '#core/pdf/pdf-service'
+import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
+import { getValidPatientIdent } from '#data-layer/fhir/mappers/patient'
+import { getHpr } from '#data-layer/fhir/mappers/practitioner'
+import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 export async function GET(
     _: NextRequest,

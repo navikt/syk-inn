@@ -1,17 +1,8 @@
-import * as R from 'remeda'
-import { addDays } from 'date-fns'
 import { logger } from '@navikt/next-logger'
+import { addDays } from 'date-fns'
+import * as R from 'remeda'
 
-import { AktivitetsPeriode, NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
-import {
-    SykmeldingFragment,
-    SykmeldingFullFragment,
-    SykmeldingLightFragment,
-    SykmeldingRedactedFragment,
-} from '@queries'
-import { raise } from '@lib/ts'
-import { dateOnly } from '@lib/date'
-import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingFormState } from '#core/redux/reducers/ny-sykmelding'
 import {
     defaultAndreSporsmal,
     defaultAnnenfravarsgrunn,
@@ -19,15 +10,24 @@ import {
     defaultMeldinger,
     defaultTilbakedatering,
     defaultUtdypendeSporsmal,
-} from '@features/ny-sykmelding-form/form/default-values'
-import { NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
+} from '#features/ny-sykmelding-form/form/default-values'
+import { AktivitetsPeriode, NySykmeldingMainFormValues } from '#features/ny-sykmelding-form/form/types'
+import { NySykmeldingFormVariantType } from '#features/ny-sykmelding-form/useFormVariant'
+import { dateOnly } from '#lib/date'
+import { raise } from '#lib/ts'
+import {
+    SykmeldingFragment,
+    SykmeldingFullFragment,
+    SykmeldingLightFragment,
+    SykmeldingRedactedFragment,
+} from '#queries'
 
-import { nySykmeldingDefaultValues } from '../ny-sykmelding/ny-sykmelding-mappers'
 import {
     sykmeldingFragmentAktivitetToFormValue,
     fullSykmeldingFragmentToNySykmeldingFormValues,
     sykmeldingDiagnoserFragmentToSykmeldingFormValues,
 } from '../common/gql-sykmelding-mappers'
+import { nySykmeldingDefaultValues } from '../ny-sykmelding/ny-sykmelding-mappers'
 
 /**
  * Creates a set of default form values specifically for 'forlenging' a sykmelding. Does NOT take

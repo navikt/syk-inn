@@ -1,9 +1,9 @@
-import React, { ReactElement, useState } from 'react'
-import { BodyShort, Button, Detail, Heading } from '@navikt/ds-react'
 import { CheckmarkHeavyIcon, FaceLaughIcon } from '@navikt/aksel-icons'
+import { BodyShort, Button, Detail, Heading } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
+import React, { ReactElement, useState } from 'react'
 
-import { SimpleReveal } from '@components/animation/Reveal'
+import { SimpleReveal } from '#components/animation/Reveal'
 
 import { useFeedback } from '../useFeedback'
 

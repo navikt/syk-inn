@@ -1,9 +1,9 @@
 'use client'
 
-import React, { PropsWithChildren, ReactElement } from 'react'
 import { BodyShort } from '@navikt/ds-react'
+import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { getBrowserSessionId } from '@lib/otel/faro'
+import { getBrowserSessionId } from '#lib/otel/faro'
 
 function SessionIdInfo({ children }: PropsWithChildren): ReactElement {
     return (

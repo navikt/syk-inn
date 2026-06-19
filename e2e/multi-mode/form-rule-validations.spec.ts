@@ -3,8 +3,8 @@ import { differenceInDays, subYears } from 'date-fns'
 
 import { fillPeriodeRelative, nextStep } from '../actions/user-actions'
 
-import { modes } from './modes'
 import { launchAndStart } from './actions/mode-user-actions'
+import { modes } from './modes'
 
 /**
  * The following rules should never actually hit the backend "hard stop", and should

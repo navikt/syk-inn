@@ -1,10 +1,8 @@
 import { expect, test } from '@playwright/test'
-import { daysAgo, inDays } from '@lib/test/date-utils'
-import { toReadableDatePeriod } from '@lib/date'
 
-import { launchWithMock } from '../actions/fhir-actions'
-import { startNewAlternateSykmelding, startNewSykmelding } from '../actions/fhir-user-actions'
-import { userInteractionsGroup } from '../../utils/actions'
+import { toReadableDatePeriod } from '#lib/date'
+import { daysAgo, inDays } from '#lib/test/date-utils'
+
 import {
     fillAndreSporsmal,
     fillArbeidsforhold,
@@ -18,7 +16,6 @@ import {
     previousStep,
     submitSykmelding,
 } from '../../actions/user-actions'
-import { verifySignerendeBehandler } from '../actions/fhir-user-verifications'
 import {
     expectAndreSporsmal,
     expectArbeidsforhold,
@@ -27,7 +24,11 @@ import {
     expectPeriode,
 } from '../../actions/user-form-verification'
 import { verifySummaryPage } from '../../actions/user-verifications'
+import { userInteractionsGroup } from '../../utils/actions'
 import { verifyNoHorizontalScroll } from '../../utils/assertions'
+import { launchWithMock } from '../actions/fhir-actions'
+import { startNewAlternateSykmelding, startNewSykmelding } from '../actions/fhir-user-actions'
+import { verifySignerendeBehandler } from '../actions/fhir-user-verifications'
 
 test('should be able to dupliser (from dashboard) an existing sykmelding with correct values', async ({ page }) => {
     await launchWithMock('empty')(page)

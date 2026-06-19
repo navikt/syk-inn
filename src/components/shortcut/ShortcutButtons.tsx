@@ -1,10 +1,10 @@
-import React, { PropsWithChildren, ReactElement, Ref, useCallback, useImperativeHandle, useRef } from 'react'
 import { Button, ButtonProps, Popover } from '@navikt/ds-react'
 import { useRouter } from 'next/navigation'
+import React, { PropsWithChildren, ReactElement, Ref, useCallback, useImperativeHandle, useRef } from 'react'
 
-import { Shortcut, useShortcut } from '@lib/hooks/shortcuts/useShortcut'
-import { useCurrentModifier } from '@lib/hooks/shortcuts/useCurrentModifier'
-import { cn } from '@lib/tw'
+import { useCurrentModifier } from '#lib/hooks/shortcuts/useCurrentModifier'
+import { Shortcut, useShortcut } from '#lib/hooks/shortcuts/useShortcut'
+import { cn } from '#lib/tw'
 
 import { SlowNextLinkButton } from '../links/SlowNextLinkButton'
 

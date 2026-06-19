@@ -1,10 +1,9 @@
 import { expect, test } from '@playwright/test'
-import { toReadableDatePeriod } from '@lib/date'
 import { add } from 'date-fns'
-import { sykmeldingPeriodeText } from '@features/fhir/dashboard/combo-table/sykmelding/sykmelding-utils'
 
-import { launchWithMock } from '../actions/fhir-actions'
-import { gotoExistingSykmelding } from '../actions/fhir-user-actions'
+import { sykmeldingPeriodeText } from '#features/fhir/dashboard/combo-table/sykmelding/sykmelding-utils'
+import { toReadableDatePeriod } from '#lib/date'
+
 import {
     fillPeriodeRelative,
     nextStep,
@@ -12,10 +11,12 @@ import {
     requestAccessToSykmeldinger,
     submitSykmelding,
 } from '../../actions/user-actions'
-import { verifyNoHorizontalScroll } from '../../utils/assertions'
 import { launchAndStart } from '../../multi-mode/actions/mode-user-actions'
-import { diagnoseSelection } from '../../utils/submit-utils'
 import { verifySignerendeBehandlerFillIfNeeded } from '../../multi-mode/actions/mode-user-verifications'
+import { verifyNoHorizontalScroll } from '../../utils/assertions'
+import { diagnoseSelection } from '../../utils/submit-utils'
+import { launchWithMock } from '../actions/fhir-actions'
+import { gotoExistingSykmelding } from '../actions/fhir-user-actions'
 
 test('should be able to view previous sykmelding', async ({ page }) => {
     await launchWithMock('plenty-of-previous')(page)

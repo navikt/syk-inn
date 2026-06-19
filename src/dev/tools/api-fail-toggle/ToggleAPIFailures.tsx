@@ -1,11 +1,11 @@
-import React, { ReactElement, startTransition } from 'react'
 import { useApolloClient } from '@apollo/client/react'
 import { Button, Checkbox, CheckboxGroup } from '@navikt/ds-react'
+import React, { ReactElement, startTransition } from 'react'
 
 import { DevToolItem } from '../InternalDevToolItem'
 
-import { useAPIOverride } from './useAPIOverride'
 import { ToggleableQueries } from './toggleable-queries'
+import { useAPIOverride } from './useAPIOverride'
 
 export function ToggleAPIFailures(): ReactElement {
     const client = useApolloClient()

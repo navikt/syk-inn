@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react'
 import { Textarea } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 import { useController } from 'react-hook-form'
 
 import { FeedbackFormValues, useFeedbackContext } from '../full-feedback/form'

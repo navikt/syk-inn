@@ -1,11 +1,11 @@
-import React, { ReactElement, useState } from 'react'
-import { BodyShort, InfoCard, ProgressBar, Radio, RadioGroup, Select, TextField } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
-import { AnimatePresence } from 'motion/react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
+import { BodyShort, InfoCard, ProgressBar, Radio, RadioGroup, Select, TextField } from '@navikt/ds-react'
+import { AnimatePresence } from 'motion/react'
+import React, { ReactElement, useState } from 'react'
 
-import { Arbeidsforhold, ArbeidsforholdDocument } from '@queries'
-import { SimpleReveal } from '@components/animation/Reveal'
+import { SimpleReveal } from '#components/animation/Reveal'
+import { Arbeidsforhold, ArbeidsforholdDocument } from '#queries'
 
 import { useController, useFormContext } from '../../form/types'
 

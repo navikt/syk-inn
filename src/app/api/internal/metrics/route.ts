@@ -1,5 +1,5 @@
-import { register } from 'prom-client'
 import { logger } from '@navikt/next-logger'
+import { register } from 'prom-client'
 
 export async function GET(): Promise<Response> {
     try {

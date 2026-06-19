@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client/react'
 import { useRef } from 'react'
 
-import { type DiagnoseFragment, KonsultasjonDocument } from '@queries'
-import type { NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form/types'
-import useOnFocus from '@lib/hooks/useOnFocus'
+import type { NySykmeldingSuggestions } from '#features/ny-sykmelding-form/form/types'
+import useOnFocus from '#lib/hooks/useOnFocus'
+import { type DiagnoseFragment, KonsultasjonDocument } from '#queries'
 
 export function useDiagnoseSuggestions():
     | {

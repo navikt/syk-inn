@@ -1,9 +1,9 @@
-import * as R from 'remeda'
 import { isAfter, isSameDay, sub, subDays } from 'date-fns'
+import * as R from 'remeda'
 
-import { raise } from '@lib/ts'
-import { SykInnApiAktivitet } from '@core/services/syk-inn-api/schema/sykmelding'
-import { toReadableDatePeriod } from '@lib/date'
+import { SykInnApiAktivitet } from '#core/services/syk-inn-api/schema/sykmelding'
+import { toReadableDatePeriod } from '#lib/date'
+import { raise } from '#lib/ts'
 
 /**
  * The definition of what the offset where Practitioners are able to see the sykmelding without

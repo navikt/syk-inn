@@ -2,10 +2,10 @@
 
 import { configureStore } from '@reduxjs/toolkit'
 
+import { metadataReducer } from './reducers/metadata'
+import { nySykmeldingReducer } from './reducers/ny-sykmelding'
 import { createPreloadedPatientState } from './reducers/ny-sykmelding/ny-sykmelding-slice'
 import { AutoPatient } from './reducers/ny-sykmelding/patient'
-import { nySykmeldingReducer } from './reducers/ny-sykmelding'
-import { metadataReducer } from './reducers/metadata'
 
 export const makeStore = (patient?: AutoPatient) => {
     return configureStore({

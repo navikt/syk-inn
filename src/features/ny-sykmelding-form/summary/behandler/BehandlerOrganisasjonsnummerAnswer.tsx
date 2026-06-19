@@ -1,12 +1,12 @@
-import React, { ReactElement, RefObject, useImperativeHandle, useRef, useState } from 'react'
-import { BodyShort, Button, FormSummary, TextField } from '@navikt/ds-react'
-import { useForm } from 'react-hook-form'
 import { CheckmarkHeavyIcon } from '@navikt/aksel-icons'
+import { BodyShort, Button, FormSummary, TextField } from '@navikt/ds-react'
+import React, { ReactElement, RefObject, useImperativeHandle, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
 
-import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
-import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
-import { useMode } from '@core/providers/Modes'
-import { DetailedAlert } from '@components/help/GeneralErrors'
+import { DetailedAlert } from '#components/help/GeneralErrors'
+import { useMode } from '#core/providers/Modes'
+import { useAppDispatch, useAppSelector } from '#core/redux/hooks'
+import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
 
 type Props = {
     contextOrganisasjonsnummer: string | undefined | null

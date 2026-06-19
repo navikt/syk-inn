@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react'
 import { BodyShort, HelpText, Label, Link, Select } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
+import React, { ReactElement } from 'react'
 
-import { SimpleReveal } from '@components/animation/Reveal'
+import { SimpleReveal } from '#components/animation/Reveal'
 
 import { AktiviteFieldType, useController } from '../../form/types'
 

@@ -1,7 +1,7 @@
-import { cookies } from 'next/headers'
 import { IToggle } from '@unleash/nextjs'
+import { cookies } from 'next/headers'
 
-import { bundledEnv } from '@lib/env'
+import { bundledEnv } from '#lib/env'
 
 import { unleashLogger } from '../unleash'
 

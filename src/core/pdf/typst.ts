@@ -1,9 +1,8 @@
+import { logger } from '@navikt/next-logger'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 
-import { logger } from '@navikt/next-logger'
-
-import { failSpan, spanServerAsync } from '@lib/otel/server'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 import { PdfResult, TypstPdfSykmelding } from './types'
 

@@ -1,26 +1,26 @@
-import * as R from 'remeda'
-import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { Table, Tag, TagProps } from '@navikt/ds-react'
+import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
+import * as R from 'remeda'
 
+import Redaction from '#components/misc/Redaction'
+import { isTodayOrInTheFuture, isWithinWeeksOldSykmelding, latestTom } from '#data-layer/common/sykmelding-utils'
+import { safeParseDraft } from '#data-layer/draft/draft-schema'
 import {
     DraftFragment,
     SykmeldingFragment,
     SykmeldingFullFragment,
     SykmeldingLightFragment,
     SykmeldingRedactedFragment,
-} from '@queries'
-import { isTodayOrInTheFuture, isWithinWeeksOldSykmelding, latestTom } from '@data-layer/common/sykmelding-utils'
-import { safeParseDraft } from '@data-layer/draft/draft-schema'
-import Redaction from '@components/misc/Redaction'
+} from '#queries'
 
 import DashboardTable from '../table/DashboardTable'
 
+import { draftAktivitetText, draftArbeidsforholdText, draftDiagnoseText } from './draft/draft-utils'
+import { DraftActions } from './draft/DraftActions'
+import DraftPeriodeLink from './draft/DraftPeriodeLink'
 import { sykmeldingArbeidsgiverText, sykmeldingDiagnoseText, sykmeldingGradText } from './sykmelding/sykmelding-utils'
 import { SykmeldingActions } from './sykmelding/SykmeldingActions'
-import DraftPeriodeLink from './draft/DraftPeriodeLink'
 import SykmeldingPeriodeLink from './sykmelding/SykmeldingPeriodeLink'
-import { DraftActions } from './draft/DraftActions'
-import { draftAktivitetText, draftArbeidsforholdText, draftDiagnoseText } from './draft/draft-utils'
 
 export function ComboTable({
     sykmeldinger,

@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react'
 import { Switch, Textarea } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
 import { useFormContext } from '../../form/types'
 

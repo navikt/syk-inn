@@ -1,10 +1,10 @@
-import { ReactElement } from 'react'
 import { logger as pinoLogger } from '@navikt/next-logger'
 import { redirect, RedirectType, unauthorized } from 'next/navigation'
+import { ReactElement } from 'react'
 
-import { getSmartClient } from '@data-layer/fhir/smart/smart-client'
-import { getSessionId } from '@core/session/session'
-import { getUserlessToggles } from '@core/toggles/unleash'
+import { getSessionId } from '#core/session/session'
+import { getUserlessToggles } from '#core/toggles/unleash'
+import { getSmartClient } from '#data-layer/fhir/smart/smart-client'
 
 import { InvalidIssuer, MissingLaunchParams } from '../launch-errors'
 

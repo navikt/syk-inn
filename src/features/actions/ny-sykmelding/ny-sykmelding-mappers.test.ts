@@ -1,8 +1,8 @@
-import { expect, test } from 'vitest'
 import { DefaultValues } from 'react-hook-form'
+import { expect, test } from 'vitest'
 
-import { dateOnly } from '@lib/date'
-import { NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
+import { NySykmeldingMainFormValues } from '#features/ny-sykmelding-form/form/types'
+import { dateOnly } from '#lib/date'
 
 import { nySykmeldingDefaultValues } from './ny-sykmelding-mappers'
 

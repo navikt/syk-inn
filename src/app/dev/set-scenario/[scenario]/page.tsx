@@ -1,9 +1,9 @@
 import { notFound, redirect, RedirectType } from 'next/navigation'
 import { ReactElement } from 'react'
 
-import { overwriteScenarioForSession, shouldUseMockEngine } from '@dev/mock-engine'
-import { Scenarios, scenarios } from '@dev/mock-engine/scenarios/scenarios'
-import { getSessionId } from '@core/session/session'
+import { getSessionId } from '#core/session/session'
+import { overwriteScenarioForSession, shouldUseMockEngine } from '#dev/mock-engine'
+import { Scenarios, scenarios } from '#dev/mock-engine/scenarios/scenarios'
 
 type RouteParams = {
     params: Promise<{ scenario: string }>

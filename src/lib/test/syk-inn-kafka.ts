@@ -1,5 +1,5 @@
-import { Consumer, Kafka, logLevel } from 'kafkajs'
 import { StartedKafkaContainer } from '@testcontainers/kafka'
+import { Consumer, Kafka, logLevel } from 'kafkajs'
 
 import { KafkaSykmeldingRecord } from './syk-inn-kafka-types'
 

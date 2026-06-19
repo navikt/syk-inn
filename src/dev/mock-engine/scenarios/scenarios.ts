@@ -1,11 +1,11 @@
 import * as R from 'remeda'
 
-import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '@core/services/syk-inn-api/schema/sykmelding'
-import { AaregArbeidsforhold } from '@core/services/aareg/aareg-schema'
+import { AaregArbeidsforhold } from '#core/services/aareg/aareg-schema'
+import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '#core/services/syk-inn-api/schema/sykmelding'
 
-import { SykmeldingBuilder } from './SykInnApiSykmeldingBuilder'
-import { DraftBuilder, ScenarioDraft } from './DraftBuilder'
 import { multipleAaregArbeidsforhold, simpleAaregArbeidsforhold } from './aareg-arbeidsforhold'
+import { DraftBuilder, ScenarioDraft } from './DraftBuilder'
+import { SykmeldingBuilder } from './SykInnApiSykmeldingBuilder'
 
 export type Scenario = {
     sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[]

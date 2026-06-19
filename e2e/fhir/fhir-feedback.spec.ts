@@ -1,8 +1,9 @@
 import test, { expect, Locator, Page } from '@playwright/test'
-import { inDays, inputDate } from '@lib/test/date-utils'
 
-import { clickAndWait, waitForHttp } from '../utils/request-utils'
+import { inDays, inputDate } from '#lib/test/date-utils'
+
 import { nextStep, submitSykmelding } from '../actions/user-actions'
+import { clickAndWait, waitForHttp } from '../utils/request-utils'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'

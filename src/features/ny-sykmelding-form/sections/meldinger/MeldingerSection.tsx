@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 
-import MeldingTilNavField from './MeldingTilNavField'
 import MeldingTilArbeidsgiverField from './MeldingTilArbeidsgiverField'
+import MeldingTilNavField from './MeldingTilNavField'
 
 function MeldingerSection(): ReactElement {
     return (

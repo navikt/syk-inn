@@ -1,7 +1,7 @@
 import { getConfig } from '../../config'
 
-import { createWellKnown } from './well-known'
 import { createKeys } from './keys'
+import { createWellKnown } from './well-known'
 
 export const helseIdServerMeta = {
     wellKnown: () => {

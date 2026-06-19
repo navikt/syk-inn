@@ -1,5 +1,5 @@
-import metrics from '@lib/prometheus/metrics'
-import { OpprettSykmeldingInput } from '@resolvers'
+import metrics from '#lib/prometheus/metrics'
+import { OpprettSykmeldingInput } from '#resolvers'
 
 export function countDiagnoses(values: OpprettSykmeldingInput, source: 'fhir' | 'helseid'): void {
     if (values.hoveddiagnose) {

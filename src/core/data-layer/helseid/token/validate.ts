@@ -1,11 +1,11 @@
-import { jwtVerify, errors } from 'jose'
 import { logger } from '@navikt/next-logger'
+import { jwtVerify, errors } from 'jose'
 
-import { spanServerAsync } from '@lib/otel/server'
+import { spanServerAsync } from '#lib/otel/server'
 
-import { getHelseIdWellKnown } from './well-known'
 import { getJwkSet } from './jwk'
 import { getHelseIdAccessToken } from './tokens'
+import { getHelseIdWellKnown } from './well-known'
 
 export async function validateHelseIdToken(): Promise<boolean> {
     return spanServerAsync('HelseID.token-validation', async (span) => {

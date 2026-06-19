@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react'
 import { ChevronRightDoubleCircleIcon, TabsAddIcon } from '@navikt/aksel-icons'
+import React, { ReactElement } from 'react'
 
-import { SykmeldingFragment } from '@queries'
-import { isTodayOrInTheFuture } from '@data-layer/common/sykmelding-utils'
-import { SlowNextLinkButton } from '@components/links/SlowNextLinkButton'
-import { useMode } from '@core/providers/Modes'
+import { SlowNextLinkButton } from '#components/links/SlowNextLinkButton'
+import { useMode } from '#core/providers/Modes'
+import { isTodayOrInTheFuture } from '#data-layer/common/sykmelding-utils'
+import { SykmeldingFragment } from '#queries'
 
 export function TidligereSykmeldingActions({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
     const mode = useMode()

@@ -1,12 +1,12 @@
+import { logger } from '@navikt/next-logger'
 import { SmartClient, SmartClientConfiguration, SmartStorage } from '@navikt/smart-on-fhir/client'
 import Valkey from 'iovalkey'
-import { logger } from '@navikt/next-logger'
 
-import { globalInMemoryValkey } from '@dev/mock-engine/valkey/global-inmem-valkey'
-import { productionValkey } from '@core/services/valkey/client'
-import { getAbsoluteURL } from '@lib/url'
-import { getServerEnv, isDemo, isE2E, isLocal } from '@lib/env'
-import { getFlag, UnleashClient } from '@core/toggles/unleash'
+import { productionValkey } from '#core/services/valkey/client'
+import { getFlag, UnleashClient } from '#core/toggles/unleash'
+import { globalInMemoryValkey } from '#dev/mock-engine/valkey/global-inmem-valkey'
+import { getServerEnv, isDemo, isE2E, isLocal } from '#lib/env'
+import { getAbsoluteURL } from '#lib/url'
 
 import { getKnownFhirServers } from './issuers'
 

@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react'
 import { BodyShort } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { OtherSubmitOutcomesEnum } from '@queries'
-import { DetailedAlert, SimpleAlert } from '@components/help/GeneralErrors'
+import { DetailedAlert, SimpleAlert } from '#components/help/GeneralErrors'
+import { OtherSubmitOutcomesEnum } from '#queries'
 
 export function OtherOutcomesAlert({
     cause,

@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react'
-import { useQueryState } from 'nuqs'
-import { ActionMenu, Button } from '@navikt/ds-react'
 import { MenuElipsisVerticalIcon, TerminalIcon } from '@navikt/aksel-icons'
+import { ActionMenu, Button } from '@navikt/ds-react'
+import { useQueryState } from 'nuqs'
+import React, { ReactElement } from 'react'
 
-import { cn } from '@lib/tw'
-import { UseOpprettSykmeldingMutation } from '@features/ny-sykmelding-form/useOpprettSykmeldingMutation'
+import { UseOpprettSykmeldingMutation } from '#features/ny-sykmelding-form/useOpprettSykmeldingMutation'
+import { cn } from '#lib/tw'
 
 import { MockRuleMarkers } from '../mock-engine/SykInnApiMockRuleMarkers'
 

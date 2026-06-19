@@ -1,16 +1,16 @@
-import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { logger } from '@navikt/next-logger'
+import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
 import { YogaInitialContext } from 'graphql-yoga'
 
-import { failSpan, spanServerAsync } from '@lib/otel/server'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
 
-import { getCurrentPatientFromExtension } from '../graphql/yoga-utils'
-import { CommonGraphqlContext } from '../graphql/common-context'
 import { assertIsPilotUser } from '../common/pilot-user-utils'
+import { CommonGraphqlContext } from '../graphql/common-context'
+import { getCurrentPatientFromExtension } from '../graphql/yoga-utils'
 
-import { getHpr } from './mappers/practitioner'
 import { NoSmartSession } from './error/Errors'
+import { getHpr } from './mappers/practitioner'
 import { getReadyClient } from './smart/ready-client'
 
 const OtelNamespace = 'GraphQL(FHIR).context'

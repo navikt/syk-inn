@@ -1,11 +1,11 @@
-import React, { ReactElement, RefObject, useImperativeHandle, useRef, useState } from 'react'
-import { Button, FormSummary, TextField } from '@navikt/ds-react'
-import { useForm } from 'react-hook-form'
 import { CheckmarkHeavyIcon } from '@navikt/aksel-icons'
+import { Button, FormSummary, TextField } from '@navikt/ds-react'
+import React, { ReactElement, RefObject, useImperativeHandle, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
 
-import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
-import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
-import { useMode } from '@core/providers/Modes'
+import { useMode } from '#core/providers/Modes'
+import { useAppDispatch, useAppSelector } from '#core/redux/hooks'
+import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
 
 type Props = {
     contextTelefonnummer: string | undefined | null

@@ -1,5 +1,5 @@
-import { collectDefaultMetrics, Counter, Histogram } from 'prom-client'
 import { nextleton } from 'nextleton'
+import { collectDefaultMetrics, Counter, Histogram } from 'prom-client'
 
 class AppMetrics {
     constructor() {

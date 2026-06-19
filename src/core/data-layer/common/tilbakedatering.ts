@@ -1,8 +1,8 @@
-import * as z from 'zod'
-import * as R from 'remeda'
 import { isBefore, parseISO, subDays } from 'date-fns'
+import * as R from 'remeda'
+import * as z from 'zod'
 
-import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
+import { AktivitetsPeriode } from '#features/ny-sykmelding-form/form/types'
 
 export function isTilbakedatering(perioder: Pick<AktivitetsPeriode, 'periode'>[], sykmeldingsDato: Date): boolean {
     const firstFom = R.pipe(

@@ -1,7 +1,7 @@
-import React, { ReactElement } from 'react'
 import { BodyShort } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { DetailedAlert } from '@components/help/GeneralErrors'
+import { DetailedAlert } from '#components/help/GeneralErrors'
 
 export function NoActivePasientWarning(): ReactElement | null {
     return (

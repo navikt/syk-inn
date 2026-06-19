@@ -1,12 +1,12 @@
 'use client'
 
-import React, { ReactElement } from 'react'
-import { BodyShort, InfoCard, Link as AkselLink } from '@navikt/ds-react'
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
+import { BodyShort, InfoCard, Link as AkselLink } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { isLocal, isDemo } from '@lib/env'
-import { raise } from '@lib/ts'
-import { pathWithBasePath } from '@lib/url'
+import { isLocal, isDemo } from '#lib/env'
+import { raise } from '#lib/ts'
+import { pathWithBasePath } from '#lib/url'
 
 function DemoWarning(): ReactElement {
     if (!(isLocal || isDemo)) {

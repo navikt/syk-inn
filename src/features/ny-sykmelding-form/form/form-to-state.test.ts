@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { daysAgo } from '@lib/test/date-utils'
+import { daysAgo } from '#lib/test/date-utils'
 
 import { formValuesToStatePayload } from './form-to-state'
 import { NySykmeldingMainFormValues } from './types'

@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react'
 import { Button, Search } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 import { useController, useForm } from 'react-hook-form'
 
-import { isLocal } from '@lib/env'
+import { isLocal } from '#lib/env'
 
 type Props = {
     handleSearch: (ident: string) => void

@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
 
-import { getUserlessToggles, getUserToggles, toToggleMap } from '@core/toggles/unleash'
-import { spanServerAsync } from '@lib/otel/server'
-import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
-import { getHelseIdIdTokenInfo, getHelseIdUserInfo } from '@data-layer/helseid/helseid-user'
-import { validateHelseIdToken } from '@data-layer/helseid/token/validate'
+import { getUserlessToggles, getUserToggles, toToggleMap } from '#core/toggles/unleash'
+import { getHelseIdBehandler } from '#data-layer/helseid/helseid-service'
+import { getHelseIdIdTokenInfo, getHelseIdUserInfo } from '#data-layer/helseid/helseid-user'
+import { validateHelseIdToken } from '#data-layer/helseid/token/validate'
+import { spanServerAsync } from '#lib/otel/server'
 
 export async function GET(): Promise<NextResponse> {
     const [toggles, behandler] = await spanServerAsync('DebugUser toggles', async () => {

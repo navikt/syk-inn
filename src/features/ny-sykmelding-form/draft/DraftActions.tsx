@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react'
 import { useMutation } from '@apollo/client/react'
-import { useRouter } from 'next/navigation'
 import { FloppydiskIcon } from '@navikt/aksel-icons'
+import { useRouter } from 'next/navigation'
+import React, { ReactElement } from 'react'
 
-import { DeleteDraftDocument, GetAllDraftsDocument } from '@queries'
-import { ShortcutButton } from '@components/shortcut/ShortcutButtons'
-import { spanBrowserAsync } from '@lib/otel/browser'
-import { useMode } from '@core/providers/Modes'
+import { ShortcutButton } from '#components/shortcut/ShortcutButtons'
+import { useMode } from '#core/providers/Modes'
+import { spanBrowserAsync } from '#lib/otel/browser'
+import { DeleteDraftDocument, GetAllDraftsDocument } from '#queries'
 
 import { useFormDraftSync } from './FormDraftSync'
 import { useDraftId } from './useDraftId'

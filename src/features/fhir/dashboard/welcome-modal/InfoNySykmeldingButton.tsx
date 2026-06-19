@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { metadataActions } from '@core/redux/reducers/metadata'
-import { useAppDispatch } from '@core/redux/hooks'
+import { useAppDispatch } from '#core/redux/hooks'
+import { metadataActions } from '#core/redux/reducers/metadata'
 
 export function InfoNySykmeldingButton(): ReactElement {
     const dispatch = useAppDispatch()

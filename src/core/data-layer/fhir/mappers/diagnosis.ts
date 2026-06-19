@@ -1,11 +1,11 @@
-import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 import { CodeableConcept, FhirCondition } from '@navikt/smart-on-fhir/zod'
-import { getICPC2 } from '@navikt/tsm-diagnoser/ICPC2'
-import { getICD10 } from '@navikt/tsm-diagnoser/ICD10'
-import { getICPC2B } from '@navikt/tsm-diagnoser/ICPC2B'
 import { ICPC2B } from '@navikt/tsm-diagnoser'
+import { getICD10 } from '@navikt/tsm-diagnoser/ICD10'
+import { getICPC2 } from '@navikt/tsm-diagnoser/ICPC2'
+import { getICPC2B } from '@navikt/tsm-diagnoser/ICPC2B'
 import Fuse from 'fuse.js'
+import * as R from 'remeda'
 
 import {
     Diagnose,
@@ -13,8 +13,8 @@ import {
     ICD10_OID_VALUE,
     ICPC2_OID_VALUE,
     ICPC2B_OID_VALUE,
-} from '@data-layer/common/diagnose'
-import { raise } from '@lib/ts'
+} from '#data-layer/common/diagnose'
+import { raise } from '#lib/ts'
 
 type Diagnosis = {
     system: 'ICD10' | 'ICPC2' | 'ICPC2B'

@@ -1,13 +1,13 @@
-import { evaluateFlags, flagsClient } from '@unleash/nextjs'
 import { logger as pinoLogger } from '@navikt/next-logger'
+import { evaluateFlags, flagsClient } from '@unleash/nextjs'
 
-import { bundledEnv, isE2E, isLocal, isDemo } from '@lib/env'
-import { raise } from '@lib/ts'
+import { bundledEnv, isE2E, isLocal, isDemo } from '#lib/env'
+import { raise } from '#lib/ts'
 
+import { getUnleashSessionId } from './cookie'
 import { getAndValidateDefinitions } from './definitions'
 import { developmentTogglesWithCookieOverrides } from './dev/cookie-override'
 import { EXPECTED_TOGGLES, ExpectedToggles } from './toggles'
-import { getUnleashSessionId } from './cookie'
 
 export const unleashLogger = pinoLogger.child({}, { msgPrefix: '[UNLEASH-TOGGLES] ' })
 

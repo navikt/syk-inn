@@ -1,10 +1,10 @@
-import React, { ReactElement, useEffect, useRef } from 'react'
 import { DevTool } from '@hookform/devtools'
 import { logger } from '@navikt/next-logger'
 import { addDays, subDays } from 'date-fns'
+import React, { ReactElement, useEffect, useRef } from 'react'
 
-import { useFormContext } from '@features/ny-sykmelding-form/form/types'
-import { dateOnly } from '@lib/date'
+import { useFormContext } from '#features/ny-sykmelding-form/form/types'
+import { dateOnly } from '#lib/date'
 
 function NySykmeldingFormDevTools(): ReactElement {
     const { control, setValue, getValues } = useFormContext()

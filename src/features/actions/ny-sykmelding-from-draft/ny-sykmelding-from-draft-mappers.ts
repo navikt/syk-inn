@@ -1,10 +1,7 @@
 import { isValid, toDate } from 'date-fns'
 
-import { NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
-import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form/types'
-import { DraftValues } from '@data-layer/draft/draft-schema'
-import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
-import { precedence } from '@features/ny-sykmelding-form/form/utils'
+import { NySykmeldingFormState } from '#core/redux/reducers/ny-sykmelding'
+import { DraftValues } from '#data-layer/draft/draft-schema'
 import {
     defaultAndreSporsmal,
     defaultAnnenfravarsgrunn,
@@ -13,9 +10,13 @@ import {
     defaultPeriode,
     defaultTilbakedatering,
     defaultUtdypendeSporsmal,
-} from '@features/ny-sykmelding-form/form/default-values'
-import { AnnenFravarsgrunnArsak } from '@queries'
+} from '#features/ny-sykmelding-form/form/default-values'
+import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from '#features/ny-sykmelding-form/form/types'
+import { precedence } from '#features/ny-sykmelding-form/form/utils'
+import { NySykmeldingFormVariantType } from '#features/ny-sykmelding-form/useFormVariant'
+import { AnnenFravarsgrunnArsak } from '#queries'
 
+import { serverDiagnoseSuggestionToFormValue } from '../common/gql-sykmelding-mappers'
 import {
     stateAndreSporsmalToFormValues,
     stateAnnenFravarsgrunnToFormValues,
@@ -27,7 +28,6 @@ import {
     stateTilbakedateringToFormValues,
     stateUtdypendeSporsmalToFormValues,
 } from '../common/state-sykmelding-mappers'
-import { serverDiagnoseSuggestionToFormValue } from '../common/gql-sykmelding-mappers'
 
 export function nySykmeldingFromDraftDefaultValues(
     draft: DraftValues | null,

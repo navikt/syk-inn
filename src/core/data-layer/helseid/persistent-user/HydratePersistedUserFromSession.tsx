@@ -2,9 +2,9 @@
 
 import { useLayoutEffect } from 'react'
 
-import { ManualPatient } from '@core/redux/reducers/ny-sykmelding/patient'
-import { useAppDispatch } from '@core/redux/hooks'
-import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { useAppDispatch } from '#core/redux/hooks'
+import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
+import { ManualPatient } from '#core/redux/reducers/ny-sykmelding/patient'
 
 import { getPersistentUser } from './persistent-user'
 

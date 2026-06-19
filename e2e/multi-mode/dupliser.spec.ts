@@ -7,13 +7,13 @@ import {
     pickHoveddiagnose,
     submitSykmelding,
 } from '../actions/user-actions'
-import { verifySummaryPage } from '../actions/user-verifications'
 import { expectBidagnoses, expectHoveddiagnose, expectPeriode } from '../actions/user-form-verification'
+import { verifySummaryPage } from '../actions/user-verifications'
 import { verifyIsOnKvitteringPage } from '../fhir/actions/fhir-user-verifications'
 
 import { launchAndStart } from './actions/mode-user-actions'
-import { modes } from './modes'
 import { verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
+import { modes } from './modes'
 
 modes.forEach(({ mode }) => {
     test(`${mode}: should be able to duplicate from kvittering`, async ({ page }) => {

@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
-import { OpprettSykmeldingDocument } from '@queries'
+
+import { OpprettSykmeldingDocument } from '#queries'
 
 import {
     fillPeriodeRelative,
@@ -10,8 +11,8 @@ import {
 } from '../actions/user-actions'
 import { anything, expectGraphQLRequest } from '../utils/assertions'
 
-import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 import { launchAndStart } from './actions/mode-user-actions'
+import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 import { modes } from './modes'
 
 modes.forEach(({ mode }) => {

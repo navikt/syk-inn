@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest'
 import { addDays, subDays } from 'date-fns'
+import { describe, expect, it } from 'vitest'
 
-import { dateOnly } from '@lib/date'
+import { dateOnly } from '#lib/date'
 
 import { earliestFom, isTodayOrInTheFuture, latestTom } from './sykmelding-utils'
 

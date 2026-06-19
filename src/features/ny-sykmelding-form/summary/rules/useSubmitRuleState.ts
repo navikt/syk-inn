@@ -1,6 +1,6 @@
 import { useReducer } from 'react'
 
-import { RuleOutcomeFragment } from '@queries'
+import { RuleOutcomeFragment } from '#queries'
 
 import { getRuleType } from './rule-texts'
 

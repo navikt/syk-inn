@@ -1,5 +1,5 @@
-import { context, Span, SpanStatusCode, trace } from '@opentelemetry/api'
 import { logger } from '@navikt/next-logger'
+import { context, Span, SpanStatusCode, trace } from '@opentelemetry/api'
 
 import { APP_NAME } from './common'
 

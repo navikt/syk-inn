@@ -1,11 +1,11 @@
 'use client'
 
-import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
+import React, { ReactElement } from 'react'
 
-import { PasientDocument } from '@queries'
-import { LoadablePageHeader, PageLayout } from '@components/layout/Page'
-import { TidligereSykmelding } from '@features/tidligere-sykmelding/TidligereSykmelding'
+import { LoadablePageHeader, PageLayout } from '#components/layout/Page'
+import { TidligereSykmelding } from '#features/tidligere-sykmelding/TidligereSykmelding'
+import { PasientDocument } from '#queries'
 
 function SykmeldingPage(): ReactElement {
     const pasientQuery = useQuery(PasientDocument)

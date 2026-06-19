@@ -1,6 +1,6 @@
+import { logger } from '@navikt/pino-logger'
 import type Valkey from 'iovalkey'
 import * as R from 'remeda'
-import { logger } from '@navikt/pino-logger'
 
 import { BruksvilkarClient, createBruksvilkarClient } from '../client'
 import { Bruksvilkar, BruksvilkarValkeySchema } from '../schema'

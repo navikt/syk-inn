@@ -1,12 +1,12 @@
-import { ReactElement, useState } from 'react'
 import { Button, Checkbox } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
 import { AnimatePresence } from 'motion/react'
+import { ReactElement, useState } from 'react'
 
-import { createFhirPaths } from '@core/providers/ModePaths'
-import { pathWithBasePath } from '@lib/url'
-import { SimpleReveal } from '@components/animation/Reveal'
-import { SimpleAlert } from '@components/help/GeneralErrors'
+import { SimpleReveal } from '#components/animation/Reveal'
+import { SimpleAlert } from '#components/help/GeneralErrors'
+import { createFhirPaths } from '#core/providers/ModePaths'
+import { pathWithBasePath } from '#lib/url'
 
 import { BRUKSVILKAR_VERSION } from './BruksvilkarSection'
 

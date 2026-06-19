@@ -1,7 +1,7 @@
-import { GenericContainer, StartedTestContainer, Network, Wait } from 'testcontainers'
 import { logger } from '@navikt/next-logger'
-import { PostgreSqlContainer } from '@testcontainers/postgresql'
 import { KafkaContainer, StartedKafkaContainer } from '@testcontainers/kafka'
+import { PostgreSqlContainer } from '@testcontainers/postgresql'
+import { GenericContainer, StartedTestContainer, Network, Wait } from 'testcontainers'
 
 import { streamToStdout } from './testcontainers-utils'
 

@@ -1,8 +1,8 @@
 'use client'
 
-import React, { ReactElement } from 'react'
 import { Heading, HeadingProps, Skeleton } from '@navikt/ds-react'
 import { AnimatePresence, motion } from 'motion/react'
+import React, { ReactElement } from 'react'
 
 export type LoadableHeaderProps = {
     lead: string

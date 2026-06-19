@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { logger as pinoLogger } from '@navikt/next-logger'
-import { GraphQLSchema } from 'graphql/type'
-import { createYoga, Plugin } from 'graphql-yoga'
 import { useOpenTelemetry } from '@envelop/opentelemetry'
+import { logger as pinoLogger } from '@navikt/next-logger'
 import { trace } from '@opentelemetry/api'
+import { createYoga, Plugin } from 'graphql-yoga'
+import { GraphQLSchema } from 'graphql/type'
 
-import { bundledEnv, isDemo, isLocal } from '@lib/env'
-import { wait } from '@lib/wait'
-import { ModeType } from '@core/providers/ModePaths'
+import { ModeType } from '#core/providers/ModePaths'
+import { bundledEnv, isDemo, isLocal } from '#lib/env'
+import { wait } from '#lib/wait'
 
 import { NextContext, YogaContext } from './yoga-utils'
 

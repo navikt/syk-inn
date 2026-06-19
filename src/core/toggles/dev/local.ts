@@ -1,6 +1,6 @@
 import { IToggle } from '@unleash/nextjs'
 
-import { raise } from '@lib/ts'
+import { raise } from '#lib/ts'
 
 import { ExpectedToggles } from '../toggles'
 

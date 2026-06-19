@@ -1,11 +1,12 @@
 import { logger as pinoLogger } from '@navikt/next-logger'
 import * as z from 'zod'
 
-import { bundledEnv } from '@lib/env'
-import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
+import { mockEngineForSession, shouldUseMockEngine } from '#dev/mock-engine'
+import { bundledEnv } from '#lib/env'
 
 import { ApiFetchErrors, fetchInternalAPI } from '../api-fetcher'
 
+import { OpprettSykmeldingPayload, OpprettSykmeldingPayloadSchema } from './schema/opprett'
 import {
     SykInnApiPersonDoesNotExist,
     SykInnApiPersonDoesNotExistSchema,
@@ -16,7 +17,6 @@ import {
     SykInnApiSykmeldingRedactedSchema,
     SykInnApiSykmeldingSchema,
 } from './schema/sykmelding'
-import { OpprettSykmeldingPayload, OpprettSykmeldingPayloadSchema } from './schema/opprett'
 
 const logger = pinoLogger.child({}, { msgPrefix: '[API Service]: ' })
 

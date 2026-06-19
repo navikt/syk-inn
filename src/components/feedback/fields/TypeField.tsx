@@ -1,7 +1,7 @@
+import { BugIcon, LightBulbIcon, QuestionmarkIcon } from '@navikt/aksel-icons'
+import { ToggleGroup } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { useController } from 'react-hook-form'
-import { ToggleGroup } from '@navikt/ds-react'
-import { BugIcon, LightBulbIcon, QuestionmarkIcon } from '@navikt/aksel-icons'
 
 import { FeedbackFormValues } from '../full-feedback/form'
 

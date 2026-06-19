@@ -1,14 +1,14 @@
-import React, { ReactElement } from 'react'
+import { TrashIcon } from '@navikt/aksel-icons'
 import { Button, ErrorMessage } from '@navikt/ds-react'
 import { addDays } from 'date-fns'
-import { TrashIcon } from '@navikt/aksel-icons'
+import React, { ReactElement } from 'react'
 import { UseFieldArrayAppend } from 'react-hook-form'
 
-import { dateOnly } from '@lib/date'
-import FormSection from '@components/form/form-section/FormSection'
+import FormSection from '#components/form/form-section/FormSection'
+import { dateOnly } from '#lib/date'
 
-import { AktivitetsPeriode, NySykmeldingMainFormValues, useFieldArray, useFormContext } from '../../form/types'
 import { defaultPeriode } from '../../form/default-values'
+import { AktivitetsPeriode, NySykmeldingMainFormValues, useFieldArray, useFormContext } from '../../form/types'
 
 import AktivitetPicker from './AktivitetPicker'
 import PeriodePicker from './PeriodePicker'

@@ -1,15 +1,15 @@
+import dynamic from 'next/dynamic'
 import React, { ReactElement } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import dynamic from 'next/dynamic'
 
-import { type NySykmeldingFormVariantType } from './useFormVariant'
-import { NormalSykmeldigForm, NormalSykmeldingFormProps } from './variants/normal/NormalSykmelding'
-import { AllFormVariantsProps } from './variants/form-props'
-import { NySykmeldingMainFormValues } from './form/types'
 import { FormDraftSync } from './draft/FormDraftSync'
+import { NySykmeldingMainFormValues } from './form/types'
+import { type NySykmeldingFormVariantType } from './useFormVariant'
 import BehandlingdagerSykmeldingForm from './variants/behandlingsdager/BehandlingdagerSykmeldingForm'
+import { AllFormVariantsProps } from './variants/form-props'
+import { NormalSykmeldigForm, NormalSykmeldingFormProps } from './variants/normal/NormalSykmelding'
 
-const FormDevTools = dynamic(() => import('@dev/tools/NySykmeldingFormDevTools'), { ssr: false })
+const FormDevTools = dynamic(() => import('#dev/tools/NySykmeldingFormDevTools'), { ssr: false })
 
 type NySykmeldingFormProps = AllFormVariantsProps &
     NormalSykmeldingFormProps & {

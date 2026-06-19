@@ -1,13 +1,13 @@
-import React, { ReactElement, useState } from 'react'
-import { BodyShort, Heading, Link, Modal } from '@navikt/ds-react'
 import { ExclamationmarkTriangleIcon, InformationSquareIcon, PaperplaneIcon } from '@navikt/aksel-icons'
+import { BodyShort, Heading, Link, Modal } from '@navikt/ds-react'
+import React, { ReactElement, useState } from 'react'
 
-import { RuleOutcomeFragment } from '@queries'
-import { ShortcutButton } from '@components/shortcut/ShortcutButtons'
-import { UnknownSystemError } from '@components/help/GeneralErrors'
+import { UnknownSystemError } from '#components/help/GeneralErrors'
+import { ShortcutButton } from '#components/shortcut/ShortcutButtons'
+import { RuleOutcomeFragment } from '#queries'
 
-import { UseOpprettSykmeldingMutation } from '../../useOpprettSykmeldingMutation'
 import { useFormStep } from '../../useFormStep'
+import { UseOpprettSykmeldingMutation } from '../../useOpprettSykmeldingMutation'
 
 import { getRuleText } from './rule-texts'
 

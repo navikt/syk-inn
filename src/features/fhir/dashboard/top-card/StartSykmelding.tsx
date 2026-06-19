@@ -1,15 +1,15 @@
-import React, { ReactElement, useState } from 'react'
-import { ActionMenu, BodyShort, Checkbox, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 import { ChevronDownIcon, FirstAidIcon } from '@navikt/aksel-icons'
+import { ActionMenu, BodyShort, Checkbox, Detail, Heading, Skeleton } from '@navikt/ds-react'
+import React, { ReactElement, useState } from 'react'
 
-import { FORM_VARIANT_KEY, NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
-import { ShortcutButton, ShortcutButtonLink } from '@components/shortcut/ShortcutButtons'
-import { PasientDocument } from '@queries'
-import { SimpleAlert } from '@components/help/GeneralErrors'
-import { useMode } from '@core/providers/Modes'
-import { useFlag } from '@core/toggles/context'
-import { AssableNextLink } from '@components/links/AssableNextLink'
+import { SimpleAlert } from '#components/help/GeneralErrors'
+import { AssableNextLink } from '#components/links/AssableNextLink'
+import { ShortcutButton, ShortcutButtonLink } from '#components/shortcut/ShortcutButtons'
+import { useMode } from '#core/providers/Modes'
+import { useFlag } from '#core/toggles/context'
+import { FORM_VARIANT_KEY, NySykmeldingFormVariantType } from '#features/ny-sykmelding-form/useFormVariant'
+import { PasientDocument } from '#queries'
 
 function StartSykmelding({ className }: { className?: string }): ReactElement {
     const mode = useMode()

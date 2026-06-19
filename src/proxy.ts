@@ -1,10 +1,10 @@
+import { MOCK_HELSEID_TOKEN_NAME, sessionToTokens } from '@navikt/helseid-mock-server'
 import { NextRequest, NextResponse, ProxyConfig } from 'next/server'
 
-import { MOCK_HELSEID_TOKEN_NAME, sessionToTokens } from '@navikt/helseid-mock-server'
-import { UNLEASH_COOKIE_NAME } from '@core/toggles/const'
-import { SESSION_COOKIE_NAME } from '@core/session/cookies'
-import { shouldUseMockEngine } from '@dev/mock-engine'
-import { spanServerAsync } from '@lib/otel/server'
+import { SESSION_COOKIE_NAME } from '#core/session/cookies'
+import { UNLEASH_COOKIE_NAME } from '#core/toggles/const'
+import { shouldUseMockEngine } from '#dev/mock-engine'
+import { spanServerAsync } from '#lib/otel/server'
 
 export async function proxy(request: NextRequest): Promise<NextResponse> {
     return spanServerAsync('Next Proxy', async (span) => {

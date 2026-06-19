@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server'
 import { logger } from '@navikt/next-logger'
+import { NextResponse } from 'next/server'
 
-import { bundledEnv, getServerEnv } from '@lib/env'
-import { getDevFhirConfiguration } from '@data-layer/fhir/smart/issuers/envs/dev-gcp'
-import { getProdFhirConfiguration } from '@data-layer/fhir/smart/issuers/envs/prod-gcp'
+import { getDevFhirConfiguration } from '#data-layer/fhir/smart/issuers/envs/dev-gcp'
+import { getProdFhirConfiguration } from '#data-layer/fhir/smart/issuers/envs/prod-gcp'
+import { bundledEnv, getServerEnv } from '#lib/env'
 
 export async function GET(): Promise<NextResponse> {
     try {

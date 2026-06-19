@@ -1,16 +1,16 @@
 'use client'
 
-import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client/react'
+import React, { ReactElement } from 'react'
 
-import { GetDraftDocument, PasientDocument } from '@queries'
-import { useDiagnoseSuggestions } from '@features/ny-sykmelding-form/sections/diagnose/useDiagnoseSuggestions'
-import { useAppSelector } from '@core/redux/hooks'
-import NySykmeldingFormSkeleton from '@features/ny-sykmelding-form/NySykmeldingFormSkeleton'
-import { inferSykmeldingTypeFromDraft, safeParseDraft } from '@data-layer/draft/draft-schema'
-import NySykmeldingFormVariants from '@features/ny-sykmelding-form/NySykmeldingFormVariants'
-import { LoadablePageHeader } from '@components/layout/Page'
-import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
+import { LoadablePageHeader } from '#components/layout/Page'
+import { useAppSelector } from '#core/redux/hooks'
+import { inferSykmeldingTypeFromDraft, safeParseDraft } from '#data-layer/draft/draft-schema'
+import NySykmeldingFormSkeleton from '#features/ny-sykmelding-form/NySykmeldingFormSkeleton'
+import NySykmeldingFormVariants from '#features/ny-sykmelding-form/NySykmeldingFormVariants'
+import NySykmeldingPageSteps from '#features/ny-sykmelding-form/NySykmeldingPageSteps'
+import { useDiagnoseSuggestions } from '#features/ny-sykmelding-form/sections/diagnose/useDiagnoseSuggestions'
+import { GetDraftDocument, PasientDocument } from '#queries'
 
 import { SykmeldingDraftFormErrors } from '../common/SykmeldingFormErrors'
 

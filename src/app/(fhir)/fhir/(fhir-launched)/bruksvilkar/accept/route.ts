@@ -1,14 +1,14 @@
-import * as z from 'zod'
-import { NextRequest, NextResponse } from 'next/server'
 import { logger } from '@navikt/next-logger'
 import { GraphQLError } from 'graphql/error'
+import { NextRequest, NextResponse } from 'next/server'
+import * as z from 'zod'
 
-import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
-import { acceptBruksvilkar } from '@core/services/bruksvilkar/bruksvilkar-service'
-import { getHpr } from '@data-layer/fhir/mappers/practitioner'
-import { getNameFromFhir } from '@data-layer/fhir/mappers/patient'
-import { getOrganisasjonsnummerFromFhir } from '@data-layer/fhir/mappers/organization'
-import { bundledEnv } from '@lib/env'
+import { acceptBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
+import { getOrganisasjonsnummerFromFhir } from '#data-layer/fhir/mappers/organization'
+import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
+import { getHpr } from '#data-layer/fhir/mappers/practitioner'
+import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
+import { bundledEnv } from '#lib/env'
 
 const PayloadSchema = z.object({
     patientId: z.string(),

@@ -1,11 +1,11 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
-import Image from 'next/image'
 import { Detail } from '@navikt/ds-react'
+import Image from 'next/image'
 import Link from 'next/link'
+import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { isDemo, isLocal } from '@lib/env'
-import DemoWarning from '@components/user-warnings/DemoWarning'
-import { pathWithBasePath } from '@lib/url'
+import DemoWarning from '#components/user-warnings/DemoWarning'
+import { isDemo, isLocal } from '#lib/env'
+import { pathWithBasePath } from '#lib/url'
 
 import { getDemoFrameEnabled } from './cookies'
 import FakeEpjHeader from './FakeEpjHeader'

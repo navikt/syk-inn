@@ -1,13 +1,13 @@
-import * as R from 'remeda'
 import { differenceInDays } from 'date-fns'
+import * as R from 'remeda'
 
 import {
     SykmeldingDateRange,
     currentSykmeldingIsAktivitetIkkeMulig,
-} from '@data-layer/common/continuous-sykefravaer-utils'
-import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
-import { raise } from '@lib/ts'
-import { UtdypendeOpplysningerHint } from '@resolvers'
+} from '#data-layer/common/continuous-sykefravaer-utils'
+import { AktivitetsPeriode } from '#features/ny-sykmelding-form/form/types'
+import { raise } from '#lib/ts'
+import { UtdypendeOpplysningerHint } from '#resolvers'
 
 const ISYFO_MAX_DAYS_GAP = 16
 

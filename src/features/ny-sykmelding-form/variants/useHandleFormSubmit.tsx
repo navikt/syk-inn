@@ -1,10 +1,10 @@
-import { useAppDispatch } from '@core/redux/hooks'
-import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
+import { useAppDispatch } from '#core/redux/hooks'
+import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
 
-import { useFormStep } from '../useFormStep'
 import { useFormDraftSync } from '../draft/FormDraftSync'
-import { NySykmeldingMainFormValues } from '../form/types'
 import { formValuesToStatePayload } from '../form/form-to-state'
+import { NySykmeldingMainFormValues } from '../form/types'
+import { useFormStep } from '../useFormStep'
 
 export function useHandleFormSubmit() {
     const [, setStep] = useFormStep()

@@ -1,6 +1,6 @@
 import { FieldReadFunction, Reference, InMemoryCache } from '@apollo/client'
 
-import { Query } from '@queries'
+import { Query } from '#queries'
 
 import possibleTypesGenerated from '../generated/possible-types.generated'
 

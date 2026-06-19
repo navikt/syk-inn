@@ -1,9 +1,9 @@
 import * as R from 'remeda'
 
-import { NySykmeldingAktivitet, NySykmeldingFormPayload } from '@core/redux/reducers/ny-sykmelding/form'
-import { raise } from '@lib/ts'
-import { Diagnose } from '@data-layer/common/diagnose'
-import { isTilbakedatering } from '@data-layer/common/tilbakedatering'
+import { NySykmeldingAktivitet, NySykmeldingFormPayload } from '#core/redux/reducers/ny-sykmelding/form'
+import { Diagnose } from '#data-layer/common/diagnose'
+import { isTilbakedatering } from '#data-layer/common/tilbakedatering'
+import { raise } from '#lib/ts'
 
 import { type AktivitetsPeriode, NySykmeldingMainFormValues } from './types'
 

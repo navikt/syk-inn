@@ -1,8 +1,8 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
 import { format } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
+import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { bundledEnv } from '@lib/env'
+import { bundledEnv } from '#lib/env'
 
 function BuildInfo(): ReactElement {
     if (bundledEnv.NEXT_PUBLIC_VERSION === 'development') {

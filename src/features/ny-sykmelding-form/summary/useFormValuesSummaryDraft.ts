@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
 import { skipToken, useQuery } from '@apollo/client/react'
 import { logger } from '@navikt/next-logger'
+import { useEffect, useState } from 'react'
 
-import { useAppDispatch } from '@core/redux/hooks'
-import { GetDraftDocument } from '@queries'
-import { nySykmeldingActions, NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
-import { inferSykmeldingTypeFromDraft, safeParseDraft } from '@data-layer/draft/draft-schema'
-import { nySykmeldingFromDraftDefaultValues } from '@features/actions/ny-sykmelding-from-draft/ny-sykmelding-from-draft-mappers'
+import { useAppDispatch } from '#core/redux/hooks'
+import { nySykmeldingActions, NySykmeldingFormState } from '#core/redux/reducers/ny-sykmelding'
+import { inferSykmeldingTypeFromDraft, safeParseDraft } from '#data-layer/draft/draft-schema'
+import { nySykmeldingFromDraftDefaultValues } from '#features/actions/ny-sykmelding-from-draft/ny-sykmelding-from-draft-mappers'
+import { GetDraftDocument } from '#queries'
 
 import { useDraftId } from '../draft/useDraftId'
 import { formValuesToStatePayload } from '../form/form-to-state'

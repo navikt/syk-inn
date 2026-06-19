@@ -1,6 +1,6 @@
 import { addDays, addMonths, addWeeks, parseISO, subDays } from 'date-fns'
 
-import { isDateValid } from '@lib/date'
+import { isDateValid } from '#lib/date'
 
 type ValidShorthand = 'd' | 'u' | 'm'
 type ShorthandTuple = [unit: ValidShorthand, amount: number]

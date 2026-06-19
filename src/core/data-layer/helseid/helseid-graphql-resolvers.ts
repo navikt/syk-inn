@@ -1,28 +1,28 @@
-import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
+import { GraphQLError } from 'graphql/error'
 import * as R from 'remeda'
 
-import { QueriedPerson, Resolvers, RuleOutcome } from '@resolvers'
-import { raise } from '@lib/ts'
-import { pdlApiService } from '@core/services/pdl/pdl-api-service'
-import { getFnrIdent, formatPdlName } from '@core/services/pdl/pdl-api-utils'
-import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
+import { pdlApiService } from '#core/services/pdl/pdl-api-service'
+import { getFnrIdent, formatPdlName } from '#core/services/pdl/pdl-api-utils'
+import { OpprettSykmeldingMeta } from '#core/services/syk-inn-api/schema/opprett'
+import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
 import {
     resolverInputToSykInnApiPayload,
     sykInnApiSykmeldingRedactedToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmeldingFull,
-} from '@core/services/syk-inn-api/syk-inn-api-utils'
-import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { getFlag, getUserToggles } from '@core/toggles/unleash'
-import metrics from '@lib/prometheus/metrics'
+} from '#core/services/syk-inn-api/syk-inn-api-utils'
+import { getFlag, getUserToggles } from '#core/toggles/unleash'
+import metrics from '#lib/prometheus/metrics'
+import { raise } from '#lib/ts'
+import { QueriedPerson, Resolvers, RuleOutcome } from '#resolvers'
 
+import { countDiagnoses } from '../common/diagnose-counting'
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
 import { commonObjectResolvers, commonQueryResolvers } from '../graphql/common-resolvers'
 import { commonTypeResolvers } from '../graphql/common-type-resolvers'
 import { createSchema } from '../graphql/create-schema'
-import { countDiagnoses } from '../common/diagnose-counting'
 
 import { NoHelseIdCurrentPatient } from './error/Errors'
 import { HelseIdGraphqlContext } from './helseid-graphql-context'

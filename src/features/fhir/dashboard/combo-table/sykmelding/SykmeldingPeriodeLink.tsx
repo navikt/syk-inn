@@ -1,10 +1,10 @@
-import * as R from 'remeda'
-import React, { ReactElement } from 'react'
 import { BodyShort, HelpText } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
+import * as R from 'remeda'
 
-import { SykmeldingFragment } from '@queries'
-import { AkselNextLink } from '@components/links/AkselNextLink'
-import { useMode } from '@core/providers/Modes'
+import { AkselNextLink } from '#components/links/AkselNextLink'
+import { useMode } from '#core/providers/Modes'
+import { SykmeldingFragment } from '#queries'
 
 import { aktivitetGradText, sykmeldingPeriodeText } from './sykmelding-utils'
 

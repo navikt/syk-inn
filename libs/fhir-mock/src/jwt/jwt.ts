@@ -1,5 +1,5 @@
-import { lazyNextleton } from 'nextleton'
 import { exportJWK, importPKCS8, importSPKI, JWK, SignJWT } from 'jose'
+import { lazyNextleton } from 'nextleton'
 
 import { fhirServerTestData } from '../meta/data/fhir-server'
 

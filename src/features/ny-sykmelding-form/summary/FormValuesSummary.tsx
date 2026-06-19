@@ -1,8 +1,12 @@
+import { useQuery } from '@apollo/client/react'
 import { BodyShort, Detail, FormSummary, List, Skeleton } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
-import { useQuery } from '@apollo/client/react'
 
+import { DetailedAlert, InlineWarning, SimpleAlert } from '#components/help/GeneralErrors'
+import { AkselNextLink } from '#components/links/AkselNextLink'
+import { useMode } from '#core/providers/Modes'
+import { useAppSelector } from '#core/redux/hooks'
 import {
     NySykmeldingAktivitet,
     NySykmeldingDiagnoser,
@@ -11,23 +15,19 @@ import {
     NySykmeldingAndreSporsmal,
     ActivePatient,
     NySykmeldingArbeidsforhold,
-} from '@core/redux/reducers/ny-sykmelding'
-import { useAppSelector } from '@core/redux/hooks'
-import { AkselNextLink } from '@components/links/AkselNextLink'
-import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
-import { toReadableDate, toReadableDatePeriod, toReadablePeriodLength } from '@lib/date'
-import { PasientDocument } from '@queries'
-import { NySykmeldingAnnenFravarsgrunn, NySykmeldingUtdypendeSporsmal } from '@core/redux/reducers/ny-sykmelding/form'
-import { useMode } from '@core/providers/Modes'
-import { DetailedAlert, InlineWarning, SimpleAlert } from '@components/help/GeneralErrors'
-import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
-import { questionTexts } from '@data-layer/common/questions'
-import { arbeidsrelaterteArsakerToText } from '@data-layer/common/arbeidsrelaterte-arsaker'
+} from '#core/redux/reducers/ny-sykmelding'
+import { NySykmeldingAnnenFravarsgrunn, NySykmeldingUtdypendeSporsmal } from '#core/redux/reducers/ny-sykmelding/form'
+import { annenFravarsgrunnToText } from '#data-layer/common/annen-fravarsgrunn'
+import { arbeidsrelaterteArsakerToText } from '#data-layer/common/arbeidsrelaterte-arsaker'
+import { questionTexts } from '#data-layer/common/questions'
+import { TilbakedateringGrunn } from '#data-layer/common/tilbakedatering'
+import { toReadableDate, toReadableDatePeriod, toReadablePeriodLength } from '#lib/date'
+import { PasientDocument } from '#queries'
 
 import { useFormStep } from '../useFormStep'
 
-import { useFormValuesSummaryDraft } from './useFormValuesSummaryDraft'
 import { aktivitetDescription } from './summary-text-utils'
+import { useFormValuesSummaryDraft } from './useFormValuesSummaryDraft'
 
 const sectionSummaryHeadingId = 'sykmelding-summary-heading'
 

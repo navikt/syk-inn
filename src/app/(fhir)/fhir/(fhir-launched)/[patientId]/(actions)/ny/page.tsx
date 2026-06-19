@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react'
 import { redirect } from 'next/navigation'
+import React, { ReactElement } from 'react'
 
-import { NySykmeldingFormWithDefaultValues } from '@features/actions/ny-sykmelding/NySykmelding'
-import { createFhirPaths } from '@core/providers/ModePaths'
+import { createFhirPaths } from '#core/providers/ModePaths'
+import { NySykmeldingFormWithDefaultValues } from '#features/actions/ny-sykmelding/NySykmelding'
 
 async function NySykmeldingPage({ params, searchParams }: PageProps<'/fhir/[patientId]/ny'>): Promise<ReactElement> {
     const search = await searchParams

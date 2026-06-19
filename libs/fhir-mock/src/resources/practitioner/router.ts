@@ -1,5 +1,5 @@
-import { Hono } from 'hono'
 import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
+import { Hono } from 'hono'
 
 import { withAuthed } from '../../auth/verify-authed'
 import { getMockSessionStore } from '../../config'

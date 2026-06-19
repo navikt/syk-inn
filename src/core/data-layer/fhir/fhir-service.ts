@@ -1,8 +1,8 @@
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { GraphQLError } from 'graphql/error'
 
-import { failSpan, spanServerAsync } from '@lib/otel/server'
-import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
+import { OpprettSykmeldingMeta } from '#core/services/syk-inn-api/schema/opprett'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from './mappers/organization'
 import { getValidPatientIdent } from './mappers/patient'

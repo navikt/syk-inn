@@ -1,12 +1,12 @@
 'use client'
 
-import React, { ReactElement } from 'react'
-import { Heading, LinkCard, Select } from '@navikt/ds-react'
 import { PlayIcon, ShieldLockIcon } from '@navikt/aksel-icons'
-import { parseAsString, useQueryState } from 'nuqs'
-
+import { Heading, LinkCard, Select } from '@navikt/ds-react'
 import { MockBehandlere } from '@navikt/helseid-mock-server'
-import { pathWithBasePath } from '@lib/url'
+import { parseAsString, useQueryState } from 'nuqs'
+import React, { ReactElement } from 'react'
+
+import { pathWithBasePath } from '#lib/url'
 
 function ScenarioLinksStandalone(): ReactElement {
     const [behandler, setBehandler] = useQueryState(

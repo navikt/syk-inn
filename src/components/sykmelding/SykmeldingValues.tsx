@@ -1,14 +1,14 @@
-import * as R from 'remeda'
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail, InfoCard, List } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
-import { InformationSquareIcon } from '@navikt/aksel-icons'
+import * as R from 'remeda'
 
-import { AktivitetFragment, SykmeldingFragment } from '@queries'
-import { toReadableDate, toReadableDatePeriod } from '@lib/date'
-import { arbeidsrelaterteArsakerToText } from '@data-layer/common/arbeidsrelaterte-arsaker'
-import { Diagnose } from '@data-layer/common/diagnose'
-import { PREVIOUS_OFFSET_DAYS } from '@data-layer/common/sykmelding-utils'
-import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
+import { annenFravarsgrunnToText } from '#data-layer/common/annen-fravarsgrunn'
+import { arbeidsrelaterteArsakerToText } from '#data-layer/common/arbeidsrelaterte-arsaker'
+import { Diagnose } from '#data-layer/common/diagnose'
+import { PREVIOUS_OFFSET_DAYS } from '#data-layer/common/sykmelding-utils'
+import { toReadableDate, toReadableDatePeriod } from '#lib/date'
+import { AktivitetFragment, SykmeldingFragment } from '#queries'
 
 import { ValueItem } from './ValuesSection'
 

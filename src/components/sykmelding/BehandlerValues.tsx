@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import { SykmeldingFragment } from '@queries'
+import { SykmeldingFragment } from '#queries'
 
 import { ValueItem } from './ValuesSection'
 

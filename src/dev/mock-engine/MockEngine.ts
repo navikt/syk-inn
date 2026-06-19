@@ -1,12 +1,12 @@
+import { createBruksvilkarClient, type BruksvilkarClient } from '@navikt/syk-zara/bruksvilkar'
 import Valkey from 'iovalkey'
 
-import { createBruksvilkarClient, type BruksvilkarClient } from '@navikt/syk-zara/bruksvilkar'
-import type { AaregArbeidsforhold } from '@core/services/aareg/aareg-schema'
-import { createDraftClient, type DraftClient } from '@data-layer/draft/draft-client'
+import type { AaregArbeidsforhold } from '#core/services/aareg/aareg-schema'
+import { createDraftClient, type DraftClient } from '#data-layer/draft/draft-client'
 
+import { Scenario } from './scenarios/scenarios'
 import { SykInnApiMock } from './SykInnApiMock'
 import { createInMemoryValkey } from './valkey/InMemValkey'
-import { Scenario } from './scenarios/scenarios'
 
 /**
  * A stateful mock system that scopes multiple parts of the application per user, e.g. the syk-inn-api and the drafts.

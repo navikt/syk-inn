@@ -1,6 +1,4 @@
-import { NySykmeldingFormState } from '@core/redux/reducers/ny-sykmelding'
-import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from '@features/ny-sykmelding-form/form/types'
-import { precedence } from '@features/ny-sykmelding-form/form/utils'
+import { NySykmeldingFormState } from '#core/redux/reducers/ny-sykmelding'
 import {
     defaultAndreSporsmal,
     defaultAnnenfravarsgrunn,
@@ -9,9 +7,12 @@ import {
     defaultPeriode,
     defaultTilbakedatering,
     defaultUtdypendeSporsmal,
-} from '@features/ny-sykmelding-form/form/default-values'
-import { NySykmeldingFormVariantType } from '@features/ny-sykmelding-form/useFormVariant'
+} from '#features/ny-sykmelding-form/form/default-values'
+import { NySykmeldingMainFormValues, NySykmeldingSuggestions } from '#features/ny-sykmelding-form/form/types'
+import { precedence } from '#features/ny-sykmelding-form/form/utils'
+import { NySykmeldingFormVariantType } from '#features/ny-sykmelding-form/useFormVariant'
 
+import { serverDiagnoseSuggestionToFormValue } from '../common/gql-sykmelding-mappers'
 import {
     stateAndreSporsmalToFormValues,
     stateAnnenFravarsgrunnToFormValues,
@@ -23,7 +24,6 @@ import {
     stateTilbakedateringToFormValues,
     stateUtdypendeSporsmalToFormValues,
 } from '../common/state-sykmelding-mappers'
-import { serverDiagnoseSuggestionToFormValue } from '../common/gql-sykmelding-mappers'
 
 export function nySykmeldingDefaultValues(
     state: NySykmeldingFormState | null,

@@ -1,7 +1,7 @@
 import { logger } from '@navikt/next-logger'
 import { GraphQLError } from 'graphql/error'
 
-import { getFlag, getUserToggles } from '@core/toggles/unleash'
+import { getFlag, getUserToggles } from '#core/toggles/unleash'
 
 export async function assertIsPilotUser(sykmelderHpr: string): Promise<void | never> {
     const toggles = await getUserToggles(sykmelderHpr)

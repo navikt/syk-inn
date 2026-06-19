@@ -1,4 +1,4 @@
-import { SykInnApiRuleOutcome } from '@core/services/syk-inn-api/schema/sykmelding'
+import { SykInnApiRuleOutcome } from '#core/services/syk-inn-api/schema/sykmelding'
 
 export const MockRuleMarkers = {
     header: 'Rule-Outcome-Override',

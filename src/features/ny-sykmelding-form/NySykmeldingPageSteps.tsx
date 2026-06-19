@@ -2,10 +2,10 @@
 
 import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 
-import { PageLayout } from '@components/layout/Page'
+import { PageLayout } from '#components/layout/Page'
 
-import { StepSection, useFormStep } from './useFormStep'
 import SummarySection from './summary/SummarySection'
+import { StepSection, useFormStep } from './useFormStep'
 
 function NySykmeldingPageSteps({ heading, children }: PropsWithChildren<{ heading: ReactNode }>): ReactElement {
     const [step] = useFormStep()

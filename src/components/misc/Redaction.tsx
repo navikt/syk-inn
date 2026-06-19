@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import { cn } from '@lib/tw'
+import { cn } from '#lib/tw'
 
 import styles from './Redaction.module.css'
 

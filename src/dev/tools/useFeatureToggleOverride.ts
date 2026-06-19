@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { localDevelopmentToggles } from '@core/toggles/dev/local'
+import { localDevelopmentToggles } from '#core/toggles/dev/local'
 
 type UseFeatureToggleOverride = {
     /**

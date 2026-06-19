@@ -1,8 +1,8 @@
-import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { Heading, Loader } from '@navikt/ds-react'
+import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 
-import { cn } from '@lib/tw'
-import { cleanId } from '@lib/string'
+import { cleanId } from '#lib/string'
+import { cn } from '#lib/tw'
 
 type BaseProps = { className?: string; fetching?: boolean; ariaBusy?: boolean }
 type StringTitle = { title: string }

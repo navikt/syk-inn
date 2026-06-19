@@ -1,4 +1,4 @@
-import { NySykmeldingAktivitet } from '@core/redux/reducers/ny-sykmelding'
+import { NySykmeldingAktivitet } from '#core/redux/reducers/ny-sykmelding'
 
 export function aktivitetDescription(aktivitet: NySykmeldingAktivitet): string {
     switch (aktivitet.type) {

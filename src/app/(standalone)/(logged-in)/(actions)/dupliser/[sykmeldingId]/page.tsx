@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 
-import { DupliserSykmeldingFormWithDefaultValues } from '@features/actions/dupliser-sykmelding/DupliserSykmelding'
-import NySykmeldingPageSteps from '@features/ny-sykmelding-form/NySykmeldingPageSteps'
-import { StaticPageHeading } from '@components/layout/Page'
+import { StaticPageHeading } from '#components/layout/Page'
+import { DupliserSykmeldingFormWithDefaultValues } from '#features/actions/dupliser-sykmelding/DupliserSykmelding'
+import NySykmeldingPageSteps from '#features/ny-sykmelding-form/NySykmeldingPageSteps'
 
 async function Page({ params }: PageProps<'/dupliser/[sykmeldingId]'>): Promise<ReactElement> {
     const sykmeldingId = (await params).sykmeldingId

@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react'
 import { BodyShort, Detail, Popover } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
 import { defaultRangeDescription } from './periode/periode-utils'
 

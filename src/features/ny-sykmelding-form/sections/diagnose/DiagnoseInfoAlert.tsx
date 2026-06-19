@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react'
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { BodyShort, Button, InfoCard } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
-import { InformationSquareIcon } from '@navikt/aksel-icons'
+import React, { ReactElement } from 'react'
 
-import { Diagnose, isSameDiagnose } from '@data-layer/common/diagnose'
-import { SimpleReveal } from '@components/animation/Reveal'
+import { SimpleReveal } from '#components/animation/Reveal'
+import { Diagnose, isSameDiagnose } from '#data-layer/common/diagnose'
 
 import { useFormContext } from '../../form/types'
 

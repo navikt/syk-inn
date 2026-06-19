@@ -1,10 +1,10 @@
 'use client'
 
-import React, { ReactElement } from 'react'
 import { BodyLong, Button, Modal } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { useAppSelector } from '@core/redux/hooks'
-import { useMode } from '@core/providers/Modes'
+import { useMode } from '#core/providers/Modes'
+import { useAppSelector } from '#core/redux/hooks'
 
 function LoggedOutWarning(): ReactElement | null {
     const isSessionExpired = useAppSelector((state) => state.metadata.sessionExpired)

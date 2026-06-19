@@ -1,10 +1,9 @@
 import '../globals.css'
-
-import React, { ReactElement } from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import React, { ReactElement } from 'react'
 
-import { bundledEnv } from '@lib/env'
+import { bundledEnv } from '#lib/env'
 
 import Preload from '../preload'
 

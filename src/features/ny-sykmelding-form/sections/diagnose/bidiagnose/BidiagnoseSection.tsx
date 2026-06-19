@@ -1,9 +1,9 @@
-import React, { ReactElement, useRef } from 'react'
-import { Button } from '@navikt/ds-react'
 import { TrashIcon } from '@navikt/aksel-icons'
+import { Button } from '@navikt/ds-react'
+import React, { ReactElement, useRef } from 'react'
 
-import { cn } from '@lib/tw'
-import { useFieldArray } from '@features/ny-sykmelding-form/form/types'
+import { useFieldArray } from '#features/ny-sykmelding-form/form/types'
+import { cn } from '#lib/tw'
 
 import BidiagnosePicker from './BidiagnosePicker'
 

@@ -1,12 +1,12 @@
 'use client'
 
-import React, { ReactElement, useEffect } from 'react'
-import { logger } from '@navikt/next-logger'
 import { BodyShort, Box, Heading, HGrid, Link, List, VStack } from '@navikt/ds-react'
-import { PageBlock } from '@navikt/ds-react/Page'
 import { ListItem } from '@navikt/ds-react/List'
+import { PageBlock } from '@navikt/ds-react/Page'
+import { logger } from '@navikt/next-logger'
+import React, { ReactElement, useEffect } from 'react'
 
-import SessionIdInfo from '@components/help/SessionIdInfo'
+import SessionIdInfo from '#components/help/SessionIdInfo'
 
 type Props = {
     error: Error & { digest?: string }

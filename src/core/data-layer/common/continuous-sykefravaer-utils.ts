@@ -1,10 +1,10 @@
-import * as R from 'remeda'
 import { differenceInDays } from 'date-fns'
+import * as R from 'remeda'
 
-import { SykmeldingFragment } from '@queries'
-import { raise } from '@lib/ts'
-import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
-import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '@core/services/syk-inn-api/schema/sykmelding'
+import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from '#core/services/syk-inn-api/schema/sykmelding'
+import { AktivitetsPeriode } from '#features/ny-sykmelding-form/form/types'
+import { raise } from '#lib/ts'
+import { SykmeldingFragment } from '#queries'
 
 import { earliestFom, latestTom } from './sykmelding-utils'
 

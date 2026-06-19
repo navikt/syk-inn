@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 
-import { PageLayout } from '@components/layout/Page'
-import SykmeldingKvittering from '@features/sykmelding-kvittering/SykmeldingKvittering'
+import { PageLayout } from '#components/layout/Page'
+import SykmeldingKvittering from '#features/sykmelding-kvittering/SykmeldingKvittering'
 
 type Props = {
     params: Promise<{

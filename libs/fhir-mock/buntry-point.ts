@@ -1,7 +1,7 @@
 import { logger } from '@navikt/pino-logger'
 
-import { createMockFhirApp } from './src/router'
 import { FhirMockConfig, setConfig } from './src/config'
+import { createMockFhirApp } from './src/router'
 import { FhirMockSession } from './src/server-session'
 
 const port = process.env.PORT ?? 5000

@@ -1,6 +1,6 @@
+import { Button, InlineMessage, Label, Textarea } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { useController, useForm } from 'react-hook-form'
-import { Button, InlineMessage, Label, Textarea } from '@navikt/ds-react'
 
 import { SentimentPicker } from '../sentiment/SentimentPicker'
 

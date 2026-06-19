@@ -1,11 +1,11 @@
 'use client'
 
-import React, { ReactElement } from 'react'
-import { BodyLong, Modal, Link as AkselLink, Skeleton, Heading } from '@navikt/ds-react'
 import { TestFlaskIcon } from '@navikt/aksel-icons'
+import { BodyLong, Modal, Link as AkselLink, Skeleton, Heading } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { ComboTableSkeleton } from '@features/fhir/dashboard/ComboTableCard'
-import DashboardCard from '@features/fhir/dashboard/card/DashboardCard'
+import DashboardCard from '#features/fhir/dashboard/card/DashboardCard'
+import { ComboTableSkeleton } from '#features/fhir/dashboard/ComboTableCard'
 
 import { PageLayout } from '../layout/Page'
 

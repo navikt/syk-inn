@@ -1,13 +1,12 @@
+import { logger } from '@navikt/next-logger'
 import fs from 'node:fs'
 
-import { logger } from '@navikt/next-logger'
-
-import { createTypstSykmelding, mapSykInnToPdfPayload } from '@core/pdf/pdf-service'
-import { isLocal } from '@lib/env'
-import { TypstPdfSykmelding } from '@core/pdf/types'
-import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
-import { daysAgo, inDays, today } from '@lib/test/date-utils'
-import { questionTexts } from '@data-layer/common/questions'
+import { createTypstSykmelding, mapSykInnToPdfPayload } from '#core/pdf/pdf-service'
+import { TypstPdfSykmelding } from '#core/pdf/types'
+import { SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
+import { questionTexts } from '#data-layer/common/questions'
+import { isLocal } from '#lib/env'
+import { daysAgo, inDays, today } from '#lib/test/date-utils'
 
 export async function GET(): Promise<Response> {
     const chonkySykmelding: SykInnApiSykmelding = {

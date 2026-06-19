@@ -1,16 +1,16 @@
 import { isValid, toDate } from 'date-fns'
 
-import { booleanOrNullToJaEllerNei } from '@features/ny-sykmelding-form/form/utils'
 import {
     NySykmeldingAktivitet,
     NySykmeldingAndreSporsmal,
     NySykmeldingArbeidsforhold,
     NySykmeldingMeldinger,
     NySykmeldingTilbakedatering,
-} from '@core/redux/reducers/ny-sykmelding'
-import { NySykmeldingMainFormValues } from '@features/ny-sykmelding-form/form/types'
-import { Diagnose } from '@data-layer/common/diagnose'
-import { NySykmeldingAnnenFravarsgrunn, NySykmeldingUtdypendeSporsmal } from '@core/redux/reducers/ny-sykmelding/form'
+} from '#core/redux/reducers/ny-sykmelding'
+import { NySykmeldingAnnenFravarsgrunn, NySykmeldingUtdypendeSporsmal } from '#core/redux/reducers/ny-sykmelding/form'
+import { Diagnose } from '#data-layer/common/diagnose'
+import { NySykmeldingMainFormValues } from '#features/ny-sykmelding-form/form/types'
+import { booleanOrNullToJaEllerNei } from '#features/ny-sykmelding-form/form/utils'
 
 export function stateArbeidsforholdToFormValues(
     stateArbeidsforhold: NySykmeldingArbeidsforhold | null,

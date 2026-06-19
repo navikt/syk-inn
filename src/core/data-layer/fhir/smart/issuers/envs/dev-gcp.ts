@@ -1,5 +1,5 @@
-import * as z from 'zod'
 import { KnownFhirServer } from '@navikt/smart-on-fhir/client'
+import * as z from 'zod'
 
 type FhirConfigurationDev = z.infer<typeof FhirConfigurationDevSchema>
 const FhirConfigurationDevSchema = z.object({

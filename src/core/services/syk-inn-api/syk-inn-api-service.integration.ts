@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
 
-import { beforeAll, describe, it, expect } from 'vitest'
-import { StartedTestContainer } from 'testcontainers'
+import * as ac from 'asciichart'
 import { Kafka } from 'kafkajs'
 import * as R from 'remeda'
-import * as ac from 'asciichart'
+import { StartedTestContainer } from 'testcontainers'
+import { beforeAll, describe, it, expect } from 'vitest'
 
-import { initializeSykInnApi } from '@lib/test/syk-inn-api'
-import { initializeValkey } from '@lib/test/valkey'
-import { daysAgo, inDays, today } from '@lib/test/date-utils'
-import { consumeUntil, initializeConsumer, initializeKafka, initializeLocalKafka } from '@lib/test/syk-inn-kafka'
-import { AnnenFravarsgrunnArsak } from '@resolvers'
-import { questionTexts } from '@data-layer/common/questions'
-import { KafkaAktivitetIkkeMulig, KafkaGradert } from '@lib/test/syk-inn-kafka-types'
+import { questionTexts } from '#data-layer/common/questions'
+import { daysAgo, inDays, today } from '#lib/test/date-utils'
+import { initializeSykInnApi } from '#lib/test/syk-inn-api'
+import { consumeUntil, initializeConsumer, initializeKafka, initializeLocalKafka } from '#lib/test/syk-inn-kafka'
+import { KafkaAktivitetIkkeMulig, KafkaGradert } from '#lib/test/syk-inn-kafka-types'
+import { initializeValkey } from '#lib/test/valkey'
+import { AnnenFravarsgrunnArsak } from '#resolvers'
 
 import { OpprettSykmeldingMeta, OpprettSykmeldingPayload } from './schema/opprett'
 import { sykInnApiService } from './syk-inn-api-service'

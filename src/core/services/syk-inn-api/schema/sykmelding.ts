@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-import { DiagnoseSchema } from '@data-layer/common/diagnose'
+import { DiagnoseSchema } from '#data-layer/common/diagnose'
 
 const BaseAktivitetSchema = z.object({
     fom: z.string(),

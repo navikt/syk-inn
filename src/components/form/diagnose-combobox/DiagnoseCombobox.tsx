@@ -1,12 +1,12 @@
-import React, { ReactElement, ReactNode, useState } from 'react'
-import { BodyShort, Button, Detail, Label, UNSAFE_Combobox as Combobox } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
+import { BodyShort, Button, Detail, Label, UNSAFE_Combobox as Combobox } from '@navikt/ds-react'
+import React, { ReactElement, ReactNode, useState } from 'react'
 import * as R from 'remeda'
 
-import { Diagnose, DiagnoseSystem } from '@data-layer/common/diagnose'
-import { DiagnoseFragment, DiagnoseSearchDocument } from '@queries'
-import { raise } from '@lib/ts'
-import { cn } from '@lib/tw'
+import { Diagnose, DiagnoseSystem } from '#data-layer/common/diagnose'
+import { raise } from '#lib/ts'
+import { cn } from '#lib/tw'
+import { DiagnoseFragment, DiagnoseSearchDocument } from '#queries'
 
 import styles from './DiagnoseCombobox.module.css'
 

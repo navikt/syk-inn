@@ -1,6 +1,7 @@
 import { test, expect, Page } from '@playwright/test'
-import { toReadableDate, toReadableDatePeriod } from '@lib/date'
-import { daysAgo } from '@lib/test/date-utils'
+
+import { toReadableDate, toReadableDatePeriod } from '#lib/date'
+import { daysAgo } from '#lib/test/date-utils'
 
 import {
     pickHoveddiagnose,
@@ -15,7 +16,6 @@ import {
     addBidiagnose,
     selectAnnenLovpalagtFravarsgrunn,
 } from '../actions/user-actions'
-import { userInteractionsGroup } from '../utils/actions'
 import {
     expectAndreSporsmal,
     expectAnnenLovpalagtFravarsgrunn,
@@ -28,10 +28,11 @@ import {
 } from '../actions/user-form-verification'
 import { verifySummaryPage } from '../actions/user-verifications'
 import * as standaloneActions from '../standalone/actions/standalone-user-actions'
+import { userInteractionsGroup } from '../utils/actions'
 
-import { modes, Modes, onMode } from './modes'
 import { launchAndStart } from './actions/mode-user-actions'
 import { verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
+import { modes, Modes, onMode } from './modes'
 
 const fillAllTheValues = (mode: Modes): ((page: Page) => Promise<void>) =>
     userInteractionsGroup(

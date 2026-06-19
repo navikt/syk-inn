@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
+import { SykmeldingBuilder } from '#dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 
 import { sykmeldingToDocumentReference } from './document-reference'
 

@@ -1,7 +1,7 @@
 import { expect, describe, test } from 'vitest'
 
-import { SykmeldingFragment } from '@queries'
-import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
+import { SykmeldingBuilder } from '#dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
+import { SykmeldingFragment } from '#queries'
 
 import {
     calculateTotalLengthOfSykmeldinger,

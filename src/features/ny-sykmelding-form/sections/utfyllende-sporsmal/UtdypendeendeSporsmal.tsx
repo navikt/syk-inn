@@ -1,10 +1,10 @@
-import { ReactElement } from 'react'
 import { BodyShort, HelpText, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { ReactElement } from 'react'
 
-import FormSection from '@components/form/form-section/FormSection'
-import { useController, useFormContext } from '@features/ny-sykmelding-form/form/types'
-import { UtdypendeOpplysningerHint } from '@resolvers'
-import { questionTexts } from '@data-layer/common/questions'
+import FormSection from '#components/form/form-section/FormSection'
+import { questionTexts } from '#data-layer/common/questions'
+import { useController, useFormContext } from '#features/ny-sykmelding-form/form/types'
+import { UtdypendeOpplysningerHint } from '#resolvers'
 
 import { shouldShowUke17Sporsmal, shouldShowUke39Sporsmal, shouldShowUke7Sporsmal } from './utdypende-sporsmal-utils'
 

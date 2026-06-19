@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react'
 import { BodyShort, Link } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
 function LegeOgBehandlerTelefonen({ short }: { short?: boolean }): ReactElement {
     if (short) {

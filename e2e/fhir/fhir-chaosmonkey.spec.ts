@@ -3,9 +3,9 @@ import { expect, Locator, test } from '@playwright/test'
 import { fillPeriodeRelative, nextStep, pickHoveddiagnose } from '../actions/user-actions'
 import { wait } from '../utils/actions'
 
-import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/fhir-user-verifications'
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
+import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 test(`spamming 'Send'-button repeatedly should only submit 1 sykmelding`, async ({ page }) => {
     await launchWithMock('empty')(page)

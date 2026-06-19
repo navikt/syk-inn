@@ -1,8 +1,8 @@
 import { DatePicker, useDatepicker } from '@navikt/ds-react'
-import React, { ReactElement } from 'react'
 import { parseISO } from 'date-fns'
+import React, { ReactElement } from 'react'
 
-import { dateOnly } from '@lib/date'
+import { dateOnly } from '#lib/date'
 
 import { useController } from '../../form/types'
 

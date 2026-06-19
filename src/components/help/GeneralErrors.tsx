@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react'
 import { BodyShort, Button, LocalAlert } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
 import LegeOgBehandlerTelefonen from './LegeOgBehandlerTelefonen'
 import SessionIdInfo from './SessionIdInfo'

@@ -1,16 +1,16 @@
-import React, { ReactElement } from 'react'
-import { Detail, Heading, LinkCard, Skeleton, Tag } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
+import { Detail, Heading, LinkCard, Skeleton, Tag } from '@navikt/ds-react'
 import Link from 'next/link'
+import React, { ReactElement } from 'react'
 
-import { DraftFragment, GetAllDraftsDocument } from '@queries'
-import { safeParseDraft } from '@data-layer/draft/draft-schema'
+import { safeParseDraft } from '#data-layer/draft/draft-schema'
+import { AutoUpdatingDistance } from '#features/fhir/dashboard/combo-table/draft/AutoUpdatingDistance'
 import {
     draftAktivitetText,
     draftArbeidsforholdText,
     draftDiagnoseText,
-} from '@features/fhir/dashboard/combo-table/draft/draft-utils'
-import { AutoUpdatingDistance } from '@features/fhir/dashboard/combo-table/draft/AutoUpdatingDistance'
+} from '#features/fhir/dashboard/combo-table/draft/draft-utils'
+import { DraftFragment, GetAllDraftsDocument } from '#queries'
 
 type Props = {
     ident: string

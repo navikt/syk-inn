@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest'
 import { FhirQuestionnaireResponse, FhirQuestionnaireResponseItem } from '@navikt/smart-on-fhir/zod'
+import { describe, expect, it } from 'vitest'
 
-import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
+import { SykmeldingBuilder } from '#dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 
 import { sykmeldingToQuestionnaireResponse } from './questionnaire-response'
 

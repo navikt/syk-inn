@@ -1,8 +1,8 @@
-import { ReadyClient, SmartClientReadyErrors } from '@navikt/smart-on-fhir/client'
 import { logger } from '@navikt/next-logger'
+import { ReadyClient, SmartClientReadyErrors } from '@navikt/smart-on-fhir/client'
 
-import { getSessionId } from '@core/session/session'
-import { getUserlessToggles } from '@core/toggles/unleash'
+import { getSessionId } from '#core/session/session'
+import { getUserlessToggles } from '#core/toggles/unleash'
 
 import { HelseIdClaimSchema } from './helseid'
 import { getSmartClient } from './smart-client'

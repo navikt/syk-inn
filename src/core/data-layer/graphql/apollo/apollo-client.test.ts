@@ -1,9 +1,14 @@
-import { describe, test, expect } from 'vitest'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { MockLink } from '@apollo/client/testing'
-import { execute, ExecutionResult } from 'graphql/execution'
 import { addTypenameToDocument } from '@apollo/client/utilities'
+import { execute, ExecutionResult } from 'graphql/execution'
+import { describe, test, expect } from 'vitest'
 
+import {
+    sykInnApiSykmeldingRedactedToResolverSykmelding,
+    sykInnApiSykmeldingToResolverSykmelding,
+} from '#core/services/syk-inn-api/syk-inn-api-utils'
+import { SykmeldingBuilder } from '#dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 import {
     AllDashboardDocument,
     AllDashboardQuery,
@@ -13,15 +18,10 @@ import {
     GetDraftQuery,
     SykmeldingByIdDocument,
     SykmeldingByIdQuery,
-} from '@queries'
-import {
-    sykInnApiSykmeldingRedactedToResolverSykmelding,
-    sykInnApiSykmeldingToResolverSykmelding,
-} from '@core/services/syk-inn-api/syk-inn-api-utils'
-import { SykmeldingBuilder } from '@dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
+} from '#queries'
 
-import { createSchema } from '../create-schema'
 import { commonTypeResolvers } from '../common-type-resolvers'
+import { createSchema } from '../create-schema'
 
 import { createInMemoryCache } from './apollo-client-cache'
 

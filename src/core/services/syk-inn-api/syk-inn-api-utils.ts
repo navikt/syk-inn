@@ -1,3 +1,7 @@
+import { getNumberOfBehandlingsdager } from '#data-layer/common/behandlingsdager'
+import { questionTexts } from '#data-layer/common/questions'
+import { byCurrentOrPreviousWithOffset } from '#data-layer/common/sykmelding-utils'
+import { AnnenFravarsgrunnArsak } from '#queries'
 import {
     AktivitetType,
     DocumentStatus,
@@ -8,14 +12,10 @@ import {
     SykmeldingFull,
     SykmeldingLight,
     SykmeldingRedacted,
-} from '@resolvers'
-import { byCurrentOrPreviousWithOffset } from '@data-layer/common/sykmelding-utils'
-import { AnnenFravarsgrunnArsak } from '@queries'
-import { questionTexts } from '@data-layer/common/questions'
-import { getNumberOfBehandlingsdager } from '@data-layer/common/behandlingsdager'
+} from '#resolvers'
 
-import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from './schema/sykmelding'
 import { OpprettSykmeldingAktivitet, OpprettSykmeldingMeta, OpprettSykmeldingPayload } from './schema/opprett'
+import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from './schema/sykmelding'
 
 export function sykInnApiSykmeldingRedactedToResolverSykmelding(
     sykmelding: SykInnApiSykmeldingRedacted,

@@ -1,5 +1,5 @@
-import { vi, test, describe, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest'
 import nock from 'nock'
+import { vi, test, describe, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest'
 
 describe('unleash definitions', () => {
     beforeAll(() => {
@@ -38,7 +38,7 @@ describe('unleash definitions', () => {
     })
 
     test('fetching toggles should use cache', async () => {
-        const { getAndValidateDefinitions } = await import('@core/toggles/definitions')
+        const { getAndValidateDefinitions } = await import('#core/toggles/definitions')
 
         const scope = nock('http://team-unleash')
             .get('/api/client/features')
@@ -58,7 +58,7 @@ describe('unleash definitions', () => {
     })
 
     test('once TTL runs out, it should use previous working value when refetch fails', async () => {
-        const { getAndValidateDefinitions } = await import('@core/toggles/definitions')
+        const { getAndValidateDefinitions } = await import('#core/toggles/definitions')
 
         const unleashApi = nock('http://team-unleash')
 

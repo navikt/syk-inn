@@ -1,7 +1,8 @@
-import { OpprettSykmeldingDocument } from '@core/data-layer/graphql/generated/queries.generated'
-import { inDays, daysAgo } from '@lib/test/date-utils'
 import test from '@playwright/test'
-import { toReadableDatePeriod, toReadableDate } from '@lib/date'
+
+import { OpprettSykmeldingDocument } from '#core/data-layer/graphql/generated/queries.generated'
+import { toReadableDatePeriod, toReadableDate } from '#lib/date'
+import { inDays, daysAgo } from '#lib/test/date-utils'
 
 import {
     fillPeriodeRelative,
@@ -10,10 +11,10 @@ import {
     submitSykmelding,
     fillTilbakedatering,
 } from '../actions/user-actions'
+import { verifySummaryPage } from '../actions/user-verifications'
 import { verifyIsOnKvitteringPage } from '../fhir/actions/fhir-user-verifications'
 import { anything, expectGraphQLRequest } from '../utils/assertions'
 import { defaultAktivitetIkkeMulig, defaultOpprettSykmeldingValues, diagnoseSelection } from '../utils/submit-utils'
-import { verifySummaryPage } from '../actions/user-verifications'
 
 import { launchAndStart } from './actions/mode-user-actions'
 import { verifySignerendeBehandlerFillIfNeeded, expectedSykmeldingMeta } from './actions/mode-user-verifications'

@@ -1,10 +1,10 @@
 import { lazyNextleton } from 'nextleton'
 
-import { getServerEnv, isE2E, isLocal, isDemo } from '@lib/env'
-import { getSessionId } from '@core/session/session'
+import { getSessionId } from '#core/session/session'
+import { getServerEnv, isE2E, isLocal, isDemo } from '#lib/env'
 
-import MockSessionStore from './MockSessionStore'
 import { MockEngine } from './MockEngine'
+import MockSessionStore from './MockSessionStore'
 import { Scenarios } from './scenarios/scenarios'
 
 const sessionRecord = lazyNextleton('mock-sessino-store', () => new MockSessionStore())

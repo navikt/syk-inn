@@ -2,17 +2,17 @@ import { logger } from '@navikt/next-logger'
 import { GraphQLError } from 'graphql/error'
 import * as R from 'remeda'
 
-import { getFlag, getUserlessToggles, getUserToggles } from '@core/toggles/unleash'
-import { QueryResolvers, Resolvers, UtdypendeSporsmalOptions } from '@resolvers'
-import { aaregService } from '@core/services/aareg/aareg-service'
-import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
+import { aaregService } from '#core/services/aareg/aareg-service'
+import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
+import { getFlag, getUserlessToggles, getUserToggles } from '#core/toggles/unleash'
+import { QueryResolvers, Resolvers, UtdypendeSporsmalOptions } from '#resolvers'
 
-import { searchDiagnose } from '../common/diagnose-search'
 import {
     calculateTotalLengthOfSykmeldinger,
     filterSykmeldingerWithinDaysGap,
     mapSykInnApiSykmeldingerToDateRanges,
 } from '../common/continuous-sykefravaer-utils'
+import { searchDiagnose } from '../common/diagnose-search'
 
 import { CommonGraphqlContext } from './common-context'
 

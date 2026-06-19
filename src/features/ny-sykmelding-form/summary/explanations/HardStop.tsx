@@ -1,10 +1,10 @@
-import React, { ReactElement, useEffect } from 'react'
-import { logger } from '@navikt/next-logger'
-import { BodyShort, Heading } from '@navikt/ds-react'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
+import { BodyShort, Heading } from '@navikt/ds-react'
+import { logger } from '@navikt/next-logger'
+import React, { ReactElement, useEffect } from 'react'
 
-import { RuleOutcomeFragment } from '@queries'
-import { DetailedAlert } from '@components/help/GeneralErrors'
+import { DetailedAlert } from '#components/help/GeneralErrors'
+import { RuleOutcomeFragment } from '#queries'
 
 import { getRuleText } from '../rules/rule-texts'
 

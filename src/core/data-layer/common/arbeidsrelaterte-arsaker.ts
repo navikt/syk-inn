@@ -1,4 +1,4 @@
-import { ArbeidsrelatertArsakType } from '@queries'
+import { ArbeidsrelatertArsakType } from '#queries'
 
 export function arbeidsrelaterteArsakerToText(type: ArbeidsrelatertArsakType): string {
     switch (type) {

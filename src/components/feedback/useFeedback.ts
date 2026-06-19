@@ -1,20 +1,20 @@
-import { useReducer } from 'react'
 import { logger } from '@navikt/next-logger'
-import * as R from 'remeda'
 import { useParams, usePathname } from 'next/navigation'
+import { useReducer } from 'react'
+import * as R from 'remeda'
 
-import { spanBrowserAsync } from '@lib/otel/browser'
+import { useMode } from '#core/providers/Modes'
 import {
     FullFeedbackPayload,
     FeedbackUpdateSentimentPayload,
     InSituFeedbackPayload,
-} from '@core/services/feedback/feedback-payload'
-import { useMode } from '@core/providers/Modes'
-import { pathWithBasePath } from '@lib/url'
-import { getBrowserSessionId } from '@lib/otel/faro'
+} from '#core/services/feedback/feedback-payload'
+import { spanBrowserAsync } from '#lib/otel/browser'
+import { getBrowserSessionId } from '#lib/otel/faro'
+import { pathWithBasePath } from '#lib/url'
 
-import { InSituFeedbackFormValues } from './in-situ/form'
 import { FeedbackFormValues } from './full-feedback/form'
+import { InSituFeedbackFormValues } from './in-situ/form'
 
 type UseFeedback = {
     submitting: boolean

@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client/react'
 import { Button, BodyShort } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 
-import { AllDashboardDocument, KonsultasjonDocument, RequestAccessToSykmeldingerDocument } from '@queries'
+import { AllDashboardDocument, KonsultasjonDocument, RequestAccessToSykmeldingerDocument } from '#queries'
 
 export function RequestSykmeldinger({ loading }: { loading: boolean }): ReactElement {
     const [requestAccessToSykmeldinger, result] = useMutation(RequestAccessToSykmeldingerDocument, {

@@ -1,10 +1,10 @@
 import { NextRequest } from 'next/server'
 
-import { validateHelseIdToken } from '@data-layer/helseid/token/validate'
-import { failSpan, spanServerAsync } from '@lib/otel/server'
-import { getHelseIdBehandler } from '@data-layer/helseid/helseid-service'
-import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { createTypstSykmelding } from '@core/pdf/pdf-service'
+import { createTypstSykmelding } from '#core/pdf/pdf-service'
+import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
+import { getHelseIdBehandler } from '#data-layer/helseid/helseid-service'
+import { validateHelseIdToken } from '#data-layer/helseid/token/validate'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 export async function GET(_: NextRequest, { params }: RouteContext<'/pdf/[sykmeldingId]'>): Promise<Response> {
     return spanServerAsync('HelseID.pdf-route', async (span) => {

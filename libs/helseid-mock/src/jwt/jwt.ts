@@ -1,8 +1,8 @@
-import { lazyNextleton } from 'nextleton'
 import { exportJWK, importPKCS8, importSPKI, JWK, SignJWT } from 'jose'
+import { lazyNextleton } from 'nextleton'
 
-import { helseIdServerMeta } from '../meta/data/helseid-server'
 import { HelseIdBehandler } from '../data/behandlere'
+import { helseIdServerMeta } from '../meta/data/helseid-server'
 
 import { testOnlyPrivateKey, testOnlyPublicKey } from './test-only-keys'
 

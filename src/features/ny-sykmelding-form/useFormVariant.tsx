@@ -1,6 +1,6 @@
 import { useQueryState, parseAsStringLiteral } from 'nuqs'
 
-import { SykmeldingFragment } from '@queries'
+import { SykmeldingFragment } from '#queries'
 
 export const FORM_VARIANT_KEY = 'variant'
 

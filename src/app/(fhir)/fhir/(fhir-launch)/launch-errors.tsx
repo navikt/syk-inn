@@ -1,6 +1,6 @@
-import { PropsWithChildren, ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { PageBlock } from '@navikt/ds-react/Page'
+import { PropsWithChildren, ReactElement } from 'react'
 
 export function MissingLaunchParams(): ReactElement {
     return (

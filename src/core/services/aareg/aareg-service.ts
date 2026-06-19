@@ -1,8 +1,8 @@
 import { logger as pinoLogger } from '@navikt/next-logger'
 
-import { raise } from '@lib/ts'
-import { bundledEnv } from '@lib/env'
-import { mockEngineForSession, shouldUseMockEngine } from '@dev/mock-engine'
+import { mockEngineForSession, shouldUseMockEngine } from '#dev/mock-engine'
+import { bundledEnv } from '#lib/env'
+import { raise } from '#lib/ts'
 
 import { AaregArbeidsforhold } from './aareg-schema'
 

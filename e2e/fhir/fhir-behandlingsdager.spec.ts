@@ -1,7 +1,8 @@
 import { test } from '@playwright/test'
-import { toReadableDatePeriod } from '@lib/date'
-import { inDays, today } from '@lib/test/date-utils'
-import { OpprettSykmeldingDocument } from '@queries'
+
+import { toReadableDatePeriod } from '#lib/date'
+import { inDays, today } from '#lib/test/date-utils'
+import { OpprettSykmeldingDocument } from '#queries'
 
 import {
     fillBehandlingsdagerExplanation,

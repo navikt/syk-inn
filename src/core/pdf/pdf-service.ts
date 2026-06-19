@@ -1,8 +1,8 @@
 import * as R from 'remeda'
 
-import { AnnenFravarsgrunnArsak } from '@queries'
-import { spanServerAsync } from '@lib/otel/server'
-import { toReadableDate, toReadableDatePeriod } from '@lib/date'
+import { toReadableDate, toReadableDatePeriod } from '#lib/date'
+import { spanServerAsync } from '#lib/otel/server'
+import { AnnenFravarsgrunnArsak } from '#queries'
 
 import { annenFravarsgrunnToText } from '../data-layer/common/annen-fravarsgrunn'
 import { getSimpleSykmeldingDescription } from '../data-layer/common/sykmelding-utils'

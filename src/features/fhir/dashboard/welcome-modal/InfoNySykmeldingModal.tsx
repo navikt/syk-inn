@@ -1,10 +1,10 @@
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { BodyShort, Button, Dialog, Link } from '@navikt/ds-react'
 import { ReactElement, useEffect } from 'react'
-import { InformationSquareIcon } from '@navikt/aksel-icons'
 
-import { useAppDispatch, useAppSelector } from '@core/redux/hooks'
-import { metadataActions } from '@core/redux/reducers/metadata'
-import { bundledEnv } from '@lib/env'
+import { useAppDispatch, useAppSelector } from '#core/redux/hooks'
+import { metadataActions } from '#core/redux/reducers/metadata'
+import { bundledEnv } from '#lib/env'
 
 import { hasSeenModal, setModalDismissed } from './state'
 

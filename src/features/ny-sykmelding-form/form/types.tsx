@@ -10,9 +10,9 @@ import {
     UseFieldArrayReturn,
 } from 'react-hook-form'
 
-import { Diagnose } from '@data-layer/common/diagnose'
-import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
-import { AnnenFravarsgrunnArsak, ArbeidsrelatertArsakType, DiagnoseFragment } from '@queries'
+import { Diagnose } from '#data-layer/common/diagnose'
+import { TilbakedateringGrunn } from '#data-layer/common/tilbakedatering'
+import { AnnenFravarsgrunnArsak, ArbeidsrelatertArsakType, DiagnoseFragment } from '#queries'
 
 export type NySykmeldingSuggestions = {
     diagnose: {

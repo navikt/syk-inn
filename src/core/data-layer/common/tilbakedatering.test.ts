@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest'
 import { parseISO } from 'date-fns'
+import { describe, expect, it } from 'vitest'
 
-import { AktivitetsPeriode } from '@features/ny-sykmelding-form/form/types'
+import { AktivitetsPeriode } from '#features/ny-sykmelding-form/form/types'
 
 import { isTilbakedatering } from './tilbakedatering'
 

@@ -1,8 +1,8 @@
-import * as R from 'remeda'
-import Fuse from 'fuse.js'
 import { ICD10, ICPC2, ICPC2B } from '@navikt/tsm-diagnoser'
+import Fuse from 'fuse.js'
+import * as R from 'remeda'
 
-import { raise } from '@lib/ts'
+import { raise } from '#lib/ts'
 
 import { Diagnose, DiagnoseSystem } from './diagnose'
 

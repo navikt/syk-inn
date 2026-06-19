@@ -1,13 +1,13 @@
 import { YogaInitialContext } from 'graphql-yoga'
 
-import { failSpan, spanServerAsync } from '@lib/otel/server'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 import { assertIsPilotUser } from '../common/pilot-user-utils'
-import { getCurrentPatientFromExtension } from '../graphql/yoga-utils'
 import { CommonGraphqlContext } from '../graphql/common-context'
+import { getCurrentPatientFromExtension } from '../graphql/yoga-utils'
 
-import { getHelseIdBehandler } from './helseid-service'
 import { NoHelseIdSession } from './error/Errors'
+import { getHelseIdBehandler } from './helseid-service'
 import { validateHelseIdToken } from './token/validate'
 
 const OtelNamespace = 'GraphQL(HelseID).context'

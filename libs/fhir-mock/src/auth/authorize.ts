@@ -1,16 +1,15 @@
-import { randomUUID } from 'node:crypto'
-
-import * as R from 'remeda'
+import { logger } from '@navikt/pino-logger'
 import { HonoRequest, Context } from 'hono'
 import { setCookie } from 'hono/cookie'
-import { logger } from '@navikt/pino-logger'
+import { randomUUID } from 'node:crypto'
+import * as R from 'remeda'
 
 import { getConfig, getMockSessionStore } from '../config'
-import { MockPatients } from '../data/patients'
-import { MockLaunchType } from '../server-launch-types'
-import { MockPractitioners } from '../data/practitioner'
 import { MockOrganizations } from '../data/organization'
+import { MockPatients } from '../data/patients'
+import { MockPractitioners } from '../data/practitioner'
 import { fhirLogger } from '../logger'
+import { MockLaunchType } from '../server-launch-types'
 
 export function authorize(request: HonoRequest, context: Context): Response {
     const url = new URL(request.url)

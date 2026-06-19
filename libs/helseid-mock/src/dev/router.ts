@@ -1,10 +1,10 @@
 import { Hono } from 'hono'
 import { setCookie } from 'hono/cookie'
 
-import { MOCK_HELSEID_TOKEN_NAME } from '../cookie'
 import { getServerSession } from '../config'
-import { helseIdLogger } from '../logger'
+import { MOCK_HELSEID_TOKEN_NAME } from '../cookie'
 import { MockBehandlere } from '../data/behandlere'
+import { helseIdLogger } from '../logger'
 
 export const devRouter = new Hono().get('/start-user', async (c) => {
     const user = c.req.query('user')

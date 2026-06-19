@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 
-import { AnnenFravarsgrunnField } from './AnnenFravarsgrunnField'
 import { AndreSporsmalField } from './AndreSporsmalField'
+import { AnnenFravarsgrunnField } from './AnnenFravarsgrunnField'
 
 function AndreSporsmalSection(): ReactElement {
     return (

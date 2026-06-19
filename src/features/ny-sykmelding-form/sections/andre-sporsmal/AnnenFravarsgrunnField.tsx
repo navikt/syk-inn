@@ -1,11 +1,11 @@
-import React, { ReactElement } from 'react'
 import { Checkbox, Fieldset, HelpText, Select, Link as AkselLink, BodyShort } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
+import React, { ReactElement } from 'react'
 
-import { useController } from '@features/ny-sykmelding-form/form/types'
-import { SimpleReveal } from '@components/animation/Reveal'
-import { AnnenFravarsgrunnArsak } from '@queries'
-import { annenFravarsgrunnToText } from '@data-layer/common/annen-fravarsgrunn'
+import { SimpleReveal } from '#components/animation/Reveal'
+import { annenFravarsgrunnToText } from '#data-layer/common/annen-fravarsgrunn'
+import { useController } from '#features/ny-sykmelding-form/form/types'
+import { AnnenFravarsgrunnArsak } from '#queries'
 
 export function AnnenFravarsgrunnField(): ReactElement {
     const harFravarsgrunn = useController({

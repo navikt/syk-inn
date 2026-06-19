@@ -1,13 +1,13 @@
 'use client'
 
-import React, { ReactElement, useEffect } from 'react'
-import { logger } from '@navikt/next-logger'
 import { BodyShort, Box, Heading, HGrid, Link, List, VStack } from '@navikt/ds-react'
-import { Page, PageBlock } from '@navikt/ds-react/Page'
 import { ListItem } from '@navikt/ds-react/List'
+import { Page, PageBlock } from '@navikt/ds-react/Page'
+import { logger } from '@navikt/next-logger'
+import React, { ReactElement, useEffect } from 'react'
 
-import { isDemo, isLocal } from '@lib/env'
-import DemoWarning from '@components/user-warnings/DemoWarning'
+import DemoWarning from '#components/user-warnings/DemoWarning'
+import { isDemo, isLocal } from '#lib/env'
 
 type Props = {
     error: Error & { digest?: string }

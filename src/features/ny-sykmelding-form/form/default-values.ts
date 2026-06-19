@@ -1,4 +1,4 @@
-import { dateOnly } from '@lib/date'
+import { dateOnly } from '#lib/date'
 
 import { NySykmeldingFormVariantType } from '../useFormVariant'
 

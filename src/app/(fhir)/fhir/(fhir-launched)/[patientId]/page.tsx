@@ -2,14 +2,14 @@
 
 import React, { ReactElement, Suspense, useEffect } from 'react'
 
-import DashboardTopCard from '@features/fhir/dashboard/top-card/DashboardTopCard'
-import HistoricalCard from '@features/fhir/dashboard/historical/HistoricalCard'
-import ComboTableCard from '@features/fhir/dashboard/ComboTableCard'
-import { PageLayout } from '@components/layout/Page'
-import { useFlag } from '@core/toggles/context'
-import { nySykmeldingActions } from '@core/redux/reducers/ny-sykmelding'
-import { useAppDispatch } from '@core/redux/hooks'
-import { WelcomeModal } from '@features/fhir/dashboard/welcome-modal/lazy'
+import { PageLayout } from '#components/layout/Page'
+import { useAppDispatch } from '#core/redux/hooks'
+import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
+import { useFlag } from '#core/toggles/context'
+import ComboTableCard from '#features/fhir/dashboard/ComboTableCard'
+import HistoricalCard from '#features/fhir/dashboard/historical/HistoricalCard'
+import DashboardTopCard from '#features/fhir/dashboard/top-card/DashboardTopCard'
+import { WelcomeModal } from '#features/fhir/dashboard/welcome-modal/lazy'
 
 function DashboardPage(): ReactElement {
     const dispatch = useAppDispatch()

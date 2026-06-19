@@ -2,10 +2,10 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
 import { HelseIdMockConfig } from './config'
+import { debugRouter } from './debug'
+import { devRouter } from './dev/router'
 import { metaRoutes } from './meta/router'
 import { connectRouter } from './user/router'
-import { devRouter } from './dev/router'
-import { debugRouter } from './debug'
 
 export function createHelseIdMockApp(config: HelseIdMockConfig): Hono {
     const app = new Hono().basePath(config.helseIdPath)

@@ -6,14 +6,14 @@ import {
     FhirQuestionnaireResponse,
 } from '@navikt/smart-on-fhir/zod'
 
-import { createPatientSession, PatientSession } from './data/patient-session'
-import { createPatientEspenEksempel, createPatientKariNormann, MockPatients } from './data/patients'
 import {
     createOrganizationKarlsrud,
     createOrganizationMagmarLegekontor,
     createOrganizationManglerud,
     MockOrganizations,
 } from './data/organization'
+import { createPatientSession, PatientSession } from './data/patient-session'
+import { createPatientEspenEksempel, createPatientKariNormann, MockPatients } from './data/patients'
 import {
     createPractitionerBadetteOrganitto,
     createPractitionerKomanMagnar,

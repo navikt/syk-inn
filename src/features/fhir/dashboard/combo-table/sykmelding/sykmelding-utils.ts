@@ -1,9 +1,9 @@
 import * as R from 'remeda'
 
-import { raise } from '@lib/ts'
-import { toReadableDatePeriod } from '@lib/date'
-import { AktivitetFragment, DiagnoseFragment, AktivitetRedacted } from '@queries'
-import { earliestFom, latestTom } from '@data-layer/common/sykmelding-utils'
+import { earliestFom, latestTom } from '#data-layer/common/sykmelding-utils'
+import { toReadableDatePeriod } from '#lib/date'
+import { raise } from '#lib/ts'
+import { AktivitetFragment, DiagnoseFragment, AktivitetRedacted } from '#queries'
 
 export function sykmeldingPeriodeText(perioder: { fom: string; tom: string }[]): string {
     const earliestPeriode = earliestFom({ values: { aktivitet: perioder } })

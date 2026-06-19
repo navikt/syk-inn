@@ -1,4 +1,3 @@
-import React, { ReactElement } from 'react'
 import {
     AllergensIcon,
     BandageIcon,
@@ -22,8 +21,9 @@ import {
 } from '@navikt/aksel-icons'
 import { Detail, LocalAlert } from '@navikt/ds-react'
 import { LocalAlertContent, LocalAlertHeader, LocalAlertTitle } from '@navikt/ds-react/LocalAlert'
+import React, { ReactElement } from 'react'
 
-import { cn } from '@lib/tw'
+import { cn } from '#lib/tw'
 
 type FakeNavItem = {
     label: string

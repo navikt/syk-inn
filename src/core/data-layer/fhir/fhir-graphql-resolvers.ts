@@ -1,41 +1,41 @@
-import { GraphQLError } from 'graphql/error'
 import { logger } from '@navikt/next-logger'
-import * as R from 'remeda'
+import { GraphQLError } from 'graphql/error'
 import { cookies } from 'next/headers'
+import * as R from 'remeda'
 
-import { Behandler, QueriedPerson, Resolvers, RuleOutcome } from '@resolvers'
-import { pdlApiService } from '@core/services/pdl/pdl-api-service'
-import { sykInnApiService } from '@core/services/syk-inn-api/syk-inn-api-service'
-import { getFnrIdent, formatPdlName } from '@core/services/pdl/pdl-api-utils'
+import { pdlApiService } from '#core/services/pdl/pdl-api-service'
+import { getFnrIdent, formatPdlName } from '#core/services/pdl/pdl-api-utils'
+import { OpprettSykmeldingMeta } from '#core/services/syk-inn-api/schema/opprett'
+import { SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
+import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
 import {
     resolverInputToSykInnApiPayload,
     sykInnApiSykmeldingRedactedToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmeldingFull,
-} from '@core/services/syk-inn-api/syk-inn-api-utils'
-import { OpprettSykmeldingMeta } from '@core/services/syk-inn-api/schema/opprett'
-import { getFlag, getUserToggles } from '@core/toggles/unleash'
-import { raise } from '@lib/ts'
-import { getHasRequestedAccessToSykmeldinger } from '@core/session/session'
-import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '@core/session/cookies'
-import metrics from '@lib/prometheus/metrics'
-import { SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
+} from '#core/services/syk-inn-api/syk-inn-api-utils'
+import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '#core/session/cookies'
+import { getHasRequestedAccessToSykmeldinger } from '#core/session/session'
+import { getFlag, getUserToggles } from '#core/toggles/unleash'
+import metrics from '#lib/prometheus/metrics'
+import { raise } from '#lib/ts'
+import { Behandler, QueriedPerson, Resolvers, RuleOutcome } from '#resolvers'
 
-import { byCurrentOrPreviousWithOffset } from '../common/sykmelding-utils'
 import { countDiagnoses } from '../common/diagnose-counting'
+import { byCurrentOrPreviousWithOffset } from '../common/sykmelding-utils'
+import { getDraftClient } from '../draft/draft-client'
+import { DraftValuesSchema } from '../draft/draft-schema'
 import { commonObjectResolvers, commonQueryResolvers } from '../graphql/common-resolvers'
 import { commonTypeResolvers } from '../graphql/common-type-resolvers'
 import { createSchema } from '../graphql/create-schema'
-import { getDraftClient } from '../draft/draft-client'
-import { DraftValuesSchema } from '../draft/draft-schema'
 
 import { FhirGraphqlContext } from './fhir-graphql-context'
-import { fhirWriteService } from './write/fhir-write-service'
-import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from './mappers/organization'
 import { getAllSykmeldingMetaFromFhir } from './fhir-service'
-import { practitionerToBehandler } from './mappers/practitioner'
 import { fhirDiagnosisToRelevantDiagnosis } from './mappers/diagnosis'
+import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from './mappers/organization'
 import { getNameFromFhir, getValidPatientIdent } from './mappers/patient'
+import { practitionerToBehandler } from './mappers/practitioner'
+import { fhirWriteService } from './write/fhir-write-service'
 
 const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     Query: {

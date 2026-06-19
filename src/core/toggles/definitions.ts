@@ -1,9 +1,9 @@
 import { getDefinitions } from '@unleash/nextjs'
-import * as R from 'remeda'
 import QuickLRU from 'quick-lru'
+import * as R from 'remeda'
 
-import { failSpan, spanServerAsync } from '@lib/otel/server'
-import { raise } from '@lib/ts'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
+import { raise } from '#lib/ts'
 
 import { EXPECTED_TOGGLES } from './toggles'
 import { unleashLogger } from './unleash'

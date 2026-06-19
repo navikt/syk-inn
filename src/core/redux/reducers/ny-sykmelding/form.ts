@@ -1,6 +1,6 @@
-import { AnnenFravarsgrunnArsak, ArbeidsrelatertArsakType } from '@queries'
-import { Diagnose } from '@data-layer/common/diagnose'
-import { TilbakedateringGrunn } from '@data-layer/common/tilbakedatering'
+import { Diagnose } from '#data-layer/common/diagnose'
+import { TilbakedateringGrunn } from '#data-layer/common/tilbakedatering'
+import { AnnenFravarsgrunnArsak, ArbeidsrelatertArsakType } from '#queries'
 
 export type NySykmeldingArbeidsforhold = {
     harFlereArbeidsforhold: boolean | null

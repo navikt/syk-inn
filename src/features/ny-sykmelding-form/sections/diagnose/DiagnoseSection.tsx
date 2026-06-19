@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react'
-import { BodyShort } from '@navikt/ds-react'
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
+import { BodyShort } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
 import DiagnosePicker from './DiagnosePicker'
 

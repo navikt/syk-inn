@@ -1,4 +1,4 @@
-import { ArbeidsrelatertArsakInput, InputAktivitet, OpprettSykmeldingInput } from '@queries'
+import { ArbeidsrelatertArsakInput, InputAktivitet, OpprettSykmeldingInput } from '#queries'
 
 import { anything } from './assertions'
 

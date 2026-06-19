@@ -2,7 +2,7 @@
 
 import { ReactElement, createContext, PropsWithChildren, useContext } from 'react'
 
-import { raise } from '@lib/ts'
+import { raise } from '#lib/ts'
 
 import { ExpectedToggles, Toggles } from './toggles'
 

@@ -1,4 +1,4 @@
-import { AaregArbeidsforhold } from '@core/services/aareg/aareg-schema'
+import { AaregArbeidsforhold } from '#core/services/aareg/aareg-schema'
 
 export const simpleAaregArbeidsforhold: AaregArbeidsforhold[] = [
     {

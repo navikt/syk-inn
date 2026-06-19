@@ -10,9 +10,9 @@ import {
     SykInnApiSykmelding,
     SykInnApiSykmeldingRedacted,
     SykInnApiSykmeldingRedactedSchema,
-} from '@core/services/syk-inn-api/schema/sykmelding'
-import { dateOnly } from '@lib/date'
-import { questionTexts } from '@data-layer/common/questions'
+} from '#core/services/syk-inn-api/schema/sykmelding'
+import { questionTexts } from '#data-layer/common/questions'
+import { dateOnly } from '#lib/date'
 
 export class SykmeldingBuilder {
     private readonly mottatt: string = '2020-02-01'

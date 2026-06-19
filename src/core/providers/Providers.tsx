@@ -1,10 +1,10 @@
 'use client'
 
-import React, { PropsWithChildren, ReactElement, useState } from 'react'
+import { ApolloProvider } from '@apollo/client/react'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import React, { PropsWithChildren, ReactElement, useState } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { Toaster } from 'sonner'
-import { ApolloProvider } from '@apollo/client/react'
 
 import { makeApolloClient } from '../data-layer/graphql/apollo/apollo-client'
 import { AutoPatient } from '../redux/reducers/ny-sykmelding/patient'

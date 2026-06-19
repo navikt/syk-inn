@@ -1,14 +1,14 @@
-import React, { ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
+import React, { ReactElement } from 'react'
 
-import { PageLayout } from '@components/layout/Page'
-import Bruksvilkar from '@features/bruksvilkar/Bruksvilkar'
-import LegeOgBehandlerTelefonen from '@components/help/LegeOgBehandlerTelefonen'
-import { getReadyClient } from '@data-layer/fhir/smart/ready-client'
-import { getHpr } from '@data-layer/fhir/mappers/practitioner'
-import { hasAcceptedBruksvilkar } from '@core/services/bruksvilkar/bruksvilkar-service'
-import { getNameFromFhir } from '@data-layer/fhir/mappers/patient'
+import LegeOgBehandlerTelefonen from '#components/help/LegeOgBehandlerTelefonen'
+import { PageLayout } from '#components/layout/Page'
+import { hasAcceptedBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
+import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
+import { getHpr } from '#data-layer/fhir/mappers/practitioner'
+import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
+import Bruksvilkar from '#features/bruksvilkar/Bruksvilkar'
 
 async function Page({ searchParams }: PageProps<'/fhir/bruksvilkar'>): Promise<ReactElement> {
     const { returnTo } = await searchParams

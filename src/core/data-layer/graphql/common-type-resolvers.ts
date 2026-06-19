@@ -1,5 +1,5 @@
-import { Resolvers } from '@resolvers'
-import { raise } from '@lib/ts'
+import { raise } from '#lib/ts'
+import { Resolvers } from '#resolvers'
 
 export const commonTypeResolvers: Resolvers = {
     SykmeldingValidering: {

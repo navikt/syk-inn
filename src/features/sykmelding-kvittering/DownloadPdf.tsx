@@ -1,13 +1,13 @@
-import { Button, ErrorMessage } from '@navikt/ds-react'
-import React, { ReactElement, useState } from 'react'
 import { FilePdfIcon } from '@navikt/aksel-icons'
+import { Button, ErrorMessage } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
 import { AnimatePresence } from 'motion/react'
+import React, { ReactElement, useState } from 'react'
 
-import { useMode } from '@core/providers/Modes'
-import { pathWithBasePath } from '@lib/url'
-import { SimpleReveal } from '@components/animation/Reveal'
-import { spanBrowserAsync } from '@lib/otel/browser'
+import { SimpleReveal } from '#components/animation/Reveal'
+import { useMode } from '#core/providers/Modes'
+import { spanBrowserAsync } from '#lib/otel/browser'
+import { pathWithBasePath } from '#lib/url'
 
 type Props = {
     sykmeldingId: string

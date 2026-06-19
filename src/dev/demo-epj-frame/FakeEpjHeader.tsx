@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react'
 import { CalendarIcon, ChevronDownIcon, PersonPlusIcon, PrinterSmallIcon, StethoscopeIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { cn } from '@lib/tw'
+import { cn } from '#lib/tw'
 
 const FAKE_BEHANDLER = {
     navn: 'Magnar Koman',

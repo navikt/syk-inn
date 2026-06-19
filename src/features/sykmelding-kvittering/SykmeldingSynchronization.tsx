@@ -1,10 +1,10 @@
-import React, { ReactElement, useEffect } from 'react'
-import { Skeleton } from '@navikt/ds-react'
 import { useMutation } from '@apollo/client/react'
+import { Skeleton } from '@navikt/ds-react'
+import React, { ReactElement, useEffect } from 'react'
 
-import { SynchronizeSykmeldingDocument } from '@queries'
-import { spanBrowserAsync } from '@lib/otel/browser'
-import { SimpleAlert } from '@components/help/GeneralErrors'
+import { SimpleAlert } from '#components/help/GeneralErrors'
+import { spanBrowserAsync } from '#lib/otel/browser'
+import { SynchronizeSykmeldingDocument } from '#queries'
 
 import { DocumentStatusSuccess } from './DocumentStatus'
 

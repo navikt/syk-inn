@@ -1,14 +1,14 @@
 'use client'
 
-import React, { ReactElement } from 'react'
-import { BodyShort, Button, Dialog, Heading, LocalAlert, Skeleton } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client/react'
 import { CheckmarkHeavyIcon, LightBulbIcon } from '@navikt/aksel-icons'
+import { BodyShort, Button, Dialog, Heading, LocalAlert, Skeleton } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import { BehandlerDocument } from '@queries'
+import { BehandlerDocument } from '#queries'
 
-import SessionIdInfo from '../help/SessionIdInfo'
 import LegeOgBehandlerTelefonen from '../help/LegeOgBehandlerTelefonen'
+import SessionIdInfo from '../help/SessionIdInfo'
 
 import { FullFeedback, FullFeedbackSentimentFollowUp } from './full-feedback/FullFeedbackForm'
 import { useFeedback } from './useFeedback'

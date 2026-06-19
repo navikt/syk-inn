@@ -1,4 +1,4 @@
-declare module '@bruksvilkar.mdx' {
+declare module '#bruksvilkar.mdx' {
     import { ComponentType } from 'react'
 
     export const metadata: {

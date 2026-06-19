@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
-import { OpprettSykmeldingDocument } from '@queries'
-import { inDays, inputDate, today } from '@lib/test/date-utils'
+
+import { inDays, inputDate, today } from '#lib/test/date-utils'
+import { OpprettSykmeldingDocument } from '#queries'
 
 import {
     fillPeriodeRelative,
@@ -9,9 +10,9 @@ import {
     addBidiagnose,
     deleteBidiagnose,
 } from '../actions/user-actions'
-import { anything, expectGraphQLRequest } from '../utils/assertions'
 import { expectBidagnoses, expectPeriode } from '../actions/user-form-verification'
 import { wait } from '../utils/actions'
+import { anything, expectGraphQLRequest } from '../utils/assertions'
 import {
     defaultAktivitetGradert,
     defaultAktivitetIkkeMulig,

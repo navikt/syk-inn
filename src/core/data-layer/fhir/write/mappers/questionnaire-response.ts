@@ -4,9 +4,9 @@ import {
     FhirQuestionnaireResponseItem,
 } from '@navikt/smart-on-fhir/zod'
 
-import { SykInnApiAktivitet, SykInnApiSykmelding } from '@core/services/syk-inn-api/schema/sykmelding'
-import { Diagnose } from '@data-layer/common/diagnose'
-import { diagnosisSystemToUrn } from '@data-layer/fhir/mappers/diagnosis'
+import { SykInnApiAktivitet, SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
+import { Diagnose } from '#data-layer/common/diagnose'
+import { diagnosisSystemToUrn } from '#data-layer/fhir/mappers/diagnosis'
 
 export function sykmeldingToQuestionnaireResponse(
     sykmelding: SykInnApiSykmelding,

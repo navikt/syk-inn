@@ -1,5 +1,5 @@
-import { Page, Request } from '@playwright/test'
 import { TypedDocumentNode } from '@apollo/client'
+import { Page, Request } from '@playwright/test'
 
 import { fail } from './assertions'
 
