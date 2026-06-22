@@ -34,6 +34,7 @@ const config: CodegenConfig = {
     },
     hooks: {
         afterOneFileWrite: ['oxfmt'],
+        afterAllFileWrite: ['oxfmt'],
     },
 }
 export default config

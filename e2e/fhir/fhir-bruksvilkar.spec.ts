@@ -29,7 +29,7 @@ test('accepting the bruksvilkår should allow you to return to the patient', asy
         .check()
 
     await accept.getByRole('button', { name: 'Send inn' }).click()
-    await accept.getByRole('link', { name: 'Gå tilbake til pasienten' }).click()
+    await accept.getByRole('button', { name: 'Gå tilbake til pasienten' }).click()
 
     // Verify we're on the dashboard
     await expect(page.getByRole('region', { name: /Oversikt over Espen Eksempel sitt sykefravær/ })).toBeVisible()
