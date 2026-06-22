@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
         optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
         authInterrupts: true,
         globalNotFound: true,
+        /**
+         * This causes insane CPU and memory usage because of a several months old bug. :-)
+         *
+         * See: https://github.com/vercel/next.js/issues/91396
+         */
+        turbopackServerFastRefresh: false,
     },
     images: { remotePatterns: [new URL('https://cdn.nav.no/**')] },
     logging: {
