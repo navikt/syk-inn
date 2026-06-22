@@ -7,6 +7,7 @@ export default defineConfig({
     rules: {
         'react/rules-of-hooks': 'error',
         'no-console': 'warn',
+        'no-unused-expressions': 'warn',
         'typescript/no-explicit-any': 'warn',
         'typescript/no-require-imports': 'warn',
         'typescript/explicit-function-return-type': ['warn', { allowExpressions: true }],

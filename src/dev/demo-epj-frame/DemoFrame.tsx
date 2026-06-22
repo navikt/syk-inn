@@ -5,7 +5,6 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 
 import DemoWarning from '#components/user-warnings/DemoWarning'
 import { isDemo, isLocal } from '#lib/env'
-import { pathWithBasePath } from '#lib/url'
 
 import { getDemoFrameEnabled } from './cookies'
 import FakeEpjHeader from './FakeEpjHeader'
@@ -30,7 +29,7 @@ async function DemoFrame({ children }: PropsWithChildren): Promise<ReactElement>
             <div className="grid h-screen w-screen grid-cols-[16rem_1fr] grid-rows-[auto_1fr] overflow-hidden bg-ax-bg-neutral-soft">
                 <header className="col-span-2 flex items-center gap-4 border-b border-ax-border-brand-magenta-subtle bg-ax-bg-brand-magenta-soft px-4 py-2">
                     <div className="flex shrink-0 items-center gap-3">
-                        <Link href={pathWithBasePath('/dev')}>
+                        <Link href="/dev">
                             <Image src={logo} alt="NAV logo" className="h-14 w-22 rotate-180 hue-rotate-120" />
                         </Link>
 
