@@ -54,6 +54,7 @@ export async function consumeUntil(consumer: Consumer, sykmeldingId: string): Pr
                 const key = message.key?.toString()
                 if (key === sykmeldingId) {
                     clearTimeout(timeout)
+                    // oxlint-disable-next-line typescript/no-non-null-assertion
                     resolve(JSON.parse(message.value!.toString()))
                 }
             },

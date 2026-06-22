@@ -1,3 +1,5 @@
+// oxlint-disable typescript/no-non-null-assertion
+
 'use client'
 
 import { animate } from 'motion'

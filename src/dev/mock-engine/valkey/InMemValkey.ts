@@ -1,3 +1,5 @@
+// oxlint-disable typescript/no-non-null-assertion
+
 import Valkey from 'iovalkey'
 
 export function createInMemoryValkey(): Valkey {
