@@ -4,6 +4,7 @@
 const softRules: Record<string, string | null> = {
     BEHANDLER_MT_FT_KI_OVER_12_UKER: 'Pasientens sykefravær overstiger 12 uker. Som kiropraktor, manuellterapeut eller fysioterapeut kan du ikke sykmelde utover 12 uker.',
     ICPC_2_Z_DIAGNOSE: 'Hoveddiagnosen er en z-diagnose (ICPC-2) som ikke gir rett til sykepenger.',
+    ICPC_2_A97: 'Hoveddiagnosen er A97 (ICPC-2) som ikke gir rett til sykepenger.',
     PASIENT_YNGRE_ENN_13: 'Pasienten er under 13 år. Sykmelding kan ikke benyttes. Hvis pasienten trenger dokumentasjon på fravær, så kan legeerklæring benyttes.',
     INNTIL_8_DAGER: 'Sykmeldingen mangler begrunnelse for tilbakedatering.',
     MINDRE_ENN_1_MAANED: 'Sykmeldingen mangler begrunnelse for tilbakedatering.',
