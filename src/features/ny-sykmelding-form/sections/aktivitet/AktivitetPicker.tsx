@@ -13,9 +13,7 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
     const aktivitetField = useController({
         name: `perioder.${index}.aktivitet.type`,
         defaultValue: 'AKTIVITET_IKKE_MULIG' satisfies AktiviteFieldType,
-        rules: {
-            required: 'Du må velge en aktivitetstype',
-        },
+        rules: { required: 'Du må velge en aktivitetstype' },
     })
 
     return (
@@ -46,19 +44,16 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
                 <option value={'AKTIVITET_IKKE_MULIG' satisfies AktiviteFieldType}>Kan ikke være i arbeid</option>
             </Select>
             <AnimatePresence initial={false}>
-                {aktivitetField.field.value === 'GRADERT' && (
-                    <SimpleReveal>
-                        <GradertGradPicker index={index} />
-                    </SimpleReveal>
+                {aktivitetField.field.value === 'GRADERT' ? (
+                    <GradertGradPicker index={index} />
+                ) : (
+                    <div className="flex flex-col gap-1">
+                        <Label>Sykmeldingsgrad (%)</Label>
+                        <BodyShort className="h-12 p-2 pl-0 flex items-center">100%</BodyShort>
+                    </div>
                 )}
                 {aktivitetField.field.value === 'AKTIVITET_IKKE_MULIG' && (
                     <>
-                        <SimpleReveal>
-                            <div className="flex flex-col gap-1">
-                                <Label>Sykmeldingsgrad (%)</Label>
-                                <BodyShort>100%</BodyShort>
-                            </div>
-                        </SimpleReveal>
                         <SimpleReveal className="col-span-2">
                             <ArsakerPicker index={index} />
                         </SimpleReveal>

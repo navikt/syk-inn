@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 
 import { useFormContext } from '../../form/types'
 
-function MeldingTilNavField(): ReactElement {
+export function MeldingTilNavField(): ReactElement {
     const form = useFormContext()
     const showTilNav = form.watch('meldinger.showTilNav')
 
@@ -29,5 +29,3 @@ function MeldingTilNavField(): ReactElement {
         </div>
     )
 }
-
-export default MeldingTilNavField

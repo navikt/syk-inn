@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 
 import { useFormContext } from '../../form/types'
 
-function MeldingTilNavField(): ReactElement {
+export function MeldingTilArbeidsgiverField(): ReactElement {
     const form = useFormContext()
 
     const showTilArbeidsgiver = form.watch('meldinger.showTilArbeidsgiver')
@@ -11,7 +11,7 @@ function MeldingTilNavField(): ReactElement {
     return (
         <div className="max-w-prose bg-ax-bg-neutral-soft rounded-xl py-2 px-5">
             <Switch position="right" {...form.register('meldinger.showTilArbeidsgiver')}>
-                Melding til arbeidsgiver (Vises for arbeidsgiver)
+                Innspill til arbeidsgiver
             </Switch>
 
             {showTilArbeidsgiver && (
@@ -25,5 +25,3 @@ function MeldingTilNavField(): ReactElement {
         </div>
     )
 }
-
-export default MeldingTilNavField

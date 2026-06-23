@@ -8,7 +8,7 @@ interface Props {
     diagnosePrefillError?: { error: 'FHIR_FAILED' }
 }
 
-function DiagnoseSection({ diagnosePrefillError }: Props): ReactElement {
+export function DiagnoseSection({ diagnosePrefillError }: Props): ReactElement {
     return (
         <section aria-label="Hoveddiagnose">
             <DiagnosePicker />
@@ -21,5 +21,3 @@ function DiagnoseSection({ diagnosePrefillError }: Props): ReactElement {
         </section>
     )
 }
-
-export default DiagnoseSection

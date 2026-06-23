@@ -7,9 +7,11 @@ import {
     pickHoveddiagnose,
     fillPeriodeRelative,
     fillTilbakedatering,
-    fillAndreSporsmal,
-    fillMeldinger,
     nextStep,
+    fillInnspillTilArbeidsgiver,
+    fillMeldingTilNav,
+    selectSvangerskapsrelatert,
+    fillYrkesskade,
     previousStep,
     saveDraft,
     fillArbeidsforhold,
@@ -17,14 +19,16 @@ import {
     selectAnnenLovpalagtFravarsgrunn,
 } from '../actions/user-actions'
 import {
-    expectAndreSporsmal,
     expectAnnenLovpalagtFravarsgrunn,
     expectArbeidsforhold,
     expectBidagnoses,
     expectHoveddiagnose,
-    expectMeldinger,
+    expectInnspillTilArbeidsgiver,
+    expectMeldingTilNav,
     expectPeriode,
+    expectSvangerskapsrelatert,
     expectTilbakedatering,
+    expectYrkesskade,
 } from '../actions/user-form-verification'
 import { verifySummaryPage } from '../actions/user-verifications'
 import * as standaloneActions from '../standalone/actions/standalone-user-actions'
@@ -44,8 +48,10 @@ const fillAllTheValues = (mode: Modes): ((page: Page) => Promise<void>) =>
         addBidiagnose({ search: 'A03', select: /Feber/ }),
         addBidiagnose({ search: 'S95', select: /Molluscum contagiosum/ }),
         selectAnnenLovpalagtFravarsgrunn({ reason: 'NODVENDIG_KONTROLLUNDENRSOKELSE' }),
-        fillAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(2) }),
-        fillMeldinger({ tilNav: 'Trenger mer penger', tilArbeidsgiver: 'Trenger sev-henk pult' }),
+        selectSvangerskapsrelatert(true),
+        fillYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(2) }),
+        fillMeldingTilNav('Trenger mer penger'),
+        fillInnspillTilArbeidsgiver('Trenger sev-henk pult'),
     )
 
 const verifyAlltheValues = userInteractionsGroup(
@@ -55,8 +61,10 @@ const verifyAlltheValues = userInteractionsGroup(
     expectHoveddiagnose('P74 - Angstlidelse'),
     expectBidagnoses(['Feber', 'Molluscum contagiosum']),
     expectAnnenLovpalagtFravarsgrunn('NODVENDIG_KONTROLLUNDENRSOKELSE'),
-    expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(2) }),
-    expectMeldinger({ tilNav: 'Trenger mer penger', tilArbeidsgiver: 'Trenger sev-henk pult' }),
+    expectSvangerskapsrelatert(true),
+    expectYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(2) }),
+    expectMeldingTilNav('Trenger mer penger'),
+    expectInnspillTilArbeidsgiver('Trenger sev-henk pult'),
 )
 
 modes.forEach(({ mode }) => {

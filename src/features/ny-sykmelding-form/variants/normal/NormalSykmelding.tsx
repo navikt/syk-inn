@@ -12,14 +12,17 @@ import { UtdypendeOpplysningerHint } from '#resolvers'
 import { ForkastDraftButtonInFormSync, LagreDraftButton } from '../../draft/DraftActions'
 import { useFormContext } from '../../form/types'
 import { NoActivePasientWarning } from '../../NoActivePasientWarning'
-import AktivitetSection from '../../sections/aktivitet/AktivitetSection'
-import AndreSporsmalSection from '../../sections/andre-sporsmal/AndreSporsmalSection'
-import ArbeidsforholdSection from '../../sections/arbeidsgiver/ArbeidsforholdSection'
-import BidiagnoseSection from '../../sections/diagnose/bidiagnose/BidiagnoseSection'
-import DiagnoseInfoAlert from '../../sections/diagnose/DiagnoseInfoAlert'
-import DiagnoseSection from '../../sections/diagnose/DiagnoseSection'
-import MeldingerSection from '../../sections/meldinger/MeldingerSection'
-import DynamicTilbakedateringSection from '../../sections/tilbakedatering/DynamicTilbakedateringSection'
+import { AktivitetSection } from '../../sections/aktivitet/AktivitetSection'
+import { AnnenFravarsgrunnField } from '../../sections/andre-sporsmal/AnnenFravarsgrunnField'
+import { SvangerskapsrelatertField } from '../../sections/andre-sporsmal/SvangerskapsrelatertField'
+import { YrkesskadeField } from '../../sections/andre-sporsmal/YrkesskadeField'
+import { ArbeidsforholdSection } from '../../sections/arbeidsgiver/ArbeidsforholdSection'
+import { BidiagnoseSection } from '../../sections/diagnose/bidiagnose/BidiagnoseSection'
+import { DiagnoseInfoAlert } from '../../sections/diagnose/DiagnoseInfoAlert'
+import { DiagnoseSection } from '../../sections/diagnose/DiagnoseSection'
+import { MeldingTilArbeidsgiverField } from '../../sections/meldinger/MeldingTilArbeidsgiverField'
+import { MeldingTilNavField } from '../../sections/meldinger/MeldingTilNavField'
+import { DynamicTilbakedateringSection } from '../../sections/tilbakedatering/DynamicTilbakedateringSection'
 import { UtdypendeSporsmal } from '../../sections/utfyllende-sporsmal/UtdypendeendeSporsmal'
 import { AllFormVariantsProps } from '../form-props'
 import { useHandleFormSubmit } from '../useHandleFormSubmit'
@@ -52,24 +55,29 @@ export function NormalSykmeldigForm({
                     <ArbeidsforholdSection />
                 </FormSection>
                 <AktivitetSection initialFom={initialFom ?? null} />
+                <MeldingTilArbeidsgiverField />
                 <DynamicTilbakedateringSection />
                 <div className="bg-ax-bg-neutral-soft w-4 h-[calc(100%-2rem)] absolute -right-6 rounded hidden ax-lg:block" />
             </FormSheet>
             <FormSheet>
                 <FormSection
                     title="Diagnose"
-                    className="border-t border-t-ax-border-neutral-subtle pt-3 ax-lg:pt-0 ax-lg:border-none"
+                    className="border-t border-t-ax-border-neutral-subtle pt-3 ax-lg:pt-0 ax-lg:border-t-0"
                 >
                     <DiagnoseSection diagnosePrefillError={contextualErrors.diagnose} />
                     <BidiagnoseSection />
                     {mode.type === 'FHIR' && <DiagnoseInfoAlert />}
+                    <div className="mt-4">
+                        <SvangerskapsrelatertField />
+                        <AnnenFravarsgrunnField />
+                    </div>
                 </FormSection>
                 <UtdypendeSporsmal utdypendeSporsmal={context.utdypendeSporsmal} />
-                <FormSection title="Andre spørsmål" hideTitle>
-                    <AndreSporsmalSection />
-                </FormSection>
-                <FormSection title="Meldinger" hideBorder>
-                    <MeldingerSection />
+                <FormSection title="Vurderinger for Nav" hideBorder>
+                    <div className="mb-4 -mt-2">
+                        <YrkesskadeField />
+                    </div>
+                    <MeldingTilNavField />
                 </FormSection>
                 <div className="flex flex-row flex-wrap ax-md:grid-cols-3 gap-3 p-2 ax-lg:justify-end">
                     <ForkastDraftButtonInFormSync className="flex-grow ax-md:max-w-46" />

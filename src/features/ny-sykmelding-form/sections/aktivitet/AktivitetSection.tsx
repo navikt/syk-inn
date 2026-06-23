@@ -20,7 +20,7 @@ type Props = {
     initialFom: string | null
 }
 
-function AktivitetSection({ initialFom }: Props): ReactElement {
+export function AktivitetSection({ initialFom }: Props): ReactElement {
     const { formState } = useFormContext()
     const { fields, append, remove } = useFieldArray({
         name: 'perioder' as const,
@@ -32,35 +32,34 @@ function AktivitetSection({ initialFom }: Props): ReactElement {
 
     return (
         <>
-            {fields.map((periode, index) => (
-                <FormSection title="Periode" key={periode.id}>
-                    <div className="relative mb-4">
-                        <PeriodePicker
-                            index={index}
-                            isLast={index === fields.length - 1}
-                            initialFom={index === 0 ? initialFom : null}
-                        />
-                        <AktivitetPicker index={index} />
+            {fields.map((periode, index) => {
+                const isLast = index === fields.length - 1
+                return (
+                    <FormSection title="Periode" key={periode.id} hideBorder={isLast}>
+                        <div className="relative mb-4">
+                            <PeriodePicker index={index} isLast={isLast} initialFom={index === 0 ? initialFom : null} />
+                            <AktivitetPicker index={index} />
 
-                        {index > 0 && (
-                            <Button
-                                data-color="danger"
-                                className="absolute top-8 right-4"
-                                variant="primary"
-                                type="button"
-                                size="small"
-                                icon={<TrashIcon title="Slett periode" />}
-                                onClick={() => remove(index)}
-                            />
-                        )}
-                    </div>
-                    {fields.length - 1 === index && (
-                        <div className="mt-6 mb-2">
-                            <AddNewPeriodButton append={append} />
+                            {index > 0 && (
+                                <Button
+                                    data-color="danger"
+                                    className="absolute top-8 right-4"
+                                    variant="primary"
+                                    type="button"
+                                    size="small"
+                                    icon={<TrashIcon title="Slett periode" />}
+                                    onClick={() => remove(index)}
+                                />
+                            )}
                         </div>
-                    )}
-                </FormSection>
-            ))}
+                        {fields.length - 1 === index && (
+                            <div className="mt-6 mb-2">
+                                <AddNewPeriodButton append={append} />
+                            </div>
+                        )}
+                    </FormSection>
+                )
+            })}
             {formState.errors.perioder?.root?.message && (
                 <ErrorMessage>{formState.errors.perioder.root.message}</ErrorMessage>
             )}
@@ -102,5 +101,3 @@ function AddNewPeriodButton({
         </Button>
     )
 }
-
-export default AktivitetSection

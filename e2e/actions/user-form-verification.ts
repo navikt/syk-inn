@@ -119,52 +119,69 @@ export function expectAnnenLovpalagtFravarsgrunn(expectedFravarsgrunn: AnnenFrav
     }
 }
 
-export function expectAndreSporsmal({
-    svangerskapsrelatert,
-    yrkesskade,
-    yrkesskadeDato,
-}: {
-    svangerskapsrelatert: boolean
-    yrkesskade: boolean
-    yrkesskadeDato: Date | string
-}) {
+export function expectSvangerskapsrelatert(svangerskapsrelatert: boolean) {
     return async (page: Page) => {
-        await test.step('Verify Andre spørsmål section', async () => {
-            const andreSporsmalRegion = page.getByRole('region', { name: 'Andre spørsmål' })
+        await test.step('Verify svangerskapsrelatert toggle', async () => {
+            const vurderingSection = page.getByRole('region', { name: 'Diagnose' })
 
-            const svangerskapsCheckbox = andreSporsmalRegion.getByRole('checkbox', {
+            const svangerskapsCheckbox = vurderingSection.getByRole('checkbox', {
                 name: 'Sykdommen er svangerskapsrelatert',
             })
-            const yrkesskadeCheckbox = andreSporsmalRegion.getByRole('checkbox', {
-                name: 'Sykmeldingen kan skyldes en yrkesskade/yrkessykdom',
-            })
+
             if (svangerskapsrelatert) {
                 await expect(svangerskapsCheckbox).toBeChecked()
             } else {
                 await expect(svangerskapsCheckbox).not.toBeChecked()
             }
+        })
+    }
+}
+
+export function expectYrkesskade({
+    yrkesskade,
+    yrkesskadeDato,
+}: {
+    yrkesskade: boolean
+    yrkesskadeDato: Date | string
+}) {
+    return async (page: Page) => {
+        await test.step('Verify yrkesskade', async () => {
+            const vurderingRegion = page.getByRole('region', { name: 'Vurderinger for Nav' })
+            const yrkesskadeCheckbox = vurderingRegion.getByRole('checkbox', {
+                name: 'Sykmeldingen kan skyldes en yrkesskade/yrkessykdom',
+            })
+
             if (yrkesskade) {
                 await expect(yrkesskadeCheckbox).toBeChecked()
             } else {
                 await expect(yrkesskadeCheckbox).not.toBeChecked()
             }
-            await expect(andreSporsmalRegion.getByRole('textbox', { name: 'Eventuell skadedato' })).toHaveValue(
+            await expect(vurderingRegion.getByRole('textbox', { name: 'Eventuell skadedato' })).toHaveValue(
                 inputDate(yrkesskadeDato),
             )
         })
     }
 }
 
-export function expectMeldinger({
-    tilNav,
-    tilArbeidsgiver,
-}: {
-    tilNav?: string | null
-    tilArbeidsgiver: string | null
-}) {
+export function expectInnspillTilArbeidsgiver(tilArbeidsgiver: string | null) {
     return async (page: Page) => {
-        await test.step('Verify Meldinger section', async () => {
-            const meldingerRegion = page.getByRole('region', { name: 'Meldinger' })
+        await test.step('Verify "Innspill til arbeidsgiver" field', async () => {
+            if (tilArbeidsgiver) {
+                await expect(page.getByRole('checkbox', { name: 'Innspill til arbeidsgiver' })).toBeChecked()
+                await expect(page.getByRole('textbox', { name: 'Melding til arbeidsgiver' })).toHaveValue(
+                    tilArbeidsgiver,
+                )
+            } else {
+                await expect(page.getByRole('checkbox', { name: 'Innspill til arbeidsgiver' })).not.toBeChecked()
+            }
+        })
+    }
+}
+
+export function expectMeldingTilNav(tilNav: string | null) {
+    return async (page: Page) => {
+        await test.step('Verify Melding til NAV', async () => {
+            const meldingerRegion = page.getByRole('region', { name: 'Vurderinger for Nav' })
 
             if (await meldingerRegion.getByRole('button', { name: 'Vis mer' }).isVisible()) {
                 await meldingerRegion.getByRole('button', { name: 'Vis mer' }).click()
@@ -175,16 +192,6 @@ export function expectMeldinger({
                 // Only check toggle state if provided, undefined means we don't care
             } else if (tilNav !== undefined) {
                 await expect(meldingerRegion.getByRole('checkbox', { name: 'Melding til Nav' })).not.toBeChecked()
-            }
-
-            if (tilArbeidsgiver) {
-                await expect(meldingerRegion.getByRole('textbox', { name: 'Melding til arbeidsgiver' })).toHaveValue(
-                    tilArbeidsgiver,
-                )
-            } else {
-                await expect(
-                    meldingerRegion.getByRole('checkbox', { name: 'Melding til arbeidsgiver' }),
-                ).not.toBeChecked()
             }
         })
     }

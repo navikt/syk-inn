@@ -1,45 +1,28 @@
 import { CheckmarkCircleIcon } from '@navikt/aksel-icons'
-import { BodyShort, Checkbox, CheckboxGroup, DatePicker, HelpText, Link, useDatepicker } from '@navikt/ds-react'
+import { BodyShort, Checkbox, DatePicker, Fieldset, HelpText, Link, useDatepicker } from '@navikt/ds-react'
 import { parseISO } from 'date-fns'
 import { AnimatePresence } from 'motion/react'
 import React, { ReactElement } from 'react'
-import * as R from 'remeda'
 
 import { SimpleReveal } from '#components/animation/Reveal'
+import { useController } from '#features/ny-sykmelding-form/form/types'
 import { dateOnly, toReadableDate } from '#lib/date'
 
-import { useController } from '../../form/types'
-
-export function AndreSporsmalField(): ReactElement {
-    const andreSporsmal = useController({
-        name: 'andreSporsmal',
+export function YrkesskadeField({ className }: { className?: string }): ReactElement {
+    const harYrkesskade = useController({
+        name: 'andreSporsmal.yrkesskade.yrkesskade',
     })
 
-    const fieldValue = [
-        andreSporsmal.field.value?.yrkesskade?.yrkesskade ? 'yrkesskade' : null,
-        andreSporsmal.field.value?.svangerskapsrelatert ? 'svangerskapsrelatert' : null,
-    ].filter(R.isNonNull)
-
     return (
-        <>
-            <CheckboxGroup
-                legend="Andre spørsmål relatert til sykmeldingen"
-                hideLegend
-                onChange={(value) => {
-                    andreSporsmal.field.onChange({
-                        svangerskapsrelatert: value.includes('svangerskapsrelatert'),
-                        yrkesskade: {
-                            yrkesskade: value.includes('yrkesskade'),
-                            skadedato: andreSporsmal.field.value?.yrkesskade?.skadedato ?? null,
-                        },
-                    })
-                }}
-                value={fieldValue}
-            >
-                <Checkbox value="svangerskapsrelatert">Sykdommen er svangerskapsrelatert</Checkbox>
-                <div className="flex gap-1 items-center">
-                    <Checkbox value="yrkesskade">Sykmeldingen kan skyldes en yrkesskade/yrkessykdom </Checkbox>
-                    <HelpText>
+        <div className={className}>
+            <Fieldset legend="Yrkesskade" hideLegend>
+                <Checkbox
+                    {...harYrkesskade.field}
+                    checked={harYrkesskade.field.value}
+                    onChange={(event) => harYrkesskade.field.onChange(event.target.checked)}
+                >
+                    Sykmeldingen kan skyldes en yrkesskade/yrkessykdom
+                    <HelpText wrapperClassName="inline-block ml-1 align-middle">
                         Kryss av hvis en ny eller tidligere yrkesskade eller yrkessykdom kan være årsaken til
                         arbeidsuførheten. Du trenger ikke å vite om skaden eller sykdommen er godkjent av Nav. Les mer
                         om yrkesskade og yrkessykdom på{' '}
@@ -51,15 +34,21 @@ export function AndreSporsmalField(): ReactElement {
                             nav.no
                         </Link>
                     </HelpText>
-                </div>
-            </CheckboxGroup>
-            {andreSporsmal.field.value?.yrkesskade?.yrkesskade && <YrkesskadeDatoPicker />}
-        </>
+                </Checkbox>
+                <AnimatePresence initial={false}>
+                    {harYrkesskade.field.value && (
+                        <SimpleReveal>
+                            <YrkesskadeDatoPicker />
+                        </SimpleReveal>
+                    )}
+                </AnimatePresence>
+            </Fieldset>
+        </div>
     )
 }
 
 function YrkesskadeDatoPicker(): ReactElement {
-    const { field } = useController<'andreSporsmal.yrkesskade.skadedato'>({
+    const { field } = useController({
         name: 'andreSporsmal.yrkesskade.skadedato',
     })
 
