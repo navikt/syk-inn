@@ -10,7 +10,7 @@ import { useFormContext } from '../../form/types'
 
 import { useDiagnoseSuggestions } from './useDiagnoseSuggestions'
 
-function DiagnoseInfoAlert(): ReactElement | null {
+export function DiagnoseInfoAlert(): ReactElement | null {
     const { watch, setValue } = useFormContext()
     const suggestionsQuery = useDiagnoseSuggestions()
     const formDiagnose = watch('diagnoser')
@@ -81,5 +81,3 @@ function DiagnoseInfoAlert(): ReactElement | null {
         </AnimatePresence>
     )
 }
-
-export default DiagnoseInfoAlert

@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 import TilbakedateringDate from './TilbakedateringDate'
 import TilbakedateringGrunn from './TilbakedateringGrunn'
 
-function TilbakedateringSection(): ReactElement {
+export function TilbakedateringSection(): ReactElement {
     return (
         <div className="flex flex-col gap-3">
             <TilbakedateringDate />
@@ -11,5 +11,3 @@ function TilbakedateringSection(): ReactElement {
         </div>
     )
 }
-
-export default TilbakedateringSection

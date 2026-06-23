@@ -4,24 +4,28 @@ import { toReadableDatePeriod } from '#lib/date'
 import { daysAgo, inDays } from '#lib/test/date-utils'
 
 import {
-    fillAndreSporsmal,
     fillArbeidsforhold,
     fillBehandlingsdagerExplanation,
     fillBehandlingsdagerPeriode,
-    fillMeldinger,
+    fillMeldingTilNav,
+    fillInnspillTilArbeidsgiver,
     fillPeriodeRelative,
     fillTilbakedatering,
     nextStep,
     pickHoveddiagnose,
     previousStep,
+    selectSvangerskapsrelatert,
     submitSykmelding,
+    fillYrkesskade,
 } from '../../actions/user-actions'
 import {
-    expectAndreSporsmal,
+    expectSvangerskapsrelatert,
+    expectYrkesskade,
     expectArbeidsforhold,
     expectHoveddiagnose,
-    expectMeldinger,
     expectPeriode,
+    expectMeldingTilNav,
+    expectInnspillTilArbeidsgiver,
 } from '../../actions/user-form-verification'
 import { verifySummaryPage } from '../../actions/user-verifications'
 import { userInteractionsGroup } from '../../utils/actions'
@@ -38,15 +42,10 @@ test('should be able to dupliser (from dashboard) an existing sykmelding with co
         fillArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         fillPeriodeRelative({ type: '100%', fromRelative: -1, days: 14 }),
         pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
-        fillAndreSporsmal({
-            svangerskapsrelatert: true,
-            yrkesskade: true,
-            yrkesskadeDato: daysAgo(7),
-        }),
-        fillMeldinger({
-            tilNav: 'Trenger definitivt to sykmeldinger',
-            tilArbeidsgiver: 'Dobbelt så mange sykmeldinger!',
-        }),
+        selectSvangerskapsrelatert(true),
+        fillYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        fillMeldingTilNav('Trenger definitivt to sykmeldinger'),
+        fillInnspillTilArbeidsgiver('Dobbelt så mange sykmeldinger!'),
         verifyNoHorizontalScroll(),
         nextStep(),
         verifySignerendeBehandler(),
@@ -61,12 +60,11 @@ test('should be able to dupliser (from dashboard) an existing sykmelding with co
         expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         expectPeriode({ type: '100%', fromRelative: -1, days: 14 }),
         expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
-        expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        expectSvangerskapsrelatert(true),
+        expectYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
         // Don't copy meldinger during duplication
-        expectMeldinger({
-            tilNav: null,
-            tilArbeidsgiver: null,
-        }),
+        expectMeldingTilNav(null),
+        expectInnspillTilArbeidsgiver(null),
         verifyNoHorizontalScroll(),
     )(page)
 
@@ -93,8 +91,9 @@ test('should be able to dupliser behandlingsdager (from dashboard) @feature-togg
         fillBehandlingsdagerPeriode({ fromRelative: -1, days: 14 }),
         fillBehandlingsdagerExplanation('Kort test-forklaring'),
         pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
-        fillMeldinger({ tilArbeidsgiver: 'Dobbelt så mange sykmeldinger!' }),
-        fillAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        fillInnspillTilArbeidsgiver('Dobbelt så mange sykmeldinger!'),
+        selectSvangerskapsrelatert(true),
+        fillYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
         verifyNoHorizontalScroll(),
         nextStep(),
         verifySignerendeBehandler(),
@@ -108,9 +107,10 @@ test('should be able to dupliser behandlingsdager (from dashboard) @feature-togg
     await userInteractionsGroup(
         expectPeriode({ type: { behandlingsdager: 3 }, fromRelative: -1, days: 14 }),
         expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
-        expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        expectSvangerskapsrelatert(true),
+        expectYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
         // Don't copy tilArbeidsgiver during duplication
-        expectMeldinger({ tilArbeidsgiver: null }),
+        expectInnspillTilArbeidsgiver(null),
         verifyNoHorizontalScroll(),
     )(page)
 
@@ -137,15 +137,10 @@ test('should be able to dupliser (from dashboard) an existing sykmelding, go to 
         fillArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         fillPeriodeRelative({ type: '100%', fromRelative: -1, days: 14 }),
         pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
-        fillAndreSporsmal({
-            svangerskapsrelatert: true,
-            yrkesskade: true,
-            yrkesskadeDato: daysAgo(7),
-        }),
-        fillMeldinger({
-            tilNav: 'Trenger definitivt to sykmeldinger',
-            tilArbeidsgiver: 'Dobbelt så mange sykmeldinger!',
-        }),
+        selectSvangerskapsrelatert(true),
+        fillYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        fillMeldingTilNav('Trenger definitivt to sykmeldinger'),
+        fillInnspillTilArbeidsgiver('Dobbelt så mange sykmeldinger!'),
         nextStep(),
         verifySignerendeBehandler(),
         submitSykmelding(),
@@ -158,12 +153,11 @@ test('should be able to dupliser (from dashboard) an existing sykmelding, go to 
         expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         expectPeriode({ type: '100%', fromRelative: -1, days: 14 }),
         expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
-        expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        expectSvangerskapsrelatert(true),
+        expectYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
         // Don't copy meldinger during duplication
-        expectMeldinger({
-            tilNav: null,
-            tilArbeidsgiver: null,
-        }),
+        expectInnspillTilArbeidsgiver(null),
+        expectMeldingTilNav(null),
     )(page)
 
     await fillArbeidsforhold({

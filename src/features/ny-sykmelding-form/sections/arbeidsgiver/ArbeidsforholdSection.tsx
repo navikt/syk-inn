@@ -5,7 +5,7 @@ import { useFlag } from '#core/toggles/context'
 import { AaregArbeidsforholdPicker } from './AaregArbeidsforholdPicker'
 import ArbeidsforholdPicker from './ArbeidsforholdPicker'
 
-function ArbeidsforholdSection(): ReactElement {
+export function ArbeidsforholdSection(): ReactElement {
     const aaregEnabled = useFlag('SYK_INN_AAREG')
 
     if (!aaregEnabled) {
@@ -22,5 +22,3 @@ function ArbeidsforholdSection(): ReactElement {
         </div>
     )
 }
-
-export default ArbeidsforholdSection

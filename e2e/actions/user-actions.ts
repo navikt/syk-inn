@@ -228,6 +228,20 @@ export function addUtdypendeSporsmal({
     }
 }
 
+export function selectSvangerskapsrelatert(svangerskapsrelatert: boolean) {
+    return async (page: Page) => {
+        await test.step(`Set svangerskapsrelatert to ${svangerskapsrelatert ? 'yes' : 'no'}`, async () => {
+            const region = page.getByRole('region', { name: 'Diagnose' })
+
+            if (svangerskapsrelatert) {
+                await region.getByRole('checkbox', { name: 'Sykdommen er svangerskapsrelatert' }).check()
+            } else {
+                await region.getByRole('checkbox', { name: 'Sykdommen er svangerskapsrelatert' }).uncheck()
+            }
+        })
+    }
+}
+
 export function selectAnnenLovpalagtFravarsgrunn({ reason }: { reason: AnnenFravarsgrunnArsak }) {
     return async (page: Page) => {
         return test.step(`Select fravarsgrunn: ${reason}`, async () => {
@@ -235,6 +249,24 @@ export function selectAnnenLovpalagtFravarsgrunn({ reason }: { reason: AnnenFrav
 
             await group.getByRole('checkbox', { name: 'Sykmeldingen har en annen lovfestet fraværsgrunn' }).click()
             await group.getByRole('combobox', { name: 'Velg lovfestet fraværsgrunn' }).selectOption(reason)
+        })
+    }
+}
+
+export function fillYrkesskade({ yrkesskade, yrkesskadeDato }: { yrkesskade: boolean; yrkesskadeDato: string | null }) {
+    return async (page: Page) => {
+        await test.step(`Fill yrkesskade ${yrkesskade ? 'yes' : 'no'}${yrkesskadeDato ? `, and input skadedato: ${yrkesskadeDato}` : ''}`, async () => {
+            const region = page.getByRole('region', { name: 'Vurderinger for Nav' })
+
+            if (yrkesskade) {
+                await region.getByRole('checkbox', { name: 'Yrkesskade' }).check()
+            } else {
+                await region.getByRole('checkbox', { name: 'Yrkesskade' }).uncheck()
+            }
+
+            if (yrkesskadeDato) {
+                await region.getByRole('textbox', { name: 'Eventuell skadedato' }).fill(inputDate(yrkesskadeDato))
+            }
         })
     }
 }
@@ -406,64 +438,22 @@ export function fillTilbakedatering({
     }
 }
 
-export function fillAndreSporsmal({
-    svangerskapsrelatert,
-    yrkesskade,
-    yrkesskadeDato,
-}: {
-    svangerskapsrelatert: boolean
-    yrkesskade: boolean
-    yrkesskadeDato: string | null
-}) {
+export function fillMeldingTilNav(tilNav: string) {
     return async (page: Page) => {
-        await test.step(`Toggle andre sporsmål${yrkesskadeDato != null ? ', and input skadedato' : ''}`, async () => {
-            const region = page.getByRole('region', { name: 'Andre spørsmål' })
-            await expect(region).toBeVisible()
+        await test.step(`Fill '"Melding til Nav" field`, async () => {
+            const region = page.getByRole('region', { name: 'Vurderinger for Nav' })
 
-            if (svangerskapsrelatert) {
-                await region.getByRole('checkbox', { name: 'Svangerskapsrelatert' }).check()
-            } else {
-                await region.getByRole('checkbox', { name: 'Svangerskapsrelatert' }).uncheck()
-            }
-
-            if (yrkesskade) {
-                await region.getByRole('checkbox', { name: 'Yrkesskade' }).check()
-            } else {
-                await region.getByRole('checkbox', { name: 'Yrkesskade' }).uncheck()
-            }
-
-            if (yrkesskadeDato) {
-                await region.getByRole('textbox', { name: 'Eventuell skadedato' }).fill(inputDate(yrkesskadeDato))
-            }
+            await region.getByRole('checkbox', { name: 'Melding til Nav' }).check()
+            await region.getByRole('textbox', { name: 'Melding til Nav' }).fill(tilNav)
         })
     }
 }
 
-export function fillMeldinger({
-    tilNav,
-    tilArbeidsgiver,
-}: {
-    tilNav?: string | null
-    tilArbeidsgiver?: string | null
-}) {
+export function fillInnspillTilArbeidsgiver(tilArbeidsgiver: string) {
     return async (page: Page) => {
-        await test.step(`Input meldinger to Nav and arbeidsgiver`, async () => {
-            const region = page.getByRole('region', { name: 'Meldinger' })
-            await expect(region).toBeVisible()
-
-            if (await region.getByRole('button', { name: 'Vis mer' }).isVisible()) {
-                await region.getByRole('button', { name: 'Vis mer' }).click()
-            }
-
-            if (tilNav) {
-                await region.getByRole('checkbox', { name: 'Melding til Nav' }).check()
-                await region.getByRole('textbox', { name: 'Melding til Nav' }).fill(tilNav)
-            }
-
-            if (tilArbeidsgiver) {
-                await region.getByRole('checkbox', { name: 'Melding til arbeidsgiver' }).check()
-                await region.getByRole('textbox', { name: 'Melding til arbeidsgiver' }).fill(tilArbeidsgiver)
-            }
+        await test.step(`Fill '"Melding til arbeidsgiver" field`, async () => {
+            await page.getByRole('checkbox', { name: 'Innspill til arbeidsgiver' }).check()
+            await page.getByRole('textbox', { name: 'Melding til arbeidsgiver' }).fill(tilArbeidsgiver)
         })
     }
 }

@@ -7,7 +7,7 @@ import { cn } from '#lib/tw'
 
 import BidiagnosePicker from './BidiagnosePicker'
 
-function BidiagnoseSection(): ReactElement {
+export function BidiagnoseSection(): ReactElement {
     const addNewRef = useRef<HTMLButtonElement>(null)
     const { fields, append, remove } = useFieldArray({
         name: 'diagnoser.bidiagnoser' as const,
@@ -51,5 +51,3 @@ function BidiagnoseSection(): ReactElement {
         </section>
     )
 }
-
-export default BidiagnoseSection

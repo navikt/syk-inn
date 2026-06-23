@@ -7,9 +7,9 @@ import { isTilbakedatering } from '#data-layer/common/tilbakedatering'
 
 import { useFormContext } from '../../form/types'
 
-import TilbakedateringSection from './TilbakedateringSection'
+import { TilbakedateringSection } from './TilbakedateringSection'
 
-function DynamicTilbakedateringSection(): ReactElement | null {
+export function DynamicTilbakedateringSection(): ReactElement | null {
     const { watch } = useFormContext()
     const perioder = watch('perioder')
     const tilbakedatering = isTilbakedatering(perioder, new Date())
@@ -45,5 +45,3 @@ function DynamicTilbakedateringSection(): ReactElement | null {
         </AnimatePresence>
     )
 }
-
-export default DynamicTilbakedateringSection

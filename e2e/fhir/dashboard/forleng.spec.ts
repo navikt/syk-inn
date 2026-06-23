@@ -4,12 +4,14 @@ import { toReadableDatePeriod } from '#lib/date'
 import { daysAgo, inDays, inputDate } from '#lib/test/date-utils'
 
 import {
-    fillAndreSporsmal,
     fillArbeidsforhold,
     fillBehandlingsdagerExplanation,
     fillBehandlingsdagerPeriode,
-    fillMeldinger,
     fillPeriodeRelative,
+    fillMeldingTilNav,
+    fillYrkesskade,
+    fillInnspillTilArbeidsgiver,
+    selectSvangerskapsrelatert,
     nextStep,
     pickHoveddiagnose,
     previousStep,
@@ -17,11 +19,13 @@ import {
     submitSykmelding,
 } from '../../actions/user-actions'
 import {
-    expectAndreSporsmal,
     expectArbeidsforhold,
     expectHoveddiagnose,
-    expectMeldinger,
+    expectInnspillTilArbeidsgiver,
+    expectMeldingTilNav,
     expectPeriode,
+    expectSvangerskapsrelatert,
+    expectYrkesskade,
 } from '../../actions/user-form-verification'
 import { verifySummaryPage } from '../../actions/user-verifications'
 import { userInteractionsGroup } from '../../utils/actions'
@@ -38,11 +42,10 @@ test('should be able to forlenge an existing sykmelding with correct values', as
         fillArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         fillPeriodeRelative({ type: '100%', fromRelative: 0, days: 14 }),
         pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
-        fillAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
-        fillMeldinger({
-            tilNav: 'Trenger definitivt to sykmeldinger',
-            tilArbeidsgiver: 'Dobbelt så mange sykmeldinger!',
-        }),
+        selectSvangerskapsrelatert(true),
+        fillYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        fillMeldingTilNav('Trenger definitivt to sykmeldinger'),
+        fillInnspillTilArbeidsgiver('Dobbelt så mange sykmeldinger!'),
         verifyNoHorizontalScroll(),
         nextStep(),
         verifySignerendeBehandler(),
@@ -60,9 +63,11 @@ test('should be able to forlenge an existing sykmelding with correct values', as
     await userInteractionsGroup(
         expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
-        expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        expectSvangerskapsrelatert(true),
+        expectYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
         // Don't copy meldinger during forlengelse
-        expectMeldinger({ tilNav: null, tilArbeidsgiver: null }),
+        expectMeldingTilNav(null),
+        expectInnspillTilArbeidsgiver(null),
     )(page)
 
     // Leave the pre-filled value
@@ -89,8 +94,9 @@ test('should be able to forlenge an existing behandlingsdager-sykmelding with co
         fillBehandlingsdagerPeriode({ fromRelative: 0, days: 14 }),
         fillBehandlingsdagerExplanation('Foo baz bar'),
         pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
-        fillAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
-        fillMeldinger({ tilArbeidsgiver: 'Dobbelt så mange sykmeldinger!' }),
+        selectSvangerskapsrelatert(true),
+        fillYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        fillInnspillTilArbeidsgiver('Dobbelt så mange sykmeldinger!'),
         verifyNoHorizontalScroll(),
         nextStep(),
         verifySignerendeBehandler(),
@@ -107,9 +113,10 @@ test('should be able to forlenge an existing behandlingsdager-sykmelding with co
 
     await userInteractionsGroup(
         expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
-        expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        expectSvangerskapsrelatert(true),
+        expectYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
         // Don't copy meldinger during forlengelse
-        expectMeldinger({ tilArbeidsgiver: null }),
+        expectInnspillTilArbeidsgiver(null),
     )(page)
 
     await fillBehandlingsdagerExplanation('Lorem ipsum')(page)
@@ -139,15 +146,10 @@ test('should be able to forleng a sykmelding, go to summary, and return to form 
         fillArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         fillPeriodeRelative({ type: '100%', fromRelative: 0, days: 14 }),
         pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
-        fillAndreSporsmal({
-            svangerskapsrelatert: true,
-            yrkesskade: true,
-            yrkesskadeDato: daysAgo(7),
-        }),
-        fillMeldinger({
-            tilNav: 'Trenger definitivt to sykmeldinger',
-            tilArbeidsgiver: 'Dobbelt så mange sykmeldinger!',
-        }),
+        selectSvangerskapsrelatert(true),
+        fillYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        fillMeldingTilNav('Trenger definitivt to sykmeldinger'),
+        fillInnspillTilArbeidsgiver('Dobbelt så mange sykmeldinger!'),
         nextStep(),
         verifySignerendeBehandler(),
         submitSykmelding(),
@@ -163,12 +165,11 @@ test('should be able to forleng a sykmelding, go to summary, and return to form 
     await userInteractionsGroup(
         expectArbeidsforhold({ harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Duplicatiore AS' }),
         expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
-        expectAndreSporsmal({ svangerskapsrelatert: true, yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        expectSvangerskapsrelatert(true),
+        expectYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
         // Don't copy meldinger during forlengelse
-        expectMeldinger({
-            tilNav: null,
-            tilArbeidsgiver: null,
-        }),
+        expectMeldingTilNav(null),
+        expectInnspillTilArbeidsgiver(null),
     )(page)
 
     // Leave the pre-filled value

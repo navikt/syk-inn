@@ -3,8 +3,9 @@ import { ReactElement } from 'react'
 
 import FormSection from '#components/form/form-section/FormSection'
 import { questionTexts } from '#data-layer/common/questions'
-import { useController, useFormContext } from '#features/ny-sykmelding-form/form/types'
 import { UtdypendeOpplysningerHint } from '#resolvers'
+
+import { useController, useFormContext } from '../../form/types'
 
 import { shouldShowUke17Sporsmal, shouldShowUke39Sporsmal, shouldShowUke7Sporsmal } from './utdypende-sporsmal-utils'
 
@@ -37,25 +38,22 @@ export function UtdypendeSporsmal({
     }
 
     const visUtdypendeSporsmal = Object.values(skalViseSporsmalForUke).some((it) => it === true)
+    if (!visUtdypendeSporsmal) return null
 
-    if (visUtdypendeSporsmal) {
-        return (
-            <FormSection title={getTitleForUtdypendeSporsmal(skalViseSporsmalForUke)}>
-                <BodyShort spacing>Helseopplysninger i Navs vurdering av aktivitetskrav og oppfølging</BodyShort>
-                <div className="flex flex-col gap-8">
-                    <UtfordringerMedArbeid skalViseSporsmal={skalViseSporsmalForUke} />
-                    <MedisinskOppsummering skalViseSporsmal={skalViseSporsmalForUke} />
-                    {skalViseSporsmalForUke.uke7 && <HensynPaArbeidsplassen />}
-                    {skalViseSporsmalForUke.uke17 && <BehandlingOgFremtidigArbeid />}
-                    {skalViseSporsmalForUke.uke17 && <UavklarteForhold />}
-                    {skalViseSporsmalForUke.uke39 && <ForventetHelsetilstandUtvikling />}
-                    {skalViseSporsmalForUke.uke39 && <MedisinskeHensyn />}
-                </div>
-            </FormSection>
-        )
-    }
-
-    return null
+    return (
+        <FormSection title={getTitleForUtdypendeSporsmal(skalViseSporsmalForUke)}>
+            <BodyShort spacing>Helseopplysninger i Navs vurdering av aktivitetskrav og oppfølging</BodyShort>
+            <div className="flex flex-col gap-8">
+                <UtfordringerMedArbeid skalViseSporsmal={skalViseSporsmalForUke} />
+                <MedisinskOppsummering skalViseSporsmal={skalViseSporsmalForUke} />
+                {skalViseSporsmalForUke.uke7 && <HensynPaArbeidsplassen />}
+                {skalViseSporsmalForUke.uke17 && <BehandlingOgFremtidigArbeid />}
+                {skalViseSporsmalForUke.uke17 && <UavklarteForhold />}
+                {skalViseSporsmalForUke.uke39 && <ForventetHelsetilstandUtvikling />}
+                {skalViseSporsmalForUke.uke39 && <MedisinskeHensyn />}
+            </div>
+        </FormSection>
+    )
 }
 
 function MedisinskOppsummering({ skalViseSporsmal }: { skalViseSporsmal: SporsmalForUke }): ReactElement | null {
