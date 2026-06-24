@@ -81,7 +81,3 @@ et felt som Nav bruker i dag.
 
 `Context.Encounter` **MÅ** inneholde referanse til konsultasjon da Folketrygdloven §8-7 krever
 konsultasjon for sykmelding.
-
-## Avklaringer
-
-- [ ] Skal Nav eller EPJ bestemme tittel på dokumentet.
