@@ -2,25 +2,32 @@
 
 ## Table of Contents
 
-- [Context](#context)
-- [Decision](#decision)
-- [Consequences](#consequences)
-  - [Positive](#positive)
-  - [Negative](#negative)
-- [Questionnaire Definition](#questionnaire-definition)
-- [Implementation](#implementation)
-  - [Requirements](#requirements)
-  - [Access Scopes](#access-scopes)
-  - [Data for Write-Back](#data-for-write-back)
-  - [Flowchart (Happy Path)](#flowchart-happy-path)
-  - [Step-by-Step Guide](#step-by-step-guide)
-  - [Complete Example](#complete-example)
-- [Alternatives](#alternatives)
-  - [Still Viable Alternatives](#still-viable-alternatives)
-- [Analysis: FHIR Best Practices](#analysis-fhir-best-practices)
-- [Q & A](#q--a)
-- [Notes](#notes)
-- [References](#references)
+- [ADR01 - FHIR Resources for writing data back to EHR](#adr01---fhir-resources-for-writing-data-back-to-ehr)
+  - [Table of Contents](#table-of-contents)
+  - [Context](#context)
+  - [Decision](#decision)
+    - [Write-back options](#write-back-options)
+  - [Consequences](#consequences)
+    - [Positive](#positive)
+    - [Negative](#negative)
+  - [Questionnaire Definition](#questionnaire-definition)
+  - [Implementation](#implementation)
+    - [Requirements](#requirements)
+    - [Access Scopes](#access-scopes)
+    - [Data for upload](#data-for-upload)
+    - [Flowchart (Happy Path)](#flowchart-happy-path)
+    - [Step-by-Step Guide](#step-by-step-guide)
+    - [Complete Example](#complete-example)
+      - [Batch Bundle (DocumentReference + QuestionnaireResponse)](#batch-bundle-documentreference--questionnaireresponse)
+  - [Alternatives](#alternatives)
+    - [Still Viable Alternatives](#still-viable-alternatives)
+  - [Analysis: FHIR Best Practices](#analysis-fhir-best-practices)
+    - [Why a Standalone QuestionnaireResponse?](#why-a-standalone-questionnaireresponse)
+    - [Reference Direction](#reference-direction)
+    - [Perspectives](#perspectives)
+  - [Q & A](#q--a)
+  - [Notes](#notes)
+  - [References](#references)
 
 ---
 
@@ -41,7 +48,7 @@ sequenceDiagram
     FHIR -->> SMART: Prefill data
     Doctor ->> SMART: Fills in and submits sick note
     SMART ->> Nav: Submit sick note
-    Nav ->> FHIR: PUT / (Transaction Bundle)
+    Nav ->> FHIR: POST / (batch Bundle) or PUT per resource
 ```
 
 ## Decision
@@ -56,11 +63,25 @@ Structured upload must adhere to the following rules:
 Based on these rules, it has been decided that the following FHIR resources and structure shall be used for structured
 upload:
 
-- **QuestionnaireResponse** – written as a standalone resource to the FHIR server, containing all structured sick note
+- **QuestionnaireResponse**: written as a standalone resource to the FHIR server, containing all structured sick note
   data as items.
-- **DocumentReference** – written as a standalone resource containing the PDF and a reference to the
+- **DocumentReference**: written as a standalone resource containing the PDF and a reference to the
   QuestionnaireResponse via `context.related`.
 - **Questionnaire** - defines the form schema, published publicly in the syk-inn repository.
+
+### Write-back options
+
+Nav can write the data back to the EHR in one of two ways:
+
+1. **`batch` Bundle** (must be `batch`, not `transaction`): a single `batch` Bundle (POST to the base
+   URL) containing both DocumentReference and QuestionnaireResponse as entries.
+2. **Separate writes**: two independent `PUT` calls, one per resource.
+
+Both options use the same resource endpoints (`PUT /DocumentReference/{id}` and
+`PUT /QuestionnaireResponse/{id}`), so the EHR must support DocumentReference and QuestionnaireResponse
+as writable resources regardless of which option is chosen. A `batch` (not `transaction`) Bundle is used
+so the mandatory DocumentReference is persisted even if the QuestionnaireResponse fails
+(journalføringsplikten).
 
 ## Consequences
 
@@ -89,7 +110,7 @@ upload:
 
 **Nav**
 
-- Requires two FHIR calls per sick note (idempotency check and transaction bundle PUT)
+- Requires two FHIR calls per sick note (idempotency check and write-back)
 - Requires extended access scopes in SMART on FHIR for the sick note
 
 ## Questionnaire Definition
@@ -137,21 +158,21 @@ structured data as a QuestionnaireResponse:
 
 ### Data for upload
 
-| #   | Data                                            | FHIR field                                         | JSON                                                              | Notes                                                                                                                                                                                                                                                                                           |
-| --- | ----------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | `sykmeldingId`                                  | `DocumentReference.id`                             | `{ "resourceType": "DocumentReference", "id": "{sykmeldingId}" }` | Nav sets the DocumentReference resource id to the sykmelding ID for traceability. The EHR must support client-assigned resource ids (standard FHIR PUT semantics).                                                                                                                              |
-| 1b  | UUID v4 (Nav-generated)                         | `QuestionnaireResponse.id`                         | `{ "resourceType": "QuestionnaireResponse", "id": "{uuid-v4}" }`  | Nav generates a UUID v4 for the QuestionnaireResponse. Both ids are set in the same transaction bundle, so the DocumentReference can reference the QR id before it is persisted.                                                                                                                |
-| 2   | Questionnaire reference                         | `QuestionnaireResponse.questionnaire`              | See example below                                                 | QuestionnaireResponse is written as a standalone resource to the FHIR server. It always refers to the publicly available Questionnaire definition via canonical URL. `encounter` links the response to the active consultation. The EHR can look up the definition to understand the structure. |
-| 3   | Main diagnosis                                  | `QuestionnaireResponse.item[hoofdiagnose]`         | See example below                                                 | Main diagnosis is represented as `valueCoding` with a code system (ICD-10 or ICPC-2), code, and display text. No separate Condition resource. Code systems: ICD-10: `urn:oid:2.16.578.1.12.4.1.1.7110`, ICPC-2: `urn:oid:2.16.578.1.12.4.1.1.7170`                                              |
-| 4   | Secondary diagnosis(es)                         | `QuestionnaireResponse.item[bidiagnose]`           | See example below                                                 | Represented the same way as the main diagnosis. The `bidiagnose` item can be repeated for multiple secondary diagnoses.                                                                                                                                                                         |
-| 5   | Period(s), activity type, and sick leave degree | `QuestionnaireResponse.item[aktivitet]`            | See example below                                                 | Activity, period, and degree are combined into a QuestionnaireResponse `.item[]` group item. Multiple periods are represented by repeating the `aktivitet` group. `aktivitet-grad` is only included for the GRADERT (graded) type.                                                              |
-| 6   | Period for the entire sick note                 | `DocumentReference.context.period`                 | See example below                                                 | The period in `DocumentReference.context.period` represents the entire sick note period (earliest fom to latest tom).                                                                                                                                                                           |
-| 7   | Other statutory leave reason                    | `QuestionnaireResponse.item[annen-fravarsgrunn]`   | See example below                                                 | `valueCoding` with one of the defined enum values from the Questionnaire. Omitted if there is no other leave reason.                                                                                                                                                                            |
-| 8   | Pregnancy-related                               | `QuestionnaireResponse.item[svangerskapsrelatert]` | See example below                                                 | `valueBoolean` set to the same value as in the sick note.                                                                                                                                                                                                                                       |
-| 9   | Occupational injury                             | `QuestionnaireResponse.item[yrkesskade]`           | See example below                                                 | Group with boolean and optional injury date. `yrkesskade-skadedato` is omitted if not relevant. TODO: Legal clarifications needed.                                                                                                                                                              |
-| 10  | Employment relationship                         | `QuestionnaireResponse.item[arbeidsforhold]`       | See example below                                                 | Employment relationship is represented as a group with employer name.                                                                                                                                                                                                                           |
-| 11  | Base64-encoded PDF                              | `DocumentReference.content[0].attachment`          | See example below                                                 | The EHR is legally required to document the sick note. It will therefore continue as before as a base64-encoded PDF.                                                                                                                                                                            |
-| 12  | Reference to QuestionnaireResponse              | `DocumentReference.context.related`                | See example below                                                 | `DocumentReference.context.related` references the standalone QuestionnaireResponse resource. This is the standard FHIR R4 field for linking related resources to a document.                                                                                                                   |
+| #   | Data                                            | FHIR field                                         | JSON                                                                  | Notes                                                                                                                                                                                                                                                                                           |
+| --- | ----------------------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `sykmeldingId`                                  | `DocumentReference.id`                             | `{ "resourceType": "DocumentReference", "id": "{sykmeldingId}" }`     | Nav sets the DocumentReference resource id to the sykmelding ID for traceability. The EHR must support client-assigned resource ids (standard FHIR PUT semantics).                                                                                                                              |
+| 1b  | `sykmeldingId`                                  | `QuestionnaireResponse.id`                         | `{ "resourceType": "QuestionnaireResponse", "id": "{sykmeldingId}" }` | Nav sets the QuestionnaireResponse resource id to the same sykmelding ID as the DocumentReference. Because FHIR identity is `<type>/<id>`, both resources can share the same id value, so the DocumentReference can reference the QR id (`QuestionnaireResponse/{sykmeldingId}`).               |
+| 2   | Questionnaire reference                         | `QuestionnaireResponse.questionnaire`              | See example below                                                     | QuestionnaireResponse is written as a standalone resource to the FHIR server. It always refers to the publicly available Questionnaire definition via canonical URL. `encounter` links the response to the active consultation. The EHR can look up the definition to understand the structure. |
+| 3   | Main diagnosis                                  | `QuestionnaireResponse.item[hoofdiagnose]`         | See example below                                                     | Main diagnosis is represented as `valueCoding` with a code system (ICD-10 or ICPC-2), code, and display text. No separate Condition resource. Code systems: ICD-10: `urn:oid:2.16.578.1.12.4.1.1.7110`, ICPC-2: `urn:oid:2.16.578.1.12.4.1.1.7170`                                              |
+| 4   | Secondary diagnosis(es)                         | `QuestionnaireResponse.item[bidiagnose]`           | See example below                                                     | Represented the same way as the main diagnosis. The `bidiagnose` item can be repeated for multiple secondary diagnoses.                                                                                                                                                                         |
+| 5   | Period(s), activity type, and sick leave degree | `QuestionnaireResponse.item[aktivitet]`            | See example below                                                     | Activity, period, and degree are combined into a QuestionnaireResponse `.item[]` group item. Multiple periods are represented by repeating the `aktivitet` group. `aktivitet-grad` is only included for the GRADERT (graded) type.                                                              |
+| 6   | Period for the entire sick note                 | `DocumentReference.context.period`                 | See example below                                                     | The period in `DocumentReference.context.period` represents the entire sick note period (earliest fom to latest tom).                                                                                                                                                                           |
+| 7   | Other statutory leave reason                    | `QuestionnaireResponse.item[annen-fravarsgrunn]`   | See example below                                                     | `valueCoding` with one of the defined enum values from the Questionnaire. Omitted if there is no other leave reason.                                                                                                                                                                            |
+| 8   | Pregnancy-related                               | `QuestionnaireResponse.item[svangerskapsrelatert]` | See example below                                                     | `valueBoolean` set to the same value as in the sick note.                                                                                                                                                                                                                                       |
+| 9   | Occupational injury                             | `QuestionnaireResponse.item[yrkesskade]`           | See example below                                                     | Group with boolean and optional injury date. `yrkesskade-skadedato` is omitted if not relevant. TODO: Legal clarifications needed.                                                                                                                                                              |
+| 10  | Employment relationship                         | `QuestionnaireResponse.item[arbeidsforhold]`       | See example below                                                     | Employment relationship is represented as a group with employer name.                                                                                                                                                                                                                           |
+| 11  | Base64-encoded PDF                              | `DocumentReference.content[0].attachment`          | See example below                                                     | The EHR is legally required to document the sick note. It will therefore continue as before as a base64-encoded PDF.                                                                                                                                                                            |
+| 12  | Reference to QuestionnaireResponse              | `DocumentReference.context.related`                | See example below                                                     | `DocumentReference.context.related` references the standalone QuestionnaireResponse resource. This is the standard FHIR R4 field for linking related resources to a document.                                                                                                                   |
 
 **Questionnaire reference example:**
 
@@ -365,7 +386,7 @@ flowchart TD
     D -->|2xx| ERR1[log.error: duplicate\nabort]
     D -->|4xx !404| ERR2[log.error: missing access\nabort]
     D -->|5xx| ERR3[log.error: server error\nabort]
-    D -->|404| E["PUT / (Transaction Bundle)\nDocumentReference + QuestionnaireResponse"]
+    D -->|404| E["POST / (batch Bundle) or PUT per resource\nDocumentReference + QuestionnaireResponse"]
     E --> F{Response?}
     F -->|4xx / 5xx| ERR4[log.error\nabort]
     F -->|2xx| OK[log.info: success]
@@ -380,26 +401,26 @@ flowchart TD
    - `!404 4xx` → `log.error` (missing access, abort)
    - `5xx` → `log.error` (server error, abort)
    - `404` → proceed
-4. Front-end sends `PUT /` with a FHIR transaction bundle containing both DocumentReference (`id = sykmeldingId`) and
-   QuestionnaireResponse (`id = uuid-v4`). The DocumentReference already contains `context.related` referencing the QR
-   by the pre-assigned uuid-v4:
-   - `4xx`/`5xx` → `log.error` (abort — transaction is atomic, neither resource is persisted)
+4. Front-end writes the data back, either as a `batch` Bundle (`POST /`) or as two separate `PUT` calls, containing
+   DocumentReference (`id = sykmeldingId`) and QuestionnaireResponse (`id = sykmeldingId`). The DocumentReference
+   contains `context.related` referencing the QR by the same sykmelding ID (`QuestionnaireResponse/{sykmeldingId}`):
+   - `4xx`/`5xx` → `log.error` (abort)
    - `2xx` → `log.info` (success)
 
 ### Complete Example
 
-#### Transaction Bundle (DocumentReference + QuestionnaireResponse)
+#### Batch Bundle (DocumentReference + QuestionnaireResponse)
 
 ```json
 {
   "resourceType": "Bundle",
-  "type": "transaction",
+  "type": "batch",
   "entry": [
     {
-      "fullUrl": "QuestionnaireResponse/e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038",
+      "fullUrl": "QuestionnaireResponse/{sykmelding-id}",
       "resource": {
         "resourceType": "QuestionnaireResponse",
-        "id": "e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038",
+        "id": "{sykmelding-id}",
         "questionnaire": "https://www.nav.no/samarbeidspartner/sykmelding/fhir/R4/Questionnaire/V1",
         "status": "completed",
         "subject": {
@@ -595,7 +616,7 @@ flowchart TD
       },
       "request": {
         "method": "PUT",
-        "url": "QuestionnaireResponse/e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038"
+        "url": "QuestionnaireResponse/{sykmelding-id}"
       }
     },
     {
@@ -644,7 +665,7 @@ flowchart TD
           },
           "related": [
             {
-              "reference": "QuestionnaireResponse/e3f7a92b-1d44-4c8e-b6f0-2a9d7c5e1038"
+              "reference": "QuestionnaireResponse/{sykmelding-id}"
             }
           ]
         }
@@ -678,9 +699,9 @@ Alternative solutions and FHIR resources that were considered and rejected:
 
 Alternatives not currently used but kept open pending EHR feedback:
 
-| #   | FHIR approach                                                                                                                                    | Notes                                                                                                                                                                                                                                                                                                                                                                                 |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | `sykmeldingId` as `DocumentReference.identifier[0]` (CodeableConcept) + `QuestionnaireResponse.identifier` (CodeableConcept), two separate POSTs | Lets the EHR assign its own resource ids. Nav stores the sykmelding ID as a coded `Identifier` (with `type` CodeableConcept, `system`, and `value`) in both resources. The idempotency check becomes a search by identifier (`GET /DocumentReference?identifier=system\|value`). Useful if EHRs reject client-assigned resource ids or if transaction bundle support is inconsistent. |
+| #   | FHIR approach                                                                                                                                    | Notes                                                                                                                                                                                                                                                                                                                                                                           |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `sykmeldingId` as `DocumentReference.identifier[0]` (CodeableConcept) + `QuestionnaireResponse.identifier` (CodeableConcept), two separate POSTs | Lets the EHR assign its own resource ids. Nav stores the sykmelding ID as a coded `Identifier` (with `type` CodeableConcept, `system`, and `value`) in both resources. The idempotency check becomes a search by identifier (`GET /DocumentReference?identifier=system\|value`). Useful if EHRs reject client-assigned resource ids or if batch Bundle support is inconsistent. |
 
 ## Analysis: FHIR Best Practices
 
@@ -706,7 +727,7 @@ With a standalone QuestionnaireResponse:
 
 - The EHR can index and search on QuestionnaireResponse independently of DocumentReference
 - The resource is used as the FHIR specification intends
-- DocumentReference remains clean – it only contains PDF and metadata, which is its purpose
+- DocumentReference remains clean; it only contains PDF and metadata, which is its purpose
 - The reference via `context.related` is the FHIR R4 field designed for this linkage
 
 ### Reference Direction
@@ -725,15 +746,15 @@ explicit back-references.
 
 ## Q & A
 
-| #   | Question                                                            | Answer                                                                                                                                                                                                                                                           |
-| --- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Does the FHIR server need to understand QuestionnaireResponse?      | Yes. QuestionnaireResponse is written as a standalone resource to the FHIR server. Most modern FHIR R4 servers support this out of the box.                                                                                                                      |
-| 2   | Can structured data be referenced outside DocumentReference?        | Yes. QuestionnaireResponse is a standalone resource with its own identity. It can be searched, indexed, and referenced freely by the EHR.                                                                                                                        |
-| 3   | How do you find DocumentReference from a QuestionnaireResponse?     | Via FHIR search: `GET DocumentReference?related=QuestionnaireResponse/{id}`. FHIR R4 QuestionnaireResponse has no standard field for referencing back to DocumentReference.                                                                                      |
-| 4   | What happens if the EHR does not support structured upload?         | DocumentReference with PDF only is sent as today. Structured data is an added benefit, not a requirement.                                                                                                                                                        |
-| 5   | How does the EHR know which items are in the QuestionnaireResponse? | `QuestionnaireResponse.questionnaire` refers to the publicly published Questionnaire definition. The EHR can look up the definition to understand the structure.                                                                                                 |
-| 6   | Is diagnosis always included in QuestionnaireResponse?              | Yes. The diagnosis set by the doctor in the sick note is always included as `valueCoding`, regardless of whether it has been changed from the Encounter or not. The Encounter reference in `DocumentReference.context` gives the EHR the opportunity to compare. |
-| 7   | What happens if the transaction bundle fails?                       | Both resources are rolled back atomically — no orphaned resources are left on the FHIR server. Nav will log the error and surface it to the user.                                                                                                                |
+| #   | Question                                                            | Answer                                                                                                                                                                                                                                                                                              |
+| --- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Does the FHIR server need to understand QuestionnaireResponse?      | Yes. QuestionnaireResponse is written as a standalone resource to the FHIR server. Most modern FHIR R4 servers support this out of the box.                                                                                                                                                         |
+| 2   | Can structured data be referenced outside DocumentReference?        | Yes. QuestionnaireResponse is a standalone resource with its own identity. It can be searched, indexed, and referenced freely by the EHR.                                                                                                                                                           |
+| 3   | How do you find DocumentReference from a QuestionnaireResponse?     | Via FHIR search: `GET DocumentReference?related=QuestionnaireResponse/{id}`. FHIR R4 QuestionnaireResponse has no standard field for referencing back to DocumentReference.                                                                                                                         |
+| 4   | What happens if the EHR does not support structured upload?         | DocumentReference with PDF only is sent as today. Structured data is an added benefit, not a requirement.                                                                                                                                                                                           |
+| 5   | How does the EHR know which items are in the QuestionnaireResponse? | `QuestionnaireResponse.questionnaire` refers to the publicly published Questionnaire definition. The EHR can look up the definition to understand the structure.                                                                                                                                    |
+| 6   | Is diagnosis always included in QuestionnaireResponse?              | Yes. The diagnosis set by the doctor in the sick note is always included as `valueCoding`, regardless of whether it has been changed from the Encounter or not. The Encounter reference in `DocumentReference.context` gives the EHR the opportunity to compare.                                    |
+| 7   | What happens if a write-back fails?                                 | DocumentReference is mandatory and is written first; QuestionnaireResponse is best-effort. With a `batch` Bundle each entry is processed independently, so the DocumentReference can still be stored even if the QuestionnaireResponse entry fails. Nav logs the error and surfaces it to the user. |
 
 ## Notes
 

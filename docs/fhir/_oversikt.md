@@ -25,7 +25,13 @@ Under er en beskrivelse av hvilke FHIR ressurser Nav trenger for preutfylling av
 
 ### Tilbakeskriving
 
-For tilbakeskriving fra Nav til EPJ må følgende FHIR ressurser være tilgjengelige i
-EPJ FHIR server eller overføres til web-applikasjonen:
+For tilbakeskriving av PDF fra Nav til EPJ må følgende FHIR ressurser være tilgjengelige i
+EPJ FHIR server:
 
 - [DocumentReference](./document-reference.md)
+
+For tilbakeskriving av _FHIR-strukturerte_ data må følgende FHIR ressurser være tilgjengelige
+i EPJ FHIR server:
+
+- [Bundle](./bundle.md)
+- [QuestionnaireResponse](./questionnaire-response.md)
