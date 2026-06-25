@@ -52,6 +52,7 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
                     )}
                 </ComboTable>
             )}
+
             {initialLoad && <ComboTableSkeleton />}
             {!initialLoad && !dashboardQuery.error && !hasData && <ComboTableEmptyState />}
             {!initialLoad && dashboardQuery.error && !hasData && <EverythingError refetch={dashboardQuery.refetch} />}
