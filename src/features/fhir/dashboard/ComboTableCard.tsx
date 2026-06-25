@@ -7,15 +7,15 @@ import * as R from 'remeda'
 
 import LegeOgBehandlerTelefonen from '#components/help/LegeOgBehandlerTelefonen'
 import SessionIdInfo from '#components/help/SessionIdInfo'
+import { useFlag } from '#core/toggles/context'
 import useOnFocus from '#lib/hooks/useOnFocus'
 import { cn } from '#lib/tw'
 import { AllDashboardDocument, KonsultasjonDocument } from '#queries'
 
 import DashboardCard from './card/DashboardCard'
 import { ComboTable, ComboTableFullCell, ComboTableHeader } from './combo-table/ComboTable'
-import DashboardTable from './table/DashboardTable'
 import { RequestSykmeldinger } from './historical/RequestSykmeldinger'
-import { useFlag } from '#core/toggles/context'
+import DashboardTable from './table/DashboardTable'
 
 function ComboTableCard({ className }: { className?: string }): ReactElement {
     const konsultasjon = useQuery(KonsultasjonDocument)
@@ -43,10 +43,7 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
             fetching={isRefetching}
         >
             {hasData && dashboardQuery.data && (
-                <ComboTable
-                    sykmeldinger={dashboardQuery.data.sykmeldinger?.current ?? []}
-                    drafts={dashboardQuery.data.drafts ?? []}
-                >
+                <ComboTable sykmeldinger={allSykmeldinger ?? []} drafts={dashboardQuery.data.drafts ?? []}>
                     {dashboardQuery.error && dashboardQuery.data.drafts == null && (
                         <AllDraftsError refetch={dashboardQuery.refetch} />
                     )}
