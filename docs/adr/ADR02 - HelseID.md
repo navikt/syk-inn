@@ -1,25 +1,25 @@
 # ADR02 - HelseID
 
 - [ADR02 - HelseID](#adr02---helseid)
-    - [Context](#context)
-        - [Current flow](#current-flow)
-        - [Scope of this decision](#scope-of-this-decision)
-    - [Decision](#decision)
-    - [Consequences](#consequences)
-        - [Positive](#positive)
-        - [Negative](#negative)
-    - [Implementation](#implementation)
-        - [Prerequisites](#prerequisites)
-        - [Architecture](#architecture)
-        - [Access scopes](#access-scopes)
-        - [Claims used](#claims-used)
-        - [Step-by-step guide](#step-by-step-guide)
-        - [Token validation & details](#token-validation--details)
-    - [Alternatives](#alternatives)
-        - [Still viable alternatives](#still-viable-alternatives)
-    - [Q & A](#q--a)
-    - [Notes](#notes)
-    - [References](#references)
+  - [Context](#context)
+    - [Current flow](#current-flow)
+    - [Scope of this decision](#scope-of-this-decision)
+  - [Decision](#decision)
+  - [Consequences](#consequences)
+    - [Positive](#positive)
+    - [Negative](#negative)
+  - [Implementation](#implementation)
+    - [Prerequisites](#prerequisites)
+    - [Architecture](#architecture)
+    - [Access scopes](#access-scopes)
+    - [Claims used](#claims-used)
+    - [Step-by-step guide](#step-by-step-guide)
+    - [Token validation & details](#token-validation--details)
+  - [Alternatives](#alternatives)
+    - [Still viable alternatives](#still-viable-alternatives)
+  - [Q & A](#q--a)
+  - [Notes](#notes)
+  - [References](#references)
 
 ## Context
 
@@ -207,8 +207,8 @@ sequenceDiagram
 5. App redirects to **Wonderwall**: `/oauth2/login?redirect=/fhir/<patientId>`.
 6. Wonderwall runs a standard **OIDC Authorization Code + PKCE** flow against HelseID. Because the practitioner already has a live HelseID browser session (they logged into the EHR with HelseID), this completes **silently, no login prompt**.
 7. Wonderwall proxies the now-authenticated request to syk-inn, adding:
-    - `Authorization: Bearer <HelseID access_token>`
-    - `X-Wonderwall-Id-Token: <HelseID id_token>`
+   - `Authorization: Bearer <HelseID access_token>`
+   - `X-Wonderwall-Id-Token: <HelseID id_token>`
 8. syk-inn **validates** the access_token against HelseID JWKS from `.well-known/openid-configuration`, expected `issuer`, `RS256`.
 9. syk-inn reads identity claims from the **id_token**: `helseid://claims/hpr/hpr_number`, `name`, `helseid://claims/identity/pid`.
 10. Optionally calls `/connect/userinfo` with the access_token to retrieve `helseid://claims/hpr/hpr_details` (profession, authorization value/description, requisition_rights).
