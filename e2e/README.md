@@ -30,7 +30,7 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 ## [fhir/dashboard/redacted.spec.ts](./fhir/dashboard/redacted.spec.ts)
 
 - [redacted @feature-toggle should see other users sykmeldinger as redacted versions](./fhir/dashboard/redacted.spec.ts#L6)
-- [redacted @feature-toggle toggled off - should not display any other sykmeldinger](./fhir/dashboard/redacted.spec.ts#L30)
+- [redacted @feature-toggle toggled off - should not display any other sykmeldinger](./fhir/dashboard/redacted.spec.ts#L24)
 
 ## [fhir/dashboard/sykmelding.spec.ts](./fhir/dashboard/sykmelding.spec.ts)
 

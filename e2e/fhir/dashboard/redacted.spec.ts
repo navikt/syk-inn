@@ -14,17 +14,11 @@ test('redacted @feature-toggle should see other users sykmeldinger as redacted v
     const rows = table.getByRole('row')
 
     await expect(table).toBeVisible()
-    await expect(rows).toHaveCount(2) // 1 + header
-
-    const tableHistoriske = page.getByRole('region', { name: 'Historiske sykmeldinger' })
-    const rowsHistoriske = tableHistoriske.getByRole('row')
-
-    await expect(tableHistoriske).toBeVisible()
-    await expect(rowsHistoriske).toHaveCount(3) // 2 + header
+    await expect(rows).toHaveCount(4) // 1 + 2 historiske + header
 
     await expect(rows.nth(1).getByRole('cell').nth(1)).toHaveText('K24 - Eksempeldiagnose 1')
-    await expect(rowsHistoriske.nth(1).getByRole('cell').nth(1)).toHaveText('Diagnose skjult')
-    await expect(rowsHistoriske.nth(2).getByRole('cell').nth(1)).toHaveText('Diagnose skjult')
+    await expect(rows.nth(2).getByRole('cell').nth(1)).toHaveText('Diagnose skjult')
+    await expect(rows.nth(3).getByRole('cell').nth(1)).toHaveText('Diagnose skjult')
 })
 
 test('redacted @feature-toggle toggled off - should not display any other sykmeldinger', async ({ page }) => {
@@ -40,7 +34,5 @@ test('redacted @feature-toggle toggled off - should not display any other sykmel
     await expect(table).toBeVisible()
     await expect(rows).toHaveCount(2) // 1 + header
 
-    const historiske = page.getByRole('region', { name: 'Historiske sykmeldinger' })
-    await expect(historiske).toContainText('Pasienten har ingen historiske sykmeldinger')
     await expect(rows.nth(1).getByRole('cell').nth(1)).toHaveText('K24 - Eksempeldiagnose 1')
 })

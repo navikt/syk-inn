@@ -13,7 +13,6 @@ import { WelcomeModal } from '#features/fhir/dashboard/welcome-modal/lazy'
 
 function DashboardPage(): ReactElement {
     const dispatch = useAppDispatch()
-    const historiskeToggle = useFlag('SYK_INN_REQUEST_HISTORISKE')
 
     useEffect(() => {
         /**
@@ -27,7 +26,6 @@ function DashboardPage(): ReactElement {
             <div className="grid grid-cols-2 gap-3 w-full">
                 <DashboardTopCard className="col-span-2" />
                 <ComboTableCard className="min-h-80 col-span-2" />
-                {historiskeToggle && <HistoricalCard className="col-span-2" />}
             </div>
             <Suspense fallback={null}>
                 <WelcomeModal />

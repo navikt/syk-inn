@@ -10,7 +10,9 @@ export function startNewSykmelding(patient?: { name: string; fnr: string }) {
         await test.step(
             patient == null ? 'Start new sykmelding' : 'Verify the patient and start new sykmelding',
             async () => {
-                const pasientInfoRegion = page.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ })
+                const pasientInfoRegion = page.getByRole('region', {
+                    name: /Oversikt over (.*) sitt sykefravær/,
+                })
 
                 if (patient != null) await expectPatient(patient)(pasientInfoRegion)
                 await verifyNoHorizontalScroll()(page)
@@ -28,7 +30,9 @@ export function startNewAlternateSykmelding(variant: 'BEHANDLINGSDAGER', patient
                 ? `Start new ${variant}-sykmelding`
                 : `Verify the patient and start new ${variant}-sykmelding`,
             async () => {
-                const pasientInfoRegion = page.getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ })
+                const pasientInfoRegion = page.getByRole('region', {
+                    name: /Oversikt over (.*) sitt sykefravær/,
+                })
 
                 if (patient != null) await expectPatient(patient)(pasientInfoRegion)
                 await verifyNoHorizontalScroll()(page)
@@ -53,11 +57,11 @@ export function startNewAlternateSykmelding(variant: 'BEHANDLINGSDAGER', patient
     }
 }
 
-export function gotoExistingSykmelding(when: 'current' | 'previous', nth: number) {
+export function gotoExistingSykmelding(nth: number) {
     return async (page: Page) => {
         await test.step('Go to existing sykmelding', async () => {
             const region = page.getByRole('region', {
-                name: when === 'current' ? 'Pågående sykmeldinger og utkast' : 'Historiske sykmeldinger',
+                name: 'Pågående sykmeldinger og utkast',
             })
 
             await expect(region).toBeVisible()
