@@ -63,7 +63,11 @@ function toPeriodeFromStatePeriode(aktivitet: NySykmeldingAktivitet): NySykmeldi
                 aktivitet: {
                     ...periode.aktivitet,
                     grad: aktivitet.grad ? aktivitet.grad.toFixed(0) : null,
-                    arbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             }
         case 'BEHANDLINGSDAGER':
@@ -72,7 +76,11 @@ function toPeriodeFromStatePeriode(aktivitet: NySykmeldingAktivitet): NySykmeldi
                 aktivitet: {
                     ...periode.aktivitet,
                     grad: null,
-                    arbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             }
     }

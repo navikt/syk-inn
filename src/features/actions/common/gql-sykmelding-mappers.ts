@@ -100,7 +100,11 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 aktivitet: {
                     type: 'GRADERT',
                     grad: aktivitet.grad.toFixed(0),
-                    arbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             } satisfies AktivitetsPeriode
         case 'Behandlingsdager':
@@ -112,7 +116,11 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 aktivitet: {
                     type: 'BEHANDLINGSDAGER',
                     grad: null,
-                    arbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             } satisfies AktivitetsPeriode
         case 'Reisetilskudd':
@@ -124,7 +132,11 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 aktivitet: {
                     type: 'GRADERT',
                     grad: null,
-                    arbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
                 periode: {
                     fom: dateOnly(new Date()),

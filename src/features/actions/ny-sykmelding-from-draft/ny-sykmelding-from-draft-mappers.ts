@@ -144,7 +144,11 @@ function toPeriodeFromDraftPeriode(
                 aktivitet: {
                     type: draft.type,
                     grad: draft.grad ?? null,
-                    arbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             }
         case 'BEHANDLINGSDAGER':
@@ -156,7 +160,11 @@ function toPeriodeFromDraftPeriode(
                 aktivitet: {
                     type: draft.type,
                     grad: null,
-                    arbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             }
     }

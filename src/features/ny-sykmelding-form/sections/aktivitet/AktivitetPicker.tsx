@@ -12,7 +12,6 @@ import GradertGradPicker from './GradertGradPicker'
 function AktivitetPicker({ index }: { index: number }): ReactElement {
     const aktivitetField = useController({
         name: `perioder.${index}.aktivitet.type`,
-        defaultValue: 'AKTIVITET_IKKE_MULIG' satisfies AktiviteFieldType,
         rules: { required: 'Du må velge en aktivitetstype' },
     })
 
@@ -45,9 +44,9 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
             </Select>
             <AnimatePresence initial={false}>
                 {aktivitetField.field.value === 'GRADERT' ? (
-                    <GradertGradPicker index={index} />
+                    <GradertGradPicker key="gradert" index={index} />
                 ) : (
-                    <div className="flex flex-col gap-1">
+                    <div key="100%" className="flex flex-col gap-1">
                         <Label>Sykmeldingsgrad (%)</Label>
                         <BodyShort className="h-12 p-2 pl-0 flex items-center">100%</BodyShort>
                     </div>
