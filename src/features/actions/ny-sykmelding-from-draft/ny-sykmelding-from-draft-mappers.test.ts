@@ -23,7 +23,11 @@ test('draft values shall be used as default if provided', () => {
                 aktivitet: {
                     type: 'GRADERT',
                     grad: '50',
-                    arbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             },
             {
@@ -90,7 +94,15 @@ test('form values shall have higher presedence than draft values', () => {
         perioder: [
             {
                 periode: { fom: '2025-02-01', tom: '2025-02-14' },
-                aktivitet: { type: 'GRADERT', grad: '40', arbeidsrelatertArsak: null },
+                aktivitet: {
+                    type: 'GRADERT',
+                    grad: '40',
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
+                },
             },
             {
                 periode: { fom: '2025-02-15', tom: '2025-02-28' },
@@ -106,7 +118,15 @@ test('form values shall have higher presedence than draft values', () => {
             },
             {
                 periode: { fom: '2025-03-01', tom: '2025-03-10' },
-                aktivitet: { type: 'GRADERT', grad: '20', arbeidsrelatertArsak: null },
+                aktivitet: {
+                    type: 'GRADERT',
+                    grad: '20',
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
+                },
             },
         ],
         diagnoser: {
@@ -155,7 +175,15 @@ test('server suggestions shall be used if no draft or form values are provided',
             {
                 // Default periode is GRADERT from Today
                 periode: { fom: dateOnly(new Date()), tom: '' },
-                aktivitet: { type: 'GRADERT', grad: null, arbeidsrelatertArsak: null },
+                aktivitet: {
+                    type: 'GRADERT',
+                    grad: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
+                },
             },
         ],
         tilbakedatering: null,

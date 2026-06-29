@@ -39,6 +39,8 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
         },
     })
 
+    console.log('HEY', isArbeidsrelatertArsak.field.value)
+
     return (
         <div className="flex gap-1 flex-col">
             <CheckboxGroup

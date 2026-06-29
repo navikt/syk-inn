@@ -78,7 +78,11 @@ export function defaultPeriode(variant: NySykmeldingFormVariantType): Aktivitets
             aktivitet: {
                 type: 'BEHANDLINGSDAGER',
                 grad: null,
-                arbeidsrelatertArsak: null,
+                arbeidsrelatertArsak: {
+                    isArbeidsrelatertArsak: false,
+                    arbeidsrelaterteArsaker: null,
+                    annenArbeidsrelatertArsak: null,
+                },
             },
         }
     }
@@ -91,7 +95,11 @@ export function defaultPeriode(variant: NySykmeldingFormVariantType): Aktivitets
         aktivitet: {
             type: 'GRADERT',
             grad: null,
-            arbeidsrelatertArsak: null,
+            arbeidsrelatertArsak: {
+                isArbeidsrelatertArsak: false,
+                arbeidsrelaterteArsaker: null,
+                annenArbeidsrelatertArsak: null,
+            },
         },
     }
 }

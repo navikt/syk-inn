@@ -19,7 +19,15 @@ const createFormValues = ({ fom, tom }: { fom: string; tom: string }): NySykmeld
         {
             // Default periode is GRADERT from Today
             periode: { fom: fom, tom: tom },
-            aktivitet: { type: 'GRADERT', grad: '70', arbeidsrelatertArsak: null },
+            aktivitet: {
+                type: 'GRADERT',
+                grad: '70',
+                arbeidsrelatertArsak: {
+                    isArbeidsrelatertArsak: false,
+                    arbeidsrelaterteArsaker: null,
+                    annenArbeidsrelatertArsak: null,
+                },
+            },
         },
     ],
     tilbakedatering: {

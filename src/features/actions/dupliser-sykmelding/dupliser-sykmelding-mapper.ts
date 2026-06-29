@@ -126,7 +126,11 @@ function toDuplisertRedactedAktivitet(
                 aktivitet: {
                     type: 'GRADERT',
                     grad: null,
-                    arbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             }
         case 'AVVENTENDE':

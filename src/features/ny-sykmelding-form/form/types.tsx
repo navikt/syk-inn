@@ -32,7 +32,7 @@ export type AktiviteFieldType = 'AKTIVITET_IKKE_MULIG' | 'GRADERT' | 'BEHANDLING
 export type AktivitetField = {
     type: AktiviteFieldType
     grad: string | null
-    arbeidsrelatertArsak: ArbeidsrelatertArsakField | null
+    arbeidsrelatertArsak: ArbeidsrelatertArsakField
 }
 
 export type AktivitetsPeriode = {

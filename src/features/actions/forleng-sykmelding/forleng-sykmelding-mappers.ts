@@ -155,7 +155,11 @@ function forlengRedactedSykmelding(
                 aktivitet: {
                     type: 'GRADERT',
                     grad: null,
-                    arbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
             }
             break
@@ -169,7 +173,11 @@ function forlengRedactedSykmelding(
                 aktivitet: {
                     type: 'GRADERT',
                     grad: null,
-                    arbeidsrelatertArsak: null,
+                    arbeidsrelatertArsak: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
                 },
                 periode: {
                     fom: dateOnly(new Date()),
