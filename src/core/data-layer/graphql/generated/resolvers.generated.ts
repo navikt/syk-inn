@@ -155,6 +155,7 @@ export type Gradert = FomTom & {
     __typename?: 'Gradert'
     fom: Scalars['DateOnly']['output']
     grad: Scalars['Int']['output']
+    reisetilskudd: Scalars['Boolean']['output']
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
 }
@@ -959,6 +960,7 @@ export type GradertResolvers<
 > = {
     fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     grad?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+    reisetilskudd?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>

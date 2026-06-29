@@ -127,12 +127,15 @@ function toPeriodeFromDraftPeriode(
                 ...periode,
                 aktivitet: {
                     ...periode.aktivitet,
-                    arbeidsrelatertArsak: {
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: draft.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
                         arbeidsrelaterteArsaker: draft.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? null,
                         annenArbeidsrelatertArsak: draft.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
                     },
-                    grad: null,
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
                 },
             }
         case 'GRADERT':
@@ -143,8 +146,11 @@ function toPeriodeFromDraftPeriode(
                 },
                 aktivitet: {
                     type: draft.type,
-                    grad: draft.grad ?? null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: draft.grad ?? null,
+                        reisetilskudd: draft.gradertReisetilksudd ?? false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -159,8 +165,30 @@ function toPeriodeFromDraftPeriode(
                 },
                 aktivitet: {
                     type: draft.type,
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
+                },
+            }
+        case 'REISETILSKUDD':
+            return {
+                periode: {
+                    fom: draft.fom ?? '',
+                    tom: draft.tom ?? '',
+                },
+                aktivitet: {
+                    type: draft.type,
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,

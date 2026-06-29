@@ -109,8 +109,11 @@ function toDuplisertRedactedAktivitet(
                 },
                 aktivitet: {
                     type: 'AKTIVITET_IKKE_MULIG',
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -125,8 +128,11 @@ function toDuplisertRedactedAktivitet(
                 },
                 aktivitet: {
                     type: 'GRADERT',
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -134,6 +140,7 @@ function toDuplisertRedactedAktivitet(
                 },
             }
         case 'AVVENTENDE':
+        // TODO: Should be dupliserbare?
         case 'BEHANDLINGSDAGER':
         case 'REISETILSKUDD':
             logger.info(`Duplisering with aktivitet of type ${aktivitet.type} is not supported yet`)

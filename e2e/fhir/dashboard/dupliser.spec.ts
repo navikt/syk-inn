@@ -17,6 +17,8 @@ import {
     selectSvangerskapsrelatert,
     submitSykmelding,
     fillYrkesskade,
+    fillReisetilskuddPeriode,
+    selectReisetilskuddType,
 } from '../../actions/user-actions'
 import {
     expectSvangerskapsrelatert,
@@ -122,6 +124,47 @@ test('should be able to dupliser behandlingsdager (from dashboard) @feature-togg
         { name: 'Periode', values: [new RegExp(toReadableDatePeriod(inDays(-1), inDays(13)))] },
         { name: 'Periode', values: [/Sykmelding med behandlingsdager/] },
         { name: 'Til NAV', values: ['Annen forklaring'] },
+    ])(page)
+
+    await submitSykmelding()(page)
+})
+
+test('should be able to dupliser reisetilskudd (from dashboard)', async ({ page }) => {
+    await launchWithMock('empty')(page)
+    await startNewAlternateSykmelding('REISETILSKUDD')(page)
+
+    await userInteractionsGroup(
+        fillReisetilskuddPeriode({ fromRelative: -1, days: 14 }),
+        selectReisetilskuddType({ grad: 30 }),
+        pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
+        fillInnspillTilArbeidsgiver('Dobbelt så mange sykmeldinger!'),
+        selectSvangerskapsrelatert(true),
+        fillYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        verifyNoHorizontalScroll(),
+        nextStep(),
+        verifySignerendeBehandler(),
+        verifyNoHorizontalScroll(),
+        submitSykmelding(),
+    )(page)
+
+    await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
+    await page.getByRole('button', { name: 'Dupliser' }).click()
+
+    await userInteractionsGroup(
+        expectPeriode({ type: { reisetilskudd: true, grad: 30 }, fromRelative: -1, days: 14 }),
+        expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
+        expectSvangerskapsrelatert(true),
+        expectYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        // Don't copy tilArbeidsgiver during duplication
+        expectInnspillTilArbeidsgiver(null),
+        verifyNoHorizontalScroll(),
+    )(page)
+
+    await userInteractionsGroup(nextStep(), verifySignerendeBehandler())(page)
+
+    await verifySummaryPage([
+        { name: 'Periode', values: [new RegExp(toReadableDatePeriod(inDays(-1), inDays(13)))] },
+        { name: 'Periode', values: [/Gradert sykmelding \(30%\), med reisetilskudd/] },
     ])(page)
 
     await submitSykmelding()(page)

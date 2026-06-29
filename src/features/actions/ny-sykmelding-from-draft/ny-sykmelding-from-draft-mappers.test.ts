@@ -22,8 +22,11 @@ test('draft values shall be used as default if provided', () => {
                 periode: { fom: '2025-01-01', tom: '2025-01-15' },
                 aktivitet: {
                     type: 'GRADERT',
-                    grad: '50',
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: '50',
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -34,12 +37,15 @@ test('draft values shall be used as default if provided', () => {
                 periode: { fom: '2025-01-16', tom: '2025-01-31' },
                 aktivitet: {
                     type: 'AKTIVITET_IKKE_MULIG',
-                    arbeidsrelatertArsak: {
+                    aktivitetIkkeMulig: {
                         annenArbeidsrelatertArsak: 'Ingen tilretteleggingsmuligheter',
                         arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING'],
                         isArbeidsrelatertArsak: true,
                     },
-                    grad: null,
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
                 },
             },
         ],
@@ -96,8 +102,11 @@ test('form values shall have higher presedence than draft values', () => {
                 periode: { fom: '2025-02-01', tom: '2025-02-14' },
                 aktivitet: {
                     type: 'GRADERT',
-                    grad: '40',
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: '40',
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -108,8 +117,11 @@ test('form values shall have higher presedence than draft values', () => {
                 periode: { fom: '2025-02-15', tom: '2025-02-28' },
                 aktivitet: {
                     type: 'AKTIVITET_IKKE_MULIG',
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: true,
                         arbeidsrelaterteArsaker: ['MANGLENDE_TILRETTELEGGING', 'ANNET'],
                         annenArbeidsrelatertArsak: 'Ingen mulighet for hjemmekontor',
@@ -120,8 +132,11 @@ test('form values shall have higher presedence than draft values', () => {
                 periode: { fom: '2025-03-01', tom: '2025-03-10' },
                 aktivitet: {
                     type: 'GRADERT',
-                    grad: '20',
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: '20',
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -177,8 +192,11 @@ test('server suggestions shall be used if no draft or form values are provided',
                 periode: { fom: dateOnly(new Date()), tom: '' },
                 aktivitet: {
                     type: 'GRADERT',
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -255,7 +273,7 @@ const fullDraft: DraftValues = {
 const fullExistingStateValues: NySykmeldingFormState = {
     arbeidsforhold: { harFlereArbeidsforhold: true, sykmeldtFraArbeidsforhold: 'Form values Arbeidsgiver' },
     aktiviteter: [
-        { type: 'GRADERT', fom: '2025-02-01', tom: '2025-02-14', grad: 40 },
+        { type: 'GRADERT', fom: '2025-02-01', tom: '2025-02-14', grad: 40, reisetilskudd: false },
         {
             type: 'AKTIVITET_IKKE_MULIG',
             fom: '2025-02-15',
@@ -266,7 +284,7 @@ const fullExistingStateValues: NySykmeldingFormState = {
                 annenArbeidsrelatertArsak: 'Ingen mulighet for hjemmekontor',
             },
         },
-        { type: 'GRADERT', fom: '2025-03-01', tom: '2025-03-10', grad: 20 },
+        { type: 'GRADERT', fom: '2025-03-01', tom: '2025-03-10', grad: 20, reisetilskudd: false },
     ],
     tilbakedatering: { fom: '2025-01-20', grunn: 'VENTETID_LEGETIME', annenGrunn: null },
     diagnose: {

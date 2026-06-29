@@ -76,21 +76,30 @@ export const defaultAktivitetGradert = ({
     fom,
     tom,
     grad,
+    reisetilskudd = false,
 }: {
     fom: string
     tom: string
     grad: number
+    reisetilskudd?: boolean
 }): InputAktivitet => ({
     gradert: {
         fom: fom,
         tom: tom,
         grad: grad,
-        reisetilskudd: false,
+        reisetilskudd: reisetilskudd,
     },
 })
 
 export const defaultBehandlingsdager = ({ fom, tom }: { fom: string; tom: string }): InputAktivitet => ({
     behandlingsdager: {
+        fom: fom,
+        tom: tom,
+    },
+})
+
+export const defaultReisetilskudd = ({ fom, tom }: { fom: string; tom: string }): InputAktivitet => ({
+    reisetilskudd: {
         fom: fom,
         tom: tom,
     },

@@ -17,6 +17,8 @@ import {
     previousStep,
     requestAccessToSykmeldinger,
     submitSykmelding,
+    fillReisetilskuddPeriode,
+    selectReisetilskuddType,
 } from '../../actions/user-actions'
 import {
     expectArbeidsforhold,
@@ -130,6 +132,54 @@ test('should be able to forlenge an existing behandlingsdager-sykmelding with co
         { name: 'Periode', values: [new RegExp(toReadableDatePeriod(inDays(15), inDays(28)))] },
         { name: 'Periode', values: [/Sykmelding med behandlingsdager/] },
         { name: 'Til NAV', values: ['Lorem ipsum'] },
+    ])(page)
+
+    await submitSykmelding()(page)
+})
+
+test('should be able to forlenge an existing reisetilskudd-sykmelding with correct values', async ({ page }) => {
+    await launchWithMock('empty')(page)
+    await startNewAlternateSykmelding('REISETILSKUDD')(page)
+
+    await userInteractionsGroup(
+        fillReisetilskuddPeriode({ fromRelative: 0, days: 14 }),
+        selectReisetilskuddType({ grad: 45 }),
+        pickHoveddiagnose({ search: 'L75', select: /Brudd lårben/ }),
+        selectSvangerskapsrelatert(true),
+        fillYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        fillInnspillTilArbeidsgiver('Dobbelt så mange sykmeldinger!'),
+        verifyNoHorizontalScroll(),
+        nextStep(),
+        verifySignerendeBehandler(),
+        verifyNoHorizontalScroll(),
+        submitSykmelding(),
+    )(page)
+
+    await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
+    await page.getByRole('button', { name: 'Forlenge' }).click()
+
+    const periodeRegion = page.getByRole('region', { name: 'Periode for reisetilskudd' })
+    // One day ahead of the previous
+    await expect(periodeRegion.getByRole('textbox', { name: 'Fra og med' })).toHaveValue(inputDate(inDays(15)))
+
+    await userInteractionsGroup(
+        expectHoveddiagnose('L75 - Brudd lårben/lårhals'),
+        expectSvangerskapsrelatert(true),
+        expectYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(7) }),
+        // Don't copy meldinger during forlengelse
+        expectInnspillTilArbeidsgiver(null),
+    )(page)
+
+    // Leave the pre-filled value
+    await periodeRegion.getByRole('textbox', { name: 'Til og med' }).fill(inputDate(inDays(28)))
+
+    await expectPeriode({ type: { reisetilskudd: true, grad: 45 }, fromRelative: 15, days: 13 })(page)
+
+    await userInteractionsGroup(nextStep(), verifySignerendeBehandler())(page)
+
+    await verifySummaryPage([
+        { name: 'Periode', values: [new RegExp(toReadableDatePeriod(inDays(15), inDays(28)))] },
+        { name: 'Periode', values: [/Gradert sykmelding \(45%\), med reisetilskudd/] },
     ])(page)
 
     await submitSykmelding()(page)

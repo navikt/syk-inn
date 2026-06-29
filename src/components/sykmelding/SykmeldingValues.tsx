@@ -179,8 +179,13 @@ function SykmeldingAktivitetValues({ aktivitet }: { aktivitet: AktivitetFragment
                             </ul>
                         </>
                     )}
-                    {it.__typename === 'Gradert' && <BodyShort>{it.grad}% gradert sykmelding</BodyShort>}
+                    {it.__typename === 'Gradert' && (
+                        <BodyShort>
+                            {it.grad}% gradert sykmelding{it.reisetilskudd ? ' med reisetilskudd' : ''}
+                        </BodyShort>
+                    )}
                     {it.__typename === 'Behandlingsdager' && <BodyShort>Periode med behandlingsdager</BodyShort>}
+                    {it.__typename === 'Reisetilskudd' && <BodyShort>Periode med reisetilskudd</BodyShort>}
                 </ValueItem>
             ))}
         </>

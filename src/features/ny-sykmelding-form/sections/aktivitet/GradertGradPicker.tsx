@@ -1,14 +1,21 @@
 import { BodyShort, TextField } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
-import { ReactElement } from 'react'
+import { ReactElement, ReactNode } from 'react'
 
 import { SimpleReveal } from '#components/animation/Reveal'
+import { cn } from '#lib/tw'
 
 import { useController } from '../../form/types'
 
-function GradertGradPicker({ index }: { index: number }): ReactElement {
+type Props = {
+    index: number
+    className?: string
+    label?: string | ReactNode
+}
+
+export function GradertGradPicker({ index, className, label = 'Sykmeldingsgrad (%)' }: Props): ReactElement {
     const gradertField = useController({
-        name: `perioder.${index}.aktivitet.grad` as const,
+        name: `perioder.${index}.aktivitet.gradert.grad` as const,
         defaultValue: '50',
         rules: {
             required: 'Du må fylle inn sykmeldingsgrad',
@@ -30,10 +37,10 @@ function GradertGradPicker({ index }: { index: number }): ReactElement {
     const coercedValue = safeGetPercentValue(gradertField.field.value ?? null)
 
     return (
-        <div className="flex flex-col gap-1">
+        <div className={cn('flex flex-col gap-1', className)}>
             <TextField
                 inputMode="numeric"
-                label="Sykmeldingsgrad (%)"
+                label={label}
                 className="[&>input]:w-[7ch]"
                 {...gradertField.field}
                 value={gradertField.field.value ?? ''}
@@ -56,5 +63,3 @@ function safeGetPercentValue(value: string | null): number | null {
 
     return Number(value)
 }
-
-export default GradertGradPicker

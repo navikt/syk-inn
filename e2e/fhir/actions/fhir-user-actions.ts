@@ -23,7 +23,10 @@ export function startNewSykmelding(patient?: { name: string; fnr: string }) {
     }
 }
 
-export function startNewAlternateSykmelding(variant: 'BEHANDLINGSDAGER', patient?: { name: string; fnr: string }) {
+export function startNewAlternateSykmelding(
+    variant: 'BEHANDLINGSDAGER' | 'REISETILSKUDD',
+    patient?: { name: string; fnr: string },
+) {
     return async (page: Page) => {
         await test.step(
             patient == null
@@ -46,6 +49,13 @@ export function startNewAlternateSykmelding(variant: 'BEHANDLINGSDAGER', patient
                                 .getByRole('menuitem', { name: 'Behandlingsdager' })
                                 .click()
                             return
+                        case 'REISETILSKUDD': {
+                            await page
+                                .getByRole('menu', { name: 'Andre handlinger' })
+                                .getByRole('menuitem', { name: 'Reisetilskudd' })
+                                .click()
+                            return
+                        }
                         default:
                             raise(
                                 `No such variant ${variant as string} implemented in startNewAlternateSykmelding(...)`,

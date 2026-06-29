@@ -341,6 +341,47 @@ export function fillPeriodeRelative({
     }
 }
 
+export function fillReisetilskuddPeriode(
+    params: { days: number; nth?: number } | { fromRelative: number; days: number; nth?: number },
+) {
+    const [fomRelativeToToday, tomRelativeToToday] =
+        'fromRelative' in params ? [params.fromRelative, params.fromRelative + params.days] : [0, params.days]
+
+    const fom = add(new Date(), { days: fomRelativeToToday })
+    const tom = add(new Date(), { days: tomRelativeToToday })
+    const nth = params.nth ?? 0
+
+    return async (page: Page) => {
+        return test.step('Fill periode for behandlingsdager', async () => {
+            const periodeRegion = page.getByRole('region', { name: 'Periode for reisetilskudd' }).nth(nth)
+            await expect(periodeRegion).toBeVisible()
+
+            const fomField = periodeRegion.getByRole('textbox', { name: 'Fra og med' })
+            await fomField.fill(inputDate(fom))
+            const tomField = periodeRegion.getByRole('textbox', { name: 'Til og med' })
+            await tomField.fill(inputDate(tom))
+        })
+    }
+}
+
+export function selectReisetilskuddType(variant: 'FULL' | { grad: number }) {
+    return async (page: Page) => {
+        return test.step(`Select reisetilskudd type ${typeof variant === 'string' ? variant : `grad ${variant.grad}`}`, async () => {
+            const region = page.getByRole('radiogroup', { name: 'Mulighet for arbeid ved bruk av reisetilskudd' })
+            await expect(region).toBeVisible()
+
+            if (typeof variant === 'string' && variant === 'FULL') {
+                await region.getByRole('radio', { name: 'Kan være 100% i arbeid' }).check()
+            } else if (typeof variant !== 'string' && 'grad' in variant) {
+                await region.getByRole('radio', { name: 'Kan jobbe gradert' }).check()
+                await page
+                    .getByRole('textbox', { name: /Sykmeldingsgrad ved bruk av reisetilskudd/ })
+                    .fill(`${variant.grad}`)
+            }
+        })
+    }
+}
+
 export function fillBehandlingsdagerPeriode(
     params: { days: number; nth?: number } | { fromRelative: number; days: number; nth?: number },
 ) {

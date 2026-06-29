@@ -48,6 +48,7 @@ type Gradert implements FomTom {
     fom: DateOnly!
     tom: DateOnly!
     grad: Int!
+    reisetilskudd: Boolean!
 }
 
 type Reisetilskudd implements FomTom {

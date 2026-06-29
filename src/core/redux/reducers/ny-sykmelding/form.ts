@@ -19,9 +19,15 @@ export type NySykmeldingAktivitet =
           fom: string
           tom: string | null
           grad: number | null
+          reisetilskudd: boolean | null
       }
     | {
           type: 'BEHANDLINGSDAGER'
+          fom: string
+          tom: string | null
+      }
+    | {
+          type: 'REISETILSKUDD'
           fom: string
           tom: string | null
       }

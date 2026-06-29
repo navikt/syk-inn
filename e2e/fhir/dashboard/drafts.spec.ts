@@ -4,8 +4,10 @@ import {
     fillBehandlingsdagerExplanation,
     fillBehandlingsdagerPeriode,
     fillPeriodeRelative,
+    fillReisetilskuddPeriode,
     nextStep,
     saveDraft,
+    selectReisetilskuddType,
     submitSykmelding,
 } from '../../actions/user-actions'
 import { expectBehandlingsdagerForklaring, expectPeriode } from '../../actions/user-form-verification'
@@ -81,6 +83,34 @@ test('save and continue editing a behandlingsdager draft', async ({ page }) => {
     await userInteractionsGroup(
         expectPeriode({ type: { behandlingsdager: 1 }, days: 6, fromRelative: 0 }),
         expectBehandlingsdagerForklaring('Foo bar baz'),
+        verifyNoHorizontalScroll(),
+        nextStep(),
+        verifySignerendeBehandler(),
+        verifyNoHorizontalScroll(),
+        submitSykmelding(),
+        verifyIsOnKvitteringPage(),
+    )(page)
+})
+
+test('save and continue editing a reisetilskudd draft', async ({ page }) => {
+    await launchWithMock('empty')(page)
+    await startNewAlternateSykmelding('REISETILSKUDD')(page)
+    await fillReisetilskuddPeriode({ days: 6 })(page)
+    await selectReisetilskuddType({ grad: 65 })(page)
+    await saveDraft()(page)
+
+    // Lets reload so we make sure the draft we verify is not from the apollo cache
+    await expect(page.getByRole('region', { name: 'Pågående sykmeldinger og utkast' })).toBeVisible()
+    await page.reload()
+
+    await test.step('Open the draft', async () => {
+        const region = page.getByRole('region', { name: 'Pågående sykmeldinger og utkast' })
+        const rows = region.getByRole('row')
+        await rows.nth(1).getByRole('link').click()
+    })
+
+    await userInteractionsGroup(
+        expectPeriode({ type: { reisetilskudd: true, grad: 65 }, days: 6, fromRelative: 0 }),
         verifyNoHorizontalScroll(),
         nextStep(),
         verifySignerendeBehandler(),
