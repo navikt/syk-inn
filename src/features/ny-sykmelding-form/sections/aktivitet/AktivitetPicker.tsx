@@ -7,7 +7,7 @@ import { SimpleReveal } from '#components/animation/Reveal'
 import { AktiviteFieldType, useController } from '../../form/types'
 
 import ArsakerPicker from './ArsakerPicker'
-import GradertGradPicker from './GradertGradPicker'
+import { GradertGradPicker } from './GradertGradPicker'
 
 function AktivitetPicker({ index }: { index: number }): ReactElement {
     const aktivitetField = useController({

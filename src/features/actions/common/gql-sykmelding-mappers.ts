@@ -82,8 +82,11 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 },
                 aktivitet: {
                     type: 'AKTIVITET_IKKE_MULIG',
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
                         arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? [],
                         annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.annenArbeidsrelatertArsak ?? null,
@@ -99,8 +102,11 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 },
                 aktivitet: {
                     type: 'GRADERT',
-                    grad: aktivitet.grad.toFixed(0),
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: aktivitet.grad.toFixed(0),
+                        reisetilskudd: aktivitet.reisetilskudd,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -115,8 +121,11 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 },
                 aktivitet: {
                     type: 'BEHANDLINGSDAGER',
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -131,8 +140,11 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 // this is in essence duplicated getDefaultPeriode from form-default-values.ts
                 aktivitet: {
                     type: 'GRADERT',
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,

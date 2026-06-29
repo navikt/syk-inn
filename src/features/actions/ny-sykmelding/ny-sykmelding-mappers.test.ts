@@ -37,8 +37,11 @@ test('multiple bidiagnoser from server suggestion shall be used', () => {
                 periode: { fom: dateOnly(new Date()), tom: '' },
                 aktivitet: {
                     type: 'GRADERT',
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,

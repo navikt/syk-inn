@@ -5,9 +5,10 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { FormDraftSync } from './draft/FormDraftSync'
 import { NySykmeldingMainFormValues } from './form/types'
 import { type NySykmeldingFormVariantType } from './useFormVariant'
-import BehandlingdagerSykmeldingForm from './variants/behandlingsdager/BehandlingdagerSykmeldingForm'
+import { BehandlingdagerSykmeldingForm } from './variants/behandlingsdager/BehandlingdagerSykmeldingForm'
 import { AllFormVariantsProps } from './variants/form-props'
 import { NormalSykmeldigForm, NormalSykmeldingFormProps } from './variants/normal/NormalSykmelding'
+import { ReisetilskuddSykmeldingForm } from './variants/reisetilskudd/ReisetilskuddSykmeldingForm'
 
 const FormDevTools = dynamic(() => import('#dev/tools/NySykmeldingFormDevTools'), { ssr: false })
 
@@ -41,16 +42,33 @@ function NySykmeldingFormVariants({
     return (
         <FormProvider {...form}>
             <FormDraftSync>
-                {variant === 'NORMAL' && (
-                    <NormalSykmeldigForm
-                        initialFom={initialFom}
-                        context={context}
-                        contextualErrors={contextualErrors}
-                    />
-                )}
-                {variant === 'BEHANDLINGSDAGER' && (
-                    <BehandlingdagerSykmeldingForm initialFom={initialFom} contextualErrors={contextualErrors} />
-                )}
+                {(() => {
+                    switch (variant) {
+                        case 'NORMAL':
+                            return (
+                                <NormalSykmeldigForm
+                                    initialFom={initialFom}
+                                    context={context}
+                                    contextualErrors={contextualErrors}
+                                />
+                            )
+
+                        case 'BEHANDLINGSDAGER':
+                            return (
+                                <BehandlingdagerSykmeldingForm
+                                    initialFom={initialFom}
+                                    contextualErrors={contextualErrors}
+                                />
+                            )
+                        case 'REISETILSKUDD':
+                            return (
+                                <ReisetilskuddSykmeldingForm
+                                    initialFom={initialFom}
+                                    contextualErrors={contextualErrors}
+                                />
+                            )
+                    }
+                })()}
             </FormDraftSync>
             <FormDevTools />
         </FormProvider>

@@ -54,6 +54,8 @@ export function draftAktivitetText(perioder: DraftValues['perioder'] | undefined
             return '100%'
         case 'BEHANDLINGSDAGER':
             return 'Behandlingsdager'
+        case 'REISETILSKUDD':
+            return 'Reisetilskudd'
     }
 }
 

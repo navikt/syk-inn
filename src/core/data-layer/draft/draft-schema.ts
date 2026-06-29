@@ -16,10 +16,11 @@ export const DraftValuesSchema = z.object({
     perioder: z
         .array(
             z.object({
-                type: z.enum(['GRADERT', 'AKTIVITET_IKKE_MULIG', 'BEHANDLINGSDAGER']),
+                type: z.enum(['GRADERT', 'AKTIVITET_IKKE_MULIG', 'BEHANDLINGSDAGER', 'REISETILSKUDD']),
                 fom: z.string().nullable(),
                 tom: z.string().nullable(),
                 grad: z.string().nullable().optional(),
+                gradertReisetilksudd: z.boolean().nullable().optional(),
                 arbeidsrelatertArsak: z
                     .object({
                         isArbeidsrelatertArsak: z.boolean().nullable(),
@@ -114,6 +115,12 @@ export function inferSykmeldingTypeFromDraft(parsedDraft: DraftValues | null): N
     if (parsedDraft == null) return 'NORMAL'
 
     const hasBehandlingsdagerAktivitet = parsedDraft?.perioder?.find((it) => it.type === 'BEHANDLINGSDAGER')
+    if (hasBehandlingsdagerAktivitet) return 'BEHANDLINGSDAGER'
 
-    return hasBehandlingsdagerAktivitet ? 'BEHANDLINGSDAGER' : 'NORMAL'
+    const hasReisetilskudd = parsedDraft.perioder?.find(
+        (it) => it.type === 'REISETILSKUDD' || (it.type === 'GRADERT' && it.gradertReisetilksudd === true),
+    )
+    if (hasReisetilskudd) return 'REISETILSKUDD'
+
+    return 'NORMAL'
 }

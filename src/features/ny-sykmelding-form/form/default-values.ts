@@ -71,14 +71,27 @@ export function defaultMeldinger(variant: NySykmeldingFormVariantType): NySykmel
 export function defaultPeriode(variant: NySykmeldingFormVariantType): AktivitetsPeriode {
     if (variant === 'BEHANDLINGSDAGER') {
         return {
-            periode: {
-                fom: dateOnly(new Date()),
-                tom: '',
-            },
+            periode: { fom: dateOnly(new Date()), tom: '' },
             aktivitet: {
                 type: 'BEHANDLINGSDAGER',
-                grad: null,
-                arbeidsrelatertArsak: {
+                gradert: {
+                    grad: null,
+                    reisetilskudd: false,
+                },
+                aktivitetIkkeMulig: {
+                    isArbeidsrelatertArsak: false,
+                    arbeidsrelaterteArsaker: null,
+                    annenArbeidsrelatertArsak: null,
+                },
+            },
+        }
+    } else if (variant === 'REISETILSKUDD') {
+        return {
+            periode: { fom: dateOnly(new Date()), tom: '' },
+            aktivitet: {
+                type: 'REISETILSKUDD',
+                gradert: { grad: null, reisetilskudd: false },
+                aktivitetIkkeMulig: {
                     isArbeidsrelatertArsak: false,
                     arbeidsrelaterteArsaker: null,
                     annenArbeidsrelatertArsak: null,
@@ -94,8 +107,11 @@ export function defaultPeriode(variant: NySykmeldingFormVariantType): Aktivitets
         },
         aktivitet: {
             type: 'GRADERT',
-            grad: null,
-            arbeidsrelatertArsak: {
+            gradert: {
+                grad: null,
+                reisetilskudd: false,
+            },
+            aktivitetIkkeMulig: {
                 isArbeidsrelatertArsak: false,
                 arbeidsrelaterteArsaker: null,
                 annenArbeidsrelatertArsak: null,

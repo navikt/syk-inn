@@ -920,6 +920,18 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "reisetilskudd",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": { "name": "Boolean", "kind": "SCALAR", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "tom",
                         "description": null,
                         "args": [],

@@ -206,6 +206,7 @@ fragment Aktivitet on Aktivitet {
     ... on Gradert {
         type
         grad
+        reisetilskudd
     }
     ... on Reisetilskudd {
         type

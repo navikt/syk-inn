@@ -205,8 +205,10 @@ function PeriodePicker({
             <AnimatePresence initial={false}>
                 {rangeDescription && (
                     <SimpleReveal>
-                        <BodyShort size="small">{rangeDescription.main}</BodyShort>
-                        <Detail>{rangeDescription.detail}</Detail>
+                        <div className="ml-2 mt-0.5">
+                            <BodyShort size="small">{rangeDescription.main}</BodyShort>
+                            <Detail>{rangeDescription.detail}</Detail>
+                        </div>
                     </SimpleReveal>
                 )}
             </AnimatePresence>

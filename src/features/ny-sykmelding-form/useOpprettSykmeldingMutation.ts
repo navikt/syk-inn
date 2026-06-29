@@ -219,13 +219,19 @@ function aktivitetStepToInputAktivitet(value: NySykmeldingAktivitet): InputAktiv
                     fom: value.fom,
                     tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
                     grad: value.grad ? +value.grad : raise("Aktivitet of type GRADERT without 'grad'"),
-                    // TODO: Implement in form
-                    reisetilskudd: false,
+                    reisetilskudd: value.reisetilskudd ?? false,
                 },
             } satisfies InputAktivitet
         case 'BEHANDLINGSDAGER':
             return {
                 behandlingsdager: {
+                    fom: value.fom,
+                    tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
+                },
+            }
+        case 'REISETILSKUDD':
+            return {
+                reisetilskudd: {
                     fom: value.fom,
                     tom: value.tom ?? raise("Aktivitet without 'tom'-date"),
                 },

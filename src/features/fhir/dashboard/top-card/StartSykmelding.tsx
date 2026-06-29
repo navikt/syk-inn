@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client/react'
-import { ChevronDownIcon, FirstAidIcon } from '@navikt/aksel-icons'
+import { ChevronDownIcon, FirstAidIcon, TrainIcon } from '@navikt/aksel-icons'
 import { ActionMenu, BodyShort, Checkbox, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import React, { ReactElement, useState } from 'react'
 
@@ -12,9 +12,6 @@ import { FORM_VARIANT_KEY, NySykmeldingFormVariantType } from '#features/ny-sykm
 import { PasientDocument } from '#queries'
 
 function StartSykmelding({ className }: { className?: string }): ReactElement {
-    const mode = useMode()
-    const behandlingsdagerEnabled = useFlag('SYK_INN_SYKMELDING_BEHANDLINGSDAGER')
-
     const { data, loading, error, refetch } = useQuery(PasientDocument)
     const [hasLegged, setHasLegged] = useState(true)
 
@@ -67,26 +64,10 @@ function StartSykmelding({ className }: { className?: string }): ReactElement {
                         Pasienten er kjent eller har vist legitimasjon
                     </Checkbox>
                 </div>
-                {!behandlingsdagerEnabled ? (
-                    <ShortcutButtonLink
-                        href={mode.paths.ny}
-                        variant="primary"
-                        disabled={loading || !hasLegged || data?.pasient == null}
-                        loading={loading}
-                        size="medium"
-                        shortcut={{
-                            modifier: 'alt',
-                            code: 'KeyN',
-                        }}
-                    >
-                        Opprett sykmelding
-                    </ShortcutButtonLink>
-                ) : (
-                    <FancyMultiOptionStartButton
-                        disabled={loading || !hasLegged || data?.pasient == null}
-                        loading={loading}
-                    />
-                )}
+                <FancyMultiOptionStartButton
+                    disabled={loading || !hasLegged || data?.pasient == null}
+                    loading={loading}
+                />
             </div>
         </div>
     )
@@ -99,6 +80,7 @@ export function FancyMultiOptionStartButton({
     loading: boolean
     disabled: boolean
 }): ReactElement {
+    const behandlingsdagerEnabled = useFlag('SYK_INN_SYKMELDING_BEHANDLINGSDAGER')
     const mode = useMode()
     const [isLinkPending, setLinkPending] = useState(false)
 
@@ -131,13 +113,23 @@ export function FancyMultiOptionStartButton({
                 </ActionMenu.Trigger>
                 <ActionMenu.Content>
                     <ActionMenu.Group label="Andre sykmeldingstyper">
+                        {behandlingsdagerEnabled && (
+                            <ActionMenu.Item
+                                icon={<FirstAidIcon aria-hidden />}
+                                as={AssableNextLink}
+                                href={`${mode.paths.ny}?${FORM_VARIANT_KEY}=${'BEHANDLINGSDAGER' satisfies NySykmeldingFormVariantType}`}
+                                onSelect={() => setLinkPending(true)}
+                            >
+                                Behandlingsdager
+                            </ActionMenu.Item>
+                        )}
                         <ActionMenu.Item
-                            icon={<FirstAidIcon aria-hidden />}
+                            icon={<TrainIcon aria-hidden />}
                             as={AssableNextLink}
-                            href={`${mode.paths.ny}?${FORM_VARIANT_KEY}=${'BEHANDLINGSDAGER' satisfies NySykmeldingFormVariantType}`}
+                            href={`${mode.paths.ny}?${FORM_VARIANT_KEY}=${'REISETILSKUDD' satisfies NySykmeldingFormVariantType}`}
                             onSelect={() => setLinkPending(true)}
                         >
-                            Behandlingsdager
+                            Reisetilskudd
                         </ActionMenu.Item>
                     </ActionMenu.Group>
                 </ActionMenu.Content>

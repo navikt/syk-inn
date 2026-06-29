@@ -49,8 +49,11 @@ function toPeriodeFromStatePeriode(aktivitet: NySykmeldingAktivitet): NySykmeldi
                 ...periode,
                 aktivitet: {
                     ...periode.aktivitet,
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak ?? false,
                         arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker ?? null,
                         annenArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak.annenArbeidsrelatertArsak ?? null,
@@ -62,8 +65,11 @@ function toPeriodeFromStatePeriode(aktivitet: NySykmeldingAktivitet): NySykmeldi
                 ...periode,
                 aktivitet: {
                     ...periode.aktivitet,
-                    grad: aktivitet.grad ? aktivitet.grad.toFixed(0) : null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: aktivitet.grad ? aktivitet.grad.toFixed(0) : null,
+                        reisetilskudd: aktivitet.reisetilskudd ?? false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -75,8 +81,27 @@ function toPeriodeFromStatePeriode(aktivitet: NySykmeldingAktivitet): NySykmeldi
                 ...periode,
                 aktivitet: {
                     ...periode.aktivitet,
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
+                },
+            }
+        case 'REISETILSKUDD':
+            return {
+                ...periode,
+                aktivitet: {
+                    ...periode.aktivitet,
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,

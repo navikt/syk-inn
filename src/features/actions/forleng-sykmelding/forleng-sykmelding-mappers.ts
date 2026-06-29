@@ -137,8 +137,11 @@ function forlengRedactedSykmelding(
                 },
                 aktivitet: {
                     type: 'AKTIVITET_IKKE_MULIG',
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -154,8 +157,11 @@ function forlengRedactedSykmelding(
                 },
                 aktivitet: {
                     type: 'GRADERT',
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,
@@ -172,8 +178,11 @@ function forlengRedactedSykmelding(
                 // this is in essence duplicated getDefaultPeriode from form-default-values.ts
                 aktivitet: {
                     type: 'GRADERT',
-                    grad: null,
-                    arbeidsrelatertArsak: {
+                    gradert: {
+                        grad: null,
+                        reisetilskudd: false,
+                    },
+                    aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
                         annenArbeidsrelatertArsak: null,

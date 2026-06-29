@@ -77,9 +77,9 @@ function formAktivitetToStepAktivitet(value: AktivitetsPeriode): NySykmeldingAkt
                 fom: value.periode.fom ?? raise('FOM is required for AKTIVITET_IKKE_MULIG'),
                 tom: value.periode.tom ?? raise('TOM is required for AKTIVITET_IKKE_MULIG'),
                 arbeidsrelatertArsak: {
-                    isArbeidsrelatertArsak: value.aktivitet.arbeidsrelatertArsak.isArbeidsrelatertArsak,
-                    arbeidsrelaterteArsaker: value.aktivitet.arbeidsrelatertArsak.arbeidsrelaterteArsaker,
-                    annenArbeidsrelatertArsak: value.aktivitet.arbeidsrelatertArsak.annenArbeidsrelatertArsak,
+                    isArbeidsrelatertArsak: value.aktivitet.aktivitetIkkeMulig.isArbeidsrelatertArsak,
+                    arbeidsrelaterteArsaker: value.aktivitet.aktivitetIkkeMulig.arbeidsrelaterteArsaker,
+                    annenArbeidsrelatertArsak: value.aktivitet.aktivitetIkkeMulig.annenArbeidsrelatertArsak,
                 },
             }
         case 'GRADERT':
@@ -87,15 +87,22 @@ function formAktivitetToStepAktivitet(value: AktivitetsPeriode): NySykmeldingAkt
                 type: 'GRADERT',
                 fom: value.periode.fom ?? raise('FOM is required for GRADERT'),
                 tom: value.periode.tom ?? raise('TOM is required for GRADERT'),
-                grad: R.isNumber(Number(value.aktivitet.grad))
-                    ? Number(value.aktivitet.grad)
+                grad: R.isNumber(Number(value.aktivitet.gradert.grad))
+                    ? Number(value.aktivitet.gradert.grad)
                     : raise('Grad is required for GRADERT'),
+                reisetilskudd: value.aktivitet.gradert.reisetilskudd,
             }
         case 'BEHANDLINGSDAGER':
             return {
                 type: 'BEHANDLINGSDAGER',
                 fom: value.periode.fom ?? raise('FOM is required for BEHANDLINGSDAGER'),
                 tom: value.periode.tom ?? raise('TOM is required for BEHANDLINGSDAGER'),
+            }
+        case 'REISETILSKUDD':
+            return {
+                type: 'REISETILSKUDD',
+                fom: value.periode.fom ?? raise('FOM is required for REISETILSKUDD'),
+                tom: value.periode.tom ?? raise('TOM is required for REISETILSKUDD'),
             }
     }
 }

@@ -46,6 +46,8 @@ function getPageLead(variant: NySykmeldingFormVariantType): string {
     switch (variant) {
         case 'NORMAL':
             return 'Sykmelding for'
+        case 'REISETILSKUDD':
+            return 'Sykmelding med reisetilskudd for'
         case 'BEHANDLINGSDAGER':
             return 'Sykemelding enkeltstående behandlingsdager for'
     }

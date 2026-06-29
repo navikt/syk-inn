@@ -153,6 +153,7 @@ export type Gradert = FomTom & {
     __typename: 'Gradert'
     fom: Scalars['DateOnly']['output']
     grad: Scalars['Int']['output']
+    reisetilskudd: Scalars['Boolean']['output']
     tom: Scalars['DateOnly']['output']
     type: AktivitetType
 }
@@ -635,7 +636,14 @@ export type AllDashboardQuery = {
                                 type: AktivitetType
                                 antallBehandlingsdager: number
                             }
-                          | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                          | {
+                                __typename: 'Gradert'
+                                fom: string
+                                tom: string
+                                type: AktivitetType
+                                grad: number
+                                reisetilskudd: boolean
+                            }
                           | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
                       >
                       arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
@@ -765,7 +773,14 @@ export type AllDashboardQuery = {
                                 type: AktivitetType
                                 antallBehandlingsdager: number
                             }
-                          | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                          | {
+                                __typename: 'Gradert'
+                                fom: string
+                                tom: string
+                                type: AktivitetType
+                                grad: number
+                                reisetilskudd: boolean
+                            }
                           | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
                       >
                   }
@@ -849,7 +864,14 @@ export type AllDashboardQuery = {
                                 type: AktivitetType
                                 antallBehandlingsdager: number
                             }
-                          | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                          | {
+                                __typename: 'Gradert'
+                                fom: string
+                                tom: string
+                                type: AktivitetType
+                                grad: number
+                                reisetilskudd: boolean
+                            }
                           | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
                       >
                       arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
@@ -979,7 +1001,14 @@ export type AllDashboardQuery = {
                                 type: AktivitetType
                                 antallBehandlingsdager: number
                             }
-                          | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                          | {
+                                __typename: 'Gradert'
+                                fom: string
+                                tom: string
+                                type: AktivitetType
+                                grad: number
+                                reisetilskudd: boolean
+                            }
                           | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
                       >
                   }
@@ -1204,7 +1233,14 @@ export type SykmeldingByIdQuery = {
                             type: AktivitetType
                             antallBehandlingsdager: number
                         }
-                      | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                      | {
+                            __typename: 'Gradert'
+                            fom: string
+                            tom: string
+                            type: AktivitetType
+                            grad: number
+                            reisetilskudd: boolean
+                        }
                       | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
                   >
                   arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
@@ -1329,7 +1365,14 @@ export type SykmeldingByIdQuery = {
                             type: AktivitetType
                             antallBehandlingsdager: number
                         }
-                      | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                      | {
+                            __typename: 'Gradert'
+                            fom: string
+                            tom: string
+                            type: AktivitetType
+                            grad: number
+                            reisetilskudd: boolean
+                        }
                       | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
                   >
               }
@@ -1416,7 +1459,14 @@ export type OpprettSykmeldingMutation = {
                             type: AktivitetType
                             antallBehandlingsdager: number
                         }
-                      | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+                      | {
+                            __typename: 'Gradert'
+                            fom: string
+                            tom: string
+                            type: AktivitetType
+                            grad: number
+                            reisetilskudd: boolean
+                        }
                       | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
                   >
                   arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
@@ -1565,7 +1615,14 @@ export type SykmeldingFullFragment = {
                   type: AktivitetType
                   antallBehandlingsdager: number
               }
-            | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+            | {
+                  __typename: 'Gradert'
+                  fom: string
+                  tom: string
+                  type: AktivitetType
+                  grad: number
+                  reisetilskudd: boolean
+              }
             | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
         >
         arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
@@ -1650,7 +1707,14 @@ export type SykmeldingLightFragment = {
                   type: AktivitetType
                   antallBehandlingsdager: number
               }
-            | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+            | {
+                  __typename: 'Gradert'
+                  fom: string
+                  tom: string
+                  type: AktivitetType
+                  grad: number
+                  reisetilskudd: boolean
+              }
             | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
         >
     }
@@ -1706,7 +1770,14 @@ type Sykmelding_SykmeldingFull_Fragment = {
                   type: AktivitetType
                   antallBehandlingsdager: number
               }
-            | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+            | {
+                  __typename: 'Gradert'
+                  fom: string
+                  tom: string
+                  type: AktivitetType
+                  grad: number
+                  reisetilskudd: boolean
+              }
             | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
         >
         arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
@@ -1791,7 +1862,14 @@ type Sykmelding_SykmeldingLight_Fragment = {
                   type: AktivitetType
                   antallBehandlingsdager: number
               }
-            | { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+            | {
+                  __typename: 'Gradert'
+                  fom: string
+                  tom: string
+                  type: AktivitetType
+                  grad: number
+                  reisetilskudd: boolean
+              }
             | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
         >
     }
@@ -1848,7 +1926,14 @@ type Aktivitet_Behandlingsdager_Fragment = {
     antallBehandlingsdager: number
 }
 
-type Aktivitet_Gradert_Fragment = { __typename: 'Gradert'; fom: string; tom: string; type: AktivitetType; grad: number }
+type Aktivitet_Gradert_Fragment = {
+    __typename: 'Gradert'
+    fom: string
+    tom: string
+    type: AktivitetType
+    grad: number
+    reisetilskudd: boolean
+}
 
 type Aktivitet_Reisetilskudd_Fragment = { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
 
@@ -2137,6 +2222,7 @@ export const AktivitetFragmentDoc = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'type' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'reisetilskudd' } },
                             ],
                         },
                     },
@@ -2539,6 +2625,7 @@ export const SykmeldingFullFragmentDoc = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'type' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'reisetilskudd' } },
                             ],
                         },
                     },
@@ -2719,6 +2806,7 @@ export const SykmeldingLightFragmentDoc = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'type' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'reisetilskudd' } },
                             ],
                         },
                     },
@@ -2837,6 +2925,7 @@ export const SykmeldingFragmentDoc = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'type' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'reisetilskudd' } },
                             ],
                         },
                     },
@@ -3481,6 +3570,7 @@ export const AllDashboardDocument = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'type' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'reisetilskudd' } },
                             ],
                         },
                     },
@@ -4561,6 +4651,7 @@ export const SykmeldingByIdDocument = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'type' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'reisetilskudd' } },
                             ],
                         },
                     },
@@ -5211,6 +5302,7 @@ export const OpprettSykmeldingDocument = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'type' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'reisetilskudd' } },
                             ],
                         },
                     },

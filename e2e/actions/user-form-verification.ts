@@ -18,10 +18,9 @@ export function expectPatient(patient: { name: string; fnr: string }) {
 export function expectPeriode({
     type,
     ...params
-}: { type: '100%' | { behandlingsdager: number } | { grad: number } } & (
-    | { days: number }
-    | { fromRelative: number; days: number }
-)) {
+}: {
+    type: '100%' | { behandlingsdager: number } | { reisetilskudd: true; grad: 'FULL' | number } | { grad: number }
+} & ({ days: number } | { fromRelative: number; days: number })) {
     const [fomRelativeToToday, tomRelativeToToday] =
         'fromRelative' in params ? [params.fromRelative, params.fromRelative + params.days] : [0, params.days]
 
@@ -36,7 +35,9 @@ export function expectPeriode({
             const periodeTitle =
                 typeof type !== 'string' && 'behandlingsdager' in type
                     ? 'Periode for enkeltstående behandlingsdager'
-                    : 'Periode'
+                    : typeof type !== 'string' && 'reisetilskudd' in type
+                      ? 'Periode for reisetilskudd'
+                      : 'Periode'
 
             const periodeRegion = page.getByRole('region', { name: periodeTitle })
             await expect(periodeRegion.getByRole('textbox', { name: 'Fra og med' })).toHaveValue(inputDate(fom))
@@ -46,6 +47,28 @@ export function expectPeriode({
                 await expect(periodeRegion.getByRole('combobox', { name: 'Mulighet for arbeid' })).toHaveValue(
                     'AKTIVITET_IKKE_MULIG',
                 )
+            } else if ('reisetilskudd' in type) {
+                if (typeof type === 'string') {
+                    await expect(
+                        page
+                            .getByRole('radiogroup', {
+                                name: /Mulighet for arbeid ved bruk av reisetilskudd/,
+                            })
+                            .getByRole('radio', { name: 'Kan være 100% i arbeid' }),
+                    ).toBeChecked()
+                } else {
+                    await expect(
+                        page
+                            .getByRole('radiogroup', {
+                                name: /Mulighet for arbeid ved bruk av reisetilskudd/,
+                            })
+                            .getByRole('radio', { name: 'Kan jobbe gradert' }),
+                    ).toBeChecked()
+
+                    await expect(
+                        page.getByRole('textbox', { name: /Sykmeldingsgrad ved bruk av reisetilskudd/ }),
+                    ).toHaveValue(`${type.grad}`)
+                }
             } else if ('grad' in type) {
                 await expect(periodeRegion.getByRole('combobox', { name: 'Mulighet for arbeid' })).toHaveValue(
                     'GRADERT',
