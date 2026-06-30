@@ -1,6 +1,6 @@
 export const sykmeldingQuestionnaireV1 = {
     resourceType: 'Questionnaire',
-    url: 'http://nav.no/samarbeidspartner/sykmelding/fhir/R4/Questionnaire/v1',
+    url: 'https://www.nav.no/samarbeidspartner/sykmelding/fhir/R4/Questionnaire/V1',
     status: 'draft',
     item: [
         {

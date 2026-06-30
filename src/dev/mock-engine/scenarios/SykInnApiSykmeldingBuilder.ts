@@ -95,12 +95,6 @@ export class SykmeldingBuilder {
         return this
     }
 
-    utdypendeSporsmal(sporsmal: SykInnApiSykmelding['values']['utdypendeSporsmal']): SykmeldingBuilder {
-        this._sykmelding.values.utdypendeSporsmal = sporsmal
-
-        return this
-    }
-
     relativeAktivitet(
         aktivitet:
             // We can't omit directly on a discriminated union, typescript doesn't like it
@@ -118,6 +112,12 @@ export class SykmeldingBuilder {
         } as SykInnApiAktivitet
 
         this.aktivitet(periodeWithDates)
+
+        return this
+    }
+
+    utdypendeSporsmal(sporsmal: SykInnApiSykmelding['values']['utdypendeSporsmal']): SykmeldingBuilder {
+        this._sykmelding.values.utdypendeSporsmal = sporsmal
 
         return this
     }
