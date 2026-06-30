@@ -64,7 +64,7 @@ test('open and edit a draft from the dashboard', async ({ page }) => {
 })
 
 test('save and continue editing a behandlingsdager draft', async ({ page }) => {
-    await launchWithMock('empty', { SYK_INN_SYKMELDING_BEHANDLINGSDAGER: true })(page)
+    await launchWithMock('empty')(page)
     await startNewAlternateSykmelding('BEHANDLINGSDAGER')(page)
     await fillBehandlingsdagerPeriode({ days: 6 })(page)
     await fillBehandlingsdagerExplanation('Foo bar baz')(page)

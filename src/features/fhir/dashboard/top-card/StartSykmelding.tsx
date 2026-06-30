@@ -7,7 +7,6 @@ import { SimpleAlert } from '#components/help/GeneralErrors'
 import { AssableNextLink } from '#components/links/AssableNextLink'
 import { ShortcutButton, ShortcutButtonLink } from '#components/shortcut/ShortcutButtons'
 import { useMode } from '#core/providers/Modes'
-import { useFlag } from '#core/toggles/context'
 import { FORM_VARIANT_KEY, NySykmeldingFormVariantType } from '#features/ny-sykmelding-form/useFormVariant'
 import { PasientDocument } from '#queries'
 
@@ -80,7 +79,6 @@ export function FancyMultiOptionStartButton({
     loading: boolean
     disabled: boolean
 }): ReactElement {
-    const behandlingsdagerEnabled = useFlag('SYK_INN_SYKMELDING_BEHANDLINGSDAGER')
     const mode = useMode()
     const [isLinkPending, setLinkPending] = useState(false)
 
@@ -113,16 +111,14 @@ export function FancyMultiOptionStartButton({
                 </ActionMenu.Trigger>
                 <ActionMenu.Content>
                     <ActionMenu.Group label="Andre sykmeldingstyper">
-                        {behandlingsdagerEnabled && (
-                            <ActionMenu.Item
-                                icon={<FirstAidIcon aria-hidden />}
-                                as={AssableNextLink}
-                                href={`${mode.paths.ny}?${FORM_VARIANT_KEY}=${'BEHANDLINGSDAGER' satisfies NySykmeldingFormVariantType}`}
-                                onSelect={() => setLinkPending(true)}
-                            >
-                                Behandlingsdager
-                            </ActionMenu.Item>
-                        )}
+                        <ActionMenu.Item
+                            icon={<FirstAidIcon aria-hidden />}
+                            as={AssableNextLink}
+                            href={`${mode.paths.ny}?${FORM_VARIANT_KEY}=${'BEHANDLINGSDAGER' satisfies NySykmeldingFormVariantType}`}
+                            onSelect={() => setLinkPending(true)}
+                        >
+                            Behandlingsdager
+                        </ActionMenu.Item>
                         <ActionMenu.Item
                             icon={<TrainIcon aria-hidden />}
                             as={AssableNextLink}

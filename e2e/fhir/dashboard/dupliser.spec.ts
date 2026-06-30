@@ -85,8 +85,8 @@ test('should be able to dupliser (from dashboard) an existing sykmelding with co
     await submitSykmelding()(page)
 })
 
-test('should be able to dupliser behandlingsdager (from dashboard) @feature-toggle', async ({ page }) => {
-    await launchWithMock('empty', { SYK_INN_SYKMELDING_BEHANDLINGSDAGER: true })(page)
+test('should be able to dupliser behandlingsdager (from dashboard)', async ({ page }) => {
+    await launchWithMock('empty')(page)
     await startNewAlternateSykmelding('BEHANDLINGSDAGER')(page)
 
     await userInteractionsGroup(

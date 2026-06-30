@@ -14,7 +14,6 @@ export const EXPECTED_TOGGLES = [
     'SYK_INN_STRUCTURED_FHIR_INLINE',
 
     // Feature rollouts (release)
-    'SYK_INN_SYKMELDING_BEHANDLINGSDAGER',
     'SYK_INN_HELSEID_DOUBLE_AUTH_EXP',
 
     // Functional toggles

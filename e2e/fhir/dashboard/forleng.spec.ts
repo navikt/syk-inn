@@ -86,10 +86,8 @@ test('should be able to forlenge an existing sykmelding with correct values', as
     await submitSykmelding()(page)
 })
 
-test('should be able to forlenge an existing behandlingsdager-sykmelding with correct values @feature-toggle', async ({
-    page,
-}) => {
-    await launchWithMock('empty', { SYK_INN_SYKMELDING_BEHANDLINGSDAGER: true })(page)
+test('should be able to forlenge an existing behandlingsdager-sykmelding with correct values', async ({ page }) => {
+    await launchWithMock('empty')(page)
     await startNewAlternateSykmelding('BEHANDLINGSDAGER')(page)
 
     await userInteractionsGroup(

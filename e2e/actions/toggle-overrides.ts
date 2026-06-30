@@ -25,5 +25,4 @@ export async function applyToggleOverrides(page: Page, toggleOverrides: ToggleOv
 export const defaultE2EToggles: ToggleOverrides = {
     SYK_INN_AAREG: false,
     SYK_INN_SHOW_REDACTED: false,
-    SYK_INN_SYKMELDING_BEHANDLINGSDAGER: false,
 }
