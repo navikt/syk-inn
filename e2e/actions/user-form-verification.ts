@@ -48,7 +48,7 @@ export function expectPeriode({
                     'AKTIVITET_IKKE_MULIG',
                 )
             } else if ('reisetilskudd' in type) {
-                if (typeof type === 'string') {
+                if (typeof type.grad === 'string') {
                     await expect(
                         page
                             .getByRole('radiogroup', {

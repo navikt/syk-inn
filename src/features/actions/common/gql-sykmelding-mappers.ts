@@ -76,16 +76,10 @@ export function sykmeldingFragmentAktivitetToFormValue(
     switch (aktivitet.__typename) {
         case 'AktivitetIkkeMulig':
             return {
-                periode: {
-                    fom: periode.fom,
-                    tom: periode.tom,
-                },
+                periode: { fom: periode.fom, tom: periode.tom },
                 aktivitet: {
                     type: 'AKTIVITET_IKKE_MULIG',
-                    gradert: {
-                        grad: null,
-                        reisetilskudd: false,
-                    },
+                    gradert: { grad: null, reisetilskudd: false },
                     aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: aktivitet.arbeidsrelatertArsak?.isArbeidsrelatertArsak ?? false,
                         arbeidsrelaterteArsaker: aktivitet.arbeidsrelatertArsak?.arbeidsrelaterteArsaker ?? [],
@@ -96,10 +90,7 @@ export function sykmeldingFragmentAktivitetToFormValue(
 
         case 'Gradert':
             return {
-                periode: {
-                    fom: periode.fom,
-                    tom: periode.tom,
-                },
+                periode: { fom: periode.fom, tom: periode.tom },
                 aktivitet: {
                     type: 'GRADERT',
                     gradert: {
@@ -115,16 +106,10 @@ export function sykmeldingFragmentAktivitetToFormValue(
             } satisfies AktivitetsPeriode
         case 'Behandlingsdager':
             return {
-                periode: {
-                    fom: periode.fom,
-                    tom: periode.tom,
-                },
+                periode: { fom: periode.fom, tom: periode.tom },
                 aktivitet: {
                     type: 'BEHANDLINGSDAGER',
-                    gradert: {
-                        grad: null,
-                        reisetilskudd: false,
-                    },
+                    gradert: { grad: null, reisetilskudd: false },
                     aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
@@ -133,6 +118,18 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 },
             } satisfies AktivitetsPeriode
         case 'Reisetilskudd':
+            return {
+                periode: { fom: periode.fom, tom: periode.tom },
+                aktivitet: {
+                    type: 'REISETILSKUDD',
+                    gradert: { grad: null, reisetilskudd: false },
+                    aktivitetIkkeMulig: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
+                },
+            } satisfies AktivitetsPeriode
         case 'Avventende':
             logger.error(`Forlengelse with aktivitet of type ${aktivitet.type} is not supported yet`)
             return {
@@ -140,10 +137,7 @@ export function sykmeldingFragmentAktivitetToFormValue(
                 // this is in essence duplicated getDefaultPeriode from form-default-values.ts
                 aktivitet: {
                     type: 'GRADERT',
-                    gradert: {
-                        grad: null,
-                        reisetilskudd: false,
-                    },
+                    gradert: { grad: null, reisetilskudd: false },
                     aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,

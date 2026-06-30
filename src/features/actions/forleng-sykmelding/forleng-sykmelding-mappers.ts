@@ -137,10 +137,7 @@ function forlengRedactedSykmelding(
                 },
                 aktivitet: {
                     type: 'AKTIVITET_IKKE_MULIG',
-                    gradert: {
-                        grad: null,
-                        reisetilskudd: false,
-                    },
+                    gradert: { grad: null, reisetilskudd: false },
                     aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
@@ -157,10 +154,41 @@ function forlengRedactedSykmelding(
                 },
                 aktivitet: {
                     type: 'GRADERT',
-                    gradert: {
-                        grad: null,
-                        reisetilskudd: false,
+                    gradert: { grad: null, reisetilskudd: false },
+                    aktivitetIkkeMulig: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
                     },
+                },
+            }
+            break
+        case 'BEHANDLINGSDAGER':
+            nextAkvititet = {
+                periode: {
+                    fom: nextFom,
+                    tom: null,
+                },
+                aktivitet: {
+                    type: 'BEHANDLINGSDAGER',
+                    gradert: { grad: null, reisetilskudd: false },
+                    aktivitetIkkeMulig: {
+                        isArbeidsrelatertArsak: false,
+                        arbeidsrelaterteArsaker: null,
+                        annenArbeidsrelatertArsak: null,
+                    },
+                },
+            }
+            break
+        case 'REISETILSKUDD':
+            nextAkvititet = {
+                periode: {
+                    fom: nextFom,
+                    tom: null,
+                },
+                aktivitet: {
+                    type: 'REISETILSKUDD',
+                    gradert: { grad: null, reisetilskudd: false },
                     aktivitetIkkeMulig: {
                         isArbeidsrelatertArsak: false,
                         arbeidsrelaterteArsaker: null,
@@ -170,8 +198,6 @@ function forlengRedactedSykmelding(
             }
             break
         case 'AVVENTENDE':
-        case 'BEHANDLINGSDAGER':
-        case 'REISETILSKUDD':
             logger.info(`Forlengelse with aktivitet of type ${latestPeriode.type} is not supported yet`)
             nextAkvititet = {
                 // This should not happen unless the user forlengs sykmeldinger from a non-syk-inn source, but

@@ -27,8 +27,9 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 - [should be able to forlenge an existing sykmelding with correct values](./fhir/dashboard/forleng.spec.ts#L39)
 - [should be able to forlenge an existing behandlingsdager-sykmelding with correct values](./fhir/dashboard/forleng.spec.ts#L89)
-- [should be able to forlenge an existing reisetilskudd-sykmelding with correct values](./fhir/dashboard/forleng.spec.ts#L138)
-- [should be able to forleng a sykmelding, go to summary, and return to form without losing values](./fhir/dashboard/forleng.spec.ts#L186)
+- [should be able to forlenge an existing gradert reisetilskudd-sykmelding with correct values](./fhir/dashboard/forleng.spec.ts#L138)
+- [should be able to forlenge an existing full reisetilskudd-sykmelding with correct values](./fhir/dashboard/forleng.spec.ts#L188)
+- [should be able to forleng a sykmelding, go to summary, and return to form without losing values](./fhir/dashboard/forleng.spec.ts#L237)
 
 ## [fhir/dashboard/redacted.spec.ts](./fhir/dashboard/redacted.spec.ts)
 
