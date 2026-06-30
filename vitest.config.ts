@@ -9,7 +9,7 @@ export default defineConfig({
             {
                 test: {
                     name: 'unit',
-                    setupFiles: ['./vitest.setup.mts'],
+                    setupFiles: ['./vitest.setup.ts'],
                     include: ['src/**/*.test.ts'],
                     exclude: ['src/**/*.integration.ts'],
                 },
@@ -18,7 +18,7 @@ export default defineConfig({
             {
                 test: {
                     name: 'integration',
-                    setupFiles: ['./vitest.integration.setup.mts'],
+                    setupFiles: ['./vitest.integration.setup.ts'],
                     include: ['src/**/*.integration.ts'],
                 },
                 extends: true,
