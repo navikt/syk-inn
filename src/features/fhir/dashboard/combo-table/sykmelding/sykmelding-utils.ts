@@ -21,7 +21,7 @@ export function aktivitetGradText(aktivitet: AktivitetFragment | AktivitetRedact
         case 'AktivitetIkkeMulig':
             return '100%'
         case 'Gradert':
-            return `${aktivitet.grad}%`
+            return aktivitet.reisetilskudd ? `${aktivitet.grad}% med reisetilskudd` : `${aktivitet.grad}%`
         case 'Avventende':
             return 'Avventende'
         case 'Reisetilskudd':
