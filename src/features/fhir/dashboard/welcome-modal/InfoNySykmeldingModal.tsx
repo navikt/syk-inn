@@ -54,9 +54,8 @@ export function InfoNySykmeldingModal(): ReactElement {
                         Foreløpig har vi ikke støtte for:
                     </BodyShort>
                     <ul className="list-disc pl-6 mb-3">
-                        <li>Enkeltstående behandlingsdager</li>
                         <li>avventende sykmelding</li>
-                        <li>reisetilskudd</li>
+                        <li>sykmeldingshistorikk eldre enn 4 dager</li>
                     </ul>
                     <BodyShort spacing>
                         For sykmeldinger hvor dette er aktuelt, må du inntil videre bruke gammel/eksisterende/ordinær
