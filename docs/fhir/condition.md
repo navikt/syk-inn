@@ -5,8 +5,10 @@ Vårt behov: **Lese**
 _Relevante referanser:_
 
 - [Condition](https://www.hl7.org/fhir/R4/condition.html) (HL7)
-- [ICPC-2](https://www.helsedirektoratet.no/digitalisering-og-e-helse/helsefaglige-kodeverk/icpc) (Helsedirektoratet)
-- [ICD-10](https://www.helsedirektoratet.no/digitalisering-og-e-helse/helsefaglige-kodeverk/icd) (Helsedirektoratet)
+- [ICPC-2](https://www.helsedirektoratet.no/digitalisering-og-e-helse/helsefaglige-kodeverk/icpc)
+  (Helsedirektoratet)
+- [ICD-10](https://www.helsedirektoratet.no/digitalisering-og-e-helse/helsefaglige-kodeverk/icd)
+  (Helsedirektoratet)
 
 ## Eksempel JSON-struktur for _ICPC-2 Condition_
 

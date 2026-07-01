@@ -9,9 +9,11 @@ specification, and stores the metadata and tokens in the server's key-value stor
 
 ### Pre-condition
 
-The SMART app is registered in the EHR system, and the EHR system has a client ID and secret for the app.
+The SMART app is registered in the EHR system, and the EHR system has a client ID and secret for the
+app.
 
-See: [HL-7: Register App with EHR](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-1-register)
+See:
+[HL-7: Register App with EHR](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-1-register)
 
 ### Sequence diagram
 
@@ -19,20 +21,29 @@ See: [HL-7: Register App with EHR](https://hl7.org/fhir/smart-app-launch/app-lau
 
 [//]: # 'These steps are autonumbered in mermaid, and must be kept in sync manually'
 
-Step 6. Launch request, see: [HL-7: Smart app launch](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-2-launch-ehr)
+Step 6. Launch request, see:
+[HL-7: Smart app launch](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-2-launch-ehr)
 
-Step 7. Discovery request, see: [HL-7: Discovery request](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-3-discovery)
+Step 7. Discovery request, see:
+[HL-7: Discovery request](https://hl7.org/fhir/smart-app-launch/app-launch.html#step-3-discovery)
 
-Step 9. Authorization flow, see: [HL-7: Obtain authorization code](https://hl7.org/fhir/smart-app-launch/app-launch.html#obtain-authorization-code)
+Step 9. Authorization flow, see:
+[HL-7: Obtain authorization code](https://hl7.org/fhir/smart-app-launch/app-launch.html#obtain-authorization-code)
 
-Step 10. Token exchange, see: [HL-7: Obtain access token](https://hl7.org/fhir/smart-app-launch/app-launch.html#obtain-access-token)
+Step 10. Token exchange, see:
+[HL-7: Obtain access token](https://hl7.org/fhir/smart-app-launch/app-launch.html#obtain-access-token)
 
-Step 24, 32, 39. Accessing FHIR data, see: [HL-7: Access FHIR data](https://hl7.org/fhir/smart-app-launch/app-launch.html#access-fhir-api)
+Step 24, 32, 39. Accessing FHIR data, see:
+[HL-7: Access FHIR data](https://hl7.org/fhir/smart-app-launch/app-launch.html#access-fhir-api)
 
 Step 23, 31, 38. Validating access token:
 
-- The specification requires that the access token shall be validated before accessing FHIR resources. See, [HL-7: Accessing FHIR data](https://hl7.org/fhir/smart-app-launch/app-launch.html#response-6)
-- The access_token (JWT) is validated using OIDC-mechanism, using the keys provided by the issuers well-known. See: [OIDC: Validating access tokens](https://datatracker.ietf.org/doc/html/rfc9068#name-validating-jwt-access-token)
+- The specification requires that the access token shall be validated before accessing FHIR
+  resources. See,
+  [HL-7: Accessing FHIR data](https://hl7.org/fhir/smart-app-launch/app-launch.html#response-6)
+- The access_token (JWT) is validated using OIDC-mechanism, using the keys provided by the issuers
+  well-known. See:
+  [OIDC: Validating access tokens](https://datatracker.ietf.org/doc/html/rfc9068#name-validating-jwt-access-token)
 
 #### Diagram
 

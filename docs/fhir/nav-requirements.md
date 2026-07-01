@@ -7,12 +7,12 @@ FHIR.
 
 Nav står overfor flere utfordringer knyttet til standardisering, leverandørsamarbeid og sikkerhet.
 For å løse disse må Nav ta en mer aktiv og ledende rolle, samarbeide tett med Helsedirektoratet og
-andre aktører, og sikre tydelig kommunikasjon og krav til leverandører.
-I de fleste tilfeller finnes det eksisterende standarder som leverandørene (og helsevirksomhetene)
-må oppfylle, mens det på noen områder er behov for etablere nye standarder.
-Nav har utarbeidet noen krav til helsevirksomheter (legekontor, RHF, kommuner o.l.) som skal benytte
-Navs nye løsninger, samt krav til EPJ-leverandører. En del krav gjelder kun for SMART on FHIR
-løsningen, mens noen er generelle og gjelder begge løsningene.
+andre aktører, og sikre tydelig kommunikasjon og krav til leverandører. I de fleste tilfeller finnes
+det eksisterende standarder som leverandørene (og helsevirksomhetene) må oppfylle, mens det på noen
+områder er behov for etablere nye standarder. Nav har utarbeidet noen krav til helsevirksomheter
+(legekontor, RHF, kommuner o.l.) som skal benytte Navs nye løsninger, samt krav til
+EPJ-leverandører. En del krav gjelder kun for SMART on FHIR løsningen, mens noen er generelle og
+gjelder begge løsningene.
 
 NB! Nav jobber nå med en pilot for SMART on FHIR, og det kan bli endringer i kravene som følge av
 denne pilloten. Det kan også komme endringer i kravene til selvstendig webapplikasjon.

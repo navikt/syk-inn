@@ -60,11 +60,11 @@ Structured upload must adhere to the following rules:
 3. Nav must **NOT** use the EHR as a database for its own data.
 4. Nav must **NOT** pollute FHIR resources and must use them as intended.
 
-Based on these rules, it has been decided that the following FHIR resources and structure shall be used for structured
-upload:
+Based on these rules, it has been decided that the following FHIR resources and structure shall be
+used for structured upload:
 
-- **QuestionnaireResponse**: written as a standalone resource to the FHIR server, containing all structured sick note
-  data as items.
+- **QuestionnaireResponse**: written as a standalone resource to the FHIR server, containing all
+  structured sick note data as items.
 - **DocumentReference**: written as a standalone resource containing the PDF and a reference to the
   QuestionnaireResponse via `context.related`.
 - **Questionnaire** - defines the form schema, published publicly in the syk-inn repository.
@@ -73,15 +73,15 @@ upload:
 
 Nav can write the data back to the EHR in one of two ways:
 
-1. **`batch` Bundle** (must be `batch`, not `transaction`): a single `batch` Bundle (POST to the base
-   URL) containing both DocumentReference and QuestionnaireResponse as entries.
+1. **`batch` Bundle** (must be `batch`, not `transaction`): a single `batch` Bundle (POST to the
+   base URL) containing both DocumentReference and QuestionnaireResponse as entries.
 2. **Separate writes**: two independent `PUT` calls, one per resource.
 
 Both options use the same resource endpoints (`PUT /DocumentReference/{id}` and
-`PUT /QuestionnaireResponse/{id}`), so the EHR must support DocumentReference and QuestionnaireResponse
-as writable resources regardless of which option is chosen. A `batch` (not `transaction`) Bundle is used
-so the mandatory DocumentReference is persisted even if the QuestionnaireResponse fails
-(journalføringsplikten).
+`PUT /QuestionnaireResponse/{id}`), so the EHR must support DocumentReference and
+QuestionnaireResponse as writable resources regardless of which option is chosen. A `batch` (not
+`transaction`) Bundle is used so the mandatory DocumentReference is persisted even if the
+QuestionnaireResponse fails (journalføringsplikten).
 
 ## Consequences
 
@@ -97,8 +97,10 @@ so the mandatory DocumentReference is persisted even if the QuestionnaireRespons
 
 - Respects the principle of not using the EHR as a database for Nav data
 - Uses FHIR resources as intended
-- Upload is optional for the EHR; Nav takes no responsibility for missing support and always provides a PDF
-- Safer to retrieve and display patient history for the doctor, as data is available in the doctor's EHR system
+- Upload is optional for the EHR; Nav takes no responsibility for missing support and always
+  provides a PDF
+- Safer to retrieve and display patient history for the doctor, as data is available in the doctor's
+  EHR system
 
 ### Negative
 
@@ -127,8 +129,8 @@ This is referenced by `QuestionnaireResponse.questionnaire` in all written-back 
 
 ## Implementation
 
-The technical implementation is to create the new FHIR resource structure in syk-inn with the necessary data for
-upload.
+The technical implementation is to create the new FHIR resource structure in syk-inn with the
+necessary data for upload.
 
 ### Requirements
 
@@ -136,7 +138,8 @@ Requirements for architecture and data structuring.
 
 ### Access Scopes
 
-Existing access scopes (expressed in EBNF notation) that define what Nav's SMART on FHIR solution has access to:
+Existing access scopes (expressed in EBNF notation) that define what Nav's SMART on FHIR solution
+has access to:
 
 | #   | Access (v1)                                                         | Access (v2)                       | Grants access to                                                                 |
 | --- | ------------------------------------------------------------------- | --------------------------------- | -------------------------------------------------------------------------------- |
@@ -149,8 +152,8 @@ Existing access scopes (expressed in EBNF notation) that define what Nav's SMART
 | 7   | `patient/Condition.read`                                            | `patient/Condition.rs`            | Read access to diagnosis set in the consultation                                 |
 | 8   | `patient/DocumentReference.write`, `patient/DocumentReference.read` | `patient/DocumentReference.cruds` | Write, read, update, search, and delete DocumentReference linked to the patient  |
 
-In addition to the existing scopes, Nav's SMART on FHIR solution requires the following extension to write back
-structured data as a QuestionnaireResponse:
+In addition to the existing scopes, Nav's SMART on FHIR solution requires the following extension to
+write back structured data as a QuestionnaireResponse:
 
 | #   | Access (v1)                                                                 | Access (v2)                           | Grants access to                                                                  |
 | --- | --------------------------------------------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------- |
@@ -401,9 +404,10 @@ flowchart TD
    - `!404 4xx` → `log.error` (missing access, abort)
    - `5xx` → `log.error` (server error, abort)
    - `404` → proceed
-4. Front-end writes the data back, either as a `batch` Bundle (`POST /`) or as two separate `PUT` calls, containing
-   DocumentReference (`id = sykmeldingId`) and QuestionnaireResponse (`id = sykmeldingId`). The DocumentReference
-   contains `context.related` referencing the QR by the same sykmelding ID (`QuestionnaireResponse/{sykmeldingId}`):
+4. Front-end writes the data back, either as a `batch` Bundle (`POST /`) or as two separate `PUT`
+   calls, containing DocumentReference (`id = sykmeldingId`) and QuestionnaireResponse
+   (`id = sykmeldingId`). The DocumentReference contains `context.related` referencing the QR by the
+   same sykmelding ID (`QuestionnaireResponse/{sykmeldingId}`):
    - `4xx`/`5xx` → `log.error` (abort)
    - `2xx` → `log.info` (success)
 
@@ -707,21 +711,25 @@ Alternatives not currently used but kept open pending EHR feedback:
 
 ### Why a Standalone QuestionnaireResponse?
 
-The FHIR specification provides clear guidelines on when resources should be standalone vs. embedded:
+The FHIR specification provides clear guidelines on when resources should be standalone vs.
+embedded:
 
-1. **Contained resources** are intended for data that does not need a standalone identity and will never be referenced
-   from outside ([FHIR R4 Contained](https://www.hl7.org/fhir/references.html#contained)).
-2. **Base64 attachments** are intended for opaque binary objects (PDF, images), not for structured FHIR resources with
-   their own semantics ([FHIR R4 DocumentReference](https://www.hl7.org/fhir/documentreference.html)).
-3. **Standalone resources with references** are recommended when data has its own identity, can be looked up separately,
-   and has value independent of the parent object.
+1. **Contained resources** are intended for data that does not need a standalone identity and will
+   never be referenced from outside
+   ([FHIR R4 Contained](https://www.hl7.org/fhir/references.html#contained)).
+2. **Base64 attachments** are intended for opaque binary objects (PDF, images), not for structured
+   FHIR resources with their own semantics
+   ([FHIR R4 DocumentReference](https://www.hl7.org/fhir/documentreference.html)).
+3. **Standalone resources with references** are recommended when data has its own identity, can be
+   looked up separately, and has value independent of the parent object.
 
-QuestionnaireResponse is a fully-fledged FHIR resource with its own semantics. Embedding it (either as contained or
-base64) undermines this:
+QuestionnaireResponse is a fully-fledged FHIR resource with its own semantics. Embedding it (either
+as contained or base64) undermines this:
 
-- **Base64 pollutes the attachment field.** Attachments are for opaque blobs, not structured FHIR resources.
-- **Contained removes the possibility of standalone search and indexing.** EHR vendors who want to utilise structured
-  data must dig inside DocumentReference.
+- **Base64 pollutes the attachment field.** Attachments are for opaque blobs, not structured FHIR
+  resources.
+- **Contained removes the possibility of standalone search and indexing.** EHR vendors who want to
+  utilise structured data must dig inside DocumentReference.
 
 With a standalone QuestionnaireResponse:
 
@@ -732,9 +740,9 @@ With a standalone QuestionnaireResponse:
 
 ### Reference Direction
 
-FHIR best practice recommends one-way references over circular dependencies. DocumentReference is the natural "owner" of
-the relationship because it is the outer document layer. FHIR search handles reverse lookups without the need for
-explicit back-references.
+FHIR best practice recommends one-way references over circular dependencies. DocumentReference is
+the natural "owner" of the relationship because it is the outer document layer. FHIR search handles
+reverse lookups without the need for explicit back-references.
 
 ### Perspectives
 

@@ -185,8 +185,8 @@ EPJ kan slå opp definisjonen for å forstå strukturen til de ulike `item`-felt
   [DocumentReference](document-reference.md). Siden FHIR-identiteten er `<ressurstype>/<id>`, kan de
   to ressursene dele samme id-verdi, og DocumentReference kan referere til QuestionnaireResponse via
   `context.related` (se [Bundle](bundle.md)).
-- `questionnaire` refererer til den offentlig publiserte Questionnaire-definisjonen via kanonisk URL.
-  EPJ kan slå opp definisjonen for å forstå strukturen.
+- `questionnaire` refererer til den offentlig publiserte Questionnaire-definisjonen via kanonisk
+  URL. EPJ kan slå opp definisjonen for å forstå strukturen.
 - `status` er satt til `completed` fordi sykmeldingen er ferdig utfylt.
 - `subject` er en referanse til pasienten sykmeldingen gjelder for.
 - `encounter` knytter svaret til den aktive konsultasjonen.

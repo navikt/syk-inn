@@ -13,7 +13,8 @@ Her er feltene:
 - `status`
 - `class`
 
-I eksemplet fordi den er påkrevd i R4 FHIR spesifikasjonen, men det er ikke et felt som Nav bruker i dag.
+I eksemplet fordi den er påkrevd i R4 FHIR spesifikasjonen, men det er ikke et felt som Nav bruker i
+dag.
 
 ```json
 {
@@ -60,12 +61,19 @@ I eksemplet fordi den er påkrevd i R4 FHIR spesifikasjonen, men det er ikke et 
 ## Begrunnelse
 
 - Subject benyttes for å identifisere pasient for den aktuelle konsultasjonen
-- Participant/individual benyttes for å identifisere sykmelder/helsepersonell for den aktuelle konsultasjonen
-- ServiceProvider/reference benyttes for å identifisere sykmelders organisasjon for den aktuelle konsultasjonen
+- Participant/individual benyttes for å identifisere sykmelder/helsepersonell for den aktuelle
+  konsultasjonen
+- ServiceProvider/reference benyttes for å identifisere sykmelders organisasjon for den aktuelle
+  konsultasjonen
 - Diagnosis benyttes for å preutfylle diagnose i appen, er ikke påkrevd
-- Type/coding/kontakttype benyttes i sykmeldingen for å avklare om det er en fysisk (1) eller telfon-/videokonsultasjon (6 | 7)
+- Type/coding/kontakttype benyttes i sykmeldingen for å avklare om det er en fysisk (1) eller
+  telfon-/videokonsultasjon (6 | 7)
 
 ### Notater
 
-- Diagnosis.Condition.Type og Referanse - I følge R4 FHIR spec gjør rom for at man kan ha en referanse (literal reference) eller selve objektet (logical reference). Literal reference er da FHIR referansen til Condition, f.eks. Condition/unik-uuid-1234. [Dersom begge er til stede foretrekkes literal reference](https://www.hl7.org/fhir/R4/references.html#logical).
-- Class - denne bør være type behandling (fysisk eller virtuelt) etter norsk kodeverk. For v3-ActCode kan vi ta i bruk AMB (pasienten er fysisk til stede) og VR (virtuelt)
+- Diagnosis.Condition.Type og Referanse - I følge R4 FHIR spec gjør rom for at man kan ha en
+  referanse (literal reference) eller selve objektet (logical reference). Literal reference er da
+  FHIR referansen til Condition, f.eks. Condition/unik-uuid-1234.
+  [Dersom begge er til stede foretrekkes literal reference](https://www.hl7.org/fhir/R4/references.html#logical).
+- Class - denne bør være type behandling (fysisk eller virtuelt) etter norsk kodeverk. For
+  v3-ActCode kan vi ta i bruk AMB (pasienten er fysisk til stede) og VR (virtuelt)

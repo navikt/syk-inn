@@ -152,10 +152,12 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 - [FHIR: "Periode"-rules](./multi-mode/form-rule-validations.spec.ts#L49)
 - [FHIR: "Time in relation to now"-rules](./multi-mode/form-rule-validations.spec.ts#L106)
-- ⚠️ [FHIR: UGYLDIG_KODEVERK_FOR_HOVEDDIAGNOSE, UGYLDIG_KODEVERK_FOR_BIDIAGNOSE](./multi-mode/form-rule-validations.spec.ts#L140)
+- ⚠️
+  [FHIR: UGYLDIG_KODEVERK_FOR_HOVEDDIAGNOSE, UGYLDIG_KODEVERK_FOR_BIDIAGNOSE](./multi-mode/form-rule-validations.spec.ts#L140)
 - [Standalone: "Periode"-rules](./multi-mode/form-rule-validations.spec.ts#L49)
 - [Standalone: "Time in relation to now"-rules](./multi-mode/form-rule-validations.spec.ts#L106)
-- ⚠️ [Standalone: UGYLDIG_KODEVERK_FOR_HOVEDDIAGNOSE, UGYLDIG_KODEVERK_FOR_BIDIAGNOSE](./multi-mode/form-rule-validations.spec.ts#L140)
+- ⚠️
+  [Standalone: UGYLDIG_KODEVERK_FOR_HOVEDDIAGNOSE, UGYLDIG_KODEVERK_FOR_BIDIAGNOSE](./multi-mode/form-rule-validations.spec.ts#L140)
 
 ## [multi-mode/form-submit.spec.ts](./multi-mode/form-submit.spec.ts)
 

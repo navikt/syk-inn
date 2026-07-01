@@ -8,8 +8,8 @@ Under er en beskrivelse av hvilke FHIR ressurser Nav trenger for preutfylling av
 
 ### Forhåndsutfylling
 
-For forhåndsutfylling fra EPJ til Nav må følgende FHIR ressurser være tilgjengelige i
-EPJ FHIR server:
+For forhåndsutfylling fra EPJ til Nav må følgende FHIR ressurser være tilgjengelige i EPJ FHIR
+server:
 
 - [Patient](./patient.md)
 - [Practitioner](./practitioner.md)
@@ -25,13 +25,13 @@ Under er en beskrivelse av hvilke FHIR ressurser Nav trenger for preutfylling av
 
 ### Tilbakeskriving
 
-For tilbakeskriving av PDF fra Nav til EPJ må følgende FHIR ressurser være tilgjengelige i
-EPJ FHIR server:
+For tilbakeskriving av PDF fra Nav til EPJ må følgende FHIR ressurser være tilgjengelige i EPJ FHIR
+server:
 
 - [DocumentReference](./document-reference.md)
 
-For tilbakeskriving av _FHIR-strukturerte_ data må følgende FHIR ressurser være tilgjengelige
-i EPJ FHIR server:
+For tilbakeskriving av _FHIR-strukturerte_ data må følgende FHIR ressurser være tilgjengelige i EPJ
+FHIR server:
 
 - [Bundle](./bundle.md)
 - [QuestionnaireResponse](./questionnaire-response.md)

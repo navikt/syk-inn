@@ -2,4 +2,5 @@
 
 Disse sidene er flyttet.
 
-Se [fhir oversikt](./fhir/_oversikt.md#fhir-ressurser-for-tilbakeskriving-til-epj) for mer informasjon.
+Se [fhir oversikt](./fhir/_oversikt.md#fhir-ressurser-for-tilbakeskriving-til-epj) for mer
+informasjon.

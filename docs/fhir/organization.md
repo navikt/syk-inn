@@ -37,6 +37,9 @@ _Relevante referanser:_
 
 ## Begrunnelse
 
-- Identifier/organisasjonsnummer - Nav benytter organisasjonsnummer som identifikator for organisasjonen sykmelder er tilknyttet (f.eks. fastlegekontor).
-- Identifier/her-id brukes til å sende dokumenter asynkront (som Dialogmelding) til EPJ hvis synkron tilbakeskriving feiler.
-- Telecom/phone - Saksbehandlere og veiledere i Nav trenger telefonnummer for å kontakte sykmelder ved oppfølging av sykmelding.
+- Identifier/organisasjonsnummer - Nav benytter organisasjonsnummer som identifikator for
+  organisasjonen sykmelder er tilknyttet (f.eks. fastlegekontor).
+- Identifier/her-id brukes til å sende dokumenter asynkront (som Dialogmelding) til EPJ hvis synkron
+  tilbakeskriving feiler.
+- Telecom/phone - Saksbehandlere og veiledere i Nav trenger telefonnummer for å kontakte sykmelder
+  ved oppfølging av sykmelding.
