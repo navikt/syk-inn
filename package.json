@@ -55,7 +55,7 @@
         "@navikt/syk-zara": "workspace:*",
         "@navikt/texas": "^4.1.4",
         "@navikt/tsm-diagnoser": "^2026.1.13",
-        "@navikt/tsm-oxfmt": "^0.0.7",
+        "@navikt/tsm-oxfmt": "^0.0.8",
         "@next/mdx": "^16.2.9",
         "@opentelemetry/api": "^1.9.1",
         "@opentelemetry/core": "^2.8.0",

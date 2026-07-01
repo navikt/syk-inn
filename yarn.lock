@@ -2416,12 +2416,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/tsm-oxfmt@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "@navikt/tsm-oxfmt@npm:0.0.7::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftsm-oxfmt%2F0.0.7%2F96f179b86831f065bad70c6ecb1a3eb420d61489"
+"@navikt/tsm-oxfmt@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "@navikt/tsm-oxfmt@npm:0.0.8::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftsm-oxfmt%2F0.0.8%2Fdbeadbe34953d2d630236fd0fa2a862edb14cf2f"
   peerDependencies:
     oxfmt: ">= 0"
-  checksum: 10c0/37a1adb76b407059159a07a22f993e52b689db01b4d24bb49d165a3e3b0cd4ce0524f434b68b448f6fb03359b66b008512a095a4e4023104c760334346e46c04
+  checksum: 10c0/7813cc74d149c93dd5881aeac653f3dfa73ea97d8efe2d3cb702f93a147a35d9c5075488ce83ad1da192ce66c40e494526046d016a4506ce647d11a6c9b74615
   languageName: node
   linkType: hard
 
@@ -10466,7 +10466,7 @@ __metadata:
     "@navikt/syk-zara": "workspace:*"
     "@navikt/texas": "npm:^4.1.4"
     "@navikt/tsm-diagnoser": "npm:^2026.1.13"
-    "@navikt/tsm-oxfmt": "npm:^0.0.7"
+    "@navikt/tsm-oxfmt": "npm:^0.0.8"
     "@next/mdx": "npm:^16.2.9"
     "@opentelemetry/api": "npm:^1.9.1"
     "@opentelemetry/core": "npm:^2.8.0"
