@@ -7,7 +7,7 @@ export const BruksvilkarValkeySchema = z.object({
     acceptedAt: DateTime,
     name: z.string(),
     hpr: z.string(),
-    org: z.string(),
+    org: z.string().nullable(),
     version: z.string(),
     system: z.string(),
     hash: z.string(),

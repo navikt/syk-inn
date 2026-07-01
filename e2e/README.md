@@ -47,11 +47,6 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 - [simple full behandlingsdager sykmelding](./fhir/fhir-behandlingsdager.spec.ts#L21)
 
-## [fhir/fhir-bruksvilkar.spec.ts](./fhir/fhir-bruksvilkar.spec.ts)
-
-- [when bruksvilkår toggle is on, user should be automatically redirected to bruksvilkår page](./fhir/fhir-bruksvilkar.spec.ts#L5)
-- [accepting the bruksvilkår should allow you to return to the patient](./fhir/fhir-bruksvilkar.spec.ts#L17)
-
 ## [fhir/fhir-chaosmonkey.spec.ts](./fhir/fhir-chaosmonkey.spec.ts)
 
 - [spamming 'Send'-button repeatedly should only submit 1 sykmelding](./fhir/fhir-chaosmonkey.spec.ts#L10)
@@ -97,10 +92,12 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 - [simple full reisetilskudd sykmelding ](./fhir/fhir-reisetilskudd.spec.ts#L21)
 - [simple gradert reisetilskudd sykmelding ](./fhir/fhir-reisetilskudd.spec.ts#L55)
 
-## [multi-mode/dupliser.spec.ts](./multi-mode/dupliser.spec.ts)
+## [multi-mode/bruksvilkar.spec.ts](./multi-mode/bruksvilkar.spec.ts)
 
-- [FHIR: should be able to duplicate from kvittering](./multi-mode/dupliser.spec.ts#L19)
-- [Standalone: should be able to duplicate from kvittering](./multi-mode/dupliser.spec.ts#L19)
+- [FHIR: when bruksvilkår toggle is on, user should be automatically redirected to bruksvilkår page](./multi-mode/bruksvilkar.spec.ts#L7)
+- [FHIR: accepting the bruksvilkår should allow you to return to the patient](./multi-mode/bruksvilkar.spec.ts#L20)
+- [Standalone: when bruksvilkår toggle is on, user should be automatically redirected to bruksvilkår page](./multi-mode/bruksvilkar.spec.ts#L7)
+- [Standalone: accepting the bruksvilkår should allow you to return to the patient](./multi-mode/bruksvilkar.spec.ts#L20)
 
 ## [multi-mode/form-aareg.spec.ts](./multi-mode/form-aareg.spec.ts)
 
@@ -207,6 +204,11 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 - [Standalone: Submit sykmelding with utdypende spørsmål when sykmeldinger is redacted last one is owned by user](./multi-mode/form-utdypende-sporsmal.spec.ts#L115)
 - [Standalone: Trigger all utdypende spørsmål in one 100% sykmelding](./multi-mode/form-utdypende-sporsmal.spec.ts#L146)
 - [Standalone: Trigger week 17 when week 7 has already been answered](./multi-mode/form-utdypende-sporsmal.spec.ts#L196)
+
+## [multi-mode/kvittering-dupliser.spec.ts](./multi-mode/kvittering-dupliser.spec.ts)
+
+- [FHIR: should be able to duplicate from kvittering](./multi-mode/kvittering-dupliser.spec.ts#L19)
+- [Standalone: should be able to duplicate from kvittering](./multi-mode/kvittering-dupliser.spec.ts#L19)
 
 ## [multi-mode/launch.spec.ts](./multi-mode/launch.spec.ts)
 

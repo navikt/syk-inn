@@ -7,7 +7,7 @@ import { ReactElement, useState } from 'react'
 
 import { SimpleReveal } from '#components/animation/Reveal'
 import { AssableNextLink } from '#components/links/AssableNextLink'
-import { createFhirPaths } from '#core/providers/ModePaths'
+import { ModePaths } from '#core/providers/ModePaths'
 import { toReadableDateTime } from '#lib/date'
 import { cn } from '#lib/tw'
 
@@ -15,7 +15,7 @@ import { AcceptBruksvilkar } from './BruksvilkarAccept'
 import { BRUKSVILKAR_TIMESTAMP, BRUKSVILKAR_VERSION, BruksvilkarSection } from './BruksvilkarSection'
 
 type Props = {
-    patientId: string
+    paths: Pick<ModePaths, 'root' | 'bruksvilkar'>
     accepter: {
         hpr: string
         name: string
@@ -27,17 +27,12 @@ type Props = {
     } | null
 }
 
-function Bruksvilkar({ patientId, accepter, accepted }: Props): ReactElement {
-    const paths = createFhirPaths(patientId)
+function Bruksvilkar({ paths, accepter, accepted }: Props): ReactElement {
     const [acceptOk, setAcceptOk] = useState<{ version: string; at: string; stale: boolean } | null>(accepted)
 
     return (
         <div className="max-w-prose">
-            <div
-                className={cn({
-                    'mb-6': acceptOk == null,
-                })}
-            >
+            <div className={cn({ 'mb-6': acceptOk == null })}>
                 <InfoCard data-color="info">
                     <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
                         <InfoCard.Title>Velkommen til ny sykemeldingsløsning</InfoCard.Title>
@@ -59,7 +54,7 @@ function Bruksvilkar({ patientId, accepter, accepted }: Props): ReactElement {
                 </InlineMessage>
                 {acceptOk == null ? (
                     <AcceptBruksvilkar
-                        patientId={patientId}
+                        paths={paths.bruksvilkar}
                         onAcceptOk={(accept) => setAcceptOk({ ...accept, stale: false })}
                     />
                 ) : (
@@ -77,7 +72,7 @@ function Bruksvilkar({ patientId, accepter, accepted }: Props): ReactElement {
                                 bruksvilkårene.
                             </BodyShort>
                             <AcceptBruksvilkar
-                                patientId={patientId}
+                                paths={paths.bruksvilkar}
                                 onAcceptOk={(accept) => setAcceptOk({ ...accept, stale: false })}
                             />
                         </InfoCard.Content>
@@ -88,7 +83,7 @@ function Bruksvilkar({ patientId, accepter, accepted }: Props): ReactElement {
                     {acceptOk != null && !acceptOk.stale && (
                         <SimpleReveal>
                             <Button href={paths.root} className="w-full mt-4" variant="secondary" as={AssableNextLink}>
-                                Gå tilbake til pasienten
+                                Gå videre til sykemeldingsløsningen
                             </Button>
                         </SimpleReveal>
                     )}

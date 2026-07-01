@@ -11,7 +11,6 @@ import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { bundledEnv } from '#lib/env'
 
 const PayloadSchema = z.object({
-    patientId: z.string(),
     version: z.templateLiteral([z.number(), '.', z.number()]),
 })
 
@@ -22,8 +21,14 @@ type ResponsePayload = {
 
 export async function PUT(request: NextRequest): Promise<Response> {
     const body = PayloadSchema.parse(await request.json())
+    const patientIdQueryParam = request.nextUrl.searchParams.get('patientId')
 
-    const readyClient = await getReadyClient(body.patientId)
+    if (!patientIdQueryParam) {
+        logger.error('Missing patientId query parameter')
+        return NextResponse.json({ error: 'MISSING_PATIENT_ID' }, { status: 400 })
+    }
+
+    const readyClient = await getReadyClient(patientIdQueryParam)
     if ('error' in readyClient) {
         logger.error(`Tried to accept bruksvilkår, got ${readyClient.error}`)
         return NextResponse.json({ error: readyClient.error }, { status: 401 })

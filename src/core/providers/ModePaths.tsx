@@ -30,7 +30,7 @@ export const createFhirPaths = (patientId: string): ModePaths => ({
     feedback: `/fhir/${patientId}/feedback`,
     bruksvilkar: {
         root: `/fhir/bruksvilkar`,
-        accept: `/fhir/bruksvilkar/accept`,
+        accept: `/fhir/bruksvilkar/accept?patientId=${patientId}`,
     },
 })
 

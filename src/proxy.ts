@@ -55,6 +55,14 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
             }
         }
 
+        if (
+            shouldUseMockEngine() &&
+            request.cookies.get(MOCK_HELSEID_TOKEN_NAME)?.value == null &&
+            request.nextUrl.pathname === '/'
+        ) {
+            return NextResponse.redirect(new URL('/dev', request.url))
+        }
+
         return response
     })
 }
