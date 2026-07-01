@@ -5,18 +5,17 @@ import { ReactElement, useState } from 'react'
 
 import { SimpleReveal } from '#components/animation/Reveal'
 import { SimpleAlert } from '#components/help/GeneralErrors'
-import { createFhirPaths } from '#core/providers/ModePaths'
+import { ModePaths } from '#core/providers/ModePaths'
 import { pathWithBasePath } from '#lib/url'
 
 import { BRUKSVILKAR_VERSION } from './BruksvilkarSection'
 
 type Props = {
-    patientId: string
+    paths: ModePaths['bruksvilkar']
     onAcceptOk: (accept: { version: string; at: string }) => void
 }
 
-export function AcceptBruksvilkar({ patientId, onAcceptOk }: Props): ReactElement {
-    const paths = createFhirPaths(patientId)
+export function AcceptBruksvilkar({ paths, onAcceptOk }: Props): ReactElement {
     const [toggledAccept, setToggledAccept] = useState(false)
     const [accepting, setAccepting] = useState(false)
     const [acceptError, setAcceptError] = useState<string | null>(null)
@@ -41,11 +40,10 @@ export function AcceptBruksvilkar({ patientId, onAcceptOk }: Props): ReactElemen
                         setAccepting(true)
 
                         try {
-                            const response = await fetch(pathWithBasePath(paths.bruksvilkar.accept), {
+                            const response = await fetch(pathWithBasePath(paths.accept), {
                                 method: 'PUT',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
-                                    patientId,
                                     version: BRUKSVILKAR_VERSION,
                                 }),
                             })

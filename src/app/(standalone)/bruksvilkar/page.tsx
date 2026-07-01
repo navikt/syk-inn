@@ -5,53 +5,39 @@ import * as R from 'remeda'
 
 import LegeOgBehandlerTelefonen from '#components/help/LegeOgBehandlerTelefonen'
 import { PageLayout } from '#components/layout/Page'
-import { createFhirPaths } from '#core/providers/ModePaths'
+import { HelseIdPaths } from '#core/providers/ModePaths'
 import { hasAcceptedBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
-import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
-import { getHpr } from '#data-layer/fhir/mappers/practitioner'
-import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
+import { getHelseIdBehandler } from '#data-layer/helseid/helseid-service'
 import Bruksvilkar from '#features/bruksvilkar/Bruksvilkar'
 
-async function Page({ searchParams }: PageProps<'/fhir/bruksvilkar'>): Promise<ReactElement> {
-    const { returnTo } = await searchParams
-
+async function Page(): Promise<ReactElement> {
     return (
         <PageLayout heading="Bruksvilkår" bg="white" size="fit">
             <div className="p-4 bg-ax-bg-default rounded-md">
-                {typeof returnTo === 'string' ? <BruksvilkarWithData patientId={returnTo} /> : <BruksvilkarError />}
+                <BruksvilkarWithData />
             </div>
         </PageLayout>
     )
 }
 
-async function BruksvilkarWithData({ patientId }: { patientId: string }): Promise<ReactElement> {
-    const readyClient = await getReadyClient(patientId)
-    if ('error' in readyClient) {
-        logger.error(`Tried to load bruksvilkår, got ${readyClient.error}`)
+async function BruksvilkarWithData(): Promise<ReactElement> {
+    const userInfo = await getHelseIdBehandler()
+    if (userInfo == null) {
+        logger.error(`User without valid HelseID info tried to access bruksvilkår`)
         return <BruksvilkarError />
     }
 
-    const practitioner = await readyClient.user.request()
-    if ('error' in practitioner) {
-        logger.error(`Tried to load bruksvilkår, got ${practitioner.error}`)
+    if (userInfo.hpr == null) {
+        logger.error(`User without valid HPR tried to access bruksvilkår`)
         return <BruksvilkarError />
     }
 
-    const hpr = getHpr(practitioner.identifier)
-    if (!hpr) {
-        logger.error(`Tried to load bruksvilkår, got practitioner without HPR: ${practitioner.id}`)
-        return <BruksvilkarError />
-    }
-
-    const acceptedBruksvilkar = await hasAcceptedBruksvilkar(hpr)
+    const acceptedBruksvilkar = await hasAcceptedBruksvilkar(userInfo.hpr)
 
     return (
         <Bruksvilkar
-            paths={R.pick(createFhirPaths(patientId), ['root', 'bruksvilkar'])}
-            accepter={{
-                hpr: hpr,
-                name: getNameFromFhir(practitioner.name),
-            }}
+            paths={R.pick(HelseIdPaths, ['root', 'bruksvilkar'])}
+            accepter={{ hpr: userInfo.hpr, name: userInfo.navn }}
             accepted={
                 acceptedBruksvilkar?.acceptedAt != null
                     ? {

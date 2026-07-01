@@ -5,7 +5,7 @@ import { Bruksvilkar } from './schema'
 export type BruksvilkarClient = {
     acceptBruksvilkar: (
         version: `${number}.${number}`,
-        user: { hpr: string; name: string; orgnummer: string },
+        user: { hpr: string; name: string; orgnummer: string | null },
         meta: { system: string; commmitHash: string },
     ) => Promise<string>
     hasAcceptedBruksvilkar: (hpr: string) => Promise<{
