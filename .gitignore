@@ -38,7 +38,9 @@ yarn-error.log*
 next-env.d.ts
 
 # idea
-.idea
+.idea/*
+!.idea/OxcSettings.xml
+!.idea/OxfmtSettings.xml
 
 # playwright
 /test-results/
