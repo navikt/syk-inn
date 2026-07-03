@@ -1,4 +1,5 @@
 import { logger } from '@navikt/next-logger'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import React, { ReactElement } from 'react'
 
@@ -18,7 +19,7 @@ import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { getHelseIdBehandler } from '#data-layer/helseid/helseid-service'
 import { getHelseIdAccessToken, getHelseIdIdToken } from '#data-layer/helseid/token/tokens'
 import { LazyDevTools } from '#dev/tools/LazyDevTools'
-import { isDemo, isLocal } from '#lib/env'
+import { isDemo, isDevGcp, isLocal } from '#lib/env'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 import metrics from '#lib/prometheus/metrics'
 
@@ -56,6 +57,13 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
                     <LoggedOutWarning />
                     {(isLocal || isDemo) && <LazyDevTools />}
                     <FeedbackButton />
+                    {(isLocal || isDevGcp) && (
+                        <div className="fixed bottom-2 left-2">
+                            <Link href={`/fhir/${patientId}/validator`} className="underline text-sm">
+                                SoF rapport
+                            </Link>
+                        </div>
+                    )}
                 </ToggleProvider>
             </Providers>
         </FhirModeProvider>
