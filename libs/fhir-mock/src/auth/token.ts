@@ -57,6 +57,8 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
         id_token: idToken,
         patient: session.patient.id,
         encounter: session.encounter.id,
+        // Can be set to test intents during launch, see /callback route.
+        // intent: 'validate',
         refresh_token: crypto.randomUUID(),
         token_type: 'Bearer',
         expires_in: 3600,

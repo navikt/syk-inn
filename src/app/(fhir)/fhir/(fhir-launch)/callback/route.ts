@@ -68,7 +68,10 @@ export async function GET(request: Request): Promise<Response> {
             logger.error('Seems like we launched without multiLaunch=true')
             redirect(pathWithBasePath('/fhir/error?reason=callback-failed'))
         }
-        const patientRedirectUrl = `${redirectUrl.origin}${redirectUrl.pathname}/${patientId}`
+
+        const patientRedirectUrl =
+            `${redirectUrl.origin}${redirectUrl.pathname}/${patientId}` +
+            (callback.intent === 'validate' ? '/validator' : '')
 
         const flag = getFlag('SYK_INN_HELSEID_DOUBLE_AUTH_EXP', await getUserlessToggles())
 
