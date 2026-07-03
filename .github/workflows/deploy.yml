@@ -73,7 +73,6 @@ jobs:
           salsa: false
     outputs:
       image: ${{ steps.next-build.outputs.image }}
-      digest: ${{ steps.next-build.outputs.digest }}
 
   build-demo:
     if: github.ref_name == 'main' || startsWith(github.ref_name, 'demo')
@@ -93,7 +92,6 @@ jobs:
           salsa: false
     outputs:
       image: ${{ steps.next-build.outputs.image }}
-      digest: ${{ steps.next-build.outputs.digest }}
 
   build-prod:
     if: github.ref_name == 'main'
@@ -113,7 +111,6 @@ jobs:
           salsa: false
     outputs:
       image: ${{ steps.next-build.outputs.image }}
-      digest: ${{ steps.next-build.outputs.digest }}
 
   sbom-dev:
     name: Upload SBOM for dev build
