@@ -20,10 +20,6 @@ _Relevante referanser:_
     {
       "system": "urn:oid:2.16.578.1.12.4.1.4.101",
       "value": "organisasjonsnummer / ENH"
-    },
-    {
-      "system": "urn:oid:2.16.578.1.12.4.1.2",
-      "value": "her-id"
     }
   ],
   "telecom": [
