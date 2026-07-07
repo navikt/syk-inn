@@ -2322,7 +2322,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^5.0.0"
-    "@navikt/smart-on-fhir": "npm:1.6.17"
+    "@navikt/smart-on-fhir": "npm:1.6.18"
     "@types/node": "npm:^24.13.2"
     hono: "npm:^4.12.27"
     jose: "npm:^6.2.3"
@@ -2373,20 +2373,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.6.17":
-  version: 1.6.17
-  resolution: "@navikt/smart-on-fhir@npm:1.6.17::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.6.17%2F0276159f707d0c791849818b4f8a33fa78ab2312"
+"@navikt/smart-on-fhir@npm:1.6.18":
+  version: 1.6.18
+  resolution: "@navikt/smart-on-fhir@npm:1.6.18::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.6.18%2F7e3f9d073bb8cc1d10c3cadff29472f2399d12d4"
   dependencies:
     "@navikt/pino-logger": "npm:^5.0.0"
     "@opentelemetry/api": "npm:^1.9.1"
-    "@opentelemetry/core": "npm:^2.8.0"
+    "@opentelemetry/core": "npm:^2.9.0"
     jose: "npm:^6.2.3"
     openid-client: "npm:^6.8.4"
     quick-lru: "npm:^7.3.0"
   peerDependencies:
     pino: 9 || 10
     zod: 4
-  checksum: 10c0/bbb4a38d4950d7ea96355cbce0b0c5a7631c912e71494f98d358b182578156ce13633d360f9bf17ae61d4d283249e315f3ca9579a13dc5a37479962608dc2ee4
+  checksum: 10c0/8fe2428d928f466e4d74bf9bbc06258d642874a1a2afc5d78688d304e8a56bfa07efde5f276da505d531f4880257b5db32fd5a2498b6d96009fa38f0df288aa1
   languageName: node
   linkType: hard
 
@@ -2630,7 +2630,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:^2.0.0, @opentelemetry/core@npm:^2.8.0, @opentelemetry/core@npm:^2.9.0":
+"@opentelemetry/core@npm:^2.0.0, @opentelemetry/core@npm:^2.9.0":
   version: 2.9.0
   resolution: "@opentelemetry/core@npm:2.9.0"
   dependencies:
@@ -10470,7 +10470,7 @@ __metadata:
     "@navikt/helseid-mock-server": "workspace:*"
     "@navikt/next-logger": "npm:^5.0.0"
     "@navikt/pino-logger": "npm:^5.0.0"
-    "@navikt/smart-on-fhir": "npm:1.6.17"
+    "@navikt/smart-on-fhir": "npm:1.6.18"
     "@navikt/syk-zara": "workspace:*"
     "@navikt/texas": "npm:^4.1.4"
     "@navikt/tsm-diagnoser": "npm:^2026.1.13"
