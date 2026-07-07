@@ -6,8 +6,22 @@ const config: CodegenConfig = {
     schema: './src/core/data-layer/graphql/schema/**/*.graphqls',
     documents: ['./src/core/data-layer/graphql/queries/**/*.graphql'],
     generates: {
+        './src/core/data-layer/graphql/generated/types.generated.ts': {
+            plugins: [oxlintDisabler, 'typescript'],
+            config: {
+                enumsAsTypes: true,
+                avoidOptionals: true,
+                scalars: { DateTime: 'string', DateOnly: 'string', JSON: 'unknown' },
+                nonOptionalTypename: true,
+            },
+        },
         './src/core/data-layer/graphql/generated/queries.generated.ts': {
-            plugins: [oxlintDisabler, 'typescript', 'typescript-operations', 'typed-document-node'],
+            plugins: [
+                oxlintDisabler,
+                { add: { content: `export * from './types.generated'` } },
+                'typescript-operations',
+                'typed-document-node',
+            ],
             config: {
                 enumsAsTypes: true,
                 avoidOptionals: true,
