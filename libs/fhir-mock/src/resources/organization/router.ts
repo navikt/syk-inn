@@ -1,4 +1,4 @@
-import { FhirBundle, FhirOrganization } from '@navikt/smart-on-fhir/zod'
+import { FhirSearchsetBundle, FhirOrganization } from '@navikt/smart-on-fhir/zod'
 import { Hono } from 'hono'
 
 import { withAuthed } from '../../auth/verify-authed'
@@ -24,7 +24,7 @@ export const organizationRouter = new Hono()
                     .map((org) => ({
                         resource: org,
                     })),
-            } satisfies FhirBundle<FhirOrganization>,
+            } satisfies FhirSearchsetBundle<FhirOrganization>,
             { status: 200 },
         )
     })

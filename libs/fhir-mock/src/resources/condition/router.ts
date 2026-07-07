@@ -1,4 +1,4 @@
-import { FhirBundle, FhirCondition } from '@navikt/smart-on-fhir/zod'
+import { FhirSearchsetBundle, FhirCondition } from '@navikt/smart-on-fhir/zod'
 import { Hono } from 'hono'
 
 import { withAuthed } from '../../auth/verify-authed'
@@ -33,7 +33,7 @@ export const conditionRouter = new Hono()
                 entry: launchedPatient.conditions.map((condition) => ({
                     resource: condition,
                 })),
-            } satisfies FhirBundle<FhirCondition>,
+            } satisfies FhirSearchsetBundle<FhirCondition>,
             { status: 200 },
         )
     })

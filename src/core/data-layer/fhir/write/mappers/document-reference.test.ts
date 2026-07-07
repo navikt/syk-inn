@@ -23,7 +23,7 @@ describe('sykmeldingToDocumentReference', () => {
         expect(result.subject.reference).toBe('Patient/patient-1')
         expect(result.author[0].reference).toBe('Practitioner/practitioner-1')
         expect(result.context.encounter[0].reference).toBe('Encounter/encounter-1')
-        expect(result.content[0].attachment.contentType).toBe('application/pdf')
+        expect(result.content[0].attachment).containSubset({ contentType: 'application/pdf' })
     })
 
     it('sets context.period from earliest fom and latest tom', () => {
