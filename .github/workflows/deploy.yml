@@ -21,7 +21,7 @@ jobs:
     name: Test, lint and verify
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/yarn@main
         with:
           READER_TOKEN: ${{ secrets.READER_TOKEN }}
@@ -42,7 +42,7 @@ jobs:
     name: Integration tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/yarn@main
         with:
           READER_TOKEN: ${{ secrets.READER_TOKEN }}
@@ -60,7 +60,7 @@ jobs:
     name: Build for dev
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/typst@main
         with:
           typst-version: ${{ env.TYPST_VERSION }}
@@ -79,7 +79,7 @@ jobs:
     name: Build for demo
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/typst@main
         with:
           typst-version: ${{ env.TYPST_VERSION }}
@@ -98,7 +98,7 @@ jobs:
     name: Build for prod
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/typst@main
         with:
           typst-version: ${{ env.TYPST_VERSION }}
@@ -151,7 +151,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-dev, test-lint-knip, integration-tests]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
@@ -168,7 +168,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-demo, test-lint-knip, integration-tests]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
@@ -186,7 +186,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [deploy-dev, run-playwright, build-prod]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
@@ -198,7 +198,7 @@ jobs:
     name: Build for playwright
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/typst@main
         with:
           typst-version: ${{ env.TYPST_VERSION }}
@@ -223,7 +223,7 @@ jobs:
         shardIndex: [1, 2, 3, 4, 5, 6, 7, 8]
         shardTotal: [8]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - run: corepack enable
       - uses: actions/setup-node@v6
         id: setup-node
@@ -243,7 +243,7 @@ jobs:
     needs: [run-playwright]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/playwright/report@main
 
   security:
