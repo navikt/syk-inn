@@ -27,6 +27,8 @@ const config: CodegenConfig = {
                 avoidOptionals: true,
                 scalars: { DateTime: 'string', DateOnly: 'string', JSON: 'unknown' },
                 nonOptionalTypename: true,
+                importSchemaTypesFrom: './src/core/data-layer/graphql/generated/types.generated.ts',
+                namespacedImportName: 'Types',
             },
         },
         './src/core/data-layer/graphql/generated/resolvers.generated.ts': {

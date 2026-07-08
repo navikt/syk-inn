@@ -4,183 +4,9 @@ type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 /** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
+
+import type * as Types from './types.generated'
 export * from './types.generated'
-export type AktivitetIkkeMuligInput = {
-    arbeidsrelatertArsak: ArbeidsrelatertArsakInput
-    fom: string
-    tom: string
-}
-
-export type AktivitetType = 'AKTIVITET_IKKE_MULIG' | 'AVVENTENDE' | 'BEHANDLINGSDAGER' | 'GRADERT' | 'REISETILSKUDD'
-
-export type AnnenFravarsgrunnArsak =
-    /** G: Når vedkommende er arbeidsufør som følge av svangerskapsavbrudd, */
-    | 'ABORT'
-    /** C: Når vedkommende deltar på et arbeidsrettet tiltak, */
-    | 'ARBEIDSRETTET_TILTAK'
-    /**
-     * B: Når pasienten er under behandling som gjør det nødvendig med fravær fra arbeid (ikke enkeltstående behandlingsdager)
-     *    Dette er spesifikt IKKE!!!! enkeltstående behandlingsdager, og faller under den forenklede annen fraværsgrunnene
-     *    vi støtter i denne spesifikke flyten.
-     */
-    | 'BEHANDLING_FORHINDRER_ARBEID'
-    /** J: Når vedkommende er arbeidsufør som følge av behandling i forbindelse med sterilisering */
-    | 'BEHANDLING_STERILISERING'
-    /** I: Når vedkommende er donor eller er under vurdering som donor, */
-    | 'DONOR'
-    /** A: Når vedkommende er innlagt i en godkjent helseinstitusjon */
-    | 'GODKJENT_HELSEINSTITUSJON'
-    /** D: Når vedkommende på grunn av sykdom, skade eller lyte får tilskott til opplæringstiltak etter § 10-7 tredje ledd, */
-    | 'MOTTAR_TILSKUDD_GRUNNET_HELSETILSTAND'
-    /** E: Når vedkommende er til nødvendig kontrollundersøkelse som krever minst 24 timers fravær, reisetid medregnet, */
-    | 'NODVENDIG_KONTROLLUNDENRSOKELSE'
-    /** F: Når vedkommende myndighet har nedlagt forbud mot at han eller hun arbeider på grunn av smittefare, */
-    | 'SMITTEFARE'
-    /** H: Når vedkommende er arbeidsufør som følge av behandling for barnløshet, */
-    | 'UFOR_GRUNNET_BARNLOSHET'
-
-export type ArbeidsrelatertArsakInput = {
-    annenArbeidsrelatertArsak: string | null | undefined
-    arbeidsrelaterteArsaker: Array<string>
-    isArbeidsrelatertArsak: boolean
-}
-
-export type ArbeidsrelatertArsakType = 'ANNET' | 'MANGLENDE_TILRETTELEGGING'
-
-export type AvventendeInput = {
-    fom: string
-    innspillTilArbeidsgiver: string
-    tom: string
-}
-
-export type BehandlingsdagerInput = {
-    fom: string
-    tom: string
-}
-
-export type DiagnoseSystem = 'ICD10' | 'ICPC2' | 'ICPC2B'
-
-export type DocumentStatus = 'COMPLETE' | 'ERRORED' | 'PENDING'
-
-export type GradertInput = {
-    fom: string
-    grad: number
-    reisetilskudd: boolean
-    tom: string
-}
-
-export type InputAktivitet =
-    | {
-          aktivitetIkkeMulig: AktivitetIkkeMuligInput
-          avventende?: never
-          behandlingsdager?: never
-          gradert?: never
-          reisetilskudd?: never
-      }
-    | {
-          aktivitetIkkeMulig?: never
-          avventende: AvventendeInput
-          behandlingsdager?: never
-          gradert?: never
-          reisetilskudd?: never
-      }
-    | {
-          aktivitetIkkeMulig?: never
-          avventende?: never
-          behandlingsdager: BehandlingsdagerInput
-          gradert?: never
-          reisetilskudd?: never
-      }
-    | {
-          aktivitetIkkeMulig?: never
-          avventende?: never
-          behandlingsdager?: never
-          gradert: GradertInput
-          reisetilskudd?: never
-      }
-    | {
-          aktivitetIkkeMulig?: never
-          avventende?: never
-          behandlingsdager?: never
-          gradert?: never
-          reisetilskudd: ReisetilskuddInput
-      }
-
-export type InputArbeidsforhold = {
-    arbeidsgivernavn: string
-}
-
-export type InputDiagnose = {
-    code: string
-    system: DiagnoseSystem
-}
-
-export type InputMeldinger = {
-    tilArbeidsgiver: string | null | undefined
-    tilNav: string | null | undefined
-}
-
-export type InputTilbakedatering = {
-    begrunnelse: string
-    startdato: string
-}
-
-export type InputUtdypendeSporsmal = {
-    arbeidsrelaterteUtfordringer: string | null | undefined
-    behandlingOgFremtidigArbeid: string | null | undefined
-    forventetHelsetilstandUtvikling: string | null | undefined
-    hensynPaArbeidsplassen: string | null | undefined
-    medisinskOppsummering: string | null | undefined
-    medisinskeHensyn: string | null | undefined
-    oppdatertMedisinskStatus: string | null | undefined
-    realistiskMestringArbeid: string | null | undefined
-    sykdomsutvikling: string | null | undefined
-    uavklarteForhold: string | null | undefined
-    utfordringerMedArbeid: string | null | undefined
-}
-
-export type InputYrkesskade = {
-    skadedato: string | null | undefined
-    yrkesskade: boolean
-}
-
-export type OpprettSykmeldingInput = {
-    aktivitet: Array<InputAktivitet>
-    annenFravarsgrunn: AnnenFravarsgrunnArsak | null | undefined
-    arbeidsforhold: InputArbeidsforhold | null | undefined
-    bidiagnoser: Array<InputDiagnose>
-    hoveddiagnose: InputDiagnose
-    meldinger: InputMeldinger
-    pasientenSkalSkjermes: boolean
-    svangerskapsrelatert: boolean
-    tilbakedatering: InputTilbakedatering | null | undefined
-    utdypendeSporsmal: InputUtdypendeSporsmal | null | undefined
-    yrkesskade: InputYrkesskade | null | undefined
-}
-
-export type OpprettSykmeldingMetaInput = {
-    legekontorTlf: string | null | undefined
-    orgnummer: string | null | undefined
-}
-
-export type OtherSubmitOutcomesEnum = 'MISSING_PRACTITIONER_INFO' | 'PATIENT_NOT_FOUND_IN_PDL'
-
-export type ReisetilskuddInput = {
-    fom: string
-    tom: string
-}
-
-export type RuleOutcomeStatus = 'INVALID' | 'PENDING'
-
-export type UtdypendeSporsmalOptions =
-    | 'BEHANDLING_OG_FREMTIDIG_ARBEID'
-    | 'FORVENTET_HELSETILSTAND_UTVIKLING'
-    | 'HENSYN_PA_ARBEIDSPLASSEN'
-    | 'MEDISINSKE_HENSYN'
-    | 'MEDISINSK_OPPSUMMERING'
-    | 'UAVKLARTE_FORHOLD'
-    | 'UTFORDRINGER_MED_ARBEID'
-
 type Person_Pasient_Fragment = { __typename: 'Pasient'; ident: string; navn: string }
 
 type Person_QueriedPerson_Fragment = { __typename: 'QueriedPerson'; ident: string; navn: string }
@@ -203,7 +29,7 @@ export type AllDashboardQuery = {
             | {
                   __typename: 'SykmeldingFull'
                   sykmeldingId: string
-                  documentStatus: DocumentStatus | null
+                  documentStatus: Types.DocumentStatus | null
                   meta: {
                       __typename: 'SykmeldingMeta'
                       pasientIdent: string
@@ -216,16 +42,16 @@ export type AllDashboardQuery = {
                       __typename: 'SykmeldingFullValues'
                       svangerskapsrelatert: boolean
                       pasientenSkalSkjermes: boolean
-                      annenFravarsgrunn: AnnenFravarsgrunnArsak | null
+                      annenFravarsgrunn: Types.AnnenFravarsgrunnArsak | null
                       hoveddiagnose: {
                           __typename: 'Diagnose'
-                          system: DiagnoseSystem
+                          system: Types.DiagnoseSystem
                           code: string
                           text: string
                       } | null
                       bidiagnoser: Array<{
                           __typename: 'Diagnose'
-                          system: DiagnoseSystem
+                          system: Types.DiagnoseSystem
                           code: string
                           text: string
                       }> | null
@@ -234,11 +60,11 @@ export type AllDashboardQuery = {
                                 __typename: 'AktivitetIkkeMulig'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 arbeidsrelatertArsak: {
                                     __typename: 'ArbeidsrelatertArsak'
                                     isArbeidsrelatertArsak: boolean
-                                    arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                                    arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
                                 }
                             }
@@ -246,25 +72,25 @@ export type AllDashboardQuery = {
                                 __typename: 'Avventende'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 innspillTilArbeidsgiver: string
                             }
                           | {
                                 __typename: 'Behandlingsdager'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 antallBehandlingsdager: number
                             }
                           | {
                                 __typename: 'Gradert'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 grad: number
                                 reisetilskudd: boolean
                             }
-                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
                       >
                       arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
                       meldinger: {
@@ -343,7 +169,7 @@ export type AllDashboardQuery = {
             | {
                   __typename: 'SykmeldingLight'
                   sykmeldingId: string
-                  documentStatus: DocumentStatus | null
+                  documentStatus: Types.DocumentStatus | null
                   meta: {
                       __typename: 'SykmeldingMeta'
                       pasientIdent: string
@@ -356,13 +182,13 @@ export type AllDashboardQuery = {
                       __typename: 'SykmeldingLightValues'
                       hoveddiagnose: {
                           __typename: 'Diagnose'
-                          system: DiagnoseSystem
+                          system: Types.DiagnoseSystem
                           code: string
                           text: string
                       } | null
                       bidiagnoser: Array<{
                           __typename: 'Diagnose'
-                          system: DiagnoseSystem
+                          system: Types.DiagnoseSystem
                           code: string
                           text: string
                       }> | null
@@ -371,11 +197,11 @@ export type AllDashboardQuery = {
                                 __typename: 'AktivitetIkkeMulig'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 arbeidsrelatertArsak: {
                                     __typename: 'ArbeidsrelatertArsak'
                                     isArbeidsrelatertArsak: boolean
-                                    arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                                    arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
                                 }
                             }
@@ -383,25 +209,25 @@ export type AllDashboardQuery = {
                                 __typename: 'Avventende'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 innspillTilArbeidsgiver: string
                             }
                           | {
                                 __typename: 'Behandlingsdager'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 antallBehandlingsdager: number
                             }
                           | {
                                 __typename: 'Gradert'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 grad: number
                                 reisetilskudd: boolean
                             }
-                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
                       >
                   }
               }
@@ -420,7 +246,7 @@ export type AllDashboardQuery = {
                       __typename: 'SykmeldingRedactedValues'
                       aktivitet: Array<{
                           __typename: 'AktivitetRedacted'
-                          type: AktivitetType
+                          type: Types.AktivitetType
                           fom: string
                           tom: string
                       }>
@@ -431,7 +257,7 @@ export type AllDashboardQuery = {
             | {
                   __typename: 'SykmeldingFull'
                   sykmeldingId: string
-                  documentStatus: DocumentStatus | null
+                  documentStatus: Types.DocumentStatus | null
                   meta: {
                       __typename: 'SykmeldingMeta'
                       pasientIdent: string
@@ -444,16 +270,16 @@ export type AllDashboardQuery = {
                       __typename: 'SykmeldingFullValues'
                       svangerskapsrelatert: boolean
                       pasientenSkalSkjermes: boolean
-                      annenFravarsgrunn: AnnenFravarsgrunnArsak | null
+                      annenFravarsgrunn: Types.AnnenFravarsgrunnArsak | null
                       hoveddiagnose: {
                           __typename: 'Diagnose'
-                          system: DiagnoseSystem
+                          system: Types.DiagnoseSystem
                           code: string
                           text: string
                       } | null
                       bidiagnoser: Array<{
                           __typename: 'Diagnose'
-                          system: DiagnoseSystem
+                          system: Types.DiagnoseSystem
                           code: string
                           text: string
                       }> | null
@@ -462,11 +288,11 @@ export type AllDashboardQuery = {
                                 __typename: 'AktivitetIkkeMulig'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 arbeidsrelatertArsak: {
                                     __typename: 'ArbeidsrelatertArsak'
                                     isArbeidsrelatertArsak: boolean
-                                    arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                                    arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
                                 }
                             }
@@ -474,25 +300,25 @@ export type AllDashboardQuery = {
                                 __typename: 'Avventende'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 innspillTilArbeidsgiver: string
                             }
                           | {
                                 __typename: 'Behandlingsdager'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 antallBehandlingsdager: number
                             }
                           | {
                                 __typename: 'Gradert'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 grad: number
                                 reisetilskudd: boolean
                             }
-                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
                       >
                       arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
                       meldinger: {
@@ -571,7 +397,7 @@ export type AllDashboardQuery = {
             | {
                   __typename: 'SykmeldingLight'
                   sykmeldingId: string
-                  documentStatus: DocumentStatus | null
+                  documentStatus: Types.DocumentStatus | null
                   meta: {
                       __typename: 'SykmeldingMeta'
                       pasientIdent: string
@@ -584,13 +410,13 @@ export type AllDashboardQuery = {
                       __typename: 'SykmeldingLightValues'
                       hoveddiagnose: {
                           __typename: 'Diagnose'
-                          system: DiagnoseSystem
+                          system: Types.DiagnoseSystem
                           code: string
                           text: string
                       } | null
                       bidiagnoser: Array<{
                           __typename: 'Diagnose'
-                          system: DiagnoseSystem
+                          system: Types.DiagnoseSystem
                           code: string
                           text: string
                       }> | null
@@ -599,11 +425,11 @@ export type AllDashboardQuery = {
                                 __typename: 'AktivitetIkkeMulig'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 arbeidsrelatertArsak: {
                                     __typename: 'ArbeidsrelatertArsak'
                                     isArbeidsrelatertArsak: boolean
-                                    arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                                    arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
                                     annenArbeidsrelatertArsak: string | null
                                 }
                             }
@@ -611,25 +437,25 @@ export type AllDashboardQuery = {
                                 __typename: 'Avventende'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 innspillTilArbeidsgiver: string
                             }
                           | {
                                 __typename: 'Behandlingsdager'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 antallBehandlingsdager: number
                             }
                           | {
                                 __typename: 'Gradert'
                                 fom: string
                                 tom: string
-                                type: AktivitetType
+                                type: Types.AktivitetType
                                 grad: number
                                 reisetilskudd: boolean
                             }
-                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
                       >
                   }
               }
@@ -648,7 +474,7 @@ export type AllDashboardQuery = {
                       __typename: 'SykmeldingRedactedValues'
                       aktivitet: Array<{
                           __typename: 'AktivitetRedacted'
-                          type: AktivitetType
+                          type: Types.AktivitetType
                           fom: string
                           tom: string
                       }>
@@ -659,7 +485,7 @@ export type AllDashboardQuery = {
     konsultasjon: {
         __typename: 'Konsultasjon'
         hasRequestedAccessToSykmeldinger: boolean | null
-        diagnoser: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+        diagnoser: Array<{ __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }> | null
     } | null
 }
 
@@ -669,10 +495,10 @@ export type DiagnoseSearchQueryVariables = Exact<{
 
 export type DiagnoseSearchQuery = {
     __typename: 'Query'
-    diagnose: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+    diagnose: Array<{ __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }> | null
 }
 
-export type DiagnoseFragment = { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }
+export type DiagnoseFragment = { __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }
 
 export type SaveDraftMutationVariables = Exact<{
     draftId: string
@@ -721,7 +547,7 @@ export type DraftFragment = {
 export type KonsultasjonFragment = {
     __typename: 'Konsultasjon'
     hasRequestedAccessToSykmeldinger: boolean | null
-    diagnoser: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+    diagnoser: Array<{ __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }> | null
 }
 
 export type KonsultasjonQueryVariables = Exact<{ [key: string]: never }>
@@ -731,7 +557,7 @@ export type KonsultasjonQuery = {
     konsultasjon: {
         __typename: 'Konsultasjon'
         hasRequestedAccessToSykmeldinger: boolean | null
-        diagnoser: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+        diagnoser: Array<{ __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }> | null
     } | null
 }
 
@@ -770,7 +596,7 @@ export type PasientQuery = {
             __typename: 'UtdypendeOpplysningerHint'
             days: number
             latestTom: string | null
-            previouslyAnsweredSporsmal: Array<UtdypendeSporsmalOptions>
+            previouslyAnsweredSporsmal: Array<Types.UtdypendeSporsmalOptions>
         } | null
     } | null
 }
@@ -805,7 +631,7 @@ export type SykmeldingByIdQuery = {
         | {
               __typename: 'SykmeldingFull'
               sykmeldingId: string
-              documentStatus: DocumentStatus | null
+              documentStatus: Types.DocumentStatus | null
               meta: {
                   __typename: 'SykmeldingMeta'
                   pasientIdent: string
@@ -818,11 +644,16 @@ export type SykmeldingByIdQuery = {
                   __typename: 'SykmeldingFullValues'
                   svangerskapsrelatert: boolean
                   pasientenSkalSkjermes: boolean
-                  annenFravarsgrunn: AnnenFravarsgrunnArsak | null
-                  hoveddiagnose: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
+                  annenFravarsgrunn: Types.AnnenFravarsgrunnArsak | null
+                  hoveddiagnose: {
+                      __typename: 'Diagnose'
+                      system: Types.DiagnoseSystem
+                      code: string
+                      text: string
+                  } | null
                   bidiagnoser: Array<{
                       __typename: 'Diagnose'
-                      system: DiagnoseSystem
+                      system: Types.DiagnoseSystem
                       code: string
                       text: string
                   }> | null
@@ -831,11 +662,11 @@ export type SykmeldingByIdQuery = {
                             __typename: 'AktivitetIkkeMulig'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             arbeidsrelatertArsak: {
                                 __typename: 'ArbeidsrelatertArsak'
                                 isArbeidsrelatertArsak: boolean
-                                arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                                arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
                                 annenArbeidsrelatertArsak: string | null
                             }
                         }
@@ -843,25 +674,25 @@ export type SykmeldingByIdQuery = {
                             __typename: 'Avventende'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             innspillTilArbeidsgiver: string
                         }
                       | {
                             __typename: 'Behandlingsdager'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             antallBehandlingsdager: number
                         }
                       | {
                             __typename: 'Gradert'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             grad: number
                             reisetilskudd: boolean
                         }
-                      | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                      | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
                   >
                   arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
                   meldinger: {
@@ -940,7 +771,7 @@ export type SykmeldingByIdQuery = {
         | {
               __typename: 'SykmeldingLight'
               sykmeldingId: string
-              documentStatus: DocumentStatus | null
+              documentStatus: Types.DocumentStatus | null
               meta: {
                   __typename: 'SykmeldingMeta'
                   pasientIdent: string
@@ -951,10 +782,15 @@ export type SykmeldingByIdQuery = {
               utfall: { __typename: 'Outcome'; result: string; melding: string | null }
               values: {
                   __typename: 'SykmeldingLightValues'
-                  hoveddiagnose: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
+                  hoveddiagnose: {
+                      __typename: 'Diagnose'
+                      system: Types.DiagnoseSystem
+                      code: string
+                      text: string
+                  } | null
                   bidiagnoser: Array<{
                       __typename: 'Diagnose'
-                      system: DiagnoseSystem
+                      system: Types.DiagnoseSystem
                       code: string
                       text: string
                   }> | null
@@ -963,11 +799,11 @@ export type SykmeldingByIdQuery = {
                             __typename: 'AktivitetIkkeMulig'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             arbeidsrelatertArsak: {
                                 __typename: 'ArbeidsrelatertArsak'
                                 isArbeidsrelatertArsak: boolean
-                                arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                                arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
                                 annenArbeidsrelatertArsak: string | null
                             }
                         }
@@ -975,25 +811,25 @@ export type SykmeldingByIdQuery = {
                             __typename: 'Avventende'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             innspillTilArbeidsgiver: string
                         }
                       | {
                             __typename: 'Behandlingsdager'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             antallBehandlingsdager: number
                         }
                       | {
                             __typename: 'Gradert'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             grad: number
                             reisetilskudd: boolean
                         }
-                      | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                      | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
                   >
               }
           }
@@ -1010,7 +846,12 @@ export type SykmeldingByIdQuery = {
               utfall: { __typename: 'Outcome'; result: string; melding: string | null }
               values: {
                   __typename: 'SykmeldingRedactedValues'
-                  aktivitet: Array<{ __typename: 'AktivitetRedacted'; type: AktivitetType; fom: string; tom: string }>
+                  aktivitet: Array<{
+                      __typename: 'AktivitetRedacted'
+                      type: Types.AktivitetType
+                      fom: string
+                      tom: string
+                  }>
               }
           }
         | null
@@ -1018,20 +859,20 @@ export type SykmeldingByIdQuery = {
 
 export type OpprettSykmeldingMutationVariables = Exact<{
     draftId: string
-    meta: OpprettSykmeldingMetaInput
-    values: OpprettSykmeldingInput
+    meta: Types.OpprettSykmeldingMetaInput
+    values: Types.OpprettSykmeldingInput
     force?: boolean
 }>
 
 export type OpprettSykmeldingMutation = {
     __typename: 'Mutation'
     opprettSykmelding:
-        | { __typename: 'OtherSubmitOutcomes'; cause: OtherSubmitOutcomesEnum }
-        | { __typename: 'RuleOutcome'; status: RuleOutcomeStatus; message: string; rule: string }
+        | { __typename: 'OtherSubmitOutcomes'; cause: Types.OtherSubmitOutcomesEnum }
+        | { __typename: 'RuleOutcome'; status: Types.RuleOutcomeStatus; message: string; rule: string }
         | {
               __typename: 'SykmeldingFull'
               sykmeldingId: string
-              documentStatus: DocumentStatus | null
+              documentStatus: Types.DocumentStatus | null
               meta: {
                   __typename: 'SykmeldingMeta'
                   pasientIdent: string
@@ -1044,11 +885,16 @@ export type OpprettSykmeldingMutation = {
                   __typename: 'SykmeldingFullValues'
                   svangerskapsrelatert: boolean
                   pasientenSkalSkjermes: boolean
-                  annenFravarsgrunn: AnnenFravarsgrunnArsak | null
-                  hoveddiagnose: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
+                  annenFravarsgrunn: Types.AnnenFravarsgrunnArsak | null
+                  hoveddiagnose: {
+                      __typename: 'Diagnose'
+                      system: Types.DiagnoseSystem
+                      code: string
+                      text: string
+                  } | null
                   bidiagnoser: Array<{
                       __typename: 'Diagnose'
-                      system: DiagnoseSystem
+                      system: Types.DiagnoseSystem
                       code: string
                       text: string
                   }> | null
@@ -1057,11 +903,11 @@ export type OpprettSykmeldingMutation = {
                             __typename: 'AktivitetIkkeMulig'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             arbeidsrelatertArsak: {
                                 __typename: 'ArbeidsrelatertArsak'
                                 isArbeidsrelatertArsak: boolean
-                                arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                                arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
                                 annenArbeidsrelatertArsak: string | null
                             }
                         }
@@ -1069,25 +915,25 @@ export type OpprettSykmeldingMutation = {
                             __typename: 'Avventende'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             innspillTilArbeidsgiver: string
                         }
                       | {
                             __typename: 'Behandlingsdager'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             antallBehandlingsdager: number
                         }
                       | {
                             __typename: 'Gradert'
                             fom: string
                             tom: string
-                            type: AktivitetType
+                            type: Types.AktivitetType
                             grad: number
                             reisetilskudd: boolean
                         }
-                      | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+                      | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
                   >
                   arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
                   meldinger: {
@@ -1167,7 +1013,7 @@ export type OpprettSykmeldingMutation = {
 
 export type RuleOutcomeFragment = {
     __typename: 'RuleOutcome'
-    status: RuleOutcomeStatus
+    status: Types.RuleOutcomeStatus
     message: string
     rule: string
 }
@@ -1185,14 +1031,14 @@ export type SykmeldingRedactedFragment = {
     utfall: { __typename: 'Outcome'; result: string; melding: string | null }
     values: {
         __typename: 'SykmeldingRedactedValues'
-        aktivitet: Array<{ __typename: 'AktivitetRedacted'; type: AktivitetType; fom: string; tom: string }>
+        aktivitet: Array<{ __typename: 'AktivitetRedacted'; type: Types.AktivitetType; fom: string; tom: string }>
     }
 }
 
 export type SykmeldingFullFragment = {
     __typename: 'SykmeldingFull'
     sykmeldingId: string
-    documentStatus: DocumentStatus | null
+    documentStatus: Types.DocumentStatus | null
     meta: {
         __typename: 'SykmeldingMeta'
         pasientIdent: string
@@ -1205,19 +1051,19 @@ export type SykmeldingFullFragment = {
         __typename: 'SykmeldingFullValues'
         svangerskapsrelatert: boolean
         pasientenSkalSkjermes: boolean
-        annenFravarsgrunn: AnnenFravarsgrunnArsak | null
-        hoveddiagnose: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
-        bidiagnoser: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+        annenFravarsgrunn: Types.AnnenFravarsgrunnArsak | null
+        hoveddiagnose: { __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string } | null
+        bidiagnoser: Array<{ __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }> | null
         aktivitet: Array<
             | {
                   __typename: 'AktivitetIkkeMulig'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   arbeidsrelatertArsak: {
                       __typename: 'ArbeidsrelatertArsak'
                       isArbeidsrelatertArsak: boolean
-                      arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                      arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
                   }
               }
@@ -1225,25 +1071,25 @@ export type SykmeldingFullFragment = {
                   __typename: 'Avventende'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   innspillTilArbeidsgiver: string
               }
             | {
                   __typename: 'Behandlingsdager'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   antallBehandlingsdager: number
               }
             | {
                   __typename: 'Gradert'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   grad: number
                   reisetilskudd: boolean
               }
-            | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+            | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
         >
         arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
         meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null } | null
@@ -1287,7 +1133,7 @@ export type SykmeldingFullFragment = {
 export type SykmeldingLightFragment = {
     __typename: 'SykmeldingLight'
     sykmeldingId: string
-    documentStatus: DocumentStatus | null
+    documentStatus: Types.DocumentStatus | null
     meta: {
         __typename: 'SykmeldingMeta'
         pasientIdent: string
@@ -1298,18 +1144,18 @@ export type SykmeldingLightFragment = {
     utfall: { __typename: 'Outcome'; result: string; melding: string | null }
     values: {
         __typename: 'SykmeldingLightValues'
-        hoveddiagnose: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
-        bidiagnoser: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+        hoveddiagnose: { __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string } | null
+        bidiagnoser: Array<{ __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }> | null
         aktivitet: Array<
             | {
                   __typename: 'AktivitetIkkeMulig'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   arbeidsrelatertArsak: {
                       __typename: 'ArbeidsrelatertArsak'
                       isArbeidsrelatertArsak: boolean
-                      arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                      arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
                   }
               }
@@ -1317,25 +1163,25 @@ export type SykmeldingLightFragment = {
                   __typename: 'Avventende'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   innspillTilArbeidsgiver: string
               }
             | {
                   __typename: 'Behandlingsdager'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   antallBehandlingsdager: number
               }
             | {
                   __typename: 'Gradert'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   grad: number
                   reisetilskudd: boolean
               }
-            | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+            | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
         >
     }
 }
@@ -1347,7 +1193,7 @@ export type RequestAccessToSykmeldingerMutation = { __typename: 'Mutation'; requ
 type Sykmelding_SykmeldingFull_Fragment = {
     __typename: 'SykmeldingFull'
     sykmeldingId: string
-    documentStatus: DocumentStatus | null
+    documentStatus: Types.DocumentStatus | null
     meta: {
         __typename: 'SykmeldingMeta'
         pasientIdent: string
@@ -1360,19 +1206,19 @@ type Sykmelding_SykmeldingFull_Fragment = {
         __typename: 'SykmeldingFullValues'
         svangerskapsrelatert: boolean
         pasientenSkalSkjermes: boolean
-        annenFravarsgrunn: AnnenFravarsgrunnArsak | null
-        hoveddiagnose: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
-        bidiagnoser: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+        annenFravarsgrunn: Types.AnnenFravarsgrunnArsak | null
+        hoveddiagnose: { __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string } | null
+        bidiagnoser: Array<{ __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }> | null
         aktivitet: Array<
             | {
                   __typename: 'AktivitetIkkeMulig'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   arbeidsrelatertArsak: {
                       __typename: 'ArbeidsrelatertArsak'
                       isArbeidsrelatertArsak: boolean
-                      arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                      arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
                   }
               }
@@ -1380,25 +1226,25 @@ type Sykmelding_SykmeldingFull_Fragment = {
                   __typename: 'Avventende'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   innspillTilArbeidsgiver: string
               }
             | {
                   __typename: 'Behandlingsdager'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   antallBehandlingsdager: number
               }
             | {
                   __typename: 'Gradert'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   grad: number
                   reisetilskudd: boolean
               }
-            | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+            | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
         >
         arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
         meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null } | null
@@ -1442,7 +1288,7 @@ type Sykmelding_SykmeldingFull_Fragment = {
 type Sykmelding_SykmeldingLight_Fragment = {
     __typename: 'SykmeldingLight'
     sykmeldingId: string
-    documentStatus: DocumentStatus | null
+    documentStatus: Types.DocumentStatus | null
     meta: {
         __typename: 'SykmeldingMeta'
         pasientIdent: string
@@ -1453,18 +1299,18 @@ type Sykmelding_SykmeldingLight_Fragment = {
     utfall: { __typename: 'Outcome'; result: string; melding: string | null }
     values: {
         __typename: 'SykmeldingLightValues'
-        hoveddiagnose: { __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string } | null
-        bidiagnoser: Array<{ __typename: 'Diagnose'; system: DiagnoseSystem; code: string; text: string }> | null
+        hoveddiagnose: { __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string } | null
+        bidiagnoser: Array<{ __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }> | null
         aktivitet: Array<
             | {
                   __typename: 'AktivitetIkkeMulig'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   arbeidsrelatertArsak: {
                       __typename: 'ArbeidsrelatertArsak'
                       isArbeidsrelatertArsak: boolean
-                      arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+                      arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
                       annenArbeidsrelatertArsak: string | null
                   }
               }
@@ -1472,25 +1318,25 @@ type Sykmelding_SykmeldingLight_Fragment = {
                   __typename: 'Avventende'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   innspillTilArbeidsgiver: string
               }
             | {
                   __typename: 'Behandlingsdager'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   antallBehandlingsdager: number
               }
             | {
                   __typename: 'Gradert'
                   fom: string
                   tom: string
-                  type: AktivitetType
+                  type: Types.AktivitetType
                   grad: number
                   reisetilskudd: boolean
               }
-            | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+            | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
         >
     }
 }
@@ -1508,7 +1354,7 @@ type Sykmelding_SykmeldingRedacted_Fragment = {
     utfall: { __typename: 'Outcome'; result: string; melding: string | null }
     values: {
         __typename: 'SykmeldingRedactedValues'
-        aktivitet: Array<{ __typename: 'AktivitetRedacted'; type: AktivitetType; fom: string; tom: string }>
+        aktivitet: Array<{ __typename: 'AktivitetRedacted'; type: Types.AktivitetType; fom: string; tom: string }>
     }
 }
 
@@ -1521,11 +1367,11 @@ type Aktivitet_AktivitetIkkeMulig_Fragment = {
     __typename: 'AktivitetIkkeMulig'
     fom: string
     tom: string
-    type: AktivitetType
+    type: Types.AktivitetType
     arbeidsrelatertArsak: {
         __typename: 'ArbeidsrelatertArsak'
         isArbeidsrelatertArsak: boolean
-        arbeidsrelaterteArsaker: Array<ArbeidsrelatertArsakType>
+        arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
         annenArbeidsrelatertArsak: string | null
     }
 }
@@ -1534,7 +1380,7 @@ type Aktivitet_Avventende_Fragment = {
     __typename: 'Avventende'
     fom: string
     tom: string
-    type: AktivitetType
+    type: Types.AktivitetType
     innspillTilArbeidsgiver: string
 }
 
@@ -1542,7 +1388,7 @@ type Aktivitet_Behandlingsdager_Fragment = {
     __typename: 'Behandlingsdager'
     fom: string
     tom: string
-    type: AktivitetType
+    type: Types.AktivitetType
     antallBehandlingsdager: number
 }
 
@@ -1550,12 +1396,17 @@ type Aktivitet_Gradert_Fragment = {
     __typename: 'Gradert'
     fom: string
     tom: string
-    type: AktivitetType
+    type: Types.AktivitetType
     grad: number
     reisetilskudd: boolean
 }
 
-type Aktivitet_Reisetilskudd_Fragment = { __typename: 'Reisetilskudd'; fom: string; tom: string; type: AktivitetType }
+type Aktivitet_Reisetilskudd_Fragment = {
+    __typename: 'Reisetilskudd'
+    fom: string
+    tom: string
+    type: Types.AktivitetType
+}
 
 export type AktivitetFragment =
     | Aktivitet_AktivitetIkkeMulig_Fragment
@@ -1572,8 +1423,8 @@ export type SynchronizeSykmeldingMutation = {
     __typename: 'Mutation'
     synchronizeSykmelding: {
         __typename: 'SynchronizationStatus'
-        documentStatus: DocumentStatus
-        navStatus: DocumentStatus
+        documentStatus: Types.DocumentStatus
+        navStatus: Types.DocumentStatus
     }
 }
 
