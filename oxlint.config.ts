@@ -1,35 +1,13 @@
+import tsmBase from '@navikt/tsm-oxlint'
+import tsmReact from '@navikt/tsm-oxlint/react'
 import { defineConfig } from 'oxlint'
 
 export default defineConfig({
-    plugins: [
-        'nextjs',
-        'import',
-        'vitest',
-        'jsx-a11y',
-        'promise',
-        'typescript',
-        'react',
-        'react-perf',
-        'oxc',
-        'node',
-        'unicorn',
-    ],
+    extends: [tsmBase, tsmReact],
+    plugins: ['nextjs', 'vitest'],
     jsPlugins: [{ name: 'import-alias', specifier: '@limegrass/eslint-plugin-import-alias' }],
     options: { typeCheck: true, typeAware: true },
     rules: {
-        'react/rules-of-hooks': 'error',
-        'no-console': 'warn',
-        'no-unused-expressions': 'warn',
-        'no-array-constructor': 'warn',
-        'typescript/no-explicit-any': 'warn',
-        'typescript/no-require-imports': 'warn',
-        'typescript/ban-ts-comment': ['warn', { 'ts-expect-error': 'allow-with-description' }],
-        'typescript/no-non-null-assertion': 'warn',
-        'typescript/no-unsafe-function-type': 'warn',
-        'typescript/no-empty-object-type': 'warn',
-        'typescript/no-unnecessary-type-constraint': 'warn',
-        'typescript/explicit-function-return-type': ['warn', { allowExpressions: true }],
-        'react/jsx-curly-brace-presence': 'warn',
         // TODO: Consider turning on
         'typescript/no-misused-spread': 'off',
         'import-alias/import-alias': [

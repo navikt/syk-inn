@@ -3,6 +3,7 @@ import { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
     output: 'standalone',
+    reactStrictMode: true,
     assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
     transpilePackages: ['@navikt/fhir-mock-server', '@navikt/helseid-mock-server'],
