@@ -12,9 +12,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^4.2.5":
-  version: 4.2.5
-  resolution: "@apollo/client@npm:4.2.5"
+"@apollo/client@npm:^4.2.6":
+  version: 4.2.6
+  resolution: "@apollo/client@npm:4.2.6"
   dependencies:
     "@graphql-typed-document-node/core": "npm:^3.1.1"
     "@wry/caches": "npm:^1.0.0"
@@ -39,7 +39,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 10c0/3323e8ae787826f6bcab8f0efdacb46751a6a5dfa87dab9397169820d432e9393527b6bde17ea6bf26f4126e211d9b6a6d5eb03cb77223307c67677db6792d68
+  checksum: 10c0/773815ffd4b6feea9992bcf403d804b3e1d43b54fe4f5ae36620a0543466d78cf537c82b70efcd3dcad0fc2194fd7aeaed8b9d81c2828077f264675b258d0dbd
   languageName: node
   linkType: hard
 
@@ -639,28 +639,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-codegen/add@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "@graphql-codegen/add@npm:7.0.1"
+"@graphql-codegen/add@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "@graphql-codegen/add@npm:7.1.0"
   dependencies:
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/718c82bea3291ffce8bebd8577ca909adc659dbb1406afbfa289b2c1d51b04a2a961cc4949ec801c5e93d12e721ab681c9a19db00ee0d4dcb72ab4d9ff5e2d08
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 10c0/bf90d22d3f56c148a2ff4370325c5ec35f8621fe031a7ef064bc00938f30b660abf32f28bcc1b4f8a9d3645bd688b82689db8b8b25d008e1a16c27c736349dd7
   languageName: node
   linkType: hard
 
-"@graphql-codegen/cli@npm:^7.1.3":
-  version: 7.1.3
-  resolution: "@graphql-codegen/cli@npm:7.1.3"
+"@graphql-codegen/cli@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "@graphql-codegen/cli@npm:7.2.0"
   dependencies:
     "@babel/generator": "npm:^7.18.13"
     "@babel/template": "npm:^7.18.10"
     "@babel/types": "npm:^7.18.13"
-    "@graphql-codegen/client-preset": "npm:^6.0.1"
-    "@graphql-codegen/core": "npm:^6.1.0"
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
+    "@graphql-codegen/client-preset": "npm:^6.1.0"
+    "@graphql-codegen/core": "npm:^6.2.0"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
     "@graphql-tools/apollo-engine-loader": "npm:^8.0.28"
     "@graphql-tools/code-file-loader": "npm:^8.1.28"
     "@graphql-tools/git-loader": "npm:^8.0.32"
@@ -670,7 +670,7 @@ __metadata:
     "@graphql-tools/load": "npm:^8.1.8"
     "@graphql-tools/merge": "npm:^9.0.6"
     "@graphql-tools/url-loader": "npm:^9.0.6"
-    "@graphql-tools/utils": "npm:^11.0.0"
+    "@graphql-tools/utils": "npm:^11.2.0"
     "@inquirer/prompts": "npm:^8.3.2"
     "@whatwg-node/fetch": "npm:^0.10.0"
     chalk: "npm:^5.6.0"
@@ -692,7 +692,7 @@ __metadata:
     yargs: "npm:^18.0.0"
   peerDependencies:
     "@parcel/watcher": ^2.1.0
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
   peerDependenciesMeta:
     "@parcel/watcher":
       optional: true
@@ -702,196 +702,196 @@ __metadata:
     graphql-codegen: esm/bin.js
     graphql-codegen-cjs: cjs/bin.js
     graphql-codegen-esm: esm/bin.js
-  checksum: 10c0/117faffe1add1d3fcc519c1d82c34d684fdbca1ad591e857456c7c416d0cb831b9dfa65d0a0781a28013508971f7cbaa8532aa50849fb8c8a541cf84a3dd6a0c
+  checksum: 10c0/fbb10aa23ba724eb6ca9e12ad6e61f004cd5e2b2596b735dc2492cdeed29e9f13c2b6b8c50055a065856d7f0e29c112a960d85bfb0357f04dde066d5d3b82f46
   languageName: node
   linkType: hard
 
-"@graphql-codegen/client-preset@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "@graphql-codegen/client-preset@npm:6.0.1"
+"@graphql-codegen/client-preset@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "@graphql-codegen/client-preset@npm:6.1.0"
   dependencies:
     "@babel/helper-plugin-utils": "npm:^7.20.2"
     "@babel/template": "npm:^7.20.7"
-    "@graphql-codegen/add": "npm:^7.0.1"
-    "@graphql-codegen/gql-tag-operations": "npm:^6.0.1"
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
-    "@graphql-codegen/typed-document-node": "npm:^7.0.1"
-    "@graphql-codegen/typescript": "npm:^6.0.2"
-    "@graphql-codegen/typescript-operations": "npm:^6.0.3"
-    "@graphql-codegen/visitor-plugin-common": "npm:^7.0.3"
+    "@graphql-codegen/add": "npm:^7.1.0"
+    "@graphql-codegen/gql-tag-operations": "npm:^6.1.0"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
+    "@graphql-codegen/typed-document-node": "npm:^7.1.0"
+    "@graphql-codegen/typescript": "npm:^6.1.0"
+    "@graphql-codegen/typescript-operations": "npm:^6.1.0"
+    "@graphql-codegen/visitor-plugin-common": "npm:^7.2.0"
     "@graphql-tools/documents": "npm:^1.0.0"
-    "@graphql-tools/utils": "npm:^11.0.0"
+    "@graphql-tools/utils": "npm:^11.2.0"
     "@graphql-typed-document-node/core": "npm:3.2.0"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     graphql-sock: ^1.0.0
   peerDependenciesMeta:
     graphql-sock:
       optional: true
-  checksum: 10c0/e90a4ca16c744bf2a1bbee2ea349e03f180699767eb2c414fe85382e8d506504ee489d372e586b93ca1d0facd94cd30249cf778d339f0a7c11f8db67176484ed
+  checksum: 10c0/03b6e8e5c722cd11d6880cc1016153a58dbd5d3a38db0fae2949bf9ce18c49f0d2fc060a8a0c82d7f7bedf1b47ad99b5e17e5c9dc96e126961982b5316c61c2b
   languageName: node
   linkType: hard
 
-"@graphql-codegen/core@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@graphql-codegen/core@npm:6.1.0"
+"@graphql-codegen/core@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "@graphql-codegen/core@npm:6.2.0"
   dependencies:
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
     "@graphql-tools/schema": "npm:^10.0.0"
-    "@graphql-tools/utils": "npm:^11.0.0"
+    "@graphql-tools/utils": "npm:^11.2.0"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/292efed5054497dbc0b40e498ed719f080fecbe88fd34117b7ab4b86e968c4870fae2c4b9138799f767766f9f891c97412748c2c694f6763909443c1207ad148
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 10c0/b73c8277e3802ec043037ff21cb36999bb4d0887559bd7c48057b6aaecb4d47c4ac5b7ef180941ff7483a2649a0a39c4e7443b911cc120f1433c0cab21d6b4f0
   languageName: node
   linkType: hard
 
-"@graphql-codegen/fragment-matcher@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "@graphql-codegen/fragment-matcher@npm:7.0.1"
+"@graphql-codegen/fragment-matcher@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "@graphql-codegen/fragment-matcher@npm:7.1.0"
   dependencies:
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/05b509a9c98fc0a96972664c98ba90b4e83643ff6ac7b73195b2330c0e5d1bfed50b5d928c45d718136dc35b69a6930c6d49e6b0713aaf9f5dc92745a0da9995
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 10c0/1a3f9de12e8373dcd65d3fcaa73448df359e7e8eaf45cfd0f1f3d1154f42a0e830f853022d6a6dedda72c63905246978d750eea7be85558140f68561e549b8bc
   languageName: node
   linkType: hard
 
-"@graphql-codegen/gql-tag-operations@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "@graphql-codegen/gql-tag-operations@npm:6.0.1"
+"@graphql-codegen/gql-tag-operations@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "@graphql-codegen/gql-tag-operations@npm:6.1.0"
   dependencies:
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
-    "@graphql-codegen/visitor-plugin-common": "npm:^7.0.3"
-    "@graphql-tools/utils": "npm:^11.0.0"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
+    "@graphql-codegen/visitor-plugin-common": "npm:^7.2.0"
+    "@graphql-tools/utils": "npm:^11.2.0"
     auto-bind: "npm:^5.0.0"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/e910b6f8c65c080ef8d84a6e4db8b525c2e9f3724360dc1f6e22b935074af9b9a46f79f8f589da7db837b6baf733fe5c8dbc2397ac65557b741d232aa9a3be4b
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 10c0/46e0ac086e8dc66bc9782385d65e36cd70ce09d195e19d033a78f97e99ad90a8258e3cd782bc811298fd51cca2517d069e7efbb18ab4c373a90c5d892358e660
   languageName: node
   linkType: hard
 
-"@graphql-codegen/introspection@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "@graphql-codegen/introspection@npm:6.0.1"
+"@graphql-codegen/introspection@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "@graphql-codegen/introspection@npm:6.1.0"
   dependencies:
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
-    "@graphql-codegen/visitor-plugin-common": "npm:^7.0.3"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
+    "@graphql-codegen/visitor-plugin-common": "npm:^7.2.0"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/8bc887acf7ee4930b7dac8f93daa5df747a2d512d89849c8281d1c147c10412f0c89a26b94e38de4c17a5ea496d2f596541dec7d1fe2dac2b6586d7985a2fd5f
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 10c0/e65d35e668a5f87d0da24d2e120948c4230fefd140f3e94c83a4fae3193ed5da98a6ce54484d02902b6f28eac2a84f18b20220ee00dc0a93de07a5503204b7d7
   languageName: node
   linkType: hard
 
-"@graphql-codegen/plugin-helpers@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "@graphql-codegen/plugin-helpers@npm:7.0.1"
+"@graphql-codegen/plugin-helpers@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "@graphql-codegen/plugin-helpers@npm:7.1.0"
   dependencies:
-    "@graphql-tools/utils": "npm:^11.0.0"
+    "@graphql-tools/utils": "npm:^11.2.0"
     change-case-all: "npm:^2.1.0"
     common-tags: "npm:1.8.2"
     import-from: "npm:4.0.0"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/627796ab587eede52a88ccf9bfad6e90351ab55f6003b238231fe93ab121ec1d030a383a9e945dcc92259fbd1d4fdfd627b429271e32d5134e6d1bfea70fb426
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 10c0/f8a4bdb94f23eddfad86fecfab40528a68aabb93228e2eece512152ea70fed55a3d3d636bb1e0e224ea2c4508445073ea1fedb989e94d42ccb084b071050f19b
   languageName: node
   linkType: hard
 
-"@graphql-codegen/schema-ast@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "@graphql-codegen/schema-ast@npm:6.0.1"
+"@graphql-codegen/schema-ast@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "@graphql-codegen/schema-ast@npm:6.1.0"
   dependencies:
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
-    "@graphql-tools/utils": "npm:^11.0.0"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
+    "@graphql-tools/utils": "npm:^11.2.0"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/9ae13ff13599520586bc0c6887a623e88858227639ff0e15416b264713a7ab686c1b8f58d487fb83c75ee967d3430c8330c85fce452dda069d63ba9f4a759414
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 10c0/b19153f4383313c03c39341dff20d53dad1388f0e255d8a46798df298007470f8f5aa296c5bf3631ef1efb03b031cf720bffc037982d64a8a792fb591c1bb678
   languageName: node
   linkType: hard
 
-"@graphql-codegen/typed-document-node@npm:^7.0.1":
-  version: 7.0.3
-  resolution: "@graphql-codegen/typed-document-node@npm:7.0.3"
+"@graphql-codegen/typed-document-node@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "@graphql-codegen/typed-document-node@npm:7.1.0"
   dependencies:
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
-    "@graphql-codegen/visitor-plugin-common": "npm:^7.1.0"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
+    "@graphql-codegen/visitor-plugin-common": "npm:^7.2.0"
     auto-bind: "npm:^5.0.0"
     change-case-all: "npm:^2.1.0"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/174aaf7c95f8c0e9c793f75ec55a4fc49a9084959c3d9c850d6e98499734e39248bc6a1f8a8cde787a2bf81129e0c7157d4e007d41cb8246911b14d764ddc250
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 10c0/31359eb9523d4ed18991bfba599127fc66f3314366bf2592d746883f9e2e10cd32da89f62845f976337b991c09da57282b28ae54305851abadbd467d9de31378
   languageName: node
   linkType: hard
 
-"@graphql-codegen/typescript-operations@npm:^6.0.3":
-  version: 6.0.5
-  resolution: "@graphql-codegen/typescript-operations@npm:6.0.5"
+"@graphql-codegen/typescript-operations@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "@graphql-codegen/typescript-operations@npm:6.1.0"
   dependencies:
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
-    "@graphql-codegen/schema-ast": "npm:^6.0.1"
-    "@graphql-codegen/visitor-plugin-common": "npm:^7.1.2"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
+    "@graphql-codegen/schema-ast": "npm:^6.1.0"
+    "@graphql-codegen/visitor-plugin-common": "npm:^7.2.0"
     auto-bind: "npm:^5.0.0"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     graphql-sock: ^1.0.0
   peerDependenciesMeta:
     graphql-sock:
       optional: true
-  checksum: 10c0/a823e0ea2d977b2aa75d0cb7fefc97557c0ae0eb1383da8623b71a3f8f23e5262287c7c2382eab870b60b10b1deb5506d2c4f9a2f30fd6148b5c8129eed421ba
+  checksum: 10c0/aff2a1f0c6bc06dbf3b36a22df2b35b8afc919c75e527ef873fe67879facf2b1b3b9faf3e906debc8d2cb260b6d6718635759650d947e8de06a6df0445ed98f4
   languageName: node
   linkType: hard
 
-"@graphql-codegen/typescript-resolvers@npm:^6.0.2":
-  version: 6.0.2
-  resolution: "@graphql-codegen/typescript-resolvers@npm:6.0.2"
+"@graphql-codegen/typescript-resolvers@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "@graphql-codegen/typescript-resolvers@npm:6.1.0"
   dependencies:
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
-    "@graphql-codegen/typescript": "npm:^6.0.2"
-    "@graphql-codegen/visitor-plugin-common": "npm:^7.0.3"
-    "@graphql-tools/utils": "npm:^11.0.0"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
+    "@graphql-codegen/typescript": "npm:^6.1.0"
+    "@graphql-codegen/visitor-plugin-common": "npm:^7.2.0"
+    "@graphql-tools/utils": "npm:^11.2.0"
     auto-bind: "npm:^5.0.0"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     graphql-sock: ^1.0.0
   peerDependenciesMeta:
     graphql-sock:
       optional: true
-  checksum: 10c0/0e79fca5895a1e39f756d9b78e678d3be5deb7c3b1a30c062191c4085e73901ae64d1e88901aa8c73104964d7dba3c9de1e88af87bad1aa8214a30a738c2992a
+  checksum: 10c0/3ae74c8c212d6979696fd7edd19e2c11f8c5bc500b490f9a57a90e02804c1e2301a943fb01f98ae0ac00fa881e6d30f2b1b851473975f70d1f62ac3b6dd75792
   languageName: node
   linkType: hard
 
-"@graphql-codegen/typescript@npm:^6.0.2":
-  version: 6.0.2
-  resolution: "@graphql-codegen/typescript@npm:6.0.2"
+"@graphql-codegen/typescript@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "@graphql-codegen/typescript@npm:6.1.0"
   dependencies:
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
-    "@graphql-codegen/schema-ast": "npm:^6.0.1"
-    "@graphql-codegen/visitor-plugin-common": "npm:^7.0.3"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
+    "@graphql-codegen/schema-ast": "npm:^6.1.0"
+    "@graphql-codegen/visitor-plugin-common": "npm:^7.2.0"
     auto-bind: "npm:^5.0.0"
     tslib: "npm:~2.8.0"
   peerDependencies:
-    graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/a10da371fd7e0358bdd0c79cfb03add99bc5e82dfe39a48020d870e44f7a0a9182c2617a87f3286d91eb51407b87127e34b19a2c6a6edecc5146ea54ed0a0f96
+    graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 10c0/298f77a8e7dd8bc0ddaf57c2f73e1103eb3c9c178de47340567c3770a18494be65e581337f698d6d71c77c945e9acfacb69a556422879fd72940de2d14913b7f
   languageName: node
   linkType: hard
 
-"@graphql-codegen/visitor-plugin-common@npm:^7.0.3, @graphql-codegen/visitor-plugin-common@npm:^7.1.0, @graphql-codegen/visitor-plugin-common@npm:^7.1.2":
-  version: 7.1.2
-  resolution: "@graphql-codegen/visitor-plugin-common@npm:7.1.2"
+"@graphql-codegen/visitor-plugin-common@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "@graphql-codegen/visitor-plugin-common@npm:7.2.0"
   dependencies:
-    "@graphql-codegen/plugin-helpers": "npm:^7.0.1"
+    "@graphql-codegen/plugin-helpers": "npm:^7.1.0"
     "@graphql-tools/optimize": "npm:^2.0.0"
     "@graphql-tools/relay-operation-optimizer": "npm:^7.1.1"
-    "@graphql-tools/utils": "npm:^11.0.0"
+    "@graphql-tools/utils": "npm:^11.2.0"
     auto-bind: "npm:^5.0.0"
     change-case-all: "npm:^2.1.0"
     dependency-graph: "npm:^1.0.0"
@@ -899,8 +899,8 @@ __metadata:
     parse-filepath: "npm:^1.0.2"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/9dd91d1df0393e07a90577f413371c1beea9a235c1200c0617a6a284cbb7f9a5431514253f1e88aa8532b34ea16c101443058ae2dfea651a4e41ff4f62fb5390
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 10c0/c49d85eabba6e3a61214723a3e25a4f15258e4773500a082574d455e3f4f0557e22a858f13f8ea04011d6b18eb5e9b6ef8d62aba37d440fb3118bccf074d08ca
   languageName: node
   linkType: hard
 
@@ -2266,49 +2266,49 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/aksel-icons@npm:^8.14.0":
-  version: 8.14.0
-  resolution: "@navikt/aksel-icons@npm:8.14.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F8.14.0%2F1932d98875d11b80f9c2e443f8db04855cd8ac27"
-  checksum: 10c0/d5179e07c34ca40c03dac08db3d234b5155baeaa60401c324abca2707bf1d6634a6fb99ab0be1d852d8a1c5db6481d2f05c1889cd61a7aec44dd1eb15c4d9c9c
+"@navikt/aksel-icons@npm:^8.15.0":
+  version: 8.15.0
+  resolution: "@navikt/aksel-icons@npm:8.15.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F8.15.0%2Fc8e11e3fe44d081727f36ec526b05f36859b8c4e"
+  checksum: 10c0/0670dae916489a904af70ce080080bd8121a8503190c4e4feb82afbb89e662de18b0453c06befd4c0681c662662007f47d6d400597bc13aae56d917dd035eab7
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^8.14.0":
-  version: 8.14.0
-  resolution: "@navikt/ds-css@npm:8.14.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F8.14.0%2Ffb120945cda0247ea4c56535066d21c5c818bfdb"
-  checksum: 10c0/6ec55cda62c0179b79c0595f61f0cf5c8bc5e01d9d7d59cff2e99b59c61fab76e0ebc22567d64383c2dd2c46cae0c3558769352ffe1d615625bb9594d47f92cd
+"@navikt/ds-css@npm:^8.15.0":
+  version: 8.15.0
+  resolution: "@navikt/ds-css@npm:8.15.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F8.15.0%2F7241ddaf993ca7e42a23cdcfd6cb716c9105bb6e"
+  checksum: 10c0/88fd2095bde88adb9e7751ad1e75fa08390134bcfa694606933c3ebec237e2e2b7a5e662f86a50e4e373f3ba479f978e63add99dbaf58b16e35c16a3699b31d3
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^8.14.0":
-  version: 8.14.0
-  resolution: "@navikt/ds-react@npm:8.14.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F8.14.0%2Fba6fdf912f3dc28b111a9a97290bd44ed16849c2"
+"@navikt/ds-react@npm:^8.15.0":
+  version: 8.15.0
+  resolution: "@navikt/ds-react@npm:8.15.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F8.15.0%2Fb28729a9b637f8853bdb1239c4fa4d3f992d3e35"
   dependencies:
     "@floating-ui/react": "npm:0.27.19"
     "@floating-ui/react-dom": "npm:^2.1.8"
-    "@navikt/aksel-icons": "npm:^8.14.0"
-    "@navikt/ds-tokens": "npm:^8.14.0"
+    "@navikt/aksel-icons": "npm:^8.15.0"
+    "@navikt/ds-tokens": "npm:^8.15.0"
     date-fns: "npm:^4.0.0"
     react-day-picker: "npm:9.14.0"
   peerDependencies:
     "@types/react": ^17.0.30 || ^18 || ^19
     react: ^17 || ^18 || ^19
     react-dom: ^17 || ^18 || ^19
-  checksum: 10c0/8b60a52d9c219836e6c66afacc676c360463f7896a7a2ff07e45bd1efa8c2ea0138b0ad318192c55f6df6b122d9b5b118baebe64be88297fbd98c6c07f684f0b
+  checksum: 10c0/ce39100c045fa7c2fd68a9fb600465f69b897252be15d628e7db1551d0f75accf97dbf95ba3d566967a560545e3a87756ace2319aae6ee31a7a23ff2a07134f7
   languageName: node
   linkType: hard
 
-"@navikt/ds-tailwind@npm:^8.14.0":
-  version: 8.14.0
-  resolution: "@navikt/ds-tailwind@npm:8.14.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F8.14.0%2F7a775bf91d131c51fe3327f38e7819772a06a08a"
-  checksum: 10c0/f9821b25b88a3480a957cd96950222529c54b5359448417275b581799b29bafe8f48598e1a3ca16358c001974de20dc4b9af62183462a302a237e89fac80185e
+"@navikt/ds-tailwind@npm:^8.15.0":
+  version: 8.15.0
+  resolution: "@navikt/ds-tailwind@npm:8.15.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F8.15.0%2F438c15ff5ec53d2ae613346bbc687c2c480bb6da"
+  checksum: 10c0/018e78337a095ec5d5ecebff4d108dae45950212bda749de11caec8ad09fd3337007eedc6badaea57d9992cf57e01d3ebc0cabb66c4ce010a96522376afecb8c
   languageName: node
   linkType: hard
 
-"@navikt/ds-tokens@npm:^8.14.0":
-  version: 8.14.0
-  resolution: "@navikt/ds-tokens@npm:8.14.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F8.14.0%2F0ffa6e54267bba9400b9f4cb306961244e2b6694"
-  checksum: 10c0/030821444acf90da035b4819e00ae6fdae97919f500e531f30aa0f8489a26bf2a1ee74e4ae61583d054b62e4de2962f2b7f50f320113e774a1deb9fdcad028b3
+"@navikt/ds-tokens@npm:^8.15.0":
+  version: 8.15.0
+  resolution: "@navikt/ds-tokens@npm:8.15.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F8.15.0%2F96c20d8f453f8be770e5e1a9e9ce4888e50e4348"
+  checksum: 10c0/f320f78e1762be85d97143daeb232e055a6c238f61f1659e52220867b3149a51c0f982919182d1e23904b004db047ccef154bd39663fb12b965ac55a6e0f388f
   languageName: node
   linkType: hard
 
@@ -2318,7 +2318,7 @@ __metadata:
   dependencies:
     "@navikt/pino-logger": "npm:^5.0.0"
     "@navikt/smart-on-fhir": "npm:1.6.18"
-    "@types/node": "npm:^24.13.2"
+    "@types/node": "npm:^24.13.3"
     hono: "npm:^4.12.28"
     jose: "npm:^6.2.3"
     nextleton: "npm:^0.6.1"
@@ -3126,135 +3126,135 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-android-arm-eabi@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-android-arm-eabi@npm:0.57.0"
+"@oxfmt/binding-android-arm-eabi@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-android-arm-eabi@npm:0.58.0"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-android-arm64@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-android-arm64@npm:0.57.0"
+"@oxfmt/binding-android-arm64@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-android-arm64@npm:0.58.0"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-darwin-arm64@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-darwin-arm64@npm:0.57.0"
+"@oxfmt/binding-darwin-arm64@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-darwin-arm64@npm:0.58.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-darwin-x64@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-darwin-x64@npm:0.57.0"
+"@oxfmt/binding-darwin-x64@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-darwin-x64@npm:0.58.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-freebsd-x64@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-freebsd-x64@npm:0.57.0"
+"@oxfmt/binding-freebsd-x64@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-freebsd-x64@npm:0.58.0"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-linux-arm-gnueabihf@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-linux-arm-gnueabihf@npm:0.57.0"
+"@oxfmt/binding-linux-arm-gnueabihf@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-linux-arm-gnueabihf@npm:0.58.0"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-linux-arm-musleabihf@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-linux-arm-musleabihf@npm:0.57.0"
+"@oxfmt/binding-linux-arm-musleabihf@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-linux-arm-musleabihf@npm:0.58.0"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-linux-arm64-gnu@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-linux-arm64-gnu@npm:0.57.0"
+"@oxfmt/binding-linux-arm64-gnu@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-linux-arm64-gnu@npm:0.58.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-linux-arm64-musl@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-linux-arm64-musl@npm:0.57.0"
+"@oxfmt/binding-linux-arm64-musl@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-linux-arm64-musl@npm:0.58.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-linux-ppc64-gnu@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-linux-ppc64-gnu@npm:0.57.0"
+"@oxfmt/binding-linux-ppc64-gnu@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-linux-ppc64-gnu@npm:0.58.0"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-linux-riscv64-gnu@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-linux-riscv64-gnu@npm:0.57.0"
+"@oxfmt/binding-linux-riscv64-gnu@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-linux-riscv64-gnu@npm:0.58.0"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-linux-riscv64-musl@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-linux-riscv64-musl@npm:0.57.0"
+"@oxfmt/binding-linux-riscv64-musl@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-linux-riscv64-musl@npm:0.58.0"
   conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-linux-s390x-gnu@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-linux-s390x-gnu@npm:0.57.0"
+"@oxfmt/binding-linux-s390x-gnu@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-linux-s390x-gnu@npm:0.58.0"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-linux-x64-gnu@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-linux-x64-gnu@npm:0.57.0"
+"@oxfmt/binding-linux-x64-gnu@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-linux-x64-gnu@npm:0.58.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-linux-x64-musl@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-linux-x64-musl@npm:0.57.0"
+"@oxfmt/binding-linux-x64-musl@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-linux-x64-musl@npm:0.58.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-openharmony-arm64@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-openharmony-arm64@npm:0.57.0"
+"@oxfmt/binding-openharmony-arm64@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-openharmony-arm64@npm:0.58.0"
   conditions: os=openharmony & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-win32-arm64-msvc@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-win32-arm64-msvc@npm:0.57.0"
+"@oxfmt/binding-win32-arm64-msvc@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-win32-arm64-msvc@npm:0.58.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-win32-ia32-msvc@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-win32-ia32-msvc@npm:0.57.0"
+"@oxfmt/binding-win32-ia32-msvc@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-win32-ia32-msvc@npm:0.58.0"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@oxfmt/binding-win32-x64-msvc@npm:0.57.0":
-  version: 0.57.0
-  resolution: "@oxfmt/binding-win32-x64-msvc@npm:0.57.0"
+"@oxfmt/binding-win32-x64-msvc@npm:0.58.0":
+  version: 0.58.0
+  resolution: "@oxfmt/binding-win32-x64-msvc@npm:0.58.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3301,135 +3301,135 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oxlint/binding-android-arm-eabi@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-android-arm-eabi@npm:1.72.0"
+"@oxlint/binding-android-arm-eabi@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-android-arm-eabi@npm:1.73.0"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxlint/binding-android-arm64@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-android-arm64@npm:1.72.0"
+"@oxlint/binding-android-arm64@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-android-arm64@npm:1.73.0"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-darwin-arm64@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-darwin-arm64@npm:1.72.0"
+"@oxlint/binding-darwin-arm64@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-darwin-arm64@npm:1.73.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-darwin-x64@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-darwin-x64@npm:1.72.0"
+"@oxlint/binding-darwin-x64@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-darwin-x64@npm:1.73.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-freebsd-x64@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-freebsd-x64@npm:1.72.0"
+"@oxlint/binding-freebsd-x64@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-freebsd-x64@npm:1.73.0"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-arm-gnueabihf@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-linux-arm-gnueabihf@npm:1.72.0"
+"@oxlint/binding-linux-arm-gnueabihf@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-linux-arm-gnueabihf@npm:1.73.0"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-arm-musleabihf@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-linux-arm-musleabihf@npm:1.72.0"
+"@oxlint/binding-linux-arm-musleabihf@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-linux-arm-musleabihf@npm:1.73.0"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-arm64-gnu@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-linux-arm64-gnu@npm:1.72.0"
+"@oxlint/binding-linux-arm64-gnu@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-linux-arm64-gnu@npm:1.73.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-arm64-musl@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-linux-arm64-musl@npm:1.72.0"
+"@oxlint/binding-linux-arm64-musl@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-linux-arm64-musl@npm:1.73.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-ppc64-gnu@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-linux-ppc64-gnu@npm:1.72.0"
+"@oxlint/binding-linux-ppc64-gnu@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-linux-ppc64-gnu@npm:1.73.0"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-riscv64-gnu@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-linux-riscv64-gnu@npm:1.72.0"
+"@oxlint/binding-linux-riscv64-gnu@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-linux-riscv64-gnu@npm:1.73.0"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-riscv64-musl@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-linux-riscv64-musl@npm:1.72.0"
+"@oxlint/binding-linux-riscv64-musl@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-linux-riscv64-musl@npm:1.73.0"
   conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-s390x-gnu@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-linux-s390x-gnu@npm:1.72.0"
+"@oxlint/binding-linux-s390x-gnu@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-linux-s390x-gnu@npm:1.73.0"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-x64-gnu@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-linux-x64-gnu@npm:1.72.0"
+"@oxlint/binding-linux-x64-gnu@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-linux-x64-gnu@npm:1.73.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/binding-linux-x64-musl@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-linux-x64-musl@npm:1.72.0"
+"@oxlint/binding-linux-x64-musl@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-linux-x64-musl@npm:1.73.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxlint/binding-openharmony-arm64@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-openharmony-arm64@npm:1.72.0"
+"@oxlint/binding-openharmony-arm64@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-openharmony-arm64@npm:1.73.0"
   conditions: os=openharmony & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-win32-arm64-msvc@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-win32-arm64-msvc@npm:1.72.0"
+"@oxlint/binding-win32-arm64-msvc@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-win32-arm64-msvc@npm:1.73.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/binding-win32-ia32-msvc@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-win32-ia32-msvc@npm:1.72.0"
+"@oxlint/binding-win32-ia32-msvc@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-win32-ia32-msvc@npm:1.73.0"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@oxlint/binding-win32-x64-msvc@npm:1.72.0":
-  version: 1.72.0
-  resolution: "@oxlint/binding-win32-x64-msvc@npm:1.72.0"
+"@oxlint/binding-win32-x64-msvc@npm:1.73.0":
+  version: 1.73.0
+  resolution: "@oxlint/binding-win32-x64-msvc@npm:1.73.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4150,12 +4150,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:^24.13.2":
-  version: 24.13.2
-  resolution: "@types/node@npm:24.13.2"
+"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:^24.13.3":
+  version: 24.13.3
+  resolution: "@types/node@npm:24.13.3"
   dependencies:
     undici-types: "npm:~7.18.0"
-  checksum: 10c0/d7d48a88a4feb0a6aac3cbfaf9ef3b12752b4b09447f88dd0b4c77c03b281e3d4330fe6982a99aedcd63fc16c7540a0c248b91eb2abb0b3edd884d7fe684e9ea
+  checksum: 10c0/a5bc08f49b9581dcdca90e02cd77197a3c799840807664942e5cd5161a553d4d2ae8064f7e3294410d748d7d098b5c1848be7fa50c06f29c4193ab16be4e59eb
   languageName: node
   linkType: hard
 
@@ -4808,8 +4808,8 @@ __metadata:
   linkType: hard
 
 "bare-fs@npm:^4.0.1, bare-fs@npm:^4.5.5":
-  version: 4.7.3
-  resolution: "bare-fs@npm:4.7.3"
+  version: 4.7.4
+  resolution: "bare-fs@npm:4.7.4"
   dependencies:
     bare-events: "npm:^2.5.4"
     bare-path: "npm:^3.0.0"
@@ -4821,23 +4821,14 @@ __metadata:
   peerDependenciesMeta:
     bare-buffer:
       optional: true
-  checksum: 10c0/7872874be6e512fd9cc705caa53ef020f516da7f46ff6c3588fa8b3abdf4daa5a7ab7e37d4b3f8f8590ad68671011883dc992f4651930b094f5e9f463802f7f0
-  languageName: node
-  linkType: hard
-
-"bare-os@npm:^3.0.1":
-  version: 3.9.3
-  resolution: "bare-os@npm:3.9.3"
-  checksum: 10c0/7ab6635305968f7bf951e9008d8177babf90ff0170052234164badefddd5087a469f4a83f9d24e7a4083758e1183b24fe18f735d31044245bf990bb1d8829d9c
+  checksum: 10c0/c189f8075c7f19142383cda7cb95e85c9a057366e6232f00ce8ad901471291bd2c716d5e480c203c38383c757e64c0388fa5184cfa767dc63c4808e566e16d89
   languageName: node
   linkType: hard
 
 "bare-path@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "bare-path@npm:3.0.1"
-  dependencies:
-    bare-os: "npm:^3.0.1"
-  checksum: 10c0/5f9b7ce5643fd0da64997a8630f2707a1a0e943f0f092d1562bd839699042714650268aa7d271d5a1ce089163b15695564ac4419f839431f1cec552d3bda8317
+  version: 3.1.0
+  resolution: "bare-path@npm:3.1.0"
+  checksum: 10c0/8612d4d29aa3509e02d08d3064f1c40feb2e9c25c87de0d564906d2b069f91b8424974f96d4f00f7387e8f8c4d978dbd2f3e61371bfa1010ec3992dbfba73a7e
   languageName: node
   linkType: hard
 
@@ -4879,7 +4870,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"baseline-browser-mapping@npm:^2.10.38, baseline-browser-mapping@npm:^2.9.19":
+"baseline-browser-mapping@npm:^2.10.42, baseline-browser-mapping@npm:^2.9.19":
   version: 2.10.42
   resolution: "baseline-browser-mapping@npm:2.10.42"
   bin:
@@ -4916,11 +4907,11 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^2.0.1, brace-expansion@npm:^2.0.2":
-  version: 2.1.1
-  resolution: "brace-expansion@npm:2.1.1"
+  version: 2.1.2
+  resolution: "brace-expansion@npm:2.1.2"
   dependencies:
     balanced-match: "npm:^1.0.0"
-  checksum: 10c0/63b5ddce608b70b50a76817c0526faf8ea67a9180073d88bb402f6bbc22a22da6b1dfac4f65efc53e5faa80222fb7d44bbf2fc638c3f55365975573f671d0ccb
+  checksum: 10c0/5442ecab84045d21826268bc56c81a6ef4215327ee1f5ee153f67928e93f7a915d130ecec9966623143277fa3cce036ebb50020024bcc4d78853cdd6af9a19f8
   languageName: node
   linkType: hard
 
@@ -4943,17 +4934,17 @@ __metadata:
   linkType: hard
 
 "browserslist@npm:^4.24.0":
-  version: 4.28.4
-  resolution: "browserslist@npm:4.28.4"
+  version: 4.28.5
+  resolution: "browserslist@npm:4.28.5"
   dependencies:
-    baseline-browser-mapping: "npm:^2.10.38"
-    caniuse-lite: "npm:^1.0.30001799"
-    electron-to-chromium: "npm:^1.5.376"
-    node-releases: "npm:^2.0.48"
+    baseline-browser-mapping: "npm:^2.10.42"
+    caniuse-lite: "npm:^1.0.30001800"
+    electron-to-chromium: "npm:^1.5.387"
+    node-releases: "npm:^2.0.50"
     update-browserslist-db: "npm:^1.2.3"
   bin:
     browserslist: cli.js
-  checksum: 10c0/d86f7319c0e3243ca5122335a98b9de8e007fb10fb5643e5f3ed69428fe81ee8646cf1a7663bcfb65bdfddbe505d39406da7ce30052e65c99df9d02336635a7c
+  checksum: 10c0/d6bb4ab286a7071db52cbeabd46ff816e09c9171d7e5da246f0b9489601ad3d4adb9fc3d14fa934a8646078f8a717507c0518a364128735a3b5a7875900b5a19
   languageName: node
   linkType: hard
 
@@ -5023,10 +5014,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001579, caniuse-lite@npm:^1.0.30001799":
-  version: 1.0.30001802
-  resolution: "caniuse-lite@npm:1.0.30001802"
-  checksum: 10c0/a78992c08e8c540a4048bfdb08a839e536ba757075531989dd9a648783e328ef2b17cd00fa6fe21f4bd74136d13ed53108050bc4fbbf3f56820a4119cd70a8d8
+"caniuse-lite@npm:^1.0.30001579, caniuse-lite@npm:^1.0.30001800":
+  version: 1.0.30001803
+  resolution: "caniuse-lite@npm:1.0.30001803"
+  checksum: 10c0/71586e9c84633cf766b208448eb76f860ec6e3befffc626d1f004e1902da063a7ab96cc94d1f4b36c0324e12997b3325a726de3287edfec91d0df495627a1d43
   languageName: node
   linkType: hard
 
@@ -5576,10 +5567,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.5.376":
-  version: 1.5.387
-  resolution: "electron-to-chromium@npm:1.5.387"
-  checksum: 10c0/49ac2f2431f48da75fbd30e4daee2304927d208adcdf4847b84ecc196785e94b1f6f873c093b59e61d14e928873518d294dc94803f4f8707ad7113aafe8dadd4
+"electron-to-chromium@npm:^1.5.387":
+  version: 1.5.389
+  resolution: "electron-to-chromium@npm:1.5.389"
+  checksum: 10c0/3681a3245fef5dfc8d9cdee231e80f8fe4fd7a87713d3a29a21ae2ec0cb6995cf14f3b3fd9e3fa8b483256e28ba2fa1daa9f23e93911a3a7241cd8f5daee9665
   languageName: node
   linkType: hard
 
@@ -6427,13 +6418,13 @@ __metadata:
   linkType: hard
 
 "import-in-the-middle@npm:^3.0.0":
-  version: 3.3.0
-  resolution: "import-in-the-middle@npm:3.3.0"
+  version: 3.3.1
+  resolution: "import-in-the-middle@npm:3.3.1"
   dependencies:
     cjs-module-lexer: "npm:^2.2.0"
     es-module-lexer: "npm:^2.2.0"
     module-details-from-path: "npm:^1.0.4"
-  checksum: 10c0/e1dc7f480e1517dfc9931c37dae959876cb026479efcaed2d8d3a3e9b6f7c69632113127cfeb5fb6bcbfc7371e0fed5e7a63118d37472d537160da65a208c7d8
+  checksum: 10c0/b2bff9cb1499a749e395b97a8ce4cd45c76d5ed37c65949bdb04b6e962a666c7ae681ab90480affafc0670e284660631068c168455e5f37a168b08d06af15da6
   languageName: node
   linkType: hard
 
@@ -6788,9 +6779,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knip@npm:^6.24.0":
-  version: 6.24.0
-  resolution: "knip@npm:6.24.0"
+"knip@npm:^6.25.0":
+  version: 6.25.0
+  resolution: "knip@npm:6.25.0"
   dependencies:
     fdir: "npm:^6.5.0"
     formatly: "npm:^0.3.0"
@@ -6808,7 +6799,7 @@ __metadata:
   bin:
     knip: bin/knip.js
     knip-bun: bin/knip-bun.js
-  checksum: 10c0/fe55ed075fd240e678a0064895d5361b2758fdfbe40a53823cbb2b59f1e2a6fb67e7f6f1f12d7312c525c8c910afbe93c8368d3e61eeac876effe80f4bbd4c45
+  checksum: 10c0/4f91895d9dc6d4112f6bcaee0a22e6c5c9357907b6396d1a2f06ee36229414d3b2776a5d91be69da7fa349b6a7f8074b3df775fc1ac7db6aca46d9eded073300
   languageName: node
   linkType: hard
 
@@ -7093,9 +7084,9 @@ __metadata:
   linkType: hard
 
 "lru-cache@npm:^11.0.0, lru-cache@npm:^11.1.0, lru-cache@npm:^11.2.1, lru-cache@npm:^11.2.5":
-  version: 11.5.1
-  resolution: "lru-cache@npm:11.5.1"
-  checksum: 10c0/7b341cea79a8efe9c6a6f20c8757a77eca5b25d7ff983ccf4e11e547b81f6787824baa1c84705251dff84ab4ffac85717ac354b9d02e465f86a9f8b166409979
+  version: 11.5.2
+  resolution: "lru-cache@npm:11.5.2"
+  checksum: 10c0/ece1ad731f5b655e85d67047d04bfc13823dc77aa61c5454924a9869ba600a0104e39cc33d726021feef812bc347ca34a5608a5eb1972a5dd0870b7ecd42c3f2
   languageName: node
   linkType: hard
 
@@ -8213,7 +8204,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-releases@npm:^2.0.48":
+"node-releases@npm:^2.0.50":
   version: 2.0.50
   resolution: "node-releases@npm:2.0.50"
   checksum: 10c0/ac75ed433864114cfd9862034960bb4f49838343dc9fc31dc7d5be8189ce5f39510ad0bb3a697efe3193d50ab6921e7a3a6ce3aae2a6f8abe62719ffd40a4cac
@@ -8500,29 +8491,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oxfmt@npm:^0.57.0":
-  version: 0.57.0
-  resolution: "oxfmt@npm:0.57.0"
+"oxfmt@npm:^0.58.0":
+  version: 0.58.0
+  resolution: "oxfmt@npm:0.58.0"
   dependencies:
-    "@oxfmt/binding-android-arm-eabi": "npm:0.57.0"
-    "@oxfmt/binding-android-arm64": "npm:0.57.0"
-    "@oxfmt/binding-darwin-arm64": "npm:0.57.0"
-    "@oxfmt/binding-darwin-x64": "npm:0.57.0"
-    "@oxfmt/binding-freebsd-x64": "npm:0.57.0"
-    "@oxfmt/binding-linux-arm-gnueabihf": "npm:0.57.0"
-    "@oxfmt/binding-linux-arm-musleabihf": "npm:0.57.0"
-    "@oxfmt/binding-linux-arm64-gnu": "npm:0.57.0"
-    "@oxfmt/binding-linux-arm64-musl": "npm:0.57.0"
-    "@oxfmt/binding-linux-ppc64-gnu": "npm:0.57.0"
-    "@oxfmt/binding-linux-riscv64-gnu": "npm:0.57.0"
-    "@oxfmt/binding-linux-riscv64-musl": "npm:0.57.0"
-    "@oxfmt/binding-linux-s390x-gnu": "npm:0.57.0"
-    "@oxfmt/binding-linux-x64-gnu": "npm:0.57.0"
-    "@oxfmt/binding-linux-x64-musl": "npm:0.57.0"
-    "@oxfmt/binding-openharmony-arm64": "npm:0.57.0"
-    "@oxfmt/binding-win32-arm64-msvc": "npm:0.57.0"
-    "@oxfmt/binding-win32-ia32-msvc": "npm:0.57.0"
-    "@oxfmt/binding-win32-x64-msvc": "npm:0.57.0"
+    "@oxfmt/binding-android-arm-eabi": "npm:0.58.0"
+    "@oxfmt/binding-android-arm64": "npm:0.58.0"
+    "@oxfmt/binding-darwin-arm64": "npm:0.58.0"
+    "@oxfmt/binding-darwin-x64": "npm:0.58.0"
+    "@oxfmt/binding-freebsd-x64": "npm:0.58.0"
+    "@oxfmt/binding-linux-arm-gnueabihf": "npm:0.58.0"
+    "@oxfmt/binding-linux-arm-musleabihf": "npm:0.58.0"
+    "@oxfmt/binding-linux-arm64-gnu": "npm:0.58.0"
+    "@oxfmt/binding-linux-arm64-musl": "npm:0.58.0"
+    "@oxfmt/binding-linux-ppc64-gnu": "npm:0.58.0"
+    "@oxfmt/binding-linux-riscv64-gnu": "npm:0.58.0"
+    "@oxfmt/binding-linux-riscv64-musl": "npm:0.58.0"
+    "@oxfmt/binding-linux-s390x-gnu": "npm:0.58.0"
+    "@oxfmt/binding-linux-x64-gnu": "npm:0.58.0"
+    "@oxfmt/binding-linux-x64-musl": "npm:0.58.0"
+    "@oxfmt/binding-openharmony-arm64": "npm:0.58.0"
+    "@oxfmt/binding-win32-arm64-msvc": "npm:0.58.0"
+    "@oxfmt/binding-win32-ia32-msvc": "npm:0.58.0"
+    "@oxfmt/binding-win32-x64-msvc": "npm:0.58.0"
     tinypool: "npm:2.1.0"
   peerDependencies:
     svelte: ^5.0.0
@@ -8573,7 +8564,7 @@ __metadata:
       optional: true
   bin:
     oxfmt: bin/oxfmt
-  checksum: 10c0/39879f27afef9b812094865d70ed51d84ab3b66b85cc6ec8a02dad0aa4ea528d0b8a33553a3a66cefa999c029529959ceb1907e4c71b1b01a882dbccb77ebc1b
+  checksum: 10c0/2543520ada4598bc285b0699872898a1ca8f05f8a5a44a68e5ed7b2ff85ea30a2a37261f7d27d929422f0c75408cfe7b0ede0aeb1ad1fd3d1af65701fce55b97
   languageName: node
   linkType: hard
 
@@ -8606,31 +8597,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oxlint@npm:^1.72.0":
-  version: 1.72.0
-  resolution: "oxlint@npm:1.72.0"
+"oxlint@npm:^1.73.0":
+  version: 1.73.0
+  resolution: "oxlint@npm:1.73.0"
   dependencies:
-    "@oxlint/binding-android-arm-eabi": "npm:1.72.0"
-    "@oxlint/binding-android-arm64": "npm:1.72.0"
-    "@oxlint/binding-darwin-arm64": "npm:1.72.0"
-    "@oxlint/binding-darwin-x64": "npm:1.72.0"
-    "@oxlint/binding-freebsd-x64": "npm:1.72.0"
-    "@oxlint/binding-linux-arm-gnueabihf": "npm:1.72.0"
-    "@oxlint/binding-linux-arm-musleabihf": "npm:1.72.0"
-    "@oxlint/binding-linux-arm64-gnu": "npm:1.72.0"
-    "@oxlint/binding-linux-arm64-musl": "npm:1.72.0"
-    "@oxlint/binding-linux-ppc64-gnu": "npm:1.72.0"
-    "@oxlint/binding-linux-riscv64-gnu": "npm:1.72.0"
-    "@oxlint/binding-linux-riscv64-musl": "npm:1.72.0"
-    "@oxlint/binding-linux-s390x-gnu": "npm:1.72.0"
-    "@oxlint/binding-linux-x64-gnu": "npm:1.72.0"
-    "@oxlint/binding-linux-x64-musl": "npm:1.72.0"
-    "@oxlint/binding-openharmony-arm64": "npm:1.72.0"
-    "@oxlint/binding-win32-arm64-msvc": "npm:1.72.0"
-    "@oxlint/binding-win32-ia32-msvc": "npm:1.72.0"
-    "@oxlint/binding-win32-x64-msvc": "npm:1.72.0"
+    "@oxlint/binding-android-arm-eabi": "npm:1.73.0"
+    "@oxlint/binding-android-arm64": "npm:1.73.0"
+    "@oxlint/binding-darwin-arm64": "npm:1.73.0"
+    "@oxlint/binding-darwin-x64": "npm:1.73.0"
+    "@oxlint/binding-freebsd-x64": "npm:1.73.0"
+    "@oxlint/binding-linux-arm-gnueabihf": "npm:1.73.0"
+    "@oxlint/binding-linux-arm-musleabihf": "npm:1.73.0"
+    "@oxlint/binding-linux-arm64-gnu": "npm:1.73.0"
+    "@oxlint/binding-linux-arm64-musl": "npm:1.73.0"
+    "@oxlint/binding-linux-ppc64-gnu": "npm:1.73.0"
+    "@oxlint/binding-linux-riscv64-gnu": "npm:1.73.0"
+    "@oxlint/binding-linux-riscv64-musl": "npm:1.73.0"
+    "@oxlint/binding-linux-s390x-gnu": "npm:1.73.0"
+    "@oxlint/binding-linux-x64-gnu": "npm:1.73.0"
+    "@oxlint/binding-linux-x64-musl": "npm:1.73.0"
+    "@oxlint/binding-openharmony-arm64": "npm:1.73.0"
+    "@oxlint/binding-win32-arm64-msvc": "npm:1.73.0"
+    "@oxlint/binding-win32-ia32-msvc": "npm:1.73.0"
+    "@oxlint/binding-win32-x64-msvc": "npm:1.73.0"
   peerDependencies:
-    oxlint-tsgolint: ">=0.22.1"
+    oxlint-tsgolint: ">=0.24.0"
     vite-plus: "*"
   dependenciesMeta:
     "@oxlint/binding-android-arm-eabi":
@@ -8678,7 +8669,7 @@ __metadata:
       optional: true
   bin:
     oxlint: bin/oxlint
-  checksum: 10c0/c8d8199b9ddf7986e96ac49ed3828c3cd33424cd0dff404f3ade834db66b10e1c7c1bf6b294d50ee1003d0b509e48e946490d7fcde5abdde07620c7c28d43738
+  checksum: 10c0/d6ac6634d445b9ab163094f9df1cf6048d25a51b6422bce72c5b59c6aeafacf36070cf6ed772579a17a4f14dedce0e46017cf71328974666908a2570d06caaf7
   languageName: node
   linkType: hard
 
@@ -9540,7 +9531,7 @@ __metadata:
 
 "resolve@patch:resolve@npm%3A^1.19.0#optional!builtin<compat/resolve>":
   version: 1.22.12
-  resolution: "resolve@patch:resolve@npm%3A1.22.12#optional!builtin<compat/resolve>::version=1.22.12&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.12#optional!builtin<compat/resolve>::version=1.22.12&hash=9bd1a5"
   dependencies:
     es-errors: "npm:^1.3.0"
     is-core-module: "npm:^2.16.1"
@@ -9548,7 +9539,7 @@ __metadata:
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10c0/fc6519984ae1f894d877c0060ba8b1f5ba3bc0e85a02f74e141929c118c23d74d9735619a9cc2965397387e514884245c65d72a40731dcb6cfc84c7bcdc8321e
+  checksum: 10c0/e12af106e16e652bd83060e8afacece4ee3dcbd0f4cf028e3d9ad178e6ced9ecb1c87ee60158b239582313902a717f8adc57a9b76ea54b1994141ba15f420c65
   languageName: node
   linkType: hard
 
@@ -10051,9 +10042,9 @@ __metadata:
   linkType: hard
 
 "std-env@npm:^4.0.0-rc.1":
-  version: 4.1.0
-  resolution: "std-env@npm:4.1.0"
-  checksum: 10c0/2e14b6b490db34cb969a48d9cf7c35bca4a47653914aac2814221baae7b867a5b15940d133625c391621971f98cd2266a5dc7036669960e883f1081db2a56558
+  version: 4.2.0
+  resolution: "std-env@npm:4.2.0"
+  checksum: 10c0/40ac525ce7b7c556abc332a7376f14356eeb1a7f17f6ff9a003eb9f52326ff1f3745d3e1b43452675b1ec6fcc319f1b1d6f3b0d386cf3f91058479ad883cff69
   languageName: node
   linkType: hard
 
@@ -10265,24 +10256,24 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "syk-inn@workspace:."
   dependencies:
-    "@apollo/client": "npm:^4.2.5"
+    "@apollo/client": "npm:^4.2.6"
     "@envelop/core": "npm:^5.5.1"
     "@envelop/opentelemetry": "npm:^9.1.1"
     "@grafana/faro-web-sdk": "npm:^2.8.2"
     "@grafana/faro-web-tracing": "npm:^2.8.2"
-    "@graphql-codegen/cli": "npm:^7.1.3"
-    "@graphql-codegen/fragment-matcher": "npm:^7.0.1"
-    "@graphql-codegen/introspection": "npm:^6.0.1"
-    "@graphql-codegen/typescript-resolvers": "npm:^6.0.2"
+    "@graphql-codegen/cli": "npm:^7.2.0"
+    "@graphql-codegen/fragment-matcher": "npm:^7.1.0"
+    "@graphql-codegen/introspection": "npm:^6.1.0"
+    "@graphql-codegen/typescript-resolvers": "npm:^6.1.0"
     "@graphql-tools/schema": "npm:^10.0.35"
     "@hookform/devtools": "npm:^4.4.0"
     "@limegrass/eslint-plugin-import-alias": "npm:^1.6.1"
     "@mdx-js/loader": "npm:^3.1.1"
     "@mdx-js/react": "npm:^3.1.1"
-    "@navikt/aksel-icons": "npm:^8.14.0"
-    "@navikt/ds-css": "npm:^8.14.0"
-    "@navikt/ds-react": "npm:^8.14.0"
-    "@navikt/ds-tailwind": "npm:^8.14.0"
+    "@navikt/aksel-icons": "npm:^8.15.0"
+    "@navikt/ds-css": "npm:^8.15.0"
+    "@navikt/ds-react": "npm:^8.15.0"
+    "@navikt/ds-tailwind": "npm:^8.15.0"
     "@navikt/fhir-mock-server": "workspace:*"
     "@navikt/helseid-mock-server": "workspace:*"
     "@navikt/next-logger": "npm:^5.0.0"
@@ -10303,7 +10294,7 @@ __metadata:
     "@testcontainers/postgresql": "npm:^12.0.4"
     "@types/asciichart": "npm:^1.5.8"
     "@types/mdx": "npm:^2.0.14"
-    "@types/node": "npm:^24.13.2"
+    "@types/node": "npm:^24.13.3"
     "@types/react": "npm:19.2.17"
     "@types/react-dom": "npm:19.2.3"
     "@typescript/native-preview": "npm:7.0.0-dev.20260421.2"
@@ -10319,7 +10310,7 @@ __metadata:
     iovalkey: "npm:^0.3.3"
     jose: "npm:^6.2.3"
     kafkajs: "npm:^2.2.4"
-    knip: "npm:^6.24.0"
+    knip: "npm:^6.25.0"
     lint-staged: "npm:^17.0.8"
     motion: "npm:^12.42.2"
     next: "npm:^16.2.10"
@@ -10327,8 +10318,8 @@ __metadata:
     nextleton: "npm:^0.6.1"
     nock: "npm:^14.0.16"
     nuqs: "npm:^2.9.0"
-    oxfmt: "npm:^0.57.0"
-    oxlint: "npm:^1.72.0"
+    oxfmt: "npm:^0.58.0"
+    oxlint: "npm:^1.73.0"
     oxlint-tsgolint: "npm:^0.24.0"
     pdf-parse: "npm:^2.4.5"
     pino: "npm:^10.3.1"
