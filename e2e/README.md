@@ -85,7 +85,7 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 - [launching twice independently in same browser, but different tabs, should work](./fhir/fhir-multi-user.spec.ts#L15)
 - [launching and opening a link in a new tab, should persist context and work with future launches](./fhir/fhir-multi-user.spec.ts#L43)
-- [edge case: launching a second sessiond, returning to first one and opening a link in a new tab fails](./fhir/fhir-multi-user.spec.ts#L77)
+- [edge case: launching a second session, returning to first one and opening a link in a new tab fails](./fhir/fhir-multi-user.spec.ts#L79)
 
 ## [fhir/fhir-reisetilskudd.spec.ts](./fhir/fhir-reisetilskudd.spec.ts)
 

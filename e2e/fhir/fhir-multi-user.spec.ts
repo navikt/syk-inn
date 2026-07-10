@@ -52,7 +52,9 @@ test('launching and opening a link in a new tab, should persist context and work
     await expectPatient(Kari)(pasientInfoRegion)
     const [newTab] = await Promise.all([
         firstTab.context().waitForEvent('page'),
-        pasientInfoRegion.getByRole('button', { name: 'Opprett sykmelding' }).click({ modifiers: ['ControlOrMeta'] }),
+        pasientInfoRegion
+            .getByRole('button', { name: 'Opprett ny sykmelding' })
+            .click({ modifiers: ['ControlOrMeta'] }),
     ])
 
     await newTab.getByRole('button', { name: 'Avbryt og forkast' }).click()
@@ -74,7 +76,7 @@ test('launching and opening a link in a new tab, should persist context and work
     await fillAndSubmitMinimalSykmelding(Espen)(secondTab)
 })
 
-test('edge case: launching a second sessiond, returning to first one and opening a link in a new tab fails', async ({
+test('edge case: launching a second session, returning to first one and opening a link in a new tab fails', async ({
     browser,
 }) => {
     const baseContext = await browser.newContext()
@@ -94,7 +96,7 @@ test('edge case: launching a second sessiond, returning to first one and opening
         firstTab.context().waitForEvent('page'),
         firstTab
             .getByRole('region', { name: /Oversikt over (.*) sitt sykefravær/ })
-            .getByRole('button', { name: 'Opprett sykmelding' })
+            .getByRole('button', { name: 'Opprett ny sykmelding' })
             .click({ modifiers: ['ControlOrMeta'] }),
     ])
     await thirdTab.getByRole('button', { name: 'Avbryt og forkast' }).click()
