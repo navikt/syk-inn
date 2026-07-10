@@ -5,7 +5,7 @@ import { BodyShort, Button, Heading, List } from '@navikt/ds-react'
 import { PageBlock } from '@navikt/ds-react/Page'
 import React, { ReactElement } from 'react'
 
-import SessionIdInfo from '#components/help/SessionIdInfo'
+import { SessionIdInfo } from '#components/help/SessionIdInfo'
 import { isDevGcp } from '#lib/env'
 
 export function NoPractitionerSession(): ReactElement {

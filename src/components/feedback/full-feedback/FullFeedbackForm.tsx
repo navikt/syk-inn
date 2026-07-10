@@ -3,7 +3,7 @@ import { BodyShort, Detail, Heading, InfoCard, LocalAlert } from '@navikt/ds-rea
 import React, { ReactElement } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import SessionIdInfo from '#components/help/SessionIdInfo'
+import { SessionIdInfo } from '#components/help/SessionIdInfo'
 import { BehandlerFragment } from '#queries'
 
 import { ContactField } from '../fields/ContactField'

@@ -3,11 +3,18 @@ query AllDashboard {
         ...Draft
     }
     sykmeldinger {
-        current {
-            ...Sykmelding
+        ... on Unrequested {
+            aktuelle {
+                ...Sykmelding
+            }
         }
-        historical {
-            ...Sykmelding
+        ... on Requested {
+            aktuelle {
+                ...Sykmelding
+            }
+            historiske {
+                ...Sykmelding
+            }
         }
     }
     konsultasjon {

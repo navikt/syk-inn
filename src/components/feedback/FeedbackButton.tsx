@@ -7,8 +7,8 @@ import React, { ReactElement } from 'react'
 
 import { BehandlerDocument } from '#queries'
 
-import LegeOgBehandlerTelefonen from '../help/LegeOgBehandlerTelefonen'
-import SessionIdInfo from '../help/SessionIdInfo'
+import { LegeOgBehandlerTelefonen } from '../help/LegeOgBehandlerTelefonen'
+import { SessionIdInfo } from '../help/SessionIdInfo'
 
 import { FullFeedback, FullFeedbackSentimentFollowUp } from './full-feedback/FullFeedbackForm'
 import { useFeedback } from './useFeedback'

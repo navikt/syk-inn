@@ -1,6 +1,12 @@
-type Sykmeldinger {
-    current: [Sykmelding!]!
-    historical: [Sykmelding!]!
+union Sykmeldinger = Unrequested | Requested
+
+type Unrequested {
+    aktuelle: [Sykmelding!]!
+}
+
+type Requested {
+    aktuelle: [Sykmelding!]!
+    historiske: [Sykmelding!]!
 }
 
 interface SykmeldingBase {

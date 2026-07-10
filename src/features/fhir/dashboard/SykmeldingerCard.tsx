@@ -5,35 +5,26 @@ import { BodyShort, Button, GlobalAlert, Skeleton, Table } from '@navikt/ds-reac
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 
-import LegeOgBehandlerTelefonen from '#components/help/LegeOgBehandlerTelefonen'
-import SessionIdInfo from '#components/help/SessionIdInfo'
-import { useFlag } from '#core/toggles/context'
+import { LegeOgBehandlerTelefonen } from '#components/help/LegeOgBehandlerTelefonen'
+import { SessionIdInfo } from '#components/help/SessionIdInfo'
 import useOnFocus from '#lib/hooks/useOnFocus'
 import { cn } from '#lib/tw'
-import { AllDashboardDocument, KonsultasjonDocument } from '#queries'
+import { AllDashboardDocument, AllDashboardQuery, SykmeldingFragment } from '#queries'
 
 import DashboardCard from './card/DashboardCard'
-import { ComboTable, ComboTableFullCell, ComboTableHeader } from './combo-table/ComboTable'
-import { RequestSykmeldinger } from './historical/RequestSykmeldinger'
+import { ComboTable, ComboTableHeader } from './combo-table/ComboTable'
+import { ComboTableFullCell } from './combo-table/ComboTableRows'
+import { HistoriskeSykmeldingerEmptyState, RequestHistoriske } from './combo-table/HistoriskeSykmeldinger'
 import DashboardTable from './table/DashboardTable'
 
-function ComboTableCard({ className }: { className?: string }): ReactElement {
-    const konsultasjon = useQuery(KonsultasjonDocument)
+export function SykmeldingerCard({ className }: { className?: string }): ReactElement {
     const dashboardQuery = useQuery(AllDashboardDocument)
     useOnFocus(dashboardQuery.refetch)
 
-    const historiskeToggle = useFlag('SYK_INN_REQUEST_HISTORISKE')
-
-    const hasRequested = konsultasjon.data?.konsultasjon?.hasRequestedAccessToSykmeldinger
     const isRefetching = dashboardQuery.networkStatus === NetworkStatus.refetch
     const initialLoad = dashboardQuery.networkStatus === NetworkStatus.loading
-    const hasDrafts = !!dashboardQuery.data?.drafts?.length
-    const hasSykmeldinger = !!dashboardQuery.data?.sykmeldinger?.current.length
-    const hasData = hasSykmeldinger || hasDrafts
-
-    const current = dashboardQuery.data?.sykmeldinger?.current ?? []
-    const historical = dashboardQuery.data?.sykmeldinger?.historical ?? []
-    const allSykmeldinger = [...current, ...historical]
+    const allSykmeldinger = getAllSykmeldingerFromQuery(dashboardQuery.data?.sykmeldinger)
+    const hasData = !!allSykmeldinger.length || !!dashboardQuery.data?.drafts?.length
 
     return (
         <DashboardCard
@@ -42,8 +33,14 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
             ariaBusy={initialLoad || isRefetching}
             fetching={isRefetching}
         >
+            {/* Loading skeleton, empty state and when everything fails, only one of these will be rendered */}
+            {initialLoad && <ComboTableSkeleton />}
+            {!initialLoad && !dashboardQuery.error && !hasData && <ComboTableEmptyState />}
+            {!initialLoad && dashboardQuery.error && !hasData && <EverythingError refetch={dashboardQuery.refetch} />}
+
+            {/* Partial errors are handled within the table, i.e. drafts load but not sykmeldinger */}
             {hasData && dashboardQuery.data && (
-                <ComboTable sykmeldinger={allSykmeldinger ?? []} drafts={dashboardQuery.data.drafts ?? []}>
+                <ComboTable sykmeldinger={allSykmeldinger} drafts={dashboardQuery.data.drafts}>
                     {dashboardQuery.error && dashboardQuery.data.drafts == null && (
                         <AllDraftsError refetch={dashboardQuery.refetch} />
                     )}
@@ -53,18 +50,13 @@ function ComboTableCard({ className }: { className?: string }): ReactElement {
                 </ComboTable>
             )}
 
-            {initialLoad && <ComboTableSkeleton />}
-            {!initialLoad && !dashboardQuery.error && !hasData && <ComboTableEmptyState />}
-            {!initialLoad && dashboardQuery.error && !hasData && <EverythingError refetch={dashboardQuery.refetch} />}
-            {historiskeToggle && dashboardQuery.error && (
-                <HistoricalSykmeldingerError refetch={dashboardQuery.refetch} />
+            {/* "Historiske" sykmeldinger (behind toggle) are rendered in combo table, but request and empty state are handled here */}
+            {!dashboardQuery.loading && dashboardQuery.data?.sykmeldinger?.__typename === 'Unrequested' && (
+                <RequestHistoriske loading={isRefetching} />
             )}
-            {historiskeToggle && !dashboardQuery.error && !hasRequested && (
-                <RequestSykmeldinger loading={initialLoad} />
-            )}
-            {historiskeToggle && !dashboardQuery.error && hasRequested && !hasSykmeldinger && !initialLoad && (
-                <HistoricalSykmeldingerEmptyState />
-            )}
+            {!dashboardQuery.loading &&
+                dashboardQuery.data?.sykmeldinger?.__typename === 'Requested' &&
+                dashboardQuery.data?.sykmeldinger?.historiske.length === 0 && <HistoriskeSykmeldingerEmptyState />}
         </DashboardCard>
     )
 }
@@ -168,43 +160,6 @@ function ComboTableEmptyState(): ReactElement {
     )
 }
 
-function HistoricalSykmeldingerError({ refetch }: { refetch: () => void }): ReactElement {
-    return (
-        <div className="flex justify-center items-center h-full pb-8">
-            <GlobalAlert status="error">
-                <GlobalAlert.Header>
-                    <GlobalAlert.Title>Ukjent feil ved henting av historiske sykmeldinger</GlobalAlert.Title>
-                </GlobalAlert.Header>
-                <GlobalAlert.Content>
-                    <BodyShort spacing>
-                        Det skjedde en ukjent feil under henting av sykmeldinger. Du kan prøve å laste siden på nytt,
-                        eller prøve på nytt senere.
-                    </BodyShort>
-                    <Button
-                        data-color="neutral"
-                        type="button"
-                        size="small"
-                        variant="secondary"
-                        onClick={() => refetch()}
-                    >
-                        Prøv på nytt
-                    </Button>
-                    <SessionIdInfo />
-                </GlobalAlert.Content>
-            </GlobalAlert>
-        </div>
-    )
-}
-
-function HistoricalSykmeldingerEmptyState(): ReactElement {
-    return (
-        <div className="flex flex-col gap-6 items-center justify-center w-full h-64 text-ax-text-neutral-subtle">
-            <FlowerPetalsIcon aria-hidden fontSize="4rem" className="opacity-75" />
-            <BodyShort>Pasienten har ingen historiske sykmeldinger</BodyShort>
-        </div>
-    )
-}
-
 export function ComboTableSkeleton(): ReactElement {
     return (
         <DashboardTable>
@@ -240,4 +195,14 @@ export function ComboTableSkeleton(): ReactElement {
     )
 }
 
-export default ComboTableCard
+function getAllSykmeldingerFromQuery(
+    sykmeldinger: AllDashboardQuery['sykmeldinger'] | undefined,
+): SykmeldingFragment[] {
+    if (!sykmeldinger) return []
+
+    if (sykmeldinger.__typename === 'Requested') {
+        return [...sykmeldinger.aktuelle, ...(sykmeldinger.historiske ?? [])]
+    }
+
+    return sykmeldinger.aktuelle
+}

@@ -13,7 +13,7 @@ import { InfoNySykmeldingButton } from '../welcome-modal/InfoNySykmeldingButton'
 import PatientStats from './dumb-stats/PatientStats'
 import StartSykmelding from './StartSykmelding'
 
-function DashboardTopCard({ className }: { className?: string }): ReactElement {
+export function DashboardTopCard({ className }: { className?: string }): ReactElement {
     const { data } = useQuery(PasientDocument)
     const dispatch = useAppDispatch()
 
@@ -50,5 +50,3 @@ function DashboardTopCard({ className }: { className?: string }): ReactElement {
         </DashboardCard>
     )
 }
-
-export default DashboardTopCard

@@ -46,4 +46,9 @@ export const commonTypeResolvers: Resolvers = {
             }
         },
     },
+    Sykmeldinger: {
+        __resolveType: (parent) => {
+            return 'historiske' in parent ? 'Requested' : 'Unrequested'
+        },
+    },
 }

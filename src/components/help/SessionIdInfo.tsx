@@ -5,7 +5,7 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 
 import { getBrowserSessionId } from '#lib/otel/faro'
 
-function SessionIdInfo({ children }: PropsWithChildren): ReactElement {
+export function SessionIdInfo({ children }: PropsWithChildren): ReactElement {
     return (
         <div className="mt-3 text-ax-text-neutral-subtle">
             <BodyShort className="inline">Feilsøkings-ID: </BodyShort>
@@ -16,5 +16,3 @@ function SessionIdInfo({ children }: PropsWithChildren): ReactElement {
         </div>
     )
 }
-
-export default SessionIdInfo

@@ -1,7 +1,7 @@
 import { BodyShort, Link } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 
-function LegeOgBehandlerTelefonen({ short }: { short?: boolean }): ReactElement {
+export function LegeOgBehandlerTelefonen({ short }: { short?: boolean }): ReactElement {
     if (short) {
         return (
             <BodyShort>
@@ -23,5 +23,3 @@ function LegeOgBehandlerTelefonen({ short }: { short?: boolean }): ReactElement 
         </BodyShort>
     )
 }
-
-export default LegeOgBehandlerTelefonen

@@ -28,8 +28,11 @@ function PatientStats({ className }: { className?: string }): ReactElement {
         )
     }
 
-    const current = sykmeldinger.data?.sykmeldinger?.current ?? []
-    const previous = sykmeldinger.data?.sykmeldinger?.historical ?? []
+    const current = sykmeldinger.data?.sykmeldinger?.aktuelle ?? []
+    const previous =
+        sykmeldinger.data?.sykmeldinger?.__typename === 'Requested'
+            ? (sykmeldinger.data?.sykmeldinger?.historiske ?? [])
+            : []
     const days = continiousSykefravaer([...current, ...previous])
 
     return (
