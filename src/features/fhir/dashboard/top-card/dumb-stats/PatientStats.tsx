@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client/react'
-import { BodyShort, Skeleton } from '@navikt/ds-react'
+import { BandageIcon, ClockDashedIcon, HourglassTopFilledIcon, NotePencilDashIcon } from '@navikt/aksel-icons'
+import { Skeleton } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
-import { PieChart } from 'react-minimal-pie-chart'
 
 import { useFlag } from '#core/toggles/context'
 import { cn } from '#lib/tw'
@@ -9,15 +9,16 @@ import { AllDashboardDocument, GetAllDraftsDocument } from '#queries'
 
 import { continiousSykefravaer } from './sykefravaer-utils'
 
-export function PatientStats({ className }: { className?: string }): ReactElement {
+export function PatientStats(): ReactElement {
     const allDrafts = useQuery(GetAllDraftsDocument)
     const sykmeldinger = useQuery(AllDashboardDocument)
 
     const sykefravaerInfoToggle = useFlag('SYK_INN_SYKEFRAVAER_INFO')
 
     if (allDrafts.loading || sykmeldinger.loading) {
+        // TODO remember loading state
         return (
-            <div className={cn(className, 'flex gap-6 items-center justify-center sm:justify-start')}>
+            <div className={cn('flex gap-6 items-center justify-center sm:justify-start')}>
                 {sykefravaerInfoToggle && (
                     <div className="flex items-center size-48 md:size-36 ax-lg:size-48">
                         <Skeleton variant="circle" className="w-full h-full" />
@@ -36,41 +37,63 @@ export function PatientStats({ className }: { className?: string }): ReactElemen
     const days = continiousSykefravaer([...current, ...previous])
 
     return (
-        <div className={cn(className, 'flex gap-6 items-center justify-center md:justify-start')}>
-            {sykefravaerInfoToggle && (
-                <div className="flex items-center relative size-48 md:size-36 ax-lg:size-48">
-                    <PieChart
-                        lineWidth={26}
-                        startAngle={270}
-                        data={[
-                            { title: 'One', value: (days / 365) * 100, color: 'var(--ax-success-600)' },
-                            { title: 'Two', value: ((365 - days) / 365) * 100, color: 'var(--ax-success-300)' },
-                        ]}
+        <div className="mt-4">
+            <div className="flex gap-3 flex-wrap">
+                <StatWithIcon
+                    Icon={BandageIcon}
+                    value={sykmeldinger.data?.sykmeldinger?.aktuelle.length ?? 0}
+                    label="Pågående sykmeldinger"
+                />
+                <StatWithIcon
+                    Icon={NotePencilDashIcon}
+                    value={allDrafts.data?.drafts?.length ?? 0}
+                    label="Utkast sykmeldinger"
+                />
+                {sykmeldinger.data?.sykmeldinger?.__typename === 'Requested' && (
+                    <StatWithIcon
+                        Icon={ClockDashedIcon}
+                        value={sykmeldinger.data?.sykmeldinger.historiske.length ?? 0}
+                        label="Tidligere sykmeldinger"
                     />
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-                        <BodyShort size="small" className="text-nowrap text-base md:text-xs ax-lg:text-base">
-                            Påløpt sykefravær
-                        </BodyShort>
-                        <BodyShort className="text-base md:text-xs ax-lg:text-base">
-                            {(days / 7).toFixed(0)} av 52 uker
-                        </BodyShort>
-                    </div>
-                </div>
-            )}
-            <div className="flex flex-col justify-between shadow-md p-4 max-h-58 h-full rounded-md">
-                <div className="flex gap-2 items-center">
-                    <div className="text-4xl">{allDrafts.data?.drafts?.length ?? 0}</div>
-                    <div className="text-center text-sm w-full">utkast</div>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <div className="text-4xl">{current.length}</div>
-                    <div className="text-center text-sm w-full">pågående sykmeldinger</div>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <div className="text-4xl">{previous.length}</div>
-                    <div className="text-center text-sm w-full">tidligere sykmeldinger</div>
-                </div>
+                )}
+                {sykefravaerInfoToggle && (
+                    <StatWithIcon
+                        Icon={HourglassTopFilledIcon}
+                        value={
+                            <div className="relative h-full w-full text-xl">
+                                <div className="absolute top-0 left-1">{+(days / 7).toFixed(0)}</div>
+                                <div className="absolute top-1/2 left-1/2 -translate-x-2/3 -translate-y-1/2">/</div>
+                                <div className="absolute bottom-0 right-0.5 text-base">52</div>
+                            </div>
+                        }
+                        label="uker påløpt sykefravær"
+                    />
+                )}
             </div>
+        </div>
+    )
+}
+
+function StatWithIcon({
+    Icon,
+    value,
+    label,
+}: {
+    Icon: typeof BandageIcon
+    value: number | ReactElement
+    label: string
+}): ReactElement {
+    return (
+        <div className="flex items-center gap-2">
+            <div className="size-12 bg-ax-bg-accent-moderate rounded-full flex items-center justify-center shrink-0">
+                <Icon aria-hidden className="size-6" />
+            </div>
+            {typeof value === 'number' ? (
+                <div className="shrink-0 size-10 text-3xl bold flex items-center justify-center">{value}</div>
+            ) : (
+                <div className="shrink-0 size-10">{value}</div>
+            )}
+            <div className="uppercase max-w-30 text-sm flex items-center justify-center">{label}</div>
         </div>
     )
 }

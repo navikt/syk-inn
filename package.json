@@ -83,7 +83,6 @@
         "react": "^19.2.7",
         "react-dom": "^19.2.7",
         "react-hook-form": "7.81.0",
-        "react-minimal-pie-chart": "^9.1.2",
         "react-redux": "^9.3.0",
         "remark-gfm": "^4.0.1",
         "remeda": "^2.39.0",

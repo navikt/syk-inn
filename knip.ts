@@ -11,7 +11,6 @@ const config: KnipConfig = {
         'libs/fhir-mock/buntry-point.ts',
         'libs/helseid-mock/buntry-point.ts',
         'next-logger.config.cjs',
-        'postcss.config.mjs',
     ],
     ignoreDependencies: ['@opentelemetry/core'],
 }

@@ -43,11 +43,8 @@ export function DashboardTopCard({ className }: { className?: string }): ReactEl
                 </Checkbox>
                 <InfoNySykmeldingButton className="absolute right-2 top-2 sm:static" />
             </div>
-            <div className={cn('grid grid-cols-1 md:grid-cols-2 gap-5 space-x-0 divide-ax-bg-neutral-soft')}>
-                <StartSykmelding className="col-start-1 row-start-1" />
-                <div className="col-start-1 row-start-1 justify-self-end w-1 mt-2 mb-2 mx-2 ax-lg:mx-8 bg-ax-bg-neutral-soft shrink-0 self-stretch hidden ax-md:block" />
-                <PatientStats />
-            </div>
+            <StartSykmelding className="col-start-1 row-start-1" />
+            <PatientStats />
         </DashboardCard>
     )
 }
