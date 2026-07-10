@@ -16,7 +16,7 @@ type Props = {
     sykmelding: SykmeldingFragment
 }
 
-function SykmeldingValues({ sykmelding }: Props): ReactElement {
+export function SykmeldingValues({ sykmelding }: Props): ReactElement {
     if (sykmelding.__typename === 'SykmeldingRedacted') {
         return (
             <>
@@ -224,5 +224,3 @@ function SykmeldingDiagnoseValues({
         </>
     )
 }
-
-export default SykmeldingValues

@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 
 import { useFormContext } from '#features/ny-sykmelding-form/form/types'
 
-function BehandlingsdagerDescriptionField(): ReactElement {
+export function BehandlingsdagerDescriptionField(): ReactElement {
     const form = useFormContext()
 
     return (
@@ -44,5 +44,3 @@ function BehandlingsdagerDescriptionField(): ReactElement {
         </div>
     )
 }
-
-export default BehandlingsdagerDescriptionField

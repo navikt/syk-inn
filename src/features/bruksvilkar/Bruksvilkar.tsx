@@ -27,7 +27,7 @@ type Props = {
     } | null
 }
 
-function Bruksvilkar({ paths, accepter, accepted }: Props): ReactElement {
+export function Bruksvilkar({ paths, accepter, accepted }: Props): ReactElement {
     const [acceptOk, setAcceptOk] = useState<{ version: string; at: string; stale: boolean } | null>(accepted)
 
     return (
@@ -100,5 +100,3 @@ function YouAcceptedBruksvilkar({ at, version }: { at: string; version: string }
         </InlineMessage>
     )
 }
-
-export default Bruksvilkar

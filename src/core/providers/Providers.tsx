@@ -12,7 +12,7 @@ import useStoreRef from '../redux/useStoreRef'
 
 import { useMode } from './Modes'
 
-function Providers({
+export function Providers({
     children,
     patient,
     graphqlPath,
@@ -32,5 +32,3 @@ function Providers({
         </ApolloProvider>
     )
 }
-
-export default Providers

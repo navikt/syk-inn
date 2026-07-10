@@ -35,7 +35,7 @@ type Props = {
     className?: string
 }
 
-function FormValuesSummary({ className }: Props): ReactElement {
+export function FormValuesSummary({ className }: Props): ReactElement {
     const mode = useMode()
     const [, setStep] = useFormStep()
     const { pasient, values } = useAppSelector((state) => state.nySykmelding)
@@ -467,5 +467,3 @@ function tilbakedateringGrunnToReadable(grunn: TilbakedateringGrunn): string {
             return 'Annet'
     }
 }
-
-export default FormValuesSummary

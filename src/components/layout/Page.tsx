@@ -4,7 +4,7 @@ import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 
 import { cn } from '#lib/tw'
 
-import LoadableHeader, { LoadableHeaderProps } from '../animation/LoadableHeader'
+import { LoadableHeader, LoadableHeaderProps } from '../animation/LoadableHeader'
 
 type Props =
     | {

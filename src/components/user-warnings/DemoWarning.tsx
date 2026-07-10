@@ -8,7 +8,7 @@ import { isLocal, isDemo } from '#lib/env'
 import { raise } from '#lib/ts'
 import { pathWithBasePath } from '#lib/url'
 
-function DemoWarning(): ReactElement {
+export function DemoWarning(): ReactElement {
     if (!(isLocal || isDemo)) {
         raise(new Error('DemoWarning should only be rendered in local or demo environment'))
     }
@@ -31,5 +31,3 @@ function DemoWarning(): ReactElement {
         </div>
     )
 }
-
-export default DemoWarning

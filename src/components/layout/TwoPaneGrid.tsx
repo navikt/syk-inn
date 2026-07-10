@@ -9,7 +9,7 @@ type Props =
     | ({ tag: 'div' } & DetailedHTMLProps<FormHTMLAttributes<HTMLDivElement>, HTMLDivElement>)
     | ({ tag: 'form' } & DetailedHTMLProps<FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>)
 
-function TwoPaneGrid({ children, className, ...props }: PropsWithChildren<Props>): ReactElement {
+export function TwoPaneGrid({ children, className, ...props }: PropsWithChildren<Props>): ReactElement {
     if (props.tag === 'div') {
         return (
             <div className={cn(styles.twoPaneGrid, className)} {...R.omit(props, ['tag'])}>
@@ -24,5 +24,3 @@ function TwoPaneGrid({ children, className, ...props }: PropsWithChildren<Props>
         </form>
     )
 }
-
-export default TwoPaneGrid

@@ -10,7 +10,7 @@ type NodeTitle = { title: ReactNode; id: string }
 type HeadingTitle = { heading: ReactNode; headingId: string }
 type NoTitle = { ariaLabel: string }
 
-function DashboardCard({
+export function DashboardCard({
     className,
     children,
     fetching,
@@ -44,5 +44,3 @@ function DashboardCard({
         </section>
     )
 }
-
-export default DashboardCard

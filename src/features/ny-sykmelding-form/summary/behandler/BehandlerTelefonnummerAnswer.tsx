@@ -11,7 +11,7 @@ type Props = {
     contextTelefonnummer: string | undefined | null
 }
 
-function BehandlerTelefonnummerAnswer({ contextTelefonnummer }: Props): ReactElement {
+export function BehandlerTelefonnummerAnswer({ contextTelefonnummer }: Props): ReactElement {
     const mode = useMode()
     const endreRef = useRef<HTMLButtonElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
@@ -117,5 +117,3 @@ function ManualTelefonnummerForm({
         </FormSummary.Answer>
     )
 }
-
-export default BehandlerTelefonnummerAnswer

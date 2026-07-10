@@ -16,7 +16,7 @@ type Props = {
     ident: string
 }
 
-function ManualPatientDrafts({ ident }: Props): ReactElement {
+export function ManualPatientDrafts({ ident }: Props): ReactElement {
     const draftsQuery = useQuery(GetAllDraftsDocument, {
         fetchPolicy: 'cache-and-network',
     })
@@ -75,5 +75,3 @@ function ContinueDraftCard({ draft, ident }: { draft: DraftFragment; ident: stri
         </LinkCard>
     )
 }
-
-export default ManualPatientDrafts

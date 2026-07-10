@@ -7,11 +7,11 @@ import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
 import { cn } from '#lib/tw'
 import { PasientDocument } from '#queries'
 
-import DashboardCard from '../card/DashboardCard'
+import { DashboardCard } from '../card/DashboardCard'
 import { InfoNySykmeldingButton } from '../welcome-modal/InfoNySykmeldingButton'
 
-import PatientStats from './dumb-stats/PatientStats'
-import StartSykmelding from './StartSykmelding'
+import { PatientStats } from './dumb-stats/PatientStats'
+import { StartSykmelding } from './StartSykmelding'
 
 export function DashboardTopCard({ className }: { className?: string }): ReactElement {
     const { data } = useQuery(PasientDocument)

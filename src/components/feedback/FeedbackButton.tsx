@@ -18,7 +18,7 @@ import { useFeedback } from './useFeedback'
  *
  * For inline feedback, use the 'in situ'-form.
  */
-function FeedbackButton(): ReactElement {
+export function FeedbackButton(): ReactElement {
     const feedback = useFeedback()
     const behandler = useQuery(BehandlerDocument, { notifyOnNetworkStatusChange: true })
     const hasBehandler = !behandler.loading && behandler.data?.behandler != null
@@ -133,5 +133,3 @@ function FeedbackErrorNoBehandler({ refetch }: { refetch: () => void }): ReactEl
         </LocalAlert>
     )
 }
-
-export default FeedbackButton

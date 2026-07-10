@@ -9,7 +9,7 @@ import { cn } from '#lib/tw'
 
 import { InternalDevToolsPanel } from './InternalDevTools'
 
-function DevTools(): ReactElement {
+export function DevTools(): ReactElement {
     const { refs, internalOpen, toggleInternalDevTools, closeAllDevTools } = useDevToolsOverlayState()
 
     useKeyboardShortcuts(closeAllDevTools, toggleInternalDevTools)
@@ -121,5 +121,3 @@ function useDevToolsOverlayState(): UseDevToolsOverlayState {
 const getAltKeyLabel = (): string => {
     return /Mac/i.test(navigator.platform) ? '⌥' : 'alt'
 }
-
-export default DevTools

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import PeriodePicker from '#features/ny-sykmelding-form/sections/aktivitet/PeriodePicker'
+import { PeriodePicker } from '#features/ny-sykmelding-form/sections/aktivitet/PeriodePicker'
 
 type Props = {
     initialFom: string | null

@@ -4,14 +4,14 @@ import { nb } from 'date-fns/locale/nb'
 import React, { ReactElement } from 'react'
 
 import { getNumberOfBehandlingsdager } from '#data-layer/common/behandlingsdager'
-import PeriodePicker from '#features/ny-sykmelding-form/sections/aktivitet/PeriodePicker'
+import { PeriodePicker } from '#features/ny-sykmelding-form/sections/aktivitet/PeriodePicker'
 import { toReadablePeriodLength } from '#lib/date'
 
 type Props = {
     initialFom: string | null
 }
 
-function BehandlingsdagerPeriode({ initialFom }: Props): ReactElement {
+export function BehandlingsdagerPeriode({ initialFom }: Props): ReactElement {
     return (
         <div>
             <BodyShort spacing>
@@ -42,5 +42,3 @@ export function behandlingsdagerDescription(fom: Date | string, tom: Date | stri
         detail: `Fra ${format(fom, 'EEEE d. MMMM', { locale: nb })}${isFomToday ? ' (i dag)' : ''} til ${format(tom, 'EEEE d. MMMM', { locale: nb })}${isTomToday ? ' (i dag)' : ''}`,
     }
 }
-
-export default BehandlingsdagerPeriode

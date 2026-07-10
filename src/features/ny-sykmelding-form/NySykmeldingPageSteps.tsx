@@ -4,10 +4,10 @@ import React, { PropsWithChildren, ReactElement, ReactNode } from 'react'
 
 import { PageLayout } from '#components/layout/Page'
 
-import SummarySection from './summary/SummarySection'
+import { SummarySection } from './summary/SummarySection'
 import { StepSection, useFormStep } from './useFormStep'
 
-function NySykmeldingPageSteps({ heading, children }: PropsWithChildren<{ heading: ReactNode }>): ReactElement {
+export function NySykmeldingPageSteps({ heading, children }: PropsWithChildren<{ heading: ReactNode }>): ReactElement {
     const [step] = useFormStep()
 
     return (
@@ -37,5 +37,3 @@ function Sections({
             )
     }
 }
-
-export default NySykmeldingPageSteps

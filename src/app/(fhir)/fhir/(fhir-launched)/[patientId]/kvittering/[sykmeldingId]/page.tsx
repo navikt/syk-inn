@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 
 import { PageLayout } from '#components/layout/Page'
-import SykmeldingKvittering from '#features/sykmelding-kvittering/SykmeldingKvittering'
+import { SykmeldingKvittering } from '#features/sykmelding-kvittering/SykmeldingKvittering'
 
 async function KvitteringPage({
     params,

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 
-import Redaction from '#components/misc/Redaction'
+import { Redaction } from '#components/misc/Redaction'
 import { isTodayOrInTheFuture, isWithinWeeksOldSykmelding } from '#data-layer/common/sykmelding-utils'
 import {
     SykmeldingFragment,
@@ -12,7 +12,7 @@ import {
 import { TableRow } from './ComboTableRows'
 import { sykmeldingArbeidsgiverText, sykmeldingDiagnoseText, sykmeldingGradText } from './sykmelding/sykmelding-utils'
 import { SykmeldingActions } from './sykmelding/SykmeldingActions'
-import SykmeldingPeriodeLink from './sykmelding/SykmeldingPeriodeLink'
+import { SykmeldingPeriodeLink } from './sykmelding/SykmeldingPeriodeLink'
 
 export function SykmeldingTableRow({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
     const status = isTodayOrInTheFuture(sykmelding) ? 'current' : 'previous'

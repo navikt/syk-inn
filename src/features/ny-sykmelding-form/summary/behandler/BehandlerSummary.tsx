@@ -6,14 +6,14 @@ import React, { ReactElement } from 'react'
 import { SimpleAlert } from '#components/help/GeneralErrors'
 import { BehandlerDocument } from '#queries'
 
-import BehandlerOrganisasjonsnummerAnswer from './BehandlerOrganisasjonsnummerAnswer'
-import BehandlerTelefonnummerAnswer from './BehandlerTelefonnummerAnswer'
+import { BehandlerOrganisasjonsnummerAnswer } from './BehandlerOrganisasjonsnummerAnswer'
+import { BehandlerTelefonnummerAnswer } from './BehandlerTelefonnummerAnswer'
 
 type Props = {
     className?: string
 }
 
-function BehandlerSummary({ className }: Props): ReactElement {
+export function BehandlerSummary({ className }: Props): ReactElement {
     const { loading, data, error, refetch } = useQuery(BehandlerDocument, {
         notifyOnNetworkStatusChange: true,
     })
@@ -110,5 +110,3 @@ function FormValueSkeleton(): ReactElement {
         </FormSummary.Value>
     )
 }
-
-export default BehandlerSummary

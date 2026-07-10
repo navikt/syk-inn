@@ -10,7 +10,7 @@ import { useMode } from '#core/providers/Modes'
 import { FORM_VARIANT_KEY, NySykmeldingFormVariantType } from '#features/ny-sykmelding-form/useFormVariant'
 import { PasientDocument } from '#queries'
 
-function StartSykmelding({ className }: { className?: string }): ReactElement {
+export function StartSykmelding({ className }: { className?: string }): ReactElement {
     const { data, loading, error, refetch } = useQuery(PasientDocument)
     const [hasLegged, setHasLegged] = useState(true)
 
@@ -133,5 +133,3 @@ export function FancyMultiOptionStartButton({
         </div>
     )
 }
-
-export default StartSykmelding

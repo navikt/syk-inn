@@ -9,7 +9,7 @@ type Props = {
     defaultIdent: string | undefined
 }
 
-function ManualPatientSearch({ handleSearch, defaultIdent }: Props): ReactElement {
+export function ManualPatientSearch({ handleSearch, defaultIdent }: Props): ReactElement {
     const form = useForm<{ ident: string }>({
         defaultValues: { ident: defaultIdent },
     })
@@ -61,5 +61,3 @@ function ManualPatientSearch({ handleSearch, defaultIdent }: Props): ReactElemen
         </form>
     )
 }
-
-export default ManualPatientSearch

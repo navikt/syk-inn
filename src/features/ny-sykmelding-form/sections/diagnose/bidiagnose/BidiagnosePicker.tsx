@@ -1,9 +1,9 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { useController } from 'react-hook-form'
 
-import DiagnoseCombobox from '#components/form/diagnose-combobox/DiagnoseCombobox'
+import { DiagnoseCombobox } from '#components/form/diagnose-combobox/DiagnoseCombobox'
 
-function BidiagnosePicker({
+export function BidiagnosePicker({
     index,
     children,
     onSelect,
@@ -36,5 +36,3 @@ function BidiagnosePicker({
         />
     )
 }
-
-export default BidiagnosePicker

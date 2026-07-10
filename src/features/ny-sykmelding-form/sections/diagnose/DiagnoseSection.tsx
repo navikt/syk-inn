@@ -2,7 +2,7 @@ import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
 import { BodyShort } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 
-import DiagnosePicker from './DiagnosePicker'
+import { DiagnosePicker } from './DiagnosePicker'
 
 interface Props {
     diagnosePrefillError?: { error: 'FHIR_FAILED' }

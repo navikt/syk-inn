@@ -3,7 +3,7 @@ import { ReactElement } from 'react'
 
 import { useController } from '../../form/types'
 
-function ArbeidsforholdPicker(): ReactElement {
+export function ArbeidsforholdPicker(): ReactElement {
     const harFlereArbeidsforhold = useController({
         name: 'arbeidsforhold.harFlereArbeidsforhold',
         defaultValue: null,
@@ -54,5 +54,3 @@ function ArbeidsforholdPicker(): ReactElement {
         </div>
     )
 }
-
-export default ArbeidsforholdPicker

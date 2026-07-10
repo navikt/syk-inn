@@ -13,7 +13,7 @@ type Props = {
     aktivitet: SykmeldingFragment['values']['aktivitet']
 }
 
-function SykmeldingPeriodeLink({ sykmeldingId, aktivitet }: Props): ReactElement {
+export function SykmeldingPeriodeLink({ sykmeldingId, aktivitet }: Props): ReactElement {
     const mode = useMode()
     const sortedPeriode = R.sortBy(aktivitet, [(it) => it.fom, 'asc'])
 
@@ -36,5 +36,3 @@ function SykmeldingPeriodeLink({ sykmeldingId, aktivitet }: Props): ReactElement
         </div>
     )
 }
-
-export default SykmeldingPeriodeLink

@@ -18,7 +18,7 @@ type Props = {
  *
  * See discussion: https://nav-it.slack.com/archives/CAFRFDJMN/p1727428714358099
  */
-function HelseIdHeader({ behandler }: Props): ReactElement {
+export function HelseIdHeader({ behandler }: Props): ReactElement {
     return (
         <div className="border-b border-b-ax-border-neutral-subtle h-20 max-h-20 flex justify-between px-2 bg-ax-bg-default">
             <div className="flex justify-center items-center gap-8">
@@ -48,5 +48,3 @@ function HelseIdHeader({ behandler }: Props): ReactElement {
         </div>
     )
 }
-
-export default HelseIdHeader

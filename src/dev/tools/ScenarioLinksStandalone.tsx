@@ -8,7 +8,7 @@ import React, { ReactElement } from 'react'
 
 import { pathWithBasePath } from '#lib/url'
 
-function ScenarioLinksStandalone(): ReactElement {
+export function ScenarioLinksStandalone(): ReactElement {
     const [behandler, setBehandler] = useQueryState(
         'behandler',
         parseAsString.withDefault('Johan Johansson' satisfies MockBehandlere).withOptions({ clearOnDefault: true }),
@@ -64,5 +64,3 @@ function createScenarioUrl(scenario: string, behandler: MockBehandlere): string 
 function buildInitParams(behandler: MockBehandlere): string {
     return `?user=${behandler}&returnTo=${pathWithBasePath('/')}`
 }
-
-export default ScenarioLinksStandalone

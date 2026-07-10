@@ -4,14 +4,14 @@ import { addDays } from 'date-fns'
 import React, { ReactElement } from 'react'
 import { UseFieldArrayAppend } from 'react-hook-form'
 
-import FormSection from '#components/form/form-section/FormSection'
+import { FormSection } from '#components/form/form-section/FormSection'
 import { dateOnly } from '#lib/date'
 
 import { defaultPeriode } from '../../form/default-values'
 import { AktivitetsPeriode, NySykmeldingMainFormValues, useFieldArray, useFormContext } from '../../form/types'
 
-import AktivitetPicker from './AktivitetPicker'
-import PeriodePicker from './PeriodePicker'
+import { AktivitetPicker } from './AktivitetPicker'
+import { PeriodePicker } from './PeriodePicker'
 
 type Props = {
     /**

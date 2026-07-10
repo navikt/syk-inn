@@ -2,7 +2,7 @@ import { HelpText, Link } from '@navikt/ds-react'
 import { AnimatePresence, motion } from 'motion/react'
 import React, { ReactElement } from 'react'
 
-import FormSection from '#components/form/form-section/FormSection'
+import { FormSection } from '#components/form/form-section/FormSection'
 import { isTilbakedatering } from '#data-layer/common/tilbakedatering'
 
 import { useFormContext } from '../../form/types'

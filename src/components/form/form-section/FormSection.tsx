@@ -12,7 +12,7 @@ type Props = {
     helpText?: ReactNode
 }
 
-function FormSection({
+export function FormSection({
     title,
     children,
     hideTitle,
@@ -37,5 +37,3 @@ function FormSection({
         </section>
     )
 }
-
-export default FormSection

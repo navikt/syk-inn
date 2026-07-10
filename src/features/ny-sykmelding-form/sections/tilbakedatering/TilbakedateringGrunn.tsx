@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 
 import { useController } from '../../form/types'
 
-function TilbakedateringGrunn(): ReactElement {
+export function TilbakedateringGrunn(): ReactElement {
     const grunn = useController({
         name: 'tilbakedatering.grunn' as const,
         rules: {
@@ -52,5 +52,3 @@ function TilbakedateringGrunn(): ReactElement {
         </>
     )
 }
-
-export default TilbakedateringGrunn

@@ -3,15 +3,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { PropsWithChildren, ReactElement } from 'react'
 
-import DemoWarning from '#components/user-warnings/DemoWarning'
+import { DemoWarning } from '#components/user-warnings/DemoWarning'
 import { isDemo, isLocal } from '#lib/env'
 
 import { getDemoFrameEnabled } from './cookies'
-import FakeEpjHeader from './FakeEpjHeader'
-import FakeEpjSidebar from './FakeEpjSidebar'
+import { FakeEpjHeader } from './FakeEpjHeader'
+import { FakeEpjSidebar } from './FakeEpjSidebar'
 import logo from './nav-logo.svg'
 
-async function DemoFrame({ children }: PropsWithChildren): Promise<ReactElement> {
+export async function DemoFrame({ children }: PropsWithChildren): Promise<ReactElement> {
     if (!isDemo && !isLocal) return <>{children}</>
 
     const useDemoFrame = await getDemoFrameEnabled()
@@ -53,5 +53,3 @@ async function DemoFrame({ children }: PropsWithChildren): Promise<ReactElement>
         </div>
     )
 }
-
-export default DemoFrame

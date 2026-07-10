@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 
-import TilbakedateringDate from './TilbakedateringDate'
-import TilbakedateringGrunn from './TilbakedateringGrunn'
+import { TilbakedateringDate } from './TilbakedateringDate'
+import { TilbakedateringGrunn } from './TilbakedateringGrunn'
 
 export function TilbakedateringSection(): ReactElement {
     return (

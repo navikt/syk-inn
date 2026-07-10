@@ -10,7 +10,7 @@ import { hasAcceptedBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-s
 import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
 import { getHpr } from '#data-layer/fhir/mappers/practitioner'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
-import Bruksvilkar from '#features/bruksvilkar/Bruksvilkar'
+import { Bruksvilkar } from '#features/bruksvilkar/Bruksvilkar'
 
 async function Page({ searchParams }: PageProps<'/fhir/bruksvilkar'>): Promise<ReactElement> {
     const { returnTo } = await searchParams

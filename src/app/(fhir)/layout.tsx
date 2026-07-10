@@ -2,8 +2,8 @@ import '../globals.css'
 import type { Metadata } from 'next'
 import React, { ReactElement } from 'react'
 
-import BuildInfo from '#components/misc/BuildInfo'
-import DemoFrame from '#dev/demo-epj-frame/DemoFrame'
+import { BuildInfo } from '#components/misc/BuildInfo'
+import { DemoFrame } from '#dev/demo-epj-frame/DemoFrame'
 
 import Preload from '../preload'
 

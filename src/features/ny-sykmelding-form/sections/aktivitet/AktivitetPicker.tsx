@@ -6,10 +6,10 @@ import { SimpleReveal } from '#components/animation/Reveal'
 
 import { AktiviteFieldType, useController } from '../../form/types'
 
-import ArsakerPicker from './ArsakerPicker'
+import { ArsakerPicker } from './ArsakerPicker'
 import { GradertGradPicker } from './GradertGradPicker'
 
-function AktivitetPicker({ index }: { index: number }): ReactElement {
+export function AktivitetPicker({ index }: { index: number }): ReactElement {
     const aktivitetField = useController({
         name: `perioder.${index}.aktivitet.type`,
         rules: { required: 'Du må velge en aktivitetstype' },
@@ -62,5 +62,3 @@ function AktivitetPicker({ index }: { index: number }): ReactElement {
         </div>
     )
 }
-
-export default AktivitetPicker

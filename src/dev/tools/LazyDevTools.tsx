@@ -2,4 +2,4 @@
 
 import dynamic from 'next/dynamic'
 
-export const LazyDevTools = dynamic(() => import('./DevTools'), { ssr: false })
+export const LazyDevTools = dynamic(() => import('./DevTools').then((mod) => mod.DevTools), { ssr: false })

@@ -6,7 +6,7 @@ import { Page, PageBlock } from '@navikt/ds-react/Page'
 import { logger } from '@navikt/next-logger'
 import React, { ReactElement, useEffect } from 'react'
 
-import DemoWarning from '#components/user-warnings/DemoWarning'
+import { DemoWarning } from '#components/user-warnings/DemoWarning'
 import { isDemo, isLocal } from '#lib/env'
 
 type Props = {

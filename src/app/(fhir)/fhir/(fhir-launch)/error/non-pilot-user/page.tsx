@@ -3,7 +3,7 @@ import { after } from 'next/server'
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 
-import NonPilotUserWarning from '#components/user-warnings/NonPilotUserWarning'
+import { NonPilotUserWarning } from '#components/user-warnings/NonPilotUserWarning'
 import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
 import { getSessionId } from '#core/session/session'
 import { getUserlessToggles } from '#core/toggles/unleash'

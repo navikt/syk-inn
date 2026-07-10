@@ -78,7 +78,7 @@ const NAV_GROUPS: FakeNavGroup[] = [
     },
 ]
 
-function FakeEpjSidebar(): ReactElement {
+export function FakeEpjSidebar(): ReactElement {
     return (
         <nav aria-hidden className="flex select-none flex-col gap-5">
             <FakeSearch />
@@ -145,5 +145,3 @@ function FakeNavRow({ item }: { item: FakeNavItem }): ReactElement {
         </li>
     )
 }
-
-export default FakeEpjSidebar
