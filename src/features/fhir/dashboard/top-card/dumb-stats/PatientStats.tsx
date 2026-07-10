@@ -4,7 +4,6 @@ import { Skeleton } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 
 import { useFlag } from '#core/toggles/context'
-import { cn } from '#lib/tw'
 import { AllDashboardDocument, GetAllDraftsDocument } from '#queries'
 
 import { continiousSykefravaer } from './sykefravaer-utils'
@@ -16,15 +15,25 @@ export function PatientStats(): ReactElement {
     const sykefravaerInfoToggle = useFlag('SYK_INN_SYKEFRAVAER_INFO')
 
     if (allDrafts.loading || sykmeldinger.loading) {
-        // TODO remember loading state
         return (
-            <div className={cn('flex gap-6 items-center justify-center sm:justify-start')}>
-                {sykefravaerInfoToggle && (
-                    <div className="flex items-center size-48 md:size-36 ax-lg:size-48">
-                        <Skeleton variant="circle" className="w-full h-full" />
+            <div className="mt-4">
+                <div className="flex gap-3 flex-wrap">
+                    <div className="flex items-center gap-2">
+                        <Skeleton variant="circle" className="size-12 shrink-0" />
+                        <Skeleton variant="rectangle" className="size-6 shrink-0 mx-2" />
+                        <Skeleton variant="rectangle" width={200} className="max-w-30 grow" />
                     </div>
-                )}
-                <Skeleton variant="rounded" className="size-50 h-full max-h-58" />
+                    <div className="flex items-center gap-2">
+                        <Skeleton variant="circle" className="size-12 shrink-0" />
+                        <Skeleton variant="rectangle" className="size-6 shrink-0 mx-2" />
+                        <Skeleton variant="rectangle" width={200} className="max-w-30 grow" />
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Skeleton variant="circle" className="size-12 shrink-0" />
+                        <Skeleton variant="rectangle" className="size-6 shrink-0 mx-2" />
+                        <Skeleton variant="rectangle" width={200} className="max-w-30 grow" />
+                    </div>
+                </div>
             </div>
         )
     }
