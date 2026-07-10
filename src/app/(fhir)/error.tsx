@@ -6,7 +6,7 @@ import { PageBlock } from '@navikt/ds-react/Page'
 import { logger } from '@navikt/next-logger'
 import React, { ReactElement, useEffect } from 'react'
 
-import SessionIdInfo from '#components/help/SessionIdInfo'
+import { SessionIdInfo } from '#components/help/SessionIdInfo'
 
 type Props = {
     error: Error & { digest?: string }

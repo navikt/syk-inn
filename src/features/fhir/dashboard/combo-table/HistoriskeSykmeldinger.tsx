@@ -1,14 +1,19 @@
 import { useMutation } from '@apollo/client/react'
+import { FlowerPetalsIcon } from '@navikt/aksel-icons'
 import { Button, BodyShort } from '@navikt/ds-react'
-import { ReactElement } from 'react'
+import React from 'react'
 
+import { useFlag } from '#core/toggles/context'
 import { AllDashboardDocument, KonsultasjonDocument, RequestAccessToSykmeldingerDocument } from '#queries'
 
-export function RequestSykmeldinger({ loading }: { loading: boolean }): ReactElement {
+export function RequestHistoriske({ loading }: { loading: boolean }): React.ReactElement | null {
     const [requestAccessToSykmeldinger, result] = useMutation(RequestAccessToSykmeldingerDocument, {
         refetchQueries: [KonsultasjonDocument, AllDashboardDocument],
         awaitRefetchQueries: true,
     })
+
+    // Allow a return null here to simplify the logic in the parent
+    if (!useFlag('SYK_INN_REQUEST_HISTORISKE')) return null
 
     return (
         <div className="flex flex-col items-center justify-center gap-3 p-8">
@@ -23,6 +28,18 @@ export function RequestSykmeldinger({ loading }: { loading: boolean }): ReactEle
                 Vis tidligere sykmeldinger
             </Button>
             <BodyShort spacing>Tilgang til sykmeldingshistorikk vil bli logget av Nav.</BodyShort>
+        </div>
+    )
+}
+
+export function HistoriskeSykmeldingerEmptyState(): React.ReactElement | null {
+    // Allow a return null here to simplify the logic in the parent
+    if (!useFlag('SYK_INN_REQUEST_HISTORISKE')) return null
+
+    return (
+        <div className="flex flex-col gap-6 items-center justify-center w-full h-64 text-ax-text-neutral-subtle">
+            <FlowerPetalsIcon aria-hidden fontSize="4rem" className="opacity-75" />
+            <BodyShort>Pasienten har ingen historiske sykmeldinger</BodyShort>
         </div>
     )
 }

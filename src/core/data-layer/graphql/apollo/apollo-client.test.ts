@@ -83,7 +83,8 @@ describe('apollo cache normalization - sykmelding', async () => {
         schema: createSchema({
             Query: {
                 sykmeldinger: () => ({
-                    current: [
+                    __typename: 'Unrequested',
+                    aktuelle: [
                         new SykmeldingBuilder({ offset: 0 }, 'sykme-1').enkelAktivitet({ offset: 0, days: 7 }).build(),
                         new SykmeldingBuilder({ offset: 7 }, 'sykme-2')
                             .enkelAktivitet({ offset: 8, days: 7 })
@@ -93,7 +94,6 @@ describe('apollo cache normalization - sykmelding', async () => {
                             ? sykInnApiSykmeldingToResolverSykmelding(it)
                             : sykInnApiSykmeldingRedactedToResolverSykmelding(it),
                     ),
-                    historical: [],
                 }),
             },
             ...commonTypeResolvers,
@@ -115,7 +115,7 @@ describe('apollo cache normalization - sykmelding', async () => {
             variables: { id: 'sykme-1' },
         })
 
-        expect(data!.sykmelding).toEqual(sykmeldinger.current[0])
+        expect(data!.sykmelding).toEqual(sykmeldinger.aktuelle[0])
     })
 
     test('sykmelding: hits cache redirect when sykmelding list is already fetched for "Redacted" sykmelding', async () => {
@@ -131,7 +131,7 @@ describe('apollo cache normalization - sykmelding', async () => {
             variables: { id: 'sykme-2' },
         })
 
-        expect(data!.sykmelding).toEqual(sykmeldinger.current[1])
+        expect(data!.sykmelding).toEqual(sykmeldinger.aktuelle[1])
     })
 
     test('sykmelding: cache redirect shall do a network request when item is not in cache', async () => {

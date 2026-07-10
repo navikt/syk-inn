@@ -5,7 +5,7 @@ import { BodyLong, Modal, Link as AkselLink, Skeleton, Heading } from '@navikt/d
 import React, { ReactElement } from 'react'
 
 import DashboardCard from '#features/fhir/dashboard/card/DashboardCard'
-import { ComboTableSkeleton } from '#features/fhir/dashboard/ComboTableCard'
+import { ComboTableSkeleton } from '#features/fhir/dashboard/SykmeldingerCard'
 
 import { PageLayout } from '../layout/Page'
 

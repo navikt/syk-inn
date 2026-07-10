@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 
-import LegeOgBehandlerTelefonen from '#components/help/LegeOgBehandlerTelefonen'
+import { LegeOgBehandlerTelefonen } from '#components/help/LegeOgBehandlerTelefonen'
 import { PageLayout } from '#components/layout/Page'
 import { createFhirPaths } from '#core/providers/ModePaths'
 import { hasAcceptedBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'

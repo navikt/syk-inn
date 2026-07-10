@@ -1372,14 +1372,6 @@
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
-                    },
-                    {
-                        "name": "hasRequestedAccessToSykmeldinger",
-                        "description": null,
-                        "args": [],
-                        "type": { "kind": "SCALAR", "name": "Boolean", "ofType": null },
-                        "isDeprecated": false,
-                        "deprecationReason": null
                     }
                 ],
                 "inputFields": null,
@@ -2179,7 +2171,7 @@
                         "name": "sykmeldinger",
                         "description": null,
                         "args": [],
-                        "type": { "kind": "OBJECT", "name": "Sykmeldinger", "ofType": null },
+                        "type": { "kind": "UNION", "name": "Sykmeldinger", "ofType": null },
                         "isDeprecated": false,
                         "deprecationReason": null
                     }
@@ -2270,6 +2262,58 @@
                     }
                 ],
                 "interfaces": null,
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "Requested",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "aktuelle",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "name": null,
+                                "kind": "LIST",
+                                "ofType": {
+                                    "name": null,
+                                    "kind": "NON_NULL",
+                                    "ofType": { "name": "Sykmelding", "kind": "UNION", "ofType": null }
+                                }
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "historiske",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "name": null,
+                                "kind": "LIST",
+                                "ofType": {
+                                    "name": null,
+                                    "kind": "NON_NULL",
+                                    "ofType": { "name": "Sykmelding", "kind": "UNION", "ofType": null }
+                                }
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
                 "enumValues": null,
                 "possibleTypes": null
             },
@@ -3035,56 +3079,18 @@
                 ]
             },
             {
-                "kind": "OBJECT",
+                "kind": "UNION",
                 "name": "Sykmeldinger",
                 "description": null,
                 "isOneOf": null,
-                "fields": [
-                    {
-                        "name": "current",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "name": null,
-                                "kind": "LIST",
-                                "ofType": {
-                                    "name": null,
-                                    "kind": "NON_NULL",
-                                    "ofType": { "name": "Sykmelding", "kind": "UNION", "ofType": null }
-                                }
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "historical",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "name": null,
-                                "kind": "LIST",
-                                "ofType": {
-                                    "name": null,
-                                    "kind": "NON_NULL",
-                                    "ofType": { "name": "Sykmelding", "kind": "UNION", "ofType": null }
-                                }
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
-                ],
+                "fields": null,
                 "inputFields": null,
-                "interfaces": [],
+                "interfaces": null,
                 "enumValues": null,
-                "possibleTypes": null
+                "possibleTypes": [
+                    { "kind": "OBJECT", "name": "Requested", "ofType": null },
+                    { "kind": "OBJECT", "name": "Unrequested", "ofType": null }
+                ]
             },
             {
                 "kind": "OBJECT",
@@ -3148,6 +3154,38 @@
                             "kind": "NON_NULL",
                             "name": null,
                             "ofType": { "name": "DateOnly", "kind": "SCALAR", "ofType": null }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "Unrequested",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "aktuelle",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "name": null,
+                                "kind": "LIST",
+                                "ofType": {
+                                    "name": null,
+                                    "kind": "NON_NULL",
+                                    "ofType": { "name": "Sykmelding", "kind": "UNION", "ofType": null }
+                                }
+                            }
                         },
                         "isDeprecated": false,
                         "deprecationReason": null

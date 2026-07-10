@@ -23,468 +23,736 @@ export type AllDashboardQuery = {
         values: unknown
         lastUpdated: string
     }> | null
-    sykmeldinger: {
-        __typename: 'Sykmeldinger'
-        current: Array<
-            | {
-                  __typename: 'SykmeldingFull'
-                  sykmeldingId: string
-                  documentStatus: Types.DocumentStatus | null
-                  meta: {
-                      __typename: 'SykmeldingMeta'
-                      pasientIdent: string
-                      sykmelderHpr: string
-                      legekontorOrgnr: string | null
-                      mottatt: string
-                  }
-                  utfall: { __typename: 'Outcome'; result: string; melding: string | null }
-                  values: {
-                      __typename: 'SykmeldingFullValues'
-                      svangerskapsrelatert: boolean
-                      pasientenSkalSkjermes: boolean
-                      annenFravarsgrunn: Types.AnnenFravarsgrunnArsak | null
-                      hoveddiagnose: {
-                          __typename: 'Diagnose'
-                          system: Types.DiagnoseSystem
-                          code: string
-                          text: string
-                      } | null
-                      bidiagnoser: Array<{
-                          __typename: 'Diagnose'
-                          system: Types.DiagnoseSystem
-                          code: string
-                          text: string
-                      }> | null
-                      aktivitet: Array<
-                          | {
-                                __typename: 'AktivitetIkkeMulig'
+    sykmeldinger:
+        | {
+              __typename: 'Requested'
+              aktuelle: Array<
+                  | {
+                        __typename: 'SykmeldingFull'
+                        sykmeldingId: string
+                        documentStatus: Types.DocumentStatus | null
+                        meta: {
+                            __typename: 'SykmeldingMeta'
+                            pasientIdent: string
+                            sykmelderHpr: string
+                            legekontorOrgnr: string | null
+                            mottatt: string
+                        }
+                        utfall: { __typename: 'Outcome'; result: string; melding: string | null }
+                        values: {
+                            __typename: 'SykmeldingFullValues'
+                            svangerskapsrelatert: boolean
+                            pasientenSkalSkjermes: boolean
+                            annenFravarsgrunn: Types.AnnenFravarsgrunnArsak | null
+                            hoveddiagnose: {
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            } | null
+                            bidiagnoser: Array<{
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            }> | null
+                            aktivitet: Array<
+                                | {
+                                      __typename: 'AktivitetIkkeMulig'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      arbeidsrelatertArsak: {
+                                          __typename: 'ArbeidsrelatertArsak'
+                                          isArbeidsrelatertArsak: boolean
+                                          arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
+                                          annenArbeidsrelatertArsak: string | null
+                                      }
+                                  }
+                                | {
+                                      __typename: 'Avventende'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      innspillTilArbeidsgiver: string
+                                  }
+                                | {
+                                      __typename: 'Behandlingsdager'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      antallBehandlingsdager: number
+                                  }
+                                | {
+                                      __typename: 'Gradert'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      grad: number
+                                      reisetilskudd: boolean
+                                  }
+                                | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
+                            >
+                            arbeidsgiver: {
+                                __typename: 'Arbeidsgiver'
+                                harFlere: boolean
+                                arbeidsgivernavn: string
+                            } | null
+                            meldinger: {
+                                __typename: 'SykmeldingMelding'
+                                tilNav: string | null
+                                tilArbeidsgiver: string | null
+                            } | null
+                            yrkesskade: {
+                                __typename: 'Yrkesskade'
+                                yrkesskade: boolean
+                                skadedato: string | null
+                            } | null
+                            tilbakedatering: {
+                                __typename: 'Tilbakedatering'
+                                startdato: string
+                                begrunnelse: string
+                            } | null
+                            utdypendeSporsmal: {
+                                __typename: 'UtdypendeSporsmal'
+                                utfordringerMedArbeid: string | null
+                                medisinskOppsummering: string | null
+                                hensynPaArbeidsplassen: string | null
+                            } | null
+                            utdypendeSporsmalSvar: {
+                                __typename: 'UtdypendeSporsmalSvar'
+                                utfordringerMedArbeid: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                medisinskOppsummering: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                hensynPaArbeidsplassen: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                sykdomsutvikling: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                arbeidsrelaterteUtfordringer: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                behandlingOgFremtidigArbeid: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                uavklarteForhold: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                oppdatertMedisinskStatus: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                realistiskMestringArbeid: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                forventetHelsetilstandUtvikling: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                medisinskeHensyn: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                            } | null
+                        }
+                    }
+                  | {
+                        __typename: 'SykmeldingLight'
+                        sykmeldingId: string
+                        documentStatus: Types.DocumentStatus | null
+                        meta: {
+                            __typename: 'SykmeldingMeta'
+                            pasientIdent: string
+                            sykmelderHpr: string
+                            legekontorOrgnr: string | null
+                            mottatt: string
+                        }
+                        utfall: { __typename: 'Outcome'; result: string; melding: string | null }
+                        values: {
+                            __typename: 'SykmeldingLightValues'
+                            hoveddiagnose: {
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            } | null
+                            bidiagnoser: Array<{
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            }> | null
+                            aktivitet: Array<
+                                | {
+                                      __typename: 'AktivitetIkkeMulig'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      arbeidsrelatertArsak: {
+                                          __typename: 'ArbeidsrelatertArsak'
+                                          isArbeidsrelatertArsak: boolean
+                                          arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
+                                          annenArbeidsrelatertArsak: string | null
+                                      }
+                                  }
+                                | {
+                                      __typename: 'Avventende'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      innspillTilArbeidsgiver: string
+                                  }
+                                | {
+                                      __typename: 'Behandlingsdager'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      antallBehandlingsdager: number
+                                  }
+                                | {
+                                      __typename: 'Gradert'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      grad: number
+                                      reisetilskudd: boolean
+                                  }
+                                | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
+                            >
+                        }
+                    }
+                  | {
+                        __typename: 'SykmeldingRedacted'
+                        sykmeldingId: string
+                        meta: {
+                            __typename: 'SykmeldingMeta'
+                            pasientIdent: string
+                            sykmelderHpr: string
+                            legekontorOrgnr: string | null
+                            mottatt: string
+                        }
+                        utfall: { __typename: 'Outcome'; result: string; melding: string | null }
+                        values: {
+                            __typename: 'SykmeldingRedactedValues'
+                            aktivitet: Array<{
+                                __typename: 'AktivitetRedacted'
+                                type: Types.AktivitetType
                                 fom: string
                                 tom: string
+                            }>
+                        }
+                    }
+              >
+              historiske: Array<
+                  | {
+                        __typename: 'SykmeldingFull'
+                        sykmeldingId: string
+                        documentStatus: Types.DocumentStatus | null
+                        meta: {
+                            __typename: 'SykmeldingMeta'
+                            pasientIdent: string
+                            sykmelderHpr: string
+                            legekontorOrgnr: string | null
+                            mottatt: string
+                        }
+                        utfall: { __typename: 'Outcome'; result: string; melding: string | null }
+                        values: {
+                            __typename: 'SykmeldingFullValues'
+                            svangerskapsrelatert: boolean
+                            pasientenSkalSkjermes: boolean
+                            annenFravarsgrunn: Types.AnnenFravarsgrunnArsak | null
+                            hoveddiagnose: {
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            } | null
+                            bidiagnoser: Array<{
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            }> | null
+                            aktivitet: Array<
+                                | {
+                                      __typename: 'AktivitetIkkeMulig'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      arbeidsrelatertArsak: {
+                                          __typename: 'ArbeidsrelatertArsak'
+                                          isArbeidsrelatertArsak: boolean
+                                          arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
+                                          annenArbeidsrelatertArsak: string | null
+                                      }
+                                  }
+                                | {
+                                      __typename: 'Avventende'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      innspillTilArbeidsgiver: string
+                                  }
+                                | {
+                                      __typename: 'Behandlingsdager'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      antallBehandlingsdager: number
+                                  }
+                                | {
+                                      __typename: 'Gradert'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      grad: number
+                                      reisetilskudd: boolean
+                                  }
+                                | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
+                            >
+                            arbeidsgiver: {
+                                __typename: 'Arbeidsgiver'
+                                harFlere: boolean
+                                arbeidsgivernavn: string
+                            } | null
+                            meldinger: {
+                                __typename: 'SykmeldingMelding'
+                                tilNav: string | null
+                                tilArbeidsgiver: string | null
+                            } | null
+                            yrkesskade: {
+                                __typename: 'Yrkesskade'
+                                yrkesskade: boolean
+                                skadedato: string | null
+                            } | null
+                            tilbakedatering: {
+                                __typename: 'Tilbakedatering'
+                                startdato: string
+                                begrunnelse: string
+                            } | null
+                            utdypendeSporsmal: {
+                                __typename: 'UtdypendeSporsmal'
+                                utfordringerMedArbeid: string | null
+                                medisinskOppsummering: string | null
+                                hensynPaArbeidsplassen: string | null
+                            } | null
+                            utdypendeSporsmalSvar: {
+                                __typename: 'UtdypendeSporsmalSvar'
+                                utfordringerMedArbeid: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                medisinskOppsummering: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                hensynPaArbeidsplassen: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                sykdomsutvikling: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                arbeidsrelaterteUtfordringer: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                behandlingOgFremtidigArbeid: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                uavklarteForhold: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                oppdatertMedisinskStatus: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                realistiskMestringArbeid: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                forventetHelsetilstandUtvikling: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                medisinskeHensyn: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                            } | null
+                        }
+                    }
+                  | {
+                        __typename: 'SykmeldingLight'
+                        sykmeldingId: string
+                        documentStatus: Types.DocumentStatus | null
+                        meta: {
+                            __typename: 'SykmeldingMeta'
+                            pasientIdent: string
+                            sykmelderHpr: string
+                            legekontorOrgnr: string | null
+                            mottatt: string
+                        }
+                        utfall: { __typename: 'Outcome'; result: string; melding: string | null }
+                        values: {
+                            __typename: 'SykmeldingLightValues'
+                            hoveddiagnose: {
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            } | null
+                            bidiagnoser: Array<{
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            }> | null
+                            aktivitet: Array<
+                                | {
+                                      __typename: 'AktivitetIkkeMulig'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      arbeidsrelatertArsak: {
+                                          __typename: 'ArbeidsrelatertArsak'
+                                          isArbeidsrelatertArsak: boolean
+                                          arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
+                                          annenArbeidsrelatertArsak: string | null
+                                      }
+                                  }
+                                | {
+                                      __typename: 'Avventende'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      innspillTilArbeidsgiver: string
+                                  }
+                                | {
+                                      __typename: 'Behandlingsdager'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      antallBehandlingsdager: number
+                                  }
+                                | {
+                                      __typename: 'Gradert'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      grad: number
+                                      reisetilskudd: boolean
+                                  }
+                                | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
+                            >
+                        }
+                    }
+                  | {
+                        __typename: 'SykmeldingRedacted'
+                        sykmeldingId: string
+                        meta: {
+                            __typename: 'SykmeldingMeta'
+                            pasientIdent: string
+                            sykmelderHpr: string
+                            legekontorOrgnr: string | null
+                            mottatt: string
+                        }
+                        utfall: { __typename: 'Outcome'; result: string; melding: string | null }
+                        values: {
+                            __typename: 'SykmeldingRedactedValues'
+                            aktivitet: Array<{
+                                __typename: 'AktivitetRedacted'
                                 type: Types.AktivitetType
-                                arbeidsrelatertArsak: {
-                                    __typename: 'ArbeidsrelatertArsak'
-                                    isArbeidsrelatertArsak: boolean
-                                    arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
-                                    annenArbeidsrelatertArsak: string | null
-                                }
-                            }
-                          | {
-                                __typename: 'Avventende'
                                 fom: string
                                 tom: string
+                            }>
+                        }
+                    }
+              >
+          }
+        | {
+              __typename: 'Unrequested'
+              aktuelle: Array<
+                  | {
+                        __typename: 'SykmeldingFull'
+                        sykmeldingId: string
+                        documentStatus: Types.DocumentStatus | null
+                        meta: {
+                            __typename: 'SykmeldingMeta'
+                            pasientIdent: string
+                            sykmelderHpr: string
+                            legekontorOrgnr: string | null
+                            mottatt: string
+                        }
+                        utfall: { __typename: 'Outcome'; result: string; melding: string | null }
+                        values: {
+                            __typename: 'SykmeldingFullValues'
+                            svangerskapsrelatert: boolean
+                            pasientenSkalSkjermes: boolean
+                            annenFravarsgrunn: Types.AnnenFravarsgrunnArsak | null
+                            hoveddiagnose: {
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            } | null
+                            bidiagnoser: Array<{
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            }> | null
+                            aktivitet: Array<
+                                | {
+                                      __typename: 'AktivitetIkkeMulig'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      arbeidsrelatertArsak: {
+                                          __typename: 'ArbeidsrelatertArsak'
+                                          isArbeidsrelatertArsak: boolean
+                                          arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
+                                          annenArbeidsrelatertArsak: string | null
+                                      }
+                                  }
+                                | {
+                                      __typename: 'Avventende'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      innspillTilArbeidsgiver: string
+                                  }
+                                | {
+                                      __typename: 'Behandlingsdager'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      antallBehandlingsdager: number
+                                  }
+                                | {
+                                      __typename: 'Gradert'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      grad: number
+                                      reisetilskudd: boolean
+                                  }
+                                | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
+                            >
+                            arbeidsgiver: {
+                                __typename: 'Arbeidsgiver'
+                                harFlere: boolean
+                                arbeidsgivernavn: string
+                            } | null
+                            meldinger: {
+                                __typename: 'SykmeldingMelding'
+                                tilNav: string | null
+                                tilArbeidsgiver: string | null
+                            } | null
+                            yrkesskade: {
+                                __typename: 'Yrkesskade'
+                                yrkesskade: boolean
+                                skadedato: string | null
+                            } | null
+                            tilbakedatering: {
+                                __typename: 'Tilbakedatering'
+                                startdato: string
+                                begrunnelse: string
+                            } | null
+                            utdypendeSporsmal: {
+                                __typename: 'UtdypendeSporsmal'
+                                utfordringerMedArbeid: string | null
+                                medisinskOppsummering: string | null
+                                hensynPaArbeidsplassen: string | null
+                            } | null
+                            utdypendeSporsmalSvar: {
+                                __typename: 'UtdypendeSporsmalSvar'
+                                utfordringerMedArbeid: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                medisinskOppsummering: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                hensynPaArbeidsplassen: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                sykdomsutvikling: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                arbeidsrelaterteUtfordringer: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                behandlingOgFremtidigArbeid: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                uavklarteForhold: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                oppdatertMedisinskStatus: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                realistiskMestringArbeid: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                forventetHelsetilstandUtvikling: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                                medisinskeHensyn: {
+                                    __typename: 'SporsmalSvar'
+                                    sporsmalstekst: string | null
+                                    svar: string
+                                } | null
+                            } | null
+                        }
+                    }
+                  | {
+                        __typename: 'SykmeldingLight'
+                        sykmeldingId: string
+                        documentStatus: Types.DocumentStatus | null
+                        meta: {
+                            __typename: 'SykmeldingMeta'
+                            pasientIdent: string
+                            sykmelderHpr: string
+                            legekontorOrgnr: string | null
+                            mottatt: string
+                        }
+                        utfall: { __typename: 'Outcome'; result: string; melding: string | null }
+                        values: {
+                            __typename: 'SykmeldingLightValues'
+                            hoveddiagnose: {
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            } | null
+                            bidiagnoser: Array<{
+                                __typename: 'Diagnose'
+                                system: Types.DiagnoseSystem
+                                code: string
+                                text: string
+                            }> | null
+                            aktivitet: Array<
+                                | {
+                                      __typename: 'AktivitetIkkeMulig'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      arbeidsrelatertArsak: {
+                                          __typename: 'ArbeidsrelatertArsak'
+                                          isArbeidsrelatertArsak: boolean
+                                          arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
+                                          annenArbeidsrelatertArsak: string | null
+                                      }
+                                  }
+                                | {
+                                      __typename: 'Avventende'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      innspillTilArbeidsgiver: string
+                                  }
+                                | {
+                                      __typename: 'Behandlingsdager'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      antallBehandlingsdager: number
+                                  }
+                                | {
+                                      __typename: 'Gradert'
+                                      fom: string
+                                      tom: string
+                                      type: Types.AktivitetType
+                                      grad: number
+                                      reisetilskudd: boolean
+                                  }
+                                | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
+                            >
+                        }
+                    }
+                  | {
+                        __typename: 'SykmeldingRedacted'
+                        sykmeldingId: string
+                        meta: {
+                            __typename: 'SykmeldingMeta'
+                            pasientIdent: string
+                            sykmelderHpr: string
+                            legekontorOrgnr: string | null
+                            mottatt: string
+                        }
+                        utfall: { __typename: 'Outcome'; result: string; melding: string | null }
+                        values: {
+                            __typename: 'SykmeldingRedactedValues'
+                            aktivitet: Array<{
+                                __typename: 'AktivitetRedacted'
                                 type: Types.AktivitetType
-                                innspillTilArbeidsgiver: string
-                            }
-                          | {
-                                __typename: 'Behandlingsdager'
                                 fom: string
                                 tom: string
-                                type: Types.AktivitetType
-                                antallBehandlingsdager: number
-                            }
-                          | {
-                                __typename: 'Gradert'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                grad: number
-                                reisetilskudd: boolean
-                            }
-                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
-                      >
-                      arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
-                      meldinger: {
-                          __typename: 'SykmeldingMelding'
-                          tilNav: string | null
-                          tilArbeidsgiver: string | null
-                      } | null
-                      yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
-                      tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
-                      utdypendeSporsmal: {
-                          __typename: 'UtdypendeSporsmal'
-                          utfordringerMedArbeid: string | null
-                          medisinskOppsummering: string | null
-                          hensynPaArbeidsplassen: string | null
-                      } | null
-                      utdypendeSporsmalSvar: {
-                          __typename: 'UtdypendeSporsmalSvar'
-                          utfordringerMedArbeid: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          medisinskOppsummering: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          hensynPaArbeidsplassen: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          sykdomsutvikling: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          arbeidsrelaterteUtfordringer: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          behandlingOgFremtidigArbeid: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          uavklarteForhold: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          oppdatertMedisinskStatus: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          realistiskMestringArbeid: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          forventetHelsetilstandUtvikling: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          medisinskeHensyn: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                      } | null
-                  }
-              }
-            | {
-                  __typename: 'SykmeldingLight'
-                  sykmeldingId: string
-                  documentStatus: Types.DocumentStatus | null
-                  meta: {
-                      __typename: 'SykmeldingMeta'
-                      pasientIdent: string
-                      sykmelderHpr: string
-                      legekontorOrgnr: string | null
-                      mottatt: string
-                  }
-                  utfall: { __typename: 'Outcome'; result: string; melding: string | null }
-                  values: {
-                      __typename: 'SykmeldingLightValues'
-                      hoveddiagnose: {
-                          __typename: 'Diagnose'
-                          system: Types.DiagnoseSystem
-                          code: string
-                          text: string
-                      } | null
-                      bidiagnoser: Array<{
-                          __typename: 'Diagnose'
-                          system: Types.DiagnoseSystem
-                          code: string
-                          text: string
-                      }> | null
-                      aktivitet: Array<
-                          | {
-                                __typename: 'AktivitetIkkeMulig'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                arbeidsrelatertArsak: {
-                                    __typename: 'ArbeidsrelatertArsak'
-                                    isArbeidsrelatertArsak: boolean
-                                    arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
-                                    annenArbeidsrelatertArsak: string | null
-                                }
-                            }
-                          | {
-                                __typename: 'Avventende'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                innspillTilArbeidsgiver: string
-                            }
-                          | {
-                                __typename: 'Behandlingsdager'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                antallBehandlingsdager: number
-                            }
-                          | {
-                                __typename: 'Gradert'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                grad: number
-                                reisetilskudd: boolean
-                            }
-                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
-                      >
-                  }
-              }
-            | {
-                  __typename: 'SykmeldingRedacted'
-                  sykmeldingId: string
-                  meta: {
-                      __typename: 'SykmeldingMeta'
-                      pasientIdent: string
-                      sykmelderHpr: string
-                      legekontorOrgnr: string | null
-                      mottatt: string
-                  }
-                  utfall: { __typename: 'Outcome'; result: string; melding: string | null }
-                  values: {
-                      __typename: 'SykmeldingRedactedValues'
-                      aktivitet: Array<{
-                          __typename: 'AktivitetRedacted'
-                          type: Types.AktivitetType
-                          fom: string
-                          tom: string
-                      }>
-                  }
-              }
-        >
-        historical: Array<
-            | {
-                  __typename: 'SykmeldingFull'
-                  sykmeldingId: string
-                  documentStatus: Types.DocumentStatus | null
-                  meta: {
-                      __typename: 'SykmeldingMeta'
-                      pasientIdent: string
-                      sykmelderHpr: string
-                      legekontorOrgnr: string | null
-                      mottatt: string
-                  }
-                  utfall: { __typename: 'Outcome'; result: string; melding: string | null }
-                  values: {
-                      __typename: 'SykmeldingFullValues'
-                      svangerskapsrelatert: boolean
-                      pasientenSkalSkjermes: boolean
-                      annenFravarsgrunn: Types.AnnenFravarsgrunnArsak | null
-                      hoveddiagnose: {
-                          __typename: 'Diagnose'
-                          system: Types.DiagnoseSystem
-                          code: string
-                          text: string
-                      } | null
-                      bidiagnoser: Array<{
-                          __typename: 'Diagnose'
-                          system: Types.DiagnoseSystem
-                          code: string
-                          text: string
-                      }> | null
-                      aktivitet: Array<
-                          | {
-                                __typename: 'AktivitetIkkeMulig'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                arbeidsrelatertArsak: {
-                                    __typename: 'ArbeidsrelatertArsak'
-                                    isArbeidsrelatertArsak: boolean
-                                    arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
-                                    annenArbeidsrelatertArsak: string | null
-                                }
-                            }
-                          | {
-                                __typename: 'Avventende'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                innspillTilArbeidsgiver: string
-                            }
-                          | {
-                                __typename: 'Behandlingsdager'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                antallBehandlingsdager: number
-                            }
-                          | {
-                                __typename: 'Gradert'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                grad: number
-                                reisetilskudd: boolean
-                            }
-                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
-                      >
-                      arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
-                      meldinger: {
-                          __typename: 'SykmeldingMelding'
-                          tilNav: string | null
-                          tilArbeidsgiver: string | null
-                      } | null
-                      yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
-                      tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
-                      utdypendeSporsmal: {
-                          __typename: 'UtdypendeSporsmal'
-                          utfordringerMedArbeid: string | null
-                          medisinskOppsummering: string | null
-                          hensynPaArbeidsplassen: string | null
-                      } | null
-                      utdypendeSporsmalSvar: {
-                          __typename: 'UtdypendeSporsmalSvar'
-                          utfordringerMedArbeid: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          medisinskOppsummering: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          hensynPaArbeidsplassen: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          sykdomsutvikling: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          arbeidsrelaterteUtfordringer: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          behandlingOgFremtidigArbeid: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          uavklarteForhold: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          oppdatertMedisinskStatus: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          realistiskMestringArbeid: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          forventetHelsetilstandUtvikling: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                          medisinskeHensyn: {
-                              __typename: 'SporsmalSvar'
-                              sporsmalstekst: string | null
-                              svar: string
-                          } | null
-                      } | null
-                  }
-              }
-            | {
-                  __typename: 'SykmeldingLight'
-                  sykmeldingId: string
-                  documentStatus: Types.DocumentStatus | null
-                  meta: {
-                      __typename: 'SykmeldingMeta'
-                      pasientIdent: string
-                      sykmelderHpr: string
-                      legekontorOrgnr: string | null
-                      mottatt: string
-                  }
-                  utfall: { __typename: 'Outcome'; result: string; melding: string | null }
-                  values: {
-                      __typename: 'SykmeldingLightValues'
-                      hoveddiagnose: {
-                          __typename: 'Diagnose'
-                          system: Types.DiagnoseSystem
-                          code: string
-                          text: string
-                      } | null
-                      bidiagnoser: Array<{
-                          __typename: 'Diagnose'
-                          system: Types.DiagnoseSystem
-                          code: string
-                          text: string
-                      }> | null
-                      aktivitet: Array<
-                          | {
-                                __typename: 'AktivitetIkkeMulig'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                arbeidsrelatertArsak: {
-                                    __typename: 'ArbeidsrelatertArsak'
-                                    isArbeidsrelatertArsak: boolean
-                                    arbeidsrelaterteArsaker: Array<Types.ArbeidsrelatertArsakType>
-                                    annenArbeidsrelatertArsak: string | null
-                                }
-                            }
-                          | {
-                                __typename: 'Avventende'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                innspillTilArbeidsgiver: string
-                            }
-                          | {
-                                __typename: 'Behandlingsdager'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                antallBehandlingsdager: number
-                            }
-                          | {
-                                __typename: 'Gradert'
-                                fom: string
-                                tom: string
-                                type: Types.AktivitetType
-                                grad: number
-                                reisetilskudd: boolean
-                            }
-                          | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
-                      >
-                  }
-              }
-            | {
-                  __typename: 'SykmeldingRedacted'
-                  sykmeldingId: string
-                  meta: {
-                      __typename: 'SykmeldingMeta'
-                      pasientIdent: string
-                      sykmelderHpr: string
-                      legekontorOrgnr: string | null
-                      mottatt: string
-                  }
-                  utfall: { __typename: 'Outcome'; result: string; melding: string | null }
-                  values: {
-                      __typename: 'SykmeldingRedactedValues'
-                      aktivitet: Array<{
-                          __typename: 'AktivitetRedacted'
-                          type: Types.AktivitetType
-                          fom: string
-                          tom: string
-                      }>
-                  }
-              }
-        >
-    } | null
+                            }>
+                        }
+                    }
+              >
+          }
+        | null
     konsultasjon: {
         __typename: 'Konsultasjon'
-        hasRequestedAccessToSykmeldinger: boolean | null
         diagnoser: Array<{ __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }> | null
     } | null
 }
@@ -546,7 +814,6 @@ export type DraftFragment = {
 
 export type KonsultasjonFragment = {
     __typename: 'Konsultasjon'
-    hasRequestedAccessToSykmeldinger: boolean | null
     diagnoser: Array<{ __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }> | null
 }
 
@@ -556,7 +823,6 @@ export type KonsultasjonQuery = {
     __typename: 'Query'
     konsultasjon: {
         __typename: 'Konsultasjon'
-        hasRequestedAccessToSykmeldinger: boolean | null
         diagnoser: Array<{ __typename: 'Diagnose'; system: Types.DiagnoseSystem; code: string; text: string }> | null
     } | null
 }
@@ -1499,7 +1765,6 @@ export const KonsultasjonFragmentDoc = {
                             selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } }],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'hasRequestedAccessToSykmeldinger' } },
                 ],
             },
         },
@@ -2866,22 +3131,59 @@ export const AllDashboardDocument = {
                             kind: 'SelectionSet',
                             selections: [
                                 {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'current' },
+                                    kind: 'InlineFragment',
+                                    typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Unrequested' } },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Sykmelding' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'aktuelle' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Sykmelding' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
                                         ],
                                     },
                                 },
                                 {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'historical' },
+                                    kind: 'InlineFragment',
+                                    typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Requested' } },
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Sykmelding' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'aktuelle' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Sykmelding' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'historiske' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'Sykmelding' },
+                                                        },
+                                                    ],
+                                                },
+                                            },
                                         ],
                                     },
                                 },
@@ -3469,7 +3771,6 @@ export const AllDashboardDocument = {
                             selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } }],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'hasRequestedAccessToSykmeldinger' } },
                 ],
             },
         },
@@ -3764,7 +4065,6 @@ export const KonsultasjonDocument = {
                             selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Diagnose' } }],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'hasRequestedAccessToSykmeldinger' } },
                 ],
             },
         },

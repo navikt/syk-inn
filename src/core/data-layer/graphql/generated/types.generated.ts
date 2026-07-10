@@ -237,7 +237,6 @@ export type InputYrkesskade = {
 export type Konsultasjon = {
     __typename: 'Konsultasjon'
     diagnoser: Maybe<Array<Diagnose>>
-    hasRequestedAccessToSykmeldinger: Maybe<Scalars['Boolean']['output']>
 }
 
 export type Mutation = {
@@ -383,6 +382,12 @@ export type ReisetilskuddInput = {
     tom: Scalars['String']['input']
 }
 
+export type Requested = {
+    __typename: 'Requested'
+    aktuelle: Array<Sykmelding>
+    historiske: Array<Sykmelding>
+}
+
 export type RuleOk = {
     __typename: 'RuleOK'
     ok: Scalars['Boolean']['output']
@@ -493,11 +498,7 @@ export type SykmeldingRedactedValues = {
 
 export type SykmeldingValidering = RuleOk | RuleOutcome
 
-export type Sykmeldinger = {
-    __typename: 'Sykmeldinger'
-    current: Array<Sykmelding>
-    historical: Array<Sykmelding>
-}
+export type Sykmeldinger = Requested | Unrequested
 
 export type SynchronizationStatus = {
     __typename: 'SynchronizationStatus'
@@ -509,6 +510,11 @@ export type Tilbakedatering = {
     __typename: 'Tilbakedatering'
     begrunnelse: Scalars['String']['output']
     startdato: Scalars['DateOnly']['output']
+}
+
+export type Unrequested = {
+    __typename: 'Unrequested'
+    aktuelle: Array<Sykmelding>
 }
 
 export type UtdypendeOpplysningerHint = {

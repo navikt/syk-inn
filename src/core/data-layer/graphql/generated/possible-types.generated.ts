@@ -19,6 +19,7 @@ const result: PossibleTypesResultData = {
         Sykmelding: ['SykmeldingFull', 'SykmeldingLight', 'SykmeldingRedacted'],
         SykmeldingBase: ['SykmeldingFull', 'SykmeldingLight'],
         SykmeldingValidering: ['RuleOK', 'RuleOutcome'],
+        Sykmeldinger: ['Requested', 'Unrequested'],
     },
 }
 export default result

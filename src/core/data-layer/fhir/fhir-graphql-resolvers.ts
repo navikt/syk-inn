@@ -138,13 +138,16 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const [current, historical] = R.partition(mappedSykmeldinger, byCurrentOrPreviousWithOffset)
 
-            // TODO: Get hasRequestedAccess from session
             const hasRequestedAccessToSykmeldinger = await getHasRequestedAccessToSykmeldinger(
                 practitioner.id,
                 patientInContext.id,
             )
 
-            return { current, historical: hasRequestedAccessToSykmeldinger ? historical : [] }
+            if (hasRequestedAccessToSykmeldinger) {
+                return { aktuelle: current, historiske: historical }
+            }
+
+            return { aktuelle: current }
         },
         person: async (_, { ident }) => {
             if (!ident) throw new GraphQLError('MISSING_IDENT')
@@ -376,14 +379,6 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
         },
     },
     Konsultasjon: {
-        hasRequestedAccessToSykmeldinger: async (_, _args, { client, practitioner }) => {
-            const patientInContext = await client.patient.request()
-            if ('error' in patientInContext) {
-                throw new GraphQLError('PARSING_ERROR')
-            }
-
-            return getHasRequestedAccessToSykmeldinger(practitioner.id, patientInContext.id)
-        },
         diagnoser: async (_, _args, { client }) => {
             const conditionsByEncounter = await client.request(`Condition?encounter=${client.encounter.id}`)
             if ('error' in conditionsByEncounter) {

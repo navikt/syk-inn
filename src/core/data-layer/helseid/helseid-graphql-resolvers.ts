@@ -212,7 +212,6 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         synchronizeSykmelding: () => raise('Not Implemented'),
     },
     Konsultasjon: {
-        hasRequestedAccessToSykmeldinger: async () => null,
         diagnoser: async () => null,
     },
     ...commonObjectResolvers,

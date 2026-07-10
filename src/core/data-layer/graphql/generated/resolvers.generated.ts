@@ -240,7 +240,6 @@ export type InputYrkesskade = {
 export type Konsultasjon = {
     __typename?: 'Konsultasjon'
     diagnoser?: Maybe<Array<Diagnose>>
-    hasRequestedAccessToSykmeldinger?: Maybe<Scalars['Boolean']['output']>
 }
 
 export type Mutation = {
@@ -386,6 +385,12 @@ export type ReisetilskuddInput = {
     tom: Scalars['String']['input']
 }
 
+export type Requested = {
+    __typename?: 'Requested'
+    aktuelle: Array<Sykmelding>
+    historiske: Array<Sykmelding>
+}
+
 export type RuleOk = {
     __typename?: 'RuleOK'
     ok: Scalars['Boolean']['output']
@@ -496,11 +501,7 @@ export type SykmeldingRedactedValues = {
 
 export type SykmeldingValidering = RuleOk | RuleOutcome
 
-export type Sykmeldinger = {
-    __typename?: 'Sykmeldinger'
-    current: Array<Sykmelding>
-    historical: Array<Sykmelding>
-}
+export type Sykmeldinger = Requested | Unrequested
 
 export type SynchronizationStatus = {
     __typename?: 'SynchronizationStatus'
@@ -512,6 +513,11 @@ export type Tilbakedatering = {
     __typename?: 'Tilbakedatering'
     begrunnelse: Scalars['String']['output']
     startdato: Scalars['DateOnly']['output']
+}
+
+export type Unrequested = {
+    __typename?: 'Unrequested'
+    aktuelle: Array<Sykmelding>
 }
 
 export type UtdypendeOpplysningerHint = {
@@ -654,6 +660,12 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
         | (Omit<SykmeldingLight, 'values'> & { values: _RefType['SykmeldingLightValues'] })
         | SykmeldingRedacted
     SykmeldingValidering: RuleOk | RuleOutcome
+    Sykmeldinger:
+        | (Omit<Requested, 'aktuelle' | 'historiske'> & {
+              aktuelle: Array<_RefType['Sykmelding']>
+              historiske: Array<_RefType['Sykmelding']>
+          })
+        | (Omit<Unrequested, 'aktuelle'> & { aktuelle: Array<_RefType['Sykmelding']> })
 }
 
 /** Mapping of interface types */
@@ -716,6 +728,12 @@ export type ResolversTypes = {
     Query: ResolverTypeWrapper<Record<PropertyKey, never>>
     Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>
     ReisetilskuddInput: ReisetilskuddInput
+    Requested: ResolverTypeWrapper<
+        Omit<Requested, 'aktuelle' | 'historiske'> & {
+            aktuelle: Array<ResolversTypes['Sykmelding']>
+            historiske: Array<ResolversTypes['Sykmelding']>
+        }
+    >
     RuleOK: ResolverTypeWrapper<RuleOk>
     RuleOutcome: ResolverTypeWrapper<RuleOutcome>
     RuleOutcomeStatus: RuleOutcomeStatus
@@ -740,14 +758,10 @@ export type ResolversTypes = {
     SykmeldingRedacted: ResolverTypeWrapper<SykmeldingRedacted>
     SykmeldingRedactedValues: ResolverTypeWrapper<SykmeldingRedactedValues>
     SykmeldingValidering: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['SykmeldingValidering']>
-    Sykmeldinger: ResolverTypeWrapper<
-        Omit<Sykmeldinger, 'current' | 'historical'> & {
-            current: Array<ResolversTypes['Sykmelding']>
-            historical: Array<ResolversTypes['Sykmelding']>
-        }
-    >
+    Sykmeldinger: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Sykmeldinger']>
     SynchronizationStatus: ResolverTypeWrapper<SynchronizationStatus>
     Tilbakedatering: ResolverTypeWrapper<Tilbakedatering>
+    Unrequested: ResolverTypeWrapper<Omit<Unrequested, 'aktuelle'> & { aktuelle: Array<ResolversTypes['Sykmelding']> }>
     UtdypendeOpplysningerHint: ResolverTypeWrapper<UtdypendeOpplysningerHint>
     UtdypendeSporsmal: ResolverTypeWrapper<UtdypendeSporsmal>
     UtdypendeSporsmalOptions: UtdypendeSporsmalOptions
@@ -800,6 +814,10 @@ export type ResolversParentTypes = {
     Query: Record<PropertyKey, never>
     Reisetilskudd: Reisetilskudd
     ReisetilskuddInput: ReisetilskuddInput
+    Requested: Omit<Requested, 'aktuelle' | 'historiske'> & {
+        aktuelle: Array<ResolversParentTypes['Sykmelding']>
+        historiske: Array<ResolversParentTypes['Sykmelding']>
+    }
     RuleOK: RuleOk
     RuleOutcome: RuleOutcome
     SporsmalSvar: SporsmalSvar
@@ -819,12 +837,10 @@ export type ResolversParentTypes = {
     SykmeldingRedacted: SykmeldingRedacted
     SykmeldingRedactedValues: SykmeldingRedactedValues
     SykmeldingValidering: ResolversUnionTypes<ResolversParentTypes>['SykmeldingValidering']
-    Sykmeldinger: Omit<Sykmeldinger, 'current' | 'historical'> & {
-        current: Array<ResolversParentTypes['Sykmelding']>
-        historical: Array<ResolversParentTypes['Sykmelding']>
-    }
+    Sykmeldinger: ResolversUnionTypes<ResolversParentTypes>['Sykmeldinger']
     SynchronizationStatus: SynchronizationStatus
     Tilbakedatering: Tilbakedatering
+    Unrequested: Omit<Unrequested, 'aktuelle'> & { aktuelle: Array<ResolversParentTypes['Sykmelding']> }
     UtdypendeOpplysningerHint: UtdypendeOpplysningerHint
     UtdypendeSporsmal: UtdypendeSporsmal
     UtdypendeSporsmalSvar: UtdypendeSporsmalSvar
@@ -970,7 +986,6 @@ export type KonsultasjonResolvers<
     ParentType extends ResolversParentTypes['Konsultasjon'] = ResolversParentTypes['Konsultasjon'],
 > = {
     diagnoser?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
-    hasRequestedAccessToSykmeldinger?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
 }
 
 export type MutationResolvers<
@@ -1101,6 +1116,15 @@ export type ReisetilskuddResolvers<
     fom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     tom?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
     type?: Resolver<ResolversTypes['AktivitetType'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type RequestedResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['Requested'] = ResolversParentTypes['Requested'],
+> = {
+    aktuelle?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>
+    historiske?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -1246,8 +1270,7 @@ export type SykmeldingerResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Sykmeldinger'] = ResolversParentTypes['Sykmeldinger'],
 > = {
-    current?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>
-    historical?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>
+    __resolveType: TypeResolveFn<'Requested' | 'Unrequested', ParentType, ContextType>
 }
 
 export type SynchronizationStatusResolvers<
@@ -1264,6 +1287,14 @@ export type TilbakedateringResolvers<
 > = {
     begrunnelse?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     startdato?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+}
+
+export type UnrequestedResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['Unrequested'] = ResolversParentTypes['Unrequested'],
+> = {
+    aktuelle?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type UtdypendeOpplysningerHintResolvers<
@@ -1337,6 +1368,7 @@ export type Resolvers<ContextType = any> = {
     QueriedPerson?: QueriedPersonResolvers<ContextType>
     Query?: QueryResolvers<ContextType>
     Reisetilskudd?: ReisetilskuddResolvers<ContextType>
+    Requested?: RequestedResolvers<ContextType>
     RuleOK?: RuleOkResolvers<ContextType>
     RuleOutcome?: RuleOutcomeResolvers<ContextType>
     SporsmalSvar?: SporsmalSvarResolvers<ContextType>
@@ -1354,6 +1386,7 @@ export type Resolvers<ContextType = any> = {
     Sykmeldinger?: SykmeldingerResolvers<ContextType>
     SynchronizationStatus?: SynchronizationStatusResolvers<ContextType>
     Tilbakedatering?: TilbakedateringResolvers<ContextType>
+    Unrequested?: UnrequestedResolvers<ContextType>
     UtdypendeOpplysningerHint?: UtdypendeOpplysningerHintResolvers<ContextType>
     UtdypendeSporsmal?: UtdypendeSporsmalResolvers<ContextType>
     UtdypendeSporsmalSvar?: UtdypendeSporsmalSvarResolvers<ContextType>

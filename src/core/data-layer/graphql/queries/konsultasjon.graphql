@@ -2,7 +2,6 @@ fragment Konsultasjon on Konsultasjon {
     diagnoser {
         ...Diagnose
     }
-    hasRequestedAccessToSykmeldinger
 }
 
 query Konsultasjon {
