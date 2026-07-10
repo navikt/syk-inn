@@ -10,7 +10,7 @@ type NodeTitle = { title: ReactNode; id: string }
 type HeadingTitle = { heading: ReactNode; headingId: string }
 type NoTitle = { ariaLabel: string }
 
-export function DashboardCard({
+export function DashboardSection({
     className,
     children,
     fetching,
@@ -28,7 +28,7 @@ export function DashboardCard({
 
     return (
         <section
-            className={cn(className, 'bg-ax-bg-default rounded-xl py-2 px-3 md:py-5 md:px-6 relative')}
+            className={cn(className, 'py-2 px-3 md:py-5 md:px-6 relative')}
             aria-labelledby={id}
             aria-label={'ariaLabel' in rest ? rest.ariaLabel : undefined}
             aria-busy={ariaBusy}

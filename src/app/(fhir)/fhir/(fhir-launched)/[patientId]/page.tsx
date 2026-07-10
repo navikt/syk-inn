@@ -5,8 +5,8 @@ import React, { ReactElement, Suspense, useEffect } from 'react'
 import { PageLayout } from '#components/layout/Page'
 import { useAppDispatch } from '#core/redux/hooks'
 import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
-import { SykmeldingerCard } from '#features/fhir/dashboard/SykmeldingerCard'
-import { DashboardTopCard } from '#features/fhir/dashboard/top-card/DashboardTopCard'
+import { SykmeldingerSection } from '#features/fhir/dashboard/SykmeldingerSection'
+import { DashboardTopSection } from '#features/fhir/dashboard/top-card/DashboardTopSection'
 import { WelcomeModal } from '#features/fhir/dashboard/welcome-modal/lazy'
 
 function DashboardPage(): ReactElement {
@@ -20,10 +20,10 @@ function DashboardPage(): ReactElement {
     }, [dispatch])
 
     return (
-        <PageLayout noHeading size="full" bg="transparent">
-            <div className="grid grid-cols-2 gap-3 w-full">
-                <DashboardTopCard className="col-span-2" />
-                <SykmeldingerCard className="min-h-80 col-span-2" />
+        <PageLayout noHeading size="full" bg="white">
+            <div className="grid grid-cols-2 w-full">
+                <DashboardTopSection className="col-span-2" />
+                <SykmeldingerSection className="min-h-80 col-span-2" />
             </div>
             <Suspense fallback={null}>
                 <WelcomeModal />

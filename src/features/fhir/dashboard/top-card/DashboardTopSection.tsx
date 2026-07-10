@@ -8,13 +8,13 @@ import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
 import { cn } from '#lib/tw'
 import { PasientDocument } from '#queries'
 
-import { DashboardCard } from '../card/DashboardCard'
+import { DashboardSection } from '../card/DashboardSection'
 import { InfoNySykmeldingButton } from '../welcome-modal/InfoNySykmeldingButton'
 
 import { PatientStats } from './dumb-stats/PatientStats'
 import { StartSykmelding } from './StartSykmelding'
 
-export function DashboardTopCard({ className }: { className?: string }): ReactElement {
+export function DashboardTopSection({ className }: { className?: string }): ReactElement {
     const [isKnown, setIsKnown] = useQueryState('known', parseAsBoolean.withDefault(true))
     const { data, loading } = useQuery(PasientDocument)
     const dispatch = useAppDispatch()
@@ -29,7 +29,7 @@ export function DashboardTopCard({ className }: { className?: string }): ReactEl
     }, [dispatch])
 
     return (
-        <DashboardCard
+        <DashboardSection
             ariaLabel={`Oversikt over ${data?.pasient?.navn} sitt sykefravær`}
             className={cn(className)}
             ariaBusy={loading}
@@ -46,6 +46,6 @@ export function DashboardTopCard({ className }: { className?: string }): ReactEl
             <StartSykmelding className="col-start-1 row-start-1" />
             <div className="border-b border-ax-border-neutral-subtle -mx-6 my-6" />
             <PatientStats />
-        </DashboardCard>
+        </DashboardSection>
     )
 }

@@ -1,33 +1,25 @@
 'use client'
 
 import { TestFlaskIcon } from '@navikt/aksel-icons'
-import { BodyLong, Modal, Link as AkselLink, Skeleton, Heading } from '@navikt/ds-react'
+import { BodyLong, Modal, Link as AkselLink, Skeleton } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 
-import { DashboardCard } from '#features/fhir/dashboard/card/DashboardCard'
-import { ComboTableSkeleton } from '#features/fhir/dashboard/SykmeldingerCard'
+import { DashboardSection } from '#features/fhir/dashboard/card/DashboardSection'
+import { ComboTableSkeleton } from '#features/fhir/dashboard/SykmeldingerSection'
 
 import { PageLayout } from '../layout/Page'
 
 export function NonPilotUserWarning(): ReactElement | null {
     return (
-        <PageLayout
-            heading={
-                <Heading level="2" size="medium" spacing className="flex gap-2">
-                    <Skeleton width={240} />
-                </Heading>
-            }
-            size="full"
-            bg="transparent"
-        >
+        <PageLayout size="full" bg="white" noHeading>
             <div className="grid grid-cols-2 gap-3 w-full">
-                <DashboardCard className="col-span-2 flex gap-8" ariaLabel="">
+                <DashboardSection className="col-span-2 flex gap-8" ariaLabel="">
                     <Skeleton variant="rounded" height={254} width={526} />
                     <Skeleton variant="rounded" height={254} className="grow" />
-                </DashboardCard>
-                <DashboardCard className="col-span-2" ariaLabel="">
+                </DashboardSection>
+                <DashboardSection className="col-span-2" ariaLabel="">
                     <ComboTableSkeleton />
-                </DashboardCard>
+                </DashboardSection>
             </div>
             <Modal
                 open={true}

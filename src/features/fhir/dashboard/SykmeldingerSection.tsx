@@ -11,13 +11,13 @@ import useOnFocus from '#lib/hooks/useOnFocus'
 import { cn } from '#lib/tw'
 import { AllDashboardDocument, AllDashboardQuery, SykmeldingFragment } from '#queries'
 
-import { DashboardCard } from './card/DashboardCard'
+import { DashboardSection } from './card/DashboardSection'
 import { ComboTable, ComboTableHeader } from './combo-table/ComboTable'
 import { ComboTableFullCell } from './combo-table/ComboTableRows'
 import { HistoriskeSykmeldingerEmptyState, RequestHistoriske } from './combo-table/HistoriskeSykmeldinger'
 import { DashboardTable } from './table/DashboardTable'
 
-export function SykmeldingerCard({ className }: { className?: string }): ReactElement {
+export function SykmeldingerSection({ className }: { className?: string }): ReactElement {
     const dashboardQuery = useQuery(AllDashboardDocument)
     useOnFocus(dashboardQuery.refetch)
 
@@ -27,7 +27,7 @@ export function SykmeldingerCard({ className }: { className?: string }): ReactEl
     const hasData = !!allSykmeldinger.length || !!dashboardQuery.data?.drafts?.length
 
     return (
-        <DashboardCard
+        <DashboardSection
             className={cn('overflow-auto', className)}
             ariaLabel="Pågående sykmeldinger og utkast"
             ariaBusy={initialLoad || isRefetching}
@@ -57,7 +57,7 @@ export function SykmeldingerCard({ className }: { className?: string }): ReactEl
             {hasData &&
                 dashboardQuery.data?.sykmeldinger?.__typename === 'Requested' &&
                 dashboardQuery.data?.sykmeldinger?.historiske.length === 0 && <HistoriskeSykmeldingerEmptyState />}
-        </DashboardCard>
+        </DashboardSection>
     )
 }
 
