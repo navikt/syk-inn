@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client/react'
 import { ChevronDownIcon, FirstAidIcon, TrainIcon } from '@navikt/aksel-icons'
-import { ActionMenu, BodyShort, Checkbox, Detail, Heading, Skeleton } from '@navikt/ds-react'
+import { ActionMenu, BodyShort, Detail, Heading, Skeleton } from '@navikt/ds-react'
+import { parseAsBoolean, useQueryState } from 'nuqs'
 import React, { ReactElement, useState } from 'react'
 
 import { SimpleAlert } from '#components/help/GeneralErrors'
@@ -12,22 +13,15 @@ import { PasientDocument } from '#queries'
 
 export function StartSykmelding({ className }: { className?: string }): ReactElement {
     const { data, loading, error, refetch } = useQuery(PasientDocument)
-    const [hasLegged, setHasLegged] = useState(true)
+    const [isKnown] = useQueryState('known', parseAsBoolean.withDefault(true))
 
     return (
         <div className={className}>
-            <Heading size="small" level="3">
-                Pasientopplysninger
-            </Heading>
-            <Detail>Denne sykmeldingen opprettes for følgende person</Detail>
             {loading && (
-                <div className="flex gap-6 mt-3 mb-2">
-                    <div className="min-w-32">
-                        <Skeleton width={120} />
-                        <Skeleton width={120} />
-                    </div>
+                <div>
+                    <Skeleton width={240} height={42} variant="text" className="mb-3" />
                     <div>
-                        <Skeleton width={120} />
+                        <Skeleton width={120} height={22} />
                         <Skeleton width={120} />
                     </div>
                 </div>
@@ -45,26 +39,20 @@ export function StartSykmelding({ className }: { className?: string }): ReactEle
                 </SimpleAlert>
             )}
             {!loading && data?.pasient && (
-                <div className="flex gap-6 mt-3">
-                    <div className="min-w-32">
-                        <Detail className="font-ax-bold">Navn</Detail>
-                        <BodyShort spacing>{data.pasient.navn ?? 'Navn mangler'}</BodyShort>
-                    </div>
+                <div>
+                    <Heading level="3" size="large" spacing>
+                        {data.pasient.navn ?? 'Navn mangler'}
+                    </Heading>
                     <div>
                         <Detail className="font-ax-bold">ID-nummer</Detail>
-                        <BodyShort spacing>{data.pasient.ident}</BodyShort>
+                        <BodyShort>{data.pasient.ident}</BodyShort>
                     </div>
                 </div>
             )}
 
-            <div className="flex flex-col gap-3">
-                <div className="grow pt-4">
-                    <Checkbox checked={hasLegged} onChange={() => setHasLegged((x) => !x)} size="small">
-                        Pasienten er kjent eller har vist legitimasjon
-                    </Checkbox>
-                </div>
+            <div className="flex flex-col gap-3 mt-2">
                 <FancyMultiOptionStartButton
-                    disabled={loading || !hasLegged || data?.pasient == null}
+                    disabled={loading || !isKnown || data?.pasient == null}
                     loading={loading}
                 />
             </div>
@@ -116,6 +104,7 @@ export function FancyMultiOptionStartButton({
                             as={AssableNextLink}
                             href={`${mode.paths.ny}?${FORM_VARIANT_KEY}=${'BEHANDLINGSDAGER' satisfies NySykmeldingFormVariantType}`}
                             onSelect={() => setLinkPending(true)}
+                            disabled={disabled}
                         >
                             Behandlingsdager
                         </ActionMenu.Item>
@@ -124,6 +113,7 @@ export function FancyMultiOptionStartButton({
                             as={AssableNextLink}
                             href={`${mode.paths.ny}?${FORM_VARIANT_KEY}=${'REISETILSKUDD' satisfies NySykmeldingFormVariantType}`}
                             onSelect={() => setLinkPending(true)}
+                            disabled={disabled}
                         >
                             Reisetilskudd
                         </ActionMenu.Item>

@@ -1,7 +1,8 @@
 import { useQuery } from '@apollo/client/react'
+import { Checkbox, Heading } from '@navikt/ds-react'
+import { parseAsBoolean, useQueryState } from 'nuqs'
 import React, { ReactElement, useEffect } from 'react'
 
-import { LoadablePageHeader } from '#components/layout/Page'
 import { useAppDispatch } from '#core/redux/hooks'
 import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
 import { cn } from '#lib/tw'
@@ -14,7 +15,8 @@ import { PatientStats } from './dumb-stats/PatientStats'
 import { StartSykmelding } from './StartSykmelding'
 
 export function DashboardTopCard({ className }: { className?: string }): ReactElement {
-    const { data } = useQuery(PasientDocument)
+    const [isKnown, setIsKnown] = useQueryState('known', parseAsBoolean.withDefault(true))
+    const { data, loading } = useQuery(PasientDocument)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -28,20 +30,19 @@ export function DashboardTopCard({ className }: { className?: string }): ReactEl
 
     return (
         <DashboardCard
-            headingId="dashboard-opprett-ny-sykmelding"
-            heading={
-                <div className="grid grid-cols-[1fr_auto] gap-2">
-                    <LoadablePageHeader
-                        id="dashboard-opprett-ny-sykmelding"
-                        lead="Oversikt over"
-                        value={data?.pasient?.navn ?? null}
-                        tail="sitt sykefravær"
-                    />
-                    <InfoNySykmeldingButton />
-                </div>
-            }
+            ariaLabel={`Oversikt over ${data?.pasient?.navn} sitt sykefravær`}
             className={cn(className)}
+            ariaBusy={loading}
         >
+            <div className="flex items-center gap-6 mb-4">
+                <Heading level="2" size="xsmall">
+                    Pasientopplysninger
+                </Heading>
+                <Checkbox checked={isKnown} onChange={() => setIsKnown((x) => !x)} size="small">
+                    Pasienten er kjent eller har vist legitimasjon
+                </Checkbox>
+                <InfoNySykmeldingButton />
+            </div>
             <div className={cn('grid grid-cols-1 md:grid-cols-2 gap-5 space-x-0 divide-ax-bg-neutral-soft')}>
                 <StartSykmelding className="col-start-1 row-start-1" />
                 <div className="col-start-1 row-start-1 justify-self-end w-1 mt-2 mb-2 mx-2 ax-lg:mx-8 bg-ax-bg-neutral-soft shrink-0 self-stretch hidden ax-md:block" />
