@@ -51,10 +51,10 @@ export function SykmeldingerCard({ className }: { className?: string }): ReactEl
             )}
 
             {/* "Historiske" sykmeldinger (behind toggle) are rendered in combo table, but request and empty state are handled here */}
-            {!dashboardQuery.loading && dashboardQuery.data?.sykmeldinger?.__typename === 'Unrequested' && (
+            {dashboardQuery.data?.sykmeldinger?.__typename === 'Unrequested' && (
                 <RequestHistoriske loading={isRefetching} />
             )}
-            {!dashboardQuery.loading &&
+            {hasData &&
                 dashboardQuery.data?.sykmeldinger?.__typename === 'Requested' &&
                 dashboardQuery.data?.sykmeldinger?.historiske.length === 0 && <HistoriskeSykmeldingerEmptyState />}
         </DashboardCard>

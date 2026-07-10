@@ -1,5 +1,4 @@
 import { useMutation } from '@apollo/client/react'
-import { FlowerPetalsIcon } from '@navikt/aksel-icons'
 import { Button, BodyShort } from '@navikt/ds-react'
 import React from 'react'
 
@@ -37,8 +36,7 @@ export function HistoriskeSykmeldingerEmptyState(): React.ReactElement | null {
     if (!useFlag('SYK_INN_REQUEST_HISTORISKE')) return null
 
     return (
-        <div className="flex flex-col gap-6 items-center justify-center w-full h-64 text-ax-text-neutral-subtle">
-            <FlowerPetalsIcon aria-hidden fontSize="4rem" className="opacity-75" />
+        <div className="flex flex-col gap-6 items-center justify-center w-full h-24 text-ax-text-neutral-subtle">
             <BodyShort>Pasienten har ingen historiske sykmeldinger</BodyShort>
         </div>
     )
