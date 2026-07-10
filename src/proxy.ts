@@ -5,6 +5,7 @@ import { SESSION_COOKIE_NAME } from '#core/session/cookies'
 import { UNLEASH_COOKIE_NAME } from '#core/toggles/const'
 import { shouldUseMockEngine } from '#dev/mock-engine'
 import { spanServerAsync } from '#lib/otel/server'
+import { pathWithBasePath } from '#lib/url'
 
 export async function proxy(request: NextRequest): Promise<NextResponse> {
     return spanServerAsync('Next Proxy', async (span) => {
@@ -60,7 +61,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
             request.cookies.get(MOCK_HELSEID_TOKEN_NAME)?.value == null &&
             request.nextUrl.pathname === '/'
         ) {
-            return NextResponse.redirect(new URL('/dev', request.url))
+            return NextResponse.redirect(new URL(pathWithBasePath('/dev'), request.url))
         }
 
         return response
