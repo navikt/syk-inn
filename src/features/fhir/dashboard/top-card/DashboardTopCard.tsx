@@ -34,14 +34,14 @@ export function DashboardTopCard({ className }: { className?: string }): ReactEl
             className={cn(className)}
             ariaBusy={loading}
         >
-            <div className="flex items-center gap-6 mb-4">
+            <div className="flex items-start sm:items-center sm:gap-6 sm:mb-4 sm:flex-row flex-col">
                 <Heading level="2" size="xsmall">
                     Pasientopplysninger
                 </Heading>
                 <Checkbox checked={isKnown} onChange={() => setIsKnown((x) => !x)} size="small">
                     Pasienten er kjent eller har vist legitimasjon
                 </Checkbox>
-                <InfoNySykmeldingButton />
+                <InfoNySykmeldingButton className="absolute right-2 top-2 sm:static" />
             </div>
             <div className={cn('grid grid-cols-1 md:grid-cols-2 gap-5 space-x-0 divide-ax-bg-neutral-soft')}>
                 <StartSykmelding className="col-start-1 row-start-1" />
