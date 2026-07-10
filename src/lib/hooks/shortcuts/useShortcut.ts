@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 
 export type Shortcut = {
     modifier: 'alt' | 'shift'
-    code: 'KeyN' | 'KeyM' | 'KeyS' | 'KeyD' | 'ArrowLeft' | 'ArrowRight'
+    code: 'KeyN' | 'KeyM' | 'KeyB' | 'KeyS' | 'KeyD' | 'ArrowLeft' | 'ArrowRight'
     /**
      * Where the shortcut hint should be placed, defaults to bottom-end
      */
@@ -65,6 +65,8 @@ function getKeyLabel(code: Shortcut['code']): string {
             return 'N'
         case 'KeyM':
             return 'M'
+        case 'KeyB':
+            return 'B'
         case 'KeyS':
             return 'S'
         case 'KeyD':

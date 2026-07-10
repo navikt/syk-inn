@@ -17,7 +17,7 @@ export function startNewSykmelding(patient?: { name: string; fnr: string }) {
                 if (patient != null) await expectPatient(patient)(pasientInfoRegion)
                 await verifyNoHorizontalScroll()(page)
 
-                await pasientInfoRegion.getByRole('button', { name: 'Opprett sykmelding' }).click()
+                await pasientInfoRegion.getByRole('button', { name: 'Opprett ny sykmelding' }).click()
             },
         )
     }
@@ -40,19 +40,16 @@ export function startNewAlternateSykmelding(
                 if (patient != null) await expectPatient(patient)(pasientInfoRegion)
                 await verifyNoHorizontalScroll()(page)
 
-                await test.step('Open menu and select variant', async () => {
-                    await pasientInfoRegion.getByRole('button', { name: 'Andre handlinger' }).click()
+                await test.step(`Start a ${variant} sykmelding`, async () => {
                     switch (variant) {
                         case 'BEHANDLINGSDAGER':
-                            await page
-                                .getByRole('menu', { name: 'Andre handlinger' })
-                                .getByRole('menuitem', { name: 'Behandlingsdager' })
+                            await pasientInfoRegion
+                                .getByRole('button', { name: 'Opprett sykmelding med behandlingsdager' })
                                 .click()
                             return
                         case 'REISETILSKUDD': {
-                            await page
-                                .getByRole('menu', { name: 'Andre handlinger' })
-                                .getByRole('menuitem', { name: 'Reisetilskudd' })
+                            await pasientInfoRegion
+                                .getByRole('button', { name: 'Opprett sykmelding med reisetilskudd' })
                                 .click()
                             return
                         }

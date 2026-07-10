@@ -44,6 +44,7 @@ export function DashboardTopCard({ className }: { className?: string }): ReactEl
                 <InfoNySykmeldingButton className="absolute right-2 top-2 sm:static" />
             </div>
             <StartSykmelding className="col-start-1 row-start-1" />
+            <div className="border-b border-ax-border-neutral-subtle -mx-6 my-6" />
             <PatientStats />
         </DashboardCard>
     )
