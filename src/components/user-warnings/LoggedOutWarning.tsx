@@ -6,7 +6,7 @@ import React, { ReactElement } from 'react'
 import { useMode } from '#core/providers/Modes'
 import { useAppSelector } from '#core/redux/hooks'
 
-function LoggedOutWarning(): ReactElement | null {
+export function LoggedOutWarning(): ReactElement | null {
     const isSessionExpired = useAppSelector((state) => state.metadata.sessionExpired)
     const mode = useMode()
 
@@ -44,5 +44,3 @@ function LoggedOutWarning(): ReactElement | null {
         </Modal>
     )
 }
-
-export default LoggedOutWarning

@@ -33,6 +33,14 @@ export default defineConfig({
     },
     overrides: [
         {
+            files: ['src/**/*.tsx'],
+            excludeFiles: ['src/app/**'],
+            rules: {
+                // No default export for React components
+                'import/no-default-export': 'error',
+            },
+        },
+        {
             files: ['libs/*-mock/**/*.{ts,tsx}'],
             rules: {
                 // TODO: Consider turning on

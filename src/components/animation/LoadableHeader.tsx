@@ -12,7 +12,7 @@ export type LoadableHeaderProps = {
     id?: string
 }
 
-function LoadableHeader({
+export function LoadableHeader({
     lead,
     value,
     tail,
@@ -52,4 +52,3 @@ function LoadableHeader({
         </div>
     )
 }
-export default LoadableHeader

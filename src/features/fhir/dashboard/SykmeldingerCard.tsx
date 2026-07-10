@@ -11,11 +11,11 @@ import useOnFocus from '#lib/hooks/useOnFocus'
 import { cn } from '#lib/tw'
 import { AllDashboardDocument, AllDashboardQuery, SykmeldingFragment } from '#queries'
 
-import DashboardCard from './card/DashboardCard'
+import { DashboardCard } from './card/DashboardCard'
 import { ComboTable, ComboTableHeader } from './combo-table/ComboTable'
 import { ComboTableFullCell } from './combo-table/ComboTableRows'
 import { HistoriskeSykmeldingerEmptyState, RequestHistoriske } from './combo-table/HistoriskeSykmeldinger'
-import DashboardTable from './table/DashboardTable'
+import { DashboardTable } from './table/DashboardTable'
 
 export function SykmeldingerCard({ className }: { className?: string }): ReactElement {
     const dashboardQuery = useQuery(AllDashboardDocument)

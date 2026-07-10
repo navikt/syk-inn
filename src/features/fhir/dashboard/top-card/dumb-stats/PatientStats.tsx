@@ -9,7 +9,7 @@ import { AllDashboardDocument, GetAllDraftsDocument } from '#queries'
 
 import { continiousSykefravaer } from './sykefravaer-utils'
 
-function PatientStats({ className }: { className?: string }): ReactElement {
+export function PatientStats({ className }: { className?: string }): ReactElement {
     const allDrafts = useQuery(GetAllDraftsDocument)
     const sykmeldinger = useQuery(AllDashboardDocument)
 
@@ -74,5 +74,3 @@ function PatientStats({ className }: { className?: string }): ReactElement {
         </div>
     )
 }
-
-export default PatientStats

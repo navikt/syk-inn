@@ -14,7 +14,7 @@ type Props = {
     perioder: DraftValues['perioder'] | undefined
 }
 
-function DraftPeriodeLink({ draftId, lastChanged, perioder }: Props): ReactElement {
+export function DraftPeriodeLink({ draftId, lastChanged, perioder }: Props): ReactElement {
     const mode = useMode()
 
     return (
@@ -26,5 +26,3 @@ function DraftPeriodeLink({ draftId, lastChanged, perioder }: Props): ReactEleme
         </div>
     )
 }
-
-export default DraftPeriodeLink

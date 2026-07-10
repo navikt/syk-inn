@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 
 import { StaticPageHeading } from '#components/layout/Page'
 import { NySykmeldingFormWithDefaultValues } from '#features/actions/ny-sykmelding/NySykmelding'
-import NySykmeldingPageSteps from '#features/ny-sykmelding-form/NySykmeldingPageSteps'
+import { NySykmeldingPageSteps } from '#features/ny-sykmelding-form/NySykmeldingPageSteps'
 
 async function Page({ searchParams }: PageProps<'/ny'>): Promise<ReactElement> {
     const search = await searchParams

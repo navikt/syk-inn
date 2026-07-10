@@ -10,7 +10,10 @@ import { AllFormVariantsProps } from './variants/form-props'
 import { NormalSykmeldigForm, NormalSykmeldingFormProps } from './variants/normal/NormalSykmelding'
 import { ReisetilskuddSykmeldingForm } from './variants/reisetilskudd/ReisetilskuddSykmeldingForm'
 
-const FormDevTools = dynamic(() => import('#dev/tools/NySykmeldingFormDevTools'), { ssr: false })
+const FormDevTools = dynamic(
+    () => import('#dev/tools/NySykmeldingFormDevTools').then((it) => it.NySykmeldingFormDevTools),
+    { ssr: false },
+)
 
 type NySykmeldingFormProps = AllFormVariantsProps &
     NormalSykmeldingFormProps & {
@@ -28,7 +31,7 @@ type NySykmeldingFormProps = AllFormVariantsProps &
  *  - Own the root form state and provide it
  *  - Select the correct 'variant' of the form based on the query parameter
  */
-function NySykmeldingFormVariants({
+export function NySykmeldingFormVariants({
     variant,
     defaultValues,
     initialFom,
@@ -74,5 +77,3 @@ function NySykmeldingFormVariants({
         </FormProvider>
     )
 }
-
-export default NySykmeldingFormVariants

@@ -6,7 +6,7 @@ import React, { ReactElement } from 'react'
 
 import { SimpleReveal } from '#components/animation/Reveal'
 import { SimpleAlert, UnknownSystemError } from '#components/help/GeneralErrors'
-import TwoPaneGrid from '#components/layout/TwoPaneGrid'
+import { TwoPaneGrid } from '#components/layout/TwoPaneGrid'
 import { ShortcutButton } from '#components/shortcut/ShortcutButtons'
 import { useAppDispatch, useAppSelector } from '#core/redux/hooks'
 import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
@@ -15,17 +15,17 @@ import { isDemo, isLocal } from '#lib/env'
 import { BehandlerDocument } from '#queries'
 
 import { ForkastDraftButton } from '../draft/DraftActions'
-import FormValuesSummary from '../summary/FormValuesSummary'
+import { FormValuesSummary } from '../summary/FormValuesSummary'
 import { useFormStep } from '../useFormStep'
 import { useOpprettSykmeldingMutation } from '../useOpprettSykmeldingMutation'
 
-import BehandlerSummary from './behandler/BehandlerSummary'
+import { BehandlerSummary } from './behandler/BehandlerSummary'
 import { HardStop } from './explanations/HardStop'
 import { OtherOutcomesAlert } from './explanations/OtherOutcomesErrors'
 import { RuleHitSendAnywayModal } from './rules/RuleHitSendAnywayModal'
 import { useSubmitRuleState } from './rules/useSubmitRuleState'
 
-function SummarySection(): ReactElement {
+export function SummarySection(): ReactElement {
     const [, setStep] = useFormStep()
 
     const behandlerQuery = useQuery(BehandlerDocument)
@@ -146,5 +146,3 @@ function RuleOutcomeWarning(): ReactElement {
         </SimpleAlert>
     )
 }
-
-export default SummarySection

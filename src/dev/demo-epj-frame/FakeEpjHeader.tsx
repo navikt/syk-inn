@@ -9,7 +9,7 @@ const FAKE_BEHANDLER = {
     hpr: '9144889',
 } as const
 
-function FakeEpjHeader(): ReactElement {
+export function FakeEpjHeader(): ReactElement {
     return (
         <div className="flex grow items-center gap-3 select-none">
             <div className="flex items-center gap-2">
@@ -137,5 +137,3 @@ function Avatar({ navn }: { navn: string }): ReactElement {
         </span>
     )
 }
-
-export default FakeEpjHeader

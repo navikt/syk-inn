@@ -6,12 +6,12 @@ import { latestTom } from '#data-layer/common/sykmelding-utils'
 import { safeParseDraft } from '#data-layer/draft/draft-schema'
 import { DraftFragment, SykmeldingFragment } from '#queries'
 
-import DashboardTable from '../table/DashboardTable'
+import { DashboardTable } from '../table/DashboardTable'
 
 import { TableRow } from './ComboTableRows'
 import { draftAktivitetText, draftArbeidsforholdText, draftDiagnoseText } from './draft/draft-utils'
 import { DraftActions } from './draft/DraftActions'
-import DraftPeriodeLink from './draft/DraftPeriodeLink'
+import { DraftPeriodeLink } from './draft/DraftPeriodeLink'
 import { SykmeldingTableRow } from './SykmeldingTableRows'
 
 export function ComboTable({

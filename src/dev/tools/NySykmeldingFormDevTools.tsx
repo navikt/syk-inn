@@ -6,7 +6,7 @@ import React, { ReactElement, useEffect, useRef } from 'react'
 import { useFormContext } from '#features/ny-sykmelding-form/form/types'
 import { dateOnly } from '#lib/date'
 
-function NySykmeldingFormDevTools(): ReactElement {
+export function NySykmeldingFormDevTools(): ReactElement {
     const { control, setValue, getValues } = useFormContext()
 
     useSecretShortcut(['d', 'd', 'd'], () => {
@@ -94,5 +94,3 @@ function useSecretShortcut(combo: string[], onHappen: () => void): void {
         return () => window.removeEventListener('keydown', onKey)
     }, [combo, onHappen])
 }
-
-export default NySykmeldingFormDevTools

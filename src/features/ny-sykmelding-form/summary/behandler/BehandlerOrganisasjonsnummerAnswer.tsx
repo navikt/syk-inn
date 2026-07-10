@@ -12,7 +12,7 @@ type Props = {
     contextOrganisasjonsnummer: string | undefined | null
 }
 
-function BehandlerOrganisasjonsnummerAnswer({ contextOrganisasjonsnummer }: Props): ReactElement {
+export function BehandlerOrganisasjonsnummerAnswer({ contextOrganisasjonsnummer }: Props): ReactElement {
     const mode = useMode()
     const endreRef = useRef<HTMLButtonElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
@@ -140,5 +140,3 @@ function ManualOrganisasjonsnummerForm({
         </FormSummary.Answer>
     )
 }
-
-export default BehandlerOrganisasjonsnummerAnswer

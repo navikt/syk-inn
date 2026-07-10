@@ -1,7 +1,7 @@
 import { Table } from '@navikt/ds-react'
 import React, { PropsWithChildren, ReactElement } from 'react'
 
-function DashboardTable({ children, className }: PropsWithChildren<{ className?: string }>): ReactElement {
+export function DashboardTable({ children, className }: PropsWithChildren<{ className?: string }>): ReactElement {
     return (
         <Table
             /* TODO: Replace this with aksel v8 themeing
@@ -17,5 +17,3 @@ function DashboardTable({ children, className }: PropsWithChildren<{ className?:
         </Table>
     )
 }
-
-export default DashboardTable

@@ -6,7 +6,7 @@ import { dateOnly } from '#lib/date'
 
 import { useController } from '../../form/types'
 
-function TilbakedateringDate(): ReactElement {
+export function TilbakedateringDate(): ReactElement {
     const { field, fieldState } = useController({
         name: 'tilbakedatering.fom' as const,
         rules: {
@@ -37,5 +37,3 @@ function TilbakedateringDate(): ReactElement {
         </DatePicker>
     )
 }
-
-export default TilbakedateringDate

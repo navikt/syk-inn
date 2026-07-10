@@ -1,9 +1,9 @@
 import { ArrowRightIcon } from '@navikt/aksel-icons'
 import React, { ReactElement } from 'react'
 
-import FormSection from '#components/form/form-section/FormSection'
-import FormSheet from '#components/form/form-section/FormSheet'
-import TwoPaneGrid from '#components/layout/TwoPaneGrid'
+import { FormSection } from '#components/form/form-section/FormSection'
+import { FormSheet } from '#components/form/form-section/FormSheet'
+import { TwoPaneGrid } from '#components/layout/TwoPaneGrid'
 import { ShortcutSubmitButton } from '#components/shortcut/ShortcutButtons'
 import { useMode } from '#core/providers/Modes'
 import { useAppSelector } from '#core/redux/hooks'
@@ -22,8 +22,8 @@ import { DynamicTilbakedateringSection } from '../../sections/tilbakedatering/Dy
 import { AllFormVariantsProps } from '../form-props'
 import { useHandleFormSubmit } from '../useHandleFormSubmit'
 
-import BehandlingsdagerDescriptionField from './BehandlingsdagerDescriptionField'
-import BehandlingsdagerPeriode from './BehandlingsdagerPeriode'
+import { BehandlingsdagerDescriptionField } from './BehandlingsdagerDescriptionField'
+import { BehandlingsdagerPeriode } from './BehandlingsdagerPeriode'
 
 export function BehandlingdagerSykmeldingForm({ initialFom, contextualErrors }: AllFormVariantsProps): ReactElement {
     const mode = useMode()

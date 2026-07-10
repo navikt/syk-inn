@@ -8,7 +8,7 @@ type Props = {
     sykmeldingMeta: SykmeldingFragment['meta']
 }
 
-function BehandlerValues({ sykmeldingMeta }: Props): ReactElement {
+export function BehandlerValues({ sykmeldingMeta }: Props): ReactElement {
     return (
         <>
             <ValueItem title="HPR">{sykmeldingMeta.sykmelderHpr}</ValueItem>
@@ -16,5 +16,3 @@ function BehandlerValues({ sykmeldingMeta }: Props): ReactElement {
         </>
     )
 }
-
-export default BehandlerValues

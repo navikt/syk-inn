@@ -29,7 +29,7 @@ type Props = {
     formatRangeDescription?: (fom: Date | string, tom: Date | string) => { main: string; detail: string }
 }
 
-function PeriodePicker({
+export function PeriodePicker({
     index,
     isLast,
     initialFom,
@@ -278,5 +278,3 @@ function useFirstPeriodeFom(): string | null {
 
     return watch('perioder.0.periode.fom' as const)
 }
-
-export default PeriodePicker

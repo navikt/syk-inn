@@ -8,8 +8,8 @@ import { notFound } from 'next/navigation'
 import React, { ReactElement } from 'react'
 
 import { getDemoFrameEnabled } from '#dev/demo-epj-frame/cookies'
-import ScenarioLinksFhir from '#dev/tools/ScenarioLinksFhir'
-import ScenarioLinksStandalone from '#dev/tools/ScenarioLinksStandalone'
+import { ScenarioLinksFhir } from '#dev/tools/ScenarioLinksFhir'
+import { ScenarioLinksStandalone } from '#dev/tools/ScenarioLinksStandalone'
 import { isLocal, isDemo, getServerEnv } from '#lib/env'
 import { getAbsoluteURL, pathWithBasePath } from '#lib/url'
 

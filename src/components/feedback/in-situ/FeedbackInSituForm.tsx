@@ -11,7 +11,7 @@ type Props = {
     onSubmit: (values: InSituFeedbackFormValues) => void
 }
 
-function FeedbackInSituForm({ loading, onSubmit }: Props): ReactElement {
+export function FeedbackInSituForm({ loading, onSubmit }: Props): ReactElement {
     const form = useForm<InSituFeedbackFormValues>({
         defaultValues: {
             sentiment: null,
@@ -61,5 +61,3 @@ function FeedbackInSituForm({ loading, onSubmit }: Props): ReactElement {
         </form>
     )
 }
-
-export default FeedbackInSituForm

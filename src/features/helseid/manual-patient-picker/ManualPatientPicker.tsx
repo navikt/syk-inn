@@ -8,16 +8,16 @@ import React, { ReactElement, useEffect, useState } from 'react'
 
 import { SimpleReveal } from '#components/animation/Reveal'
 import { SimpleAlert } from '#components/help/GeneralErrors'
-import TwoPaneGrid from '#components/layout/TwoPaneGrid'
+import { TwoPaneGrid } from '#components/layout/TwoPaneGrid'
 import { useAppDispatch, useAppSelector } from '#core/redux/hooks'
 import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
 import { setPersistentUser } from '#data-layer/helseid/persistent-user/persistent-user'
 import { PersonByIdentDocument } from '#queries'
 
-import ManualPatientDrafts from './ManualPatientDrafts'
-import ManualPatientSearch from './ManualPatientSearch'
+import { ManualPatientDrafts } from './ManualPatientDrafts'
+import { ManualPatientSearch } from './ManualPatientSearch'
 
-function ManualPatientPicker(): ReactElement {
+export function ManualPatientPicker(): ReactElement {
     const dispatch = useAppDispatch()
     const existingPatient = useAppSelector((state) => state.nySykmelding.pasient)
     const [currentPatient, setCurrentPatient] = useState<string | null>(null)
@@ -94,5 +94,3 @@ function ManualPatientPicker(): ReactElement {
         </TwoPaneGrid>
     )
 }
-
-export default ManualPatientPicker

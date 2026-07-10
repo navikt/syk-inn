@@ -23,7 +23,7 @@ interface Props {
     actions?: ReactNode | null
 }
 
-function DiagnoseCombobox({
+export function DiagnoseCombobox({
     id,
     className,
     value,
@@ -153,5 +153,3 @@ function unwrapUniqueValue(value: string): Pick<Diagnose, 'code' | 'system'> {
         code,
     }
 }
-
-export default DiagnoseCombobox

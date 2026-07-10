@@ -8,7 +8,7 @@ import { ManualPatient } from '#core/redux/reducers/ny-sykmelding/patient'
 
 import { getPersistentUser } from './persistent-user'
 
-function HydratePersistedUserFromSession(): null {
+export function HydratePersistedUserFromSession(): null {
     const dispatch = useAppDispatch()
 
     useLayoutEffect(() => {
@@ -26,5 +26,3 @@ function restoreFromSession(): ManualPatient | undefined {
 
     return { type: 'manual' as const, ...persistentUser }
 }
-
-export default HydratePersistedUserFromSession

@@ -6,7 +6,7 @@ import { ArbeidsrelatertArsakType } from '#queries'
 
 import { useController } from '../../form/types'
 
-function ArsakerPicker({ index }: { index: number }): ReactElement {
+export function ArsakerPicker({ index }: { index: number }): ReactElement {
     const isArbeidsrelatertArsak = useController({
         name: `perioder.${index}.aktivitet.aktivitetIkkeMulig.isArbeidsrelatertArsak`,
     })
@@ -76,5 +76,3 @@ function ArsakerPicker({ index }: { index: number }): ReactElement {
         </div>
     )
 }
-
-export default ArsakerPicker

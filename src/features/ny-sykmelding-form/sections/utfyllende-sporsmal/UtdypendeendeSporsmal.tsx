@@ -1,7 +1,7 @@
 import { BodyShort, HelpText, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 
-import FormSection from '#components/form/form-section/FormSection'
+import { FormSection } from '#components/form/form-section/FormSection'
 import { questionTexts } from '#data-layer/common/questions'
 import { UtdypendeOpplysningerHint } from '#resolvers'
 

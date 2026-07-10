@@ -7,9 +7,9 @@ import { SimpleReveal } from '#components/animation/Reveal'
 
 import { useFeedback } from '../useFeedback'
 
-import FeedbackInSituForm from './FeedbackInSituForm'
+import { FeedbackInSituForm } from './FeedbackInSituForm'
 
-function FeedbackInSitu(): ReactElement {
+export function FeedbackInSitu(): ReactElement {
     const [wantsToFeedback, setWantsToFeedback] = useState(false)
 
     return (
@@ -68,5 +68,3 @@ function InSituQuestionaire(): ReactElement {
         </div>
     )
 }
-
-export default FeedbackInSitu

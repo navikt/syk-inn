@@ -4,7 +4,7 @@ import React, { PropsWithChildren, ReactElement } from 'react'
 
 import { bundledEnv } from '#lib/env'
 
-function BuildInfo(): ReactElement {
+export function BuildInfo(): ReactElement {
     if (bundledEnv.NEXT_PUBLIC_VERSION === 'development') {
         return <BuildInfoInCorner>Versjon: dev</BuildInfoInCorner>
     }
@@ -33,5 +33,3 @@ function BuildInfo(): ReactElement {
 function BuildInfoInCorner({ children }: PropsWithChildren): ReactElement {
     return <div className="fixed top-2 right-2 text-ax-text-neutral-subtle text-sm text-right">{children}</div>
 }
-
-export default BuildInfo

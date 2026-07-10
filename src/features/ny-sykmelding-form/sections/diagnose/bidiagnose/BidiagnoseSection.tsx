@@ -5,7 +5,7 @@ import React, { ReactElement, useRef } from 'react'
 import { useFieldArray } from '#features/ny-sykmelding-form/form/types'
 import { cn } from '#lib/tw'
 
-import BidiagnosePicker from './BidiagnosePicker'
+import { BidiagnosePicker } from './BidiagnosePicker'
 
 export function BidiagnoseSection(): ReactElement {
     const addNewRef = useRef<HTMLButtonElement>(null)

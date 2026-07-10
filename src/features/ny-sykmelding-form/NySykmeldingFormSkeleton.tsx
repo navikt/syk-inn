@@ -1,17 +1,17 @@
 import { Skeleton } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 
-import FormSheet from '#components/form/form-section/FormSheet'
+import { FormSheet } from '#components/form/form-section/FormSheet'
 import { LoadablePageHeader } from '#components/layout/Page'
-import TwoPaneGrid from '#components/layout/TwoPaneGrid'
+import { TwoPaneGrid } from '#components/layout/TwoPaneGrid'
 
-import NySykmeldingPageSteps from './NySykmeldingPageSteps'
+import { NySykmeldingPageSteps } from './NySykmeldingPageSteps'
 
 type Props = {
     lead: string
 }
 
-function NySykmeldingFormSkeleton({ lead }: Props): ReactElement {
+export function NySykmeldingFormSkeleton({ lead }: Props): ReactElement {
     return (
         <NySykmeldingPageSteps heading={<LoadablePageHeader lead={lead} value={null} />}>
             <TwoPaneGrid tag="div">
@@ -26,5 +26,3 @@ function NySykmeldingFormSkeleton({ lead }: Props): ReactElement {
         </NySykmeldingPageSteps>
     )
 }
-
-export default NySykmeldingFormSkeleton

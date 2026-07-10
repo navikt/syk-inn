@@ -5,12 +5,12 @@ import { CheckmarkCircleFillIcon, ChevronDownIcon, ExclamationmarkTriangleIcon, 
 import { BodyShort, Button, ExpansionCard, Heading, Link as AkselLink, Skeleton, InfoCard } from '@navikt/ds-react'
 import React, { ReactElement, useEffect, useState } from 'react'
 
-import FeedbackInSitu from '#components/feedback/in-situ/FeedbackInSitu'
+import { FeedbackInSitu } from '#components/feedback/in-situ/FeedbackInSitu'
 import { SimpleAlert } from '#components/help/GeneralErrors'
-import TwoPaneGrid from '#components/layout/TwoPaneGrid'
+import { TwoPaneGrid } from '#components/layout/TwoPaneGrid'
 import { SlowNextLinkButton } from '#components/links/SlowNextLinkButton'
 import { ShortcutButtonLink } from '#components/shortcut/ShortcutButtons'
-import SykmeldingValues from '#components/sykmelding/SykmeldingValues'
+import { SykmeldingValues } from '#components/sykmelding/SykmeldingValues'
 import { ValueItemSkeleton } from '#components/sykmelding/ValuesSection'
 import { useMode } from '#core/providers/Modes'
 import { useAppDispatch } from '#core/redux/hooks'
@@ -28,7 +28,7 @@ type Props = {
     sykmeldingId: string
 }
 
-function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
+export function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
     const kvitteringFeedback = useFlag('SYK_INN_FEEDBACK_KVITTERING')
     const dispatch = useAppDispatch()
     const mode = useMode()
@@ -264,5 +264,3 @@ function SykmeldingKvitteringError({ error, refetch }: { error: Error; refetch: 
         </div>
     )
 }
-
-export default SykmeldingKvittering
