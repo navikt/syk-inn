@@ -13,6 +13,7 @@ import { InfoNySykmeldingButton } from '../welcome-modal/InfoNySykmeldingButton'
 
 import { PatientStats } from './dumb-stats/PatientStats'
 import { StartSykmelding } from './StartSykmelding'
+import { SykmeldingTimeline } from './SykmeldingTimeline'
 
 export function DashboardTopSection({ className }: { className?: string }): ReactElement {
     const [isKnown, setIsKnown] = useQueryState('known', parseAsBoolean.withDefault(true))
@@ -45,6 +46,7 @@ export function DashboardTopSection({ className }: { className?: string }): Reac
             </div>
             <StartSykmelding className="col-start-1 row-start-1" />
             <div className="border-b border-ax-border-neutral-subtle -mx-6 my-6" />
+            <SykmeldingTimeline />
             <PatientStats />
         </DashboardSection>
     )

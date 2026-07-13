@@ -7,9 +7,10 @@ import * as R from 'remeda'
 
 import { LegeOgBehandlerTelefonen } from '#components/help/LegeOgBehandlerTelefonen'
 import { SessionIdInfo } from '#components/help/SessionIdInfo'
+import { getAllSykmeldingerFromQuery } from '#data-layer/common/sykmelding-utils'
 import useOnFocus from '#lib/hooks/useOnFocus'
 import { cn } from '#lib/tw'
-import { AllDashboardDocument, AllDashboardQuery, SykmeldingFragment } from '#queries'
+import { AllDashboardDocument } from '#queries'
 
 import { DashboardSection } from './card/DashboardSection'
 import { ComboTable, ComboTableHeader } from './combo-table/ComboTable'
@@ -193,16 +194,4 @@ export function ComboTableSkeleton(): ReactElement {
             </Table.Body>
         </DashboardTable>
     )
-}
-
-function getAllSykmeldingerFromQuery(
-    sykmeldinger: AllDashboardQuery['sykmeldinger'] | undefined,
-): SykmeldingFragment[] {
-    if (!sykmeldinger) return []
-
-    if (sykmeldinger.__typename === 'Requested') {
-        return [...sykmeldinger.aktuelle, ...(sykmeldinger.historiske ?? [])]
-    }
-
-    return sykmeldinger.aktuelle
 }

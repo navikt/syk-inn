@@ -4,6 +4,7 @@ import * as R from 'remeda'
 import { SykInnApiAktivitet } from '#core/services/syk-inn-api/schema/sykmelding'
 import { toReadableDatePeriod } from '#lib/date'
 import { raise } from '#lib/ts'
+import { AllDashboardQuery, SykmeldingFragment } from '#queries'
 
 /**
  * The definition of what the offset where Practitioners are able to see the sykmelding without
@@ -85,4 +86,16 @@ export function getSimpleSykmeldingDescription(aktivitet: SykInnApiAktivitet[]):
     const [firstAktivitet] = aktivitet
 
     return `${aktivitetTypeText(firstAktivitet)} sykmelding, ${toReadableDatePeriod(firstAktivitet.fom, firstAktivitet.tom)}`
+}
+
+export function getAllSykmeldingerFromQuery(
+    sykmeldinger: AllDashboardQuery['sykmeldinger'] | undefined,
+): SykmeldingFragment[] {
+    if (!sykmeldinger) return []
+
+    if (sykmeldinger.__typename === 'Requested') {
+        return [...sykmeldinger.aktuelle, ...(sykmeldinger.historiske ?? [])]
+    }
+
+    return sykmeldinger.aktuelle
 }
