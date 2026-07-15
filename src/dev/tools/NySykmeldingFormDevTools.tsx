@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 import { addDays, subDays } from 'date-fns'
 import React, { ReactElement, useEffect, useRef } from 'react'
 
-import { useFormContext } from '#features/ny-sykmelding-form/form/types'
+import { AktivitetField, useFormContext } from '#features/ny-sykmelding-form/form/types'
 import { dateOnly } from '#lib/date'
 
 export function NySykmeldingFormDevTools(): ReactElement {
@@ -20,47 +20,81 @@ export function NySykmeldingFormDevTools(): ReactElement {
         }
         setValue('andreSporsmal', { svangerskapsrelatert: true, yrkesskade: null }, { shouldDirty: true })
         setValue('arbeidsforhold.harFlereArbeidsforhold', 'NEI', { shouldDirty: true })
-        setValue(
-            'perioder',
-            [
-                {
-                    periode: { fom: dateOnly(new Date()), tom: dateOnly(addDays(new Date(), 7)) },
-                    aktivitet: {
-                        type: 'AKTIVITET_IKKE_MULIG',
-                        gradert: {
-                            grad: null,
-                            reisetilskudd: false,
-                        },
-                        aktivitetIkkeMulig: {
-                            isArbeidsrelatertArsak: false,
-                            arbeidsrelaterteArsaker: null,
-                            annenArbeidsrelatertArsak: null,
-                        },
+
+        if (currentValues.perioder[0].aktivitet.type === 'BEHANDLINGSDAGER') {
+            setValue(
+                'perioder',
+                [
+                    {
+                        periode: { fom: dateOnly(new Date()), tom: dateOnly(addDays(new Date(), 7)) },
+                        aktivitet: { type: 'BEHANDLINGSDAGER', ...defaultAktivitet },
                     },
-                },
-            ],
-            { shouldDirty: true, shouldValidate: true },
-        )
+                ],
+                { shouldDirty: true, shouldValidate: true },
+            )
+        } else if (currentValues.perioder[0].aktivitet.type === 'REISETILSKUDD') {
+            setValue(
+                'perioder',
+                [
+                    {
+                        periode: { fom: dateOnly(new Date()), tom: dateOnly(addDays(new Date(), 7)) },
+                        aktivitet: { type: 'REISETILSKUDD', ...defaultAktivitet },
+                    },
+                ],
+                { shouldDirty: true, shouldValidate: true },
+            )
+        } else {
+            setValue(
+                'perioder',
+                [
+                    {
+                        periode: { fom: dateOnly(new Date()), tom: dateOnly(addDays(new Date(), 7)) },
+                        aktivitet: { type: 'AKTIVITET_IKKE_MULIG', ...defaultAktivitet },
+                    },
+                ],
+                { shouldDirty: true, shouldValidate: true },
+            )
+        }
     })
 
     useSecretShortcut(['d', 'd', 't'], () => {
-        setValue('perioder', [
-            {
-                periode: { fom: dateOnly(subDays(new Date(), 10)), tom: dateOnly(subDays(new Date(), 2)) },
-                aktivitet: {
-                    type: 'AKTIVITET_IKKE_MULIG',
-                    gradert: {
-                        grad: null,
-                        reisetilskudd: false,
+        const currentValues = getValues()
+        const tilbakedatertPeriode = { fom: dateOnly(subDays(new Date(), 10)), tom: dateOnly(subDays(new Date(), 2)) }
+
+        if (currentValues.perioder[0].aktivitet.type === 'BEHANDLINGSDAGER') {
+            setValue(
+                'perioder',
+                [
+                    {
+                        periode: tilbakedatertPeriode,
+                        aktivitet: { type: 'BEHANDLINGSDAGER', ...defaultAktivitet },
                     },
-                    aktivitetIkkeMulig: {
-                        isArbeidsrelatertArsak: false,
-                        arbeidsrelaterteArsaker: null,
-                        annenArbeidsrelatertArsak: null,
+                ],
+                { shouldDirty: true, shouldValidate: true },
+            )
+        } else if (currentValues.perioder[0].aktivitet.type === 'REISETILSKUDD') {
+            setValue(
+                'perioder',
+                [
+                    {
+                        periode: tilbakedatertPeriode,
+                        aktivitet: { type: 'REISETILSKUDD', ...defaultAktivitet },
                     },
-                },
-            },
-        ])
+                ],
+                { shouldDirty: true, shouldValidate: true },
+            )
+        } else {
+            setValue(
+                'perioder',
+                [
+                    {
+                        periode: tilbakedatertPeriode,
+                        aktivitet: { type: 'AKTIVITET_IKKE_MULIG', ...defaultAktivitet },
+                    },
+                ],
+                { shouldDirty: true, shouldValidate: true },
+            )
+        }
     })
 
     return (
@@ -93,4 +127,16 @@ function useSecretShortcut(combo: string[], onHappen: () => void): void {
 
         return () => window.removeEventListener('keydown', onKey)
     }, [combo, onHappen])
+}
+
+const defaultAktivitet: Omit<AktivitetField, 'type'> = {
+    gradert: {
+        grad: null,
+        reisetilskudd: false,
+    },
+    aktivitetIkkeMulig: {
+        isArbeidsrelatertArsak: false,
+        arbeidsrelaterteArsaker: null,
+        annenArbeidsrelatertArsak: null,
+    },
 }
