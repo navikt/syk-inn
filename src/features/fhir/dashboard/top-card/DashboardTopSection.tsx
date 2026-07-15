@@ -46,7 +46,9 @@ export function DashboardTopSection({ className }: { className?: string }): Reac
             </div>
             <StartSykmelding className="col-start-1 row-start-1" />
             <div className="border-b border-ax-border-neutral-subtle -mx-6 my-6" />
-            <SykmeldingTimeline />
+            <div className="hidden sm:block">
+                <SykmeldingTimeline />
+            </div>
             <PatientStats />
         </DashboardSection>
     )
