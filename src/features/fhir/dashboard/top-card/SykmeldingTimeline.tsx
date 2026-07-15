@@ -1,46 +1,148 @@
 import { useQuery } from '@apollo/client/react'
 import { BandageIcon } from '@navikt/aksel-icons'
-import { Timeline } from '@navikt/ds-react'
+import { BodyShort, Detail, Heading, Skeleton, Timeline } from '@navikt/ds-react'
 import { addDays, parseISO } from 'date-fns/fp'
+import { useRouter } from 'next/navigation'
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 
-import { earliestFom, getAllSykmeldingerFromQuery, latestTom } from '#data-layer/common/sykmelding-utils'
-import { toReadableDatePeriod } from '#lib/date'
-import { AllDashboardDocument, SykmeldingFragment } from '#queries'
+import { AkselNextLink } from '#components/links/AkselNextLink'
+import { useMode } from '#core/providers/Modes'
+import {
+    earliestFom,
+    getAllSykmeldingerFromQuery,
+    isTodayOrInTheFuture,
+    latestTom,
+} from '#data-layer/common/sykmelding-utils'
+import { AllDashboardDocument, DraftFragment, SykmeldingFragment } from '#queries'
 
-import { sykmeldingGradText } from '../combo-table/sykmelding/sykmelding-utils'
+import { AutoUpdatingDistance } from '../combo-table/draft/AutoUpdatingDistance'
+import {
+    draftAktivitetText,
+    draftArbeidsforholdText,
+    draftDiagnoseText,
+    draftPeriodeText,
+} from '../combo-table/draft/draft-utils'
+import {
+    sykmeldingArbeidsgiverText,
+    sykmeldingDiagnoseText,
+    sykmeldingGradText,
+} from '../combo-table/sykmelding/sykmelding-utils'
+import { SykmeldingPeriodeLink } from '../combo-table/sykmelding/SykmeldingPeriodeLink'
 
-export function SykmeldingTimeline(): ReactElement {
+import {
+    getLatestDraftDate,
+    getLatestSykmeldingerDate,
+    partitionDraftLanes,
+    partitionSykmeldingLanes,
+} from './sykmeldinger-timeline-utils'
+
+export function SykmeldingTimeline(): ReactElement | null {
     const { loading, data, error } = useQuery(AllDashboardDocument)
 
     if (loading) {
-        return <div>Loading timeline...</div>
+        return (
+            <div className="flex flex-col gap-3 mb-8">
+                <div className="ml-28 mr-4 flex flex-row justify-around">
+                    <Skeleton variant="text" width="12ch" />
+                    <Skeleton variant="text" width="12ch" />
+                    <Skeleton variant="text" width="12ch" />
+                </div>
+                <div className="flex gap-8">
+                    <Skeleton width="9ch" />
+                    <Skeleton variant="rounded" width="100%" />
+                </div>
+            </div>
+        )
     }
 
     if (error) {
-        return <div>ewwow :(</div>
+        return (
+            // A more complete and obvious error is rendered in the table, this error is mostly to stop weird
+            // layout shifts when errors occur, it takes the exact same space as the loading skeleton
+            <div className="flex flex-col gap-3 mb-8">
+                <div className="flex flex-row">
+                    <Heading level="3" size="xsmall">
+                        Kunne ikke vise tidslinje
+                    </Heading>
+                </div>
+                <div className="flex gap-8">
+                    <BodyShort>Lasting av sykmeldinger og utkast feilet</BodyShort>
+                </div>
+            </div>
+        )
     }
 
     const allSykmeldinger = getAllSykmeldingerFromQuery(data?.sykmeldinger)
+    if (!R.hasAtLeast(allSykmeldinger, 1)) {
+        // There are other more logically placed empty states, for users without any, don't render anything
+        return null
+    }
+
     return (
         <div className="mb-8">
-            {R.hasAtLeast(allSykmeldinger, 1) ? <FullTimeline sykmeldinger={allSykmeldinger} /> : <div>empty</div>}
+            <FullTimeline sykmeldinger={allSykmeldinger} drafts={data?.drafts ?? []} />
         </div>
     )
 }
 
-function FullTimeline({ sykmeldinger }: { sykmeldinger: [SykmeldingFragment, ...SykmeldingFragment[]] }): ReactElement {
-    const latest = R.pipe(sykmeldinger, R.map(latestTom), R.firstBy([R.identity(), 'desc']), parseISO, addDays(1))
-    const lanes = partitionLanes(sykmeldinger)
+function FullTimeline({
+    sykmeldinger,
+    drafts,
+}: {
+    drafts: DraftFragment[]
+    sykmeldinger: [SykmeldingFragment, ...SykmeldingFragment[]]
+}): ReactElement {
+    const mode = useMode()
+    const router = useRouter()
+    const draftLanes = partitionDraftLanes(drafts)
+    const sykmeldingLanes = partitionSykmeldingLanes(sykmeldinger)
+
+    const latestSykmeldingDate = getLatestSykmeldingerDate(sykmeldinger)
+    const latestDraftDate = getLatestDraftDate(draftLanes)
+
+    const latestDate = latestDraftDate
+        ? R.firstBy([latestDraftDate, latestSykmeldingDate], [R.identity(), 'desc'])
+        : latestSykmeldingDate
 
     return (
-        <Timeline endDate={latest}>
-            {lanes.map((lane, index) => (
-                <Timeline.Row key={index} label="Sykmeldinger">
+        <Timeline endDate={addDays(1)(latestDate)}>
+            {draftLanes.map((lane, index) => (
+                <Timeline.Row key={index} label={index === 0 ? 'Utkast' : ''}>
+                    {lane.map(([draft, values, fomtom]) => {
+                        return (
+                            <Timeline.Period
+                                key={draft.draftId}
+                                start={fomtom.fom}
+                                end={fomtom.tom}
+                                statusLabel="Hey"
+                                status="info"
+                                icon={<BandageIcon />}
+                                onSelectPeriod={() => {
+                                    router.push(mode.paths.utkast(draft.draftId))
+                                }}
+                            >
+                                <AkselNextLink href={mode.paths.utkast(draft.draftId)}>
+                                    {draftPeriodeText(values.perioder)}
+                                </AkselNextLink>
+                                <BodyShort>{draftDiagnoseText(values?.hoveddiagnose)}</BodyShort>
+                                <BodyShort>{draftAktivitetText(values?.perioder)}</BodyShort>
+                                <BodyShort>{draftArbeidsforholdText(values?.arbeidsforhold)}</BodyShort>
+                                <Detail className="text-xs mt-2">
+                                    Sist endret <AutoUpdatingDistance time={draft.lastUpdated} />
+                                </Detail>
+                            </Timeline.Period>
+                        )
+                    })}
+                </Timeline.Row>
+            ))}
+
+            {sykmeldingLanes.map((lane, index) => (
+                <Timeline.Row key={index} label={index === 0 ? 'Sykmeldinger' : ''}>
                     {lane.map((it) => {
                         const fom = parseISO(earliestFom(it))
                         const tom = parseISO(latestTom(it))
+                        const isCurrent = isTodayOrInTheFuture(it)
 
                         return (
                             <Timeline.Period
@@ -48,13 +150,24 @@ function FullTimeline({ sykmeldinger }: { sykmeldinger: [SykmeldingFragment, ...
                                 start={fom}
                                 end={tom}
                                 statusLabel="Hey"
-                                status="success"
+                                status={isCurrent ? 'success' : 'neutral'}
                                 icon={<BandageIcon />}
+                                onSelectPeriod={() => {
+                                    router.push(mode.paths.sykmelding(it.sykmeldingId))
+                                }}
                             >
-                                {it.values.__typename !== 'SykmeldingRedactedValues'
-                                    ? `${sykmeldingGradText(it.values.aktivitet)}, `
-                                    : ''}
-                                {toReadableDatePeriod(fom, tom)}
+                                <SykmeldingPeriodeLink sykmeldingId={it.sykmeldingId} aktivitet={it.values.aktivitet} />
+                                {it.__typename !== 'SykmeldingRedacted' && (
+                                    <>
+                                        <BodyShort>{sykmeldingDiagnoseText(it.values.hoveddiagnose)}</BodyShort>
+                                        <BodyShort>{sykmeldingGradText(it.values.aktivitet)} sykmelding</BodyShort>
+                                    </>
+                                )}
+                                {it.__typename === 'SykmeldingFull' && (
+                                    <>
+                                        <BodyShort>{sykmeldingArbeidsgiverText(it.values.arbeidsgiver)}</BodyShort>
+                                    </>
+                                )}
                             </Timeline.Period>
                         )
                     })}
@@ -62,28 +175,4 @@ function FullTimeline({ sykmeldinger }: { sykmeldinger: [SykmeldingFragment, ...
             ))}
         </Timeline>
     )
-}
-
-function partitionLanes(sykmeldinger: [SykmeldingFragment, ...SykmeldingFragment[]]): SykmeldingFragment[][] {
-    const sorted = R.sortBy(sykmeldinger, [earliestFom, 'asc'])
-
-    const lanes: SykmeldingFragment[][] = []
-    const laneEnd: Date[] = []
-
-    for (const sykmelding of sorted) {
-        const start = parseISO(earliestFom(sykmelding))
-        const end = parseISO(latestTom(sykmelding))
-
-        const laneIndex = laneEnd.findIndex((laneEndDate) => start > laneEndDate)
-
-        if (laneIndex === -1) {
-            lanes.push([sykmelding])
-            laneEnd.push(end)
-        } else {
-            lanes[laneIndex].push(sykmelding)
-            laneEnd[laneIndex] = end
-        }
-    }
-
-    return lanes
 }
