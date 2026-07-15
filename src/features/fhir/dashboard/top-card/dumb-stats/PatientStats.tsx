@@ -70,9 +70,11 @@ export function PatientStats(): ReactElement {
                         Icon={HourglassTopFilledIcon}
                         value={
                             <div className="relative h-full w-full text-xl">
-                                <div className="absolute top-0 left-1">{+(days / 7).toFixed(0)}</div>
+                                <div className="absolute top-0 left-0 text-base text-right w-4">
+                                    {+(days / 7).toFixed(0)}
+                                </div>
                                 <div className="absolute top-1/2 left-1/2 -translate-x-2/3 -translate-y-1/2">/</div>
-                                <div className="absolute bottom-0 right-0.5 text-base">52</div>
+                                <div className="absolute bottom-0 right-0.5 text-base text-left w-4">52</div>
                             </div>
                         }
                         label="uker påløpt sykefravær"

@@ -50,8 +50,8 @@ export const DraftValuesSchema = z.object({
     tilbakedatering: z
         .object({
             fom: z.string().nullable(),
-            grunn: TilbakedateringGrunnSchema.nullable(),
-            annenGrunn: z.string().nullable(),
+            grunn: TilbakedateringGrunnSchema.optional().nullable(),
+            annenGrunn: z.string().nullable().optional(),
         })
         .nullable(),
     meldinger: z

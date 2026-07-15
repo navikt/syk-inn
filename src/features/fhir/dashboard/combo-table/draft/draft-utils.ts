@@ -1,15 +1,34 @@
 import { isValid, parseISO } from 'date-fns'
+import * as R from 'remeda'
 
 import { DraftValues } from '#data-layer/draft/draft-schema'
 import { toReadableDate, toReadableDatePeriod } from '#lib/date'
 
-export function draftPeriodeText(perioder: { fom: string | null; tom: string | null }[] | null | undefined): string {
+export function maybeFom(perioder: DraftValues['perioder']): string | null {
+    if (perioder == null || perioder.length === 0) return null
+
+    const [firstPeriode] = perioder
+    if (firstPeriode.fom == null) return null
+
+    return firstPeriode.fom
+}
+
+export function maybeTom(perioder: DraftValues['perioder']): string | null {
+    if (perioder == null || perioder.length === 0) return null
+
+    const lastPeriode = R.last(perioder)
+    if (lastPeriode == null || lastPeriode.tom == null) return null
+
+    return lastPeriode.tom
+}
+
+export function draftPeriodeText(perioder: DraftValues['perioder'] | undefined): string {
     if (!perioder || perioder.length === 0) {
         return `Ingen periode`
     }
 
-    const firstPeriodFom = perioder[0].fom
-    const lastPeriodTom = perioder[perioder.length - 1].tom
+    const firstPeriodFom = maybeFom(perioder)
+    const lastPeriodTom = maybeTom(perioder)
     const fomDate = firstPeriodFom ? parseISO(firstPeriodFom) : null
     const tomDate = lastPeriodTom ? parseISO(lastPeriodTom) : null
 
