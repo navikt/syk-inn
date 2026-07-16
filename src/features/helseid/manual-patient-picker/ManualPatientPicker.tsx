@@ -62,8 +62,17 @@ export function ManualPatientPicker(): ReactElement {
             <div className="p-4 bg-ax-bg-default rounded-xl">
                 <ManualPatientSearch handleSearch={handleSearch} defaultIdent={existingPatient?.ident} />
                 {loading && (
-                    <div className="mt-4">
-                        <Skeleton height={94} variant="rounded" />
+                    <div className="border-t border-t-ax-border-neutral-subtle mt-4 pt-4">
+                        <div className="mb-4">
+                            <Skeleton variant="text" width={240} height={32} />
+                            <Skeleton variant="text" width={84} height={18} />
+                            <Skeleton variant="text" width={120} height={24} />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <Skeleton height={48} variant="rounded" />
+                            <Skeleton height={48} variant="rounded" />
+                            <Skeleton height={48} variant="rounded" />
+                        </div>
                     </div>
                 )}
                 {!loading && data?.person != null && (
