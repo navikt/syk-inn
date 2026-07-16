@@ -1,7 +1,7 @@
 import { ApolloLink } from '@apollo/client'
 import { useApolloClient } from '@apollo/client/react'
 import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons'
-import { Chips, Detail, Heading } from '@navikt/ds-react'
+import { BodyShort, Chips, Detail, Heading } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { tap } from 'rxjs'
@@ -61,21 +61,27 @@ export function PreviousPatientsList({ search }: PreviousPatientsListProps): Rea
             <Heading size="xsmall" level="3" spacing>
                 Tidligere brukte pasienter
             </Heading>
-            <Chips size="small">
-                {idents.map((person) => (
-                    <Chips.Toggle
-                        key={person.ident}
-                        checkmark={false}
-                        selected={previousIdent === person.ident}
-                        onClick={async () => {
-                            setPreviousIdent(person.ident)
-                            await search(person.ident)
-                        }}
-                    >
-                        {`${person.navn} (${person.ident})`}
-                    </Chips.Toggle>
-                ))}
-            </Chips>
+            {idents.length > 0 ? (
+                <Chips size="small">
+                    {idents.map((person) => (
+                        <Chips.Toggle
+                            key={person.ident}
+                            checkmark={false}
+                            selected={previousIdent === person.ident}
+                            onClick={async () => {
+                                setPreviousIdent(person.ident)
+                                await search(person.ident)
+                            }}
+                        >
+                            {`${person.navn} (${person.ident})`}
+                        </Chips.Toggle>
+                    ))}
+                </Chips>
+            ) : (
+                <BodyShort size="small" className="italic">
+                    Ingen tidligere pasienter
+                </BodyShort>
+            )}
         </div>
     )
 }
