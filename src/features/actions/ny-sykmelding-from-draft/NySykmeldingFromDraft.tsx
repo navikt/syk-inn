@@ -10,6 +10,7 @@ import { NySykmeldingFormSkeleton } from '#features/ny-sykmelding-form/NySykmeld
 import { NySykmeldingFormVariants } from '#features/ny-sykmelding-form/NySykmeldingFormVariants'
 import { NySykmeldingPageSteps } from '#features/ny-sykmelding-form/NySykmeldingPageSteps'
 import { useDiagnoseSuggestions } from '#features/ny-sykmelding-form/sections/diagnose/useDiagnoseSuggestions'
+import { NySykmeldingFormVariantType } from '#features/ny-sykmelding-form/useFormVariant'
 import { GetDraftDocument, PasientDocument } from '#queries'
 
 import { SykmeldingDraftFormErrors } from '../common/SykmeldingFormErrors'
@@ -49,7 +50,9 @@ export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactE
 
     return (
         <NySykmeldingPageSteps
-            heading={<LoadablePageHeader lead="Ny sykmelding for" value={pasient.data?.pasient?.navn ?? null} />}
+            heading={
+                <LoadablePageHeader lead={getPageLead(variantInDraft)} value={pasient.data?.pasient?.navn ?? null} />
+            }
         >
             <NySykmeldingFormVariants
                 variant={variantInDraft}
@@ -61,4 +64,15 @@ export function DraftSykmeldingFormWithDefaultValues({ draftId }: Props): ReactE
             />
         </NySykmeldingPageSteps>
     )
+}
+
+function getPageLead(variant: NySykmeldingFormVariantType): string {
+    switch (variant) {
+        case 'NORMAL':
+            return 'Sykmelding for'
+        case 'REISETILSKUDD':
+            return 'Sykmelding med reisetilskudd for'
+        case 'BEHANDLINGSDAGER':
+            return 'Sykemelding enkeltstående behandlingsdager for'
+    }
 }
