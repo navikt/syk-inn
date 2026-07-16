@@ -12,6 +12,8 @@ import { TwoPaneGrid } from '#components/layout/TwoPaneGrid'
 import { useAppDispatch, useAppSelector } from '#core/redux/hooks'
 import { nySykmeldingActions } from '#core/redux/reducers/ny-sykmelding'
 import { setPersistentUser } from '#data-layer/helseid/persistent-user/persistent-user'
+import { DevGcpScenariosSectionLazy } from '#dev/dev-gcp-scenarios/lazy'
+import { isDevGcp, isLocal } from '#lib/env'
 import { PersonByIdentDocument } from '#queries'
 
 import { ManualPatientDrafts } from './ManualPatientDrafts'
@@ -54,7 +56,7 @@ export function ManualPatientPicker(): ReactElement {
 
     return (
         <TwoPaneGrid tag="div">
-            <div className="p-4 bg-ax-bg-default">
+            <div className="p-4 bg-ax-bg-default rounded-xl">
                 <ManualPatientSearch handleSearch={handleSearch} defaultIdent={existingPatient?.ident} />
                 {loading && (
                     <div className="mt-4">
@@ -91,6 +93,7 @@ export function ManualPatientPicker(): ReactElement {
                     )}
                 </AnimatePresence>
             </div>
+            {(isLocal || isDevGcp) && <DevGcpScenariosSectionLazy search={handleSearch} />}
         </TwoPaneGrid>
     )
 }

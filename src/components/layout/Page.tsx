@@ -42,7 +42,7 @@ export function LoadablePageHeader(props: Omit<LoadableHeaderProps, 'level' | 's
 
 export function StaticPageHeading({ children }: PropsWithChildren): ReactElement {
     return (
-        <Heading level="2" size="medium" spacing>
+        <Heading level="2" size="medium" className="mb-2">
             {children}
         </Heading>
     )

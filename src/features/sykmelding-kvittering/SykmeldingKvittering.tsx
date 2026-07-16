@@ -44,7 +44,7 @@ export function SykmeldingKvittering({ sykmeldingId }: Props): ReactElement {
     return (
         <div className="p-4">
             <TwoPaneGrid tag="div">
-                <div className="">
+                <div>
                     <SykmeldingKvitteringSummary sykmeldingId={sykmeldingId} />
                     <div className="flex justify-end mt-4">
                         {mode.type === 'FHIR' ? (
