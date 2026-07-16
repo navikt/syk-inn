@@ -1,7 +1,8 @@
 import { Button, Search } from '@navikt/ds-react'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { useController, useForm } from 'react-hook-form'
 
+import { useAppSelector } from '#core/redux/hooks'
 import { isLocal } from '#lib/env'
 
 type Props = {
@@ -10,6 +11,8 @@ type Props = {
 }
 
 export function ManualPatientSearch({ handleSearch, defaultIdent }: Props): ReactElement {
+    const existingPatient = useAppSelector((state) => state.nySykmelding.pasient)
+
     const form = useForm<{ ident: string }>({
         defaultValues: { ident: defaultIdent },
     })
@@ -32,6 +35,12 @@ export function ManualPatientSearch({ handleSearch, defaultIdent }: Props): Reac
             },
         },
     })
+
+    useEffect(() => {
+        if (existingPatient?.ident) {
+            form.reset({ ident: existingPatient.ident })
+        }
+    }, [existingPatient?.ident, form])
 
     return (
         <form onSubmit={form.handleSubmit((data) => handleSearch(data.ident))} className="relative">

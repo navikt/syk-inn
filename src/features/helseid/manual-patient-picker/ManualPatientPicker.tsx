@@ -4,7 +4,7 @@ import { useLazyQuery } from '@apollo/client/react'
 import { ChevronRightIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail, Heading, Skeleton } from '@navikt/ds-react'
 import { AnimatePresence } from 'motion/react'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useCallback, useEffect, useState } from 'react'
 
 import { SimpleReveal } from '#components/animation/Reveal'
 import { SimpleAlert } from '#components/help/GeneralErrors'
@@ -27,27 +27,37 @@ export function ManualPatientPicker(): ReactElement {
     const existingPatient = useAppSelector((state) => state.nySykmelding.pasient)
     const [currentPatient, setCurrentPatient] = useState<string | null>(null)
     const [searchPerson, { loading, data, error }] = useLazyQuery(PersonByIdentDocument, {
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
     })
-    const handleSearch = async (ident: string): Promise<void> => {
-        if (!ident) return
 
-        setCurrentPatient(null)
-        const pdlPerson = await searchPerson({
-            variables: { ident: ident },
-        })
+    const handleSearch = useCallback(
+        async (ident: string): Promise<void> => {
+            if (!ident) return
 
-        if (pdlPerson.data?.person) {
-            const patient = {
-                type: 'manual' as const,
-                ident: pdlPerson.data.person.ident,
-                navn: pdlPerson.data.person.navn,
+            setCurrentPatient(null)
+            const pdlPerson = await searchPerson({
+                variables: { ident: ident },
+            })
+
+            if (pdlPerson.data?.person) {
+                const patient = {
+                    type: 'manual' as const,
+                    ident: pdlPerson.data.person.ident,
+                    navn: pdlPerson.data.person.navn,
+                }
+                dispatch(nySykmeldingActions.manualPatient(patient))
+                setPersistentUser(patient)
+                setCurrentPatient(patient.ident)
             }
-            dispatch(nySykmeldingActions.manualPatient(patient))
-            setPersistentUser(patient)
-            setCurrentPatient(patient.ident)
+        },
+        [dispatch, searchPerson],
+    )
+
+    useEffect(() => {
+        if (existingPatient?.ident) {
+            void handleSearch(existingPatient.ident)
         }
-    }
+    }, [handleSearch, existingPatient?.ident])
 
     useEffect(() => {
         /**

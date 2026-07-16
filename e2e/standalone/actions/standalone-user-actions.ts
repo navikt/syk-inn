@@ -13,9 +13,12 @@ export function startNewSykmelding(ident: string) {
     return async (page: Page) => {
         await test.step(`Start new sykmelding for ${ident}`, async () => {
             const link = page.getByRole('button', { name: /Opprett ny sykmelding/ })
-
             await expect(link).toBeVisible()
-            await expect(link.locator(':scope + *'), `Ident for searched user matches ${ident}`).toHaveText(ident)
+
+            await expect(
+                page.getByText('ID-nummer').locator(':scope + *'),
+                `Ident for searched user matches ${ident}`,
+            ).toHaveText(ident)
             await link.click()
         })
     }

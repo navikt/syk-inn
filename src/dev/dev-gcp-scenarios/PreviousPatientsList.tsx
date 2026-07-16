@@ -6,6 +6,7 @@ import { logger } from '@navikt/next-logger'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { tap } from 'rxjs'
 
+import { useAppSelector } from '#core/redux/hooks'
 import { PersonFragment } from '#queries'
 
 type PersistablePatient = { ident: string; navn: string }
@@ -15,9 +16,11 @@ interface PreviousPatientsListProps {
 }
 
 export function PreviousPatientsList({ search }: PreviousPatientsListProps): ReactElement {
+    const existingPatient = useAppSelector((state) => state.nySykmelding.pasient)
+
     const client = useApolloClient()
     const [idents, setIdents] = useState<PersistablePatient[]>(restoreFromLocalStorage())
-    const [previousIdent, setPreviousIdent] = useState<string | null>(null)
+    const [previousIdent, setPreviousIdent] = useState<string | null>(existingPatient?.ident ?? null)
     const addNew = (person: PersistablePatient): void => {
         setIdents((prev) => {
             const updated = prev.find((it) => it.ident === person.ident) ? prev : [...prev, person]
