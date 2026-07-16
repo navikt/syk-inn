@@ -35,7 +35,7 @@
         "postinstall": "husky"
     },
     "dependencies": {
-        "@apollo/client": "^4.2.6",
+        "@apollo/client": "^4.2.7",
         "@envelop/core": "^5.5.1",
         "@envelop/opentelemetry": "^9.1.1",
         "@grafana/faro-web-sdk": "^2.8.2",
@@ -65,7 +65,7 @@
         "@unleash/nextjs": "^1.6.7",
         "clsx": "^2.1.1",
         "date-fns": "^4.4.0",
-        "fuse.js": "^7.4.2",
+        "fuse.js": "^7.5.0",
         "graphql": "^16.14.2",
         "graphql-yoga": "^5.21.2",
         "iovalkey": "^0.3.3",
@@ -114,8 +114,8 @@
         "knip": "^6.26.0",
         "lint-staged": "^17.0.8",
         "nock": "^14.0.16",
-        "oxfmt": "^0.58.0",
-        "oxlint": "^1.73.0",
+        "oxfmt": "^0.59.0",
+        "oxlint": "^1.74.0",
         "oxlint-tsgolint": "^0.24.0",
         "pdf-parse": "^2.4.5",
         "postcss": "^8.5.19",

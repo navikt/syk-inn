@@ -19,6 +19,12 @@ need() { command -v "$1" >/dev/null 2>&1 || { err "Missing dependency: $1"; exit
 
 need docker
 need jq
+need nc
+
+if nc -z localhost 3000; then
+  printf "\033[0;31m 🔥🔥🔥 Oh no, you have a dev server running on port 3000! This dev mode does not support other ports than 3000.\033[0m\n"
+  exit 1
+fi
 
 # Only manage compose in local runtime env
 grep -q '^NEXT_PUBLIC_RUNTIME_ENV=local$' .env.development 2>/dev/null || exit 0
@@ -57,3 +63,4 @@ else
   rm -f "$tmp"
   exit 1
 fi
+
