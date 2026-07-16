@@ -59,7 +59,8 @@ export function NySykmeldingFormDevTools(): ReactElement {
 
     useSecretShortcut(['d', 'd', 't'], () => {
         const currentValues = getValues()
-        const tilbakedatertPeriode = { fom: dateOnly(subDays(new Date(), 10)), tom: dateOnly(subDays(new Date(), 2)) }
+        const fom = dateOnly(subDays(new Date(), 10))
+        const tilbakedatertPeriode = { fom: fom, tom: dateOnly(subDays(new Date(), 2)) }
 
         if (currentValues.perioder[0].aktivitet.type === 'BEHANDLINGSDAGER') {
             setValue(
@@ -95,6 +96,12 @@ export function NySykmeldingFormDevTools(): ReactElement {
                 { shouldDirty: true, shouldValidate: true },
             )
         }
+
+        setValue('tilbakedatering', {
+            fom: fom,
+            grunn: 'VENTETID_LEGETIME',
+            annenGrunn: null,
+        })
     })
 
     return (
