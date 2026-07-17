@@ -4,15 +4,18 @@ import { useRouter } from 'next/navigation'
 import React, { ReactElement } from 'react'
 
 import { HelseIdPaths } from '#core/providers/ModePaths'
-import { useAppDispatch } from '#core/redux/hooks'
+import { useAppDispatch, useAppSelector } from '#core/redux/hooks'
 import { NySykmeldingFormPayload } from '#core/redux/reducers/ny-sykmelding/form'
 import { nySykmeldingSlice } from '#core/redux/reducers/ny-sykmelding/ny-sykmelding-slice'
 import { FORM_VARIANT_KEY, NySykmeldingFormVariantType } from '#features/ny-sykmelding-form/useFormVariant'
 import { dateOnly } from '#lib/date'
+import { cn } from '#lib/tw'
 
 import { scenarioPeriode } from './date'
 
 export function SykepengesoknadScenarios(): ReactElement {
+    const existingPatient = useAppSelector((state) => state.nySykmelding.pasient)
+
     return (
         <div className="mt-4">
             <Heading size="xsmall" level="3">
@@ -22,10 +25,21 @@ export function SykepengesoknadScenarios(): ReactElement {
                 Forhåndsdefinerte scenarioer som vil generere opp en sykepengesøknad med en gang. Dette betyr at til og
                 med dato er i fortiden.
             </Detail>
-            <div className="mt-2 gap-1 grid grid-cols-2">
-                {sykepengesoknadScenarios.map((scenario) => (
-                    <ScenarioButton key={scenario.title} {...scenario} />
-                ))}
+            <div className={cn('mt-2 relative')}>
+                <div
+                    className={cn('gap-1 grid grid-cols-2', {
+                        'opacity-50 pointer-events-none': !existingPatient,
+                    })}
+                >
+                    {sykepengesoknadScenarios.map((scenario) => (
+                        <ScenarioButton key={scenario.title} {...scenario} />
+                    ))}
+                </div>
+                {existingPatient == null && (
+                    <div className="absolute top-1/2 left-1/2 -translate-1/2 text-2xl text-center max-w-64 rotate-12">
+                        Søk opp en pasient for å velge scenario
+                    </div>
+                )}
             </div>
         </div>
     )
