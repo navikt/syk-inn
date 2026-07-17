@@ -18,7 +18,7 @@ type Props = {
 
 export function ManualPatientDrafts({ ident }: Props): ReactElement {
     const draftsQuery = useQuery(GetAllDraftsDocument, {
-        fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'network-only',
     })
 
     const hasDrafts = draftsQuery.data?.drafts != null && draftsQuery.data.drafts.length > 0

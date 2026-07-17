@@ -58,7 +58,10 @@ export function ManualPatientSearch({ handleSearch, defaultIdent }: Props): Reac
             {isLocal && (
                 <Button
                     data-color="neutral"
-                    onClick={() => controller.field.onChange('45847100951')}
+                    onClick={() => {
+                        controller.field.onChange('45847100951')
+                        handleSearch('45847100951')
+                    }}
                     variant="secondary"
                     size="xsmall"
                     className="mt-4 absolute -top-4 right-0"

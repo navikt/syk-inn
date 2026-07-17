@@ -163,7 +163,8 @@ export function ManualPatientPicker(): ReactElement {
                 <AnimatePresence initial={false}>
                     {!loading && data?.person != null && currentPatient != null && (
                         <SimpleReveal>
-                            <ManualPatientDrafts ident={data.person.ident} />
+                            {/* The key here is to force a remount so drafts are re-fetched when patient changes */}
+                            <ManualPatientDrafts key={data.person.ident} ident={data.person.ident} />
                         </SimpleReveal>
                     )}
                 </AnimatePresence>

@@ -58,11 +58,11 @@ export function PreviousPatientsList({ search }: PreviousPatientsListProps): Rea
     return (
         <div>
             <Detail className="flex gap-1 items-center">
-                <ExclamationmarkTriangleIcon aria-hidden />
-                Dette er verktøy kun for dev-miljø
+                <ExclamationmarkTriangleIcon aria-hidden className="animate-bounce" />
+                Dette testdata-verktøyet kun for dev-miljø og vil aldri være synlig for vanlige brukere
             </Detail>
             <Heading size="xsmall" level="3" spacing>
-                Tidligere brukte pasienter
+                Tidligere brukte test-pasienter
             </Heading>
             {idents.length > 0 ? (
                 <Chips size="small">
