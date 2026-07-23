@@ -72,7 +72,7 @@ export type Arbeidsforhold = {
 
 export type Arbeidsgiver = {
     __typename: 'Arbeidsgiver'
-    arbeidsgivernavn: Scalars['String']['output']
+    arbeidsgivernavn: Maybe<Scalars['String']['output']>
     harFlere: Scalars['Boolean']['output']
 }
 

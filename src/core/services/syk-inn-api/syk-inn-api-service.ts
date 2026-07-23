@@ -83,7 +83,10 @@ export const sykInnApiService = {
             path: `/api/sykmelding/${sykmeldingId}`,
             method: 'GET',
             headers: { 'Content-Type': 'application/json', HPR: hpr },
-            responseSchema: z.union([SykInnApiSykmeldingSchema, SykInnApiSykmeldingRedactedSchema]),
+            responseSchema: z.discriminatedUnion('isFull', [
+                SykInnApiSykmeldingSchema,
+                SykInnApiSykmeldingRedactedSchema,
+            ]),
         })
     },
     getSykmeldinger: async (
@@ -102,7 +105,9 @@ export const sykInnApiService = {
             path: `/api/sykmelding`,
             method: 'GET',
             headers: { 'Content-Type': 'application/json', Ident: pasientIdent, HPR: hpr },
-            responseSchema: z.array(z.union([SykInnApiSykmeldingSchema, SykInnApiSykmeldingRedactedSchema])),
+            responseSchema: z.array(
+                z.discriminatedUnion('isFull', [SykInnApiSykmeldingSchema, SykInnApiSykmeldingRedactedSchema]),
+            ),
         })
     },
 }

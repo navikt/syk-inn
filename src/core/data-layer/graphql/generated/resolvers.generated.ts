@@ -75,7 +75,7 @@ export type Arbeidsforhold = {
 
 export type Arbeidsgiver = {
     __typename?: 'Arbeidsgiver'
-    arbeidsgivernavn: Scalars['String']['output']
+    arbeidsgivernavn?: Maybe<Scalars['String']['output']>
     harFlere: Scalars['Boolean']['output']
 }
 
@@ -891,7 +891,7 @@ export type ArbeidsgiverResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Arbeidsgiver'] = ResolversParentTypes['Arbeidsgiver'],
 > = {
-    arbeidsgivernavn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    arbeidsgivernavn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     harFlere?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
 }
 

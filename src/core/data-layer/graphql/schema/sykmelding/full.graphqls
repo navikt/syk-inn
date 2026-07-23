@@ -40,7 +40,7 @@ type Yrkesskade {
 
 type Arbeidsgiver {
     harFlere: Boolean!
-    arbeidsgivernavn: String!
+    arbeidsgivernavn: String
 }
 
 type Tilbakedatering {

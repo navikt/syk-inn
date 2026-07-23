@@ -57,6 +57,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         },
         sykmelding: async (_, { id: sykmeldingId }, { hpr }) => {
             const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
+
             if ('errorType' in sykmelding) {
                 throw new GraphQLError('API_ERROR')
             }
