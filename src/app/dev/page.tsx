@@ -3,15 +3,15 @@ import { BodyShort, Detail, Heading, InfoCard } from '@navikt/ds-react'
 import { InfoCardContent, InfoCardHeader, InfoCardTitle } from '@navikt/ds-react/InfoCard'
 import { LinkCard, LinkCardAnchor, LinkCardIcon, LinkCardTitle } from '@navikt/ds-react/LinkCard'
 import { Page, PageBlock } from '@navikt/ds-react/Page'
-import { MockLaunchType } from '@navikt/fhir-mock-server/types'
 import { notFound } from 'next/navigation'
 import React, { ReactElement } from 'react'
 
 import { getDemoFrameEnabled } from '#dev/demo-epj-frame/cookies'
-import { ScenarioLinksFhir } from '#dev/tools/ScenarioLinksFhir'
-import { ScenarioLinksStandalone } from '#dev/tools/ScenarioLinksStandalone'
+import { buildFhirLaunchParam, buildStandaloneInitParams, fhirLaunchUrl } from '#dev/tools/scenarios/scenario-url-utils'
+import { ScenarioLinksFhir } from '#dev/tools/scenarios/ScenarioLinksFhir'
+import { ScenarioLinksStandalone } from '#dev/tools/scenarios/ScenarioLinksStandalone'
 import { isLocal, isDemo, getServerEnv } from '#lib/env'
-import { getAbsoluteURL, pathWithBasePath } from '#lib/url'
+import { pathWithBasePath } from '#lib/url'
 
 import DumbDevHeader from './dumb/DumbDevHeader'
 
@@ -59,11 +59,23 @@ export default async function Home(): Promise<ReactElement> {
                                     </LinkCardIcon>
                                     <LinkCardTitle>
                                         <LinkCardAnchor
+                                            href={`${fhirLaunchUrl}&launch=${buildFhirLaunchParam('Espen Eksempel', 'Magnar Koman', 'Magnar Legekontor', false)}`}
+                                        >
+                                            FHIR with syk-inn-api!
+                                        </LinkCardAnchor>
+                                    </LinkCardTitle>
+                                </LinkCard>
+                                <LinkCard className="mt-4">
+                                    <LinkCardIcon>
+                                        <TerminalIcon fontSize="2rem" />
+                                    </LinkCardIcon>
+                                    <LinkCardTitle>
+                                        <LinkCardAnchor
                                             href={pathWithBasePath(
-                                                `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir&launch=${`local-dev-launch:Espen Eksempel:Magnar Koman:Magnar Legekontor:with-frame` satisfies MockLaunchType}`}`,
+                                                `/api/mocks/helseid/dev/start-user${buildStandaloneInitParams('Johan Johansson')}`,
                                             )}
                                         >
-                                            Launch with syk-inn-api!
+                                            HelseID with syk-inn-api!
                                         </LinkCardAnchor>
                                     </LinkCardTitle>
                                 </LinkCard>
@@ -89,10 +101,11 @@ export default async function Home(): Promise<ReactElement> {
                         )}
 
                         {!isSykInnApiIntegrationEnabled && (
-                            <ScenarioLinksFhir defaultFrameValue={await getDemoFrameEnabled()} />
+                            <>
+                                <ScenarioLinksFhir defaultFrameValue={await getDemoFrameEnabled()} />
+                                <ScenarioLinksStandalone />
+                            </>
                         )}
-
-                        <ScenarioLinksStandalone />
                     </div>
                 </div>
             </PageBlock>

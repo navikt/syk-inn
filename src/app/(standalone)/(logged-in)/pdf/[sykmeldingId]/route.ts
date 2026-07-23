@@ -21,7 +21,7 @@ export async function GET(_: NextRequest, { params }: RouteContext<'/pdf/[sykmel
             return new Response('Internal server error', { status: 500 })
         }
 
-        const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, behandler?.hpr)
+        const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, behandler.hpr)
         if ('errorType' in sykmelding) {
             failSpan(span, `Failed to get sykmelding: ${sykmelding.errorType}`)
             return new Response('Internal server error', { status: 500 })

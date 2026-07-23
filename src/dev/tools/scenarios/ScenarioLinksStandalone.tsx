@@ -6,7 +6,7 @@ import { MockBehandlere } from '@navikt/helseid-mock-server'
 import { parseAsString, useQueryState } from 'nuqs'
 import React, { ReactElement } from 'react'
 
-import { pathWithBasePath } from '#lib/url'
+import { createHelseIDScenarioUrl } from './scenario-url-utils'
 
 export function ScenarioLinksStandalone(): ReactElement {
     const [behandler, setBehandler] = useQueryState(
@@ -42,7 +42,7 @@ export function ScenarioLinksStandalone(): ReactElement {
                 <LinkCard.Title>
                     <LinkCard.Anchor
                         suppressHydrationWarning
-                        href={createScenarioUrl('empty', behandler as MockBehandlere)}
+                        href={createHelseIDScenarioUrl('empty', behandler as MockBehandlere)}
                     >
                         Just go
                     </LinkCard.Anchor>
@@ -53,14 +53,4 @@ export function ScenarioLinksStandalone(): ReactElement {
             </LinkCard>
         </div>
     )
-}
-
-function createScenarioUrl(scenario: string, behandler: MockBehandlere): string {
-    const helseIdMockUrl = `/api/mocks/helseid/dev/start-user${buildInitParams(behandler as MockBehandlere)}`
-
-    return pathWithBasePath(`/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(helseIdMockUrl)}`)
-}
-
-function buildInitParams(behandler: MockBehandlere): string {
-    return `?user=${behandler}&returnTo=${pathWithBasePath('/')}`
 }

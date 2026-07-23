@@ -1,15 +1,16 @@
 'use client'
 
 import { FlowerPetalsIcon, PlayIcon } from '@navikt/aksel-icons'
-import { Heading, LinkCard, Select, Link, Modal, Loader, Switch } from '@navikt/ds-react'
-import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
+import { Heading, Link, LinkCard, Loader, Modal, Select, Switch } from '@navikt/ds-react'
+import { MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
 import Image from 'next/image'
 import { parseAsBoolean, parseAsString, useQueryState } from 'nuqs'
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 
-import { getAbsoluteURL, pathWithBasePath } from '#lib/url'
+import { scenarios } from '#dev/mock-engine/scenarios/scenarios'
+import { pathWithBasePath } from '#lib/url'
 
-import { scenarios } from '../mock-engine/scenarios/scenarios'
+import { buildFhirLaunchParam, createFhirScenarioUrl, fhirLaunchUrl } from './scenario-url-utils'
 
 export function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: boolean }): ReactElement {
     const [isLaunching, setIsLaunching] = useState<string | null>(null)
@@ -105,7 +106,7 @@ export function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: bo
                         <LinkCard.Anchor
                             ref={justLaunchRef}
                             href={pathWithBasePath(
-                                `${fhirLaunchUrl}&launch=${buildLaunchParam(patient as MockPatients, (practitioner || 'Magnar Koman') as MockPractitioners, (organization || 'Magnar Legekontor') as MockOrganizations, frame)}`,
+                                `${fhirLaunchUrl}&launch=${buildFhirLaunchParam(patient as MockPatients, (practitioner || 'Magnar Koman') as MockPractitioners, (organization || 'Magnar Legekontor') as MockOrganizations, frame)}`,
                             )}
                             onClick={() => setIsLaunching('keep previous')}
                         >
@@ -123,7 +124,7 @@ export function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: bo
                         </LinkCard.Icon>
                         <LinkCard.Title>
                             <LinkCard.Anchor
-                                href={createScenarioUrl(
+                                href={createFhirScenarioUrl(
                                     scenarioKey,
                                     patient as MockPatients,
                                     (practitioner || 'Magnar Koman') as MockPractitioners,
@@ -166,29 +167,4 @@ export function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: bo
             </Modal>
         </div>
     )
-}
-
-const fhirLaunchUrl = `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir`}` as const
-
-function createScenarioUrl(
-    scenario: string,
-    patient: MockPatients,
-    practitioner: MockPractitioners,
-    organization: MockOrganizations,
-    frame: boolean,
-): string {
-    return pathWithBasePath(
-        `/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(
-            `${fhirLaunchUrl}&launch=${buildLaunchParam(patient as MockPatients, practitioner, organization, frame)}`,
-        )}`,
-    )
-}
-
-function buildLaunchParam(
-    patient: MockPatients,
-    practitioner: MockPractitioners,
-    organization: MockOrganizations,
-    frame: boolean,
-): MockLaunchType {
-    return `local-dev-launch:${patient}:${practitioner}:${organization}:${frame ? 'with-frame' : 'no-frame'}`
 }

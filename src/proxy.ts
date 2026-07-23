@@ -4,6 +4,7 @@ import { NextRequest, NextResponse, ProxyConfig } from 'next/server'
 import { SESSION_COOKIE_NAME } from '#core/session/cookies'
 import { UNLEASH_COOKIE_NAME } from '#core/toggles/const'
 import { shouldUseMockEngine } from '#dev/mock-engine'
+import { getServerEnv } from '#lib/env'
 import { spanServerAsync } from '#lib/otel/server'
 import { pathWithBasePath } from '#lib/url'
 
@@ -33,7 +34,10 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
          * For local, e2e and demo, we pretend to be Wonderwall, and extract the current users session and
          * set the headers that Wonderwall would normally set.
          */
-        if (shouldUseMockEngine() && request.cookies.get(MOCK_HELSEID_TOKEN_NAME)?.value != null) {
+        if (
+            (shouldUseMockEngine() || getServerEnv().useLocalSykInnApi) &&
+            request.cookies.get(MOCK_HELSEID_TOKEN_NAME)?.value != null
+        ) {
             const sessionId = request.cookies.get(MOCK_HELSEID_TOKEN_NAME)?.value as string
 
             span.setAttribute('proxy.mock-helseid-token-session', sessionId)
