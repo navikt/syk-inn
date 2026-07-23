@@ -96,7 +96,7 @@ export type AllDashboardQuery = {
                             arbeidsgiver: {
                                 __typename: 'Arbeidsgiver'
                                 harFlere: boolean
-                                arbeidsgivernavn: string
+                                arbeidsgivernavn: string | null
                             } | null
                             meldinger: {
                                 __typename: 'SykmeldingMelding'
@@ -336,7 +336,7 @@ export type AllDashboardQuery = {
                             arbeidsgiver: {
                                 __typename: 'Arbeidsgiver'
                                 harFlere: boolean
-                                arbeidsgivernavn: string
+                                arbeidsgivernavn: string | null
                             } | null
                             meldinger: {
                                 __typename: 'SykmeldingMelding'
@@ -579,7 +579,7 @@ export type AllDashboardQuery = {
                             arbeidsgiver: {
                                 __typename: 'Arbeidsgiver'
                                 harFlere: boolean
-                                arbeidsgivernavn: string
+                                arbeidsgivernavn: string | null
                             } | null
                             meldinger: {
                                 __typename: 'SykmeldingMelding'
@@ -960,7 +960,11 @@ export type SykmeldingByIdQuery = {
                         }
                       | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
                   >
-                  arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
+                  arbeidsgiver: {
+                      __typename: 'Arbeidsgiver'
+                      harFlere: boolean
+                      arbeidsgivernavn: string | null
+                  } | null
                   meldinger: {
                       __typename: 'SykmeldingMelding'
                       tilNav: string | null
@@ -1201,7 +1205,11 @@ export type OpprettSykmeldingMutation = {
                         }
                       | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
                   >
-                  arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
+                  arbeidsgiver: {
+                      __typename: 'Arbeidsgiver'
+                      harFlere: boolean
+                      arbeidsgivernavn: string | null
+                  } | null
                   meldinger: {
                       __typename: 'SykmeldingMelding'
                       tilNav: string | null
@@ -1357,7 +1365,7 @@ export type SykmeldingFullFragment = {
               }
             | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
         >
-        arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
+        arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string | null } | null
         meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null } | null
         yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
         tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
@@ -1512,7 +1520,7 @@ type Sykmelding_SykmeldingFull_Fragment = {
               }
             | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
         >
-        arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string } | null
+        arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string | null } | null
         meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null } | null
         yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
         tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null

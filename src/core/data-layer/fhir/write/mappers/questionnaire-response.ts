@@ -44,7 +44,7 @@ function sykmeldingValuesToItems(values: SykInnApiSykmelding['values']): FhirQue
         })
     }
 
-    if (values.arbeidsgiver) {
+    if (values.arbeidsgiver?.arbeidsgivernavn) {
         items.push({
             linkId: 'arbeidsforhold',
             text: 'Arbeidsforhold sykmeldingen gjelder for',

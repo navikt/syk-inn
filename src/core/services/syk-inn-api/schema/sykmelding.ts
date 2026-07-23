@@ -82,7 +82,7 @@ const UtdypendeSporsmalSvarSchema = z.object({
 
 const ArbeidsgiverSchema = z.object({
     harFlere: z.boolean(),
-    arbeidsgivernavn: z.string(),
+    arbeidsgivernavn: z.string().nullable(),
 })
 
 const YrkesskadeSchema = z.object({
@@ -116,6 +116,7 @@ const SykInnApiSykmeldingMeta = z.object({
 export type SykInnApiSykmelding = z.infer<typeof SykInnApiSykmeldingSchema>
 export const SykInnApiSykmeldingSchema = z
     .object({
+        isFull: z.literal(true),
         sykmeldingId: z.string(),
         meta: SykInnApiSykmeldingMeta,
         values: z.object({
@@ -141,6 +142,7 @@ export const SykInnApiSykmeldingSchema = z
 export type SykInnApiSykmeldingRedacted = z.infer<typeof SykInnApiSykmeldingRedactedSchema>
 export const SykInnApiSykmeldingRedactedSchema = z
     .object({
+        isFull: z.literal(false),
         sykmeldingId: z.string(),
         meta: SykInnApiSykmeldingMeta,
         values: z.object({

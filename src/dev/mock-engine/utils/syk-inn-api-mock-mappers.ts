@@ -2,7 +2,12 @@ import { differenceInWeeks, formatISO } from 'date-fns'
 import * as R from 'remeda'
 
 import { OpprettSykmeldingPayload } from '#core/services/syk-inn-api/schema/opprett'
-import { RuleResult, SykInnApiAktivitet, SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
+import {
+    RuleResult,
+    SykInnApiAktivitet,
+    SykInnApiSykmelding,
+    SykInnApiSykmeldingSchema,
+} from '#core/services/syk-inn-api/schema/sykmelding'
 
 import { addDiagnoseText } from './diagnose'
 
@@ -11,8 +16,8 @@ export function sykInnApiPayloadToResponse(
     utfall: RuleResult,
     payload: OpprettSykmeldingPayload,
 ): SykInnApiSykmelding {
-    return {
-        kind: 'full',
+    return SykInnApiSykmeldingSchema.parse({
+        isFull: true,
         sykmeldingId,
         meta: {
             pasient: {
@@ -87,5 +92,5 @@ export function sykInnApiPayloadToResponse(
             annenFravarsgrunn: payload.values.annenFravarsgrunn,
         },
         utfall: utfall,
-    }
+    } satisfies Omit<SykInnApiSykmelding, 'kind'>)
 }

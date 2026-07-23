@@ -3,15 +3,15 @@ import fs from 'node:fs'
 
 import { createTypstSykmelding, mapSykInnToPdfPayload } from '#core/pdf/pdf-service'
 import { TypstPdfSykmelding } from '#core/pdf/types'
-import { SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
+import { SykInnApiSykmelding, SykInnApiSykmeldingSchema } from '#core/services/syk-inn-api/schema/sykmelding'
 import { questionTexts } from '#data-layer/common/questions'
 import { isLocal } from '#lib/env'
 import { daysAgo, inDays, today } from '#lib/test/date-utils'
 
 export async function GET(): Promise<Response> {
-    const chonkySykmelding: SykInnApiSykmelding = {
+    const chonkySykmelding: SykInnApiSykmelding = SykInnApiSykmeldingSchema.parse({
         sykmeldingId: crypto.randomUUID(),
-        kind: 'full',
+        isFull: true,
         utfall: { result: 'OK', cause: null },
         meta: {
             mottatt: new Date().toISOString(),
@@ -134,7 +134,7 @@ export async function GET(): Promise<Response> {
             },
             annenFravarsgrunn: 'GODKJENT_HELSEINSTITUSJON',
         },
-    }
+    } satisfies Omit<SykInnApiSykmelding, 'kind'>)
 
     const body = await createTypstSykmelding(chonkySykmelding)
     if (!body.ok) {

@@ -47,9 +47,9 @@ export function sykmeldingGradText(aktivitet: AktivitetFragment[]): string {
 }
 
 export function sykmeldingArbeidsgiverText(
-    arbeidsgiver: { arbeidsgivernavn: string } | null | undefined,
+    arbeidsgiver: { arbeidsgivernavn: string | null } | null | undefined,
 ): string | null {
-    if (!arbeidsgiver) {
+    if (arbeidsgiver == null || arbeidsgiver.arbeidsgivernavn == null) {
         return null
     }
 

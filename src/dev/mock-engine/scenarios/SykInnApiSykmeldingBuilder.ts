@@ -10,14 +10,14 @@ import {
     SykInnApiSykmelding,
     SykInnApiSykmeldingRedacted,
     SykInnApiSykmeldingRedactedSchema,
+    SykInnApiSykmeldingSchema,
 } from '#core/services/syk-inn-api/schema/sykmelding'
 import { questionTexts } from '#data-layer/common/questions'
 import { dateOnly } from '#lib/date'
 
 export class SykmeldingBuilder {
     private readonly mottatt: string = '2020-02-01'
-    private readonly _sykmelding: SykInnApiSykmelding = {
-        kind: 'full',
+    private readonly _sykmelding: Omit<SykInnApiSykmelding, 'kind' | 'isFull'> = {
         sykmeldingId: 'sykmelding-id',
         utfall: {
             result: 'OK',
@@ -213,7 +213,7 @@ export class SykmeldingBuilder {
             throw new Error('Sykmelding må ha minst en aktivitet! Dumbass >:(')
         }
 
-        return this._sykmelding
+        return SykInnApiSykmeldingSchema.parse({ ...this._sykmelding, isFull: true })
     }
 
     buildRedacted(): SykInnApiSykmeldingRedacted {
@@ -221,6 +221,6 @@ export class SykmeldingBuilder {
             throw new Error('Sykmelding må ha minst en aktivitet! Dumbass >:(')
         }
 
-        return SykInnApiSykmeldingRedactedSchema.parse(this._sykmelding)
+        return SykInnApiSykmeldingRedactedSchema.parse({ ...this._sykmelding, isFull: false })
     }
 }
