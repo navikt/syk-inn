@@ -1,7 +1,7 @@
 {
     "name": "e2e",
     "dependencies": {
-        "@playwright/test": "^1.61.1",
+        "@playwright/test": "^1.62.0",
         "date-fns": "^4.4.0",
         "remeda": "^2.39.0"
     },
