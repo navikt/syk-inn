@@ -106,7 +106,7 @@
         "@types/node": "^24.13.3",
         "@types/react": "19.2.17",
         "@types/react-dom": "19.2.3",
-        "@typescript/native-preview": "7.0.0-dev.20260421.2",
+        "@typescript/native-preview": "7.0.0-dev.20260707.2",
         "asciichart": "^1.5.25",
         "concurrently": "^10.0.4",
         "husky": "^9.1.7",
