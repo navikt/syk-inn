@@ -29,6 +29,7 @@ const nextConfig: NextConfig = {
          * See: https://github.com/vercel/next.js/issues/91396
          */
         turbopackServerFastRefresh: false,
+        useTypeScriptCli: true,
     },
     images: { remotePatterns: [new URL('https://cdn.nav.no/**')] },
     logging: {
