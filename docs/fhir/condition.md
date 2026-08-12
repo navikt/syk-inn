@@ -27,6 +27,9 @@ _Relevante referanser:_
         "code": "ICPC-2 diagnosekode"
       }
     ]
+  },
+  "encounter": {
+    "reference": "Encounter/<konsultasjon diagnosen ble satt>"
   }
 }
 ```
@@ -48,6 +51,9 @@ _Relevante referanser:_
         "code": "ICD-10 diagnosekode"
       }
     ]
+  },
+  "encounter": {
+    "reference": "Encounter/<konsultasjon diagnosen ble satt>"
   }
 }
 ```
