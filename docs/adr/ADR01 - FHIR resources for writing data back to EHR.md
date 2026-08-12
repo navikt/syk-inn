@@ -79,9 +79,12 @@ Nav can write the data back to the EHR in one of two ways:
 
 Both options use the same resource endpoints (`PUT /DocumentReference/{id}` and
 `PUT /QuestionnaireResponse/{id}`), so the EHR must support DocumentReference and
-QuestionnaireResponse as writable resources regardless of which option is chosen. A `batch` (not
-`transaction`) Bundle is used so the mandatory DocumentReference is persisted even if the
-QuestionnaireResponse fails (journalføringsplikten).
+QuestionnaireResponse as writable resources regardless of which option is chosen.
+
+> [!WARNING]
+>
+> To adhere to **Journalføringsplikten**, a `batch` (NOT `transaction`) Bundle is used so the
+> mandatory DocumentReference is persisted even if the QuestionnaireResponse fails.
 
 ## Consequences
 

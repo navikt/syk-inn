@@ -21,6 +21,51 @@ _Relevante referanser:_
       "system": "urn:oid:2.16.578.1.12.4.1.4.4",
       "value": "hpr-nummer"
     }
+  ],
+  "telecom": [
+    {
+      "system": "phone | fax | email | pager | url | sms | other",
+      "value": "+47 987 65 432",
+      "use": "home | work | temp | old | mobile"
+    }
+  ],
+  "qualifications": [
+    {
+      "code": {
+        "coding": [
+          {
+            "system": "urn:oid:2.16.578.1.12.4.1.1.9060",
+            "code": "LE",
+            "display": "Lege"
+          }
+        ]
+      }
+    },
+    {
+      "code": {
+        "coding": [
+          {
+            "system": "urn:oid:2.16.578.1.12.4.1.1.7426",
+            "code": "1",
+            "display": "Allmennmedisin"
+          }
+        ]
+      }
+    },
+    {
+      "code": {
+        "coding": [
+          {
+            "system": "urn:oid:2.16.578.1.12.4.1.1.7704",
+            "code": "1",
+            "display": "Autorisasjon"
+          }
+        ]
+      },
+      "period": {
+        "start": "dateTime kvalifikasjonen gjelder fra"
+      }
+    }
   ]
 }
 ```
