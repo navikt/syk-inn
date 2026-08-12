@@ -42,7 +42,7 @@ practitioners already authenticate their users through HelseID (provided by Nors
 HelseID can therefore tell Nav, from public records such as Helsepersonellregisteret (HPR), exactly
 who the logged-in healthcare professional is.
 
-This is not a statement that EHRs cannot be trusted. It reflects a broader goal: the Norwegian
+This is not a statement that EHRs cannot be trusted. It reflects a broader goal that the Norwegian
 public sector should collaborate to provide EHRs, practitioners and other public services with good,
 shared, authoritative data. Since HelseID is already part of every practitioner's login, Nav can
 reuse it to verify identity without adding work for the EHR or the practitioner.
@@ -59,9 +59,10 @@ HPR-registered professional they claim to be.
 This ADR concerns verifying the **identity** of the logged-in practitioner. It does **not** cover
 which organisation the practitioner is acting on behalf of (for example, whether a doctor working at
 _legekontor 1_, rather than _hospital 2_ or _emergency room 3_, has the correct organisation number
-attached to the sykmelding). The EHR is better placed than HelseID to track where a practitioner is
-currently working, and that concern is handled separately. It is out of scope for HelseID
-double-auth SSO.
+attached to the sykmelding).
+
+The EHR is better placed than HelseID to track where a practitioner is currently working, and that
+concern is handled separately. It is out of scope for HelseID double-auth SSO.
 
 ## Decision
 
@@ -78,7 +79,10 @@ Wonderwall reverse proxy that reuses the HelseID session the practitioner alread
 logging in to the EHR. It requires no action from the practitioner and no development from the EHR.
 
 HelseID does **not** establish whether a healthcare professional has the authority to write a
-sykmelding — that authority is granted and managed by Nav, and is out of scope for this decision.
+sykmelding as that authority is granted and managed by Nav, and is out of scope for this decision.
+
+This decision changes the "Generelle Krav" for an EHR to support HelseID from **SHOULD (Bør)** to
+**MUST (Må)** in [nav-requirements](../fhir/nav-requirements.md#generelle-krav).
 
 ## Consequences
 
@@ -90,7 +94,7 @@ sykmelding — that authority is granted and managed by Nav, and is out of scope
 
 - Authoritative practitioner identity (HPR number) from public record, independent of EHR data
 - No EHR development or contract required to verify identity
-- Reuses an auth mechanism every practitioner already uses — no workflow disruption
+- Reuses an auth mechanism every practitioner already uses causing no workflow disruption
 
 **Practitioner / EHR**
 
@@ -190,7 +194,7 @@ sequenceDiagram
     Note over Doc,HID: HelseID double-auth SSO
     App-->>WW: Redirect /oauth2/login?redirect=/fhir/<patientId>
     WW->>HID: OIDC Auth Code + PKCE (PAR, private_key_jwt)
-    Note right of HID: Silent — reuses existing HelseID session
+    Note right of HID: Silent (reuses existing HelseID session)
     HID-->>WW: access_token + id_token
     WW->>App: Proxied request + Bearer access_token + X-Wonderwall-Id-Token
     App->>App: Validate access_token (JWKS, issuer, RS256)
