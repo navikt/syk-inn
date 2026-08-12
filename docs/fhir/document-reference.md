@@ -19,6 +19,9 @@ et felt som Nav bruker i dag.
 
 ```json
 {
+  "meta": {
+    "lastUpdated": "Last updated _timestamp_"
+  },
   "resourceType": "DocumentReference",
   "id": "unik DocumentReference id",
   "description": "Menneskelig lesbar forklaring av dokumentet",
@@ -36,8 +39,8 @@ et felt som Nav bruker i dag.
       "attachment": {
         "title": "Tittel generert av Nav",
         "language": "NO-nb",
-        "contentType": "application/pdf",
-        "data": "base64 PDF"
+        "contentType": "application/pdf | application/fhir+json",
+        "data": "base64 PDF | base64 FHIR JSON"
       }
     }
   ],
@@ -68,7 +71,7 @@ et felt som Nav bruker i dag.
 - `Description` er en overordnet beskrivelse av dokumentet, for sykmeldingen vil vi generere opp en
   informativ beskrivelse som _"100% Sykmelding fra 01.06.2024 til 07.06.2024"_.
 - `Content` er selve dokumentet, for sykmeldinger så vil vi opprette PDF-er med base64-koding som
-  vist i eksempelet over.
+  vist i eksempelet over. Det er også mulig å sende base64-kodet FHIR JSON fremfor PDF.
 - `Subject` er en refereanse til pasienten som gjelder for den aktuelle sykmeldingen.
 - `Author` er en referanse til Practitioner som sendte inn sykmeldingen.
 - `Context` → `Encounter` er brukt til å ivareta kravet om at en sykmelding krever en konsultasjon.
