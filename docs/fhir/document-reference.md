@@ -57,7 +57,11 @@ et felt som Nav bruker i dag.
       {
         "reference": "Encounter/<Referanse til encounter fordi Nav loven krever konsultasjon for sykmelding>"
       }
-    ]
+    ],
+    "period": {
+      "start": "1970-01-01",
+      "end": "1970-01-02"
+    }
   },
   "status": "current"
 }
