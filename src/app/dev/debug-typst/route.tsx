@@ -1,14 +1,19 @@
 import { logger } from '@navikt/next-logger'
+import { notFound } from 'next/navigation'
 import fs from 'node:fs'
 
 import { createTypstSykmelding, mapSykInnToPdfPayload } from '#core/pdf/pdf-service'
 import { TypstPdfSykmelding } from '#core/pdf/types'
 import { SykInnApiSykmelding, SykInnApiSykmeldingSchema } from '#core/services/syk-inn-api/schema/sykmelding'
 import { questionTexts } from '#data-layer/common/questions'
-import { isLocal } from '#lib/env'
+import { isDemo, isLocal } from '#lib/env'
 import { daysAgo, inDays, today } from '#lib/test/date-utils'
 
 export async function GET(): Promise<Response> {
+    if (!(isLocal || isDemo)) {
+        notFound()
+    }
+
     const chonkySykmelding: SykInnApiSykmelding = SykInnApiSykmeldingSchema.parse({
         sykmeldingId: crypto.randomUUID(),
         isFull: true,
