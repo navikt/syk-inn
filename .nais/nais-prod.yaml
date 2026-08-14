@@ -6,6 +6,13 @@ metadata:
   labels:
     team: tsm
 spec:
+  login:
+    provider: openid
+    enforcer:
+      enabled: true
+      excludePaths:
+        - /samarbeidspartner/sykmelding/fhir/**
+        - /samarbeidspartner/sykmelding/api/**
   ingresses:
     - 'https://www.nav.no/samarbeidspartner/sykmelding'
   valkey:
