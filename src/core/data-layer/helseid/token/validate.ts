@@ -1,7 +1,6 @@
-import { logger } from '@navikt/next-logger'
 import { jwtVerify, errors } from 'jose'
 
-import { spanServerAsync } from '#lib/otel/server'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 import { getJwkSet } from './jwk'
 import { getHelseIdAccessToken } from './tokens'
@@ -28,7 +27,11 @@ export async function validateHelseIdToken(): Promise<boolean> {
         } catch (e) {
             const errorType = e instanceof errors.JOSEError ? e.code : 'UnknownError'
 
-            logger.warn(new Error(`HelseID-token validation failed`, { cause: e }))
+            failSpan(
+                span,
+                'HelseID-token validation failed',
+                new Error(`HelseID-token validation failed`, { cause: e }),
+            )
 
             span.setAttributes({
                 'HelseID.token.valid': false,
