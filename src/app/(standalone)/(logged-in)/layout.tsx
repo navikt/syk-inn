@@ -15,6 +15,7 @@ import { getFlag, getUserlessToggles, getUserToggles, toToggleMap, UnleashClient
 import { HelseIdHeader } from '#data-layer/helseid/components/HelseIdHeader'
 import { getHelseIdBehandler } from '#data-layer/helseid/helseid-service'
 import { HydratePersistedUserFromSession } from '#data-layer/helseid/persistent-user/HydratePersistedUserFromSession'
+import { validateHelseIdToken } from '#data-layer/helseid/token/validate'
 import { LazyDevTools } from '#dev/tools/LazyDevTools'
 import { isDemo, isLocal } from '#lib/env'
 import { spanServerAsync } from '#lib/otel/server'
@@ -85,6 +86,13 @@ async function getRootStandaloneData(): Promise<RootStandaloneData> {
             }
             return [await getUserToggles(userInfo.hpr), userInfo]
         })
+
+        const validToken = await validateHelseIdToken()
+        if (!validToken) {
+            metrics.appLoadErrorsTotal.inc({ mode: 'HelseID', error_type: 'INVALID_TOKEN' })
+
+            return { error: 'NO_SESSION' }
+        }
 
         if (behandler == null) {
             metrics.appLoadErrorsTotal.inc({ mode: 'HelseID', error_type: 'NO_BEHANDLER' })
