@@ -110,8 +110,8 @@ export type AllDashboardQuery = {
                             } | null
                             tilbakedatering: {
                                 __typename: 'Tilbakedatering'
-                                startdato: string
-                                begrunnelse: string
+                                startdato: string | null
+                                begrunnelse: string | null
                             } | null
                             utdypendeSporsmal: {
                                 __typename: 'UtdypendeSporsmal'
@@ -350,8 +350,8 @@ export type AllDashboardQuery = {
                             } | null
                             tilbakedatering: {
                                 __typename: 'Tilbakedatering'
-                                startdato: string
-                                begrunnelse: string
+                                startdato: string | null
+                                begrunnelse: string | null
                             } | null
                             utdypendeSporsmal: {
                                 __typename: 'UtdypendeSporsmal'
@@ -593,8 +593,8 @@ export type AllDashboardQuery = {
                             } | null
                             tilbakedatering: {
                                 __typename: 'Tilbakedatering'
-                                startdato: string
-                                begrunnelse: string
+                                startdato: string | null
+                                begrunnelse: string | null
                             } | null
                             utdypendeSporsmal: {
                                 __typename: 'UtdypendeSporsmal'
@@ -971,7 +971,11 @@ export type SykmeldingByIdQuery = {
                       tilArbeidsgiver: string | null
                   } | null
                   yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
-                  tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+                  tilbakedatering: {
+                      __typename: 'Tilbakedatering'
+                      startdato: string | null
+                      begrunnelse: string | null
+                  } | null
                   utdypendeSporsmal: {
                       __typename: 'UtdypendeSporsmal'
                       utfordringerMedArbeid: string | null
@@ -1216,7 +1220,11 @@ export type OpprettSykmeldingMutation = {
                       tilArbeidsgiver: string | null
                   } | null
                   yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
-                  tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+                  tilbakedatering: {
+                      __typename: 'Tilbakedatering'
+                      startdato: string | null
+                      begrunnelse: string | null
+                  } | null
                   utdypendeSporsmal: {
                       __typename: 'UtdypendeSporsmal'
                       utfordringerMedArbeid: string | null
@@ -1368,7 +1376,7 @@ export type SykmeldingFullFragment = {
         arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string | null } | null
         meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null } | null
         yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
-        tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+        tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string | null; begrunnelse: string | null } | null
         utdypendeSporsmal: {
             __typename: 'UtdypendeSporsmal'
             utfordringerMedArbeid: string | null
@@ -1523,7 +1531,7 @@ type Sykmelding_SykmeldingFull_Fragment = {
         arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string | null } | null
         meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null } | null
         yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
-        tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string; begrunnelse: string } | null
+        tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string | null; begrunnelse: string | null } | null
         utdypendeSporsmal: {
             __typename: 'UtdypendeSporsmal'
             utfordringerMedArbeid: string | null

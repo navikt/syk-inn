@@ -161,7 +161,7 @@ export function serverDiagnoseSuggestionToFormValue(diagnose: DiagnoseFragment |
 function toTilbakedatering(
     tilbakedatering: SykmeldingFullFragment['values']['tilbakedatering'] | null,
 ): TilbakedateringField | null {
-    if (!tilbakedatering) {
+    if (!tilbakedatering || tilbakedatering.begrunnelse == null) {
         return null
     }
 

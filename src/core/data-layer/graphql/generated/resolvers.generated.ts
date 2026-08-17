@@ -511,8 +511,8 @@ export type SynchronizationStatus = {
 
 export type Tilbakedatering = {
     __typename?: 'Tilbakedatering'
-    begrunnelse: Scalars['String']['output']
-    startdato: Scalars['DateOnly']['output']
+    begrunnelse?: Maybe<Scalars['String']['output']>
+    startdato?: Maybe<Scalars['DateOnly']['output']>
 }
 
 export type Unrequested = {
@@ -1285,8 +1285,8 @@ export type TilbakedateringResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Tilbakedatering'] = ResolversParentTypes['Tilbakedatering'],
 > = {
-    begrunnelse?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    startdato?: Resolver<ResolversTypes['DateOnly'], ParentType, ContextType>
+    begrunnelse?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    startdato?: Resolver<Maybe<ResolversTypes['DateOnly']>, ParentType, ContextType>
 }
 
 export type UnrequestedResolvers<
