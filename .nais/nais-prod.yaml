@@ -8,7 +8,7 @@ metadata:
 spec:
   login:
     provider: openid
-    enforcer:
+    enforce:
       enabled: true
       excludePaths:
         - /samarbeidspartner/sykmelding/fhir/**
