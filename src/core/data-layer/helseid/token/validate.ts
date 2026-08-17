@@ -25,12 +25,16 @@ export async function validateHelseIdToken(): Promise<boolean> {
 
             return true
         } catch (e) {
+            // TODO: Temporary, just log the raw error:
+            // oxlint-disable-next-line no-console
+            console.error(e)
+
             const errorType = e instanceof errors.JOSEError ? e.code : 'UnknownError'
 
             failSpan(
                 span,
                 'HelseID-token validation failed',
-                new Error(`HelseID-token validation failed`, { cause: e }),
+                e instanceof Error ? e : new Error('Unknown error during token validation', { cause: e }),
             )
 
             span.setAttributes({

@@ -1,3 +1,4 @@
+import * as R from 'remeda'
 import * as z from 'zod'
 
 import { failSpan, spanServerAsync } from '#lib/otel/server'
@@ -13,7 +14,13 @@ const HelseIdWellKnownSchema = z.object({
 
 export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
     return spanServerAsync('HelseID.get-well-known', async (span) => {
-        const response = await fetch(`${getHelseIdUrl()}/.well-known/openid-configuration`, {
+        const openidConfigurationEndpoint = `${getHelseIdUrl()}/.well-known/openid-configuration`
+
+        span.setAttributes({
+            'HelseID.well-known.endpoint': openidConfigurationEndpoint,
+        })
+
+        const response = await fetch(openidConfigurationEndpoint, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
@@ -35,6 +42,8 @@ export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
                 new Error(`HelseID well-known parse failed`, { cause: parsed.error }),
             )
         }
+
+        span.setAttributes(R.mapKeys(parsed.data, (value, key) => `HelseID.well-known.${key}`))
 
         return parsed.data
     })
