@@ -1,9 +1,6 @@
 import '../globals.css'
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
 import React, { ReactElement } from 'react'
-
-import { bundledEnv } from '#lib/env'
 
 import Preload from '../preload'
 
@@ -14,9 +11,6 @@ export const metadata: Metadata = {
 }
 
 export default function StandaloneLayout({ children }: LayoutProps<'/'>): ReactElement {
-    // Standalone and wonderwall is disabled in production
-    if (bundledEnv.runtimeEnv === 'prod-gcp') return notFound()
-
     return (
         <html lang="nb" className="bg-ax-bg-neutral-soft">
             <head>
