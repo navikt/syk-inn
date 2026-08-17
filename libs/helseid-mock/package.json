@@ -13,8 +13,8 @@
     "exports": "./src/index.ts",
     "dependencies": {
         "@navikt/pino-logger": "^5.0.0",
-        "hono": "^4.13.1",
-        "jose": "^6.2.8",
+        "hono": "^4.13.2",
+        "jose": "^6.2.9",
         "nextleton": "^0.6.1",
         "pino": "^10.3.1"
     }
