@@ -63,6 +63,7 @@ spec:
       cpu: 50m
       memory: 360Mi
   envFrom:
+    - secret: login-config-syk-inn
     - secret: tsm-syk-inn-epj-secrets
     - secret: tsm-syk-inn-slack-secrets
     - secret: tsm-unleash-api-token
