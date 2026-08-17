@@ -31,7 +31,7 @@ export async function validateHelseIdToken(): Promise<boolean> {
             logger.warn(new Error(`HelseID-token validation failed`, { cause: e }))
 
             span.setAttributes({
-                'HelseID.token.valid': true,
+                'HelseID.token.valid': false,
                 'HelseID.token.error-type': errorType,
             })
 
