@@ -30,6 +30,7 @@ const nextConfig: NextConfig = {
          */
         turbopackServerFastRefresh: false,
         useTypeScriptCli: true,
+        serverSourceMaps: true,
     },
     images: { remotePatterns: [new URL('https://cdn.nav.no/**')] },
     logging: {
