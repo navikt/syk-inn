@@ -1,3 +1,4 @@
+import QuickLRU from 'quick-lru'
 import * as R from 'remeda'
 import * as z from 'zod'
 
@@ -5,7 +6,12 @@ import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 import { getHelseIdUrl } from '../config/envs'
 
-type HelseIdWellKnown = z.infer<typeof HelseIdWellKnownSchema>
+const wellKnownCache = new QuickLRU<string, HelseIdWellKnown>({
+    maxSize: 50,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+})
+
+export type HelseIdWellKnown = z.infer<typeof HelseIdWellKnownSchema>
 const HelseIdWellKnownSchema = z.object({
     issuer: z.string(),
     jwks_uri: z.url(),
@@ -14,9 +20,17 @@ const HelseIdWellKnownSchema = z.object({
 
 export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
     return spanServerAsync('HelseID.get-well-known', async (span) => {
+        const cached = wellKnownCache.get('well-known')
+        if (cached) {
+            span.setAttribute('HelseID.well-known.cached', true)
+            span.setAttribute('HelseID.well-known.cached.ttl', `${wellKnownCache.expiresIn('well-known')}ms`)
+            return cached
+        }
+
         const openidConfigurationEndpoint = `${getHelseIdUrl()}/.well-known/openid-configuration`
 
         span.setAttributes({
+            'HelseID.well-known.cached': false,
             'HelseID.well-known.endpoint': openidConfigurationEndpoint,
         })
 
@@ -45,6 +59,7 @@ export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
 
         span.setAttributes(R.mapKeys(parsed.data, (value, key) => `HelseID.well-known.${key}`))
 
+        wellKnownCache.set('well-known', parsed.data)
         return parsed.data
     })
 }
