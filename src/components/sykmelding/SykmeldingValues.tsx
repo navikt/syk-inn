@@ -8,7 +8,7 @@ import { arbeidsrelaterteArsakerToText } from '#data-layer/common/arbeidsrelater
 import { Diagnose } from '#data-layer/common/diagnose'
 import { PREVIOUS_OFFSET_DAYS } from '#data-layer/common/sykmelding-utils'
 import { toReadableDate, toReadableDatePeriod } from '#lib/date'
-import { AktivitetFragment, SykmeldingFragment } from '#queries'
+import { AktivitetFragment, SykmeldingFragment, SykmeldingFullValues } from '#queries'
 
 import { ValueItem } from './ValuesSection'
 
@@ -61,14 +61,7 @@ export function SykmeldingValues({ sykmelding }: Props): ReactElement {
                 </ValueItem>
             )}
             {sykmelding.values.tilbakedatering && (
-                <>
-                    <ValueItem title="Dato for tilbakedatering">
-                        {toReadableDate(sykmelding.values.tilbakedatering.startdato)}
-                    </ValueItem>
-                    <ValueItem title="Grunn for tilbakedatering">
-                        {sykmelding.values.tilbakedatering.begrunnelse}
-                    </ValueItem>
-                </>
+                <SykmeldingTilbakedateringValues tilbakedatering={sykmelding.values.tilbakedatering} />
             )}
             <SykmeldingDiagnoseValues
                 hoveddiagnose={sykmelding.values.hoveddiagnose}
@@ -220,6 +213,26 @@ function SykmeldingDiagnoseValues({
                         ))}
                     </ul>
                 </ValueItem>
+            )}
+        </>
+    )
+}
+
+function SykmeldingTilbakedateringValues({
+    tilbakedatering,
+}: {
+    tilbakedatering: SykmeldingFullValues['tilbakedatering']
+}): ReactElement | null {
+    if (tilbakedatering == null || (tilbakedatering.startdato == null && tilbakedatering.begrunnelse == null))
+        return null
+
+    return (
+        <>
+            {tilbakedatering.startdato != null && (
+                <ValueItem title="Dato for tilbakedatering">{toReadableDate(tilbakedatering.startdato)}</ValueItem>
+            )}
+            {tilbakedatering.begrunnelse != null && (
+                <ValueItem title="Grunn for tilbakedatering">{tilbakedatering.begrunnelse}</ValueItem>
             )}
         </>
     )

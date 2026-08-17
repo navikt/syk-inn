@@ -508,8 +508,8 @@ export type SynchronizationStatus = {
 
 export type Tilbakedatering = {
     __typename: 'Tilbakedatering'
-    begrunnelse: Scalars['String']['output']
-    startdato: Scalars['DateOnly']['output']
+    begrunnelse: Maybe<Scalars['String']['output']>
+    startdato: Maybe<Scalars['DateOnly']['output']>
 }
 
 export type Unrequested = {

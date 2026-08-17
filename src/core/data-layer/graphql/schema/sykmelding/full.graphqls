@@ -44,8 +44,8 @@ type Arbeidsgiver {
 }
 
 type Tilbakedatering {
-    startdato: DateOnly!
-    begrunnelse: String!
+    startdato: DateOnly
+    begrunnelse: String
 }
 
 type UtdypendeSporsmal {

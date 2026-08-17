@@ -57,8 +57,8 @@ const RuleResultSchema = z.object({
 })
 
 const TilbakedateringSchema = z.object({
-    startdato: z.string(),
-    begrunnelse: z.string(),
+    startdato: z.string().nullable(),
+    begrunnelse: z.string().nullable(),
 })
 
 const SporsmalSvarSchema = z.object({
