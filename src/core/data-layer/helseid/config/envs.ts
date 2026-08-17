@@ -5,7 +5,7 @@ export function getHelseIdUrl(): string {
         case 'dev-gcp':
             return 'https://helseid-sts.test.nhn.no'
         case 'prod-gcp':
-            throw 'https://helseid-sts.nhn.no'
+            return 'https://helseid-sts.nhn.no'
         case 'e2e':
         case 'local':
             return 'http://localhost:3000/api/mocks/helseid'
