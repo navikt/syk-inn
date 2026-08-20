@@ -3,7 +3,7 @@
     "dependencies": {
         "@playwright/test": "^1.62.1",
         "date-fns": "^4.4.0",
-        "remeda": "^2.40.0"
+        "remeda": "^2.42.0"
     },
     "scripts": {
         "e2e": "playwright test",
