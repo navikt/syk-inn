@@ -25,13 +25,13 @@
         }
     },
     "dependencies": {
-        "@navikt/pino-logger": "^5.0.0",
+        "@navikt/pino-logger": "^5.0.1",
         "@navikt/smart-on-fhir": "1.6.20",
         "hono": "^4.13.3",
-        "jose": "^6.2.9",
+        "jose": "^6.2.10",
         "nextleton": "^0.6.1",
         "pino": "^10.3.1",
-        "remeda": "^2.42.0",
+        "remeda": "^2.43.0",
         "zod": "^4.4.3"
     },
     "devDependencies": {
