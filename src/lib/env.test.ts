@@ -20,13 +20,11 @@ describe('getServerEnv', () => {
             const env = getServerEnv()
 
             expect(env.valkey).toEqual({
-                runtimeEnv: 'local',
                 host: 'foo',
             })
         })
 
         test('should parse valkeyConfig for dev', () => {
-            process.env.NEXT_PUBLIC_RUNTIME_ENV = 'dev-gcp'
             process.env.VALKEY_HOST_SYK_INN = 'foo'
             process.env.VALKEY_USERNAME_SYK_INN = 'bar'
             process.env.VALKEY_PASSWORD_SYK_INN = 'baz'
@@ -35,7 +33,6 @@ describe('getServerEnv', () => {
             const env = getServerEnv()
 
             expect(env.valkey).toEqual({
-                runtimeEnv: 'dev-gcp',
                 tls: {
                     host: 'foo',
                     port: 1234,
@@ -46,7 +43,6 @@ describe('getServerEnv', () => {
         })
 
         test('should parse valkeyConfig for prod', () => {
-            process.env.NEXT_PUBLIC_RUNTIME_ENV = 'prod-gcp'
             process.env.VALKEY_HOST_SYK_INN = 'foo'
             process.env.VALKEY_USERNAME_SYK_INN = 'bar'
             process.env.VALKEY_PASSWORD_SYK_INN = 'baz'
@@ -55,7 +51,6 @@ describe('getServerEnv', () => {
             const env = getServerEnv()
 
             expect(env.valkey).toEqual({
-                runtimeEnv: 'prod-gcp',
                 tls: {
                     host: 'foo',
                     port: 1234,
