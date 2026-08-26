@@ -1,8 +1,12 @@
-import { beforeEach, describe, expect, test } from 'vitest'
+import { beforeAll, beforeEach, describe, expect, test } from 'vitest'
 
 import { getServerEnv } from './env'
 
 describe('getServerEnv', () => {
+    beforeAll(() => {
+        process.env.HELSEID_URL = 'http://localhost:3000/api/mocks/helseid'
+    })
+
     beforeEach(() => {
         delete process.env.VALKEY_HOST_SYK_INN
         delete process.env.VALKEY_USERNAME_SYK_INN
@@ -15,7 +19,7 @@ describe('getServerEnv', () => {
 
             const env = getServerEnv()
 
-            expect(env.valkeyConfig).toEqual({
+            expect(env.valkey).toEqual({
                 runtimeEnv: 'local',
                 host: 'foo',
             })
@@ -30,7 +34,7 @@ describe('getServerEnv', () => {
 
             const env = getServerEnv()
 
-            expect(env.valkeyConfig).toEqual({
+            expect(env.valkey).toEqual({
                 runtimeEnv: 'dev-gcp',
                 tls: {
                     host: 'foo',
@@ -50,7 +54,7 @@ describe('getServerEnv', () => {
 
             const env = getServerEnv()
 
-            expect(env.valkeyConfig).toEqual({
+            expect(env.valkey).toEqual({
                 runtimeEnv: 'prod-gcp',
                 tls: {
                     host: 'foo',

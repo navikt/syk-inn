@@ -41,3 +41,6 @@ spec:
       memory: 400Mi
   envFrom:
     - secret: tsm-unleash-api-token
+  env:
+    - name: HELSEID_URL
+      value: https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding/api/mocks/helseid
