@@ -7,7 +7,7 @@ import { getServerEnv } from '#lib/env'
 import { raise } from '#lib/ts'
 
 function initializeValkey(): Valkey {
-    const valkeyConfig = getServerEnv().valkeyConfig ?? raise('Valkey config is not set! :(')
+    const valkeyConfig = getServerEnv().valkey ?? raise('Valkey config is not set! :(')
 
     const client = new Valkey({
         ...R.omit(valkeyConfig, ['runtimeEnv']),

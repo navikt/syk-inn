@@ -2,9 +2,8 @@ import QuickLRU from 'quick-lru'
 import * as R from 'remeda'
 import * as z from 'zod'
 
+import { getServerEnv } from '#lib/env'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
-
-import { getHelseIdUrl } from '../config/envs'
 
 const wellKnownCache = new QuickLRU<string, HelseIdWellKnown>({
     maxSize: 50,
@@ -27,7 +26,7 @@ export async function getHelseIdWellKnown(): Promise<HelseIdWellKnown> {
             return cached
         }
 
-        const openidConfigurationEndpoint = `${getHelseIdUrl()}/.well-known/openid-configuration`
+        const openidConfigurationEndpoint = `${getServerEnv().helseid.url}/.well-known/openid-configuration`
 
         span.setAttributes({
             'HelseID.well-known.cached': false,

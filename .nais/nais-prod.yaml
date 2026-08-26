@@ -67,3 +67,6 @@ spec:
     - secret: tsm-syk-inn-epj-secrets
     - secret: tsm-syk-inn-slack-secrets
     - secret: tsm-unleash-api-token
+  env:
+    - name: HELSEID_URL
+      value: https://helseid-sts.nhn.no

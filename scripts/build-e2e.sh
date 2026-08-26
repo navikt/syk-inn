@@ -10,5 +10,7 @@ fi
 echo -e "\033[0;32mLooks good, lets build (trying turbo)!\033[0m"
 
 cp .nais/envs/.env.demo .env.production
+
+echo HELSEID_URL=http://localhost:3000/api/mocks/helseid >> .env.production
 NEXT_PUBLIC_ASSET_PREFIX= NEXT_PUBLIC_BASE_PATH= NEXT_PUBLIC_RUNTIME_ENV=e2e yarn build --turbo
 cp -R .next/static .next/standalone/.next

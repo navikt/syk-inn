@@ -3,6 +3,12 @@ import { vi, test, describe, expect, beforeEach, afterEach, afterAll } from 'vit
 
 import type { HelseIdWellKnown } from './well-known'
 
+vi.mock('#lib/env', () => ({
+    getServerEnv: () => ({
+        helseid: { url: 'http://localhost:3000/api/mocks/helseid' },
+    }),
+}))
+
 describe('HelseID well known', () => {
     afterAll(() => {
         vi.restoreAllMocks()
@@ -10,6 +16,7 @@ describe('HelseID well known', () => {
 
     beforeEach(() => {
         vi.useFakeTimers()
+        // mock envs from src/lib/env.ts
     })
 
     afterEach(() => {
