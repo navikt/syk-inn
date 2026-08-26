@@ -1,7 +1,6 @@
 import { logger } from '@navikt/next-logger'
 import Valkey from 'iovalkey'
 import { lazyNextleton } from 'nextleton'
-import * as R from 'remeda'
 
 import { getServerEnv } from '#lib/env'
 import { raise } from '#lib/ts'
@@ -10,7 +9,7 @@ function initializeValkey(): Valkey {
     const valkeyConfig = getServerEnv().valkey ?? raise('Valkey config is not set! :(')
 
     const client = new Valkey({
-        ...R.omit(valkeyConfig, ['runtimeEnv']),
+        ...valkeyConfig,
         connectTimeout: 5000,
         enableReadyCheck: false,
     })

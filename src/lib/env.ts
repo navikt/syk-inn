@@ -38,7 +38,6 @@ const ValkeyConfigSchema = z.union([
      * The local setup doesn't require authentication but does need the Docker image URL.
      */
     z.object({
-        runtimeEnv: z.union([z.literal('dev-gcp'), z.literal('prod-gcp')]),
         username: z.string(),
         password: z.string(),
         tls: z.object({
@@ -47,7 +46,6 @@ const ValkeyConfigSchema = z.union([
         }),
     }),
     z.object({
-        runtimeEnv: z.literal('local'),
         host: z.string(),
     }),
 ])
@@ -78,16 +76,22 @@ export function getServerEnv(): ServerEnv {
     const valkeyConfig =
         bundledEnv.runtimeEnv !== 'demo' && bundledEnv.runtimeEnv !== 'e2e'
             ? ({
-                  runtimeEnv: process.env.NEXT_PUBLIC_RUNTIME_ENV,
                   username: process.env.VALKEY_USERNAME_SYK_INN,
                   password: process.env.VALKEY_PASSWORD_SYK_INN,
-                  // Local
-                  host: process.env.VALKEY_HOST_SYK_INN,
-                  // Cloud
-                  tls: {
-                      host: process.env.VALKEY_HOST_SYK_INN,
-                      port: process.env.VALKEY_PORT_SYK_INN,
-                  },
+                  ...(process.env.VALKEY_PORT_SYK_INN
+                      ? {
+                            // Cloud
+                            tls: {
+                                host: process.env.VALKEY_HOST_SYK_INN,
+                                port: process.env.VALKEY_PORT_SYK_INN,
+                            },
+                            host: undefined,
+                        }
+                      : {
+                            // Local
+                            host: process.env.VALKEY_HOST_SYK_INN,
+                            tls: undefined,
+                        }),
               } satisfies Record<KeysOfUnion<ValkeyConfig>, unknown>)
             : undefined
 
