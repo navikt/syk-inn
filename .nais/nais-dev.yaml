@@ -51,6 +51,7 @@ spec:
       external:
         - host: 'tsm-unleash-api.nav.cloud.nais.io'
         - host: 'fhir-api-auth.public.webmedepj.no'
+        - host: 'epj.ekstern.dev.nav.no'
         - host: 'helseid-sts.test.nhn.no'
         - host: 'slack.com'
       rules:
