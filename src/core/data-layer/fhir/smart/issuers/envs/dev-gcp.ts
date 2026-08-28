@@ -26,7 +26,7 @@ export function getKnownDevFhirServers(): KnownFhirServer[] {
         },
         {
             name: 'nav-epj',
-            issuer: 'https://epj.ansatt.dev.nav.no/fhir',
+            issuer: 'https://epj.ekstern.dev.nav.no/fhir',
             type: 'confidential-symmetric',
             method: 'client_secret_basic',
             clientSecret: configuration.navEpjClientSecret,
