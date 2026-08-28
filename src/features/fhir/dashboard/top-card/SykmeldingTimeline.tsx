@@ -14,6 +14,7 @@ import {
     isTodayOrInTheFuture,
     latestTom,
 } from '#data-layer/common/sykmelding-utils'
+import { toReadableDatePeriod } from '#lib/date'
 import { AllDashboardDocument, DraftFragment, SykmeldingFragment } from '#queries'
 
 import { AutoUpdatingDistance } from '../combo-table/draft/AutoUpdatingDistance'
@@ -151,7 +152,12 @@ function FullTimeline({
                                 end={tom}
                                 statusLabel="Hey"
                                 status={isCurrent ? 'success' : 'neutral'}
-                                icon={<BandageIcon />}
+                                icon={
+                                    <div className="inline-flex items-center">
+                                        <BandageIcon className="mr-1" />
+                                        {toReadableDatePeriod(fom, tom)}
+                                    </div>
+                                }
                                 onSelectPeriod={() => {
                                     router.push(mode.paths.sykmelding(it.sykmeldingId))
                                 }}
