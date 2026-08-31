@@ -27,12 +27,12 @@
     "dependencies": {
         "@navikt/pino-logger": "^5.0.1",
         "@navikt/smart-on-fhir": "1.6.20",
-        "hono": "^4.13.3",
+        "hono": "^4.13.5",
         "jose": "^6.2.10",
         "nextleton": "^0.6.1",
         "pino": "^10.3.1",
-        "remeda": "^2.43.0",
-        "zod": "^4.4.3"
+        "remeda": "^2.45.0",
+        "zod": "^4.5.2"
     },
     "devDependencies": {
         "@types/node": "^24.13.3",
