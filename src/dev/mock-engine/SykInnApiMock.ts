@@ -68,6 +68,7 @@ export class SykInnApiMock {
         return pdfBuffer.buffer
     }
 
+    // oxlint-disable-next-line no-unused-vars
     async verifySykmelding(_: OpprettSykmeldingPayload): Promise<SykInnApiRuleOutcome | SykInnApiPersonDoesNotExist> {
         const headersStore = await headers()
 

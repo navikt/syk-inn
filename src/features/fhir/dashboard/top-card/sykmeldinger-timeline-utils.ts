@@ -11,7 +11,7 @@ export const getLatestDraftDate = (lanes: DraftValueTriple[][]): Date | null | u
     R.pipe(
         lanes,
         R.flat(),
-        R.map(([, _, fomtom]) => fomtom.tom),
+        R.map(([, , fomtom]) => fomtom.tom),
         R.firstBy([R.identity(), 'desc']),
     )
 

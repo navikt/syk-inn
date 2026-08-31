@@ -10,6 +10,8 @@ export default defineConfig({
     rules: {
         // TODO: Consider turning on
         'typescript/no-misused-spread': 'off',
+        'react/refs': 'off',
+        'react/set-state-in-effect': 'off',
         'import-alias/import-alias': [
             'error',
             {

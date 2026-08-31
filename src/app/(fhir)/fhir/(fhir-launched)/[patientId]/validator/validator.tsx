@@ -10,6 +10,7 @@ import { cn } from '#lib/tw'
 const quips = ['Sjekker FHIR ressurser...', 'Validerer data...', 'Ser etter feil...', 'Justerer flux capacitor...']
 
 export function LoadingQuips(): ReactElement {
+    // oxlint-disable-next-line react/purity
     const [quip, setQuip] = React.useState<string | null>(quips[Math.floor(Math.random() * quips.length)])
     useInterval(() => {
         setQuip(quips[Math.floor(Math.random() * quips.length)])
