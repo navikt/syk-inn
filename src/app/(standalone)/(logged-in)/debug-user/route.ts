@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server'
 
+import { decodeHelseIdIdToken, getHelseIdBehandler, fetchHelseIdUserInfo } from '#core/auth/helseid/helseid'
+import { validateHelseIdToken } from '#core/auth/helseid/token/validate'
+import { getWonderwallHelseIdAccessToken, getWonderwallHelseIdIdToken } from '#core/auth/helseid/wonderwall-tokens'
 import { getUserlessToggles, getUserToggles, toToggleMap } from '#core/toggles/unleash'
-import { getHelseIdBehandler } from '#data-layer/helseid/helseid-service'
-import { getHelseIdIdTokenInfo, getHelseIdUserInfo } from '#data-layer/helseid/helseid-user'
-import { getHelseIdAccessToken, getHelseIdIdToken } from '#data-layer/helseid/token/tokens'
-import { validateHelseIdToken } from '#data-layer/helseid/token/validate'
 import { spanServerAsync } from '#lib/otel/server'
 
 export async function GET(): Promise<NextResponse> {
@@ -20,11 +19,11 @@ export async function GET(): Promise<NextResponse> {
         hpr: behandler?.hpr ?? 'missing',
         toggles: toToggleMap(toggles),
         validToken: await validateHelseIdToken().catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
-        idToken: await getHelseIdIdTokenInfo().catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
-        userInfo: await getHelseIdUserInfo().catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
+        idToken: await decodeHelseIdIdToken().catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
+        userInfo: await fetchHelseIdUserInfo().catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
         raw: {
-            id_token: await getHelseIdIdToken(),
-            access_token: await getHelseIdAccessToken(),
+            id_token: await getWonderwallHelseIdIdToken(),
+            access_token: await getWonderwallHelseIdAccessToken(),
         },
     })
 }

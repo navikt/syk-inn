@@ -1,10 +1,10 @@
 import { logger } from '@navikt/next-logger'
 import { NextRequest } from 'next/server'
 
+import { getHelseIdBehandler } from '#core/auth/helseid/helseid'
+import { validateHelseIdToken } from '#core/auth/helseid/token/validate'
 import { handleFeedback } from '#core/services/feedback/feedback-service'
 import { NoHelseIdSession } from '#data-layer/helseid/error/Errors'
-import { getHelseIdBehandler } from '#data-layer/helseid/helseid-service'
-import { validateHelseIdToken } from '#data-layer/helseid/token/validate'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 export async function POST(request: NextRequest): Promise<Response> {
