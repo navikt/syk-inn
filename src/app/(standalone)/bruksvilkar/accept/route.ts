@@ -2,8 +2,8 @@ import { logger } from '@navikt/next-logger'
 import { NextRequest, NextResponse } from 'next/server'
 import * as z from 'zod'
 
+import { getHelseIdBehandler } from '#core/auth/helseid/helseid'
 import { acceptBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
-import { getHelseIdBehandler } from '#data-layer/helseid/helseid-service'
 import { bundledEnv } from '#lib/env'
 
 const PayloadSchema = z.object({

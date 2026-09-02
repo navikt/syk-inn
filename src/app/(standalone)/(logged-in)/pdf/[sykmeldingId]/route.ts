@@ -1,9 +1,9 @@
 import { NextRequest } from 'next/server'
 
+import { getHelseIdBehandler } from '#core/auth/helseid/helseid'
+import { validateHelseIdToken } from '#core/auth/helseid/token/validate'
 import { createTypstSykmelding } from '#core/pdf/pdf-service'
 import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
-import { getHelseIdBehandler } from '#data-layer/helseid/helseid-service'
-import { validateHelseIdToken } from '#data-layer/helseid/token/validate'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 export async function GET(_: NextRequest, { params }: RouteContext<'/pdf/[sykmeldingId]'>): Promise<Response> {

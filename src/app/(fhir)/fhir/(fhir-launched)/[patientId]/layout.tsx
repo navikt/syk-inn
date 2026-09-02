@@ -6,6 +6,8 @@ import React, { ReactElement } from 'react'
 import { NoValidHPR } from '#components/errors/NoValidHPR'
 import { FeedbackButton } from '#components/feedback/FeedbackButton'
 import { LoggedOutWarning } from '#components/user-warnings/LoggedOutWarning'
+import { getHelseIdBehandler } from '#core/auth/helseid/helseid'
+import { getWonderwallHelseIdAccessToken, getWonderwallHelseIdIdToken } from '#core/auth/helseid/wonderwall-tokens'
 import { createFhirPaths } from '#core/providers/ModePaths'
 import { FhirModeProvider } from '#core/providers/Modes'
 import { Providers } from '#core/providers/Providers'
@@ -16,8 +18,6 @@ import { getFlag, getUserToggles, toToggleMap } from '#core/toggles/unleash'
 import { getNameFromFhir, getValidPatientIdent } from '#data-layer/fhir/mappers/patient'
 import { getHpr } from '#data-layer/fhir/mappers/practitioner'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
-import { getHelseIdBehandler } from '#data-layer/helseid/helseid-service'
-import { getHelseIdAccessToken, getHelseIdIdToken } from '#data-layer/helseid/token/tokens'
 import { LazyDevTools } from '#dev/tools/LazyDevTools'
 import { isDemo, isDevGcp, isLocal } from '#lib/env'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
@@ -111,8 +111,8 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
         const flag = getFlag('SYK_INN_HELSEID_DOUBLE_AUTH_EXP', toggles)
         if (flag) {
             try {
-                const helseIdAccessToken = await getHelseIdAccessToken()
-                const helseIdIdToken = await getHelseIdIdToken()
+                const helseIdAccessToken = await getWonderwallHelseIdAccessToken()
+                const helseIdIdToken = await getWonderwallHelseIdIdToken()
                 logger.info(
                     `[HelseID-double-auth-exp] HelseID tokens on FHIR path! access_token length: ${helseIdAccessToken.length}, id_token length: ${helseIdIdToken.length}`,
                 )

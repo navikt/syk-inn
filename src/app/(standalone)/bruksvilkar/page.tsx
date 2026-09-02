@@ -5,9 +5,9 @@ import * as R from 'remeda'
 
 import { LegeOgBehandlerTelefonen } from '#components/help/LegeOgBehandlerTelefonen'
 import { PageLayout } from '#components/layout/Page'
+import { getHelseIdBehandler } from '#core/auth/helseid/helseid'
 import { HelseIdPaths } from '#core/providers/ModePaths'
 import { hasAcceptedBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
-import { getHelseIdBehandler } from '#data-layer/helseid/helseid-service'
 import { Bruksvilkar } from '#features/bruksvilkar/Bruksvilkar'
 
 async function Page(): Promise<ReactElement> {
