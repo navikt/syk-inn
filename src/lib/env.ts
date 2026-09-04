@@ -62,6 +62,7 @@ const ServerEnvSchema = z.object({
     localSykInnApiHost: z.string().default('localhost:8080'),
     useLocalValkey: z.boolean().default(false),
     pilotFeedbackSlackWebhook: z.string().nullish(),
+    openDemoMsFormsUrl: z.string().nullish(),
 })
 
 /**
@@ -102,6 +103,7 @@ export function getServerEnv(): ServerEnv {
         localSykInnApiHost: process.env.LOCAL_SYK_INN_API_HOST,
         useLocalValkey: process.env.USE_LOCAL_VALKEY === 'true',
         pilotFeedbackSlackWebhook: process.env.PILOT_FEEDBACK_SLACK_WEBHOOK,
+        openDemoMsFormsUrl: process.env.DEMO_MS_FORMS_URL,
     } satisfies Record<keyof ServerEnv, unknown>)
 
     if (bundledEnv.runtimeEnv !== 'local' && parsedEnv.useLocalSykInnApi) {

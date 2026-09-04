@@ -3,11 +3,15 @@ import { BodyShort, Button, Link as AkselLink } from '@navikt/ds-react'
 import { InfoCard, InfoCardHeader, InfoCardContent, InfoCardTitle } from '@navikt/ds-react/InfoCard'
 import React, { ReactElement } from 'react'
 
-import { isLocal, isDemo } from '#lib/env'
+import { isLocal, isDemo, getServerEnv } from '#lib/env'
 import { raise } from '#lib/ts'
 import { pathWithBasePath } from '#lib/url'
 
-export async function DemoHeader(): Promise<ReactElement> {
+type Props = {
+    questionnaire?: boolean
+}
+
+export async function DemoHeader({ questionnaire = true }: Props): Promise<ReactElement> {
     if (!(isLocal || isDemo)) {
         raise(new Error('DemoHeader should only be rendered in local or demo environment'))
     }
@@ -27,26 +31,31 @@ export async function DemoHeader(): Promise<ReactElement> {
                     </AkselLink>
                 </InfoCardContent>
             </InfoCard>
-            <InfoCard data-color="info" size="small">
-                <InfoCardHeader icon={<FaceSmileIcon aria-hidden />}>
-                    <InfoCardTitle suppressHydrationWarning>Noe du vil dele med oss?</InfoCardTitle>
-                </InfoCardHeader>
-                <InfoCardContent>
-                    <BodyShort spacing>
-                        Svar på en enkel spørreundersøkelse og fortell oss dine tanker om løsningen.
-                    </BodyShort>
-                    <Button
-                        size="small"
-                        icon={<ExternalLinkIcon aria-hidden />}
-                        variant="secondary"
-                        as="a"
-                        href={process.env.DEMO_MS_FORMS_URL ?? raise(new Error('Missing DEMO_MS_FORMS_URL env var'))}
-                        target="_blank"
-                    >
-                        Svar på spørreundersøkelse
-                    </Button>
-                </InfoCardContent>
-            </InfoCard>
+            {questionnaire && (
+                <InfoCard data-color="info" size="small">
+                    <InfoCardHeader icon={<FaceSmileIcon aria-hidden />}>
+                        <InfoCardTitle suppressHydrationWarning>Noe du vil dele med oss?</InfoCardTitle>
+                    </InfoCardHeader>
+                    <InfoCardContent>
+                        <BodyShort spacing>
+                            Svar på en enkel spørreundersøkelse og fortell oss dine tanker om løsningen.
+                        </BodyShort>
+                        <Button
+                            size="small"
+                            icon={<ExternalLinkIcon aria-hidden />}
+                            variant="secondary"
+                            as="a"
+                            href={
+                                getServerEnv().openDemoMsFormsUrl ??
+                                raise(new Error('Missing DEMO_MS_FORMS_URL env var'))
+                            }
+                            target="_blank"
+                        >
+                            Svar på spørreundersøkelse
+                        </Button>
+                    </InfoCardContent>
+                </InfoCard>
+            )}
         </div>
     )
 }

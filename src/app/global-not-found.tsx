@@ -30,7 +30,7 @@ function GlobalNotFound(): ReactElement {
             </head>
             <Preload />
             <body>
-                {(isLocal || isDemo) && <DemoHeader />}
+                {(isLocal || isDemo) && <DemoHeader questionnaire={false} />}
                 <PageBlock as="main" width="xl" gutters>
                     <Box paddingBlock="space-20 space-16">
                         <VStack gap="space-16">
