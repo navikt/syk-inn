@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import React, { ReactElement } from 'react'
 
-import { DemoWarning } from '#components/user-warnings/DemoWarning'
+import { DemoHeader } from '#components/user-warnings/DemoHeader'
 import { isDemo, isLocal } from '#lib/env'
 
 import Preload from '../preload'
@@ -28,7 +28,7 @@ export default async function DevLayout({ children }: LayoutProps<'/'>): Promise
             <Preload />
             <body>
                 <NuqsAdapter>
-                    {(isLocal || isDemo) && <DemoWarning />}
+                    {(isLocal || isDemo) && <DemoHeader />}
                     {children}
                 </NuqsAdapter>
             </body>

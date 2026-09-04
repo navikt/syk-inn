@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import React, { ReactElement } from 'react'
 
 import { NoValidHPR } from '#components/errors/NoValidHPR'
-import { DemoWarning } from '#components/user-warnings/DemoWarning'
+import { DemoHeader } from '#components/user-warnings/DemoHeader'
 import { LoggedOutWarning } from '#components/user-warnings/LoggedOutWarning'
 import { NonPilotUserWarning } from '#components/user-warnings/NonPilotUserWarning'
 import { getHelseIdBehandler } from '#core/auth/helseid/helseid'
@@ -31,21 +31,21 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
             case 'NO_HPR':
                 return (
                     <>
-                        {(isLocal || isDemo) && <DemoWarning />}
+                        {(isLocal || isDemo) && <DemoHeader />}
                         <NoValidHPR />
                     </>
                 )
             case 'NO_SESSION':
                 return (
                     <>
-                        {(isLocal || isDemo) && <DemoWarning />}
+                        {(isLocal || isDemo) && <DemoHeader />}
                         <NoBehandlerError />
                     </>
                 )
             case 'NON_PILOT_USER':
                 return (
                     <>
-                        {(isLocal || isDemo) && <DemoWarning />}
+                        {(isLocal || isDemo) && <DemoHeader />}
                         <NonPilotUserWarning />
                     </>
                 )
@@ -57,7 +57,7 @@ async function StandaloneLoggedInLayout({ children }: LayoutProps<'/'>): Promise
             <Providers graphqlPath={HelseIdPaths.graphql}>
                 <HydratePersistedUserFromSession />
                 <HelseIdHeader behandler={rootData.behandler} />
-                {(isLocal || isDemo) && <DemoWarning />}
+                {(isLocal || isDemo) && <DemoHeader />}
                 <ToggleProvider toggles={toToggleMap(rootData.toggles)}>
                     {children}
                     <LoggedOutWarning />

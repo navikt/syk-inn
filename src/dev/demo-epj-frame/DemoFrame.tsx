@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { PropsWithChildren, ReactElement } from 'react'
 
-import { DemoWarning } from '#components/user-warnings/DemoWarning'
+import { DemoHeader } from '#components/user-warnings/DemoHeader'
 import { isDemo, isLocal } from '#lib/env'
 
 import { getDemoFrameEnabled } from './cookies'
@@ -18,7 +18,7 @@ export async function DemoFrame({ children }: PropsWithChildren): Promise<ReactE
     if (!useDemoFrame) {
         return (
             <>
-                <DemoWarning />
+                <DemoHeader />
                 {children}
             </>
         )

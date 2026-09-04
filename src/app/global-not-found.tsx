@@ -6,7 +6,7 @@ import { PageBlock } from '@navikt/ds-react/Page'
 import { Metadata } from 'next'
 import React, { ReactElement } from 'react'
 
-import { DemoWarning } from '#components/user-warnings/DemoWarning'
+import { DemoHeader } from '#components/user-warnings/DemoHeader'
 import { isDemo, isLocal } from '#lib/env'
 
 import Preload from './preload'
@@ -30,7 +30,7 @@ function GlobalNotFound(): ReactElement {
             </head>
             <Preload />
             <body>
-                {(isLocal || isDemo) && <DemoWarning />}
+                {(isLocal || isDemo) && <DemoHeader />}
                 <PageBlock as="main" width="xl" gutters>
                     <Box paddingBlock="space-20 space-16">
                         <VStack gap="space-16">

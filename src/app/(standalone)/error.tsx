@@ -6,7 +6,7 @@ import { Page, PageBlock } from '@navikt/ds-react/Page'
 import { logger } from '@navikt/next-logger'
 import React, { ReactElement, useEffect } from 'react'
 
-import { DemoWarning } from '#components/user-warnings/DemoWarning'
+import { DemoHeader } from '#components/user-warnings/DemoHeader'
 import { isDemo, isLocal } from '#lib/env'
 
 type Props = {
@@ -23,7 +23,7 @@ function Error({ error }: Props): ReactElement {
 
     return (
         <Page>
-            {(isLocal || isDemo) && <DemoWarning />}
+            {(isLocal || isDemo) && <DemoHeader />}
             <PageBlock as="main" width="xl" gutters>
                 <Box paddingBlock="space-20 space-8">
                     <HGrid columns="minmax(auto,600px)" data-aksel-template="500-v2">

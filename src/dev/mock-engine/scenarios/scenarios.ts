@@ -35,6 +35,13 @@ const simpleScenarios = {
         scenario: () => ({
             drafts: [new DraftBuilder().diagnose('A01').gradert(60, { offset: 1, days: 4 }).lastUpdated(3).build()],
             sykmeldinger: [
+                new SykmeldingBuilder({ offset: -36 })
+                    .meldinger({
+                        tilNav: 'Eksempel på melding til Nav',
+                        tilArbeidsgiver: 'Eksempel på melding til arbeidsgiver',
+                    })
+                    .enkelAktivitet({ offset: 0, days: 14 })
+                    .build(),
                 new SykmeldingBuilder({ offset: -18 }).enkelAktivitet({ offset: 0, days: 14 }).build(),
                 new SykmeldingBuilder({ offset: -3 }).enkelAktivitet({ offset: 0, days: 4 }).build(),
             ],
