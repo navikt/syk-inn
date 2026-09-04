@@ -2356,7 +2356,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^5.0.1"
-    "@navikt/smart-on-fhir": "npm:1.6.20"
+    "@navikt/smart-on-fhir": "npm:1.6.21"
     "@types/node": "npm:^24.13.3"
     hono: "npm:^4.13.5"
     jose: "npm:^6.2.10"
@@ -2392,7 +2392,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/pino-logger@npm:^5.0.0, @navikt/pino-logger@npm:^5.0.1":
+"@navikt/pino-logger@npm:^5.0.1":
   version: 5.0.1
   resolution: "@navikt/pino-logger@npm:5.0.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F5.0.1%2F819f7f398e4378c014dd39f704c26f691a0915a1"
   dependencies:
@@ -2407,21 +2407,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.6.20":
-  version: 1.6.20
-  resolution: "@navikt/smart-on-fhir@npm:1.6.20::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.6.20%2Fb3e8a6fccbc822835d8c6b19f297a48e5f675881"
+"@navikt/smart-on-fhir@npm:1.6.21":
+  version: 1.6.21
+  resolution: "@navikt/smart-on-fhir@npm:1.6.21::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.6.21%2Fe2ab101183c418eced65ab06adf070ebf6712e8f"
   dependencies:
-    "@navikt/pino-logger": "npm:^5.0.0"
-    "@navikt/tsm-oxlint": "npm:^0.0.4"
+    "@navikt/pino-logger": "npm:^5.0.1"
     "@opentelemetry/api": "npm:^1.9.1"
-    "@opentelemetry/core": "npm:^2.9.0"
-    jose: "npm:^6.2.3"
-    openid-client: "npm:^6.8.4"
+    "@opentelemetry/core": "npm:^2.11.0"
+    jose: "npm:^6.2.10"
+    openid-client: "npm:^6.8.7"
     quick-lru: "npm:^7.3.0"
   peerDependencies:
     pino: 9 || 10
     zod: 4
-  checksum: 10c0/879154f4945f4ba2e245a0d7e33958bc2713824671c70328f25c4aaa6b1dc3e889b87339b543c6b2e62b221d2581f5b0dfedff60b8abcbd9ad92f2b053609931
+  checksum: 10c0/38e07922dc782234bfd82ed748706ad9a5ca6751a47ee8f56903e00f444e75fc31bff3b0f6cbc874f014a68a405d944d586ef9d6352f713ad0713f1c0de27cd7
   languageName: node
   linkType: hard
 
@@ -2437,10 +2436,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@navikt/texas@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "@navikt/texas@npm:4.2.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftexas%2F4.2.0%2F5f1e0e66d7d06742ce47b4b9738fe17b4f97d6ac"
-  checksum: 10c0/b772f9bca0984d51020548545dcc393fdbc2333b0f9dd22237d8a3bc64aede6a410ab61a7277486845ad85dbdbac5f2fbd1fbeeeb07e7c666524c5721001b9a2
+"@navikt/texas@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "@navikt/texas@npm:4.2.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftexas%2F4.2.2%2F862d743a1df21630a007a0d2d2a36a74dd8b5187"
+  checksum: 10c0/3b6d0ea1660b23094eb6ee60d45ec41c630df2ba1db6a15b9702f8b7ee8927912564f3896262a59329ed9b8c573684ccc34fb2335787311c74a973aa67537252
   languageName: node
   linkType: hard
 
@@ -2457,15 +2456,6 @@ __metadata:
   peerDependencies:
     oxfmt: ">= 0"
   checksum: 10c0/5a848aba8a73058a4e7f91f2f824dd70856ed330a66282a4f9130b25e8a8b3d067276c150fd2693158fedcfc22e7ceb320ac283adea4169f8707f285631d49c3
-  languageName: node
-  linkType: hard
-
-"@navikt/tsm-oxlint@npm:^0.0.4":
-  version: 0.0.4
-  resolution: "@navikt/tsm-oxlint@npm:0.0.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftsm-oxlint%2F0.0.4%2F1e78181a9ad31a9313f95fb7188098de742da86c"
-  peerDependencies:
-    oxlint: ">= 1"
-  checksum: 10c0/ca1f5c3c68cc919c7c5da68f0222c1e06a95c8ed96544d115eb73c09f5e05bb42e7fc4ff89c619ac55ea33d2df3efe5208cb9135e2fcf15b0921f260f377f459
   languageName: node
   linkType: hard
 
@@ -2683,7 +2673,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:^2.0.0, @opentelemetry/core@npm:^2.11.0, @opentelemetry/core@npm:^2.9.0":
+"@opentelemetry/core@npm:^2.0.0, @opentelemetry/core@npm:^2.11.0":
   version: 2.11.0
   resolution: "@opentelemetry/core@npm:2.11.0"
   dependencies:
@@ -6750,7 +6740,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^6.2.10, jose@npm:^6.2.3, jose@npm:^6.2.8":
+"jose@npm:^6.2.10, jose@npm:^6.2.8":
   version: 6.2.10
   resolution: "jose@npm:6.2.10"
   checksum: 10c0/799fd8d3d92fe748ebe1f57dbd3dfd917d2e61d9fb39912c72cc674ae61d69414b7cc0ce773df8a0160e849926fc31853aec9caab88c481563d5a8ab6558e107
@@ -8498,7 +8488,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openid-client@npm:^6.8.4":
+"openid-client@npm:^6.8.7":
   version: 6.8.7
   resolution: "openid-client@npm:6.8.7"
   dependencies:
@@ -10432,9 +10422,9 @@ __metadata:
     "@navikt/helseid-mock-server": "workspace:*"
     "@navikt/next-logger": "npm:^5.0.1"
     "@navikt/pino-logger": "npm:^5.0.1"
-    "@navikt/smart-on-fhir": "npm:1.6.20"
+    "@navikt/smart-on-fhir": "npm:1.6.21"
     "@navikt/syk-zara": "workspace:*"
-    "@navikt/texas": "npm:^4.2.0"
+    "@navikt/texas": "npm:^4.2.2"
     "@navikt/tsm-diagnoser": "npm:^2026.8.25"
     "@navikt/tsm-oxfmt": "npm:^0.0.11"
     "@navikt/tsm-oxlint": "npm:^0.0.7"

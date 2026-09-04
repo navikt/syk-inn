@@ -2,7 +2,6 @@ import { useQuery } from '@apollo/client/react'
 import { useRef } from 'react'
 
 import type { NySykmeldingSuggestions } from '#features/ny-sykmelding-form/form/types'
-import useOnFocus from '#lib/hooks/useOnFocus'
 import { type DiagnoseFragment, KonsultasjonDocument } from '#queries'
 
 export function useDiagnoseSuggestions():
@@ -17,11 +16,10 @@ export function useDiagnoseSuggestions():
       } {
     const neverAbortSignal = useRef(new AbortController())
     const konsultasjonsQuery = useQuery(KonsultasjonDocument, {
+        refetchOn: { windowFocus: true },
         /* This lets the consultasjon query finish even when the parent component unmounts */
         context: { signal: neverAbortSignal.current.signal },
     })
-
-    useOnFocus(konsultasjonsQuery.refetch)
 
     if (konsultasjonsQuery.loading && konsultasjonsQuery.data?.konsultasjon == null) {
         return { loading: true, suggestions: null }

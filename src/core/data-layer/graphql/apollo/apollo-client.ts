@@ -1,4 +1,11 @@
-import { ApolloClient, ApolloLink, CombinedGraphQLErrors, HttpLink } from '@apollo/client'
+import {
+    ApolloClient,
+    ApolloLink,
+    CombinedGraphQLErrors,
+    HttpLink,
+    RefetchEventManager,
+    windowFocusSource,
+} from '@apollo/client'
 import { ErrorLink } from '@apollo/client/link/error'
 import { RetryLink } from '@apollo/client/link/retry'
 import { logger } from '@navikt/next-logger'
@@ -39,6 +46,8 @@ const inferOperationName = (body: string | undefined): string => {
 
 export function makeApolloClient(store: AppStore, mode: ModeType, path: `/${string}`) {
     return (): ApolloClient => {
+        const refetchEventManager = new RefetchEventManager({ sources: { windowFocus: windowFocusSource } })
+
         const httpLink = new HttpLink({
             uri: pathWithBasePath(path),
             fetch: (input, options) => {
@@ -66,6 +75,8 @@ export function makeApolloClient(store: AppStore, mode: ModeType, path: `/${stri
             link: ApolloLink.from(
                 [errorLink, failingDevLink, retryLink, currentPatientLink, patientLink, httpLink].filter(R.isNonNull),
             ),
+            refetchEventManager: refetchEventManager,
+            defaultOptions: { watchQuery: { refetchOn: false } },
             devtools: { enabled: process.env.NODE_ENV === 'development' || isLocal || isDemo },
         })
     }

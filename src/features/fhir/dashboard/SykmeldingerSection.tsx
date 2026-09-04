@@ -8,7 +8,6 @@ import * as R from 'remeda'
 import { LegeOgBehandlerTelefonen } from '#components/help/LegeOgBehandlerTelefonen'
 import { SessionIdInfo } from '#components/help/SessionIdInfo'
 import { getAllSykmeldingerFromQuery } from '#data-layer/common/sykmelding-utils'
-import useOnFocus from '#lib/hooks/useOnFocus'
 import { cn } from '#lib/tw'
 import { AllDashboardDocument } from '#queries'
 
@@ -19,8 +18,9 @@ import { HistoriskeSykmeldingerEmptyState, RequestHistoriske } from './combo-tab
 import { DashboardTable } from './table/DashboardTable'
 
 export function SykmeldingerSection({ className }: { className?: string }): ReactElement {
-    const dashboardQuery = useQuery(AllDashboardDocument)
-    useOnFocus(dashboardQuery.refetch)
+    const dashboardQuery = useQuery(AllDashboardDocument, {
+        refetchOn: { windowFocus: true },
+    })
 
     const isRefetching = dashboardQuery.networkStatus === NetworkStatus.refetch
     const initialLoad = dashboardQuery.networkStatus === NetworkStatus.loading
