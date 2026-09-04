@@ -1,7 +1,9 @@
-import { subMinutes } from 'date-fns'
+import { addDays, subMinutes } from 'date-fns'
 
+import { getDiagnoseText } from '#data-layer/common/diagnose-search'
 import { DraftOwnership } from '#data-layer/draft/draft-client'
 import { DraftValues } from '#data-layer/draft/draft-schema'
+import { dateOnly } from '#lib/date'
 
 export class DraftBuilder {
     private _id: string
@@ -30,6 +32,38 @@ export class DraftBuilder {
 
     lastUpdated(minutesAgo: number): DraftBuilder {
         this._lastUpdated = subMinutes(new Date(), minutesAgo)
+        return this
+    }
+
+    gradert(grad: number, relative: { offset: number; days: number } = { offset: 0, days: 7 }): DraftBuilder {
+        const now = new Date()
+
+        const fom = dateOnly(addDays(now, relative.offset))
+        const tom = dateOnly(addDays(now, relative.offset + relative.days))
+
+        this._values.perioder = [
+            {
+                type: 'GRADERT',
+                fom,
+                tom,
+                grad: grad.toString(),
+                gradertReisetilksudd: false,
+                arbeidsrelatertArsak: null,
+            },
+        ]
+        return this
+    }
+
+    /**
+     * ICPC-2
+     */
+    diagnose(code: string): DraftBuilder {
+        const text = getDiagnoseText('ICPC2', code)
+        if (text == null) {
+            throw Error(`Illegal ICPC-2 mock code: ${code}, does not exist`)
+        }
+
+        this._values.hoveddiagnose = { system: 'ICPC2', code, text: text }
         return this
     }
 

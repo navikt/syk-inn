@@ -30,6 +30,17 @@ const simpleScenarios = {
             drafts: [],
         }),
     },
+    demo: {
+        description: 'Enkel demo med fornuftige test-data',
+        scenario: () => ({
+            drafts: [new DraftBuilder().diagnose('A01').gradert(60, { offset: 1, days: 4 }).lastUpdated(3).build()],
+            sykmeldinger: [
+                new SykmeldingBuilder({ offset: -18 }).enkelAktivitet({ offset: 0, days: 14 }).build(),
+                new SykmeldingBuilder({ offset: -3 }).enkelAktivitet({ offset: 0, days: 4 }).build(),
+            ],
+            arbeidsforhold: simpleAaregArbeidsforhold,
+        }),
+    },
     empty: {
         description: 'No previous sykmeldinger, no current sykmelding',
         scenario: () => ({

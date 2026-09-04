@@ -56,7 +56,7 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
                     {children}
                     <LoggedOutWarning />
                     {(isLocal || isDemo) && <LazyDevTools />}
-                    <FeedbackButton />
+                    {!isDemo && <FeedbackButton />}
                     {(isLocal || isDevGcp) && (
                         <div className="fixed bottom-2 left-2">
                             <Link href={`/fhir/${patientId}/validator`} className="underline text-sm">
