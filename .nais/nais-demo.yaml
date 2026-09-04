@@ -40,7 +40,7 @@ spec:
       cpu: 50m
       memory: 400Mi
   envFrom:
-    - secret: tsm-unleash-api-token
+    - configmap: syk-inn-demo-forms
   env:
     - name: HELSEID_URL
       value: https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding/api/mocks/helseid

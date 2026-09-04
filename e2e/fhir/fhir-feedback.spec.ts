@@ -36,7 +36,9 @@ test('submitting feedback without contact should work', async ({ page }) => {
 })
 
 test('submitting feedback on kvittering page should work', async ({ page }) => {
-    await launchWithMock('empty')(page)
+    await launchWithMock('empty', {
+        SYK_INN_FEEDBACK_KVITTERING: true,
+    })(page)
     await startNewSykmelding({ name: 'Espen Eksempel', fnr: '21037712323' })(page)
     await test.step('fill only values that are not prefilled (tom, grad)', async () => {
         // Tom is not prefilled
