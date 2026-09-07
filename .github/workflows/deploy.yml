@@ -71,6 +71,7 @@ jobs:
           env: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           salsa: false
+          disable-docker-cache: 'true'
     outputs:
       image: ${{ steps.next-build.outputs.image }}
 
@@ -90,6 +91,7 @@ jobs:
           env: demo
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           salsa: false
+          disable-docker-cache: 'true'
     outputs:
       image: ${{ steps.next-build.outputs.image }}
 
@@ -109,6 +111,7 @@ jobs:
           env: prod
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           salsa: false
+          disable-docker-cache: 'true'
     outputs:
       image: ${{ steps.next-build.outputs.image }}
 
