@@ -1,7 +1,6 @@
 import { NextRequest } from 'next/server'
 
-import { getHelseIdBehandler } from '#core/auth/helseid/helseid'
-import { validateHelseIdToken } from '#core/auth/helseid/token/validate'
+import { getHelseIdBehandler, validateHelseIdAccessToken } from '#core/auth/helseid/helseid'
 import { createTypstSykmelding } from '#core/pdf/pdf-service'
 import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
@@ -9,7 +8,7 @@ import { failSpan, spanServerAsync } from '#lib/otel/server'
 export async function GET(_: NextRequest, { params }: RouteContext<'/pdf/[sykmeldingId]'>): Promise<Response> {
     return spanServerAsync('HelseID.pdf-route', async (span) => {
         const { sykmeldingId } = await params
-        const validToken = await validateHelseIdToken()
+        const validToken = await validateHelseIdAccessToken()
         if (!validToken) {
             failSpan(span, 'Invalid or missing HelseID token')
             return new Response('Internal server error', { status: 500 })

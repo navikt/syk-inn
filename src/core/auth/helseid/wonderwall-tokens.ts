@@ -4,12 +4,9 @@ import { headers } from 'next/headers'
  * Wonderwall (see README.md) exchanges its own session ID for the actual HelseID access token. This
  * is not available in another contexts other than an RSC or route handler.
  */
-export async function getWonderwallHelseIdAccessToken(): Promise<string> {
+export async function getWonderwallHelseIdAccessToken(): Promise<string | null> {
     const bearerToken = (await headers()).get('Authorization')
-
-    if (!bearerToken) {
-        throw new Error('No HelseID access_token was found')
-    }
+    if (!bearerToken) return null
 
     return bearerToken.replace('Bearer ', '')
 }

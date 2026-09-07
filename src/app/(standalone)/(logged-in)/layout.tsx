@@ -6,8 +6,7 @@ import { NoValidHPR } from '#components/errors/NoValidHPR'
 import { DemoHeader } from '#components/user-warnings/DemoHeader'
 import { LoggedOutWarning } from '#components/user-warnings/LoggedOutWarning'
 import { NonPilotUserWarning } from '#components/user-warnings/NonPilotUserWarning'
-import { getHelseIdBehandler } from '#core/auth/helseid/helseid'
-import { validateHelseIdToken } from '#core/auth/helseid/token/validate'
+import { getHelseIdBehandler, validateHelseIdAccessToken } from '#core/auth/helseid/helseid'
 import { HelseIdPaths } from '#core/providers/ModePaths'
 import { HelseIdModeProvider } from '#core/providers/Modes'
 import { Providers } from '#core/providers/Providers'
@@ -87,7 +86,7 @@ async function getRootStandaloneData(): Promise<RootStandaloneData> {
             return [await getUserToggles(userInfo.hpr), userInfo]
         })
 
-        const validToken = await validateHelseIdToken()
+        const validToken = await validateHelseIdAccessToken()
         if (!validToken) {
             metrics.appLoadErrorsTotal.inc({ mode: 'HelseID', error_type: 'INVALID_TOKEN' })
 

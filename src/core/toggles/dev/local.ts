@@ -53,10 +53,6 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
         name: 'SYK_INN_STRUCTURED_FHIR_INLINE',
         ...on,
     },
-    SYK_INN_HELSEID_DOUBLE_AUTH_EXP: {
-        name: 'SYK_INN_HELSEID_DOUBLE_AUTH_EXP',
-        ...off,
-    },
 }
 
 for (const [key, value] of Object.entries(devToggles)) {

@@ -6,8 +6,7 @@ import React, { ReactElement } from 'react'
 import { NoValidHPR } from '#components/errors/NoValidHPR'
 import { FeedbackButton } from '#components/feedback/FeedbackButton'
 import { LoggedOutWarning } from '#components/user-warnings/LoggedOutWarning'
-import { getHelseIdBehandler } from '#core/auth/helseid/helseid'
-import { getWonderwallHelseIdAccessToken, getWonderwallHelseIdIdToken } from '#core/auth/helseid/wonderwall-tokens'
+import { getHelseIdBehandler, validateHelseIdAccessToken } from '#core/auth/helseid/helseid'
 import { createFhirPaths } from '#core/providers/ModePaths'
 import { FhirModeProvider } from '#core/providers/Modes'
 import { Providers } from '#core/providers/Providers'
@@ -23,7 +22,7 @@ import { isDemo, isDevGcp, isLocal } from '#lib/env'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 import metrics from '#lib/prometheus/metrics'
 
-import { NoPractitionerSession, NoValidPatient } from './launched-errors'
+import { NoHelseIdInFhirSession, NoPractitionerSession, NoValidPatient } from './launched-errors'
 
 /**
  * Any FHIR launched session requires a practitioner with a valid HPR, and a patient with a valid ident.
@@ -44,6 +43,8 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
                 return <NoValidHPR />
             case 'NO_SESSION':
                 return <NoPractitionerSession />
+            case 'NO_HELSEID':
+                return <NoHelseIdInFhirSession />
             case 'NO_PATIENT':
                 return <NoValidPatient />
         }
@@ -72,7 +73,7 @@ async function LaunchedLayout({ children, params }: LayoutProps<'/fhir/[patientI
 
 type RootFhirData =
     | {
-          error: 'NO_HPR' | 'NO_SESSION' | 'NO_PATIENT'
+          error: 'NO_HPR' | 'NO_SESSION' | 'NO_HELSEID' | 'NO_PATIENT'
       }
     | {
           pasient: AutoPatient
@@ -86,6 +87,12 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
         if ('error' in readyClient) {
             failSpan.silently(span, readyClient.error)
             return { error: 'NO_SESSION' }
+        }
+
+        const validHelseIdToken = await validateHelseIdAccessToken()
+        if (!validHelseIdToken) {
+            failSpan.silently(span, 'Invalid HelseID token')
+            return { error: 'NO_HELSEID' }
         }
 
         const [practitioner, patient] = await Promise.all([readyClient.user.request(), readyClient.patient.request()])
@@ -106,32 +113,16 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
             return { error: 'NO_HPR' }
         }
 
-        const toggles = await spanServerAsync('FHIR.getRootFhirData.toggles', async () => await getUserToggles(hpr))
-
-        const flag = getFlag('SYK_INN_HELSEID_DOUBLE_AUTH_EXP', toggles)
-        if (flag) {
-            try {
-                const helseIdAccessToken = await getWonderwallHelseIdAccessToken()
-                const helseIdIdToken = await getWonderwallHelseIdIdToken()
-                logger.info(
-                    `[HelseID-double-auth-exp] HelseID tokens on FHIR path! access_token length: ${helseIdAccessToken.length}, id_token length: ${helseIdIdToken.length}`,
-                )
-
-                // Match HPR-number in HelseID token with FHIR-resource HPR-number
-                const helseIdUserInfo = await getHelseIdBehandler()
-                const helseIdHpr = helseIdUserInfo?.hpr
-
-                if (helseIdHpr && helseIdHpr === hpr) {
-                    logger.info(`[HelseID-double-auth-exp] HelseID HPR matches FHIR HPR`)
-                }
-            } catch (e) {
-                logger.warn(
-                    `[HelseID-double-auth-exp] Error while getting HelseID auth information: ${(e as Error).message}`,
-                )
-            }
+        const helseIdBehandler = await getHelseIdBehandler()
+        if (hpr === helseIdBehandler?.hpr) {
+            logger.info(`HPR matches between FHIR practitioner and HelseID`)
+        } else {
+            logger.error(`HPR mismatch between FHIR practitioner (${hpr}) and HelseID (${helseIdBehandler?.hpr})`)
         }
 
         metrics.appLoadsTotal.inc({ hpr: hpr, mode: 'FHIR' })
+
+        const toggles = await spanServerAsync('FHIR.getRootFhirData.toggles', async () => await getUserToggles(hpr))
         if (!getFlag('PILOT_USER', toggles)) {
             logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
 

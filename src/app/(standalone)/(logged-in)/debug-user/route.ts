@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server'
 
-import { decodeHelseIdIdToken, getHelseIdBehandler, fetchHelseIdUserInfo } from '#core/auth/helseid/helseid'
-import { validateHelseIdToken } from '#core/auth/helseid/token/validate'
+import {
+    decodeHelseIdIdToken,
+    getHelseIdBehandler,
+    fetchHelseIdUserInfo,
+    validateHelseIdAccessToken,
+} from '#core/auth/helseid/helseid'
 import { getWonderwallHelseIdAccessToken, getWonderwallHelseIdIdToken } from '#core/auth/helseid/wonderwall-tokens'
 import { getUserlessToggles, getUserToggles, toToggleMap } from '#core/toggles/unleash'
 import { spanServerAsync } from '#lib/otel/server'
@@ -18,7 +22,9 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json({
         hpr: behandler?.hpr ?? 'missing',
         toggles: toToggleMap(toggles),
-        validToken: await validateHelseIdToken().catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
+        validToken: await validateHelseIdAccessToken().catch((it) =>
+            it instanceof Error ? it.message : 'Unknown error',
+        ),
         idToken: await decodeHelseIdIdToken().catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
         userInfo: await fetchHelseIdUserInfo().catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
         raw: {

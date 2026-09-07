@@ -13,6 +13,36 @@ export function NoPractitionerSession(): ReactElement {
         <PageBlock as="main" width="xl" gutters className="pt-4">
             <div className="max-w-prose">
                 <Heading size="large" spacing>
+                    HelseID-sesjonen din er ikke gyldig
+                </Heading>
+                <BodyShort spacing>
+                    Autorisasjon mot EPJ-systemet gikk greit, men din innlogging mot HelseID var ikke komplett.
+                </BodyShort>
+                <BodyShort spacing>
+                    Du kan prøve å laste siden på nytt, dersom dette ikke fungerer, må du må gjenåpne applikasjonen fra
+                    ditt journalsystem.
+                </BodyShort>
+                <div className="flex gap-3 justify-end mt-8">
+                    <Button
+                        data-color="neutral"
+                        type="button"
+                        variant="secondary"
+                        onClick={() => window.location.reload()}
+                    >
+                        Last siden på nytt
+                    </Button>
+                </div>
+            </div>
+            {isDevGcp && <DevGcpErrorInfo why="SMART launch gikk greit, men HelseID tokenet er null." />}
+        </PageBlock>
+    )
+}
+
+export function NoHelseIdInFhirSession(): ReactElement {
+    return (
+        <PageBlock as="main" width="xl" gutters className="pt-4">
+            <div className="max-w-prose">
+                <Heading size="large" spacing>
                     Du har blitt logget ut
                 </Heading>
                 <BodyShort spacing>Du har blitt logget ut av sykmeldingsløsningen for denne pasienten.</BodyShort>
