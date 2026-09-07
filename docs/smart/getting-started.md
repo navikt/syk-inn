@@ -125,14 +125,11 @@ IT sandbox or a local NAV EPJ server).
 
 Nav's app currently supports these two client authentication types:
 
-| Type                     | What it means                                     | When to use                                        |
-| ------------------------ | ------------------------------------------------- | -------------------------------------------------- |
-| `confidential-symmetric` | Shared client secret (e.g. `client_secret_basic`) | Real EPJ integrations (Nav's dev and prod default) |
-| `public`                 | No client secret                                  | Local development / sandbox testing only           |
-
-> **`confidential-asymmetric` (signed JWT client assertion / `private_key_jwt`) is not yet
-> supported.** It is on the roadmap; if you need asymmetric client auth, coordinate with Nav before
-> onboarding.
+| Type                      | What it means                                                             | When to use                              |
+| ------------------------- | ------------------------------------------------------------------------- | ---------------------------------------- |
+| `confidential-asymmetric` | Private signing key (`private_key_jwt`)                                   | Preferred for production                 |
+| `confidential-symmetric`  | Shared client secret (e.g. `client_secret_basic` or `client_secret_post`) | Can be used for production or dev.       |
+| `public`                  | No client secret                                                          | Local development / sandbox testing only |
 
 Nav's known-server config in code:
 [`issuers/envs/dev-gcp.ts`](../../src/core/data-layer/fhir/smart/issuers/envs/dev-gcp.ts) and
