@@ -4,6 +4,7 @@ import { decodeJwt } from 'jose'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 import { HelseIdIdToken, HelseIdIdTokenSchema, UserInfo, UserInfoSchema } from './schema'
+import { verifyHelseIdToken } from './token/validate'
 import { getHelseIdWellKnown } from './token/well-known'
 import { getWonderwallHelseIdAccessToken, getWonderwallHelseIdIdToken } from './wonderwall-tokens'
 
@@ -32,6 +33,15 @@ export async function getHelseIdBehandler(): Promise<HelseIdBehandler | null> {
 
             return null
         }
+    })
+}
+
+export async function validateHelseIdAccessToken(): Promise<boolean> {
+    return spanServerAsync('HelseID.validateHelseIdAccessToken', async () => {
+        const token = await getWonderwallHelseIdAccessToken()
+        if (!token) return false
+
+        return verifyHelseIdToken(token)
     })
 }
 
@@ -78,6 +88,11 @@ export async function fetchHelseIdUserInfo(): Promise<UserInfo | null> {
     })
 }
 
+/**
+ * Don't use directly, use getHelseIdBehandler().
+ *
+ * Exported only for debug route.
+ */
 export async function decodeHelseIdIdToken(): Promise<HelseIdIdToken> {
     return spanServerAsync('HelseID.getHelseIdIdTokenInfo', async () => {
         const idToken = await getWonderwallHelseIdIdToken()

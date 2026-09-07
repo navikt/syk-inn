@@ -1,15 +1,14 @@
 import { logger } from '@navikt/next-logger'
 import { NextRequest } from 'next/server'
 
-import { getHelseIdBehandler } from '#core/auth/helseid/helseid'
-import { validateHelseIdToken } from '#core/auth/helseid/token/validate'
+import { getHelseIdBehandler, validateHelseIdAccessToken } from '#core/auth/helseid/helseid'
 import { handleFeedback } from '#core/services/feedback/feedback-service'
 import { NoHelseIdSession } from '#data-layer/helseid/error/Errors'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 export async function POST(request: NextRequest): Promise<Response> {
     return spanServerAsync('Feedback(HelseID).POST', async (span) => {
-        const validToken = await validateHelseIdToken()
+        const validToken = await validateHelseIdAccessToken()
         if (!validToken) {
             failSpan(span, 'Invalid or missing HelseID token')
             throw NoHelseIdSession()

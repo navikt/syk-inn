@@ -1,8 +1,9 @@
 import { logger as pinoLogger } from '@navikt/next-logger'
 import { redirect } from 'next/navigation'
 
+import { validateHelseIdAccessToken } from '#core/auth/helseid/helseid'
 import { getSessionId } from '#core/session/session'
-import { getFlag, getUserlessToggles } from '#core/toggles/unleash'
+import { getUserlessToggles } from '#core/toggles/unleash'
 import { getSmartClient } from '#data-layer/fhir/smart/smart-client'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 import { pathWithBasePath } from '#lib/url'
@@ -73,19 +74,16 @@ export async function GET(request: Request): Promise<Response> {
             `${redirectUrl.origin}${redirectUrl.pathname}/${patientId}` +
             (callback.intent === 'validate' ? '/validator' : '')
 
-        const flag = getFlag('SYK_INN_HELSEID_DOUBLE_AUTH_EXP', await getUserlessToggles())
-
-        span.setAttributes({
-            'helseid.toggle.exp.enabled': flag,
-        })
-
-        if (flag) {
-            logger.info(`[HelseID-double-auth-exp] redirecting to wonderwall and return to ${patientRedirectUrl}`)
+        const validHelseIdToken = await validateHelseIdAccessToken()
+        if (validHelseIdToken) {
+            span.setAttribute('FHIR.callback.helseid-token.valid', true)
+            logger.info(`Redirecting user to Wonderwall HelseID`)
 
             // Go to wonderwall and return to patient url
             redirect(pathWithBasePath(`/oauth2/login?redirect=${patientRedirectUrl}`))
         }
 
+        span.setAttribute('FHIR.callback.helseid-token.valid', false)
         redirect(patientRedirectUrl)
     })
 }

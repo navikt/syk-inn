@@ -3,6 +3,7 @@ import { ReadyClient } from '@navikt/smart-on-fhir/client'
 import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
 import { YogaInitialContext } from 'graphql-yoga'
 
+import { validateHelseIdAccessToken } from '#core/auth/helseid/helseid'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 import { assertIsPilotUser } from '../common/pilot-user-utils'
@@ -27,6 +28,11 @@ export const createFhirResolverContext = async (context: YogaInitialContext): Pr
 
         if ('error' in client) {
             failSpan(span, client.error)
+            throw NoSmartSession()
+        }
+
+        if (!(await validateHelseIdAccessToken())) {
+            failSpan(span, 'HelseID access token is invalid')
             throw NoSmartSession()
         }
 

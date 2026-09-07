@@ -2,20 +2,16 @@ import { jwtVerify, errors } from 'jose'
 
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
-import { getWonderwallHelseIdAccessToken } from '../wonderwall-tokens'
-
 import { getJwkSet } from './jwk'
 import { getHelseIdWellKnown } from './well-known'
 
-export async function validateHelseIdToken(): Promise<boolean> {
-    return spanServerAsync('HelseID.token-validation', async (span) => {
-        const accessToken = await getWonderwallHelseIdAccessToken()
-
+export async function verifyHelseIdToken(token: string): Promise<boolean> {
+    return spanServerAsync('HelseID.verify-token', async (span) => {
         try {
             const wellKnown = await getHelseIdWellKnown()
             const jwks = getJwkSet(wellKnown.jwks_uri)
 
-            await jwtVerify(accessToken, jwks, {
+            await jwtVerify(token, jwks, {
                 issuer: wellKnown.issuer,
                 algorithms: ['RS256'],
             })
