@@ -13,6 +13,7 @@ spec:
       excludePaths:
         - /samarbeidspartner/sykmelding/fhir/**
         - /samarbeidspartner/sykmelding/api/**
+        - /samarbeidspartner/sykmelding/jwk.json
   ingresses:
     - 'https://www.nav.no/samarbeidspartner/sykmelding'
   valkey:
