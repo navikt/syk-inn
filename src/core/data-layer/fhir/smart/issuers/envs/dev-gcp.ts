@@ -16,6 +16,7 @@ export const getDevFhirConfiguration = (): FhirConfigurationDev =>
     } satisfies Record<keyof FhirConfigurationDev, unknown>)
 
 export function getKnownDevFhirServers(): KnownFhirServer[] {
+    // const env = getServerEnv() - Use env.fhir.privateJwk for any confidential-asymmetric private_key_jwk clients
     const configuration = getDevFhirConfiguration()
 
     return [

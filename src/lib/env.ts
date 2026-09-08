@@ -54,8 +54,14 @@ const HelseIdConfigSchema = z.object({
     url: z.url(),
 })
 
+const FhirConfigSchema = z.object({
+    publicJwk: z.string(),
+    privateJwk: z.string(),
+})
+
 type ServerEnv = z.infer<typeof ServerEnvSchema>
 const ServerEnvSchema = z.object({
+    fhir: FhirConfigSchema,
     helseid: HelseIdConfigSchema,
     valkey: ValkeyConfigSchema.nullish(),
     useLocalSykInnApi: z.boolean().default(false),
@@ -98,6 +104,10 @@ export function getServerEnv(): ServerEnv {
 
     const parsedEnv = ServerEnvSchema.parse({
         valkey: valkeyConfig,
+        fhir: {
+            publicJwk: process.env.SYK_INN_PUBLIC_KEY_JWK,
+            privateJwk: process.env.SYK_INN_PRIVATE_KEY_JWK,
+        },
         helseid: { url: process.env.HELSEID_URL },
         useLocalSykInnApi: process.env.USE_LOCAL_SYK_INN_API === 'true',
         localSykInnApiHost: process.env.LOCAL_SYK_INN_API_HOST,
