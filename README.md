@@ -4,6 +4,11 @@
 
 This application will be used by health care professionals to send "sykmeldinger" to NAV.
 
+## Developer from a EHR provider? (EPJ leverandør)
+
+Jump to "[Running this application locally](#run-local-for-external-ehr-developers)" to see how you
+can use "syk-inn" for a quick local development feedback loop.
+
 ## High level decisions
 
 - This is a monolithic application that will handle users:
@@ -262,3 +267,55 @@ flowchart TD
   SYK -->|⚠️ Rule Hit ⚠️| SUMMARY
   SYK --> SUCCESS["🎉 Sykmelding created and published 🎉"]
 ```
+
+# Run Local (for external EHR developers)
+
+## Prerequisites
+
+Clone this repo your preferred way and `cd syk-inn`
+
+To install the dependencies you need a PAT (Personal Access Token) with `package:read` scope. You
+can create one [here](https://github.com/settings/tokens). This is because this application uses
+some packages on Github Package Registry, but Github disallows unauthenticated access to these
+packages. This PAT only has access to pull public packages, and is not used for anything else.
+
+Once you have your PAT, make it available in your environment as `NPM_AUTH_TOKEN`. For example, in
+Linux/MacOS:
+
+```bash
+export NPM_AUTH_TOKEN=<your-pat>
+```
+
+In your .bashrc or .zshrc. Feel free to use a more secure way of injecting this token into your
+environment.
+
+You should now be able to install the dependencies using yarn, you may need to enable corepack
+first:
+
+```bash
+corepack enable
+```
+
+And then install dependencies:
+
+```bash
+yarn
+```
+
+## Actually running
+
+You should now be able to run the development mode of the application using
+
+```bash
+yarn dev
+```
+
+This will start a fully mocked version of the application, this will mock out FHIR and HelseID and
+external APIs.
+
+But you can launch this local app from any EHR (local or cloud) by adding what you need in the list
+of "known" EHR systems in
+[getLocalKnownFhirServers()](src/core/data-layer/fhir/smart/issuers/envs/others.ts).
+
+You should now be able to launch using the URL
+`http://localhost:3000/fhir/launch?iss=<your-ehr-iss>&code=<code>` from your EHR.
