@@ -4,12 +4,14 @@ import * as z from 'zod'
 type FhirConfigurationDev = z.infer<typeof FhirConfigurationDevSchema>
 const FhirConfigurationDevSchema = z.object({
     webmedClientSecret: z.string(),
+    joviaHelseSecret: z.string(),
     navEpjClientSecret: z.string(),
 })
 
 export const getDevFhirConfiguration = (): FhirConfigurationDev =>
     FhirConfigurationDevSchema.parse({
         webmedClientSecret: process.env.WEBMED_CLIENT_SECRET,
+        joviaHelseSecret: process.env.JOVIA_HELSE_CLIENT_SECRET,
         navEpjClientSecret: process.env.NAV_EPJ_CLIENT_SECRET,
     } satisfies Record<keyof FhirConfigurationDev, unknown>)
 
@@ -23,6 +25,13 @@ export function getKnownDevFhirServers(): KnownFhirServer[] {
             type: 'confidential-symmetric',
             method: 'client_secret_basic',
             clientSecret: configuration.webmedClientSecret,
+        },
+        {
+            name: 'Jovia Helse (test)',
+            issuer: 'https://joviahelse.no/journal/fhir/r4',
+            type: 'confidential-symmetric',
+            method: 'client_secret_basic',
+            clientSecret: configuration.joviaHelseSecret,
         },
         {
             name: 'nav-epj',
