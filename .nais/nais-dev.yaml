@@ -15,6 +15,7 @@ spec:
         - /samarbeidspartner/sykmelding/fhir/launch
         - /samarbeidspartner/sykmelding/fhir/error/**
         - /samarbeidspartner/sykmelding/api/**
+        - /samarbeidspartner/sykmelding/jwk.json
   ingresses:
     - 'https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
   valkey:
