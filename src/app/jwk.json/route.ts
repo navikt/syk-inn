@@ -7,7 +7,7 @@ export function GET(): Response {
 
     return Response.json(publicJwk, {
         headers: {
-            'Content-Type': 'application/jwk+json',
+            'Content-Type': 'application/json',
             'Cache-Control': 'public, max-age=300',
         },
         status: 200,

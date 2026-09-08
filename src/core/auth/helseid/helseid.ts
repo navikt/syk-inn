@@ -41,14 +41,19 @@ export async function getHelseIdBehandler(): Promise<HelseIdBehandler | null> {
  */
 export async function fetchHelseIdUserInfo(): Promise<UserInfo | null> {
     return spanServerAsync('HelseID.getHelseIdUserInfo', async () => {
-        const wellKnown = await getHelseIdWellKnown()
+        const accessToken = await getWonderwallHelseIdAccessToken()
+        if (accessToken == null) {
+            logger.warn('No HelseID access token was found, cannot fetch user info')
+            return null
+        }
 
+        const wellKnown = await getHelseIdWellKnown()
         logger.info(`Getting userinfo from: ${wellKnown.userinfo_endpoint}`)
         const response = await fetch(wellKnown.userinfo_endpoint, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${await getWonderwallHelseIdAccessToken()}`,
+                Authorization: `Bearer ${accessToken}`,
             },
             cache: 'no-store',
         })
