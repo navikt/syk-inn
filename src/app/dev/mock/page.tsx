@@ -17,9 +17,7 @@ export const metadata: Metadata = {
 }
 
 function MockPage(): ReactElement {
-    if (!(isLocal || isDemo)) {
-        notFound()
-    }
+    if (!(isLocal || isDemo)) notFound()
 
     const store = getMockStore()
     const allSessions = R.pipe(

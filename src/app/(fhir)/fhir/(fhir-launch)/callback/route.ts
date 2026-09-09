@@ -75,7 +75,7 @@ export async function GET(request: Request): Promise<Response> {
             (callback.intent === 'validate' ? '/validator' : '')
 
         const validHelseIdToken = await validateHelseIdAccessToken()
-        if (validHelseIdToken) {
+        if (!validHelseIdToken) {
             span.setAttribute('FHIR.callback.helseid-token.valid', true)
             logger.info(`Redirecting user to Wonderwall HelseID`)
 

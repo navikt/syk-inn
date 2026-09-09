@@ -18,3 +18,4 @@ export function createFhirHandler(config: FhirMockConfig): (req: Request) => Pro
 }
 
 export { FhirMockSession } from './server-session'
+export { getMockSessionStore } from './config'
