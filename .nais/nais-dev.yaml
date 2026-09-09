@@ -55,6 +55,7 @@ spec:
         - host: 'tsm-unleash-api.nav.cloud.nais.io'
         - host: 'fhir-api-auth.public.webmedepj.no'
         - host: 'joviahelse.no'
+        - host: 'dev.medro.no'
         - host: 'epj.ekstern.dev.nav.no'
         - host: 'helseid-sts.test.nhn.no'
         - host: 'slack.com'

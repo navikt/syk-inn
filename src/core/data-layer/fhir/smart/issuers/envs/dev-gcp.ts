@@ -1,6 +1,8 @@
 import { KnownFhirServer } from '@navikt/smart-on-fhir/client'
 import * as z from 'zod'
 
+import { getServerEnv } from '#lib/env'
+
 type FhirConfigurationDev = z.infer<typeof FhirConfigurationDevSchema>
 const FhirConfigurationDevSchema = z.object({
     webmedClientSecret: z.string(),
@@ -16,7 +18,7 @@ export const getDevFhirConfiguration = (): FhirConfigurationDev =>
     } satisfies Record<keyof FhirConfigurationDev, unknown>)
 
 export function getKnownDevFhirServers(): KnownFhirServer[] {
-    // const env = getServerEnv() - Use env.fhir.privateJwk for any confidential-asymmetric private_key_jwk clients
+    const env = getServerEnv() //  Use env.fhir.privateJwk for any confidential-asymmetric private_key_jwk clients
     const configuration = getDevFhirConfiguration()
 
     return [
@@ -33,6 +35,13 @@ export function getKnownDevFhirServers(): KnownFhirServer[] {
             type: 'confidential-symmetric',
             method: 'client_secret_basic',
             clientSecret: configuration.joviaHelseSecret,
+        },
+        {
+            name: 'Medro (test)',
+            issuer: 'https://dev.medro.no/api/fhir',
+            type: 'confidential-asymmetric',
+            method: 'private_key_jwt',
+            privateKey: env.fhir.privateJwk,
         },
         {
             name: 'nav-epj',
