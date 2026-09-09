@@ -10,9 +10,7 @@ import { isDemo, isLocal } from '#lib/env'
 import { daysAgo, inDays, today } from '#lib/test/date-utils'
 
 export async function GET(): Promise<Response> {
-    if (!(isLocal || isDemo)) {
-        notFound()
-    }
+    if (!(isLocal || isDemo)) notFound()
 
     const chonkySykmelding: SykInnApiSykmelding = SykInnApiSykmeldingSchema.parse({
         sykmeldingId: crypto.randomUUID(),

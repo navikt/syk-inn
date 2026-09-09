@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import React, { ReactElement } from 'react'
 
 import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
+import { isDemo, isLocal } from '#lib/env'
 
 import { getMockStore } from '../../../api/mocks/fhir/[[...path]]/mock-storage'
 
@@ -13,6 +14,8 @@ export const metadata: Metadata = {
 }
 
 async function SessionDebugPage({ searchParams }: PageProps<'/dev/mock/session'>): Promise<ReactElement> {
+    if (!(isLocal || isDemo)) notFound()
+
     const { sessionId } = await searchParams
 
     const store = getMockStore()
