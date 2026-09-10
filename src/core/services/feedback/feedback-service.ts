@@ -32,7 +32,7 @@ export async function handleFeedback(
             return { feedbackId: crypto.randomUUID() }
         }
 
-        const feedbackClient = getFeedbackClient()
+        const feedbackClient = await getFeedbackClient()
         switch (payload.data.feedbackType) {
             case 'SENTIMENT_UPDATE': {
                 await feedbackClient.sentiment(payload.data.id, payload.data.sentiment)
