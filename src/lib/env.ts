@@ -32,24 +32,13 @@ export const bundledEnv = BundledEnvSchema.parse({
 } satisfies Record<keyof BundledEnv, unknown>)
 
 type ValkeyConfig = z.infer<typeof ValkeyConfigSchema>
-const ValkeyConfigSchema = z.union([
-    /**
-     * Defines a union type for strongly typing Valkey configurations for local and production environments.
-     * The local setup doesn't require authentication but does need the Docker image URL.
-     */
-    z.object({
-        username: z.string(),
-        password: z.string(),
-        tls: z.object({
-            host: z.string(),
-            port: z.coerce.number(),
-        }),
-    }),
-    z.object({
-        host: z.string(),
-    }),
-])
-
+const ValkeyConfigSchema = z.object({
+    username: z.string().optional(),
+    password: z.string().optional(),
+    host: z.string(),
+    port: z.coerce.number(),
+    tls: z.boolean(),
+})
 const HelseIdConfigSchema = z.object({
     url: z.url(),
 })
@@ -85,20 +74,10 @@ export function getServerEnv(): ServerEnv {
             ? ({
                   username: process.env.VALKEY_USERNAME_SYK_INN,
                   password: process.env.VALKEY_PASSWORD_SYK_INN,
-                  ...(process.env.VALKEY_PORT_SYK_INN
-                      ? {
-                            // Cloud
-                            tls: {
-                                host: process.env.VALKEY_HOST_SYK_INN,
-                                port: process.env.VALKEY_PORT_SYK_INN,
-                            },
-                            host: undefined,
-                        }
-                      : {
-                            // Local
-                            host: process.env.VALKEY_HOST_SYK_INN,
-                            tls: undefined,
-                        }),
+                  host: process.env.VALKEY_HOST_SYK_INN,
+                  port: process.env.VALKEY_PORT_SYK_INN,
+                  // If VALKEY_URI_SYK_INN is set, it means we're in nais cloud
+                  tls: process.env.VALKEY_URI_SYK_INN != null,
               } satisfies Record<KeysOfUnion<ValkeyConfig>, unknown>)
             : undefined
 

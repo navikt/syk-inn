@@ -1,9 +1,10 @@
 import { logger } from '@navikt/next-logger'
+import { GlideClient } from '@valkey/valkey-glide'
 import { addDays, addSeconds, differenceInSeconds, endOfDay } from 'date-fns'
-import Valkey from 'iovalkey'
 import * as R from 'remeda'
 
-import { productionValkey } from '#core/services/valkey/client'
+import { realValkey } from '#core/services/valkey/client'
+import { hashToRecord, toHashData } from '#core/services/valkey/utils'
 import { mockEngineForSession, shouldUseMockEngine } from '#dev/mock-engine'
 import { getServerEnv } from '#lib/env'
 import { withSpanServerAsync } from '#lib/otel/server'
@@ -50,10 +51,10 @@ export async function getDraftClient(): Promise<DraftClient> {
         logger.warn('USE_LOCAL_VALKEY is enabled, using actual valkey for drafts.')
     }
 
-    return createDraftClient(productionValkey())
+    return createDraftClient(await realValkey())
 }
 
-export function createDraftClient(valkey: Valkey): DraftClient {
+export function createDraftClient(valkey: GlideClient): DraftClient {
     return {
         saveDraft: withSpanServerAsync(
             'draft client - save draft',
@@ -62,16 +63,21 @@ export function createDraftClient(valkey: Valkey): DraftClient {
                 const ownershipKey = ownershipIndexKey(owner)
                 const expireInSeconds = secondsToMidnightTomorrow()
 
-                await valkey.hset(key, {
-                    draftId,
-                    values: JSON.stringify(values),
-                    lastUpdated: lastUpdated.toISOString(),
-                    deletesAt: addSeconds(lastUpdated, expireInSeconds).toISOString(),
-                } satisfies ValkeyDraftEntry)
-                await valkey.sadd(ownershipKey, key)
+                await Promise.all([
+                    valkey.hset(
+                        key,
+                        toHashData({
+                            draftId,
+                            values: JSON.stringify(values),
+                            lastUpdated: lastUpdated.toISOString(),
+                            deletesAt: addSeconds(lastUpdated, expireInSeconds).toISOString(),
+                        } satisfies ValkeyDraftEntry),
+                    ),
+                    valkey.sadd(ownershipKey, [key]),
+                ])
 
-                await valkey.expire(key, expireInSeconds)
-                await valkey.expire(ownershipKey, expireInSeconds)
+                // EXPIRE requires the keys to exist, so this has to happen after the writes above
+                await Promise.all([valkey.expire(key, expireInSeconds), valkey.expire(ownershipKey, expireInSeconds)])
 
                 return values
             },
@@ -80,18 +86,21 @@ export function createDraftClient(valkey: Valkey): DraftClient {
             const key = draftKey(draftId)
             const ownershipKey = ownershipIndexKey(owner)
 
+            /**
+             * Both of these are independent, glide multiplexes them over the same connection, so they
+             * cost a single round trip instead of two sequential ones.
+             */
+            const [exists, isMember] = await Promise.all([valkey.exists([key]), valkey.sismember(ownershipKey, key)])
+
             // Does document even exist?
-            const exists = await valkey.exists(key)
             if (exists !== 1) return
 
             // If the ownership is not in the index, it's not this users draft
-            const isMember = await valkey.sismember(ownershipKey, key)
-            if (isMember !== 1) {
+            if (!isMember) {
                 throw new Error(`Draft with ID ${draftId} does not belong to ownership ${owner.hpr} or provided ident`)
             }
 
-            await valkey.del(key)
-            await valkey.srem(ownershipKey, key)
+            await Promise.all([valkey.del([key]), valkey.srem(ownershipKey, [key])])
         }),
         getDraft: withSpanServerAsync(
             'draft client - get draft',
@@ -99,41 +108,53 @@ export function createDraftClient(valkey: Valkey): DraftClient {
                 const key = draftKey(draftId)
                 const ownershipKey = ownershipIndexKey(owner)
 
-                // Does document even exist?
-                const exists = await valkey.exists(key)
-                if (exists !== 1) return null
+                /**
+                 * Both of these are independent, glide multiplexes them over the same connection, so they
+                 * cost a single round trip. A missing key yields an empty hash, so no EXISTS is needed.
+                 */
+                const [isMember, value] = await Promise.all([
+                    valkey.sismember(ownershipKey, key),
+                    valkey.hgetall(key).then(hashToRecord),
+                ])
+
+                if (Object.keys(value).length === 0) return null
 
                 // If the ownership is not in the index, it's not this users draft
-                const isMember = await valkey.sismember(ownershipKey, key)
-                if (isMember !== 1) {
+                if (!isMember) {
                     throw new Error(
                         `Draft with ID ${draftId} does not belong to ownership ${owner.hpr} or provided ident`,
                     )
-                }
-
-                const value = await valkey.hgetall(draftKey(draftId))
-                if (valkeyEmptyHashValueToNull(value) == null) {
-                    return null
                 }
 
                 return internalEntryToDraftEntry(value)
             },
         ),
         getDrafts: withSpanServerAsync('draft client - get all drafts', async (ownership) => {
-            const keys = await valkey.smembers(ownershipIndexKey(ownership))
+            const ownershipKey = ownershipIndexKey(ownership)
+            const keys = [...(await valkey.smembers(ownershipKey))].map(String)
             if (keys.length === 0) {
                 return []
             }
 
-            const drafts = await Promise.all(keys.map((key) => valkey.hgetall(key)))
+            const entries = await Promise.all(
+                keys.map(async (key) => [key, hashToRecord(await valkey.hgetall(key))] as const),
+            )
+
+            /**
+             * Drafts expire on their own, but the ownership index does not shrink with them, which would make
+             * this set (and this N+1 lookup) grow forever. Prune the dangling members as we find them.
+             */
+            const staleKeys = entries.filter(([, value]) => Object.keys(value).length === 0).map(([key]) => key)
+            if (staleKeys.length > 0) {
+                await valkey.srem(ownershipKey, staleKeys)
+            }
 
             return (
-                drafts
-                    .map(valkeyEmptyHashValueToNull)
-                    // Removes keys that valkey returned as {}
-                    .filter(R.isNonNull)
+                entries
+                    .map(([, value]) => value)
+                    .filter((value) => Object.keys(value).length > 0)
                     .map(internalEntryToDraftEntry)
-                    // Removes potentials broken drafts
+                    // Removes potentially broken drafts
                     .filter(R.isNonNull)
             )
         }),
@@ -154,10 +175,6 @@ function internalEntryToDraftEntry(value: Record<string, string>): DraftEntry | 
         deletesAt: value.deletesAt,
         values: JSON.parse(value.values),
     } satisfies DraftEntry
-}
-
-function valkeyEmptyHashValueToNull(value: Record<string, string>): Record<string, string> | null {
-    return Object.keys(value).length === 0 ? null : value
 }
 
 function secondsToMidnightTomorrow(): number {

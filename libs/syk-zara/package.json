@@ -20,8 +20,8 @@
     },
     "peerDependencies": {
         "@navikt/pino-logger": "*",
+        "@valkey/valkey-glide": "2",
         "date-fns": "4",
-        "iovalkey": "0 || 1",
         "remeda": "*",
         "zod": "4"
     }

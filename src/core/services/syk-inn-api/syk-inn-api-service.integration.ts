@@ -41,7 +41,8 @@ describe('SykInnApi integration', () => {
             process.env.LOCAL_SYK_INN_API_HOST = `${sykInnApi.getHost()}:${sykInnApi.getMappedPort(8080)}`
         }
 
-        process.env.VALKEY_HOST_SYK_INN = `${valkey.getHost()}:${valkey.getMappedPort(6379)}`
+        process.env.VALKEY_HOST_SYK_INN = `${valkey.getHost()}`
+        process.env.VALKEY_PORT_SYK_INN = `${valkey.getMappedPort(6379)}`
     }, 60_000)
 
     it('sanity check health endpoint', async () => {

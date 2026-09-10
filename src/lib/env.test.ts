@@ -18,15 +18,21 @@ describe('getServerEnv', () => {
     describe('valkeyConfig', () => {
         test('should parse valkeyConfig for local', () => {
             process.env.VALKEY_HOST_SYK_INN = 'foo'
+            process.env.VALKEY_PORT_SYK_INN = '6969'
 
             const env = getServerEnv()
 
             expect(env.valkey).toEqual({
                 host: 'foo',
+                port: 6969,
+                username: undefined,
+                password: undefined,
+                tls: false,
             })
         })
 
         test('should parse valkeyConfig for dev', () => {
+            process.env.VALKEY_URI_SYK_INN = 'ya'
             process.env.VALKEY_HOST_SYK_INN = 'foo'
             process.env.VALKEY_USERNAME_SYK_INN = 'bar'
             process.env.VALKEY_PASSWORD_SYK_INN = 'baz'
@@ -35,16 +41,16 @@ describe('getServerEnv', () => {
             const env = getServerEnv()
 
             expect(env.valkey).toEqual({
-                tls: {
-                    host: 'foo',
-                    port: 1234,
-                },
+                host: 'foo',
+                port: 1234,
                 username: 'bar',
                 password: 'baz',
+                tls: true,
             })
         })
 
         test('should parse valkeyConfig for prod', () => {
+            process.env.VALKEY_URI_SYK_INN = 'ya'
             process.env.VALKEY_HOST_SYK_INN = 'foo'
             process.env.VALKEY_USERNAME_SYK_INN = 'bar'
             process.env.VALKEY_PASSWORD_SYK_INN = 'baz'
@@ -53,21 +59,12 @@ describe('getServerEnv', () => {
             const env = getServerEnv()
 
             expect(env.valkey).toEqual({
-                tls: {
-                    host: 'foo',
-                    port: 1234,
-                },
+                host: 'foo',
+                port: 1234,
                 username: 'bar',
                 password: 'baz',
+                tls: true,
             })
-        })
-
-        test('should parse valkeyConfig and throw if prod and missing username/password', () => {
-            process.env.NEXT_PUBLIC_RUNTIME_ENV = 'prod-gcp'
-            process.env.VALKEY_HOST_SYK_INN = 'foo'
-            process.env.VALKEY_PORT_SYK_INN = '1234'
-
-            expect(() => getServerEnv()).toThrowErrorMatchingSnapshot()
         })
     })
 })

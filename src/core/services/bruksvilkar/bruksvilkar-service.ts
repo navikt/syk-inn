@@ -7,7 +7,7 @@ import { getServerEnv } from '#lib/env'
 import { spanServerAsync } from '#lib/otel/server'
 import { raise } from '#lib/ts'
 
-import { productionValkey } from '../valkey/client'
+import { realValkey } from '../valkey/client'
 
 import { versionUtils } from './utils'
 
@@ -70,5 +70,5 @@ async function getClient(): Promise<BruksvilkarClient> {
         logger.warn('USE_LOCAL_VALKEY is enabled, using actual valkey for bruksvilkår.')
     }
 
-    return createBruksvilkarClient(productionValkey())
+    return createBruksvilkarClient(await realValkey())
 }
