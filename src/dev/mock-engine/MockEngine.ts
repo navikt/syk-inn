@@ -1,5 +1,5 @@
 import { createBruksvilkarClient, type BruksvilkarClient } from '@navikt/syk-zara/bruksvilkar'
-import Valkey from 'iovalkey'
+import type { ValkeyClient } from '@navikt/syk-zara/valkey'
 
 import type { AaregArbeidsforhold } from '#core/services/aareg/aareg-schema'
 import { createDraftClient, type DraftClient } from '#data-layer/draft/draft-client'
@@ -14,7 +14,7 @@ import { createInMemoryValkey } from './valkey/InMemValkey'
 export class MockEngine {
     private initialized = false
 
-    private readonly valkey: Valkey
+    private readonly valkey: ValkeyClient
     private readonly scenario: Scenario
 
     public readonly sykInnApi: SykInnApiMock

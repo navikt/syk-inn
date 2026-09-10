@@ -1,3 +1,4 @@
+import { hashToRecord } from '@navikt/syk-zara/valkey'
 import { describe, it, expect } from 'vitest'
 
 import { createInMemoryValkey } from '#dev/mock-engine/valkey/InMemValkey'
@@ -18,12 +19,12 @@ describe('in memory valkey proxy', () => {
             lastUpdated: new Date().toISOString(),
         })
 
-        await valkey.sadd(ownershipKey, draftKey)
+        await valkey.sadd(ownershipKey, [draftKey])
         const isMember = await valkey.sismember(ownershipKey, draftKey)
-        expect(isMember).toBe(1)
+        expect(isMember).toBe(true)
 
         // Fetch it back
-        const draft = await valkey.hgetall(draftKey)
+        const draft = hashToRecord(await valkey.hgetall(draftKey))
         expect(draft.draftId).toBe('123')
         expect(JSON.parse(draft.values).title).toBe('Test Draft')
     })
@@ -38,19 +39,19 @@ describe('in memory valkey proxy', () => {
             values: JSON.stringify({ title: 'Test Draft' }),
             lastUpdated: new Date().toISOString(),
         })
-        await valkey.sadd(ownershipKey, 'draft:1')
+        await valkey.sadd(ownershipKey, ['draft:1'])
 
         await valkey.hset('draft:2', {
             draftId: '123',
             values: JSON.stringify({ title: 'Test Draft' }),
             lastUpdated: new Date().toISOString(),
         })
-        await valkey.sadd(ownershipKey, 'draft:2')
+        await valkey.sadd(ownershipKey, ['draft:2'])
 
-        expect(await valkey.sismember(ownershipKey, 'draft:1')).toBe(1)
-        expect(await valkey.sismember(ownershipKey, 'draft:2')).toBe(1)
+        expect(await valkey.sismember(ownershipKey, 'draft:1')).toBe(true)
+        expect(await valkey.sismember(ownershipKey, 'draft:2')).toBe(true)
 
         // Sanity check
-        expect(await valkey.sismember(ownershipKey, 'draft:3')).toBe(0)
+        expect(await valkey.sismember(ownershipKey, 'draft:3')).toBe(false)
     })
 })

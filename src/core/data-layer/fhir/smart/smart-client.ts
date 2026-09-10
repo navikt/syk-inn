@@ -1,6 +1,6 @@
 import { logger } from '@navikt/next-logger'
 import { SmartClient, SmartClientConfiguration, SmartStorage } from '@navikt/smart-on-fhir/client'
-import Valkey from 'iovalkey'
+import { hashToRecord, toHashData, type ValkeyClient } from '@navikt/syk-zara/valkey'
 
 import { productionValkey } from '#core/services/valkey/client'
 import { getFlag, UnleashClient } from '#core/toggles/unleash'
@@ -55,16 +55,22 @@ export function getSmartClient(
 }
 
 function getSmartStorage(): SmartStorage {
+    // Lazily resolved, glide clients are created asynchronously
     const valkey = getBackingStore()
 
     return {
         set: async (sessionId, values) => {
-            await valkey.hset(sessionIdKey(sessionId), values)
+            const client = await valkey
+            const key = sessionIdKey(sessionId)
+
+            await client.hset(key, toHashData(values))
             // Refresh tokens expires in a month, should exp be less?
-            await valkey.expire(sessionIdKey(sessionId), 60 * 60 * 24 * 30)
+            await client.expire(key, 60 * 60 * 24 * 30)
         },
         get: async (sessionId) => {
-            return valkey.hgetall(sessionIdKey(sessionId))
+            const client = await valkey
+
+            return hashToRecord(await client.hgetall(sessionIdKey(sessionId)))
         },
     }
 }
@@ -77,9 +83,9 @@ function sessionIdKey(sessionId: string): string {
  * In e2e/demo, the in-memory store used for sessions is global, as opposed to the draft-client valkey which is
  * scoped per user.
  */
-function getBackingStore(): Valkey {
+function getBackingStore(): Promise<ValkeyClient> {
     if ((isE2E || isDemo) && !getServerEnv().useLocalValkey) {
-        return globalInMemoryValkey()
+        return Promise.resolve(globalInMemoryValkey())
     } else {
         if (getServerEnv().useLocalValkey) {
             logger.warn('USE_LOCAL_VALKEY is enabled, using actual valkey for smart sessions.')

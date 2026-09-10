@@ -31,7 +31,7 @@ export const bundledEnv = BundledEnvSchema.parse({
     NEXT_PUBLIC_BUILD_TIME: process.env.NEXT_PUBLIC_BUILD_TIME,
 } satisfies Record<keyof BundledEnv, unknown>)
 
-type ValkeyConfig = z.infer<typeof ValkeyConfigSchema>
+export type ValkeyConfig = z.infer<typeof ValkeyConfigSchema>
 const ValkeyConfigSchema = z.union([
     /**
      * Defines a union type for strongly typing Valkey configurations for local and production environments.

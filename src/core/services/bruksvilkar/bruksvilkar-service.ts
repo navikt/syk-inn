@@ -70,5 +70,5 @@ async function getClient(): Promise<BruksvilkarClient> {
         logger.warn('USE_LOCAL_VALKEY is enabled, using actual valkey for bruksvilkår.')
     }
 
-    return createBruksvilkarClient(productionValkey())
+    return createBruksvilkarClient(await productionValkey())
 }
