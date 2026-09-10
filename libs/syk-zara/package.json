@@ -13,15 +13,16 @@
         "./feedback": "./src/feedback/index.ts",
         "./feedback/admin": "./src/feedback/admin/index.ts",
         "./bruksvilkar": "./src/bruksvilkar/index.ts",
-        "./bruksvilkar/admin": "./src/bruksvilkar/admin/index.ts"
+        "./bruksvilkar/admin": "./src/bruksvilkar/admin/index.ts",
+        "./valkey": "./src/lib/valkey.ts"
     },
     "scripts": {
         "tsc": "tsc"
     },
     "peerDependencies": {
         "@navikt/pino-logger": "*",
+        "@valkey/valkey-glide": "2",
         "date-fns": "4",
-        "iovalkey": "0 || 1",
         "remeda": "*",
         "zod": "4"
     }

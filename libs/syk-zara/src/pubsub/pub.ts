@@ -1,4 +1,4 @@
-import Valkey from 'iovalkey'
+import type { ValkeyClient } from '../lib/valkey'
 
 import { FEEDBACK_PUBSUB_CHANNELS } from './channels'
 
@@ -11,17 +11,19 @@ type FeedbackPubClient = {
 /**
  * All of these events should be triggered internally in clients, and should never have
  * to be exposed to the consumers of this library.
+ *
+ * Note: glide's `publish` takes the message first, then the channel.
  */
-export const createFeedbackPubClient = (valkey: Valkey): FeedbackPubClient => {
+export const createFeedbackPubClient = (valkey: ValkeyClient): FeedbackPubClient => {
     return {
         new: async (id) => {
-            await valkey.publish(FEEDBACK_PUBSUB_CHANNELS.NEW, id)
+            await valkey.publish(id, FEEDBACK_PUBSUB_CHANNELS.NEW)
         },
         update: async (id) => {
-            await valkey.publish(FEEDBACK_PUBSUB_CHANNELS.UPDATED, id)
+            await valkey.publish(id, FEEDBACK_PUBSUB_CHANNELS.UPDATED)
         },
         deleted: async (id) => {
-            await valkey.publish(FEEDBACK_PUBSUB_CHANNELS.DELETED, id)
+            await valkey.publish(id, FEEDBACK_PUBSUB_CHANNELS.DELETED)
         },
     }
 }
