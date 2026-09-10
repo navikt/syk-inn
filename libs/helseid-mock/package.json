@@ -14,7 +14,7 @@
     "dependencies": {
         "@navikt/pino-logger": "^5.0.1",
         "hono": "^4.13.7",
-        "jose": "^6.2.11",
+        "jose": "^6.2.12",
         "nextleton": "^0.6.1",
         "pino": "^10.3.1"
     }
