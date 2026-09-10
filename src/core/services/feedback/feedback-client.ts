@@ -1,7 +1,7 @@
 import { createFeedbackClient, FeedbackClient } from '@navikt/syk-zara/feedback'
 
-import { productionValkey } from '../valkey/client'
+import { realValkey } from '../valkey/client'
 
-export function getFeedbackClient(): FeedbackClient {
-    return createFeedbackClient(productionValkey())
+export async function getFeedbackClient(): Promise<FeedbackClient> {
+    return createFeedbackClient(await realValkey())
 }

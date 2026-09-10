@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     transpilePackages: ['@navikt/fhir-mock-server', '@navikt/helseid-mock-server'],
     serverExternalPackages: [
         '@navikt/next-logger',
+        '@valkey/valkey-glide',
         'next-logger',
         'pino',
         'pino-socket',

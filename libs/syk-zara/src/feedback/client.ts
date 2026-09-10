@@ -1,7 +1,8 @@
-import Valkey from 'iovalkey'
+import { GlideClient } from '@valkey/valkey-glide'
 import * as z from 'zod'
 
 import { feedbackValkeyKey } from '../lib/keys'
+import { toHashData } from '../lib/valkey'
 import { createFeedbackPubClient } from '../pubsub/pub'
 
 import { ContactTypeSchema, ContactableUserFeedback, InSituFeedback } from './schema/schema'
@@ -51,14 +52,14 @@ export type FeedbackClient = {
     sentiment: (id: string, sentiment: number) => Promise<void>
 }
 
-export function createFeedbackClient(valkey: Valkey): FeedbackClient {
+export function createFeedbackClient(valkey: GlideClient): FeedbackClient {
     const pub = createFeedbackPubClient(valkey)
 
     return {
         create: async (id, feedback) => {
             const key = feedbackValkeyKey(id)
 
-            if (await valkey.exists(key)) {
+            if ((await valkey.exists([key])) !== 0) {
                 throw new Error(`Feedback with id ${id} already exists`)
             }
 
@@ -68,56 +69,62 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
             const timestamp = new Date().toISOString()
             switch (payload.type) {
                 case 'IN_SITU':
-                    await valkey.hset(key, {
-                        id: id,
-                        type: 'IN_SITU',
-                        timestamp: timestamp,
-                        message: payload.message,
-                        sentiment: payload.sentiment,
-                        variant: payload.variant,
-                        name: payload.user.name,
-                        uid: payload.user.hpr,
-                        verifiedContentAt: null,
-                        verifiedContentBy: null,
-                        sharedAt: null,
-                        sharedBy: null,
-                        sharedLink: null,
-                        redactionLog: JSON.stringify([]),
-                        metaLocation: payload.meta.location,
-                        metaSystem: payload.meta.system,
-                        metaTags: JSON.stringify(payload.meta.tags ?? []),
-                        metaDev: JSON.stringify(payload.meta.dev ?? {}),
-                        // TODO: Expand this if we'll use it it more than syk-inn
-                        metaSource: 'syk-inn',
-                    } satisfies Record<keyof InSituFeedback, string | number | null>)
+                    await valkey.hset(
+                        key,
+                        toHashData({
+                            id: id,
+                            type: 'IN_SITU',
+                            timestamp: timestamp,
+                            message: payload.message,
+                            sentiment: payload.sentiment,
+                            variant: payload.variant,
+                            name: payload.user.name,
+                            uid: payload.user.hpr,
+                            verifiedContentAt: null,
+                            verifiedContentBy: null,
+                            sharedAt: null,
+                            sharedBy: null,
+                            sharedLink: null,
+                            redactionLog: JSON.stringify([]),
+                            metaLocation: payload.meta.location,
+                            metaSystem: payload.meta.system,
+                            metaTags: JSON.stringify(payload.meta.tags ?? []),
+                            metaDev: JSON.stringify(payload.meta.dev ?? {}),
+                            // TODO: Expand this if we'll use it it more than syk-inn
+                            metaSource: 'syk-inn',
+                        } satisfies Record<keyof InSituFeedback, string | number | null>),
+                    )
                     break
                 case 'FULL':
-                    await valkey.hset(key, {
-                        id: id,
-                        type: 'CONTACTABLE',
-                        timestamp: timestamp,
-                        message: payload.message,
-                        name: payload.user.name,
-                        uid: payload.user.hpr,
-                        category: payload.category,
-                        sentiment: payload.sentiment,
-                        contactType: payload.contact.type,
-                        contactDetails: payload.contact.details,
-                        verifiedContentAt: null,
-                        verifiedContentBy: null,
-                        contactedAt: null,
-                        contactedBy: null,
-                        sharedAt: null,
-                        sharedBy: null,
-                        sharedLink: null,
-                        redactionLog: JSON.stringify([]),
-                        metaLocation: payload.meta.location,
-                        metaSystem: payload.meta.system,
-                        metaTags: JSON.stringify(payload.meta.tags ?? []),
-                        metaDev: JSON.stringify(payload.meta.dev ?? {}),
-                        // TODO: Expand this if we'll use it it more than syk-inn
-                        metaSource: 'syk-inn',
-                    } satisfies Record<keyof ContactableUserFeedback, string | number | null>)
+                    await valkey.hset(
+                        key,
+                        toHashData({
+                            id: id,
+                            type: 'CONTACTABLE',
+                            timestamp: timestamp,
+                            message: payload.message,
+                            name: payload.user.name,
+                            uid: payload.user.hpr,
+                            category: payload.category,
+                            sentiment: payload.sentiment,
+                            contactType: payload.contact.type,
+                            contactDetails: payload.contact.details,
+                            verifiedContentAt: null,
+                            verifiedContentBy: null,
+                            contactedAt: null,
+                            contactedBy: null,
+                            sharedAt: null,
+                            sharedBy: null,
+                            sharedLink: null,
+                            redactionLog: JSON.stringify([]),
+                            metaLocation: payload.meta.location,
+                            metaSystem: payload.meta.system,
+                            metaTags: JSON.stringify(payload.meta.tags ?? []),
+                            metaDev: JSON.stringify(payload.meta.dev ?? {}),
+                            // TODO: Expand this if we'll use it it more than syk-inn
+                            metaSource: 'syk-inn',
+                        } satisfies Record<keyof ContactableUserFeedback, string | number | null>),
+                    )
                     break
             }
 
@@ -125,14 +132,12 @@ export function createFeedbackClient(valkey: Valkey): FeedbackClient {
         },
         sentiment: async (id, sentiment) => {
             const key = feedbackValkeyKey(id)
-            const exists = await valkey.exists(key)
+            const exists = await valkey.exists([key])
             if (exists !== 1) {
                 throw new Error(`Feedback with id ${id} does not exist`)
             }
 
-            await valkey.hset(key, {
-                sentiment: sentiment,
-            })
+            await valkey.hset(key, toHashData({ sentiment: sentiment }))
 
             await pub.update(id)
         },

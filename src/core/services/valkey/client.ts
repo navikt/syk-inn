@@ -1,22 +1,25 @@
 import { logger } from '@navikt/next-logger'
-import Valkey from 'iovalkey'
+import { GlideClient } from '@valkey/valkey-glide'
 import { lazyNextleton } from 'nextleton'
 
 import { getServerEnv } from '#lib/env'
 import { raise } from '#lib/ts'
 
-function initializeValkey(): Valkey {
+async function initializeValkey(): Promise<GlideClient> {
     const valkeyConfig = getServerEnv().valkey ?? raise('Valkey config is not set! :(')
 
-    const client = new Valkey({
-        ...valkeyConfig,
-        connectTimeout: 5000,
-        enableReadyCheck: false,
+    const client = await GlideClient.createClient({
+        clientName: 'syk-inn',
+        addresses: [{ host: valkeyConfig.host, port: valkeyConfig.port }],
+        credentials: valkeyConfig.password
+            ? { username: valkeyConfig.username, password: valkeyConfig.password }
+            : undefined,
+        useTLS: valkeyConfig.tls,
     })
 
-    client.on('error', (err: Error) => logger.error(err))
+    logger.info('Valkey client initialized')
 
     return client
 }
 
-export const productionValkey = lazyNextleton('valkey-client', () => initializeValkey())
+export const realValkey = lazyNextleton('valkey-client', () => initializeValkey())
