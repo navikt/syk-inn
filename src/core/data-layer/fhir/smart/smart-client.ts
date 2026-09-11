@@ -21,6 +21,7 @@ const smartClientScopes = [
     'patient/Condition.read',
     'patient/DocumentReference.read',
     'patient/DocumentReference.write',
+    'user/Organization.read',
 ]
 
 const structuredScopes = ['patient/QuestionnaireResponse.read', 'patient/QuestionnaireResponse.write']
