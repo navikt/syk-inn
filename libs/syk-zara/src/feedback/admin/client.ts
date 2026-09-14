@@ -73,10 +73,6 @@ export function createAdminFeedbackClient(valkey: GlideClient): AdminFeedbackCli
         delete: async (id) => {
             const key = feedbackValkeyKey(id)
 
-            /**
-             * `DEL` already tells us how many keys were removed, so the previous `EXISTS` round trip
-             * was both redundant and racy.
-             */
             const deleted = await valkey.del([key])
             if (deleted === 0) return
 
@@ -122,7 +118,6 @@ export function createAdminFeedbackClient(valkey: GlideClient): AdminFeedbackCli
             },
             contacted: async (id, by) => {
                 const key = feedbackValkeyKey(id)
-                // Both fields live in the same hash, so fetch them in a single round trip
                 const [existingAtRaw, typeRaw] = await valkey.hmget(key, ['contactedAt', 'type'])
                 const existingAt = toStringOrNull(existingAtRaw)
                 const type = toStringOrNull(typeRaw)
