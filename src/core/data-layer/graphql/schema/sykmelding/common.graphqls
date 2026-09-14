@@ -18,11 +18,18 @@ interface SykmeldingBase {
 
 union Sykmelding = SykmeldingRedacted | SykmeldingFull | SykmeldingLight
 
-type SykmeldingMeta {
+union SykmeldingMeta = NasjonalSykmeldingMeta | UtenlandskSykmeldingMeta
+
+type NasjonalSykmeldingMeta {
     mottatt: DateTime!
     pasientIdent: String!
     sykmelderHpr: String!
     legekontorOrgnr: String
+}
+
+type UtenlandskSykmeldingMeta {
+    mottatt: DateTime!
+    pasientIdent: String!
 }
 
 type Outcome {

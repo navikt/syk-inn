@@ -31,13 +31,15 @@ export type AllDashboardQuery = {
                         __typename: 'SykmeldingFull'
                         sykmeldingId: string
                         documentStatus: Types.DocumentStatus | null
-                        meta: {
-                            __typename: 'SykmeldingMeta'
-                            pasientIdent: string
-                            sykmelderHpr: string
-                            legekontorOrgnr: string | null
-                            mottatt: string
-                        }
+                        meta:
+                            | {
+                                  __typename: 'NasjonalSykmeldingMeta'
+                                  pasientIdent: string
+                                  sykmelderHpr: string
+                                  legekontorOrgnr: string | null
+                                  mottatt: string
+                              }
+                            | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
                         utfall: { __typename: 'Outcome'; result: string; melding: string | null }
                         values: {
                             __typename: 'SykmeldingFullValues'
@@ -183,13 +185,15 @@ export type AllDashboardQuery = {
                         __typename: 'SykmeldingLight'
                         sykmeldingId: string
                         documentStatus: Types.DocumentStatus | null
-                        meta: {
-                            __typename: 'SykmeldingMeta'
-                            pasientIdent: string
-                            sykmelderHpr: string
-                            legekontorOrgnr: string | null
-                            mottatt: string
-                        }
+                        meta:
+                            | {
+                                  __typename: 'NasjonalSykmeldingMeta'
+                                  pasientIdent: string
+                                  sykmelderHpr: string
+                                  legekontorOrgnr: string | null
+                                  mottatt: string
+                              }
+                            | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
                         utfall: { __typename: 'Outcome'; result: string; melding: string | null }
                         values: {
                             __typename: 'SykmeldingLightValues'
@@ -247,13 +251,15 @@ export type AllDashboardQuery = {
                   | {
                         __typename: 'SykmeldingRedacted'
                         sykmeldingId: string
-                        meta: {
-                            __typename: 'SykmeldingMeta'
-                            pasientIdent: string
-                            sykmelderHpr: string
-                            legekontorOrgnr: string | null
-                            mottatt: string
-                        }
+                        meta:
+                            | {
+                                  __typename: 'NasjonalSykmeldingMeta'
+                                  pasientIdent: string
+                                  sykmelderHpr: string
+                                  legekontorOrgnr: string | null
+                                  mottatt: string
+                              }
+                            | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
                         utfall: { __typename: 'Outcome'; result: string; melding: string | null }
                         values: {
                             __typename: 'SykmeldingRedactedValues'
@@ -271,13 +277,15 @@ export type AllDashboardQuery = {
                         __typename: 'SykmeldingFull'
                         sykmeldingId: string
                         documentStatus: Types.DocumentStatus | null
-                        meta: {
-                            __typename: 'SykmeldingMeta'
-                            pasientIdent: string
-                            sykmelderHpr: string
-                            legekontorOrgnr: string | null
-                            mottatt: string
-                        }
+                        meta:
+                            | {
+                                  __typename: 'NasjonalSykmeldingMeta'
+                                  pasientIdent: string
+                                  sykmelderHpr: string
+                                  legekontorOrgnr: string | null
+                                  mottatt: string
+                              }
+                            | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
                         utfall: { __typename: 'Outcome'; result: string; melding: string | null }
                         values: {
                             __typename: 'SykmeldingFullValues'
@@ -423,13 +431,15 @@ export type AllDashboardQuery = {
                         __typename: 'SykmeldingLight'
                         sykmeldingId: string
                         documentStatus: Types.DocumentStatus | null
-                        meta: {
-                            __typename: 'SykmeldingMeta'
-                            pasientIdent: string
-                            sykmelderHpr: string
-                            legekontorOrgnr: string | null
-                            mottatt: string
-                        }
+                        meta:
+                            | {
+                                  __typename: 'NasjonalSykmeldingMeta'
+                                  pasientIdent: string
+                                  sykmelderHpr: string
+                                  legekontorOrgnr: string | null
+                                  mottatt: string
+                              }
+                            | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
                         utfall: { __typename: 'Outcome'; result: string; melding: string | null }
                         values: {
                             __typename: 'SykmeldingLightValues'
@@ -487,13 +497,15 @@ export type AllDashboardQuery = {
                   | {
                         __typename: 'SykmeldingRedacted'
                         sykmeldingId: string
-                        meta: {
-                            __typename: 'SykmeldingMeta'
-                            pasientIdent: string
-                            sykmelderHpr: string
-                            legekontorOrgnr: string | null
-                            mottatt: string
-                        }
+                        meta:
+                            | {
+                                  __typename: 'NasjonalSykmeldingMeta'
+                                  pasientIdent: string
+                                  sykmelderHpr: string
+                                  legekontorOrgnr: string | null
+                                  mottatt: string
+                              }
+                            | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
                         utfall: { __typename: 'Outcome'; result: string; melding: string | null }
                         values: {
                             __typename: 'SykmeldingRedactedValues'
@@ -514,13 +526,15 @@ export type AllDashboardQuery = {
                         __typename: 'SykmeldingFull'
                         sykmeldingId: string
                         documentStatus: Types.DocumentStatus | null
-                        meta: {
-                            __typename: 'SykmeldingMeta'
-                            pasientIdent: string
-                            sykmelderHpr: string
-                            legekontorOrgnr: string | null
-                            mottatt: string
-                        }
+                        meta:
+                            | {
+                                  __typename: 'NasjonalSykmeldingMeta'
+                                  pasientIdent: string
+                                  sykmelderHpr: string
+                                  legekontorOrgnr: string | null
+                                  mottatt: string
+                              }
+                            | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
                         utfall: { __typename: 'Outcome'; result: string; melding: string | null }
                         values: {
                             __typename: 'SykmeldingFullValues'
@@ -666,13 +680,15 @@ export type AllDashboardQuery = {
                         __typename: 'SykmeldingLight'
                         sykmeldingId: string
                         documentStatus: Types.DocumentStatus | null
-                        meta: {
-                            __typename: 'SykmeldingMeta'
-                            pasientIdent: string
-                            sykmelderHpr: string
-                            legekontorOrgnr: string | null
-                            mottatt: string
-                        }
+                        meta:
+                            | {
+                                  __typename: 'NasjonalSykmeldingMeta'
+                                  pasientIdent: string
+                                  sykmelderHpr: string
+                                  legekontorOrgnr: string | null
+                                  mottatt: string
+                              }
+                            | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
                         utfall: { __typename: 'Outcome'; result: string; melding: string | null }
                         values: {
                             __typename: 'SykmeldingLightValues'
@@ -730,13 +746,15 @@ export type AllDashboardQuery = {
                   | {
                         __typename: 'SykmeldingRedacted'
                         sykmeldingId: string
-                        meta: {
-                            __typename: 'SykmeldingMeta'
-                            pasientIdent: string
-                            sykmelderHpr: string
-                            legekontorOrgnr: string | null
-                            mottatt: string
-                        }
+                        meta:
+                            | {
+                                  __typename: 'NasjonalSykmeldingMeta'
+                                  pasientIdent: string
+                                  sykmelderHpr: string
+                                  legekontorOrgnr: string | null
+                                  mottatt: string
+                              }
+                            | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
                         utfall: { __typename: 'Outcome'; result: string; melding: string | null }
                         values: {
                             __typename: 'SykmeldingRedactedValues'
@@ -898,13 +916,15 @@ export type SykmeldingByIdQuery = {
               __typename: 'SykmeldingFull'
               sykmeldingId: string
               documentStatus: Types.DocumentStatus | null
-              meta: {
-                  __typename: 'SykmeldingMeta'
-                  pasientIdent: string
-                  sykmelderHpr: string
-                  legekontorOrgnr: string | null
-                  mottatt: string
-              }
+              meta:
+                  | {
+                        __typename: 'NasjonalSykmeldingMeta'
+                        pasientIdent: string
+                        sykmelderHpr: string
+                        legekontorOrgnr: string | null
+                        mottatt: string
+                    }
+                  | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
               utfall: { __typename: 'Outcome'; result: string; melding: string | null }
               values: {
                   __typename: 'SykmeldingFullValues'
@@ -1046,13 +1066,15 @@ export type SykmeldingByIdQuery = {
               __typename: 'SykmeldingLight'
               sykmeldingId: string
               documentStatus: Types.DocumentStatus | null
-              meta: {
-                  __typename: 'SykmeldingMeta'
-                  pasientIdent: string
-                  sykmelderHpr: string
-                  legekontorOrgnr: string | null
-                  mottatt: string
-              }
+              meta:
+                  | {
+                        __typename: 'NasjonalSykmeldingMeta'
+                        pasientIdent: string
+                        sykmelderHpr: string
+                        legekontorOrgnr: string | null
+                        mottatt: string
+                    }
+                  | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
               utfall: { __typename: 'Outcome'; result: string; melding: string | null }
               values: {
                   __typename: 'SykmeldingLightValues'
@@ -1110,13 +1132,15 @@ export type SykmeldingByIdQuery = {
         | {
               __typename: 'SykmeldingRedacted'
               sykmeldingId: string
-              meta: {
-                  __typename: 'SykmeldingMeta'
-                  pasientIdent: string
-                  sykmelderHpr: string
-                  legekontorOrgnr: string | null
-                  mottatt: string
-              }
+              meta:
+                  | {
+                        __typename: 'NasjonalSykmeldingMeta'
+                        pasientIdent: string
+                        sykmelderHpr: string
+                        legekontorOrgnr: string | null
+                        mottatt: string
+                    }
+                  | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
               utfall: { __typename: 'Outcome'; result: string; melding: string | null }
               values: {
                   __typename: 'SykmeldingRedactedValues'
@@ -1147,13 +1171,15 @@ export type OpprettSykmeldingMutation = {
               __typename: 'SykmeldingFull'
               sykmeldingId: string
               documentStatus: Types.DocumentStatus | null
-              meta: {
-                  __typename: 'SykmeldingMeta'
-                  pasientIdent: string
-                  sykmelderHpr: string
-                  legekontorOrgnr: string | null
-                  mottatt: string
-              }
+              meta:
+                  | {
+                        __typename: 'NasjonalSykmeldingMeta'
+                        pasientIdent: string
+                        sykmelderHpr: string
+                        legekontorOrgnr: string | null
+                        mottatt: string
+                    }
+                  | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
               utfall: { __typename: 'Outcome'; result: string; melding: string | null }
               values: {
                   __typename: 'SykmeldingFullValues'
@@ -1300,16 +1326,36 @@ export type RuleOutcomeFragment = {
     rule: string
 }
 
+type SykmeldingMeta_NasjonalSykmeldingMeta_Fragment = {
+    __typename: 'NasjonalSykmeldingMeta'
+    pasientIdent: string
+    sykmelderHpr: string
+    legekontorOrgnr: string | null
+    mottatt: string
+}
+
+type SykmeldingMeta_UtenlandskSykmeldingMeta_Fragment = {
+    __typename: 'UtenlandskSykmeldingMeta'
+    pasientIdent: string
+    mottatt: string
+}
+
+export type SykmeldingMetaFragment =
+    | SykmeldingMeta_NasjonalSykmeldingMeta_Fragment
+    | SykmeldingMeta_UtenlandskSykmeldingMeta_Fragment
+
 export type SykmeldingRedactedFragment = {
     __typename: 'SykmeldingRedacted'
     sykmeldingId: string
-    meta: {
-        __typename: 'SykmeldingMeta'
-        pasientIdent: string
-        sykmelderHpr: string
-        legekontorOrgnr: string | null
-        mottatt: string
-    }
+    meta:
+        | {
+              __typename: 'NasjonalSykmeldingMeta'
+              pasientIdent: string
+              sykmelderHpr: string
+              legekontorOrgnr: string | null
+              mottatt: string
+          }
+        | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
     utfall: { __typename: 'Outcome'; result: string; melding: string | null }
     values: {
         __typename: 'SykmeldingRedactedValues'
@@ -1321,13 +1367,15 @@ export type SykmeldingFullFragment = {
     __typename: 'SykmeldingFull'
     sykmeldingId: string
     documentStatus: Types.DocumentStatus | null
-    meta: {
-        __typename: 'SykmeldingMeta'
-        pasientIdent: string
-        sykmelderHpr: string
-        legekontorOrgnr: string | null
-        mottatt: string
-    }
+    meta:
+        | {
+              __typename: 'NasjonalSykmeldingMeta'
+              pasientIdent: string
+              sykmelderHpr: string
+              legekontorOrgnr: string | null
+              mottatt: string
+          }
+        | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
     utfall: { __typename: 'Outcome'; result: string; melding: string | null }
     values: {
         __typename: 'SykmeldingFullValues'
@@ -1416,13 +1464,15 @@ export type SykmeldingLightFragment = {
     __typename: 'SykmeldingLight'
     sykmeldingId: string
     documentStatus: Types.DocumentStatus | null
-    meta: {
-        __typename: 'SykmeldingMeta'
-        pasientIdent: string
-        sykmelderHpr: string
-        legekontorOrgnr: string | null
-        mottatt: string
-    }
+    meta:
+        | {
+              __typename: 'NasjonalSykmeldingMeta'
+              pasientIdent: string
+              sykmelderHpr: string
+              legekontorOrgnr: string | null
+              mottatt: string
+          }
+        | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
     utfall: { __typename: 'Outcome'; result: string; melding: string | null }
     values: {
         __typename: 'SykmeldingLightValues'
@@ -1476,13 +1526,15 @@ type Sykmelding_SykmeldingFull_Fragment = {
     __typename: 'SykmeldingFull'
     sykmeldingId: string
     documentStatus: Types.DocumentStatus | null
-    meta: {
-        __typename: 'SykmeldingMeta'
-        pasientIdent: string
-        sykmelderHpr: string
-        legekontorOrgnr: string | null
-        mottatt: string
-    }
+    meta:
+        | {
+              __typename: 'NasjonalSykmeldingMeta'
+              pasientIdent: string
+              sykmelderHpr: string
+              legekontorOrgnr: string | null
+              mottatt: string
+          }
+        | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
     utfall: { __typename: 'Outcome'; result: string; melding: string | null }
     values: {
         __typename: 'SykmeldingFullValues'
@@ -1571,13 +1623,15 @@ type Sykmelding_SykmeldingLight_Fragment = {
     __typename: 'SykmeldingLight'
     sykmeldingId: string
     documentStatus: Types.DocumentStatus | null
-    meta: {
-        __typename: 'SykmeldingMeta'
-        pasientIdent: string
-        sykmelderHpr: string
-        legekontorOrgnr: string | null
-        mottatt: string
-    }
+    meta:
+        | {
+              __typename: 'NasjonalSykmeldingMeta'
+              pasientIdent: string
+              sykmelderHpr: string
+              legekontorOrgnr: string | null
+              mottatt: string
+          }
+        | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
     utfall: { __typename: 'Outcome'; result: string; melding: string | null }
     values: {
         __typename: 'SykmeldingLightValues'
@@ -1626,13 +1680,15 @@ type Sykmelding_SykmeldingLight_Fragment = {
 type Sykmelding_SykmeldingRedacted_Fragment = {
     __typename: 'SykmeldingRedacted'
     sykmeldingId: string
-    meta: {
-        __typename: 'SykmeldingMeta'
-        pasientIdent: string
-        sykmelderHpr: string
-        legekontorOrgnr: string | null
-        mottatt: string
-    }
+    meta:
+        | {
+              __typename: 'NasjonalSykmeldingMeta'
+              pasientIdent: string
+              sykmelderHpr: string
+              legekontorOrgnr: string | null
+              mottatt: string
+          }
+        | { __typename: 'UtenlandskSykmeldingMeta'; pasientIdent: string; mottatt: string }
     utfall: { __typename: 'Outcome'; result: string; melding: string | null }
     values: {
         __typename: 'SykmeldingRedactedValues'
@@ -1837,6 +1893,45 @@ export const RuleOutcomeFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<RuleOutcomeFragment, unknown>
+export const SykmeldingMetaFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingMeta' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingMeta' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'NasjonalSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UtenlandskSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<SykmeldingMetaFragment, unknown>
 export const SykmeldingRedactedFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -1853,12 +1948,7 @@ export const SykmeldingRedactedFragmentDoc = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -1890,6 +1980,40 @@ export const SykmeldingRedactedFragmentDoc = {
                                         ],
                                     },
                                 },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingMeta' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingMeta' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'NasjonalSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UtenlandskSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
                             ],
                         },
                     },
@@ -2007,12 +2131,7 @@ export const SykmeldingFullFragmentDoc = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -2293,6 +2412,40 @@ export const SykmeldingFullFragmentDoc = {
         },
         {
             kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingMeta' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingMeta' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'NasjonalSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UtenlandskSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
             name: { kind: 'Name', value: 'Diagnose' },
             typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Diagnose' } },
             selectionSet: {
@@ -2410,12 +2563,7 @@ export const SykmeldingLightFragmentDoc = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -2469,6 +2617,40 @@ export const SykmeldingLightFragmentDoc = {
                         },
                     },
                     { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingMeta' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingMeta' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'NasjonalSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UtenlandskSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
                 ],
             },
         },
@@ -2593,6 +2775,40 @@ export const SykmeldingFragmentDoc = {
         },
         {
             kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingMeta' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingMeta' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'NasjonalSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UtenlandskSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
             name: { kind: 'Name', value: 'Diagnose' },
             typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Diagnose' } },
             selectionSet: {
@@ -2705,12 +2921,7 @@ export const SykmeldingFragmentDoc = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -2761,12 +2972,7 @@ export const SykmeldingFragmentDoc = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -3058,12 +3264,7 @@ export const SykmeldingFragmentDoc = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -3219,6 +3420,40 @@ export const AllDashboardDocument = {
         },
         {
             kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingMeta' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingMeta' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'NasjonalSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UtenlandskSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
             name: { kind: 'Name', value: 'SykmeldingRedacted' },
             typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
             selectionSet: {
@@ -3230,12 +3465,7 @@ export const AllDashboardDocument = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -3387,12 +3617,7 @@ export const AllDashboardDocument = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -3684,12 +3909,7 @@ export const AllDashboardDocument = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -4298,6 +4518,40 @@ export const SykmeldingByIdDocument = {
         },
         {
             kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingMeta' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingMeta' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'NasjonalSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UtenlandskSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
             name: { kind: 'Name', value: 'SykmeldingRedacted' },
             typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
             selectionSet: {
@@ -4309,12 +4563,7 @@ export const SykmeldingByIdDocument = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -4466,12 +4715,7 @@ export const SykmeldingByIdDocument = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -4763,12 +5007,7 @@ export const SykmeldingByIdDocument = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -4949,6 +5188,40 @@ export const OpprettSykmeldingDocument = {
         },
         {
             kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingMeta' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingMeta' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'NasjonalSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'UtenlandskSykmeldingMeta' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
             name: { kind: 'Name', value: 'SykmeldingRedacted' },
             typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SykmeldingRedacted' } },
             selectionSet: {
@@ -4960,12 +5233,7 @@ export const OpprettSykmeldingDocument = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -5117,12 +5385,7 @@ export const OpprettSykmeldingDocument = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {
@@ -5414,12 +5677,7 @@ export const OpprettSykmeldingDocument = {
                         name: { kind: 'Name', value: 'meta' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'pasientIdent' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'sykmelderHpr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'legekontorOrgnr' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingMeta' } }],
                         },
                     },
                     {

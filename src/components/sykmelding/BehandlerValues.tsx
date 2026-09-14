@@ -9,6 +9,10 @@ type Props = {
 }
 
 export function BehandlerValues({ sykmeldingMeta }: Props): ReactElement {
+    if (sykmeldingMeta.__typename === 'UtenlandskSykmeldingMeta') {
+        return <ValueItem title="Behandler">Skrevet av en behandler i utlandet</ValueItem>
+    }
+
     return (
         <>
             <ValueItem title="HPR">{sykmeldingMeta.sykmelderHpr}</ValueItem>

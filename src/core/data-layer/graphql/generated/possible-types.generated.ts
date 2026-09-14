@@ -18,6 +18,7 @@ const result: PossibleTypesResultData = {
         Person: ['Pasient', 'QueriedPerson'],
         Sykmelding: ['SykmeldingFull', 'SykmeldingLight', 'SykmeldingRedacted'],
         SykmeldingBase: ['SykmeldingFull', 'SykmeldingLight'],
+        SykmeldingMeta: ['NasjonalSykmeldingMeta', 'UtenlandskSykmeldingMeta'],
         SykmeldingValidering: ['RuleOK', 'RuleOutcome'],
         Sykmeldinger: ['Requested', 'Unrequested'],
     },

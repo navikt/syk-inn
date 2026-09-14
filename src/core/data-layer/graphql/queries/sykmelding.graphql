@@ -29,13 +29,23 @@ fragment RuleOutcome on RuleOutcome {
     rule
 }
 
-fragment SykmeldingRedacted on SykmeldingRedacted {
-    sykmeldingId
-    meta {
+fragment SykmeldingMeta on SykmeldingMeta {
+    ... on NasjonalSykmeldingMeta {
         pasientIdent
         sykmelderHpr
         legekontorOrgnr
         mottatt
+    }
+    ... on UtenlandskSykmeldingMeta {
+        pasientIdent
+        mottatt
+    }
+}
+
+fragment SykmeldingRedacted on SykmeldingRedacted {
+    sykmeldingId
+    meta {
+        ...SykmeldingMeta
     }
     utfall {
         result
@@ -53,10 +63,7 @@ fragment SykmeldingRedacted on SykmeldingRedacted {
 fragment SykmeldingFull on SykmeldingFull {
     sykmeldingId
     meta {
-        pasientIdent
-        sykmelderHpr
-        legekontorOrgnr
-        mottatt
+        ...SykmeldingMeta
     }
     utfall {
         result
@@ -149,10 +156,7 @@ fragment SykmeldingFull on SykmeldingFull {
 fragment SykmeldingLight on SykmeldingLight {
     sykmeldingId
     meta {
-        pasientIdent
-        sykmelderHpr
-        legekontorOrgnr
-        mottatt
+        ...SykmeldingMeta
     }
     utfall {
         result
