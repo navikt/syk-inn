@@ -19,6 +19,7 @@ export class SykmeldingBuilder {
     private readonly mottatt: string = '2020-02-01'
     private readonly _sykmelding: Omit<SykInnApiSykmelding, 'kind' | 'isFull'> = {
         sykmeldingId: 'sykmelding-id',
+        type: 'DIGITAL',
         utfall: {
             result: 'OK',
             cause: null,

@@ -2,6 +2,7 @@ import * as R from 'remeda'
 
 import { toReadableDate, toReadableDatePeriod } from '#lib/date'
 import { spanServerAsync } from '#lib/otel/server'
+import { raise } from '#lib/ts'
 import { AnnenFravarsgrunnArsak } from '#queries'
 
 import { annenFravarsgrunnToText } from '../data-layer/common/annen-fravarsgrunn'
@@ -23,6 +24,14 @@ export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding): Pr
 }
 
 export function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding): TypstPdfSykmelding {
+    if (sykmelding.meta.sykmelder == null) {
+        raise(
+            Error(
+                `Sykmelding (${sykmelding.sykmeldingId}) without behandler, this cannot happen. Was type ${sykmelding.type}.`,
+            ),
+        )
+    }
+
     return {
         id: sykmelding.sykmeldingId,
         title: 'Innsendt sykmelding',

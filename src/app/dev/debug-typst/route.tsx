@@ -15,6 +15,7 @@ export async function GET(): Promise<Response> {
     const chonkySykmelding: SykInnApiSykmelding = SykInnApiSykmeldingSchema.parse({
         sykmeldingId: crypto.randomUUID(),
         isFull: true,
+        type: 'DIGITAL',
         utfall: { result: 'OK', cause: null },
         meta: {
             mottatt: new Date().toISOString(),

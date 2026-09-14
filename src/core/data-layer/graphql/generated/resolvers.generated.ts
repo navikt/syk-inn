@@ -281,6 +281,14 @@ export type MutationSynchronizeSykmeldingArgs = {
     id: Scalars['String']['input']
 }
 
+export type NasjonalSykmeldingMeta = {
+    __typename?: 'NasjonalSykmeldingMeta'
+    legekontorOrgnr?: Maybe<Scalars['String']['output']>
+    mottatt: Scalars['DateTime']['output']
+    pasientIdent: Scalars['String']['output']
+    sykmelderHpr: Scalars['String']['output']
+}
+
 export type OpprettSykmeldingDraft = {
     __typename?: 'OpprettSykmeldingDraft'
     draftId: Scalars['String']['output']
@@ -472,13 +480,7 @@ export type SykmeldingMelding = {
     tilNav?: Maybe<Scalars['String']['output']>
 }
 
-export type SykmeldingMeta = {
-    __typename?: 'SykmeldingMeta'
-    legekontorOrgnr?: Maybe<Scalars['String']['output']>
-    mottatt: Scalars['DateTime']['output']
-    pasientIdent: Scalars['String']['output']
-    sykmelderHpr: Scalars['String']['output']
-}
+export type SykmeldingMeta = NasjonalSykmeldingMeta | UtenlandskSykmeldingMeta
 
 /**
  * A completely redacted sykmelding, only containing the absolute bare minimum of information.
@@ -556,6 +558,12 @@ export type UtdypendeSporsmalSvar = {
     sykdomsutvikling?: Maybe<SporsmalSvar>
     uavklarteForhold?: Maybe<SporsmalSvar>
     utfordringerMedArbeid?: Maybe<SporsmalSvar>
+}
+
+export type UtenlandskSykmeldingMeta = {
+    __typename?: 'UtenlandskSykmeldingMeta'
+    mottatt: Scalars['DateTime']['output']
+    pasientIdent: Scalars['String']['output']
 }
 
 export type Yrkesskade = {
@@ -654,11 +662,21 @@ export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
     OpprettetSykmelding:
         | OtherSubmitOutcomes
         | RuleOutcome
-        | (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingFullValues'] })
+        | (Omit<SykmeldingFull, 'meta' | 'values'> & {
+              meta: _RefType['SykmeldingMeta']
+              values: _RefType['SykmeldingFullValues']
+          })
     Sykmelding:
-        | (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingFullValues'] })
-        | (Omit<SykmeldingLight, 'values'> & { values: _RefType['SykmeldingLightValues'] })
-        | SykmeldingRedacted
+        | (Omit<SykmeldingFull, 'meta' | 'values'> & {
+              meta: _RefType['SykmeldingMeta']
+              values: _RefType['SykmeldingFullValues']
+          })
+        | (Omit<SykmeldingLight, 'meta' | 'values'> & {
+              meta: _RefType['SykmeldingMeta']
+              values: _RefType['SykmeldingLightValues']
+          })
+        | (Omit<SykmeldingRedacted, 'meta'> & { meta: _RefType['SykmeldingMeta'] })
+    SykmeldingMeta: NasjonalSykmeldingMeta | UtenlandskSykmeldingMeta
     SykmeldingValidering: RuleOk | RuleOutcome
     Sykmeldinger:
         | (Omit<Requested, 'aktuelle' | 'historiske'> & {
@@ -673,8 +691,14 @@ export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = 
     FomTom: AktivitetIkkeMulig | AktivitetRedacted | Avventende | Behandlingsdager | Gradert | Reisetilskudd
     Person: Pasient | QueriedPerson
     SykmeldingBase:
-        | (Omit<SykmeldingFull, 'values'> & { values: _RefType['SykmeldingFullValues'] })
-        | (Omit<SykmeldingLight, 'values'> & { values: _RefType['SykmeldingLightValues'] })
+        | (Omit<SykmeldingFull, 'meta' | 'values'> & {
+              meta: _RefType['SykmeldingMeta']
+              values: _RefType['SykmeldingFullValues']
+          })
+        | (Omit<SykmeldingLight, 'meta' | 'values'> & {
+              meta: _RefType['SykmeldingMeta']
+              values: _RefType['SykmeldingLightValues']
+          })
 }
 
 /** Mapping between all available schema types and the resolvers types */
@@ -715,6 +739,7 @@ export type ResolversTypes = {
     JSON: ResolverTypeWrapper<Scalars['JSON']['output']>
     Konsultasjon: ResolverTypeWrapper<Konsultasjon>
     Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>
+    NasjonalSykmeldingMeta: ResolverTypeWrapper<NasjonalSykmeldingMeta>
     OpprettSykmeldingDraft: ResolverTypeWrapper<OpprettSykmeldingDraft>
     OpprettSykmeldingInput: OpprettSykmeldingInput
     OpprettSykmeldingMetaInput: OpprettSykmeldingMetaInput
@@ -742,20 +767,28 @@ export type ResolversTypes = {
     Sykmelding: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Sykmelding']>
     SykmeldingBase: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['SykmeldingBase']>
     SykmeldingFull: ResolverTypeWrapper<
-        Omit<SykmeldingFull, 'values'> & { values: ResolversTypes['SykmeldingFullValues'] }
+        Omit<SykmeldingFull, 'meta' | 'values'> & {
+            meta: ResolversTypes['SykmeldingMeta']
+            values: ResolversTypes['SykmeldingFullValues']
+        }
     >
     SykmeldingFullValues: ResolverTypeWrapper<
         Omit<SykmeldingFullValues, 'aktivitet'> & { aktivitet: Array<ResolversTypes['Aktivitet']> }
     >
     SykmeldingLight: ResolverTypeWrapper<
-        Omit<SykmeldingLight, 'values'> & { values: ResolversTypes['SykmeldingLightValues'] }
+        Omit<SykmeldingLight, 'meta' | 'values'> & {
+            meta: ResolversTypes['SykmeldingMeta']
+            values: ResolversTypes['SykmeldingLightValues']
+        }
     >
     SykmeldingLightValues: ResolverTypeWrapper<
         Omit<SykmeldingLightValues, 'aktivitet'> & { aktivitet: Array<ResolversTypes['Aktivitet']> }
     >
     SykmeldingMelding: ResolverTypeWrapper<SykmeldingMelding>
-    SykmeldingMeta: ResolverTypeWrapper<SykmeldingMeta>
-    SykmeldingRedacted: ResolverTypeWrapper<SykmeldingRedacted>
+    SykmeldingMeta: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['SykmeldingMeta']>
+    SykmeldingRedacted: ResolverTypeWrapper<
+        Omit<SykmeldingRedacted, 'meta'> & { meta: ResolversTypes['SykmeldingMeta'] }
+    >
     SykmeldingRedactedValues: ResolverTypeWrapper<SykmeldingRedactedValues>
     SykmeldingValidering: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['SykmeldingValidering']>
     Sykmeldinger: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Sykmeldinger']>
@@ -766,6 +799,7 @@ export type ResolversTypes = {
     UtdypendeSporsmal: ResolverTypeWrapper<UtdypendeSporsmal>
     UtdypendeSporsmalOptions: UtdypendeSporsmalOptions
     UtdypendeSporsmalSvar: ResolverTypeWrapper<UtdypendeSporsmalSvar>
+    UtenlandskSykmeldingMeta: ResolverTypeWrapper<UtenlandskSykmeldingMeta>
     Yrkesskade: ResolverTypeWrapper<Yrkesskade>
 }
 
@@ -802,6 +836,7 @@ export type ResolversParentTypes = {
     JSON: Scalars['JSON']['output']
     Konsultasjon: Konsultasjon
     Mutation: Record<PropertyKey, never>
+    NasjonalSykmeldingMeta: NasjonalSykmeldingMeta
     OpprettSykmeldingDraft: OpprettSykmeldingDraft
     OpprettSykmeldingInput: OpprettSykmeldingInput
     OpprettSykmeldingMetaInput: OpprettSykmeldingMetaInput
@@ -824,17 +859,23 @@ export type ResolversParentTypes = {
     String: Scalars['String']['output']
     Sykmelding: ResolversUnionTypes<ResolversParentTypes>['Sykmelding']
     SykmeldingBase: ResolversInterfaceTypes<ResolversParentTypes>['SykmeldingBase']
-    SykmeldingFull: Omit<SykmeldingFull, 'values'> & { values: ResolversParentTypes['SykmeldingFullValues'] }
+    SykmeldingFull: Omit<SykmeldingFull, 'meta' | 'values'> & {
+        meta: ResolversParentTypes['SykmeldingMeta']
+        values: ResolversParentTypes['SykmeldingFullValues']
+    }
     SykmeldingFullValues: Omit<SykmeldingFullValues, 'aktivitet'> & {
         aktivitet: Array<ResolversParentTypes['Aktivitet']>
     }
-    SykmeldingLight: Omit<SykmeldingLight, 'values'> & { values: ResolversParentTypes['SykmeldingLightValues'] }
+    SykmeldingLight: Omit<SykmeldingLight, 'meta' | 'values'> & {
+        meta: ResolversParentTypes['SykmeldingMeta']
+        values: ResolversParentTypes['SykmeldingLightValues']
+    }
     SykmeldingLightValues: Omit<SykmeldingLightValues, 'aktivitet'> & {
         aktivitet: Array<ResolversParentTypes['Aktivitet']>
     }
     SykmeldingMelding: SykmeldingMelding
-    SykmeldingMeta: SykmeldingMeta
-    SykmeldingRedacted: SykmeldingRedacted
+    SykmeldingMeta: ResolversUnionTypes<ResolversParentTypes>['SykmeldingMeta']
+    SykmeldingRedacted: Omit<SykmeldingRedacted, 'meta'> & { meta: ResolversParentTypes['SykmeldingMeta'] }
     SykmeldingRedactedValues: SykmeldingRedactedValues
     SykmeldingValidering: ResolversUnionTypes<ResolversParentTypes>['SykmeldingValidering']
     Sykmeldinger: ResolversUnionTypes<ResolversParentTypes>['Sykmeldinger']
@@ -844,6 +885,7 @@ export type ResolversParentTypes = {
     UtdypendeOpplysningerHint: UtdypendeOpplysningerHint
     UtdypendeSporsmal: UtdypendeSporsmal
     UtdypendeSporsmalSvar: UtdypendeSporsmalSvar
+    UtenlandskSykmeldingMeta: UtenlandskSykmeldingMeta
     Yrkesskade: Yrkesskade
 }
 
@@ -1017,6 +1059,17 @@ export type MutationResolvers<
         ContextType,
         RequireFields<MutationSynchronizeSykmeldingArgs, 'id'>
     >
+}
+
+export type NasjonalSykmeldingMetaResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['NasjonalSykmeldingMeta'] = ResolversParentTypes['NasjonalSykmeldingMeta'],
+> = {
+    legekontorOrgnr?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    mottatt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>
+    pasientIdent?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    sykmelderHpr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type OpprettSykmeldingDraftResolvers<
@@ -1233,10 +1286,7 @@ export type SykmeldingMetaResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['SykmeldingMeta'] = ResolversParentTypes['SykmeldingMeta'],
 > = {
-    legekontorOrgnr?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-    mottatt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>
-    pasientIdent?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    sykmelderHpr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    __resolveType: TypeResolveFn<'NasjonalSykmeldingMeta' | 'UtenlandskSykmeldingMeta', ParentType, ContextType>
 }
 
 export type SykmeldingRedactedResolvers<
@@ -1333,6 +1383,16 @@ export type UtdypendeSporsmalSvarResolvers<
     utfordringerMedArbeid?: Resolver<Maybe<ResolversTypes['SporsmalSvar']>, ParentType, ContextType>
 }
 
+export type UtenlandskSykmeldingMetaResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['UtenlandskSykmeldingMeta'] =
+        ResolversParentTypes['UtenlandskSykmeldingMeta'],
+> = {
+    mottatt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>
+    pasientIdent?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type YrkesskadeResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Yrkesskade'] = ResolversParentTypes['Yrkesskade'],
@@ -1359,6 +1419,7 @@ export type Resolvers<ContextType = any> = {
     JSON?: GraphQLScalarType
     Konsultasjon?: KonsultasjonResolvers<ContextType>
     Mutation?: MutationResolvers<ContextType>
+    NasjonalSykmeldingMeta?: NasjonalSykmeldingMetaResolvers<ContextType>
     OpprettSykmeldingDraft?: OpprettSykmeldingDraftResolvers<ContextType>
     OpprettetSykmelding?: OpprettetSykmeldingResolvers<ContextType>
     OtherSubmitOutcomes?: OtherSubmitOutcomesResolvers<ContextType>
@@ -1390,5 +1451,6 @@ export type Resolvers<ContextType = any> = {
     UtdypendeOpplysningerHint?: UtdypendeOpplysningerHintResolvers<ContextType>
     UtdypendeSporsmal?: UtdypendeSporsmalResolvers<ContextType>
     UtdypendeSporsmalSvar?: UtdypendeSporsmalSvarResolvers<ContextType>
+    UtenlandskSykmeldingMeta?: UtenlandskSykmeldingMetaResolvers<ContextType>
     Yrkesskade?: YrkesskadeResolvers<ContextType>
 }

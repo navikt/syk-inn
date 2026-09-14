@@ -107,7 +107,7 @@ const PasientSchema = z.object({
 
 const SykInnApiSykmeldingMeta = z.object({
     pasient: PasientSchema,
-    sykmelder: SykmelderSchema,
+    sykmelder: SykmelderSchema.nullable(),
     legekontorOrgnr: z.string().nullable(),
     legekontorTlf: z.string().nullable(),
     mottatt: z.string(),
@@ -117,6 +117,7 @@ export type SykInnApiSykmelding = z.infer<typeof SykInnApiSykmeldingSchema>
 export const SykInnApiSykmeldingSchema = z
     .object({
         isFull: z.literal(true),
+        type: z.string(),
         sykmeldingId: z.string(),
         meta: SykInnApiSykmeldingMeta,
         values: z.object({
@@ -143,6 +144,7 @@ export type SykInnApiSykmeldingRedacted = z.infer<typeof SykInnApiSykmeldingReda
 export const SykInnApiSykmeldingRedactedSchema = z
     .object({
         isFull: z.literal(false),
+        type: z.string(),
         sykmeldingId: z.string(),
         meta: SykInnApiSykmeldingMeta,
         values: z.object({

@@ -18,6 +18,7 @@ export function sykInnApiPayloadToResponse(
 ): SykInnApiSykmelding {
     return SykInnApiSykmeldingSchema.parse({
         isFull: true,
+        type: 'DIGITAL',
         sykmeldingId,
         meta: {
             pasient: {

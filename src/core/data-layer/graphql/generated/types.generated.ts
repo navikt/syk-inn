@@ -278,6 +278,14 @@ export type MutationSynchronizeSykmeldingArgs = {
     id: Scalars['String']['input']
 }
 
+export type NasjonalSykmeldingMeta = {
+    __typename: 'NasjonalSykmeldingMeta'
+    legekontorOrgnr: Maybe<Scalars['String']['output']>
+    mottatt: Scalars['DateTime']['output']
+    pasientIdent: Scalars['String']['output']
+    sykmelderHpr: Scalars['String']['output']
+}
+
 export type OpprettSykmeldingDraft = {
     __typename: 'OpprettSykmeldingDraft'
     draftId: Scalars['String']['output']
@@ -469,13 +477,7 @@ export type SykmeldingMelding = {
     tilNav: Maybe<Scalars['String']['output']>
 }
 
-export type SykmeldingMeta = {
-    __typename: 'SykmeldingMeta'
-    legekontorOrgnr: Maybe<Scalars['String']['output']>
-    mottatt: Scalars['DateTime']['output']
-    pasientIdent: Scalars['String']['output']
-    sykmelderHpr: Scalars['String']['output']
-}
+export type SykmeldingMeta = NasjonalSykmeldingMeta | UtenlandskSykmeldingMeta
 
 /**
  * A completely redacted sykmelding, only containing the absolute bare minimum of information.
@@ -553,6 +555,12 @@ export type UtdypendeSporsmalSvar = {
     sykdomsutvikling: Maybe<SporsmalSvar>
     uavklarteForhold: Maybe<SporsmalSvar>
     utfordringerMedArbeid: Maybe<SporsmalSvar>
+}
+
+export type UtenlandskSykmeldingMeta = {
+    __typename: 'UtenlandskSykmeldingMeta'
+    mottatt: Scalars['DateTime']['output']
+    pasientIdent: Scalars['String']['output']
 }
 
 export type Yrkesskade = {

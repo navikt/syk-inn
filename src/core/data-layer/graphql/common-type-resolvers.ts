@@ -2,6 +2,9 @@ import { raise } from '#lib/ts'
 import { Resolvers } from '#resolvers'
 
 export const commonTypeResolvers: Resolvers = {
+    SykmeldingMeta: {
+        __resolveType: (parent) => ('sykmelderHpr' in parent ? 'NasjonalSykmeldingMeta' : 'UtenlandskSykmeldingMeta'),
+    },
     SykmeldingValidering: {
         __resolveType: (parent) => ('ok' in parent ? 'RuleOK' : 'RuleOutcome'),
     },

@@ -1,6 +1,7 @@
 import { getNumberOfBehandlingsdager } from '#data-layer/common/behandlingsdager'
 import { questionTexts } from '#data-layer/common/questions'
 import { byCurrentOrPreviousWithOffset } from '#data-layer/common/sykmelding-utils'
+import { raise } from '#lib/ts'
 import { AnnenFravarsgrunnArsak } from '#queries'
 import {
     AktivitetType,
@@ -23,12 +24,7 @@ export function sykInnApiSykmeldingRedactedToResolverSykmelding(
     return {
         kind: 'redacted',
         sykmeldingId: sykmelding.sykmeldingId,
-        meta: {
-            pasientIdent: sykmelding.meta.pasient.ident,
-            legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
-            mottatt: sykmelding.meta.mottatt,
-            sykmelderHpr: sykmelding.meta.sykmelder.hpr,
-        },
+        meta: sykInnApiMetaToResolverMeta(sykmelding.sykmeldingId, sykmelding.type, sykmelding.meta),
         values: {
             aktivitet: sykmelding.values.aktivitet.map((it) => ({
                 ...it,
@@ -52,12 +48,7 @@ export function sykInnApiSykmeldingToResolverSykmelding(
         return {
             kind: 'light',
             sykmeldingId: sykmelding.sykmeldingId,
-            meta: {
-                pasientIdent: sykmelding.meta.pasient.ident,
-                legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
-                mottatt: sykmelding.meta.mottatt,
-                sykmelderHpr: sykmelding.meta.sykmelder.hpr,
-            },
+            meta: sykInnApiMetaToResolverMeta(sykmelding.sykmeldingId, sykmelding.type, sykmelding.meta),
             values: {
                 aktivitet: sykmelding.values.aktivitet,
                 hoveddiagnose: sykmelding.values.hoveddiagnose,
@@ -78,12 +69,7 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
     return {
         kind: 'full',
         sykmeldingId: sykmelding.sykmeldingId,
-        meta: {
-            pasientIdent: sykmelding.meta.pasient.ident,
-            legekontorOrgnr: sykmelding.meta.legekontorOrgnr,
-            mottatt: sykmelding.meta.mottatt,
-            sykmelderHpr: sykmelding.meta.sykmelder.hpr,
-        },
+        meta: sykInnApiMetaToResolverMeta(sykmelding.sykmeldingId, sykmelding.type, sykmelding.meta),
         values: {
             aktivitet: sykmelding.values.aktivitet,
             hoveddiagnose: sykmelding.values.hoveddiagnose,
@@ -234,6 +220,30 @@ function mapUtdypendeSporsmalToSykInnApiMap(
     }
 
     return result
+}
+
+function sykInnApiMetaToResolverMeta(
+    sykmeldingId: string,
+    type: string,
+    sykmeldingMeta: SykInnApiSykmelding['meta'],
+): SykmeldingFull['meta'] {
+    const meta: SykmeldingFull['meta'] =
+        sykmeldingMeta.sykmelder == null
+            ? { mottatt: sykmeldingMeta.mottatt, pasientIdent: sykmeldingMeta.pasient.ident }
+            : {
+                  pasientIdent: sykmeldingMeta.pasient.ident,
+                  legekontorOrgnr: sykmeldingMeta.legekontorOrgnr,
+                  mottatt: sykmeldingMeta.mottatt,
+                  sykmelderHpr: sykmeldingMeta.sykmelder.hpr,
+              }
+
+    if (sykmeldingMeta.sykmelder == null && type !== 'UTENLANDSK') {
+        raise(
+            `Sykmelding is missing sykmelder information, but is not of type UTENLANDSK - this cannot. SID: ${sykmeldingId}`,
+        )
+    }
+
+    return meta
 }
 
 /**
