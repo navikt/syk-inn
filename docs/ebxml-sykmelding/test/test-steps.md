@@ -16,8 +16,8 @@ sykmelder numbers refer to [`test-data.md`](./test-data.md); every step uses syk
 - `Blocked by EPJ`: the EPJ must refuse to submit at all, the message must never reach Nav.
 - `No submission`: nothing is sent. Verify only that the expected question appears in the UI.
 
-`Screenshots` = `yes` means take screenshots of the relevant printouts/copies and email them to Nav
-alongside the test report.
+`Screenshots` = `yes` means take screenshots of the relevant printouts/copies and email them to
+[Nav](mailto:nav.sykmelding@nav.no) alongside the test report.
 
 ## Scenarios
 
@@ -49,7 +49,8 @@ alongside the test report.
 
 ## Reporting your results
 
-Copy this table, fill in one row per step, and return it to Nav as a PDF, CSV or XLSX.
+Copy this table, fill in one row per step, and return it to [Nav](mailto:nav.sykmelding@nav.no) as a
+PDF, CSV or XLSX.
 
 | #   | Status  | Actual result | Error id | Timestamp | msgid |
 | --- | ------- | ------------- | -------- | --------- | ----- |
@@ -81,7 +82,7 @@ Copy this table, fill in one row per step, and return it to Nav as a PDF, CSV or
 
 ## Documents/link
 
-Code that runs the validation rules_
+Code that runs the validation rules
 
 - https://github.com/navikt/syfosmregler
 - https://github.com/navikt/syfosmmottak Code with xsd ++
