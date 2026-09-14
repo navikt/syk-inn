@@ -11,7 +11,7 @@
 >
 > The validation steps are manual and will not be automated in the future since this method is
 > deprecated. We do not guarantee a short ETC (estimated time to completion) as this is subject to
-> existing prioritised work.
+> existing prioritized work.
 
 ## Prerequisites:
 

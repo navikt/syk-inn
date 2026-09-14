@@ -177,7 +177,8 @@ Once you have applied the CPA to your system, part 1 is done.
 ## What part 1 does not cover
 
 Part 1 ends with a working CPA. Building and sending the actual sykmelding messages, message
-versions, packaging, and error handling for message exchange is part 2, documented separately.
+versions, packaging, and error handling for message exchange is [part 2](getting-started-2.md),
+documented separately.
 
 ## Reference documents
 
