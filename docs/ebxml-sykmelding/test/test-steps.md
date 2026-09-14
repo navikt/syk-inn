@@ -52,33 +52,36 @@ sykmelder numbers refer to [`test-data.md`](./test-data.md); every step uses syk
 Copy this table, fill in one row per step, and return it to [Nav](mailto:nav.sykmelding@nav.no) as a
 PDF, CSV or XLSX.
 
-| #   | Status  | Actual result | Error id | Timestamp | msgid |
-| --- | ------- | ------------- | -------- | --------- | ----- |
-| 1   | Not run |               |          |           |       |
-| 2   | Not run |               |          |           |       |
-| 3   | Not run |               |          |           |       |
-| 4   | Not run |               |          |           |       |
-| 5   | Not run |               |          |           |       |
-| 6   | Not run |               |          |           |       |
-| 7   | Not run |               |          |           |       |
-| 8   | Not run |               |          |           |       |
-| 9   | Not run |               |          |           |       |
-| 10  | Not run |               |          |           |       |
-| 11  | Not run |               |          |           |       |
-| 12  | Not run |               |          |           |       |
-| 13  | Not run |               |          |           |       |
-| 14  | Not run |               |          |           |       |
-| 15  | Not run |               |          |           |       |
-| 16  | Not run |               |          |           |       |
-| 17  | Not run |               |          |           |       |
-| 18  | Not run |               |          |           |       |
-| 19  | Not run |               |          |           |       |
-| 20  | Not run |               |          |           |       |
-| 21  | Not run |               |          |           |       |
-| 22  | Not run |               |          |           |       |
-| 23  | Not run |               |          |           |       |
+| #   | Status  | Result description | Date and time | msgid |
+| --- | ------- | ------------------ | ------------- | ----- |
+| 1   | Not run |                    |               |       |
+| 2   | Not run |                    |               |       |
+| 3   | Not run |                    |               |       |
+| 4   | Not run |                    |               |       |
+| 5   | Not run |                    |               |       |
+| 6   | Not run |                    |               |       |
+| 7   | Not run |                    |               |       |
+| 8   | Not run |                    |               |       |
+| 9   | Not run |                    |               |       |
+| 10  | Not run |                    |               |       |
+| 11  | Not run |                    |               |       |
+| 12  | Not run |                    |               |       |
+| 13  | Not run |                    |               |       |
+| 14  | Not run |                    |               |       |
+| 15  | Not run |                    |               |       |
+| 16  | Not run |                    |               |       |
+| 17  | Not run |                    |               |       |
+| 18  | Not run |                    |               |       |
+| 19  | Not run |                    |               |       |
+| 20  | Not run |                    |               |       |
+| 21  | Not run |                    |               |       |
+| 22  | Not run |                    |               |       |
+| 23  | Not run |                    |               |       |
 
-`Status` is one of `OK`, `Failed`, `Not ready`, `Not run`.
+- `Status` is one of `OK`, `Failed`, `Not ready`, `Not run`.
+- `Result description` example if test is OK: sykmelding is sendt, and got a OK apprec back from Nav
+- `Date and time` example: 2026-09-14T10:52:00Z, where format for date is yyyy-mm-dd
+- `MsgId` example: 28e0d505-ee5b-40d7-8488-354eb25ca99d
 
 ## Documents/link
 
