@@ -121,14 +121,10 @@ that the CPP goes to NHN or to `e-mottak@nav.no` without their instruction.
 If e-mottak instructs you to use the NHN process, send the signed CPP as an email attachment to one
 of these addresses, depending on environment:
 
-| Environment | Address                |
-| ----------- | ---------------------- |
-| Production  | `cpp@edi.nhn.no`       |
-| QA          | `cpp-qa@edi.nhn.no`    |
-| Test 1      | `cpp-test1@edi.nhn.no` |
-| Test 2      | `cpp-test2@edi.nhn.no` |
-| Test 3      | `cpp-test3@edi.nhn.no` |
-| Test 4      | `cpp-test4@edi.nhn.no` |
+| Environment | Address              |
+| ----------- | -------------------- |
+| Production  | `cpp@edi.nhn.no`     |
+| QA          | `cpp@test-es.nav.no` |
 
 If e-mottak instructs you to use the NHN process, register your CPP in a test environment first and
 confirm you get a CPA back before you send anything to production.
