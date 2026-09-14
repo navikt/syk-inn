@@ -5,7 +5,7 @@
 > This flow is deprecated and will be turned off in 2028.
 >
 > Use SMART on FHIR as the preferred method of exchanging data with Nav. See
-> [`docs/smart/getting-started.md`](../../smart/getting-started.md).
+> [`docs/smart/getting-started.md`](../smart/getting-started.md).
 
 This is part 1 of 2. Part 1 covers everything that happens before you can exchange messages, from
 first contact to a working CPA (Collaboration Protocol Agreement). Part 2 covers the actual message
