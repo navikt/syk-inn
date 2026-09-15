@@ -7,6 +7,7 @@ import { hashToRecord, toHashData } from '#core/services/valkey/utils'
 import { getFlag, UnleashClient } from '#core/toggles/unleash'
 import { globalInMemoryValkey } from '#dev/mock-engine/valkey/global-inmem-valkey'
 import { getServerEnv, isDemo, isE2E, isLocal } from '#lib/env'
+import { spanServerAsync } from '#lib/otel/server'
 import { getAbsoluteURL } from '#lib/url'
 
 import { getKnownFhirServers } from './issuers'
@@ -60,19 +61,21 @@ function getSmartStorage(): SmartStorage {
     const valkey = getBackingStore()
 
     return {
-        set: async (sessionId, values) => {
-            const client = await valkey
-            const key = sessionIdKey(sessionId)
+        set: async (sessionId, values) =>
+            spanServerAsync('SmartStorage.set', async () => {
+                const client = await valkey
+                const key = sessionIdKey(sessionId)
 
-            await client.hset(key, toHashData(values))
-            // Refresh tokens expires in a month, should exp be less?
-            await client.expire(key, 60 * 60 * 24 * 30)
-        },
-        get: async (sessionId) => {
-            const client = await valkey
+                await client.hset(key, toHashData(values))
+                // Refresh tokens expires in a month, should exp be less?
+                await client.expire(key, 60 * 60 * 24 * 30)
+            }),
+        get: async (sessionId) =>
+            spanServerAsync('SmartStorage.get', async () => {
+                const client = await valkey
 
-            return hashToRecord(await client.hgetall(sessionIdKey(sessionId)))
-        },
+                return hashToRecord(await client.hgetall(sessionIdKey(sessionId)))
+            }),
     }
 }
 

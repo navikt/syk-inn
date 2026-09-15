@@ -1,5 +1,7 @@
 import { GlideClient } from '@valkey/valkey-glide'
 
+import { spanServerAsync } from '../lib/otel'
+
 import { FEEDBACK_PUBSUB_CHANNELS } from './channels'
 
 type FeedbackPubClient = {
@@ -16,14 +18,17 @@ type FeedbackPubClient = {
  */
 export const createFeedbackPubClient = (valkey: GlideClient): FeedbackPubClient => {
     return {
-        new: async (id) => {
-            await valkey.publish(id, FEEDBACK_PUBSUB_CHANNELS.NEW)
-        },
-        update: async (id) => {
-            await valkey.publish(id, FEEDBACK_PUBSUB_CHANNELS.UPDATED)
-        },
-        deleted: async (id) => {
-            await valkey.publish(id, FEEDBACK_PUBSUB_CHANNELS.DELETED)
-        },
+        new: async (id) =>
+            spanServerAsync('FeedbackPubClient.new', async () => {
+                await valkey.publish(id, FEEDBACK_PUBSUB_CHANNELS.NEW)
+            }),
+        update: async (id) =>
+            spanServerAsync('FeedbackPubClient.update', async () => {
+                await valkey.publish(id, FEEDBACK_PUBSUB_CHANNELS.UPDATED)
+            }),
+        deleted: async (id) =>
+            spanServerAsync('FeedbackPubClient.deleted', async () => {
+                await valkey.publish(id, FEEDBACK_PUBSUB_CHANNELS.DELETED)
+            }),
     }
 }

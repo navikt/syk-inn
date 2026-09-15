@@ -2407,6 +2407,7 @@ __metadata:
   resolution: "@navikt/syk-zara@workspace:libs/syk-zara"
   peerDependencies:
     "@navikt/pino-logger": "*"
+    "@opentelemetry/api": ^1.9.1
     "@valkey/valkey-glide": 2
     date-fns: 4
     remeda: "*"
