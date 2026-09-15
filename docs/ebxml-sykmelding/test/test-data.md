@@ -1,9 +1,9 @@
 # Test data
 
 Test persons for the acceptance test suite in [`test-steps.md`](./test-steps.md). Nav creates these
-using Dolly (Nav's internal synthetic test suite) and Synthpop (NHN's test suite), fills in a copy
-of this file per vendor, and sends it together with the test scenarios. See testdata is created
-here: https://dolly.ekstern.dev.nav.no/gruppe/11547
+using [Dolly](https://dolly.ekstern.dev.nav.no) (Nav's internal synthetic test suite) and Synthpop
+(NHN's test suite), fills in a copy of this file per vendor, and sends it together with the test
+scenarios. See testdata is created here: https://dolly.ekstern.dev.nav.no/gruppe/11547
 
 ## Patients
 

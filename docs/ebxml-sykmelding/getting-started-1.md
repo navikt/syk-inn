@@ -17,17 +17,17 @@ You need all the following in place before building and sending your CPP.
 
 1. Membership and connectivity with Norsk Helsenett (NHN).
 2. A PKI solution that provides one certificate for signing and one certificate for encryption. The
-   old CPP/CPA flow requires X.509 certificates, encoded as base64 in the CPP. Confirm with Nav or
-   NHN which certificate solution is accepted for new integrations. Preferred method is signing with
-   HelseID.
+   old CPP/CPA flow requires X.509 certificates, encoded as base64 in the CPP. Confirm with
+   [eMottak](mailto:e-mottak@nav.no) or NHN which certificate solution is accepted for new
+   integrations. Preferred method is signing with HelseID.
 3. A HER-id registered in Adresseregisteret (AR).
 4. An EDI address on the form `mailto://din-adresse@edi.nhn.no`.
 
 ## Step 1: contact Nav before creating the CPP
 
-Send an email to `e-mottak@nav.no` to announce that you want to start sending sykmelding over ebXML.
-Nav replies with an explanation of CPP and CPA and points you to the technical specifications listed
-at the bottom of this page.
+Send an email to [eMottak](mailto:e-mottak@nav.no) to announce that you want to start sending
+sykmelding over ebXML. Nav replies with an explanation of CPP and CPA and points you to the
+technical specifications listed at the bottom of this page.
 
 Do not expect the CPA at this stage. The CPP must exist before the CPA can be created. The 2013 CPP
 Guide says that the local actor creates a CPP first, then the central actor creates the CPA from
@@ -114,11 +114,11 @@ http://www.oasis-open.org/committees/ebXML-msg/schema/msg-header-2_0.xsd
 The 2013 CPP Guide says to send your CPP to **NHN Adresseregisteret (AR)**. AR stores your CPP,
 publishes it, and forwards it to central actors. The guide does not mention `e-mottak@nav.no`.
 
-The current e-mottak process is not described in the guide or on the current Nav technical
+The current eMottak process is not described in the guide or on the current Nav technical
 specifications page. Ask the e-mottak team where they want the completed CPP sent. Do not assume
-that the CPP goes to NHN or to `e-mottak@nav.no` without their instruction.
+that the CPP goes to NHN or to [eMottak](mailto:e-mottak@nav.no) without their instruction.
 
-If e-mottak instructs you to use the NHN process, send the signed CPP as an email attachment to one
+If eMottak instructs you to use the NHN process, send the signed CPP as an email attachment to one
 of these addresses, depending on environment:
 
 | Environment | Address              |
@@ -126,7 +126,7 @@ of these addresses, depending on environment:
 | Production  | `cpp@edi.nhn.no`     |
 | QA          | `cpp@test-es.nav.no` |
 
-If e-mottak instructs you to use the NHN process, register your CPP in a test environment first and
+If eMottak instructs you to use the NHN process, register your CPP in a test environment first and
 confirm you get a CPA back before you send anything to production.
 
 For the NHN process, the email must follow these rules exactly:
@@ -147,9 +147,9 @@ There are two failure modes:
 
 ## Step 5: e-mottak creates and returns the CPA
 
-After e-mottak receives or otherwise obtains your CPP, the e-mottak team creates the CPA from your
-CPP and Nav's CPP, then sends the CPA back to you. If Nav already had an older CPA with you, that
-older CPA is not deleted, its expiry date (`End` element) is set so it stops being valid.
+After eMottak receives or otherwise obtains your CPP, the eMottak team creates the CPA from your CPP
+and Nav's CPP, then sends the CPA back to you. If Nav already had an older CPA with you, that older
+CPA is not deleted, its expiry date (`End` element) is set so it stops being valid.
 
 ## Step 6: apply the CPA
 

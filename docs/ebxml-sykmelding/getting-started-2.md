@@ -48,4 +48,4 @@ the reporting table at the bottom of that file and returns it to Nav.
 
 ## Step 4 - production ready
 
-If the validation goes well you are allowed to start sending sykmeldinger in production.
+If the validation goes well, you are allowed to start sending sykmeldinger in production.

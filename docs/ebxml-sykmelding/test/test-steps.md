@@ -17,7 +17,7 @@ sykmelder numbers refer to [`test-data.md`](./test-data.md); every step uses syk
 - `No submission`: nothing is sent. Verify only that the expected question appears in the UI.
 
 `Screenshots` = `yes` means take screenshots of the relevant printouts/copies and email them to
-[Nav](mailto:nav.sykmelding@nav.no) alongside the test report.
+[Nav sykmelding](mailto:nav.sykmelding@nav.no) alongside the test report.
 
 ## Scenarios
 
