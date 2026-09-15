@@ -47,7 +47,7 @@ export function sykmeldingToDocumentReference(
             {
                 attachment: {
                     title: description,
-                    language: 'NO-nb',
+                    language: 'no-NO',
                     contentType: 'application/pdf',
                     data: base64Pdf,
                 },
