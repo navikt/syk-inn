@@ -1,5 +1,6 @@
 import { GlideClient } from '@valkey/valkey-glide'
 
+import { spanServerAsync } from '../lib/otel'
 import { hashToRecord, toHashData } from '../lib/valkey'
 
 import { Bruksvilkar } from './schema'
@@ -18,38 +19,40 @@ export type BruksvilkarClient = {
 
 export function createBruksvilkarClient(valkey: GlideClient): BruksvilkarClient {
     return {
-        acceptBruksvilkar: async (version, user, meta) => {
-            const key = createKey(user.hpr)
-            const acceptedAt = new Date().toISOString()
+        acceptBruksvilkar: async (version, user, meta) =>
+            spanServerAsync('BruksvilkarClient.acceptBruksvilkar', async () => {
+                const key = createKey(user.hpr)
+                const acceptedAt = new Date().toISOString()
 
-            await valkey.hset(
-                key,
-                toHashData({
-                    acceptedAt: acceptedAt,
-                    name: user.name,
-                    hpr: user.hpr,
-                    org: user.orgnummer,
-                    version: version,
-                    system: meta.system,
-                    hash: meta.commmitHash,
-                    tokenValid: true,
-                } satisfies Bruksvilkar),
-            )
+                await valkey.hset(
+                    key,
+                    toHashData({
+                        acceptedAt: acceptedAt,
+                        name: user.name,
+                        hpr: user.hpr,
+                        org: user.orgnummer,
+                        version: version,
+                        system: meta.system,
+                        hash: meta.commmitHash,
+                        tokenValid: true,
+                    } satisfies Bruksvilkar),
+                )
 
-            return acceptedAt
-        },
-        hasAcceptedBruksvilkar: async (hpr) => {
-            const key = createKey(hpr)
-            const data = hashToRecord(await valkey.hgetall(key)) as Partial<Record<keyof Bruksvilkar, string>>
-            if (!data.acceptedAt || !data.version) {
-                return null
-            }
+                return acceptedAt
+            }),
+        hasAcceptedBruksvilkar: async (hpr) =>
+            spanServerAsync('BruksvilkarClient.hasAcceptedBruksvilkar', async () => {
+                const key = createKey(hpr)
+                const data = hashToRecord(await valkey.hgetall(key)) as Partial<Record<keyof Bruksvilkar, string>>
+                if (!data.acceptedAt || !data.version) {
+                    return null
+                }
 
-            return {
-                acceptedAt: data.acceptedAt,
-                version: data.version as `${number}.${number}`,
-            }
-        },
+                return {
+                    acceptedAt: data.acceptedAt,
+                    version: data.version as `${number}.${number}`,
+                }
+            }),
     }
 }
 
