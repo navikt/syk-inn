@@ -1,28 +1,9 @@
+#import "./components.typ": info, diagnose, aktivitet
+
 // Destructure the input from the JSON provided via --input
 #let sykmelding = json(bytes(sys.inputs.at("sykmelding")))
 #let meta = sykmelding.meta
 #let values = sykmelding.values
-
-// Reusable templates
-#let info(title, value, empty: false) = [
-  == #title
-  #set text(luma(120), style: "italic") if (empty)
-  #value
-]
-
-#let diagnose(diagnose) = [
-  #diagnose.code: #diagnose.text (#diagnose.system)
-]
-
-#let aktivitet(aktivitet) = [
-  #strong(aktivitet.periode) - #aktivitet.type
-  #for detail in aktivitet.details {
-    [- #detail.text]
-    if detail.items.len() > 0 {
-      block(above: 6pt, below: 0pt, list(indent: 1em, ..detail.items))
-    }
-  }
-]
 
 // Global configuration
 #set text(font: ("Source Sans 3",  "Noto Color Emoji"), lang: "nb", size: 10pt, fallback: false)
@@ -37,7 +18,7 @@
       grid.cell(
         [
           #set text(16pt)
-          = Innsendt sykmelding
+          #title[Innsendt sykmelding]
         ],
         align: horizon,
       ),
@@ -108,7 +89,7 @@
     info("Diagnose", [
       #diagnose(values.diagnose.hoved)
       #if values.diagnose.bi.len() > 0 [
-        === Bidiagnoser
+        == Bidiagnoser
         #for bi in values.diagnose.bi {
           [ #diagnose(bi)\ ]
         }
