@@ -35,7 +35,7 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
             return spanServerAsync('FhirWriteService.writeDocumentReference', async (span) => {
                 const sykmeldingId = sykmelding.sykmeldingId
 
-                const alreadyExists = await resourceAlreadyExists(client, {
+                const alreadyExists = await safeToWrite(client, {
                     type: 'DocumentReference',
                     id: sykmeldingId,
                 })
@@ -106,28 +106,35 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
         },
     }) as const
 
-async function resourceAlreadyExists(
+async function safeToWrite(
     client: ReadyClient,
     document: {
         type: 'DocumentReference' | 'QuestionnaireResponse'
         id: string
     },
-): Promise<true | { error: string }> {
-    return spanServerAsync(`FhirWriteService.resourceAlreadyExists(${document.type}/${document.id})`, async (span) => {
+): Promise<boolean> {
+    return spanServerAsync(`FhirWriteService.safeToWrite(${document.type}/${document.id})`, async (span) => {
         const existingResource = await client.request(`${document.type}/${document.id}`, {
             expectNotFound: true,
         })
 
-        if ('resourceType' in existingResource || existingResource.error === 'REQUEST_FAILED_RESOURCE_NOT_FOUND') {
+        // resource already exists = log and skip
+        if ('resourceType' in existingResource) {
+            logger.error(`Resource ${document.type}/${document.id} already exists, skipping write.`)
+            return false
+        }
+
+        // resource is not found = proceed
+        if (existingResource.error === 'REQUEST_FAILED_RESOURCE_NOT_FOUND') {
+            logger.debug(`Writing ${document.type}/${document.id}`)
             return true
         }
 
-        failSpan(
-            span,
-            'Unable to verify if resource exists',
-            new Error(`Error checking existence of ${document.type}/${document.id}: ${existingResource.error}`),
-        )
-        return { error: existingResource.error }
+        const message = `Unexpected error when checking resource already exists: ${existingResource.error}. Resource: ${document.type}/${document.id}`
+        // other = log and skip
+        logger.error(message)
+        failSpan(span, message)
+        return false
     })
 }
 
