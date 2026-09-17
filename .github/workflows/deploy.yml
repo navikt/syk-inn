@@ -9,7 +9,7 @@ on:
 env:
   APP: syk-inn
   BASE_PATH: /samarbeidspartner/sykmelding
-  TYPST_VERSION: 0.14.2
+  TYPST_VERSION: 0.15.1
 
 permissions:
   contents: read

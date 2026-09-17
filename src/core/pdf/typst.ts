@@ -24,7 +24,7 @@ export function execTypst(module: Modules): Promise<PdfResult> {
                 './typst-pdf/typst',
                 [
                     'compile',
-                    '--pdf-standard=a-2a',
+                    '--pdf-standard=a-2a,ua-1',
                     '--font-path=./typst-pdf/fonts',
                     `--input=sykmelding=${JSON.stringify(module.payload)}`,
                     'typst-pdf/sykmelding.typ',
