@@ -341,18 +341,11 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             const userToggles = await getUserToggles(hpr)
             const writeService = fhirWriteService(client, userToggles)
+
             const questionnaireRef = await writeQuestionnaireResponseWithFallback(writeService, sykmelding)
+            const documentReference = await writeService.writeDocumentReference(sykmelding, questionnaireRef)
 
-            const [documentReference] = await Promise.allSettled([
-                writeService.writeDocumentReference(sykmelding, questionnaireRef),
-            ])
-
-            if (documentReference.status === 'rejected') {
-                logger.error(new Error(`Creating document reference failed`, { cause: documentReference.reason }))
-                throw new GraphQLError('API_ERROR')
-            }
-
-            if ('error' in documentReference.value) {
+            if ('error' in documentReference) {
                 // Already logged and failed span in service
                 throw new GraphQLError('API_ERROR')
             }
