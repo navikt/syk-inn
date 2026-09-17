@@ -37,6 +37,11 @@ export async function GET(_: NextRequest, { params }: RouteContext<'/pdf/[sykmel
             return new Response('Internal server error', { status: 500 })
         }
 
+        span.setAttributes({
+            'pdf.size': pdf.pdf.byteLength,
+            'pdf.sykmeldingId': sykmeldingId,
+        })
+
         return new Response(pdf.pdf, {
             headers: { 'Content-Type': 'application/pdf' },
             status: 200,

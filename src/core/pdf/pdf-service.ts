@@ -26,9 +26,7 @@ export async function createTypstSykmelding(sykmelding: SykInnApiSykmelding): Pr
 export function mapSykInnToPdfPayload(sykmelding: SykInnApiSykmelding): TypstPdfSykmelding {
     if (sykmelding.meta.sykmelder == null) {
         raise(
-            Error(
-                `Sykmelding (${sykmelding.sykmeldingId}) without behandler, this cannot happen. Was type ${sykmelding.type}.`,
-            ),
+            `Sykmelding (${sykmelding.sykmeldingId}) without behandler, this cannot happen. Was type ${sykmelding.type}.`,
         )
     }
 
