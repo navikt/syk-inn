@@ -26,7 +26,7 @@
             "Sykmeldingen er relatert til yrkesskade, skadedato: 9. april 2026"
         ],
         "meldinger": {
-            "tilNav": "Hei NAV, dette er en melding til dere",
+            "tilNav": "Hei NAV, dette er en melding til dere \uD83D\uDE0E\uD83E\uDD19\uD83E\uDD29",
             "tilArbeidsgiver": "Hei arbeidsgiver, dette er en melding til dere. Det er veldig viktig at dere leser denne meldingen, for det står nemlig veldig viktige ting her som dere må ta hensyn til når dere skal legge til rette for arbeidstakeren sin retur til jobb etter sykefraværet."
         },
         "pasientenSkalSkjermes": true,

@@ -13,6 +13,10 @@ describe('typst CLI integration', () => {
             .enkelAktivitet({ offset: 0, days: 7 })
             .enkelAktivitet({ offset: 8, days: 14 })
             .uke17Answered()
+            .meldinger({
+                tilNav: 'Dette er en melding med emojis: 🩺 👉 👈',
+                tilArbeidsgiver: 'Og her er andre emojis: 😎🤙🤩',
+            })
             .build()
 
         const typst = await createTypstSykmelding(chonkySykmelding)
