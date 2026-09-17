@@ -17,7 +17,7 @@ describe('feedback client integration test', () => {
 
         process.env.VALKEY_HOST_SYK_INN = `${valkey.getHost()}`
         process.env.VALKEY_PORT_SYK_INN = `${valkey.getMappedPort(6379)}`
-    })
+    }, 30_000)
 
     test('submitting feedback to valkey should be good in the hood', async () => {
         const feedback = await getFeedbackClient()
