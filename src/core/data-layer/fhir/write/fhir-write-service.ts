@@ -35,11 +35,11 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
             return spanServerAsync('FhirWriteService.writeDocumentReference', async (span) => {
                 const sykmeldingId = sykmelding.sykmeldingId
 
-                const alreadyExists = await safeToWrite(client, {
+                const safeToWrite = await isSafeToWrite(client, {
                     type: 'DocumentReference',
                     id: sykmeldingId,
                 })
-                if (alreadyExists !== true) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
+                if (!safeToWrite) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
 
                 const pdf = await createTypstSykmelding(sykmelding)
                 if (!pdf.ok) {
@@ -106,14 +106,14 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
         },
     }) as const
 
-async function safeToWrite(
+async function isSafeToWrite(
     client: ReadyClient,
     document: {
         type: 'DocumentReference' | 'QuestionnaireResponse'
         id: string
     },
 ): Promise<boolean> {
-    return spanServerAsync(`FhirWriteService.safeToWrite(${document.type}/${document.id})`, async (span) => {
+    return spanServerAsync(`FhirWriteService.isSafeToWrite(${document.type}/${document.id})`, async (span) => {
         const existingResource = await client.request(`${document.type}/${document.id}`, {
             expectNotFound: true,
         })
