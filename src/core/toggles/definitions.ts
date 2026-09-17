@@ -13,14 +13,14 @@ type ToggleDefinitions = Awaited<ReturnType<typeof getDefinitions>>
 const TOGGLES_KEY = 'toggles'
 
 const unleashCache = new QuickLRU<typeof TOGGLES_KEY, ToggleDefinitions>({
-    maxAge: 15 * 1000,
+    maxAge: 5 * 60 * 1000, // 5 minutes
     maxSize: 10,
 })
 
 let previousValid: ToggleDefinitions | null
 
 /**
- * Fetches the definitions from Unleash and caches them in a simple in-memory cache with 15 seconds TTL.
+ * Fetches the definitions from Unleash and caches them in a simple in-memory cache with a 5 minute TTL.
  *
  * Validates their presence against the expected toggles.
  */
@@ -29,20 +29,19 @@ export async function getAndValidateDefinitions(): Promise<ToggleDefinitions> {
         if (unleashCache.has(TOGGLES_KEY)) {
             const cachedToggles = unleashCache.get(TOGGLES_KEY)
             if (cachedToggles != null) {
+                if ((unleashCache.expiresIn(TOGGLES_KEY) ?? 0) < 60) {
+                    // Update the cache silently in the background if the cache expires soon
+                    void fetchAndUpdateCache().catch(() => void 0)
+                }
+
                 span.setAttribute('unleash.cached-toggles', true)
                 return cachedToggles
             }
         }
 
         try {
-            const definitions = await fetchDefinitions()
-
-            unleashCache.set(TOGGLES_KEY, definitions)
-            previousValid = definitions
-
-            diffToggles(definitions)
+            const definitions = await fetchAndUpdateCache()
             span.setAttribute('unleash.cached-toggles', false)
-
             return definitions
         } catch (e) {
             if (previousValid != null) {
@@ -68,6 +67,17 @@ export async function getAndValidateDefinitions(): Promise<ToggleDefinitions> {
             )
         }
     })
+}
+
+async function fetchAndUpdateCache(): Promise<ToggleDefinitions> {
+    const definitions = await fetchDefinitions()
+
+    unleashCache.set(TOGGLES_KEY, definitions)
+    previousValid = definitions
+
+    diffToggles(definitions)
+
+    return definitions
 }
 
 async function fetchDefinitions(): Promise<ToggleDefinitions> {

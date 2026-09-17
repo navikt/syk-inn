@@ -69,12 +69,12 @@ describe('unleash definitions', () => {
         expect(unleashApi.pendingMocks(), 'First fetch fetched').length(1)
 
         // Still uses cache
-        vi.advanceTimersByTime(14 * 1000)
+        vi.advanceTimersByTime(3 * 60 * 1000)
         await getAndValidateDefinitions()
         expect(unleashApi.pendingMocks(), 'First fetch fetched').length(1)
 
         // Hits refetch, which fails, but uses previous valid value
-        vi.advanceTimersByTime(2 * 1000)
+        vi.advanceTimersByTime(2 * 60 * 1000)
         await getAndValidateDefinitions()
 
         expect(unleashApi.pendingMocks(), 'First fetch fetched').length(0)
