@@ -14,11 +14,7 @@ import {
 } from './data/organization'
 import { createPatientSession, PatientSession } from './data/patient-session'
 import { createPatientEspenEksempel, createPatientKariNormann, MockPatients } from './data/patients'
-import {
-    createPractitionerBadetteOrganitto,
-    createPractitionerKomanMagnar,
-    MockPractitioners,
-} from './data/practitioner'
+import { createPractitionerKomanMagnar, MockPractitioners } from './data/practitioner'
 import { fhirLogger } from './logger'
 
 type LaunchPayload = {
@@ -39,9 +35,9 @@ export class FhirMockSession {
         ['Karlsrud', createOrganizationKarlsrud()],
     ]
 
-    private practitioners: [MockPractitioners, FhirPractitioner][] = [
-        ['Magnar Koman', createPractitionerKomanMagnar()],
-        ['Badette Organitto', createPractitionerBadetteOrganitto()],
+    private practitionerMagnar: [MockPractitioners, FhirPractitioner] = [
+        'Magnar Koman',
+        createPractitionerKomanMagnar(),
     ]
 
     private launches: Record<string, LaunchPayload> = {}
@@ -73,7 +69,7 @@ export class FhirMockSession {
         this.sessions[accessToken] = createPatientSession(
             launchPayload.patient,
             this.getPatientByName(launchPayload.patient),
-            this.getPractitionerByName(launchPayload.practitioner)!,
+            this.practitionerMagnar[1],
             this.getOrganizationByName(launchPayload.organization)!,
         )
         return this.sessions[accessToken]
@@ -144,11 +140,11 @@ export class FhirMockSession {
     }
 
     getPractitioner(practitionerId: string): FhirPractitioner | null {
-        return this.practitioners.find((it) => it[1].id === practitionerId)?.[1] ?? null
-    }
+        const magnar = this.practitionerMagnar[1]
 
-    getAllPractitioners(): FhirPractitioner[] {
-        return Object.values(this.practitioners).map((it) => it[1])
+        if (magnar.id !== practitionerId) return null
+
+        return magnar
     }
 
     private getPatientByName(name: MockPatients): FhirPatient {
@@ -157,14 +153,6 @@ export class FhirMockSession {
             throw new Error(`No patient found for name ${name}`)
         }
         return patient[1]
-    }
-
-    private getPractitionerByName(name: MockPractitioners): FhirPractitioner {
-        const practitioner = this.practitioners.find((it) => it[0] === name)
-        if (!practitioner) {
-            throw new Error(`No practitioner found for name ${name}`)
-        }
-        return practitioner[1]
     }
 
     private getOrganizationByName(name: MockOrganizations): FhirOrganization {
@@ -182,7 +170,7 @@ export class FhirMockSession {
     dump(): unknown {
         return {
             organizations: this.organizations,
-            practitioners: this.practitioners,
+            practitioners: this.practitionerMagnar,
             launches: this.launches,
             sessions: this.sessions,
         }

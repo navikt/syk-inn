@@ -63,12 +63,6 @@ function Error({ error }: Props): ReactElement {
                                         .
                                     </BodyShort>
                                 </div>
-
-                                {/*<BodyShort size="small" textColor="subtle">
-                                Feil-id: 12345678-9123-4567-8912-345678912345
-                            </BodyShort>
-
-                            <Button>Gå til Min side</Button>*/}
                             </VStack>
 
                             <div>

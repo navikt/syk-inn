@@ -13,7 +13,7 @@ export function verifySignerendeBehandlerFillIfNeeded(mode: Modes): (page: Page)
             await fhirUserVerification.verifySignerendeBehandler()(page)
         },
         standalone: async (page) => {
-            await standaloneUserVerification.verifySignerendeBehandler('123456')(page)
+            await standaloneUserVerification.verifySignerendeBehandler('9144889')(page)
             await standaloneActions.fillOrgnummer('112233445')(page)
             await standaloneActions.fillTelefonnummer('+47 99887766')(page)
 
