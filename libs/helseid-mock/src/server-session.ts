@@ -11,20 +11,16 @@ type UserSession = {
 }
 
 export class HelseIdMockSession {
-    private behandlere: [MockBehandlere, HelseIdBehandler][] = [
-        ['Johan Johansson', { pid: '01010112345', hpr: '123456', name: 'Johan Johansson' }],
-        ['Kari Karlsen', { pid: '02020212345', hpr: '654321', name: 'Kari Karlsen' }],
-        ['Ola Olsen', { pid: '03030312345', hpr: '112233', name: 'Ola Olsen' }],
+    private behandlerMagnar: [MockBehandlere, HelseIdBehandler] = [
+        'Magnar Koman',
+        { pid: '01010112345', hpr: '9144889', name: 'Magnar Koman' },
     ]
 
     private sessions: Record<string, UserSession> = {}
 
-    public async initUser(sessionId: string, behandler: MockBehandlere): Promise<UserSession> {
-        const behandlerInfo = this.behandlere.find(([name]) => name === behandler)
-        if (!behandlerInfo) throw new Error(`Behandler not found: ${behandler}`)
-
+    public async initUser(sessionId: string): Promise<UserSession> {
         const accessToken = await createAccessToken('syk-inn', crypto.randomUUID())
-        const idToken = await createIdToken(behandlerInfo[1])
+        const idToken = await createIdToken(this.behandlerMagnar[1])
 
         this.sessions[sessionId] = {
             tokens: {

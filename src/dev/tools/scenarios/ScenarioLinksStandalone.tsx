@@ -1,49 +1,24 @@
 'use client'
 
 import { PlayIcon, ShieldLockIcon } from '@navikt/aksel-icons'
-import { Heading, LinkCard, Select } from '@navikt/ds-react'
-import { MockBehandlere } from '@navikt/helseid-mock-server'
-import { parseAsString, useQueryState } from 'nuqs'
+import { Heading, LinkCard } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 
 import { createHelseIDScenarioUrl } from './scenario-url-utils'
 
 export function ScenarioLinksStandalone(): ReactElement {
-    const [behandler, setBehandler] = useQueryState(
-        'behandler',
-        parseAsString.withDefault('Johan Johansson' satisfies MockBehandlere).withOptions({ clearOnDefault: true }),
-    )
-
     return (
         <div className="mt-4">
-            <div className="flex flex-col ax-sm:flex-row justify-between">
-                <Heading level="3" size="xsmall" spacing className="flex gap-1 items-center">
-                    <ShieldLockIcon height="32" width="32" aria-hidden />
-                    HelseID scenarioer
-                </Heading>
-                <div className="flex gap-2 mb-4 relative w-full ax-sm:w-fit">
-                    <Select
-                        className="grow"
-                        label="Practitioner"
-                        size="small"
-                        onChange={(e) => setBehandler(e.target.value)}
-                        value={behandler}
-                    >
-                        <option value={'Johan Johansson' satisfies MockBehandlere}>Johan Johansson</option>
-                        <option value={'Ola Olsen' satisfies MockBehandlere}>Ola Olsen</option>
-                        <option value={'Kari Karlsen' satisfies MockBehandlere}>Kari Karlsen</option>
-                    </Select>
-                </div>
-            </div>
+            <Heading level="3" size="xsmall" spacing className="flex gap-1 items-center">
+                <ShieldLockIcon height="32" width="32" aria-hidden />
+                HelseID scenarioer
+            </Heading>
             <LinkCard>
                 <LinkCard.Icon>
                     <PlayIcon fontSize="2rem" />
                 </LinkCard.Icon>
                 <LinkCard.Title>
-                    <LinkCard.Anchor
-                        suppressHydrationWarning
-                        href={createHelseIDScenarioUrl('empty', behandler as MockBehandlere)}
-                    >
+                    <LinkCard.Anchor suppressHydrationWarning href={createHelseIDScenarioUrl('empty')}>
                         Just go
                     </LinkCard.Anchor>
                 </LinkCard.Title>

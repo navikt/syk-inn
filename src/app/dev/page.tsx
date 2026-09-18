@@ -72,7 +72,7 @@ export default async function Home(): Promise<ReactElement> {
                                     <LinkCardTitle>
                                         <LinkCardAnchor
                                             href={pathWithBasePath(
-                                                `/api/mocks/helseid/dev/start-user${buildStandaloneInitParams('Johan Johansson')}`,
+                                                `/api/mocks/helseid/dev/start-user${buildStandaloneInitParams()}`,
                                             )}
                                         >
                                             HelseID with syk-inn-api!

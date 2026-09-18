@@ -1,4 +1,4 @@
-export type MockBehandlere = 'Johan Johansson' | 'Kari Karlsen' | 'Ola Olsen'
+export type MockBehandlere = 'Magnar Koman'
 
 export type HelseIdBehandler = {
     pid: string

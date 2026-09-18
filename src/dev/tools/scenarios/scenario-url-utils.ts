@@ -1,5 +1,4 @@
 import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
-import { MockBehandlere } from '@navikt/helseid-mock-server'
 
 import { getAbsoluteURL, pathWithBasePath } from '#lib/url'
 
@@ -28,12 +27,12 @@ export function buildFhirLaunchParam(
     return `local-dev-launch:${patient}:${practitioner}:${organization}:${frame ? 'with-frame' : 'no-frame'}`
 }
 
-export function createHelseIDScenarioUrl(scenario: string, behandler: MockBehandlere): string {
-    const helseIdMockUrl = `/api/mocks/helseid/dev/start-user${buildStandaloneInitParams(behandler as MockBehandlere)}`
+export function createHelseIDScenarioUrl(scenario: string): string {
+    const helseIdMockUrl = `/api/mocks/helseid/dev/start-user${buildStandaloneInitParams()}`
 
     return pathWithBasePath(`/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(helseIdMockUrl)}`)
 }
 
-export function buildStandaloneInitParams(behandler: MockBehandlere): string {
-    return `?user=${behandler}&returnTo=${pathWithBasePath('/')}`
+export function buildStandaloneInitParams(): string {
+    return `?returnTo=${pathWithBasePath('/')}`
 }

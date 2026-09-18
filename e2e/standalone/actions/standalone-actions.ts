@@ -16,7 +16,7 @@ type AdditionalOptions = {
 
 export function launchWithMock(
     scenario: Scenarios = 'empty',
-    { behandler = 'Johan Johansson', ...toggleOverrides }: ToggleOverrides & AdditionalOptions,
+    { ...toggleOverrides }: ToggleOverrides & AdditionalOptions,
 ) {
     const actualToggleOverrides: ToggleOverrides = {
         ...defaultE2EToggles,
@@ -28,17 +28,17 @@ export function launchWithMock(
             await applyToggleOverrides(page, actualToggleOverrides)
         }
 
-        const startUrlWithBehandler = `${startPath}?user=${encodeURIComponent(behandler)}&returnTo=/`
+        const startUrlWithBehandler = `${startPath}?returnTo=/`
 
         if (scenario != 'normal') {
-            return test.step(`Launch scenario ${scenario} (${behandler})`, async () => {
+            return test.step(`Launch scenario ${scenario}`, async () => {
                 await page.goto(
                     `/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(`${startUrlWithBehandler}`)}`,
                 )
             })
         }
 
-        return test.step(`Launch Standalone mock with default scenario (normal, ${behandler})`, async () => {
+        return test.step(`Launch Standalone mock with default scenario (normal)`, async () => {
             await page.goto(startUrlWithBehandler)
         })
     }

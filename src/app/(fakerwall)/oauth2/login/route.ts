@@ -15,8 +15,5 @@ export function GET(request: NextRequest): Response {
         return new Response('Missing redirect query parameter', { status: 400 })
     }
 
-    redirect(
-        pathWithBasePath(`/api/mocks/helseid/dev/start-user?user=Johan Johansson&returnTo=${finalRedirect}`),
-        RedirectType.replace,
-    )
+    redirect(pathWithBasePath(`/api/mocks/helseid/dev/start-user?returnTo=${finalRedirect}`), RedirectType.replace)
 }

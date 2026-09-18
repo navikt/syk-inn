@@ -46,22 +46,10 @@ export function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: bo
                     <Image src="https://cdn.nav.no/tsm/syk-inn/dass.gif" alt="" width="48" height="48" unoptimized />
                     FHIR scenarioer
                 </Heading>
-                <div className="grid grid-cols-3 gap-2 relative ax-md:max-w-2/3">
+                <div className="grid grid-cols-2 gap-2 relative ax-md:max-w-1/3">
                     <Select label="Pasient" size="small" onChange={(e) => setPatient(e.target.value)} value={patient}>
                         <option value={'Espen Eksempel' satisfies MockPatients}>Espen Eksempel</option>
                         <option value={'Kari Normann' satisfies MockPatients}>Kari Normann</option>
-                    </Select>
-                    <Select
-                        label="Practitioner"
-                        size="small"
-                        onChange={(e) => setPractitioner(e.target.value)}
-                        value={practitioner}
-                    >
-                        <option value="" disabled>
-                            Default
-                        </option>
-                        <option value={'Magnar Koman' satisfies MockPractitioners}>Magnar Koman</option>
-                        <option value={'Badette Organitto' satisfies MockPractitioners}>Badette</option>
                     </Select>
                     <Select
                         label="Organization"
