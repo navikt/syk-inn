@@ -100,8 +100,12 @@ export type AllDashboardQuery = {
                                 harFlere: boolean
                                 arbeidsgivernavn: string | null
                             } | null
+                            prognose: {
+                                __typename: 'Prognose'
+                                friskmeldingTilArbeidsformidling: boolean | null
+                            } | null
                             meldinger: {
-                                __typename: 'SykmeldingMelding'
+                                __typename: 'Meldinger'
                                 tilNav: string | null
                                 tilArbeidsgiver: string | null
                             } | null
@@ -346,8 +350,12 @@ export type AllDashboardQuery = {
                                 harFlere: boolean
                                 arbeidsgivernavn: string | null
                             } | null
+                            prognose: {
+                                __typename: 'Prognose'
+                                friskmeldingTilArbeidsformidling: boolean | null
+                            } | null
                             meldinger: {
-                                __typename: 'SykmeldingMelding'
+                                __typename: 'Meldinger'
                                 tilNav: string | null
                                 tilArbeidsgiver: string | null
                             } | null
@@ -595,8 +603,12 @@ export type AllDashboardQuery = {
                                 harFlere: boolean
                                 arbeidsgivernavn: string | null
                             } | null
+                            prognose: {
+                                __typename: 'Prognose'
+                                friskmeldingTilArbeidsformidling: boolean | null
+                            } | null
                             meldinger: {
-                                __typename: 'SykmeldingMelding'
+                                __typename: 'Meldinger'
                                 tilNav: string | null
                                 tilArbeidsgiver: string | null
                             } | null
@@ -985,11 +997,8 @@ export type SykmeldingByIdQuery = {
                       harFlere: boolean
                       arbeidsgivernavn: string | null
                   } | null
-                  meldinger: {
-                      __typename: 'SykmeldingMelding'
-                      tilNav: string | null
-                      tilArbeidsgiver: string | null
-                  } | null
+                  prognose: { __typename: 'Prognose'; friskmeldingTilArbeidsformidling: boolean | null } | null
+                  meldinger: { __typename: 'Meldinger'; tilNav: string | null; tilArbeidsgiver: string | null } | null
                   yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
                   tilbakedatering: {
                       __typename: 'Tilbakedatering'
@@ -1240,11 +1249,8 @@ export type OpprettSykmeldingMutation = {
                       harFlere: boolean
                       arbeidsgivernavn: string | null
                   } | null
-                  meldinger: {
-                      __typename: 'SykmeldingMelding'
-                      tilNav: string | null
-                      tilArbeidsgiver: string | null
-                  } | null
+                  prognose: { __typename: 'Prognose'; friskmeldingTilArbeidsformidling: boolean | null } | null
+                  meldinger: { __typename: 'Meldinger'; tilNav: string | null; tilArbeidsgiver: string | null } | null
                   yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
                   tilbakedatering: {
                       __typename: 'Tilbakedatering'
@@ -1422,7 +1428,8 @@ export type SykmeldingFullFragment = {
             | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
         >
         arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string | null } | null
-        meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null } | null
+        prognose: { __typename: 'Prognose'; friskmeldingTilArbeidsformidling: boolean | null } | null
+        meldinger: { __typename: 'Meldinger'; tilNav: string | null; tilArbeidsgiver: string | null } | null
         yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
         tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string | null; begrunnelse: string | null } | null
         utdypendeSporsmal: {
@@ -1581,7 +1588,8 @@ type Sykmelding_SykmeldingFull_Fragment = {
             | { __typename: 'Reisetilskudd'; fom: string; tom: string; type: Types.AktivitetType }
         >
         arbeidsgiver: { __typename: 'Arbeidsgiver'; harFlere: boolean; arbeidsgivernavn: string | null } | null
-        meldinger: { __typename: 'SykmeldingMelding'; tilNav: string | null; tilArbeidsgiver: string | null } | null
+        prognose: { __typename: 'Prognose'; friskmeldingTilArbeidsformidling: boolean | null } | null
+        meldinger: { __typename: 'Meldinger'; tilNav: string | null; tilArbeidsgiver: string | null } | null
         yrkesskade: { __typename: 'Yrkesskade'; yrkesskade: boolean; skadedato: string | null } | null
         tilbakedatering: { __typename: 'Tilbakedatering'; startdato: string | null; begrunnelse: string | null } | null
         utdypendeSporsmal: {
@@ -2194,6 +2202,19 @@ export const SykmeldingFullFragmentDoc = {
                                 },
                                 { kind: 'Field', name: { kind: 'Name', value: 'svangerskapsrelatert' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'prognose' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'friskmeldingTilArbeidsformidling' },
+                                            },
+                                        ],
+                                    },
+                                },
                                 {
                                     kind: 'Field',
                                     name: { kind: 'Name', value: 'meldinger' },
@@ -3037,6 +3058,19 @@ export const SykmeldingFragmentDoc = {
                                 { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
                                 {
                                     kind: 'Field',
+                                    name: { kind: 'Name', value: 'prognose' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'friskmeldingTilArbeidsformidling' },
+                                            },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
                                     name: { kind: 'Name', value: 'meldinger' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
@@ -3680,6 +3714,19 @@ export const AllDashboardDocument = {
                                 },
                                 { kind: 'Field', name: { kind: 'Name', value: 'svangerskapsrelatert' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'prognose' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'friskmeldingTilArbeidsformidling' },
+                                            },
+                                        ],
+                                    },
+                                },
                                 {
                                     kind: 'Field',
                                     name: { kind: 'Name', value: 'meldinger' },
@@ -4780,6 +4827,19 @@ export const SykmeldingByIdDocument = {
                                 { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
                                 {
                                     kind: 'Field',
+                                    name: { kind: 'Name', value: 'prognose' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'friskmeldingTilArbeidsformidling' },
+                                            },
+                                        ],
+                                    },
+                                },
+                                {
+                                    kind: 'Field',
                                     name: { kind: 'Name', value: 'meldinger' },
                                     selectionSet: {
                                         kind: 'SelectionSet',
@@ -5448,6 +5508,19 @@ export const OpprettSykmeldingDocument = {
                                 },
                                 { kind: 'Field', name: { kind: 'Name', value: 'svangerskapsrelatert' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'pasientenSkalSkjermes' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'prognose' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'friskmeldingTilArbeidsformidling' },
+                                            },
+                                        ],
+                                    },
+                                },
                                 {
                                     kind: 'Field',
                                     name: { kind: 'Name', value: 'meldinger' },

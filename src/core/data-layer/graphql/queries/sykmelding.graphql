@@ -85,6 +85,9 @@ fragment SykmeldingFull on SykmeldingFull {
         }
         svangerskapsrelatert
         pasientenSkalSkjermes
+        prognose {
+            friskmeldingTilArbeidsformidling
+        }
         meldinger {
             tilNav
             tilArbeidsgiver

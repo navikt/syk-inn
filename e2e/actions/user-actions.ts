@@ -253,6 +253,24 @@ export function selectAnnenLovpalagtFravarsgrunn({ reason }: { reason: AnnenFrav
     }
 }
 
+export function fillPrognose({ friskmeldingTilArbeidsformidling }: { friskmeldingTilArbeidsformidling: boolean }) {
+    return async (page: Page) => {
+        await test.step(`Fill prognose ${friskmeldingTilArbeidsformidling ? 'yes' : 'no'}`, async () => {
+            const region = page.getByRole('region', { name: 'Vurderinger for Nav' })
+
+            if (friskmeldingTilArbeidsformidling) {
+                await region
+                    .getByRole('checkbox', { name: 'Kan pasienten bli frisk ved bytte av arbeid/arbeidsgiver' })
+                    .check()
+            } else {
+                await region
+                    .getByRole('checkbox', { name: 'Kan pasienten bli frisk ved bytte av arbeid/arbeidsgiver' })
+                    .uncheck()
+            }
+        })
+    }
+}
+
 export function fillYrkesskade({ yrkesskade, yrkesskadeDato }: { yrkesskade: boolean; yrkesskadeDato: string | null }) {
     return async (page: Page) => {
         await test.step(`Fill yrkesskade ${yrkesskade ? 'yes' : 'no'}${yrkesskadeDato ? `, and input skadedato: ${yrkesskadeDato}` : ''}`, async () => {

@@ -258,6 +258,7 @@ function draftAndreSporsmalToFormValues(
             yrkesskade: draftValues.yrkesskade?.yrkesskade ?? false,
             skadedato: draftValues.yrkesskade?.skadedato ?? null,
         },
+        friskmeldingTilArbeidsformidling: draftValues.friskmeldingTilArbeidsformidling ?? false,
     }
 }
 

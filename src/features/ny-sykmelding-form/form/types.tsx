@@ -72,6 +72,7 @@ type ArbeidsforholdField = {
 }
 
 type AndreSporsmalFields = {
+    friskmeldingTilArbeidsformidling: boolean
     svangerskapsrelatert: boolean
     yrkesskade: {
         yrkesskade: boolean

@@ -13,7 +13,7 @@ type SectionTitle =
     | 'Hoveddiagnose'
     | 'Til NAV'
     | 'Til arbeidsgiver'
-    | 'Annen info'
+    | 'Sykdommen er svangerskapsrelatert'
     | 'Kan skyldes yrkesskade'
     | 'Eventuell skadedato'
 

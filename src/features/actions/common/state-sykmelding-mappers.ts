@@ -163,6 +163,7 @@ export function stateAndreSporsmalToFormValues(
             yrkesskade: stateAndreSporsmal.yrkesskade,
             skadedato: stateAndreSporsmal.yrkesskadeDato,
         },
+        friskmeldingTilArbeidsformidling: stateAndreSporsmal.friskmeldingTilArbeidsformidling,
     }
 }
 

@@ -160,6 +160,24 @@ export function expectSvangerskapsrelatert(svangerskapsrelatert: boolean) {
     }
 }
 
+export function expectPrognose({ friskmeldingTilArbeidsformidling }: { friskmeldingTilArbeidsformidling: boolean }) {
+    return async (page: Page) => {
+        await test.step('Verify friskmeldingTilArbeidsformidling toggle', async () => {
+            const vurderingSection = page.getByRole('region', { name: 'Vurderinger for Nav' })
+
+            const friskmeldingCheckbox = vurderingSection.getByRole('checkbox', {
+                name: 'Kan pasienten bli frisk ved bytte av arbeid/arbeidsgiver',
+            })
+
+            if (friskmeldingTilArbeidsformidling) {
+                await expect(friskmeldingCheckbox).toBeChecked()
+            } else {
+                await expect(friskmeldingCheckbox).not.toBeChecked()
+            }
+        })
+    }
+}
+
 export function expectYrkesskade({
     yrkesskade,
     yrkesskadeDato,

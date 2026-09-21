@@ -39,6 +39,7 @@ modes.forEach(({ mode }) => {
                 meldinger: anything(),
                 yrkesskade: anything(),
                 utdypendeSporsmal: anything(),
+                prognose: anything(),
                 svangerskapsrelatert: false,
                 pasientenSkalSkjermes: false,
                 arbeidsforhold: null,

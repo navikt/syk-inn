@@ -22,6 +22,7 @@ input OpprettSykmeldingInput {
     meldinger: InputMeldinger!
     svangerskapsrelatert: Boolean!
     yrkesskade: InputYrkesskade
+    prognose: InputPrognose
     arbeidsforhold: InputArbeidsforhold
     tilbakedatering: InputTilbakedatering
     utdypendeSporsmal: InputUtdypendeSporsmal
@@ -31,6 +32,10 @@ input OpprettSykmeldingInput {
 input InputDiagnose {
     code: String!
     system: DiagnoseSystem!
+}
+
+input InputPrognose {
+    friskmeldingTilArbeidsformidling: Boolean
 }
 
 input InputYrkesskade {

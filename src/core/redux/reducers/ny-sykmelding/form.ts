@@ -57,6 +57,7 @@ export type NySykmeldingDiagnoser = {
 }
 
 export type NySykmeldingAndreSporsmal = {
+    friskmeldingTilArbeidsformidling: boolean
     svangerskapsrelatert: boolean
     yrkesskade: boolean
     yrkesskadeDato: string | null

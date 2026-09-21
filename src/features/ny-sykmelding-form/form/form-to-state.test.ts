@@ -47,6 +47,7 @@ const createFormValues = ({ fom, tom }: { fom: string; tom: string }): NySykmeld
     andreSporsmal: {
         svangerskapsrelatert: false,
         yrkesskade: { yrkesskade: false, skadedato: null },
+        friskmeldingTilArbeidsformidling: false,
     },
     utdypendeSporsmal: {
         utfordringerMedArbeid: null,

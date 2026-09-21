@@ -62,7 +62,11 @@ test('draft values shall be used as default if provided', () => {
             tilNav: 'Draft Melding til Nav',
             tilArbeidsgiver: 'Draft Melding til Arbeidsgiver',
         },
-        andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: true, skadedato: '2024-11-20' } },
+        andreSporsmal: {
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: true, skadedato: '2024-11-20' },
+            friskmeldingTilArbeidsformidling: false,
+        },
         utdypendeSporsmal: {
             utfordringerMedArbeid: null,
             medisinskOppsummering: null,
@@ -158,7 +162,11 @@ test('form values shall have higher presedence than draft values', () => {
             tilNav: 'Vurdering gjort på bakgrunn av pasientens egenbeskrivelse.',
             tilArbeidsgiver: 'Pasienten anbefales å jobbe redusert i en periode.',
         },
-        andreSporsmal: { svangerskapsrelatert: true, yrkesskade: { yrkesskade: false, skadedato: null } },
+        andreSporsmal: {
+            svangerskapsrelatert: true,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            friskmeldingTilArbeidsformidling: false,
+        },
         utdypendeSporsmal: {
             utfordringerMedArbeid: null,
             medisinskOppsummering: null,
@@ -206,7 +214,11 @@ test('server suggestions shall be used if no draft or form values are provided',
         ],
         tilbakedatering: null,
         meldinger: { showTilNav: false, tilNav: null, showTilArbeidsgiver: false, tilArbeidsgiver: null },
-        andreSporsmal: { svangerskapsrelatert: false, yrkesskade: { yrkesskade: false, skadedato: null } },
+        andreSporsmal: {
+            svangerskapsrelatert: false,
+            yrkesskade: { yrkesskade: false, skadedato: null },
+            friskmeldingTilArbeidsformidling: false,
+        },
         utdypendeSporsmal: {
             utfordringerMedArbeid: null,
             medisinskOppsummering: null,
@@ -251,6 +263,7 @@ const fullDraft: DraftValues = {
             },
         },
     ],
+    friskmeldingTilArbeidsformidling: false,
     hoveddiagnose: { system: 'ICD10', code: 'A00', text: 'Kolera' },
     bidiagnoser: [{ system: 'ICPC2', code: 'L73', text: 'Brudd legg/ankel' }],
     tilbakedatering: {
@@ -301,6 +314,7 @@ const fullExistingStateValues: NySykmeldingFormState = {
         tilArbeidsgiver: 'Pasienten anbefales å jobbe redusert i en periode.',
     },
     andreSporsmal: {
+        friskmeldingTilArbeidsformidling: false,
         svangerskapsrelatert: true,
         yrkesskade: false,
         yrkesskadeDato: null,

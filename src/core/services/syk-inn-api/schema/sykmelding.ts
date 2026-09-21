@@ -90,6 +90,10 @@ const YrkesskadeSchema = z.object({
     skadedato: z.string().nullable(),
 })
 
+const PrognoseSchema = z.object({
+    friskmeldingTilArbeidsformidling: z.boolean().nullable(),
+})
+
 const MeldingerSchema = z.object({
     tilNav: z.string().nullable(),
     tilArbeidsgiver: z.string().nullable(),
@@ -126,6 +130,8 @@ export const SykInnApiSykmeldingSchema = z
             aktivitet: z.array(AktivitetSchema),
             svangerskapsrelatert: z.boolean(),
             pasientenSkalSkjermes: z.boolean(),
+            // Backwards compatability, can remove optional once it's fully deployed
+            prognose: PrognoseSchema.nullable().optional(),
             meldinger: MeldingerSchema.nullable(),
             yrkesskade: YrkesskadeSchema.nullable(),
             arbeidsgiver: ArbeidsgiverSchema.nullable(),

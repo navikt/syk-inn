@@ -26,6 +26,7 @@ export function fullSykmeldingFragmentToNySykmeldingFormValues(
               }
             : defaultArbeidsforhold(),
         andreSporsmal: {
+            friskmeldingTilArbeidsformidling: sykmelding.values.prognose?.friskmeldingTilArbeidsformidling ?? false,
             yrkesskade: sykmelding.values.yrkesskade
                 ? {
                       yrkesskade: sykmelding.values.yrkesskade.yrkesskade,

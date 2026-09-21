@@ -191,6 +191,7 @@ function createPayload(
             tilArbeidsgiver: null,
         },
         andreSporsmal: {
+            friskmeldingTilArbeidsformidling: false,
             svangerskapsrelatert: false,
             yrkesskade: false,
             yrkesskadeDato: null,

@@ -15,6 +15,7 @@ export function defaultArbeidsforhold(): NySykmeldingMainFormValues['arbeidsforh
 
 export function defaultAndreSporsmal(): NySykmeldingMainFormValues['andreSporsmal'] {
     return {
+        friskmeldingTilArbeidsformidling: false,
         svangerskapsrelatert: false,
         yrkesskade: {
             yrkesskade: false,

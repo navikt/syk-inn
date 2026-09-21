@@ -40,6 +40,7 @@ export function formValuesToStatePayload(values: NySykmeldingMainFormValues): Ny
             tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
         },
         andreSporsmal: {
+            friskmeldingTilArbeidsformidling: values.andreSporsmal.friskmeldingTilArbeidsformidling,
             svangerskapsrelatert: values.andreSporsmal.svangerskapsrelatert,
             yrkesskade: values.andreSporsmal.yrkesskade?.yrkesskade ?? false,
             yrkesskadeDato: values.andreSporsmal.yrkesskade?.skadedato ?? null,

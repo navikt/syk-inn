@@ -213,6 +213,10 @@ export type InputMeldinger = {
     tilNav?: InputMaybe<Scalars['String']['input']>
 }
 
+export type InputPrognose = {
+    friskmeldingTilArbeidsformidling?: InputMaybe<Scalars['Boolean']['input']>
+}
+
 export type InputTilbakedatering = {
     begrunnelse: Scalars['String']['input']
     startdato: Scalars['String']['input']
@@ -240,6 +244,12 @@ export type InputYrkesskade = {
 export type Konsultasjon = {
     __typename?: 'Konsultasjon'
     diagnoser?: Maybe<Array<Diagnose>>
+}
+
+export type Meldinger = {
+    __typename?: 'Meldinger'
+    tilArbeidsgiver?: Maybe<Scalars['String']['output']>
+    tilNav?: Maybe<Scalars['String']['output']>
 }
 
 export type Mutation = {
@@ -304,6 +314,7 @@ export type OpprettSykmeldingInput = {
     hoveddiagnose: InputDiagnose
     meldinger: InputMeldinger
     pasientenSkalSkjermes: Scalars['Boolean']['input']
+    prognose?: InputMaybe<InputPrognose>
     svangerskapsrelatert: Scalars['Boolean']['input']
     tilbakedatering?: InputMaybe<InputTilbakedatering>
     utdypendeSporsmal?: InputMaybe<InputUtdypendeSporsmal>
@@ -343,6 +354,11 @@ export type Pasient = Person & {
 export type Person = {
     ident: Scalars['String']['output']
     navn: Scalars['String']['output']
+}
+
+export type Prognose = {
+    __typename?: 'Prognose'
+    friskmeldingTilArbeidsformidling?: Maybe<Scalars['Boolean']['output']>
 }
 
 export type QueriedPerson = Person & {
@@ -447,8 +463,9 @@ export type SykmeldingFullValues = {
     arbeidsgiver?: Maybe<Arbeidsgiver>
     bidiagnoser?: Maybe<Array<Diagnose>>
     hoveddiagnose?: Maybe<Diagnose>
-    meldinger?: Maybe<SykmeldingMelding>
+    meldinger?: Maybe<Meldinger>
     pasientenSkalSkjermes: Scalars['Boolean']['output']
+    prognose?: Maybe<Prognose>
     svangerskapsrelatert: Scalars['Boolean']['output']
     tilbakedatering?: Maybe<Tilbakedatering>
     utdypendeSporsmal?: Maybe<UtdypendeSporsmal>
@@ -472,12 +489,6 @@ export type SykmeldingLightValues = {
     aktivitet: Array<Aktivitet>
     bidiagnoser?: Maybe<Array<Diagnose>>
     hoveddiagnose?: Maybe<Diagnose>
-}
-
-export type SykmeldingMelding = {
-    __typename?: 'SykmeldingMelding'
-    tilArbeidsgiver?: Maybe<Scalars['String']['output']>
-    tilNav?: Maybe<Scalars['String']['output']>
 }
 
 export type SykmeldingMeta = NasjonalSykmeldingMeta | UtenlandskSykmeldingMeta
@@ -732,12 +743,14 @@ export type ResolversTypes = {
     InputArbeidsforhold: InputArbeidsforhold
     InputDiagnose: InputDiagnose
     InputMeldinger: InputMeldinger
+    InputPrognose: InputPrognose
     InputTilbakedatering: InputTilbakedatering
     InputUtdypendeSporsmal: InputUtdypendeSporsmal
     InputYrkesskade: InputYrkesskade
     Int: ResolverTypeWrapper<Scalars['Int']['output']>
     JSON: ResolverTypeWrapper<Scalars['JSON']['output']>
     Konsultasjon: ResolverTypeWrapper<Konsultasjon>
+    Meldinger: ResolverTypeWrapper<Meldinger>
     Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>
     NasjonalSykmeldingMeta: ResolverTypeWrapper<NasjonalSykmeldingMeta>
     OpprettSykmeldingDraft: ResolverTypeWrapper<OpprettSykmeldingDraft>
@@ -749,6 +762,7 @@ export type ResolversTypes = {
     Outcome: ResolverTypeWrapper<Outcome>
     Pasient: ResolverTypeWrapper<Pasient>
     Person: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Person']>
+    Prognose: ResolverTypeWrapper<Prognose>
     QueriedPerson: ResolverTypeWrapper<QueriedPerson>
     Query: ResolverTypeWrapper<Record<PropertyKey, never>>
     Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>
@@ -784,7 +798,6 @@ export type ResolversTypes = {
     SykmeldingLightValues: ResolverTypeWrapper<
         Omit<SykmeldingLightValues, 'aktivitet'> & { aktivitet: Array<ResolversTypes['Aktivitet']> }
     >
-    SykmeldingMelding: ResolverTypeWrapper<SykmeldingMelding>
     SykmeldingMeta: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['SykmeldingMeta']>
     SykmeldingRedacted: ResolverTypeWrapper<
         Omit<SykmeldingRedacted, 'meta'> & { meta: ResolversTypes['SykmeldingMeta'] }
@@ -829,12 +842,14 @@ export type ResolversParentTypes = {
     InputArbeidsforhold: InputArbeidsforhold
     InputDiagnose: InputDiagnose
     InputMeldinger: InputMeldinger
+    InputPrognose: InputPrognose
     InputTilbakedatering: InputTilbakedatering
     InputUtdypendeSporsmal: InputUtdypendeSporsmal
     InputYrkesskade: InputYrkesskade
     Int: Scalars['Int']['output']
     JSON: Scalars['JSON']['output']
     Konsultasjon: Konsultasjon
+    Meldinger: Meldinger
     Mutation: Record<PropertyKey, never>
     NasjonalSykmeldingMeta: NasjonalSykmeldingMeta
     OpprettSykmeldingDraft: OpprettSykmeldingDraft
@@ -845,6 +860,7 @@ export type ResolversParentTypes = {
     Outcome: Outcome
     Pasient: Pasient
     Person: ResolversInterfaceTypes<ResolversParentTypes>['Person']
+    Prognose: Prognose
     QueriedPerson: QueriedPerson
     Query: Record<PropertyKey, never>
     Reisetilskudd: Reisetilskudd
@@ -873,7 +889,6 @@ export type ResolversParentTypes = {
     SykmeldingLightValues: Omit<SykmeldingLightValues, 'aktivitet'> & {
         aktivitet: Array<ResolversParentTypes['Aktivitet']>
     }
-    SykmeldingMelding: SykmeldingMelding
     SykmeldingMeta: ResolversUnionTypes<ResolversParentTypes>['SykmeldingMeta']
     SykmeldingRedacted: Omit<SykmeldingRedacted, 'meta'> & { meta: ResolversParentTypes['SykmeldingMeta'] }
     SykmeldingRedactedValues: SykmeldingRedactedValues
@@ -1030,6 +1045,14 @@ export type KonsultasjonResolvers<
     diagnoser?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
 }
 
+export type MeldingerResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['Meldinger'] = ResolversParentTypes['Meldinger'],
+> = {
+    tilArbeidsgiver?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    tilNav?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+}
+
 export type MutationResolvers<
     ContextType = any,
     ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
@@ -1121,6 +1144,13 @@ export type PersonResolvers<
     ParentType extends ResolversParentTypes['Person'] = ResolversParentTypes['Person'],
 > = {
     __resolveType: TypeResolveFn<'Pasient' | 'QueriedPerson', ParentType, ContextType>
+}
+
+export type PrognoseResolvers<
+    ContextType = any,
+    ParentType extends ResolversParentTypes['Prognose'] = ResolversParentTypes['Prognose'],
+> = {
+    friskmeldingTilArbeidsformidling?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
 }
 
 export type QueriedPersonResolvers<
@@ -1243,8 +1273,9 @@ export type SykmeldingFullValuesResolvers<
     arbeidsgiver?: Resolver<Maybe<ResolversTypes['Arbeidsgiver']>, ParentType, ContextType>
     bidiagnoser?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
     hoveddiagnose?: Resolver<Maybe<ResolversTypes['Diagnose']>, ParentType, ContextType>
-    meldinger?: Resolver<Maybe<ResolversTypes['SykmeldingMelding']>, ParentType, ContextType>
+    meldinger?: Resolver<Maybe<ResolversTypes['Meldinger']>, ParentType, ContextType>
     pasientenSkalSkjermes?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+    prognose?: Resolver<Maybe<ResolversTypes['Prognose']>, ParentType, ContextType>
     svangerskapsrelatert?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     tilbakedatering?: Resolver<Maybe<ResolversTypes['Tilbakedatering']>, ParentType, ContextType>
     utdypendeSporsmal?: Resolver<Maybe<ResolversTypes['UtdypendeSporsmal']>, ParentType, ContextType>
@@ -1272,14 +1303,6 @@ export type SykmeldingLightValuesResolvers<
     aktivitet?: Resolver<Array<ResolversTypes['Aktivitet']>, ParentType, ContextType>
     bidiagnoser?: Resolver<Maybe<Array<ResolversTypes['Diagnose']>>, ParentType, ContextType>
     hoveddiagnose?: Resolver<Maybe<ResolversTypes['Diagnose']>, ParentType, ContextType>
-}
-
-export type SykmeldingMeldingResolvers<
-    ContextType = any,
-    ParentType extends ResolversParentTypes['SykmeldingMelding'] = ResolversParentTypes['SykmeldingMelding'],
-> = {
-    tilArbeidsgiver?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-    tilNav?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
 }
 
 export type SykmeldingMetaResolvers<
@@ -1418,6 +1441,7 @@ export type Resolvers<ContextType = any> = {
     Gradert?: GradertResolvers<ContextType>
     JSON?: GraphQLScalarType
     Konsultasjon?: KonsultasjonResolvers<ContextType>
+    Meldinger?: MeldingerResolvers<ContextType>
     Mutation?: MutationResolvers<ContextType>
     NasjonalSykmeldingMeta?: NasjonalSykmeldingMetaResolvers<ContextType>
     OpprettSykmeldingDraft?: OpprettSykmeldingDraftResolvers<ContextType>
@@ -1426,6 +1450,7 @@ export type Resolvers<ContextType = any> = {
     Outcome?: OutcomeResolvers<ContextType>
     Pasient?: PasientResolvers<ContextType>
     Person?: PersonResolvers<ContextType>
+    Prognose?: PrognoseResolvers<ContextType>
     QueriedPerson?: QueriedPersonResolvers<ContextType>
     Query?: QueryResolvers<ContextType>
     Reisetilskudd?: ReisetilskuddResolvers<ContextType>
@@ -1439,7 +1464,6 @@ export type Resolvers<ContextType = any> = {
     SykmeldingFullValues?: SykmeldingFullValuesResolvers<ContextType>
     SykmeldingLight?: SykmeldingLightResolvers<ContextType>
     SykmeldingLightValues?: SykmeldingLightValuesResolvers<ContextType>
-    SykmeldingMelding?: SykmeldingMeldingResolvers<ContextType>
     SykmeldingMeta?: SykmeldingMetaResolvers<ContextType>
     SykmeldingRedacted?: SykmeldingRedactedResolvers<ContextType>
     SykmeldingRedactedValues?: SykmeldingRedactedValuesResolvers<ContextType>

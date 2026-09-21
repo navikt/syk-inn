@@ -9,6 +9,7 @@ import {
     fillArbeidsforhold,
     fillArsakerTilAktivitetIkkeMulig,
     fillPeriodeRelative,
+    fillPrognose,
     nextStep,
     pickHoveddiagnose,
     submitSykmelding,
@@ -192,6 +193,36 @@ modes.forEach(({ mode }) => {
                     }),
                 ],
                 arbeidsforhold: { arbeidsgivernavn: 'Test AS' },
+            },
+        })
+    })
+
+    test(`${mode}: optional - "friskmelding til arbeidsformidling" should be part of payload if checked`, async ({
+        page,
+    }) => {
+        await launchAndStart(mode)(page)
+        await fillPeriodeRelative({ type: '100%', days: 3 })(page)
+        await pickHoveddiagnose(diagnoseSelection.angst.pick)(page)
+        await fillPrognose({ friskmeldingTilArbeidsformidling: true })(page)
+
+        await nextStep()(page)
+        await verifySignerendeBehandlerFillIfNeeded(mode)(page)
+
+        const { request, draftId } = await submitSykmelding()(page)
+        await expectGraphQLRequest(request).toBe(OpprettSykmeldingDocument, {
+            draftId: draftId,
+            meta: expectedSykmeldingMeta(mode),
+            force: false,
+            values: {
+                ...defaultOpprettSykmeldingValues,
+                hoveddiagnose: diagnoseSelection.angst.verify,
+                aktivitet: [
+                    defaultAktivitetIkkeMulig({
+                        fom: today(),
+                        tom: inDays(3),
+                    }),
+                ],
+                prognose: { friskmeldingTilArbeidsformidling: true },
             },
         })
     })

@@ -19,7 +19,8 @@ type SykmeldingFullValues {
     aktivitet: [Aktivitet!]!
     svangerskapsrelatert: Boolean!
     pasientenSkalSkjermes: Boolean!
-    meldinger: SykmeldingMelding
+    prognose: Prognose
+    meldinger: Meldinger
     yrkesskade: Yrkesskade
     arbeidsgiver: Arbeidsgiver
     tilbakedatering: Tilbakedatering
@@ -28,9 +29,13 @@ type SykmeldingFullValues {
     annenFravarsgrunn: AnnenFravarsgrunnArsak
 }
 
-type SykmeldingMelding {
+type Meldinger {
     tilNav: String
     tilArbeidsgiver: String
+}
+
+type Prognose {
+    friskmeldingTilArbeidsformidling: Boolean
 }
 
 type Yrkesskade {

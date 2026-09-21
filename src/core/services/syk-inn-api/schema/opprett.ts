@@ -73,6 +73,11 @@ export const OpprettSykmeldingPayloadSchema = z.object({
             tilArbeidsgiver: z.string().nullable(),
         }),
         svangerskapsrelatert: z.boolean(),
+        prognose: z
+            .object({
+                friskmeldingTilArbeidsformidling: z.boolean().nullable(),
+            })
+            .nullable(),
         yrkesskade: z
             .object({
                 yrkesskade: z.boolean(),

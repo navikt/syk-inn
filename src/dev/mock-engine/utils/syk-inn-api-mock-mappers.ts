@@ -77,6 +77,12 @@ export function sykInnApiPayloadToResponse(
             }),
             svangerskapsrelatert: payload.values.svangerskapsrelatert,
             pasientenSkalSkjermes: payload.values.pasientenSkalSkjermes,
+            prognose: payload.values.prognose
+                ? {
+                      friskmeldingTilArbeidsformidling:
+                          payload.values.prognose.friskmeldingTilArbeidsformidling ?? false,
+                  }
+                : null,
             meldinger: {
                 tilNav: payload.values.meldinger.tilNav,
                 tilArbeidsgiver: payload.values.meldinger.tilArbeidsgiver,
