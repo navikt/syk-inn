@@ -7,6 +7,7 @@ import { TwoPaneGrid } from '#components/layout/TwoPaneGrid'
 import { ShortcutSubmitButton } from '#components/shortcut/ShortcutButtons'
 import { useMode } from '#core/providers/Modes'
 import { useAppSelector } from '#core/redux/hooks'
+import { FriskmeldingTilArbeidsformidling } from '#features/ny-sykmelding-form/sections/andre-sporsmal/FriskmeldingTilArbeidsformidling'
 import { UtdypendeOpplysningerHint } from '#resolvers'
 
 import { ForkastDraftButtonInFormSync, LagreDraftButton } from '../../draft/DraftActions'
@@ -75,6 +76,7 @@ export function NormalSykmeldigForm({
                 <UtdypendeSporsmal utdypendeSporsmal={context.utdypendeSporsmal} />
                 <FormSection title="Vurderinger for Nav" hideBorder>
                     <div className="mb-4 -mt-2">
+                        <FriskmeldingTilArbeidsformidling />
                         <YrkesskadeField />
                     </div>
                     <MeldingTilNavField />

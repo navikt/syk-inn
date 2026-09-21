@@ -116,7 +116,11 @@ export function SykmeldingValues({ sykmelding }: Props): ReactElement {
                     )}
                 </ValueItem>
             )}
-            {[sykmelding.values.svangerskapsrelatert, sykmelding.values.pasientenSkalSkjermes].some(R.isTruthy) && (
+            {[
+                sykmelding.values.svangerskapsrelatert,
+                sykmelding.values.pasientenSkalSkjermes,
+                sykmelding.values.prognose?.friskmeldingTilArbeidsformidling,
+            ].some(R.isTruthy) && (
                 <ValueItem title="Annen info">
                     <List className="my-4">
                         {sykmelding.values.svangerskapsrelatert && (
@@ -124,6 +128,9 @@ export function SykmeldingValues({ sykmelding }: Props): ReactElement {
                         )}
                         {sykmelding.values.pasientenSkalSkjermes && (
                             <List.Item>Pasienten skal skjermes for medisinsk informasjon</List.Item>
+                        )}
+                        {sykmelding.values.prognose?.friskmeldingTilArbeidsformidling && (
+                            <List.Item>Kan pasienten bli frisk ved bytte av arbeid/arbeidsgiver</List.Item>
                         )}
                     </List>
                 </ValueItem>

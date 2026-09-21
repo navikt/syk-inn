@@ -33,6 +33,7 @@ export const defaultOpprettSykmeldingValues: Omit<OpprettSykmeldingInput, 'aktiv
     meldinger: { tilNav: null, tilArbeidsgiver: null },
     svangerskapsrelatert: false,
     yrkesskade: { yrkesskade: false, skadedato: null },
+    prognose: { friskmeldingTilArbeidsformidling: false },
     tilbakedatering: null,
     arbeidsforhold: null,
     pasientenSkalSkjermes: false,

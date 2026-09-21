@@ -48,7 +48,7 @@ export async function expectTermToHaveDefinitions(
 
         expect(
             definitionElements.length,
-            `Found ${definitionElements.length} definitions, expected ${definitions.length} for term "${term}"`,
+            `Found ${definitionElements.length} definitions, expected ${definitions.length} for term "${term}", (want: ${definitions.join(', ')})`,
         ).toEqual(definitions.length)
 
         for (const dd of definitionElements) {

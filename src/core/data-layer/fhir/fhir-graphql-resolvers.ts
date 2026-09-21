@@ -130,11 +130,11 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 ? sykInnSykmeldinger
                 : sykInnSykmeldinger.filter((it) => it.kind !== 'redacted')
 
-            const mappedSykmeldinger = sykmeldinger.map((it) => {
-                return it.kind === 'redacted'
+            const mappedSykmeldinger = sykmeldinger.map((it) =>
+                it.kind === 'redacted'
                     ? sykInnApiSykmeldingRedactedToResolverSykmelding(it)
-                    : sykInnApiSykmeldingToResolverSykmelding(it)
-            })
+                    : sykInnApiSykmeldingToResolverSykmelding(it),
+            )
 
             const [current, historical] = R.partition(mappedSykmeldinger, byCurrentOrPreviousWithOffset)
 

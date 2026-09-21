@@ -76,6 +76,9 @@ export async function GET(): Promise<Response> {
                 },
             ],
             svangerskapsrelatert: true,
+            prognose: {
+                friskmeldingTilArbeidsformidling: true,
+            },
             yrkesskade: {
                 yrkesskade: true,
                 skadedato: daysAgo(7),

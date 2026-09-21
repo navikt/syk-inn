@@ -48,6 +48,9 @@ export class SykmeldingBuilder {
                 code: 'K24',
                 text: 'Eksempeldiagnose 1',
             },
+            prognose: {
+                friskmeldingTilArbeidsformidling: false,
+            },
             bidiagnoser: [],
             svangerskapsrelatert: false,
             yrkesskade: null,

@@ -63,6 +63,7 @@ export const DraftValuesSchema = z.object({
         })
         .nullable(),
     svangerskapsrelatert: z.boolean().nullable(),
+    friskmeldingTilArbeidsformidling: z.boolean().nullable().optional(),
     yrkesskade: z
         .object({
             yrkesskade: z.boolean(),

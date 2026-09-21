@@ -144,6 +144,9 @@ function formStateToOpprettSykmeldingInput(multiStepState: NySykmeldingState): O
                     : null,
         },
         svangerskapsrelatert: formState.andreSporsmal?.svangerskapsrelatert ?? false,
+        prognose: {
+            friskmeldingTilArbeidsformidling: formState.andreSporsmal?.friskmeldingTilArbeidsformidling ?? false,
+        },
         yrkesskade: {
             yrkesskade: formState.andreSporsmal?.yrkesskade ?? false,
             skadedato: formState.andreSporsmal?.yrkesskadeDato ?? null,

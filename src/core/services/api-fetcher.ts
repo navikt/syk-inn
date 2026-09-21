@@ -106,7 +106,7 @@ export async function fetchInternalAPI<
             failSpan(
                 span,
                 'Invalid API response body',
-                new Error(`Invalid response from ${path}`, { cause: parsed.error }),
+                new Error(`Invalid response from ${method} ${path}`, { cause: parsed.error }),
             )
 
             return { errorType: 'API_BODY_INVALID' }

@@ -210,6 +210,10 @@ export type InputMeldinger = {
     tilNav: InputMaybe<Scalars['String']['input']>
 }
 
+export type InputPrognose = {
+    friskmeldingTilArbeidsformidling: InputMaybe<Scalars['Boolean']['input']>
+}
+
 export type InputTilbakedatering = {
     begrunnelse: Scalars['String']['input']
     startdato: Scalars['String']['input']
@@ -237,6 +241,12 @@ export type InputYrkesskade = {
 export type Konsultasjon = {
     __typename: 'Konsultasjon'
     diagnoser: Maybe<Array<Diagnose>>
+}
+
+export type Meldinger = {
+    __typename: 'Meldinger'
+    tilArbeidsgiver: Maybe<Scalars['String']['output']>
+    tilNav: Maybe<Scalars['String']['output']>
 }
 
 export type Mutation = {
@@ -301,6 +311,7 @@ export type OpprettSykmeldingInput = {
     hoveddiagnose: InputDiagnose
     meldinger: InputMeldinger
     pasientenSkalSkjermes: Scalars['Boolean']['input']
+    prognose: InputMaybe<InputPrognose>
     svangerskapsrelatert: Scalars['Boolean']['input']
     tilbakedatering: InputMaybe<InputTilbakedatering>
     utdypendeSporsmal: InputMaybe<InputUtdypendeSporsmal>
@@ -340,6 +351,11 @@ export type Pasient = Person & {
 export type Person = {
     ident: Scalars['String']['output']
     navn: Scalars['String']['output']
+}
+
+export type Prognose = {
+    __typename: 'Prognose'
+    friskmeldingTilArbeidsformidling: Maybe<Scalars['Boolean']['output']>
 }
 
 export type QueriedPerson = Person & {
@@ -444,8 +460,9 @@ export type SykmeldingFullValues = {
     arbeidsgiver: Maybe<Arbeidsgiver>
     bidiagnoser: Maybe<Array<Diagnose>>
     hoveddiagnose: Maybe<Diagnose>
-    meldinger: Maybe<SykmeldingMelding>
+    meldinger: Maybe<Meldinger>
     pasientenSkalSkjermes: Scalars['Boolean']['output']
+    prognose: Maybe<Prognose>
     svangerskapsrelatert: Scalars['Boolean']['output']
     tilbakedatering: Maybe<Tilbakedatering>
     utdypendeSporsmal: Maybe<UtdypendeSporsmal>
@@ -469,12 +486,6 @@ export type SykmeldingLightValues = {
     aktivitet: Array<Aktivitet>
     bidiagnoser: Maybe<Array<Diagnose>>
     hoveddiagnose: Maybe<Diagnose>
-}
-
-export type SykmeldingMelding = {
-    __typename: 'SykmeldingMelding'
-    tilArbeidsgiver: Maybe<Scalars['String']['output']>
-    tilNav: Maybe<Scalars['String']['output']>
 }
 
 export type SykmeldingMeta = NasjonalSykmeldingMeta | UtenlandskSykmeldingMeta

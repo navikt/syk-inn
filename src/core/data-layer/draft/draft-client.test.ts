@@ -85,6 +85,7 @@ const emptyDraft: DraftValues = {
     hoveddiagnose: null,
     bidiagnoser: [],
     svangerskapsrelatert: null,
+    friskmeldingTilArbeidsformidling: null,
     tilbakedatering: null,
     meldinger: null,
     yrkesskade: null,

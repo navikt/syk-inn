@@ -75,6 +75,7 @@ export function mapFormValuesToDraftValues(values: NySykmeldingMainFormValues): 
             tilArbeidsgiver: values.meldinger.tilArbeidsgiver,
         },
         svangerskapsrelatert: values.andreSporsmal.svangerskapsrelatert,
+        friskmeldingTilArbeidsformidling: values.andreSporsmal.friskmeldingTilArbeidsformidling,
         yrkesskade: {
             yrkesskade: values.andreSporsmal.yrkesskade?.yrkesskade ?? false,
             skadedato: values.andreSporsmal.yrkesskade?.skadedato ?? null,

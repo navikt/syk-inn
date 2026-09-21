@@ -1159,6 +1159,26 @@
             },
             {
                 "kind": "INPUT_OBJECT",
+                "name": "InputPrognose",
+                "description": null,
+                "isOneOf": false,
+                "fields": null,
+                "inputFields": [
+                    {
+                        "name": "friskmeldingTilArbeidsformidling",
+                        "description": null,
+                        "type": { "kind": "SCALAR", "name": "Boolean", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "interfaces": null,
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "INPUT_OBJECT",
                 "name": "InputTilbakedatering",
                 "description": null,
                 "isOneOf": false,
@@ -1366,6 +1386,34 @@
                                 "ofType": { "name": "Diagnose", "kind": "OBJECT", "ofType": null }
                             }
                         },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "Meldinger",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "tilArbeidsgiver",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "tilNav",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
                         "isDeprecated": false,
                         "deprecationReason": null
                     }
@@ -1759,6 +1807,14 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "prognose",
+                        "description": null,
+                        "type": { "kind": "INPUT_OBJECT", "name": "InputPrognose", "ofType": null },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "svangerskapsrelatert",
                         "description": null,
                         "type": {
@@ -2028,6 +2084,26 @@
                     { "kind": "OBJECT", "name": "Pasient", "ofType": null },
                     { "kind": "OBJECT", "name": "QueriedPerson", "ofType": null }
                 ]
+            },
+            {
+                "kind": "OBJECT",
+                "name": "Prognose",
+                "description": null,
+                "isOneOf": null,
+                "fields": [
+                    {
+                        "name": "friskmeldingTilArbeidsformidling",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "SCALAR", "name": "Boolean", "ofType": null },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
             },
             {
                 "kind": "OBJECT",
@@ -2726,7 +2802,7 @@
                         "name": "meldinger",
                         "description": null,
                         "args": [],
-                        "type": { "kind": "OBJECT", "name": "SykmeldingMelding", "ofType": null },
+                        "type": { "kind": "OBJECT", "name": "Meldinger", "ofType": null },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
@@ -2739,6 +2815,14 @@
                             "name": null,
                             "ofType": { "name": "Boolean", "kind": "SCALAR", "ofType": null }
                         },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "prognose",
+                        "description": null,
+                        "args": [],
+                        "type": { "kind": "OBJECT", "name": "Prognose", "ofType": null },
                         "isDeprecated": false,
                         "deprecationReason": null
                     },
@@ -2919,34 +3003,6 @@
                         "description": null,
                         "args": [],
                         "type": { "kind": "OBJECT", "name": "Diagnose", "ofType": null },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
-                ],
-                "inputFields": null,
-                "interfaces": [],
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "OBJECT",
-                "name": "SykmeldingMelding",
-                "description": null,
-                "isOneOf": null,
-                "fields": [
-                    {
-                        "name": "tilArbeidsgiver",
-                        "description": null,
-                        "args": [],
-                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "tilNav",
-                        "description": null,
-                        "args": [],
-                        "type": { "kind": "SCALAR", "name": "String", "ofType": null },
                         "isDeprecated": false,
                         "deprecationReason": null
                     }

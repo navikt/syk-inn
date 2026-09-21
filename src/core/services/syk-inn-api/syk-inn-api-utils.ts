@@ -77,6 +77,7 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
             svangerskapsrelatert: sykmelding.values.svangerskapsrelatert,
             pasientenSkalSkjermes: sykmelding.values.pasientenSkalSkjermes,
             meldinger: sykmelding.values.meldinger,
+            prognose: sykmelding.values.prognose,
             yrkesskade: sykmelding.values.yrkesskade,
             arbeidsgiver: sykmelding.values.arbeidsgiver,
             tilbakedatering: sykmelding.values.tilbakedatering,
@@ -101,6 +102,11 @@ export function resolverInputToSykInnApiPayload(
             hoveddiagnose: values.hoveddiagnose,
             bidiagnoser: values.bidiagnoser,
             aktivitet: values.aktivitet.map(gqlInputAktivitetToSykInnAktivitet),
+            prognose: values.prognose
+                ? {
+                      friskmeldingTilArbeidsformidling: values.prognose.friskmeldingTilArbeidsformidling ?? null,
+                  }
+                : null,
             meldinger: {
                 tilNav: values.meldinger.tilNav ?? null,
                 tilArbeidsgiver: values.meldinger.tilArbeidsgiver ?? null,

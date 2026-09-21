@@ -18,7 +18,11 @@ export function NySykmeldingFormDevTools(): ReactElement {
                 { shouldDirty: true },
             )
         }
-        setValue('andreSporsmal', { svangerskapsrelatert: true, yrkesskade: null }, { shouldDirty: true })
+        setValue(
+            'andreSporsmal',
+            { svangerskapsrelatert: true, yrkesskade: null, friskmeldingTilArbeidsformidling: false },
+            { shouldDirty: true },
+        )
         setValue('arbeidsforhold.harFlereArbeidsforhold', 'NEI', { shouldDirty: true })
 
         if (currentValues.perioder[0].aktivitet.type === 'BEHANDLINGSDAGER') {

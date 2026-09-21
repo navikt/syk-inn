@@ -21,6 +21,7 @@ export class DraftBuilder {
             hoveddiagnose: null,
             bidiagnoser: [],
             svangerskapsrelatert: null,
+            friskmeldingTilArbeidsformidling: null,
             tilbakedatering: null,
             yrkesskade: null,
             meldinger: null,

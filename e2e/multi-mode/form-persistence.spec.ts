@@ -17,6 +17,7 @@ import {
     fillArbeidsforhold,
     addBidiagnose,
     selectAnnenLovpalagtFravarsgrunn,
+    fillPrognose,
 } from '../actions/user-actions'
 import {
     expectAnnenLovpalagtFravarsgrunn,
@@ -26,6 +27,7 @@ import {
     expectInnspillTilArbeidsgiver,
     expectMeldingTilNav,
     expectPeriode,
+    expectPrognose,
     expectSvangerskapsrelatert,
     expectTilbakedatering,
     expectYrkesskade,
@@ -49,6 +51,7 @@ const fillAllTheValues = (mode: Modes): ((page: Page) => Promise<void>) =>
         addBidiagnose({ search: 'S95', select: /Molluscum contagiosum/ }),
         selectAnnenLovpalagtFravarsgrunn({ reason: 'NODVENDIG_KONTROLLUNDENRSOKELSE' }),
         selectSvangerskapsrelatert(true),
+        fillPrognose({ friskmeldingTilArbeidsformidling: true }),
         fillYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(2) }),
         fillMeldingTilNav('Trenger mer penger'),
         fillInnspillTilArbeidsgiver('Trenger sev-henk pult'),
@@ -63,6 +66,7 @@ const verifyAlltheValues = userInteractionsGroup(
     expectAnnenLovpalagtFravarsgrunn('NODVENDIG_KONTROLLUNDENRSOKELSE'),
     expectSvangerskapsrelatert(true),
     expectYrkesskade({ yrkesskade: true, yrkesskadeDato: daysAgo(2) }),
+    expectPrognose({ friskmeldingTilArbeidsformidling: true }),
     expectMeldingTilNav('Trenger mer penger'),
     expectInnspillTilArbeidsgiver('Trenger sev-henk pult'),
 )
@@ -146,9 +150,8 @@ modes.forEach(({ mode }) => {
             { name: 'Hoveddiagnose', values: ['Angstlidelse (P74)ICPC2'] },
             { name: 'Til NAV', values: ['Trenger mer penger'] },
             { name: 'Til arbeidsgiver', values: ['Trenger sev-henk pult'] },
-            { name: 'Annen info', values: ['Sykdommen er svangerskapsrelatert'] },
-            { name: 'Kan skyldes yrkesskade', values: ['Ja'] },
-            { name: 'Eventuell skadedato', values: [toReadableDate(daysAgo(2))] },
+            { name: 'Sykdommen er svangerskapsrelatert', values: ['Ja'] },
+            { name: 'Kan skyldes yrkesskade', values: ['Ja', `Skadedato: ${toReadableDate(daysAgo(2))}`] },
         ])(page)
     })
 })

@@ -350,23 +350,30 @@ function AnderSporsmalSummaryAnswers({
 
     return (
         <>
-            {andreSporsmal?.svangerskapsrelatert && (
+            {andreSporsmal?.friskmeldingTilArbeidsformidling && (
                 <FormSummary.Answer>
-                    <FormSummary.Label>Annen info</FormSummary.Label>
-                    <FormSummary.Value>Sykdommen er svangerskapsrelatert</FormSummary.Value>
-                </FormSummary.Answer>
-            )}
-            {andreSporsmal?.yrkesskade && (
-                <FormSummary.Answer>
-                    <FormSummary.Label>Kan skyldes yrkesskade</FormSummary.Label>
+                    <FormSummary.Label>Kan pasienten bli frisk ved bytte av arbeid/arbeidsgiver</FormSummary.Label>
                     <FormSummary.Value>Ja</FormSummary.Value>
                 </FormSummary.Answer>
             )}
-            {andreSporsmal?.yrkesskadeDato && (
+            {andreSporsmal?.svangerskapsrelatert && (
                 <FormSummary.Answer>
-                    <FormSummary.Label>Eventuell skadedato</FormSummary.Label>
-                    <FormSummary.Value>{toReadableDate(andreSporsmal.yrkesskadeDato)}</FormSummary.Value>
+                    <FormSummary.Label>Sykdommen er svangerskapsrelatert</FormSummary.Label>
+                    <FormSummary.Value>Ja</FormSummary.Value>
                 </FormSummary.Answer>
+            )}
+            {andreSporsmal?.yrkesskade && (
+                <>
+                    <FormSummary.Answer>
+                        <FormSummary.Label>Kan skyldes yrkesskade</FormSummary.Label>
+                        <FormSummary.Value>Ja</FormSummary.Value>
+                        {andreSporsmal?.yrkesskadeDato && (
+                            <FormSummary.Value>
+                                Skadedato: {toReadableDate(andreSporsmal.yrkesskadeDato)}
+                            </FormSummary.Value>
+                        )}
+                    </FormSummary.Answer>
+                </>
             )}
         </>
     )
