@@ -252,6 +252,9 @@ describe('SykInnApi integration', () => {
         expect.soft(kafkaMessage.sykmelding.medisinskVurdering.yrkesskade?.yrkesskadeDato).toBeDefined()
         expect.soft(kafkaMessage.sykmelding.medisinskVurdering.annenFravarsgrunn).toEqual('BEHANDLING_STERILISERING')
 
+        // prognose
+        expect.soft(kafkaMessage.sykmelding.prognose?.friskmeldingTilArbeidsformidling).toBe(true)
+
         // aktivitet
         expect.soft(kafkaMessage.sykmelding.aktivitet).toHaveLength(2)
         const aktivitetIkkeMulig = kafkaMessage.sykmelding.aktivitet.find(

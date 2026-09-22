@@ -26,6 +26,9 @@ export type KafkaSykmeldingRecord = {
         metadata: { avsenderSystem: { navn: string; versjon: string } }
         pasient: { fnr: string }
         sykmelder: { ids: unknown[]; helsepersonellKategori: string }
+        prognose: {
+            friskmeldingTilArbeidsformidling: boolean | null
+        } | null
         medisinskVurdering: {
             hovedDiagnose: { system: string; kode: string }
             biDiagnoser: { system: string; kode: string }[]
