@@ -139,8 +139,10 @@ describe('writeQuestionnaireResponse idempotency', () => {
         expect(result).toMatchObject({ result: 'ALREADY_CREATED', selfRef: null })
     })
 
-    test('calls update when toggle is on, with no existence check', async () => {
-        const request = vi.fn<() => Promise<ResourceRequestErrors>>()
+    test('calls update when toggle is on, 404 on existence check proceeds to PUT', async () => {
+        const request = vi.fn<() => Promise<ResourceRequestErrors>>().mockResolvedValue({
+            error: 'REQUEST_FAILED_RESOURCE_NOT_FOUND',
+        })
         const update = vi.fn<() => Promise<FhirQuestionnaireResponse>>().mockResolvedValue({
             resourceType: 'QuestionnaireResponse',
             id: 'sykmelding-1',
@@ -150,16 +152,18 @@ describe('writeQuestionnaireResponse idempotency', () => {
 
         const result = await service.writeQuestionnaireResponse(sykmelding('sykmelding-1'))
 
-        expect(request).not.toHaveBeenCalled()
         expect(update).toHaveBeenCalled()
         expect(result).toMatchObject({ result: 'CREATED', selfRef: 'QuestionnaireResponse/sykmelding-1' })
     })
 
     test('surfaces an error when update fails, toggle is on', async () => {
+        const request = vi.fn<() => Promise<ResourceRequestErrors>>().mockResolvedValue({
+            error: 'REQUEST_FAILED_RESOURCE_NOT_FOUND',
+        })
         const update = vi.fn<() => Promise<ResourceCreateErrors>>().mockResolvedValue({
             error: 'CREATE_FAILED_NON_OK_RESPONSE',
         })
-        const client = mockClient({ update })
+        const client = mockClient({ request, update })
         const service = fhirWriteService(client, unleashStub(['SYK_INN_STRUCTURED_FHIR']))
 
         const result = await service.writeQuestionnaireResponse(sykmelding('sykmelding-1'))
