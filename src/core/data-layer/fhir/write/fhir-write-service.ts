@@ -86,6 +86,14 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                     return { result: 'ALREADY_CREATED', selfRef: null }
                 }
 
+                const safeToWrite = await isSafeToWrite(client, {
+                    type: 'QuestionnaireResponse',
+                    id: sykmelding.sykmeldingId,
+                })
+
+                // TODO This logic needs some work, it should return ALREADY_CREATED with ref if it is created.
+                if (!safeToWrite) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
+
                 const payload: FhirQuestionnaireResponse = sykmeldingToQuestionnaireResponse(sykmelding, {
                     encounterId: client.encounter.id,
                     patientId: client.patient.id,
@@ -120,7 +128,7 @@ async function isSafeToWrite(
 
         // resource already exists = log and skip
         if ('resourceType' in existingResource) {
-            logger.error(`Resource ${document.type}/${document.id} already exists, skipping write.`)
+            logger.warn(`Resource ${document.type}/${document.id} already exists, no need to write again.`)
             return false
         }
 
