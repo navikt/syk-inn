@@ -20,6 +20,7 @@
         "build:e2e": "./scripts/build-e2e.sh",
         "test": "vitest --project unit --run",
         "test:integration": "vitest --project integration --run",
+        "test:integration:only-api": "vitest --project integration -t SykInnApi --run ",
         "lint": "oxlint",
         "lint:fix": "oxlint --fix",
         "fmt": "oxfmt",
