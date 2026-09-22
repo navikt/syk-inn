@@ -144,5 +144,9 @@ function toAndreSporsmal(sykmelding: SykInnApiSykmelding): string[] | null {
         items.push(`Sykmeldingen er relatert til yrkesskade${skadedato}`)
     }
 
+    if (sykmelding.values.prognose?.friskmeldingTilArbeidsformidling === true) {
+        items.push('Pasienten kan bli frisk ved bytte av arbeid/arbeidsgiver')
+    }
+
     return items.length > 0 ? items : null
 }

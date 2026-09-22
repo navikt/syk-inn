@@ -23,7 +23,8 @@
         "annenFravarsgrunn": "Pasienten er innlagt i en godkjent helseinstitusjon",
         "andreSporsmal": [
             "Sykmeldingen er svangerskapsrelatert",
-            "Sykmeldingen er relatert til yrkesskade, skadedato: 9. april 2026"
+            "Sykmeldingen er relatert til yrkesskade, skadedato: 9. april 2026",
+            "Pasienten kan bli frisk ved bytte av arbeid/arbeidsgiver"
         ],
         "meldinger": {
             "tilNav": "Hei NAV, dette er en melding til dere \uD83D\uDE0E\uD83E\uDD19\uD83E\uDD29",
