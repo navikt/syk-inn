@@ -130,7 +130,7 @@ export function SykmeldingValues({ sykmelding }: Props): ReactElement {
                             <List.Item>Pasienten skal skjermes for medisinsk informasjon</List.Item>
                         )}
                         {sykmelding.values.prognose?.friskmeldingTilArbeidsformidling && (
-                            <List.Item>Kan pasienten bli frisk ved bytte av arbeid/arbeidsgiver</List.Item>
+                            <List.Item>Pasienten kan være aktuell for friskmelding til arbeidsformidling</List.Item>
                         )}
                     </List>
                 </ValueItem>

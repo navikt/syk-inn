@@ -166,7 +166,7 @@ export function expectPrognose({ friskmeldingTilArbeidsformidling }: { friskmeld
             const vurderingSection = page.getByRole('region', { name: 'Vurderinger for Nav' })
 
             const friskmeldingCheckbox = vurderingSection.getByRole('checkbox', {
-                name: 'Kan pasienten bli frisk ved bytte av arbeid/arbeidsgiver',
+                name: 'Pasienten kan være aktuell for friskmelding til arbeidsformidling',
             })
 
             if (friskmeldingTilArbeidsformidling) {

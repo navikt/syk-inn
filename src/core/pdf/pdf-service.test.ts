@@ -13,7 +13,9 @@ describe('mapSykInnToPdfPayload - friskmelding til arbeidsformidling', () => {
 
         const payload = mapSykInnToPdfPayload(sykmelding)
 
-        expect(payload.values.andreSporsmal).toContain('Pasienten kan bli frisk ved bytte av arbeid/arbeidsgiver')
+        expect(payload.values.andreSporsmal).toContain(
+            'Pasienten kan være aktuell for friskmelding til arbeidsformidling',
+        )
     })
 
     test('does not include friskmelding line when false', () => {
@@ -25,7 +27,7 @@ describe('mapSykInnToPdfPayload - friskmelding til arbeidsformidling', () => {
         const payload = mapSykInnToPdfPayload(sykmelding)
 
         expect(payload.values.andreSporsmal ?? []).not.toContain(
-            'Pasienten kan bli frisk ved bytte av arbeid/arbeidsgiver',
+            'Pasienten kan være aktuell for friskmelding til arbeidsformidling',
         )
     })
 })
