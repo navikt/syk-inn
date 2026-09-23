@@ -39,7 +39,12 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                     type: 'DocumentReference',
                     id: sykmeldingId,
                 })
-                if (!safeToWrite) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
+
+                if (safeToWrite === 'already exists') {
+                    return { result: 'ALREADY_CREATED', selfRef: `DocumentReference/${sykmeldingId}` }
+                } else if (safeToWrite === 'failed to check') {
+                    return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
+                }
 
                 const pdf = await createTypstSykmelding(sykmelding)
                 if (!pdf.ok) {
@@ -91,8 +96,10 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                     id: sykmelding.sykmeldingId,
                 })
 
-                // TODO This logic needs some work, it should return ALREADY_CREATED with ref if it is created.
-                if (!safeToWrite) return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
+                if (safeToWrite === 'already exists') {
+                    return { result: 'ALREADY_CREATED', selfRef: `QuestionnaireResponse/${sykmelding.sykmeldingId}` }
+                }
+                if (safeToWrite === 'failed to check') return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
 
                 const payload: FhirQuestionnaireResponse = sykmeldingToQuestionnaireResponse(sykmelding, {
                     encounterId: client.encounter.id,
@@ -120,7 +127,7 @@ async function isSafeToWrite(
         type: 'DocumentReference' | 'QuestionnaireResponse'
         id: string
     },
-): Promise<boolean> {
+): Promise<true | 'already exists' | 'failed to check'> {
     return spanServerAsync(`FhirWriteService.isSafeToWrite(${document.type}/${document.id})`, async (span) => {
         const existingResource = await client.request(`${document.type}/${document.id}`, {
             expectNotFound: true,
@@ -129,7 +136,7 @@ async function isSafeToWrite(
         // resource already exists = log and skip
         if ('resourceType' in existingResource) {
             logger.warn(`Resource ${document.type}/${document.id} already exists, no need to write again.`)
-            return false
+            return 'already exists'
         }
 
         // resource is not found = proceed
@@ -142,7 +149,7 @@ async function isSafeToWrite(
         // other = log and skip
         logger.error(message)
         failSpan(span, message)
-        return false
+        return 'failed to check'
     })
 }
 
