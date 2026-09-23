@@ -101,7 +101,7 @@ describe('writeDocumentReference idempotency', () => {
         const result = await service.writeDocumentReference(sykmelding('sykmelding-1'), null)
 
         expect(update).not.toHaveBeenCalled()
-        expect(result).toMatchObject({ error: expect.any(String) })
+        expect(result).toMatchObject({ result: 'ALREADY_CREATED', selfRef: 'DocumentReference/sykmelding-1' })
     })
 
     test('other error on existence check aborts and logs', async () => {
