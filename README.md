@@ -72,9 +72,9 @@ code still in English.
 - FHIR Callback route:
   [src/app/(fhir)/fhir/(fhir-launch)/callback/route.ts](<src/app/(fhir)/fhir/(fhir-launch)/callback/route.ts>)
 - FHIR Dashboard:
-  [src/app/(fhir)/fhir/(fhir-launched)/page.tsx](<src/app/(fhir)/fhir/(fhir-launched)/page.tsx>)
+  [src/app/(fhir)/fhir/(fhir-launched)/[patientId]/page.tsx](<src/app/(fhir)/fhir/(fhir-launched)/[patientId]/page.tsx>)
 - FHIR Sykmelding Form
-  [src/app/(fhir)/fhir/(fhir-launched)/ny/[draftId]/page.tsx](<src/app/(fhir)/fhir/(fhir-launched)/ny/[draftId]/page.tsx>)
+  [src/app/(fhir)/fhir/(fhir-launched)/[patientId]/(actions)/ny/page.tsx](<src/app/(fhir)/fhir/(fhir-launched)/[patientId]/(actions)/ny/page.tsx>)
 
 ### The actual form:
 
@@ -84,9 +84,9 @@ application can be "launched" in (FHIR/HelseID) will provide their own implement
 schema, with their corresponding auth.
 
 - Root form:
-  [src/components/ny-sykmelding-form/NySykmeldingForm.tsx](src/components/ny-sykmelding-form/NySykmeldingForm.tsx)
+  [src/features/ny-sykmelding-form/NySykmeldingFormVariants.tsx](src/features/ny-sykmelding-form/NySykmeldingFormVariants.tsx)
 - The data available to the form:
-  [src/data-layer/graphql/schema/root.graphqls](src/data-layer/graphql/schema/root.graphqls)
+  [src/core/data-layer/graphql/schema/root.graphqls](src/core/data-layer/graphql/schema/root.graphqls)
 
 ## Local Development
 
