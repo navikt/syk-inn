@@ -11,7 +11,7 @@ import { CommonGraphqlContext } from '../graphql/common-context'
 import { getCurrentPatientFromExtension } from '../graphql/yoga-utils'
 
 import { NoSmartSession } from './error/Errors'
-import { getHpr } from './mappers/practitioner'
+import { getHprFromFhir, isValidIdent } from './mappers/identifiers'
 import { getReadyClient } from './smart/ready-client'
 
 const OtelNamespace = 'GraphQL(FHIR).context'
@@ -42,10 +42,12 @@ export const createFhirResolverContext = async (context: YogaInitialContext): Pr
             throw NoSmartSession()
         }
 
-        const hpr = getHpr(practitioner.identifier)
-        if (hpr == null) {
-            failSpan(span, 'Practitioner without HPR')
-            logger.warn(`Practitioner does not have HPR, practitioner: ${JSON.stringify(practitioner)}`)
+        const hpr = getHprFromFhir(practitioner.identifier)
+        if (!isValidIdent(hpr)) {
+            failSpan(span, `Practitioner without HPR: ${hpr.error}`)
+            logger.warn(
+                `Practitioner does not have HPR (${hpr.details}), practitioner: ${JSON.stringify(practitioner)}`,
+            )
             throw NoSmartSession()
         }
 

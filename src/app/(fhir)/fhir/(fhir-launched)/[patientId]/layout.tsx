@@ -14,8 +14,13 @@ import { AutoPatient } from '#core/redux/reducers/ny-sykmelding/patient'
 import { hasAcceptedBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
 import { ToggleProvider } from '#core/toggles/context'
 import { getFlag, getUserToggles, toToggleMap } from '#core/toggles/unleash'
-import { getNameFromFhir, getValidPatientIdent } from '#data-layer/fhir/mappers/patient'
-import { getHpr } from '#data-layer/fhir/mappers/practitioner'
+import {
+    getNameFromFhir,
+    getIdentFromFhir,
+    getHprFromFhir,
+    isValidIdent,
+    isValidName,
+} from '#data-layer/fhir/mappers/identifiers'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { LazyDevTools } from '#dev/tools/LazyDevTools'
 import { isDemo, isDevGcp, isLocal } from '#lib/env'
@@ -107,9 +112,11 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
             return { error: 'NO_PATIENT' }
         }
 
-        const hpr = getHpr(practitioner.identifier)
-        if (hpr == null) {
-            logger.warn(`Practitioner does not have HPR, practitioner: ${JSON.stringify(practitioner)}`)
+        const hpr = getHprFromFhir(practitioner.identifier)
+        if (!isValidIdent(hpr)) {
+            logger.warn(
+                `Practitioner does not have HPR (${hpr.details}), practitioner: ${JSON.stringify(practitioner)}`,
+            )
             return { error: 'NO_HPR' }
         }
 
@@ -144,10 +151,15 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
         }
 
         const navn = getNameFromFhir(patient.name)
-        const ident = getValidPatientIdent(patient.identifier)
+        const ident = getIdentFromFhir(patient.identifier)
 
-        if (ident == null) {
-            failSpan(span, 'Patient without valid FNR/DNR')
+        if (!isValidName(navn)) {
+            failSpan(span, `Patient without valid name: ${navn.error}`)
+            return { error: 'NO_PATIENT' }
+        }
+
+        if (!isValidIdent(ident)) {
+            failSpan(span, `Patient without valid FNR/DNR: ${ident.error}, ${ident.details}`)
             return { error: 'NO_PATIENT' }
         }
 

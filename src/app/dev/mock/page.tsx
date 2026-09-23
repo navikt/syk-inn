@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation'
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 
-import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
+import { getNameFromFhir } from '#data-layer/fhir/mappers/identifiers'
 import { isDemo, isLocal } from '#lib/env'
 import { pathWithBasePath } from '#lib/url'
 
@@ -42,7 +42,7 @@ function MockPage(): ReactElement {
                         <LinkCard key={sessionId}>
                             <LinkCardTitle>
                                 <LinkCardAnchor href={pathWithBasePath(`/dev/mock/session?sessionId=${sessionId}`)}>
-                                    {session.practitioner} → {session.patient}
+                                    <FhirName name={session.practitioner} /> → <FhirName name={session.patient} />
                                 </LinkCardAnchor>
                             </LinkCardTitle>
                             <LinkCardDescription>{session.encounter}</LinkCardDescription>
@@ -52,6 +52,14 @@ function MockPage(): ReactElement {
             </PageBlock>
         </Page>
     )
+}
+
+function FhirName({ name }: { name: ReturnType<typeof getNameFromFhir> }): ReactElement {
+    if (typeof name !== 'string') {
+        return <span className="italic text-ax-text-neutral-subtle">{name.error}</span>
+    }
+
+    return <span>{name}</span>
 }
 
 export default MockPage

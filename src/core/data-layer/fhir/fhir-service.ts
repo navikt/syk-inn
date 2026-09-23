@@ -4,8 +4,8 @@ import { GraphQLError } from 'graphql/error'
 import { OpprettSykmeldingMeta } from '#core/services/syk-inn-api/schema/opprett'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
+import { getIdentFromFhir, isValidIdent } from './mappers/identifiers'
 import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from './mappers/organization'
-import { getValidPatientIdent } from './mappers/patient'
 
 /**
  * Chonky boi. Fetches the FHIR resources: Practitioner, Patient, Encounter and Organization, and extracts the relevant
@@ -16,10 +16,8 @@ export async function getAllSykmeldingMetaFromFhir(
 ): Promise<Omit<OpprettSykmeldingMeta, 'source' | 'sykmelderHpr'>> {
     return spanServerAsync('FhirService.all-meta-resources', async (span) => {
         const encounter = await client.encounter.request()
-
         if ('error' in encounter) {
             failSpan(span, encounter.error)
-
             throw new GraphQLError('API_ERROR')
         }
 
@@ -55,14 +53,12 @@ export async function getAllSykmeldingMetaFromFhir(
             throw new GraphQLError('API_ERROR')
         }
 
-        const pasientIdent = getValidPatientIdent(patient.identifier)
-        if (pasientIdent == null) {
+        const pasientIdent = getIdentFromFhir(patient.identifier)
+        if (!isValidIdent(pasientIdent)) {
             failSpan(
                 span,
-                'Patient without valid FNR/DNR',
-                new Error(
-                    `Patient without valid FNR/DNR, found OIDs: ${patient.identifier?.map((id) => id.system).join(', ') || 'none'}`,
-                ),
+                `Patient without valid FNR/DNR: ${pasientIdent.error}`,
+                new Error(`Patient without valid FNR/DNR: ${pasientIdent.details}`),
             )
             throw new GraphQLError('API_ERROR')
         }
