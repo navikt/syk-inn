@@ -7,8 +7,7 @@ import { LegeOgBehandlerTelefonen } from '#components/help/LegeOgBehandlerTelefo
 import { PageLayout } from '#components/layout/Page'
 import { createFhirPaths } from '#core/providers/ModePaths'
 import { hasAcceptedBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
-import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
-import { getHpr } from '#data-layer/fhir/mappers/practitioner'
+import { getHprFromFhir, getNameFromFhir, isValidIdent } from '#data-layer/fhir/mappers/identifiers'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { Bruksvilkar } from '#features/bruksvilkar/Bruksvilkar'
 
@@ -37,20 +36,21 @@ async function BruksvilkarWithData({ patientId }: { patientId: string }): Promis
         return <BruksvilkarError />
     }
 
-    const hpr = getHpr(practitioner.identifier)
-    if (!hpr) {
-        logger.error(`Tried to load bruksvilkår, got practitioner without HPR: ${practitioner.id}`)
+    const hpr = getHprFromFhir(practitioner.identifier)
+    if (!isValidIdent(hpr)) {
+        logger.error(`Tried to load bruksvilkår, got practitioner without HPR: ${practitioner.id} (${hpr.details})`)
         return <BruksvilkarError />
     }
 
     const acceptedBruksvilkar = await hasAcceptedBruksvilkar(hpr)
+    const practitionerName = getNameFromFhir(practitioner.name)
 
     return (
         <Bruksvilkar
             paths={R.pick(createFhirPaths(patientId), ['root', 'bruksvilkar'])}
             accepter={{
                 hpr: hpr,
-                name: getNameFromFhir(practitioner.name),
+                name: typeof practitionerName === 'string' ? practitionerName : 'Ukjent behandlernavn',
             }}
             accepted={
                 acceptedBruksvilkar?.acceptedAt != null

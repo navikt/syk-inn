@@ -7,9 +7,8 @@ import { NonPilotUserWarning } from '#components/user-warnings/NonPilotUserWarni
 import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
 import { getSessionId } from '#core/session/session'
 import { getUserlessToggles } from '#core/toggles/unleash'
+import { getHprFromFhir, getIdentFromFhir, isValidIdent } from '#data-layer/fhir/mappers/identifiers'
 import { getOrganisasjonstelefonnummerFromFhir } from '#data-layer/fhir/mappers/organization'
-import { getValidPatientIdent } from '#data-layer/fhir/mappers/patient'
-import { getHpr } from '#data-layer/fhir/mappers/practitioner'
 import { getSmartClient } from '#data-layer/fhir/smart/smart-client'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 import metrics from '#lib/prometheus/metrics'
@@ -76,11 +75,19 @@ async function Page(): Promise<ReactElement> {
                         return
                     }
 
-                    const hpr = getHpr(practitioner.identifier)
-                    const ident = getValidPatientIdent(patient.identifier)
+                    const hpr = getHprFromFhir(practitioner.identifier)
+                    const ident = getIdentFromFhir(patient.identifier)
 
-                    if (hpr == null || ident == null) {
-                        failSpan(innerSpan, 'Non-pilot-user missing HPR or patient identifier')
+                    if (!isValidIdent(hpr)) {
+                        failSpan(innerSpan, `Non-pilot-user missing HPR ${hpr.details}`)
+                        return
+                    }
+
+                    if (!isValidIdent(ident)) {
+                        failSpan(
+                            innerSpan,
+                            `Non-pilot-user missing patient identifier ${ident.error}, ${ident.details}`,
+                        )
                         return
                     }
 

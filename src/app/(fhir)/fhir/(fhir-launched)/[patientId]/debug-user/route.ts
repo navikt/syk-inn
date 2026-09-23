@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { getUserToggles, toToggleMap } from '#core/toggles/unleash'
-import { getHpr } from '#data-layer/fhir/mappers/practitioner'
+import { getHprFromFhir, isValidIdent } from '#data-layer/fhir/mappers/identifiers'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 
 export async function GET(_: NextRequest, { params }: RouteContext<'/fhir/[patientId]/debug-user'>): Promise<Response> {
@@ -15,9 +15,9 @@ export async function GET(_: NextRequest, { params }: RouteContext<'/fhir/[patie
         return NextResponse.json({ error: practitioner.error }, { status: 500 })
     }
 
-    const hpr = getHpr(practitioner.identifier)
-    if (hpr == null) {
-        return NextResponse.json({ error: `No HPR for practitioner ${hpr}` }, { status: 400 })
+    const hpr = getHprFromFhir(practitioner.identifier)
+    if (!isValidIdent(hpr)) {
+        return NextResponse.json({ error: `No HPR for practitioner ${hpr.details}` }, { status: 400 })
     }
 
     const toggles = await getUserToggles(hpr)

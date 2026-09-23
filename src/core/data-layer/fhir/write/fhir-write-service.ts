@@ -173,3 +173,18 @@ function sanityCheckDocumentReferenceId(
         )
     }
 }
+
+export async function writeQuestionnaireResponseWithFallback(
+    writeService: ReturnType<typeof fhirWriteService>,
+    sykmelding: SykInnApiSykmelding,
+): Promise<string | null> {
+    const fhirWriteOutcome = await writeService.writeQuestionnaireResponse(sykmelding).catch((err) => {
+        logger.error(new Error('Creating questionnaire response failed', { cause: err }))
+        return null
+    })
+
+    if (fhirWriteOutcome === null || 'error' in fhirWriteOutcome) {
+        return null
+    }
+    return fhirWriteOutcome.selfRef
+}

@@ -4,9 +4,8 @@ import { cookies } from 'next/headers'
 import * as R from 'remeda'
 
 import { pdlApiService } from '#core/services/pdl/pdl-api-service'
-import { getFnrIdent, formatPdlName } from '#core/services/pdl/pdl-api-utils'
+import { formatPdlName, getFnrIdent } from '#core/services/pdl/pdl-api-utils'
 import { OpprettSykmeldingMeta } from '#core/services/syk-inn-api/schema/opprett'
-import { SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
 import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
 import {
     resolverInputToSykInnApiPayload,
@@ -30,12 +29,12 @@ import { commonTypeResolvers } from '../graphql/common-type-resolvers'
 import { createSchema } from '../graphql/create-schema'
 
 import { FhirGraphqlContext } from './fhir-graphql-context'
+import { assertValidIdent, assertValidName, practitionerToBehandler } from './fhir-graphql-utils'
 import { getAllSykmeldingMetaFromFhir } from './fhir-service'
 import { fhirDiagnosisToRelevantDiagnosis } from './mappers/diagnosis'
+import { getNameFromFhir, getIdentFromFhir } from './mappers/identifiers'
 import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from './mappers/organization'
-import { getNameFromFhir, getValidPatientIdent } from './mappers/patient'
-import { practitionerToBehandler } from './mappers/practitioner'
-import { fhirWriteService } from './write/fhir-write-service'
+import { fhirWriteService, writeQuestionnaireResponseWithFallback } from './write/fhir-write-service'
 
 const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     Query: {
@@ -76,10 +75,13 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
-            return {
-                navn: getNameFromFhir(patient.name),
-                ident: getValidPatientIdent(patient.identifier) ?? raise('Patient without valid FNR/DNR'),
-            }
+            const patientName = getNameFromFhir(patient.name)
+            const patientIdent = getIdentFromFhir(patient.identifier)
+
+            assertValidName(patientName)
+            assertValidIdent(patientIdent)
+
+            return { navn: patientName, ident: patientIdent }
         },
         konsultasjon: async () => ({}),
         sykmelding: async (_, { id: sykmeldingId }, { client, hpr }) => {
@@ -110,12 +112,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('PARSING_ERROR')
             }
 
-            const ident = getValidPatientIdent(patientInContext.identifier)
-            if (ident == null) {
-                const oids = patientInContext.identifier?.map((it) => it.system).join(', ') ?? 'none'
-                logger.error(`Missing valid FNR/DNR in patient resource, found OIDs: ${oids}`)
-                throw new GraphQLError('API_ERROR')
-            }
+            const ident = getIdentFromFhir(patientInContext.identifier)
+            assertValidIdent(ident)
 
             const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(ident, hpr)
             if ('errorType' in sykInnSykmeldinger) {
@@ -168,13 +166,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const ident = getValidPatientIdent(patient.identifier)
-            if (ident == null) {
-                logger.error('Missing valid FNR/DNR in patient resource')
-                const oids = patient.identifier?.map((it) => it.system).join(', ') ?? 'none'
-                logger.error(`Missing valid FNR/DNR in patient resource, found OIDs: ${oids}`)
-                throw new GraphQLError('API_ERROR')
-            }
+            const ident = getIdentFromFhir(patient.identifier)
+            assertValidIdent(ident)
 
             const draftClient = await getDraftClient()
             const draft = await draftClient.getDraft(draftId, { hpr, ident })
@@ -193,17 +186,11 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const ident = getValidPatientIdent(patient.identifier)
-            if (ident == null) {
-                const oids = patient.identifier?.map((it) => it.system).join(', ') ?? 'none'
-                logger.error(`Missing valid FNR/DNR in patient resource, found OIDs: ${oids}`)
-                throw new GraphQLError('API_ERROR')
-            }
+            const ident = getIdentFromFhir(patient.identifier)
+            assertValidIdent(ident)
 
             const draftClient = await getDraftClient()
-
             const allDrafts = await draftClient.getDrafts({ hpr, ident })
-
             return R.sortBy(allDrafts, [(it) => it.lastUpdated, 'desc'])
         },
         ...commonQueryResolvers,
@@ -215,12 +202,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const ident = getValidPatientIdent(patient.identifier)
-            if (ident == null) {
-                const oids = patient.identifier?.map((it) => it.system).join(', ') ?? 'none'
-                logger.error(`Missing valid FNR/DNR in patient resource, found OIDs: ${oids}`)
-                throw new GraphQLError('API_ERROR')
-            }
+            const ident = getIdentFromFhir(patient.identifier)
+            assertValidIdent(ident)
 
             const parsedValues = DraftValuesSchema.safeParse(values)
             if (!parsedValues.success) {
@@ -249,13 +232,8 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 throw new GraphQLError('API_ERROR')
             }
 
-            const ident = getValidPatientIdent(patient.identifier)
-            if (ident == null) {
-                const oids = patient.identifier?.map((it) => it.system).join(', ')
-
-                logger.error(`Missing valid FNR/DNR in patient resource, found OIDs: ${oids ?? 'none'}`)
-                throw new GraphQLError('API_ERROR')
-            }
+            const ident = getIdentFromFhir(patient.identifier)
+            assertValidIdent(ident)
 
             const draftClient = await getDraftClient()
             await draftClient.deleteDraft(draftId, { hpr, ident })
@@ -391,21 +369,6 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     },
     ...commonObjectResolvers,
     ...commonTypeResolvers,
-}
-
-async function writeQuestionnaireResponseWithFallback(
-    writeService: ReturnType<typeof fhirWriteService>,
-    sykmelding: SykInnApiSykmelding,
-): Promise<string | null> {
-    const fhirWriteOutcome = await writeService.writeQuestionnaireResponse(sykmelding).catch((err) => {
-        logger.error(new Error('Creating questionnaire response failed', { cause: err }))
-        return null
-    })
-
-    if (fhirWriteOutcome === null || 'error' in fhirWriteOutcome) {
-        return null
-    }
-    return fhirWriteOutcome.selfRef
 }
 
 export const fhirSchema = createSchema(fhirResolvers)

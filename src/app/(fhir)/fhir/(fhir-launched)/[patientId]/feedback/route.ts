@@ -2,8 +2,7 @@ import { logger } from '@navikt/next-logger'
 import { NextRequest } from 'next/server'
 
 import { handleFeedback } from '#core/services/feedback/feedback-service'
-import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
-import { getHpr } from '#data-layer/fhir/mappers/practitioner'
+import { getHprFromFhir, getNameFromFhir, isValidIdent, isValidName } from '#data-layer/fhir/mappers/identifiers'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
@@ -24,12 +23,16 @@ export async function POST(
             return Response.json({ message: practitioner.error }, { status: 500 })
         }
 
-        const hpr = getHpr(practitioner.identifier)
-        if (hpr == null) {
-            failSpan(span, 'Missing HPR identifier in practitioner resource')
+        const hpr = getHprFromFhir(practitioner.identifier)
+        if (!isValidIdent(hpr)) {
+            failSpan(span, `Missing HPR identifier in practitioner resource: ${hpr.details}`)
             return Response.json({ message: 'Vi fant ikke et gyldig HPR nummer' }, { status: 500 })
         }
         const behandlerName = getNameFromFhir(practitioner.name)
+        if (!isValidName(behandlerName)) {
+            failSpan(span, `Missing name in practitioner resource: ${behandlerName.error}`)
+            return Response.json({ message: 'Vi fant ikke et gyldig navn' }, { status: 500 })
+        }
 
         logger.info('Received feedback with HPR and name!')
         const json = await request.json()

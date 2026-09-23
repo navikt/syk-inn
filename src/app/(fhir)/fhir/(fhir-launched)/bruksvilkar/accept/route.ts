@@ -4,9 +4,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import * as z from 'zod'
 
 import { acceptBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
+import { getHprFromFhir, getNameFromFhir, isValidIdent, isValidName } from '#data-layer/fhir/mappers/identifiers'
 import { getOrganisasjonsnummerFromFhir } from '#data-layer/fhir/mappers/organization'
-import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
-import { getHpr } from '#data-layer/fhir/mappers/practitioner'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { bundledEnv } from '#lib/env'
 
@@ -40,8 +39,8 @@ export async function PUT(request: NextRequest): Promise<Response> {
         return NextResponse.json({ error: practitioner.error }, { status: 401 })
     }
 
-    const hpr = getHpr(practitioner.identifier)
-    if (!hpr) {
+    const hpr = getHprFromFhir(practitioner.identifier)
+    if (!isValidIdent(hpr)) {
         logger.error(`Tried to accept bruksvilkår, got practitioner without HPR: ${practitioner.id}`)
         return NextResponse.json({ error: 'NO_HPR' }, { status: 401 })
     }
@@ -64,9 +63,15 @@ export async function PUT(request: NextRequest): Promise<Response> {
         throw new GraphQLError('API_ERROR')
     }
 
+    const practitionerName = getNameFromFhir(practitioner.name)
+    if (!isValidName(practitionerName)) {
+        logger.error(`Practitioner without valid name: ${practitionerName.error}`)
+        throw new GraphQLError('API_ERROR')
+    }
+
     const accept: ResponsePayload = await acceptBruksvilkar(
         body.version,
-        { hpr, orgnummer, name: getNameFromFhir(practitioner.name) },
+        { hpr, orgnummer, name: practitionerName },
         { system: readyClient.issuerName, commmitHash: bundledEnv.NEXT_PUBLIC_VERSION ?? 'missing' },
     )
 

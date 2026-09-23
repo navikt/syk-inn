@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import React, { ReactElement } from 'react'
 
-import { getNameFromFhir } from '#data-layer/fhir/mappers/patient'
+import { getNameFromFhir } from '#data-layer/fhir/mappers/identifiers'
 import { isDemo, isLocal } from '#lib/env'
 
 import { getMockStore } from '../../../api/mocks/fhir/[[...path]]/mock-storage'
@@ -22,6 +22,9 @@ async function SessionDebugPage({ searchParams }: PageProps<'/dev/mock/session'>
     const session = store.getSession(sessionId as string)
     if (session === null) notFound()
 
+    const pracName = getNameFromFhir(session.practitioner.name)
+    const patiName = getNameFromFhir(session.patient.name)
+
     return (
         <Page className="bg-transparent">
             <PageBlock as="main" width="xl" gutters>
@@ -31,7 +34,7 @@ async function SessionDebugPage({ searchParams }: PageProps<'/dev/mock/session'>
                     </Heading>
                     <div>
                         <Heading level="2" size="xsmall">
-                            {getNameFromFhir(session.practitioner.name)} → {getNameFromFhir(session.patient.name)}
+                            <FhirName name={pracName} /> → <FhirName name={patiName} />
                         </Heading>
                     </div>
                     <div>
@@ -60,6 +63,14 @@ async function SessionDebugPage({ searchParams }: PageProps<'/dev/mock/session'>
             </PageBlock>
         </Page>
     )
+}
+
+function FhirName({ name }: { name: ReturnType<typeof getNameFromFhir> }): ReactElement {
+    if (typeof name !== 'string') {
+        return <span className="italic text-ax-text-neutral-subtle">{name.error}</span>
+    }
+
+    return <span>{name}</span>
 }
 
 function OverflowableJson({ children }: { children: Record<string, unknown> }): ReactElement {

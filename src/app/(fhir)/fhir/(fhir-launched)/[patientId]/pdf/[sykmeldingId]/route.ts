@@ -2,8 +2,7 @@ import { NextRequest } from 'next/server'
 
 import { createTypstSykmelding } from '#core/pdf/pdf-service'
 import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
-import { getValidPatientIdent } from '#data-layer/fhir/mappers/patient'
-import { getHpr } from '#data-layer/fhir/mappers/practitioner'
+import { getHprFromFhir, getIdentFromFhir, isValidIdent } from '#data-layer/fhir/mappers/identifiers'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
@@ -25,9 +24,9 @@ export async function GET(
             return new Response('Internal server error', { status: 500 })
         }
 
-        const hpr = getHpr(practitioner.identifier)
-        if (hpr == null) {
-            failSpan(span, `Missing HPR identifier in practitioner resource`)
+        const hpr = getHprFromFhir(practitioner.identifier)
+        if (!isValidIdent(hpr)) {
+            failSpan(span, `Missing valid HPR identifier in practitioner resource: ${hpr.details}`)
             return new Response('Internal server error', { status: 500 })
         }
 
@@ -37,9 +36,9 @@ export async function GET(
             return new Response('Internal server error', { status: 500 })
         }
 
-        const patientIdent = getValidPatientIdent(patient.identifier)
-        if (patientIdent == null) {
-            failSpan(span, `Missing valid patient identifier in patient resource`)
+        const patientIdent = getIdentFromFhir(patient.identifier)
+        if (!isValidIdent(patientIdent)) {
+            failSpan(span, `Missing valid patient identifier in patient resource: ${patientIdent.details}`)
             return new Response('Internal server error', { status: 500 })
         }
 
