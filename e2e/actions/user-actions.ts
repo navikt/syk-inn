@@ -260,11 +260,15 @@ export function fillPrognose({ friskmeldingTilArbeidsformidling }: { friskmeldin
 
             if (friskmeldingTilArbeidsformidling) {
                 await region
-                    .getByRole('checkbox', { name: 'Kan pasienten bli frisk ved bytte av arbeid/arbeidsgiver' })
+                    .getByRole('checkbox', {
+                        name: 'Pasienten kan være aktuell for friskmelding til arbeidsformidling',
+                    })
                     .check()
             } else {
                 await region
-                    .getByRole('checkbox', { name: 'Kan pasienten bli frisk ved bytte av arbeid/arbeidsgiver' })
+                    .getByRole('checkbox', {
+                        name: 'Pasienten kan være aktuell for friskmelding til arbeidsformidling',
+                    })
                     .uncheck()
             }
         })

@@ -15,7 +15,7 @@ export function FriskmeldingTilArbeidsformidling(): ReactElement {
                 checked={friskmeldingTilArbeidsformidling.field.value}
                 onChange={(event) => friskmeldingTilArbeidsformidling.field.onChange(event.target.checked)}
             >
-                Kan pasienten bli frisk ved bytte av arbeid/arbeidsgiver
+                Pasienten kan være aktuell for friskmelding til arbeidsformidling
                 <HelpText wrapperClassName="inline-block ml-1 align-middle">
                     Denne ordningen er aktuell hvis helsen til pasienten er slik at hen kan komme tilbake i arbeid, men
                     ikke til den jobben hen er sykmeldt fra.

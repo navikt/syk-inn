@@ -352,7 +352,9 @@ function AnderSporsmalSummaryAnswers({
         <>
             {andreSporsmal?.friskmeldingTilArbeidsformidling && (
                 <FormSummary.Answer>
-                    <FormSummary.Label>Kan pasienten bli frisk ved bytte av arbeid/arbeidsgiver</FormSummary.Label>
+                    <FormSummary.Label>
+                        Pasienten kan være aktuell for friskmelding til arbeidsformidling
+                    </FormSummary.Label>
                     <FormSummary.Value>Ja</FormSummary.Value>
                 </FormSummary.Answer>
             )}

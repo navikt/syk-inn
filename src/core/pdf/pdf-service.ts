@@ -145,7 +145,7 @@ function toAndreSporsmal(sykmelding: SykInnApiSykmelding): string[] | null {
     }
 
     if (sykmelding.values.prognose?.friskmeldingTilArbeidsformidling === true) {
-        items.push('Pasienten kan bli frisk ved bytte av arbeid/arbeidsgiver')
+        items.push('Pasienten kan være aktuell for friskmelding til arbeidsformidling')
     }
 
     return items.length > 0 ? items : null
