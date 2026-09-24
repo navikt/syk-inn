@@ -95,14 +95,12 @@ const allowedScopes = [
     'patient/QuestionnaireResponse.write',
 ]
 
-const knownLocalOnlyScopes = ['https://helseid.nhn.no']
-
 function onlyValidScopes(scope: string): boolean {
     const actualScopes = scope.split(' ')
 
     logger.info(`Launch has ${actualScopes.length} scopes!`)
 
-    const diff = R.difference(actualScopes, [...allowedScopes, ...knownLocalOnlyScopes])
+    const diff = R.difference(actualScopes, allowedScopes)
     if (diff.length > 0) {
         logger.warn(`Invalid scopes found: \n - ${diff.join('\n -')}`)
         return false

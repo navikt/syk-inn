@@ -1,6 +1,7 @@
+import { logger } from '@navikt/next-logger'
 import { GeneralIdentifier, Name } from '@navikt/smart-on-fhir/zod'
 
-import { userUrnToOidType } from './oids'
+import { OID_DNR, OID_FNR, OID_HPR } from './oids'
 
 export function getNameFromFhir(name: Name): string | { error: 'NO_NAME' } {
     if (name == null || name.length === 0) {
@@ -81,4 +82,21 @@ export function isValidIdent(
 
 export function isValidName(name: ReturnType<typeof getNameFromFhir>): name is string {
     return typeof name === 'string'
+}
+
+/**
+ * Kilde: https://www.ehelse.no/teknisk-dokumentasjon/oid-identifikatorserier-i-helse-og-omsorgstjenesten
+ */
+function userUrnToOidType(urn: string): 'fnr' | 'dnr' | 'hpr' | 'annet' {
+    switch (urn.replace('urn:oid:', '')) {
+        case OID_FNR:
+            return 'fnr'
+        case OID_DNR:
+            return 'dnr'
+        case OID_HPR:
+            return 'hpr'
+        default:
+            logger.error(`Unknown OID: ${urn}`)
+            return 'annet'
+    }
 }

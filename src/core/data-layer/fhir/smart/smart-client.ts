@@ -27,10 +27,6 @@ const smartClientScopes = [
 
 const structuredScopes = ['patient/QuestionnaireResponse.read', 'patient/QuestionnaireResponse.write']
 
-if (isDemo || isLocal) {
-    smartClientScopes.push('https://helseid.nhn.no')
-}
-
 export function getSmartClient(
     sessionId: string | null,
     activePatient: string | null,

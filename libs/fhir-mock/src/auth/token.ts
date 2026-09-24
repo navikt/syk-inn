@@ -40,13 +40,7 @@ export async function tokenExchange(request: HonoRequest): Promise<Response> {
 
     const accessToken = await createAccessToken(fhirServerTestData.wellKnown().issuer, code)
     const session = getMockSessionStore().completeLaunch(code, accessToken)
-    const idToken = await createIdToken(session.practitioner.id, {
-        'https://helseid.nhn.no': {
-            access_token: await createAccessToken('https://helseid.nhn.no', crypto.randomUUID()),
-            issuer: 'https://helseid.nhn.no',
-            scope: 'nav:syk-inn',
-        },
-    })
+    const idToken = await createIdToken(session.practitioner.id, {})
 
     fhirLogger.warn(
         `Launch complete! \npatient: ${session.patient.id}\nencounter: ${session.encounter.id}\npractitioner: ${session.practitioner.id}\norganization: ${session.organization.id}`,
