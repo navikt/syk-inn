@@ -64,7 +64,7 @@ export function latestTom(sykmelding: { values: { aktivitet: { tom: string }[] }
     return latestTom.tom
 }
 
-export function aktivitetTypeText(aktivitet: SykInnApiAktivitet): string {
+function aktivitetTypeText(aktivitet: SykInnApiAktivitet): string {
     switch (aktivitet.type) {
         case 'AKTIVITET_IKKE_MULIG':
             return '100%'

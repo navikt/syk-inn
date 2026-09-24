@@ -58,7 +58,7 @@ export function StartSykmelding({ className }: { className?: string }): ReactEle
     )
 }
 
-export function StartSykmeldingActions({ loading, disabled }: { loading: boolean; disabled: boolean }): ReactElement {
+function StartSykmeldingActions({ loading, disabled }: { loading: boolean; disabled: boolean }): ReactElement {
     const mode = useMode()
 
     return (

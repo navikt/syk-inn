@@ -121,7 +121,7 @@ export async function fetchInternalAPI<
     })
 }
 
-export async function getApi(
+async function getApi(
     api: ValidAPI,
 ): Promise<{ host: string; token: string } | { errorType: 'TOKEN_EXCHANGE_FAILED' }> {
     const serverEnv = getServerEnv()

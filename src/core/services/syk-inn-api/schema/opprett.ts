@@ -17,7 +17,7 @@ const OpprettSykmeldingDiagnoseSchema = z.object({
     code: z.string(),
 })
 
-export const UtdypendeSporsmalSchema = z.object({
+const UtdypendeSporsmalSchema = z.object({
     sporsmalstekst: z.string(),
     svar: z.string(),
 })

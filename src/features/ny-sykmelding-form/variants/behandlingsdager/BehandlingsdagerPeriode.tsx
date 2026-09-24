@@ -28,7 +28,7 @@ export function BehandlingsdagerPeriode({ initialFom }: Props): ReactElement {
     )
 }
 
-export function behandlingsdagerDescription(fom: Date | string, tom: Date | string): { main: string; detail: string } {
+function behandlingsdagerDescription(fom: Date | string, tom: Date | string): { main: string; detail: string } {
     const antallBehandlingsdager = getNumberOfBehandlingsdager(fom, tom)
 
     const isFomToday = isSameDay(fom, new Date())

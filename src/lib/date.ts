@@ -11,7 +11,7 @@ import {
 } from 'date-fns'
 import { nb } from 'date-fns/locale/nb'
 
-export function toReadableDateNoYear(date: string | Date): string {
+function toReadableDateNoYear(date: string | Date): string {
     return format(date, 'd. MMMM', { locale: nb })
 }
 

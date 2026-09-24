@@ -28,7 +28,7 @@ const currentSykmeldingIsPartOfPeriode = (
     return diff < ISYFO_MAX_DAYS_GAP
 }
 
-export const totalDaysIsMoreThanDays = (
+const totalDaysIsMoreThanDays = (
     utdypendeSporsmal: { days: number; latestTom?: string | null },
     currentSykmeldingRange: SykmeldingDateRange[],
     days: number,
@@ -46,7 +46,7 @@ export const totalDaysIsMoreThanDays = (
     return totalDays >= days
 }
 
-export const satisfiesGeneralConditions = (
+const satisfiesGeneralConditions = (
     perioder: AktivitetsPeriode[],
     utdypendeSporsmal: UtdypendeOpplysningerHint,
     daysForPeriode: number,

@@ -14,19 +14,19 @@ function createCondition(patientId: string, encounterId: string, coding: Codeabl
     }
 }
 
-export const codingBruddLeggAnkel = {
+const codingBruddLeggAnkel = {
     system: 'urn:oid:2.16.578.1.12.4.1.1.7170',
     display: 'Brudd legg/ankel',
     code: 'L73',
 }
 
-export const codingAngstlidelse = {
+const codingAngstlidelse = {
     system: 'urn:oid:2.16.578.1.12.4.1.1.7170',
     display: 'Angstlidelse',
     code: 'P74',
 }
 
-export const codingBotulisme = {
+const codingBotulisme = {
     system: 'urn:oid:2.16.578.1.12.4.1.1.7110',
     display: 'Botulisme',
     code: 'A051',
