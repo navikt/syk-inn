@@ -2361,7 +2361,7 @@ __metadata:
   resolution: "@navikt/fhir-mock-server@workspace:libs/fhir-mock"
   dependencies:
     "@navikt/pino-logger": "npm:^5.0.1"
-    "@navikt/smart-on-fhir": "npm:1.6.25"
+    "@navikt/smart-on-fhir": "npm:1.6.27"
     "@types/node": "npm:^24.13.6"
     hono: "npm:^4.13.8"
     jose: "npm:^6.2.12"
@@ -2412,9 +2412,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/smart-on-fhir@npm:1.6.25":
-  version: 1.6.25
-  resolution: "@navikt/smart-on-fhir@npm:1.6.25::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.6.25%2Ff4a1e16e56f7e2118883a1962e602cea1ad25e8f"
+"@navikt/smart-on-fhir@npm:1.6.27":
+  version: 1.6.27
+  resolution: "@navikt/smart-on-fhir@npm:1.6.27::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fsmart-on-fhir%2F1.6.27%2F1eeee010af410dbfbdd97ae0d54968a8eed2f0f1"
   dependencies:
     "@navikt/pino-logger": "npm:^5.0.1"
     "@opentelemetry/api": "npm:^1.9.1"
@@ -2425,7 +2425,7 @@ __metadata:
   peerDependencies:
     pino: 9 || 10
     zod: 4
-  checksum: 10c0/062edd8c68734f9fe8f6d32efe09f45490e2b2fa1960097b5237ab1e92c9c97ac053a074f43031ede7a6b215bf73262062d60b065b5a9065e124af919503d85b
+  checksum: 10c0/b31b798557d7b23193405471c7002ce9b6c61b60115a4cd25b7b13433e785510f9ac6c4404ac2b81e783be1112912dd1ef1d5d61de7c84d8dec2bc104fa44f10
   languageName: node
   linkType: hard
 
@@ -10438,7 +10438,7 @@ __metadata:
     "@navikt/helseid-mock-server": "workspace:*"
     "@navikt/next-logger": "npm:^5.0.1"
     "@navikt/pino-logger": "npm:^5.0.1"
-    "@navikt/smart-on-fhir": "npm:1.6.25"
+    "@navikt/smart-on-fhir": "npm:1.6.27"
     "@navikt/syk-zara": "workspace:*"
     "@navikt/texas": "npm:^4.2.2"
     "@navikt/tsm-diagnoser": "npm:^2026.8.25"
