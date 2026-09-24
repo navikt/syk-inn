@@ -52,7 +52,7 @@
         "@navikt/helseid-mock-server": "workspace:*",
         "@navikt/next-logger": "^5.0.1",
         "@navikt/pino-logger": "^5.0.1",
-        "@navikt/smart-on-fhir": "1.6.25",
+        "@navikt/smart-on-fhir": "1.6.26",
         "@navikt/syk-zara": "workspace:*",
         "@navikt/texas": "^4.2.2",
         "@navikt/tsm-diagnoser": "^2026.8.25",
