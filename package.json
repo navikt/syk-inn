@@ -93,7 +93,7 @@
         "zod": "^4.6.5"
     },
     "devDependencies": {
-        "@graphql-codegen/cli": "^7.4.1",
+        "@graphql-codegen/cli": "^7.4.2",
         "@graphql-codegen/fragment-matcher": "^7.1.0",
         "@graphql-codegen/introspection": "^6.1.0",
         "@graphql-codegen/typescript-resolvers": "^6.1.0",
@@ -114,8 +114,8 @@
         "knip": "^6.37.0",
         "lint-staged": "^17.5.1",
         "nock": "^14.0.17",
-        "oxfmt": "^0.68.0",
-        "oxlint": "1.83.0",
+        "oxfmt": "^0.70.0",
+        "oxlint": "1.85.0",
         "oxlint-tsgolint": "^7.0.2002",
         "pdf-parse": "^2.4.5",
         "postcss": "^8.5.28",
