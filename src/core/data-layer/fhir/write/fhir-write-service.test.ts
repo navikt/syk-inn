@@ -1,3 +1,4 @@
+import { logger } from '@navikt/next-logger'
 import type { ReadyClient, ResourceCreateErrors, ResourceRequestErrors } from '@navikt/smart-on-fhir/client'
 import type { FhirDocumentReference, FhirQuestionnaireResponse } from '@navikt/smart-on-fhir/zod'
 import { flagsClient } from '@unleash/nextjs'
@@ -119,6 +120,25 @@ describe('writeDocumentReference idempotency', () => {
         expect(update).not.toHaveBeenCalled()
         expect(result).toMatchObject({ error: expect.any(String) })
     })
+
+    test('CREATE_FAILED_NOT_SUPPORTED aborts loud and logs error', async () => {
+        const update = vi.fn<() => Promise<ResourceCreateErrors>>().mockResolvedValue({
+            error: 'CREATE_FAILED_NOT_SUPPORTED',
+        })
+        const client = mockClient({
+            request: vi.fn<() => Promise<ResourceRequestErrors>>().mockResolvedValue({
+                error: 'REQUEST_FAILED_RESOURCE_NOT_FOUND',
+            }),
+            update,
+        })
+        const service = fhirWriteService(client, unleashStub())
+
+        const result = await service.writeDocumentReference(sykmelding('sykmelding-1'), null)
+
+        expect(update).toHaveBeenCalled()
+        expect(result).toMatchObject({ error: 'UNABLE_TO_CREATE' })
+        expect(vi.mocked(logger.error)).toHaveBeenCalled()
+    })
 })
 
 describe('writeQuestionnaireResponse idempotency', () => {
@@ -169,5 +189,22 @@ describe('writeQuestionnaireResponse idempotency', () => {
         const result = await service.writeQuestionnaireResponse(sykmelding('sykmelding-1'))
 
         expect(result).toMatchObject({ error: expect.any(String) })
+    })
+
+    test('CREATE_FAILED_NOT_SUPPORTED skips silently and reports success', async () => {
+        const request = vi.fn<() => Promise<ResourceRequestErrors>>().mockResolvedValue({
+            error: 'REQUEST_FAILED_RESOURCE_NOT_FOUND',
+        })
+        const update = vi.fn<() => Promise<ResourceCreateErrors>>().mockResolvedValue({
+            error: 'CREATE_FAILED_NOT_SUPPORTED',
+        })
+        const client = mockClient({ request, update })
+        const service = fhirWriteService(client, unleashStub(['SYK_INN_STRUCTURED_FHIR']))
+
+        const result = await service.writeQuestionnaireResponse(sykmelding('sykmelding-1'))
+
+        expect(update).toHaveBeenCalled()
+        expect(result).toMatchObject({ result: 'ALREADY_CREATED', selfRef: null })
+        expect(vi.mocked(logger.info)).toHaveBeenCalled()
     })
 })

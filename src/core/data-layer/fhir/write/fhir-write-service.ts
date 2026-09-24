@@ -67,6 +67,10 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                 )
 
                 if ('error' in createdDocumentReference) {
+                    if (createdDocumentReference.error === 'CREATE_FAILED_NOT_SUPPORTED') {
+                        logger.error(`EHR does not support writing DocumentReference(${sykmeldingId}), aborting`)
+                        return { error: 'UNABLE_TO_CREATE' }
+                    }
                     failSpan(
                         span,
                         `Failed to create DocumentReference(${sykmeldingId}): ${createdDocumentReference.error}`,
@@ -112,6 +116,10 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                 })
 
                 if ('error' in createdQuestionnaireResponse) {
+                    if (createdQuestionnaireResponse.error === 'CREATE_FAILED_NOT_SUPPORTED') {
+                        logger.info('EHR does not support QuestionnaireResponse, skipping')
+                        return { result: 'ALREADY_CREATED', selfRef: null }
+                    }
                     failSpan(span, `Failed to create QuestionnaireResponse ${createdQuestionnaireResponse.error}`)
                     return { error: 'UNABLE_TO_CREATE' }
                 }
