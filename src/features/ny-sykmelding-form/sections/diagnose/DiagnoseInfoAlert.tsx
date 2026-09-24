@@ -28,7 +28,7 @@ export function DiagnoseInfoAlert(): ReactElement | null {
         (suggestionsQuery.suggestions.bidiagnoser == null || suggestionsQuery.suggestions.bidiagnoser?.length === 0)
 
     return (
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
             {!zeroFromEpj && !(sameHovedDiagnose && allBiSame) && (
                 <SimpleReveal>
                     <InfoCard data-color="info" className="mt-4" size="small">
