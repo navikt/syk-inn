@@ -9,8 +9,8 @@ export async function GET(_: NextRequest, { params }: RouteContext<'/fhir/[patie
     }
 
     const batchResponse = await readyClient.batch('batch', [
-        { method: 'GET', url: readyClient.user.fhirUser },
-        { method: 'GET', url: readyClient.patient.reference },
+        { request: { method: 'GET', url: readyClient.user.fhirUser } },
+        { request: { method: 'GET', url: readyClient.patient.reference } },
     ])
 
     return NextResponse.json(batchResponse)
