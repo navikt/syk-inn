@@ -19,7 +19,7 @@ permissions:
 jobs:
   test-lint-knip:
     name: Test, lint and verify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/yarn@main
@@ -40,7 +40,7 @@ jobs:
 
   integration-tests:
     name: Integration tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/yarn@main
@@ -58,7 +58,7 @@ jobs:
 
   build-dev:
     name: Build for dev
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/typst@main
@@ -78,7 +78,7 @@ jobs:
   build-demo:
     if: github.ref_name == 'main' || startsWith(github.ref_name, 'demo')
     name: Build for demo
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/typst@main
@@ -98,7 +98,7 @@ jobs:
   build-prod:
     if: github.ref_name == 'main'
     name: Build for prod
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/typst@main
@@ -118,7 +118,7 @@ jobs:
   sbom-dev:
     name: Upload SBOM for dev build
     needs: build-dev
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: navikt/tsm-workflows/actions/attest-sign@main
         with:
@@ -128,7 +128,7 @@ jobs:
   sbom-demo:
     name: Upload SBOM for demo build
     needs: build-demo
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: navikt/tsm-workflows/actions/attest-sign@main
         with:
@@ -138,7 +138,7 @@ jobs:
   sbom-prod:
     name: Upload SBOM for prod build
     needs: build-prod
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: navikt/tsm-workflows/actions/attest-sign@main
         with:
@@ -151,7 +151,7 @@ jobs:
     environment:
       name: dev
       url: https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: [build-dev, test-lint-knip, integration-tests]
     steps:
       - uses: actions/checkout@v7
@@ -168,7 +168,7 @@ jobs:
     environment:
       name: demo-main
       url: https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: [build-demo, test-lint-knip, integration-tests]
     steps:
       - uses: actions/checkout@v7
@@ -186,7 +186,7 @@ jobs:
     environment:
       name: production
       url: https://nav.no/samarbeidspartner/sykmelding
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: [deploy-dev, run-playwright, build-prod]
     steps:
       - uses: actions/checkout@v7
@@ -199,7 +199,7 @@ jobs:
 
   build-for-playwright:
     name: Build for playwright
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/typst@main
@@ -215,7 +215,7 @@ jobs:
   run-playwright:
     needs: [build-for-playwright]
     name: Playwright shard ${{ matrix.shardIndex }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     services:
       app:
         image: ${{ needs.build-for-playwright.outputs.image }}
@@ -244,7 +244,7 @@ jobs:
     name: Playwright report
     if: ${{ !cancelled() }}
     needs: [run-playwright]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/playwright/report@main

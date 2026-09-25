@@ -13,7 +13,7 @@ permissions:
 jobs:
   deploy-unleash-token-dev:
     name: Deploy unleash token to dev
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: nais/deploy/actions/deploy@v2
@@ -24,7 +24,7 @@ jobs:
 
   deploy-unleash-token-prod:
     name: Deploy unleash token to prod
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: nais/deploy/actions/deploy@v2

@@ -8,7 +8,7 @@ on:
 
 jobs:
   should_release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     outputs:
       skip: ${{ steps.check.outputs.skip }}
     permissions:
@@ -37,7 +37,7 @@ jobs:
       id-token: write
       packages: write
       contents: write
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: should_release
     steps:
       - uses: actions/checkout@v7
