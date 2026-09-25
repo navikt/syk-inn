@@ -5,7 +5,6 @@ import {
     getHelseIdBehandler,
     fetchHelseIdUserInfo,
     validateHelseIdAccessToken,
-    validateHelseIdDPoPToken,
 } from '#core/auth/helseid/helseid'
 import {
     getWonderwallHelseIdAccessToken,
@@ -27,16 +26,16 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json({
         hpr: behandler?.hpr ?? 'missing',
         toggles: toToggleMap(toggles),
+        dpopEnabled: process.env.WONDERWALL_OPENID_DPOP === 'true',
         validToken: await validateHelseIdAccessToken().catch((it) =>
             it instanceof Error ? it.message : 'Unknown error',
         ),
         idToken: await decodeHelseIdIdToken().catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
         userInfo: await fetchHelseIdUserInfo().catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
+        dpop: await getWonderwallHelseIdDPoPToken(),
         raw: {
             id_token: await getWonderwallHelseIdIdToken(),
             access_token: await getWonderwallHelseIdAccessToken(),
         },
-        validDPoPToken: await validateHelseIdDPoPToken(),
-        dpop: await getWonderwallHelseIdDPoPToken(),
     })
 }
