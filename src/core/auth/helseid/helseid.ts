@@ -52,6 +52,8 @@ export async function validateHelseIdAccessToken(): Promise<boolean> {
                 return false
             }
             span.setAttribute('dpop.token.present', true)
+
+            // TODO: verifyHelseIDDPoPToken once its implementation is complete
             return verifyHelseIdToken(dpop.token)
         } else {
             const token = await getWonderwallHelseIdAccessToken()
@@ -66,21 +68,15 @@ export async function validateHelseIdAccessToken(): Promise<boolean> {
  * Requests all details about the currently logged in user directly from HelseID using
  * the user_info endpoint. This is an additional request.
  */
-export async function fetchHelseIdUserInfo(): Promise<UserInfo | null> {
+export async function fetchHelseIdUserInfo(token: string): Promise<UserInfo | null> {
     return spanServerAsync('HelseID.getHelseIdUserInfo', async () => {
-        const accessToken = await getWonderwallHelseIdAccessToken()
-        if (accessToken == null) {
-            logger.warn('No HelseID access token was found, cannot fetch user info')
-            return null
-        }
-
         const wellKnown = await getHelseIdWellKnown()
         logger.info(`Getting userinfo from: ${wellKnown.userinfo_endpoint}`)
         const response = await fetch(wellKnown.userinfo_endpoint, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${token}`,
             },
             cache: 'no-store',
         })
