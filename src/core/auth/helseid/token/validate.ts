@@ -1,7 +1,8 @@
-import { jwtVerify, errors, decodeProtectedHeader, importJWK } from 'jose'
+import { jwtVerify, errors, decodeProtectedHeader } from 'jose'
 
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
+import { iatAgeInSeconds, verifyProofJwt } from './dpop'
 import { getJwkSet } from './jwk'
 import { getHelseIdWellKnown } from './well-known'
 
@@ -10,7 +11,11 @@ import { getHelseIdWellKnown } from './well-known'
  *
  * https://utviklerportal.nhn.no/informasjonstjenester/helseid/protokoller-og-sikkerhetsprofil/sikkerhetsprofil/docs/vedlegg/validering_av_dpop-bevis_no_nbmd
  *
- * Wonderwall handles a lot of the complexity, but as the app we are responsible for validating the claims.
+ * Wonderwall handles a lot of the complexity, but as the app we are responsible for
+ * validating the claims.
+ *
+ * Maybe we should do more here? Maybe not. Maybe jose should handle most of this? There not much
+ * about DPoP on the jose Github repo, mostly this: https://github.com/panva/jose/discussions/99
  */
 export async function verifyHelseIdDPoPToken(token: string, proof: string): Promise<boolean> {
     return spanServerAsync('HelseID.verify-dpop-token', async (span) => {
@@ -33,14 +38,16 @@ export async function verifyHelseIdDPoPToken(token: string, proof: string): Prom
                 return false
             }
 
-            try {
-                const publicKey = await importJWK(proofHeader.jwk, proofHeader.alg)
-                await jwtVerify(proof, publicKey)
-            } catch (e) {
-                failSpan(span, 'HelseID DPoP proof signature validation', e instanceof Error ? e : undefined)
+            const proofPayload = await verifyProofJwt(proof, proofHeader.jwk, proofHeader.alg)
+            if (proofPayload === false) {
+                failSpan(span, 'HelseID DPoP proof validation failed')
+                return false
+            }
+
+            if (iatAgeInSeconds(proofPayload.iat) > 10) {
                 span.setAttributes({
                     'HelseID.token.valid': false,
-                    'HelseId.token.cause': 'invalid proof signature',
+                    'HelseId.token.cause': 'proof iat is too old',
                 })
                 return false
             }

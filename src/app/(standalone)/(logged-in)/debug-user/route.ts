@@ -40,7 +40,7 @@ export async function GET(): Promise<NextResponse> {
                     .then((it) => (it == null ? raise('No DPoP header found') : it))
                     .then((it) => verifyHelseIdDPoPToken(it.token, it.proof))
                     .catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
-                userInfo: getWonderwallHelseIdDPoPToken()
+                userInfo: await getWonderwallHelseIdDPoPToken()
                     .then((it) => (it == null ? raise('No bearer token found') : it))
                     .then((it) => fetchHelseIdUserInfo(it.token))
                     .catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
@@ -54,7 +54,7 @@ export async function GET(): Promise<NextResponse> {
                     id_token: await getWonderwallHelseIdIdToken(),
                     access_token: await getWonderwallHelseIdAccessToken(),
                 },
-                userInfo: getWonderwallHelseIdAccessToken()
+                userInfo: await getWonderwallHelseIdAccessToken()
                     .then((it) => (it == null ? raise('No bearer token found') : it))
                     .then(fetchHelseIdUserInfo)
                     .catch((it) => (it instanceof Error ? it.message : 'Unknown error')),
