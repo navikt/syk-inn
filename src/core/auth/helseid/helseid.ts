@@ -41,20 +41,24 @@ export async function getHelseIdBehandler(): Promise<HelseIdBehandler | null> {
 }
 
 export async function validateHelseIdAccessToken(): Promise<boolean> {
-    return spanServerAsync('HelseID.validateHelseIdAccessToken', async () => {
-        const token = await getWonderwallHelseIdAccessToken()
-        if (!token) return false
+    return spanServerAsync('HelseID.validateHelseIdAccessToken', async (span) => {
+        const dpopEnabled = process.env.WONDERWALL_OPENID_DPOP === 'true'
 
-        return verifyHelseIdToken(token)
-    })
-}
+        span.setAttribute('dpop.enabled', dpopEnabled)
+        if (dpopEnabled) {
+            const dpop = await getWonderwallHelseIdDPoPToken()
+            if (!dpop) {
+                span.setAttribute('dpop.token.present', false)
+                return false
+            }
+            span.setAttribute('dpop.token.present', true)
+            return verifyHelseIdToken(dpop.token)
+        } else {
+            const token = await getWonderwallHelseIdAccessToken()
+            if (!token) return false
 
-export async function validateHelseIdDPoPToken(): Promise<boolean> {
-    return spanServerAsync('HelseID.validateHelseIdAccessToken', async () => {
-        const dpop = await getWonderwallHelseIdDPoPToken()
-        if (!dpop) return false
-
-        return verifyHelseIdToken(dpop.token)
+            return verifyHelseIdToken(token)
+        }
     })
 }
 
