@@ -11,6 +11,23 @@ export async function getWonderwallHelseIdAccessToken(): Promise<string | null> 
     return bearerToken.replace('Bearer ', '')
 }
 
+export async function getWonderwallHelseIdDPoPToken(): Promise<{
+    token: string
+    proof: string
+} | null> {
+    const headersStore = await headers()
+
+    const bearerToken = headersStore.get('Authorization')
+    const dpopProof = headersStore.get('DPoP')
+
+    if (!bearerToken || !dpopProof) return null
+
+    return {
+        token: bearerToken.replace('DPoP ', ''),
+        proof: dpopProof,
+    }
+}
+
 export async function getWonderwallHelseIdIdToken(): Promise<string> {
     const idToken = (await headers()).get('X-Wonderwall-Id-Token')
     if (!idToken) {

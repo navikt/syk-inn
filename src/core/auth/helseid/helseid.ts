@@ -6,7 +6,11 @@ import { failSpan, spanServerAsync } from '#lib/otel/server'
 import { HelseIdIdToken, HelseIdIdTokenSchema, UserInfo, UserInfoSchema } from './schema'
 import { verifyHelseIdToken } from './token/validate'
 import { getHelseIdWellKnown } from './token/well-known'
-import { getWonderwallHelseIdAccessToken, getWonderwallHelseIdIdToken } from './wonderwall-tokens'
+import {
+    getWonderwallHelseIdAccessToken,
+    getWonderwallHelseIdDPoPToken,
+    getWonderwallHelseIdIdToken,
+} from './wonderwall-tokens'
 
 type HelseIdBehandler = {
     /**
@@ -42,6 +46,15 @@ export async function validateHelseIdAccessToken(): Promise<boolean> {
         if (!token) return false
 
         return verifyHelseIdToken(token)
+    })
+}
+
+export async function validateHelseIdDPoPToken(): Promise<boolean> {
+    return spanServerAsync('HelseID.validateHelseIdAccessToken', async () => {
+        const dpop = await getWonderwallHelseIdDPoPToken()
+        if (!dpop) return false
+
+        return verifyHelseIdToken(dpop.token)
     })
 }
 
