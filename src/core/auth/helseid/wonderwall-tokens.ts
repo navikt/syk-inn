@@ -1,3 +1,4 @@
+import { logger } from '@navikt/next-logger'
 import { headers } from 'next/headers'
 
 /**
@@ -21,6 +22,13 @@ export async function getWonderwallHelseIdDPoPToken(): Promise<{
     const dpopProof = headersStore.get('DPoP')
 
     if (!bearerToken || !dpopProof) return null
+
+    if (!bearerToken.startsWith('DPoP')) {
+        logger.error(
+            `Found Authorization header, but it doesn't start with 'DPoP ', actually starts with: ${bearerToken.slice(0, 6)}`,
+        )
+        return null
+    }
 
     return {
         token: bearerToken.replace('DPoP ', ''),
