@@ -5,8 +5,13 @@ import {
     getHelseIdBehandler,
     fetchHelseIdUserInfo,
     validateHelseIdAccessToken,
+    validateHelseIdDPoPToken,
 } from '#core/auth/helseid/helseid'
-import { getWonderwallHelseIdAccessToken, getWonderwallHelseIdIdToken } from '#core/auth/helseid/wonderwall-tokens'
+import {
+    getWonderwallHelseIdAccessToken,
+    getWonderwallHelseIdDPoPToken,
+    getWonderwallHelseIdIdToken,
+} from '#core/auth/helseid/wonderwall-tokens'
 import { getUserlessToggles, getUserToggles, toToggleMap } from '#core/toggles/unleash'
 import { spanServerAsync } from '#lib/otel/server'
 
@@ -31,5 +36,7 @@ export async function GET(): Promise<NextResponse> {
             id_token: await getWonderwallHelseIdIdToken(),
             access_token: await getWonderwallHelseIdAccessToken(),
         },
+        validDPoPToken: await validateHelseIdDPoPToken(),
+        dpop: await getWonderwallHelseIdDPoPToken(),
     })
 }
