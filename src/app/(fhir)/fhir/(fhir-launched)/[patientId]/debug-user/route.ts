@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { getUserToggles, toToggleMap } from '#core/toggles/unleash'
-import { getHprFromFhir, isValidIdent } from '#data-layer/fhir/mappers/identifiers'
+import { getHprFromFhir, isValidIdent } from '#data-layer/fhir/resources/mappers/identifiers'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 
 export async function GET(_: NextRequest, { params }: RouteContext<'/fhir/[patientId]/debug-user'>): Promise<Response> {

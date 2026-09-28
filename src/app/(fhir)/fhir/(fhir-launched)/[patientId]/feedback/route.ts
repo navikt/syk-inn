@@ -2,7 +2,12 @@ import { logger } from '@navikt/next-logger'
 import { NextRequest } from 'next/server'
 
 import { handleFeedback } from '#core/services/feedback/feedback-service'
-import { getHprFromFhir, getNameFromFhir, isValidIdent, isValidName } from '#data-layer/fhir/mappers/identifiers'
+import {
+    getHprFromFhir,
+    getNameFromFhir,
+    isValidIdent,
+    isValidName,
+} from '#data-layer/fhir/resources/mappers/identifiers'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 

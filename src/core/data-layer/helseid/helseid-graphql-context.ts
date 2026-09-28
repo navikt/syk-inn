@@ -11,9 +11,7 @@ import { NoHelseIdSession } from './error/Errors'
 
 const OtelNamespace = 'GraphQL(HelseID).context'
 
-export type HelseIdGraphqlContext = CommonGraphqlContext & {
-    name: string
-}
+export type HelseIdGraphqlContext = CommonGraphqlContext
 
 export const createHelseIdResolverContext = async (context: YogaInitialContext): Promise<HelseIdGraphqlContext> => {
     return spanServerAsync(OtelNamespace, async (span) => {
@@ -39,6 +37,9 @@ export const createHelseIdResolverContext = async (context: YogaInitialContext):
         const currentPatientIdent = getCurrentPatientFromExtension(context.params.extensions)
         span.setAttribute(`${OtelNamespace}.hasPatientIdent`, currentPatientIdent != null)
 
-        return { hpr: behandler.hpr, name: behandler.navn, patientIdent: currentPatientIdent }
+        return {
+            behandler: { hpr: behandler.hpr, navn: behandler.navn, epost: null },
+            patientIdent: currentPatientIdent,
+        }
     })
 }

@@ -1,4 +1,8 @@
 export type CommonGraphqlContext = {
-    hpr: string
     patientIdent: string | null
+    behandler: {
+        navn: string
+        hpr: string
+        epost: string | null
+    }
 }
