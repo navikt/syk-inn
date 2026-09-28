@@ -20,7 +20,7 @@ import {
     getHprFromFhir,
     isValidIdent,
     isValidName,
-} from '#data-layer/fhir/mappers/identifiers'
+} from '#data-layer/fhir/resources/mappers/identifiers'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { LazyDevTools } from '#dev/tools/LazyDevTools'
 import { isDemo, isDevGcp, isLocal } from '#lib/env'

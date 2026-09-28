@@ -33,14 +33,14 @@ export const commonObjectResolvers: Resolvers<CommonGraphqlContext> = {
 
             return await aaregService.getArbeidsforhold(pasient.ident)
         },
-        utdypendeSporsmal: async (pasient, _args, { hpr }) => {
-            const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(pasient.ident, hpr)
+        utdypendeSporsmal: async (pasient, _args, { behandler }) => {
+            const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(pasient.ident, behandler.hpr)
             if ('errorType' in sykInnSykmeldinger) {
                 throw new GraphQLError('API_ERROR')
             }
 
             // TODO la utdypendespørsmål basere seg på alle sykmeldinger, ikke bare egen behandler
-            const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
+            const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(behandler.hpr))
 
             const sykmeldinger = R.pipe(
                 sykInnSykmeldinger,

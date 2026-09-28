@@ -4,7 +4,13 @@ import { GraphQLError } from 'graphql/error'
 
 import { Behandler } from '#resolvers'
 
-import { getHprFromFhir, getIdentFromFhir, getNameFromFhir, isValidIdent, isValidName } from './mappers/identifiers'
+import {
+    getHprFromFhir,
+    getIdentFromFhir,
+    getNameFromFhir,
+    isValidIdent,
+    isValidName,
+} from './resources/mappers/identifiers'
 
 /**
  * In a GraphQL context, asserts that the mapped patient ID is usable.

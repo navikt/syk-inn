@@ -1,7 +1,6 @@
-import { logger } from '@navikt/next-logger'
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
-import { FhirPractitioner } from '@navikt/smart-on-fhir/zod'
 import { YogaInitialContext } from 'graphql-yoga'
+import { GraphQLError } from 'graphql/error'
 
 import { validateHelseIdAccessToken } from '#core/auth/helseid/helseid'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
@@ -10,15 +9,13 @@ import { assertIsPilotUser } from '../common/pilot-user-utils'
 import { CommonGraphqlContext } from '../graphql/common-context'
 import { getCurrentPatientFromExtension } from '../graphql/yoga-utils'
 
-import { NoSmartSession } from './error/Errors'
-import { getHprFromFhir, isValidIdent } from './mappers/identifiers'
+import { getBehandler } from './resources/fhir-resources-service'
 import { getReadyClient } from './smart/ready-client'
 
 const OtelNamespace = 'GraphQL(FHIR).context'
 
 export type FhirGraphqlContext = CommonGraphqlContext & {
     client: ReadyClient
-    practitioner: FhirPractitioner
 }
 
 export const createFhirResolverContext = async (context: YogaInitialContext): Promise<FhirGraphqlContext> => {
@@ -36,23 +33,14 @@ export const createFhirResolverContext = async (context: YogaInitialContext): Pr
             throw NoSmartSession()
         }
 
-        const practitioner = await client.user.request()
-        if ('error' in practitioner) {
-            failSpan(span, 'Practitioner without HPR')
-            throw NoSmartSession()
-        }
-
-        const hpr = getHprFromFhir(practitioner.identifier)
-        if (!isValidIdent(hpr)) {
-            failSpan(span, `Practitioner without HPR: ${hpr.error}`)
-            logger.warn(
-                `Practitioner does not have HPR (${hpr.details}), practitioner: ${JSON.stringify(practitioner)}`,
-            )
+        const behandler = await getBehandler(client)
+        if (behandler == null) {
+            failSpan(span, 'No valid HPR or request failed')
             throw NoSmartSession()
         }
 
         try {
-            await assertIsPilotUser(hpr)
+            await assertIsPilotUser(behandler.hpr)
         } catch {
             failSpan(span, 'Non pilot user in GQL')
             throw NoSmartSession()
@@ -61,6 +49,11 @@ export const createFhirResolverContext = async (context: YogaInitialContext): Pr
         const currentPatientIdent = getCurrentPatientFromExtension(context.params.extensions)
         span.setAttribute(`${OtelNamespace}.hasPatientIdent`, currentPatientIdent != null)
 
-        return { client, practitioner, hpr, patientIdent: currentPatientIdent }
+        return { client, behandler, patientIdent: currentPatientIdent }
     })
 }
+
+export const NoSmartSession = (): GraphQLError =>
+    new GraphQLError('Du har blitt logget ut', {
+        extensions: { code: 'SMART_SESSION_INVALID' },
+    })

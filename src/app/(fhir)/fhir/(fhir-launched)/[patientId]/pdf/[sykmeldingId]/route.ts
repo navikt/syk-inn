@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 
 import { createTypstSykmelding } from '#core/pdf/pdf-service'
 import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
-import { getHprFromFhir, getIdentFromFhir, isValidIdent } from '#data-layer/fhir/mappers/identifiers'
+import { getHprFromFhir, getIdentFromFhir, isValidIdent } from '#data-layer/fhir/resources/mappers/identifiers'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 

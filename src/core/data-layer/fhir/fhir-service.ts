@@ -4,8 +4,8 @@ import { GraphQLError } from 'graphql/error'
 import { OpprettSykmeldingMeta } from '#core/services/syk-inn-api/schema/opprett'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
-import { getIdentFromFhir, isValidIdent } from './mappers/identifiers'
-import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from './mappers/organization'
+import { getIdentFromFhir, isValidIdent } from './resources/mappers/identifiers'
+import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from './resources/mappers/organization'
 
 /**
  * Chonky boi. Fetches the FHIR resources: Practitioner, Patient, Encounter and Organization, and extracts the relevant

@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation'
 import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 
-import { getNameFromFhir } from '#data-layer/fhir/mappers/identifiers'
+import { getNameFromFhir } from '#data-layer/fhir/resources/mappers/identifiers'
 import { isDemo, isLocal } from '#lib/env'
 import { pathWithBasePath } from '#lib/url'
 

@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import React, { ReactElement } from 'react'
 
-import { getNameFromFhir } from '#data-layer/fhir/mappers/identifiers'
+import { getNameFromFhir } from '#data-layer/fhir/resources/mappers/identifiers'
 import { isDemo, isLocal } from '#lib/env'
 
 import { getMockStore } from '../../../api/mocks/fhir/[[...path]]/mock-storage'

@@ -4,8 +4,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import * as z from 'zod'
 
 import { acceptBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
-import { getHprFromFhir, getNameFromFhir, isValidIdent, isValidName } from '#data-layer/fhir/mappers/identifiers'
-import { getOrganisasjonsnummerFromFhir } from '#data-layer/fhir/mappers/organization'
+import {
+    getHprFromFhir,
+    getNameFromFhir,
+    isValidIdent,
+    isValidName,
+} from '#data-layer/fhir/resources/mappers/identifiers'
+import { getOrganisasjonsnummerFromFhir } from '#data-layer/fhir/resources/mappers/organization'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { bundledEnv } from '#lib/env'
 

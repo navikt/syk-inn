@@ -31,8 +31,8 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
     Query: {
         behandler: async (_, _args, context) => {
             return {
-                hpr: context.hpr,
-                navn: context.name,
+                hpr: context.behandler.hpr,
+                navn: context.behandler.navn,
                 legekontorTlf: null,
                 orgnummer: null,
             }
@@ -55,15 +55,15 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
                 ident: patientIdent,
             }
         },
-        sykmelding: async (_, { id: sykmeldingId }, { hpr }) => {
-            const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
+        sykmelding: async (_, { id: sykmeldingId }, { behandler }) => {
+            const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, behandler.hpr)
 
             if ('errorType' in sykmelding) {
                 throw new GraphQLError('API_ERROR')
             }
 
             if (sykmelding.kind === 'redacted') {
-                const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(hpr))
+                const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(behandler.hpr))
                 if (!showRedactedFlag) return null
 
                 return sykInnApiSykmeldingRedactedToResolverSykmelding(sykmelding)
@@ -72,11 +72,11 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             return sykInnApiSykmeldingToResolverSykmelding(sykmelding, 'PENDING')
         },
         sykmeldinger: () => null,
-        draft: async (_, { draftId }, { patientIdent, hpr }) => {
+        draft: async (_, { draftId }, { patientIdent, behandler }) => {
             if (patientIdent == null) throw NoHelseIdCurrentPatient()
 
             const draftClient = await getDraftClient()
-            const draft = await draftClient.getDraft(draftId, { hpr, ident: patientIdent })
+            const draft = await draftClient.getDraft(draftId, { hpr: behandler.hpr, ident: patientIdent })
 
             if (draft == null) return null
 
@@ -86,12 +86,12 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
                 lastUpdated: draft.lastUpdated,
             }
         },
-        drafts: async (_, _args, { patientIdent, hpr }) => {
+        drafts: async (_, _args, { patientIdent, behandler }) => {
             if (patientIdent == null) throw NoHelseIdCurrentPatient()
 
             const draftClient = await getDraftClient()
 
-            const allDrafts = await draftClient.getDrafts({ hpr, ident: patientIdent })
+            const allDrafts = await draftClient.getDrafts({ hpr: behandler.hpr, ident: patientIdent })
 
             return R.sortBy(allDrafts, [(it) => it.lastUpdated, 'desc'])
         },
@@ -115,7 +115,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         ...commonQueryResolvers,
     },
     Mutation: {
-        saveDraft: async (_, { draftId, values }, { patientIdent, hpr }) => {
+        saveDraft: async (_, { draftId, values }, { patientIdent, behandler }) => {
             if (patientIdent == null) throw NoHelseIdCurrentPatient()
 
             const parsedValues = DraftValuesSchema.safeParse(values)
@@ -129,7 +129,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             }
 
             const draftClient = await getDraftClient()
-            await draftClient.saveDraft(draftId, { hpr, ident: patientIdent }, parsedValues.data)
+            await draftClient.saveDraft(draftId, { hpr: behandler.hpr, ident: patientIdent }, parsedValues.data)
 
             logger.info(`Saved draft ${draftId} to draft client`)
 
@@ -139,17 +139,17 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
                 lastUpdated: new Date().toISOString(),
             }
         },
-        deleteDraft: async (_, { draftId }, { patientIdent, hpr }) => {
+        deleteDraft: async (_, { draftId }, { patientIdent, behandler }) => {
             if (patientIdent == null) throw NoHelseIdCurrentPatient()
 
             const draftClient = await getDraftClient()
-            await draftClient.deleteDraft(draftId, { hpr, ident: patientIdent })
+            await draftClient.deleteDraft(draftId, { hpr: behandler.hpr, ident: patientIdent })
 
             logger.info(`Deleted draft ${draftId} from draft client`)
 
             return true
         },
-        opprettSykmelding: async (_, { draftId, meta, values, force }, { hpr, patientIdent }) => {
+        opprettSykmelding: async (_, { draftId, meta, values, force }, { behandler, patientIdent }) => {
             if (patientIdent == null) throw NoHelseIdCurrentPatient()
 
             if (meta.orgnummer == null || meta.legekontorTlf == null) {
@@ -158,7 +158,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
 
             const opprettMeta: OpprettSykmeldingMeta = {
                 source: `syk-inn (HelseID)`,
-                sykmelderHpr: hpr,
+                sykmelderHpr: behandler.hpr,
                 pasientIdent: patientIdent,
                 legekontorOrgnr: meta.orgnummer,
                 legekontorTlf: meta.legekontorTlf,
@@ -196,7 +196,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
 
             metrics.createdSykmelding.inc(
                 {
-                    hpr: hpr,
+                    hpr: behandler.hpr,
                     outcome: result.utfall.result,
                 },
                 1,
@@ -206,7 +206,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
 
             // Delete the draft after successful creation
             const draftClient = await getDraftClient()
-            await draftClient.deleteDraft(draftId, { hpr: hpr, ident: patientIdent })
+            await draftClient.deleteDraft(draftId, { hpr: behandler.hpr, ident: patientIdent })
 
             return sykInnApiSykmeldingToResolverSykmeldingFull(result, 'PENDING')
         },
