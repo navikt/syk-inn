@@ -59,58 +59,62 @@ const OpprettSykmeldingAktivitetSchema = z.discriminatedUnion('type', [
         tom: DateOnly,
     }),
 ])
+
+export type OpprettSykmeldingValues = z.infer<typeof OpprettSykmeldingValuesSchema>
+const OpprettSykmeldingValuesSchema = z.object({
+    pasientenSkalSkjermes: z.boolean(),
+    hoveddiagnose: OpprettSykmeldingDiagnoseSchema,
+    bidiagnoser: z.array(OpprettSykmeldingDiagnoseSchema),
+    aktivitet: z.array(OpprettSykmeldingAktivitetSchema),
+    meldinger: z.object({
+        tilNav: z.string().nullable(),
+        tilArbeidsgiver: z.string().nullable(),
+    }),
+    svangerskapsrelatert: z.boolean(),
+    prognose: z
+        .object({
+            friskmeldingTilArbeidsformidling: z.boolean().nullable(),
+        })
+        .nullable(),
+    yrkesskade: z
+        .object({
+            yrkesskade: z.boolean(),
+            skadedato: DateOnly.nullable(),
+        })
+        .nullable(),
+    arbeidsgiver: z
+        .object({
+            harFlere: z.boolean(),
+            arbeidsgivernavn: z.string(),
+        })
+        .nullable(),
+    tilbakedatering: z
+        .object({
+            startdato: DateOnly,
+            begrunnelse: z.string(),
+        })
+        .nullable(),
+    utdypendeSporsmal: z
+        .object({
+            utfordringerMedArbeid: UtdypendeSporsmalSchema.nullable(),
+            medisinskOppsummering: UtdypendeSporsmalSchema.nullable(),
+            hensynPaArbeidsplassen: UtdypendeSporsmalSchema.nullable(),
+            sykdomsutvikling: UtdypendeSporsmalSchema.nullable(),
+            arbeidsrelaterteUtfordringer: UtdypendeSporsmalSchema.nullable(),
+            behandlingOgFremtidigArbeid: UtdypendeSporsmalSchema.nullable(),
+            uavklarteForhold: UtdypendeSporsmalSchema.nullable(),
+            oppdatertMedisinskStatus: UtdypendeSporsmalSchema.nullable(),
+            realistiskMestringArbeid: UtdypendeSporsmalSchema.nullable(),
+            forventetHelsetilstandUtvikling: UtdypendeSporsmalSchema.nullable(),
+            medisinskeHensyn: UtdypendeSporsmalSchema.nullable(),
+        })
+        .nullable(),
+    annenFravarsgrunn: z.string().nullable(),
+})
+
 export type OpprettSykmeldingPayload = z.infer<typeof OpprettSykmeldingPayloadSchema>
 export const OpprettSykmeldingPayloadSchema = z.object({
     submitId: z.uuid(),
     meta: OpprettSykmeldingMetaSchema,
-    values: z.object({
-        pasientenSkalSkjermes: z.boolean(),
-        hoveddiagnose: OpprettSykmeldingDiagnoseSchema,
-        bidiagnoser: z.array(OpprettSykmeldingDiagnoseSchema),
-        aktivitet: z.array(OpprettSykmeldingAktivitetSchema),
-        meldinger: z.object({
-            tilNav: z.string().nullable(),
-            tilArbeidsgiver: z.string().nullable(),
-        }),
-        svangerskapsrelatert: z.boolean(),
-        prognose: z
-            .object({
-                friskmeldingTilArbeidsformidling: z.boolean().nullable(),
-            })
-            .nullable(),
-        yrkesskade: z
-            .object({
-                yrkesskade: z.boolean(),
-                skadedato: DateOnly.nullable(),
-            })
-            .nullable(),
-        arbeidsgiver: z
-            .object({
-                harFlere: z.boolean(),
-                arbeidsgivernavn: z.string(),
-            })
-            .nullable(),
-        tilbakedatering: z
-            .object({
-                startdato: DateOnly,
-                begrunnelse: z.string(),
-            })
-            .nullable(),
-        utdypendeSporsmal: z
-            .object({
-                utfordringerMedArbeid: UtdypendeSporsmalSchema.nullable(),
-                medisinskOppsummering: UtdypendeSporsmalSchema.nullable(),
-                hensynPaArbeidsplassen: UtdypendeSporsmalSchema.nullable(),
-                sykdomsutvikling: UtdypendeSporsmalSchema.nullable(),
-                arbeidsrelaterteUtfordringer: UtdypendeSporsmalSchema.nullable(),
-                behandlingOgFremtidigArbeid: UtdypendeSporsmalSchema.nullable(),
-                uavklarteForhold: UtdypendeSporsmalSchema.nullable(),
-                oppdatertMedisinskStatus: UtdypendeSporsmalSchema.nullable(),
-                realistiskMestringArbeid: UtdypendeSporsmalSchema.nullable(),
-                forventetHelsetilstandUtvikling: UtdypendeSporsmalSchema.nullable(),
-                medisinskeHensyn: UtdypendeSporsmalSchema.nullable(),
-            })
-            .nullable(),
-        annenFravarsgrunn: z.string().nullable(),
-    }),
+    values: OpprettSykmeldingValuesSchema,
 })

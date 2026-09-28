@@ -8,18 +8,14 @@ import { formatPdlName, getFnrIdent } from '#core/services/pdl/pdl-api-utils'
 import { OpprettSykmeldingMeta } from '#core/services/syk-inn-api/schema/opprett'
 import { sykInnApiClient } from '#core/services/syk-inn-api/syk-inn-api-client'
 import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
-import {
-    resolverInputToSykInnApiPayload,
-    sykInnApiSykmeldingToResolverSykmeldingFull,
-} from '#core/services/syk-inn-api/syk-inn-api-utils'
+import { resolverInputToSykInnApiPayloadValues } from '#core/services/syk-inn-api/syk-inn-api-utils'
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '#core/session/cookies'
 import { getHasRequestedAccessToSykmeldinger } from '#core/session/session'
 import { getUserToggles } from '#core/toggles/unleash'
 import metrics from '#lib/prometheus/metrics'
 import { raise } from '#lib/ts'
-import { Behandler, QueriedPerson, Resolvers, RuleOutcome } from '#resolvers'
+import { Behandler, QueriedPerson, Resolvers } from '#resolvers'
 
-import { countDiagnoses } from '../common/diagnose-counting'
 import { byCurrentOrPreviousWithOffset } from '../common/sykmelding-utils'
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
@@ -29,7 +25,6 @@ import { createSchema } from '../graphql/create-schema'
 
 import { FhirGraphqlContext } from './fhir-graphql-context'
 import { assertValidIdent } from './fhir-graphql-utils'
-import { getAllSykmeldingMetaFromFhir } from './fhir-service'
 import { getExtendedBehandlerMeta, getPasient } from './resources/fhir-resources-service'
 import { fhirDiagnosisToRelevantDiagnosis } from './resources/mappers/diagnosis'
 import { getIdentFromFhir } from './resources/mappers/identifiers'
@@ -39,6 +34,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     Query: {
         behandler: async (_, _args, { client, behandler }) => {
             const meta = await getExtendedBehandlerMeta(client)
+            if (meta == null) throw new GraphQLError('API_ERROR')
 
             return { ...behandler, ...meta } satisfies Behandler
         },
@@ -48,6 +44,10 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             return { navn: pasient.navn, ident: pasient.ident }
         },
+        /**
+         * Konsultasjon-values are resolved using object resolvers, but we need to satisfy the
+         * Typescript-schema with a simple no-op resolver.
+         */
         konsultasjon: async () => ({}),
         sykmelding: async (_, { id: sykmeldingId }, { behandler }) => {
             const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, behandler.hpr)
@@ -79,9 +79,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             if (!ident) throw new GraphQLError('MISSING_IDENT')
 
             const person = await pdlApiClient.getPdlPerson(ident)
-            if ('errorType' in person) {
-                throw new GraphQLError('API_ERROR')
-            }
+            if ('errorType' in person) throw new GraphQLError('API_ERROR')
 
             return {
                 ident: getFnrIdent(person.identer) ?? raise('Person without valid FNR/DNR, hows that possible?'),
@@ -90,9 +88,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
         },
         draft: async (_, { draftId }, { client, behandler }) => {
             const patient = await client.patient.request()
-            if ('error' in patient) {
-                throw new GraphQLError('API_ERROR')
-            }
+            if ('error' in patient) throw new GraphQLError('API_ERROR')
 
             const ident = getIdentFromFhir(patient.identifier)
             assertValidIdent(ident)
@@ -109,29 +105,19 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             }
         },
         drafts: async (_, _args, { client, behandler }) => {
-            const patient = await client.patient.request()
-            if ('error' in patient) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const ident = getIdentFromFhir(patient.identifier)
-            assertValidIdent(ident)
+            const pasient = await getPasient(client)
+            if (pasient == null) throw new GraphQLError('API_ERROR')
 
             const draftClient = await getDraftClient()
-            const allDrafts = await draftClient.getDrafts({ hpr: behandler.hpr, ident })
+            const allDrafts = await draftClient.getDrafts({ hpr: behandler.hpr, ident: pasient.ident })
             return R.sortBy(allDrafts, [(it) => it.lastUpdated, 'desc'])
         },
         ...commonQueryResolvers,
     },
     Mutation: {
         saveDraft: async (_, { draftId, values }, { client, behandler }) => {
-            const patient = await client.patient.request()
-            if ('error' in patient) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const ident = getIdentFromFhir(patient.identifier)
-            assertValidIdent(ident)
+            const pasient = await getPasient(client)
+            if (pasient == null) throw new GraphQLError('API_ERROR')
 
             const parsedValues = DraftValuesSchema.safeParse(values)
             if (!parsedValues.success) {
@@ -144,7 +130,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             }
 
             const draftClient = await getDraftClient()
-            await draftClient.saveDraft(draftId, { hpr: behandler.hpr, ident }, parsedValues.data)
+            await draftClient.saveDraft(draftId, { hpr: behandler.hpr, ident: pasient.ident }, parsedValues.data)
 
             logger.info(`Saved draft ${draftId} to draft client`)
 
@@ -155,16 +141,11 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             }
         },
         deleteDraft: async (_, { draftId }, { client, behandler }) => {
-            const patient = await client.patient.request()
-            if ('error' in patient) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            const ident = getIdentFromFhir(patient.identifier)
-            assertValidIdent(ident)
+            const pasient = await getPasient(client)
+            if (pasient == null) throw new GraphQLError('API_ERROR')
 
             const draftClient = await getDraftClient()
-            await draftClient.deleteDraft(draftId, { hpr: behandler.hpr, ident })
+            await draftClient.deleteDraft(draftId, { hpr: behandler.hpr, ident: pasient.ident })
 
             logger.info(`Deleted draft ${draftId} from draft client`)
 
@@ -175,64 +156,41 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             { draftId, values, force },
             { client, behandler, patientIdent: contextPatientIdent },
         ) => {
-            const { pasientIdent, legekontorOrgnr, legekontorTlf } = await getAllSykmeldingMetaFromFhir(client)
+            const pasient = await getPasient(client)
+            if (contextPatientIdent !== pasient?.ident) throw new GraphQLError('PASIENT_IDENT_MISMATCH')
 
-            if (contextPatientIdent !== pasientIdent) {
-                throw new GraphQLError('PASIENT_IDENT_MISMATCH')
-            }
+            const behandlerMeta = await getExtendedBehandlerMeta(client)
+            if (behandlerMeta == null) throw new GraphQLError('API_ERROR')
 
+            const opprettValues = resolverInputToSykInnApiPayloadValues(values)
             const opprettMeta: OpprettSykmeldingMeta = {
                 source: `${client.issuerName} (FHIR)`,
                 sykmelderHpr: behandler.hpr,
-                pasientIdent,
-                legekontorOrgnr,
-                legekontorTlf,
+                pasientIdent: pasient.ident,
+                legekontorOrgnr: behandlerMeta.orgnummer,
+                legekontorTlf: behandlerMeta.legekontorTlf,
             }
-            const payload = resolverInputToSykInnApiPayload(draftId, values, opprettMeta)
 
-            if (!force) {
-                // When not forcing, we first verify the sykmelding
-                const verifyResult = await sykInnApiClient.verifySykmelding(payload)
-                if ('errorType' in verifyResult) {
+            const result = await sykInnApiService.opprettSykmelding(opprettMeta, opprettValues, {
+                submitId: draftId,
+                force,
+            })
+
+            if ('error' in result) {
+                if (result.error === 'PATIENT_NOT_IN_PDL') {
+                    return { cause: 'PATIENT_NOT_FOUND_IN_PDL' }
+                } else {
                     throw new GraphQLError('API_ERROR')
                 }
-
-                if ('status' in verifyResult && verifyResult.status !== 'OK') {
-                    // There are rule outcomes, short circuit and return them
-                    return {
-                        status: verifyResult.status,
-                        rule: verifyResult.rule ?? raise(`Rule outcome ${verifyResult.status} without rule`),
-                        message: verifyResult.message ?? raise(`Rule outcome ${verifyResult.status} without message`),
-                    } satisfies RuleOutcome
-                }
-
-                if (typeof verifyResult === 'object' && verifyResult.message === 'Person does not exist') {
-                    return { cause: 'PATIENT_NOT_FOUND_IN_PDL' }
-                }
-
-                // No rule hits, proceed to create the sykmelding
             }
 
-            const result = await sykInnApiClient.opprettSykmelding(payload)
-            if ('errorType' in result) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            metrics.createdSykmelding.inc(
-                {
-                    hpr: behandler.hpr,
-                    outcome: result.utfall.result,
-                },
-                1,
-            )
-
-            countDiagnoses(values, 'fhir')
+            if (result.__typename === 'RuleOutcome') return result
 
             // Delete the draft after successful creation
             const draftClient = await getDraftClient()
-            await draftClient.deleteDraft(draftId, { hpr: behandler.hpr, ident: pasientIdent })
+            await draftClient.deleteDraft(draftId, { hpr: behandler.hpr, ident: pasient.ident })
 
-            return sykInnApiSykmeldingToResolverSykmeldingFull(result)
+            return result
         },
         synchronizeSykmelding: async (_, { id: sykmeldingId }, { client, behandler }) => {
             const sykmelding = await sykInnApiClient.getSykmelding(sykmeldingId, behandler.hpr)
