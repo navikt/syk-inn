@@ -3,19 +3,18 @@ import { GraphQLError } from 'graphql/error'
 import { cookies } from 'next/headers'
 import * as R from 'remeda'
 
-import { pdlApiService } from '#core/services/pdl/pdl-api-service'
+import { pdlApiClient } from '#core/services/pdl/pdl-api-client'
 import { formatPdlName, getFnrIdent } from '#core/services/pdl/pdl-api-utils'
 import { OpprettSykmeldingMeta } from '#core/services/syk-inn-api/schema/opprett'
+import { sykInnApiClient } from '#core/services/syk-inn-api/syk-inn-api-client'
 import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
 import {
     resolverInputToSykInnApiPayload,
-    sykInnApiSykmeldingRedactedToResolverSykmelding,
-    sykInnApiSykmeldingToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmeldingFull,
 } from '#core/services/syk-inn-api/syk-inn-api-utils'
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '#core/session/cookies'
 import { getHasRequestedAccessToSykmeldinger } from '#core/session/session'
-import { getFlag, getUserToggles } from '#core/toggles/unleash'
+import { getUserToggles } from '#core/toggles/unleash'
 import metrics from '#lib/prometheus/metrics'
 import { raise } from '#lib/ts'
 import { Behandler, QueriedPerson, Resolvers, RuleOutcome } from '#resolvers'
@@ -50,50 +49,20 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             return { navn: pasient.navn, ident: pasient.ident }
         },
         konsultasjon: async () => ({}),
-        sykmelding: async (_, { id: sykmeldingId }, { client, behandler }) => {
+        sykmelding: async (_, { id: sykmeldingId }, { behandler }) => {
             const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, behandler.hpr)
-            if ('errorType' in sykmelding) {
-                throw new GraphQLError('API_ERROR')
-            }
+            if ('error' in sykmelding) throw new GraphQLError('API_ERROR')
 
-            if (sykmelding.kind === 'redacted') {
-                const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(behandler.hpr))
-                if (!showRedactedFlag) return null
-
-                return sykInnApiSykmeldingRedactedToResolverSykmelding(sykmelding)
-            }
-
-            const existingDocumentReference = await client.request(`DocumentReference/${sykmeldingId}` as const, {
-                expectNotFound: true,
-            })
-
-            return sykInnApiSykmeldingToResolverSykmelding(
-                sykmelding,
-                'resourceType' in existingDocumentReference ? 'COMPLETE' : 'PENDING',
-            )
+            return sykmelding
         },
         sykmeldinger: async (_, _args, { client, behandler }) => {
             const patient = await getPasient(client)
             if (patient == null) throw new GraphQLError('API_ERROR')
 
-            const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(patient.ident, behandler.hpr)
-            if ('errorType' in sykInnSykmeldinger) throw new GraphQLError('API_ERROR')
+            const sykmeldinger = await sykInnApiService.getSykmeldinger(patient.ident, behandler.hpr)
+            if ('error' in sykmeldinger) throw new GraphQLError('API_ERROR')
 
-            /**
-             * Only return kind='redacted' sykmeldinger if SYK_INN_SHOW_REDACTED is enabled for this user
-             */
-            const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(behandler.hpr))
-            const sykmeldinger = showRedactedFlag
-                ? sykInnSykmeldinger
-                : sykInnSykmeldinger.filter((it) => it.kind !== 'redacted')
-
-            const mappedSykmeldinger = sykmeldinger.map((it) =>
-                it.kind === 'redacted'
-                    ? sykInnApiSykmeldingRedactedToResolverSykmelding(it)
-                    : sykInnApiSykmeldingToResolverSykmelding(it),
-            )
-
-            const [current, historical] = R.partition(mappedSykmeldinger, byCurrentOrPreviousWithOffset)
+            const [current, historical] = R.partition(sykmeldinger, byCurrentOrPreviousWithOffset)
 
             const hasRequestedAccessToSykmeldinger = await getHasRequestedAccessToSykmeldinger(
                 client.user.id,
@@ -109,7 +78,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
         person: async (_, { ident }) => {
             if (!ident) throw new GraphQLError('MISSING_IDENT')
 
-            const person = await pdlApiService.getPdlPerson(ident)
+            const person = await pdlApiClient.getPdlPerson(ident)
             if ('errorType' in person) {
                 throw new GraphQLError('API_ERROR')
             }
@@ -223,7 +192,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
 
             if (!force) {
                 // When not forcing, we first verify the sykmelding
-                const verifyResult = await sykInnApiService.verifySykmelding(payload)
+                const verifyResult = await sykInnApiClient.verifySykmelding(payload)
                 if ('errorType' in verifyResult) {
                     throw new GraphQLError('API_ERROR')
                 }
@@ -244,7 +213,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
                 // No rule hits, proceed to create the sykmelding
             }
 
-            const result = await sykInnApiService.opprettSykmelding(payload)
+            const result = await sykInnApiClient.opprettSykmelding(payload)
             if ('errorType' in result) {
                 throw new GraphQLError('API_ERROR')
             }
@@ -263,10 +232,10 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             const draftClient = await getDraftClient()
             await draftClient.deleteDraft(draftId, { hpr: behandler.hpr, ident: pasientIdent })
 
-            return sykInnApiSykmeldingToResolverSykmeldingFull(result, 'PENDING')
+            return sykInnApiSykmeldingToResolverSykmeldingFull(result)
         },
         synchronizeSykmelding: async (_, { id: sykmeldingId }, { client, behandler }) => {
-            const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, behandler.hpr)
+            const sykmelding = await sykInnApiClient.getSykmelding(sykmeldingId, behandler.hpr)
             if ('errorType' in sykmelding) {
                 throw new GraphQLError('API_ERROR')
             }

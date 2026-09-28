@@ -1,113 +1,71 @@
-import { logger as pinoLogger } from '@navikt/next-logger'
-import * as z from 'zod'
+import { getFlag, getUserToggles } from '#core/toggles/unleash'
+import { Sykmelding } from '#resolvers'
 
-import { mockEngineForSession, shouldUseMockEngine } from '#dev/mock-engine'
-import { bundledEnv } from '#lib/env'
-
-import { ApiFetchErrors, fetchInternalAPI } from '../api-fetcher'
-
-import { OpprettSykmeldingPayload, OpprettSykmeldingPayloadSchema } from './schema/opprett'
+import { sykInnApiClient } from './syk-inn-api-client'
 import {
-    SykInnApiPersonDoesNotExist,
-    SykInnApiPersonDoesNotExistSchema,
-    SykInnApiRuleOutcome,
-    SykInnApiRuleOutcomeSchema,
-    SykInnApiSykmelding,
-    SykInnApiSykmeldingRedacted,
-    SykInnApiSykmeldingRedactedSchema,
-    SykInnApiSykmeldingSchema,
-} from './schema/sykmelding'
-
-const logger = pinoLogger.child({}, { msgPrefix: '[API Service]: ' })
+    sykInnApiSykmeldingRedactedToResolverSykmelding,
+    sykInnApiSykmeldingToResolverSykmelding,
+} from './syk-inn-api-utils'
 
 export const sykInnApiService = {
-    opprettSykmelding: async (payload: OpprettSykmeldingPayload): Promise<SykInnApiSykmelding | ApiFetchErrors> => {
-        if (shouldUseMockEngine()) {
-            logger.warn(
-                `Running in ${bundledEnv.runtimeEnv}, submitting send sykmelding values: ${JSON.stringify(payload, null, 2)}`,
-            )
-
-            try {
-                const mockEngine = await mockEngineForSession()
-                return mockEngine.sykInnApi.opprettSykmelding(OpprettSykmeldingPayloadSchema.parse(payload))
-            } catch (e) {
-                logger.error(new Error(`Sykmelding parse dryrun failed`, { cause: e }))
-                throw e
-            }
-        }
-
-        return fetchInternalAPI({
-            api: 'syk-inn-api',
-            path: '/api/sykmelding',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(OpprettSykmeldingPayloadSchema.parse(payload)),
-            responseSchema: z.union([SykInnApiSykmeldingSchema, SykInnApiRuleOutcomeSchema]),
-        })
-    },
-    verifySykmelding: async (
-        payload: OpprettSykmeldingPayload,
-    ): Promise<SykInnApiRuleOutcome | SykInnApiPersonDoesNotExist | ApiFetchErrors> => {
-        if (shouldUseMockEngine()) {
-            logger.warn(
-                `Running in ${bundledEnv.runtimeEnv}, faking rule execution for values: ${JSON.stringify(payload, null, 2)}`,
-            )
-
-            const mock = await mockEngineForSession()
-            return mock.sykInnApi.verifySykmelding(OpprettSykmeldingPayloadSchema.parse(payload))
-        }
-
-        return fetchInternalAPI({
-            api: 'syk-inn-api',
-            path: '/api/sykmelding/verify',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(OpprettSykmeldingPayloadSchema.parse(payload)),
-            responseSchema: z.union([z.literal(true), SykInnApiRuleOutcomeSchema, SykInnApiPersonDoesNotExistSchema]),
-            responseValidStatus: [422],
-        })
-    },
-    getSykmelding: async (
+    /**
+     * Fetches access-controlled sykmeldinger (the behandler should have the rights to see them).
+     *
+     * If toggled on, redacted sykmeldinger will be mapped down, if not they will be mapped out (null).
+     *
+     * Normal mapping reduces the visibily to a 'light' sykmelding if applicable.
+     */
+    async getSykmelding(
         sykmeldingId: string,
-        hpr: string,
-    ): Promise<SykInnApiSykmelding | SykInnApiSykmeldingRedacted | ApiFetchErrors> => {
-        if (shouldUseMockEngine()) {
-            logger.info(`Running in ${bundledEnv.runtimeEnv} environment, returning mocked sykmelding by id data`)
-
-            const mockEngine = await mockEngineForSession()
-            return mockEngine.sykInnApi.sykmeldingById(sykmeldingId)
+        behandlerHpr: string,
+    ): Promise<Sykmelding | { error: 'NO_ACCESS' } | { error: 'API_ERROR'; cause: string }> {
+        const sykmelding = await sykInnApiClient.getSykmelding(sykmeldingId, behandlerHpr)
+        if ('errorType' in sykmelding) {
+            return { error: 'API_ERROR', cause: sykmelding.errorType }
         }
 
-        return fetchInternalAPI({
-            api: 'syk-inn-api',
-            path: `/api/sykmelding/${sykmeldingId}`,
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json', HPR: hpr },
-            responseSchema: z.discriminatedUnion('isFull', [
-                SykInnApiSykmeldingSchema,
-                SykInnApiSykmeldingRedactedSchema,
-            ]),
-        })
+        if (sykmelding.kind === 'redacted') {
+            const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(behandlerHpr))
+            if (!showRedactedFlag) return { error: 'NO_ACCESS' }
+
+            return sykInnApiSykmeldingRedactedToResolverSykmelding(sykmelding)
+        }
+
+        return sykInnApiSykmeldingToResolverSykmelding(sykmelding)
     },
-    getSykmeldinger: async (
+    /**
+     * Fetches all sykmeldinger for a given patient and behandler. The behandler should have the rights to see them.
+     *
+     * If toggled on, redacted sykmeldinger will be mapped down, if not they will be filtered out.
+     *
+     * Normal mapping reduces the visibily to a 'light' sykmelding if applicable.
+     */
+    async getSykmeldinger(
         pasientIdent: string,
-        hpr: string,
-    ): Promise<(SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[] | ApiFetchErrors> => {
-        if (shouldUseMockEngine()) {
-            logger.info(`Running in ${bundledEnv.runtimeEnv} environment, returning mocked sykmelding data`)
-
-            const mockEngine = await mockEngineForSession()
-            return mockEngine.sykInnApi.allSykmeldinger()
+        behandlerHpr: string,
+    ): Promise<Sykmelding[] | { error: 'API_ERROR'; cause: string }> {
+        const sykInnSykmeldinger = await sykInnApiClient.getSykmeldinger(pasientIdent, behandlerHpr)
+        if ('errorType' in sykInnSykmeldinger) {
+            return { error: 'API_ERROR', cause: sykInnSykmeldinger.errorType }
         }
 
-        return fetchInternalAPI({
-            api: 'syk-inn-api',
-            path: `/api/sykmelding`,
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json', Ident: pasientIdent, HPR: hpr },
-            responseSchema: z.array(
-                z.discriminatedUnion('isFull', [SykInnApiSykmeldingSchema, SykInnApiSykmeldingRedactedSchema]),
-            ),
-        })
+        /**
+         * Only return kind='redacted' sykmeldinger if SYK_INN_SHOW_REDACTED is enabled for this user
+         */
+        const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(behandlerHpr))
+        const sykmeldinger = showRedactedFlag
+            ? sykInnSykmeldinger
+            : sykInnSykmeldinger.filter((it) => it.kind !== 'redacted')
+
+        /**
+         * Redacted are already filtered out if the feature is off.
+         */
+        const mappedSykmeldinger = sykmeldinger.map((it) =>
+            it.kind === 'redacted'
+                ? sykInnApiSykmeldingRedactedToResolverSykmelding(it)
+                : sykInnApiSykmeldingToResolverSykmelding(it),
+        )
+
+        return mappedSykmeldinger
     },
 }

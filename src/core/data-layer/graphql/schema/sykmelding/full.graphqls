@@ -7,10 +7,6 @@ type SykmeldingFull implements SykmeldingBase {
     meta: SykmeldingMeta!
     values: SykmeldingFullValues!
     utfall: Outcome!
-    """
-    Status on the document in the EHR system.
-    """
-    documentStatus: DocumentStatus
 }
 
 type SykmeldingFullValues {
