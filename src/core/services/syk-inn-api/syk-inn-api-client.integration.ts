@@ -15,7 +15,7 @@ import { initializeValkey } from '#lib/test/valkey'
 import { AnnenFravarsgrunnArsak } from '#resolvers'
 
 import { OpprettSykmeldingMeta, OpprettSykmeldingPayload } from './schema/opprett'
-import { sykInnApiService } from './syk-inn-api-service'
+import { sykInnApiClient } from './syk-inn-api-client'
 
 /**
  * Can be manually toggled to run tests with local (already running syk-inn-api)
@@ -52,13 +52,13 @@ describe('SykInnApi integration', () => {
     })
 
     it('POST /sykmelding/verify should be able to verify with all values', async () => {
-        const opprettResult = await sykInnApiService.verifySykmelding(createFullOpprettSykmeldingPayload())
+        const opprettResult = await sykInnApiClient.verifySykmelding(createFullOpprettSykmeldingPayload())
 
         expect(R.prop(opprettResult, 'status')).toBe('OK')
     })
 
     it('POST /sykmelding/verify should inform that patient does not exist', async () => {
-        const opprettResult = await sykInnApiService.verifySykmelding(
+        const opprettResult = await sykInnApiClient.verifySykmelding(
             createFullOpprettSykmeldingPayload({
                 pasientIdent: 'does-not-exist',
             }),
@@ -79,7 +79,7 @@ describe('SykInnApi integration', () => {
 
     it('POST /sykmelding should be able to opprettSykmelding with all values', async () => {
         const payload = createFullOpprettSykmeldingPayload()
-        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
+        const opprettResult = await sykInnApiClient.opprettSykmelding(payload)
 
         if ('errorType' in opprettResult) {
             throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
@@ -95,7 +95,7 @@ describe('SykInnApi integration', () => {
 
         // Create first
         const payload = createFullOpprettSykmeldingPayload(undefined, undefined, submitId)
-        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
+        const opprettResult = await sykInnApiClient.opprettSykmelding(payload)
 
         if ('errorType' in opprettResult) {
             throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
@@ -105,7 +105,7 @@ describe('SykInnApi integration', () => {
 
         // Same submit ID, should return same sykmelding
         const secondPayload = createFullOpprettSykmeldingPayload(undefined, undefined, submitId)
-        const secondResult = await sykInnApiService.opprettSykmelding(secondPayload)
+        const secondResult = await sykInnApiClient.opprettSykmelding(secondPayload)
 
         if ('errorType' in secondResult) {
             throw Error(`Opprett failed, expected OK but had error: ${secondResult.errorType}`)
@@ -118,8 +118,8 @@ describe('SykInnApi integration', () => {
     it('POST /sykmelding should handle idempotentness correctly even with simultaneous requests', async () => {
         const payload = createFullOpprettSykmeldingPayload()
         const [result1, result2] = await Promise.all([
-            sykInnApiService.opprettSykmelding(payload),
-            sykInnApiService.opprettSykmelding(payload),
+            sykInnApiClient.opprettSykmelding(payload),
+            sykInnApiClient.opprettSykmelding(payload),
         ])
 
         if ('errorType' in result1) {
@@ -149,7 +149,7 @@ describe('SykInnApi integration', () => {
             pasientenSkalSkjermes: false,
         })
 
-        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
+        const opprettResult = await sykInnApiClient.opprettSykmelding(payload)
         if ('errorType' in opprettResult) {
             throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
         }
@@ -215,7 +215,7 @@ describe('SykInnApi integration', () => {
             },
         })
 
-        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
+        const opprettResult = await sykInnApiClient.opprettSykmelding(payload)
         if ('errorType' in opprettResult) {
             throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
         }
@@ -328,13 +328,13 @@ describe('SykInnApi integration', () => {
 
     it('GET /sykmelding/<id> should fetch correctly', async () => {
         const payload = createFullOpprettSykmeldingPayload()
-        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
+        const opprettResult = await sykInnApiClient.opprettSykmelding(payload)
 
         if ('errorType' in opprettResult) {
             throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
         }
 
-        const singleSykmelding = await sykInnApiService.getSykmelding(
+        const singleSykmelding = await sykInnApiClient.getSykmelding(
             opprettResult.sykmeldingId,
             payload.meta.sykmelderHpr,
         )
@@ -354,13 +354,13 @@ describe('SykInnApi integration', () => {
 
     it('GET /sykmelding/<id> should get redacted sykmelding when HPR differs', async () => {
         const payload = createFullOpprettSykmeldingPayload()
-        const opprettResult = await sykInnApiService.opprettSykmelding(payload)
+        const opprettResult = await sykInnApiClient.opprettSykmelding(payload)
 
         if ('errorType' in opprettResult) {
             throw Error(`Opprett failed, expected OK but had error: ${opprettResult.errorType}`)
         }
 
-        const singleSykmelding = await sykInnApiService.getSykmelding(opprettResult.sykmeldingId, 'other-hpr')
+        const singleSykmelding = await sykInnApiClient.getSykmelding(opprettResult.sykmeldingId, 'other-hpr')
 
         if ('errorType' in singleSykmelding) {
             throw Error(`Fetch by ID failed, expected OK but had error: ${singleSykmelding.errorType}`)
@@ -379,8 +379,8 @@ describe('SykInnApi integration', () => {
         const payload1 = createFullOpprettSykmeldingPayload()
         const payload2 = createFullOpprettSykmeldingPayload()
         const [opprettet1, opprettet2] = await Promise.all([
-            sykInnApiService.opprettSykmelding(payload1),
-            sykInnApiService.opprettSykmelding(payload2),
+            sykInnApiClient.opprettSykmelding(payload1),
+            sykInnApiClient.opprettSykmelding(payload2),
         ])
 
         if ('errorType' in opprettet1 || 'errorType' in opprettet2) {
@@ -388,7 +388,7 @@ describe('SykInnApi integration', () => {
             throw Error(`Opprett failed, expected OK but had error, ${errors}`)
         }
 
-        const sykmeldinger = await sykInnApiService.getSykmeldinger(
+        const sykmeldinger = await sykInnApiClient.getSykmeldinger(
             payload1.meta.pasientIdent,
             payload1.meta.sykmelderHpr,
         )
@@ -407,10 +407,10 @@ describe('SykInnApi integration', () => {
     })
 
     it('GET /sykmelding should return list of sykmeldinger mixed with full and redacted', async () => {
-        const opprettet1 = await sykInnApiService.opprettSykmelding(
+        const opprettet1 = await sykInnApiClient.opprettSykmelding(
             createFullOpprettSykmeldingPayload({ pasientIdent: '02020221155', sykmelderHpr: 'oneth' }),
         )
-        const opprettet2 = await sykInnApiService.opprettSykmelding(
+        const opprettet2 = await sykInnApiClient.opprettSykmelding(
             createFullOpprettSykmeldingPayload({ pasientIdent: '02020221155', sykmelderHpr: 'twoth' }),
         )
 
@@ -419,7 +419,7 @@ describe('SykInnApi integration', () => {
             throw Error(`Opprett failed, expected OK but had error, ${errors}`)
         }
 
-        const sykmeldinger = await sykInnApiService.getSykmeldinger('02020221155', 'oneth')
+        const sykmeldinger = await sykInnApiClient.getSykmeldinger('02020221155', 'oneth')
 
         if ('errorType' in sykmeldinger) {
             throw Error(`Fetch all sykmeldinger failed, expected OK but had error: ${sykmeldinger.errorType}`)
@@ -449,7 +449,7 @@ describe('SykInnApi integration', () => {
             const payload = createFullOpprettSykmeldingPayload({
                 pasientIdent: `010101${Math.floor(Math.random() * 90000 + 10000)}`,
             })
-            const opprettResult = await sykInnApiService.opprettSykmelding(payload)
+            const opprettResult = await sykInnApiClient.opprettSykmelding(payload)
 
             requestTimes.push(performance.now())
 

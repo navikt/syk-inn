@@ -1,0 +1,119 @@
+import { logger as pinoLogger } from '@navikt/next-logger'
+import * as z from 'zod'
+
+import { mockEngineForSession, shouldUseMockEngine } from '#dev/mock-engine'
+import { bundledEnv } from '#lib/env'
+
+import { ApiFetchErrors, fetchInternalAPI } from '../api-fetcher'
+
+import { OpprettSykmeldingPayload, OpprettSykmeldingPayloadSchema } from './schema/opprett'
+import {
+    SykInnApiPersonDoesNotExist,
+    SykInnApiPersonDoesNotExistSchema,
+    SykInnApiRuleOutcome,
+    SykInnApiRuleOutcomeSchema,
+    SykInnApiSykmelding,
+    SykInnApiSykmeldingRedacted,
+    SykInnApiSykmeldingRedactedSchema,
+    SykInnApiSykmeldingSchema,
+} from './schema/sykmelding'
+
+const logger = pinoLogger.child({}, { msgPrefix: '[API Client]: ' })
+
+/**
+ * This is a 'client' because it simply exposes the API surface of syk-inn-api with
+ * strongly typed response and request payloads using schemas.
+ *
+ * This should for the most part be used through syk-inn-api-service.ts.
+ */
+export const sykInnApiClient = {
+    opprettSykmelding: async (payload: OpprettSykmeldingPayload): Promise<SykInnApiSykmelding | ApiFetchErrors> => {
+        if (shouldUseMockEngine()) {
+            logger.warn(
+                `Running in ${bundledEnv.runtimeEnv}, submitting send sykmelding values: ${JSON.stringify(payload, null, 2)}`,
+            )
+
+            try {
+                const mockEngine = await mockEngineForSession()
+                return mockEngine.sykInnApi.opprettSykmelding(OpprettSykmeldingPayloadSchema.parse(payload))
+            } catch (e) {
+                logger.error(new Error(`Sykmelding parse dryrun failed`, { cause: e }))
+                throw e
+            }
+        }
+
+        return fetchInternalAPI({
+            api: 'syk-inn-api',
+            path: '/api/sykmelding',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(OpprettSykmeldingPayloadSchema.parse(payload)),
+            responseSchema: z.union([SykInnApiSykmeldingSchema, SykInnApiRuleOutcomeSchema]),
+        })
+    },
+    verifySykmelding: async (
+        payload: OpprettSykmeldingPayload,
+    ): Promise<SykInnApiRuleOutcome | SykInnApiPersonDoesNotExist | ApiFetchErrors> => {
+        if (shouldUseMockEngine()) {
+            logger.warn(
+                `Running in ${bundledEnv.runtimeEnv}, faking rule execution for values: ${JSON.stringify(payload, null, 2)}`,
+            )
+
+            const mock = await mockEngineForSession()
+            return mock.sykInnApi.verifySykmelding(OpprettSykmeldingPayloadSchema.parse(payload))
+        }
+
+        return fetchInternalAPI({
+            api: 'syk-inn-api',
+            path: '/api/sykmelding/verify',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(OpprettSykmeldingPayloadSchema.parse(payload)),
+            responseSchema: z.union([z.literal(true), SykInnApiRuleOutcomeSchema, SykInnApiPersonDoesNotExistSchema]),
+            responseValidStatus: [422],
+        })
+    },
+    getSykmelding: async (
+        sykmeldingId: string,
+        hpr: string,
+    ): Promise<SykInnApiSykmelding | SykInnApiSykmeldingRedacted | ApiFetchErrors> => {
+        if (shouldUseMockEngine()) {
+            logger.info(`Running in ${bundledEnv.runtimeEnv} environment, returning mocked sykmelding by id data`)
+
+            const mockEngine = await mockEngineForSession()
+            return mockEngine.sykInnApi.sykmeldingById(sykmeldingId)
+        }
+
+        return fetchInternalAPI({
+            api: 'syk-inn-api',
+            path: `/api/sykmelding/${sykmeldingId}`,
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', HPR: hpr },
+            responseSchema: z.discriminatedUnion('isFull', [
+                SykInnApiSykmeldingSchema,
+                SykInnApiSykmeldingRedactedSchema,
+            ]),
+        })
+    },
+    getSykmeldinger: async (
+        pasientIdent: string,
+        hpr: string,
+    ): Promise<(SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[] | ApiFetchErrors> => {
+        if (shouldUseMockEngine()) {
+            logger.info(`Running in ${bundledEnv.runtimeEnv} environment, returning mocked sykmelding data`)
+
+            const mockEngine = await mockEngineForSession()
+            return mockEngine.sykInnApi.allSykmeldinger()
+        }
+
+        return fetchInternalAPI({
+            api: 'syk-inn-api',
+            path: `/api/sykmelding`,
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', Ident: pasientIdent, HPR: hpr },
+            responseSchema: z.array(
+                z.discriminatedUnion('isFull', [SykInnApiSykmeldingSchema, SykInnApiSykmeldingRedactedSchema]),
+            ),
+        })
+    },
+}

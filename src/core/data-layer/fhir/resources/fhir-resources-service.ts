@@ -1,5 +1,4 @@
 import { ReadyClient } from '@navikt/smart-on-fhir/client'
-import { GraphQLError } from 'graphql/error'
 
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
@@ -7,11 +6,16 @@ import { Behandler, BehandlerMeta, Pasient } from './fhir-resource-types'
 import { getHprFromFhir, getIdentFromFhir, getNameFromFhir, isValidIdent, isValidName } from './mappers/identifiers'
 import { getOrganisasjonsnummerFromFhir, getOrganisasjonstelefonnummerFromFhir } from './mappers/organization'
 
+/**
+ * Resources fetched:
+ *  - Patient
+ */
 export async function getPasient(client: ReadyClient): Promise<Pasient | null> {
     return spanServerAsync('FHIR.getPasient', async (span) => {
         const patient = await client.patient.request()
         if ('error' in patient) {
-            throw new GraphQLError('PARSING_ERROR')
+            failSpan(span, `Failed to get patient from FHIR: ${patient.error}`)
+            return null
         }
 
         const patientName = getNameFromFhir(patient.name)
@@ -31,6 +35,10 @@ export async function getPasient(client: ReadyClient): Promise<Pasient | null> {
     })
 }
 
+/**
+ * Resources fetched:
+ *  - Practitioner
+ */
 export async function getBehandler(client: ReadyClient): Promise<Behandler | null> {
     return spanServerAsync('FHIR.getBehandler', async (span) => {
         const practitioner = await client.user.request()
@@ -55,6 +63,11 @@ export async function getBehandler(client: ReadyClient): Promise<Behandler | nul
     })
 }
 
+/**
+ * Resources fetched:
+ *  - Encounter
+ *  - Organization
+ */
 export async function getExtendedBehandlerMeta(client: ReadyClient): Promise<BehandlerMeta | null> {
     return spanServerAsync('FHIR.getExtendedBehandlerMeta', async (span) => {
         const encounter = await client.encounter.request()

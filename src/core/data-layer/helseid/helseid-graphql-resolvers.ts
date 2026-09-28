@@ -2,17 +2,15 @@ import { logger } from '@navikt/next-logger'
 import { GraphQLError } from 'graphql/error'
 import * as R from 'remeda'
 
-import { pdlApiService } from '#core/services/pdl/pdl-api-service'
+import { pdlApiClient } from '#core/services/pdl/pdl-api-client'
 import { getFnrIdent, formatPdlName } from '#core/services/pdl/pdl-api-utils'
 import { OpprettSykmeldingMeta } from '#core/services/syk-inn-api/schema/opprett'
+import { sykInnApiClient } from '#core/services/syk-inn-api/syk-inn-api-client'
 import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
 import {
     resolverInputToSykInnApiPayload,
-    sykInnApiSykmeldingRedactedToResolverSykmelding,
-    sykInnApiSykmeldingToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmeldingFull,
 } from '#core/services/syk-inn-api/syk-inn-api-utils'
-import { getFlag, getUserToggles } from '#core/toggles/unleash'
 import metrics from '#lib/prometheus/metrics'
 import { raise } from '#lib/ts'
 import { QueriedPerson, Resolvers, RuleOutcome } from '#resolvers'
@@ -41,7 +39,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         pasient: async (_, _args, { patientIdent }) => {
             if (!patientIdent) throw new GraphQLError('MISSING_IDENT')
 
-            const person = await pdlApiService.getPdlPerson(patientIdent)
+            const person = await pdlApiClient.getPdlPerson(patientIdent)
             if ('errorType' in person) {
                 if (person.errorType === 'PERSON_NOT_FOUND') {
                     return null
@@ -57,19 +55,9 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         },
         sykmelding: async (_, { id: sykmeldingId }, { behandler }) => {
             const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, behandler.hpr)
+            if ('error' in sykmelding) throw new GraphQLError('API_ERROR')
 
-            if ('errorType' in sykmelding) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            if (sykmelding.kind === 'redacted') {
-                const showRedactedFlag = getFlag('SYK_INN_SHOW_REDACTED', await getUserToggles(behandler.hpr))
-                if (!showRedactedFlag) return null
-
-                return sykInnApiSykmeldingRedactedToResolverSykmelding(sykmelding)
-            }
-
-            return sykInnApiSykmeldingToResolverSykmelding(sykmelding, 'PENDING')
+            return sykmelding
         },
         sykmeldinger: () => null,
         draft: async (_, { draftId }, { patientIdent, behandler }) => {
@@ -98,7 +86,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         person: async (_, { ident }) => {
             if (!ident) throw new GraphQLError('MISSING_IDENT')
 
-            const person = await pdlApiService.getPdlPerson(ident)
+            const person = await pdlApiClient.getPdlPerson(ident)
             if ('errorType' in person) {
                 if (person.errorType === 'PERSON_NOT_FOUND') {
                     return null
@@ -168,7 +156,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
 
             if (!force) {
                 // When not forcing, we first verify the sykmelding
-                const verifyResult = await sykInnApiService.verifySykmelding(payload)
+                const verifyResult = await sykInnApiClient.verifySykmelding(payload)
                 if ('errorType' in verifyResult) {
                     throw new GraphQLError('API_ERROR')
                 }
@@ -189,7 +177,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
                 // No rule hits, proceed to create the sykmelding
             }
 
-            const result = await sykInnApiService.opprettSykmelding(payload)
+            const result = await sykInnApiClient.opprettSykmelding(payload)
             if ('errorType' in result) {
                 throw new GraphQLError('API_ERROR')
             }
@@ -208,7 +196,7 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
             const draftClient = await getDraftClient()
             await draftClient.deleteDraft(draftId, { hpr: behandler.hpr, ident: patientIdent })
 
-            return sykInnApiSykmeldingToResolverSykmeldingFull(result, 'PENDING')
+            return sykInnApiSykmeldingToResolverSykmeldingFull(result)
         },
         synchronizeSykmelding: () => raise('Not Implemented'),
     },

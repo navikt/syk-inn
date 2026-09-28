@@ -5,7 +5,6 @@ import { raise } from '#lib/ts'
 import { AnnenFravarsgrunnArsak } from '#queries'
 import {
     AktivitetType,
-    DocumentStatus,
     InputAktivitet,
     InputMaybe,
     InputUtdypendeSporsmal,
@@ -37,7 +36,6 @@ export function sykInnApiSykmeldingRedactedToResolverSykmelding(
 
 export function sykInnApiSykmeldingToResolverSykmelding(
     sykmelding: SykInnApiSykmelding,
-    documentStatus?: DocumentStatus,
 ): SykmeldingFull | SykmeldingLight {
     const isWithinOffset = byCurrentOrPreviousWithOffset(sykmelding)
 
@@ -55,17 +53,13 @@ export function sykInnApiSykmeldingToResolverSykmelding(
                 bidiagnoser: sykmelding.values.bidiagnoser,
             },
             utfall: sykmelding.utfall,
-            documentStatus: documentStatus ?? null,
         } satisfies SykmeldingLight
     }
 
-    return sykInnApiSykmeldingToResolverSykmeldingFull(sykmelding, documentStatus)
+    return sykInnApiSykmeldingToResolverSykmeldingFull(sykmelding)
 }
 
-export function sykInnApiSykmeldingToResolverSykmeldingFull(
-    sykmelding: SykInnApiSykmelding,
-    documentStatus?: DocumentStatus,
-): SykmeldingFull {
+export function sykInnApiSykmeldingToResolverSykmeldingFull(sykmelding: SykInnApiSykmelding): SykmeldingFull {
     return {
         kind: 'full',
         sykmeldingId: sykmelding.sykmeldingId,
@@ -85,7 +79,6 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(
             annenFravarsgrunn: sykmelding.values.annenFravarsgrunn as AnnenFravarsgrunnArsak,
         },
         utfall: sykmelding.utfall,
-        documentStatus: documentStatus ?? null,
     }
 }
 

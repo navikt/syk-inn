@@ -20,7 +20,6 @@ import { cn } from '#lib/tw'
 import { pathWithBasePath } from '#lib/url'
 import { SykmeldingByIdDocument, SykmeldingFragment } from '#queries'
 
-import { DocumentStatusSuccess } from './DocumentStatus'
 import { DownloadPdfButton } from './DownloadPdf'
 import { SykmeldingSynchronization } from './SykmeldingSynchronization'
 
@@ -229,11 +228,7 @@ function SykmeldingKvitteringStatus({ sykmeldingId }: { sykmeldingId: string }):
                     {loading ? (
                         <Skeleton variant="rounded" height={48} />
                     ) : data?.sykmelding ? (
-                        data.sykmelding.documentStatus === 'COMPLETE' ? (
-                            <DocumentStatusSuccess />
-                        ) : (
-                            <SykmeldingSynchronization sykmeldingId={sykmeldingId} />
-                        )
+                        <SykmeldingSynchronization sykmeldingId={sykmeldingId} />
                     ) : null}
                 </>
             )}

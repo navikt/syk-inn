@@ -2659,14 +2659,6 @@
                 "isOneOf": null,
                 "fields": [
                     {
-                        "name": "documentStatus",
-                        "description": "Status on the document in the EHR system.",
-                        "args": [],
-                        "type": { "kind": "ENUM", "name": "DocumentStatus", "ofType": null },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "kind",
                         "description": null,
                         "args": [],
@@ -2882,14 +2874,6 @@
                 "description": null,
                 "isOneOf": null,
                 "fields": [
-                    {
-                        "name": "documentStatus",
-                        "description": "Status on the document in the EHR system.",
-                        "args": [],
-                        "type": { "kind": "ENUM", "name": "DocumentStatus", "ofType": null },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
                     {
                         "name": "kind",
                         "description": null,

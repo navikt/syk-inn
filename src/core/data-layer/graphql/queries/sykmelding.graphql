@@ -153,7 +153,6 @@ fragment SykmeldingFull on SykmeldingFull {
         }
         annenFravarsgrunn
     }
-    documentStatus
 }
 
 fragment SykmeldingLight on SykmeldingLight {
@@ -176,7 +175,6 @@ fragment SykmeldingLight on SykmeldingLight {
             ...Aktivitet
         }
     }
-    documentStatus
 }
 
 mutation RequestAccessToSykmeldinger {

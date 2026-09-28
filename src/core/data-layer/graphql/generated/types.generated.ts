@@ -444,8 +444,6 @@ export type SykmeldingBase = {
 /** A complete sykmelding, containing every value. */
 export type SykmeldingFull = SykmeldingBase & {
     __typename: 'SykmeldingFull'
-    /** Status on the document in the EHR system. */
-    documentStatus: Maybe<DocumentStatus>
     kind: Scalars['String']['output']
     meta: SykmeldingMeta
     sykmeldingId: Scalars['String']['output']
@@ -472,8 +470,6 @@ export type SykmeldingFullValues = {
 
 export type SykmeldingLight = SykmeldingBase & {
     __typename: 'SykmeldingLight'
-    /** Status on the document in the EHR system. */
-    documentStatus: Maybe<DocumentStatus>
     kind: Scalars['String']['output']
     meta: SykmeldingMeta
     sykmeldingId: Scalars['String']['output']

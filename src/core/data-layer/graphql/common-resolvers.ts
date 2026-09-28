@@ -3,7 +3,7 @@ import { GraphQLError } from 'graphql/error'
 import * as R from 'remeda'
 
 import { aaregService } from '#core/services/aareg/aareg-service'
-import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
+import { sykInnApiClient } from '#core/services/syk-inn-api/syk-inn-api-client'
 import { getFlag, getUserlessToggles, getUserToggles } from '#core/toggles/unleash'
 import { QueryResolvers, Resolvers, UtdypendeSporsmalOptions } from '#resolvers'
 
@@ -34,7 +34,7 @@ export const commonObjectResolvers: Resolvers<CommonGraphqlContext> = {
             return await aaregService.getArbeidsforhold(pasient.ident)
         },
         utdypendeSporsmal: async (pasient, _args, { behandler }) => {
-            const sykInnSykmeldinger = await sykInnApiService.getSykmeldinger(pasient.ident, behandler.hpr)
+            const sykInnSykmeldinger = await sykInnApiClient.getSykmeldinger(pasient.ident, behandler.hpr)
             if ('errorType' in sykInnSykmeldinger) {
                 throw new GraphQLError('API_ERROR')
             }

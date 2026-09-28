@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react'
 import * as R from 'remeda'
 
 import { NonPilotUserWarning } from '#components/user-warnings/NonPilotUserWarning'
-import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
+import { sykInnApiClient } from '#core/services/syk-inn-api/syk-inn-api-client'
 import { getSessionId } from '#core/session/session'
 import { getUserlessToggles } from '#core/toggles/unleash'
 import { getHprFromFhir, getIdentFromFhir, isValidIdent } from '#data-layer/fhir/resources/mappers/identifiers'
@@ -91,7 +91,7 @@ async function Page(): Promise<ReactElement> {
                         return
                     }
 
-                    const sykmeldinger = await sykInnApiService.getSykmeldinger(ident, hpr)
+                    const sykmeldinger = await sykInnApiClient.getSykmeldinger(ident, hpr)
                     if ('errorType' in sykmeldinger) {
                         failSpan(innerSpan, `Non-pilot-user failed to fetch sykmeldinger: ${sykmeldinger.errorType}`)
                         innerSpan.setAttribute('non-pilot-user.dry-run.sykmeldinger', 'fail')

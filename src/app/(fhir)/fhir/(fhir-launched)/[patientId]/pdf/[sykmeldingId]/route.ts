@@ -1,8 +1,8 @@
 import { NextRequest } from 'next/server'
 
 import { createTypstSykmelding } from '#core/pdf/pdf-service'
-import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
-import { getHprFromFhir, getIdentFromFhir, isValidIdent } from '#data-layer/fhir/resources/mappers/identifiers'
+import { sykInnApiClient } from '#core/services/syk-inn-api/syk-inn-api-client'
+import { getBehandler } from '#data-layer/fhir/resources/fhir-resources-service'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
@@ -18,31 +18,17 @@ export async function GET(
             return new Response('Internal server error', { status: 500 })
         }
 
-        const practitioner = await client.user.request()
-        if ('error' in practitioner) {
-            failSpan(span, `Failed to fetch practitioner: ${practitioner.error}`)
+        const behandler = await getBehandler(client)
+        if (behandler == null) {
+            failSpan(span, `Failed to get behandler from FHIR`)
             return new Response('Internal server error', { status: 500 })
         }
 
-        const hpr = getHprFromFhir(practitioner.identifier)
-        if (!isValidIdent(hpr)) {
-            failSpan(span, `Missing valid HPR identifier in practitioner resource: ${hpr.details}`)
-            return new Response('Internal server error', { status: 500 })
-        }
-
-        const patient = await client.patient.request()
-        if ('error' in patient) {
-            failSpan(span, `Failed to fetch patient: ${patient.error}`)
-            return new Response('Internal server error', { status: 500 })
-        }
-
-        const patientIdent = getIdentFromFhir(patient.identifier)
-        if (!isValidIdent(patientIdent)) {
-            failSpan(span, `Missing valid patient identifier in patient resource: ${patientIdent.details}`)
-            return new Response('Internal server error', { status: 500 })
-        }
-
-        const sykmelding = await sykInnApiService.getSykmelding(sykmeldingId, hpr)
+        /**
+         * PDF-mapping uses the syk-inn-api data types directly, and therefore we use the client
+         * directly instead of the service.
+         */
+        const sykmelding = await sykInnApiClient.getSykmelding(sykmeldingId, behandler.hpr)
 
         if ('errorType' in sykmelding) {
             failSpan(span, `Failed to get sykmelding: ${sykmelding.errorType}`)

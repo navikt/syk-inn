@@ -30,7 +30,6 @@ export type AllDashboardQuery = {
                   | {
                         __typename: 'SykmeldingFull'
                         sykmeldingId: string
-                        documentStatus: Types.DocumentStatus | null
                         meta:
                             | {
                                   __typename: 'NasjonalSykmeldingMeta'
@@ -188,7 +187,6 @@ export type AllDashboardQuery = {
                   | {
                         __typename: 'SykmeldingLight'
                         sykmeldingId: string
-                        documentStatus: Types.DocumentStatus | null
                         meta:
                             | {
                                   __typename: 'NasjonalSykmeldingMeta'
@@ -280,7 +278,6 @@ export type AllDashboardQuery = {
                   | {
                         __typename: 'SykmeldingFull'
                         sykmeldingId: string
-                        documentStatus: Types.DocumentStatus | null
                         meta:
                             | {
                                   __typename: 'NasjonalSykmeldingMeta'
@@ -438,7 +435,6 @@ export type AllDashboardQuery = {
                   | {
                         __typename: 'SykmeldingLight'
                         sykmeldingId: string
-                        documentStatus: Types.DocumentStatus | null
                         meta:
                             | {
                                   __typename: 'NasjonalSykmeldingMeta'
@@ -533,7 +529,6 @@ export type AllDashboardQuery = {
                   | {
                         __typename: 'SykmeldingFull'
                         sykmeldingId: string
-                        documentStatus: Types.DocumentStatus | null
                         meta:
                             | {
                                   __typename: 'NasjonalSykmeldingMeta'
@@ -691,7 +686,6 @@ export type AllDashboardQuery = {
                   | {
                         __typename: 'SykmeldingLight'
                         sykmeldingId: string
-                        documentStatus: Types.DocumentStatus | null
                         meta:
                             | {
                                   __typename: 'NasjonalSykmeldingMeta'
@@ -927,7 +921,6 @@ export type SykmeldingByIdQuery = {
         | {
               __typename: 'SykmeldingFull'
               sykmeldingId: string
-              documentStatus: Types.DocumentStatus | null
               meta:
                   | {
                         __typename: 'NasjonalSykmeldingMeta'
@@ -1074,7 +1067,6 @@ export type SykmeldingByIdQuery = {
         | {
               __typename: 'SykmeldingLight'
               sykmeldingId: string
-              documentStatus: Types.DocumentStatus | null
               meta:
                   | {
                         __typename: 'NasjonalSykmeldingMeta'
@@ -1179,7 +1171,6 @@ export type OpprettSykmeldingMutation = {
         | {
               __typename: 'SykmeldingFull'
               sykmeldingId: string
-              documentStatus: Types.DocumentStatus | null
               meta:
                   | {
                         __typename: 'NasjonalSykmeldingMeta'
@@ -1372,7 +1363,6 @@ export type SykmeldingRedactedFragment = {
 export type SykmeldingFullFragment = {
     __typename: 'SykmeldingFull'
     sykmeldingId: string
-    documentStatus: Types.DocumentStatus | null
     meta:
         | {
               __typename: 'NasjonalSykmeldingMeta'
@@ -1470,7 +1460,6 @@ export type SykmeldingFullFragment = {
 export type SykmeldingLightFragment = {
     __typename: 'SykmeldingLight'
     sykmeldingId: string
-    documentStatus: Types.DocumentStatus | null
     meta:
         | {
               __typename: 'NasjonalSykmeldingMeta'
@@ -1532,7 +1521,6 @@ export type RequestAccessToSykmeldingerMutation = { __typename: 'Mutation'; requ
 type Sykmelding_SykmeldingFull_Fragment = {
     __typename: 'SykmeldingFull'
     sykmeldingId: string
-    documentStatus: Types.DocumentStatus | null
     meta:
         | {
               __typename: 'NasjonalSykmeldingMeta'
@@ -1630,7 +1618,6 @@ type Sykmelding_SykmeldingFull_Fragment = {
 type Sykmelding_SykmeldingLight_Fragment = {
     __typename: 'SykmeldingLight'
     sykmeldingId: string
-    documentStatus: Types.DocumentStatus | null
     meta:
         | {
               __typename: 'NasjonalSykmeldingMeta'
@@ -2427,7 +2414,6 @@ export const SykmeldingFullFragmentDoc = {
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
                 ],
             },
         },
@@ -2637,7 +2623,6 @@ export const SykmeldingLightFragmentDoc = {
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
                 ],
             },
         },
@@ -3281,7 +3266,6 @@ export const SykmeldingFragmentDoc = {
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
                 ],
             },
         },
@@ -3351,7 +3335,6 @@ export const SykmeldingFragmentDoc = {
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
                 ],
             },
         },
@@ -3939,7 +3922,6 @@ export const AllDashboardDocument = {
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
                 ],
             },
         },
@@ -4009,7 +3991,6 @@ export const AllDashboardDocument = {
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
                 ],
             },
         },
@@ -5050,7 +5031,6 @@ export const SykmeldingByIdDocument = {
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
                 ],
             },
         },
@@ -5120,7 +5100,6 @@ export const SykmeldingByIdDocument = {
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
                 ],
             },
         },
@@ -5733,7 +5712,6 @@ export const OpprettSykmeldingDocument = {
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
                 ],
             },
         },
@@ -5803,7 +5781,6 @@ export const OpprettSykmeldingDocument = {
                             ],
                         },
                     },
-                    { kind: 'Field', name: { kind: 'Name', value: 'documentStatus' } },
                 ],
             },
         },

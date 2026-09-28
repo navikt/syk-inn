@@ -7,7 +7,7 @@ import { ApiFetchErrors, fetchInternalAPI } from '../api-fetcher'
 import { createPdlPersonMock } from './pdl-api-mock-data'
 import { PdlPerson, PdlPersonSchema } from './pdl-api-schema'
 
-export const pdlApiService = {
+export const pdlApiClient = {
     getPdlPerson: async (ident: string): Promise<PdlPerson | ApiFetchErrors<'PERSON_NOT_FOUND'>> => {
         if (isLocal || isDemo || isE2E) {
             if (ident.length !== 11) {
