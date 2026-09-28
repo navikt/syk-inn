@@ -14,7 +14,7 @@ import {
     SykmeldingRedacted,
 } from '#resolvers'
 
-import { OpprettSykmeldingAktivitet, OpprettSykmeldingMeta, OpprettSykmeldingPayload } from './schema/opprett'
+import { OpprettSykmeldingAktivitet, OpprettSykmeldingPayload, OpprettSykmeldingValues } from './schema/opprett'
 import { SykInnApiSykmelding, SykInnApiSykmeldingRedacted } from './schema/sykmelding'
 
 export function sykInnApiSykmeldingRedactedToResolverSykmelding(
@@ -82,50 +82,42 @@ export function sykInnApiSykmeldingToResolverSykmeldingFull(sykmelding: SykInnAp
     }
 }
 
-export function resolverInputToSykInnApiPayload(
-    draftId: string,
-    values: OpprettSykmeldingInput,
-    meta: OpprettSykmeldingMeta,
-): OpprettSykmeldingPayload {
+export function resolverInputToSykInnApiPayloadValues(values: OpprettSykmeldingInput): OpprettSykmeldingValues {
     return {
-        submitId: draftId,
-        meta,
-        values: {
-            pasientenSkalSkjermes: values.pasientenSkalSkjermes,
-            hoveddiagnose: values.hoveddiagnose,
-            bidiagnoser: values.bidiagnoser,
-            aktivitet: values.aktivitet.map(gqlInputAktivitetToSykInnAktivitet),
-            prognose: values.prognose
-                ? {
-                      friskmeldingTilArbeidsformidling: values.prognose.friskmeldingTilArbeidsformidling ?? null,
-                  }
-                : null,
-            meldinger: {
-                tilNav: values.meldinger.tilNav ?? null,
-                tilArbeidsgiver: values.meldinger.tilArbeidsgiver ?? null,
-            },
-            svangerskapsrelatert: values.svangerskapsrelatert,
-            yrkesskade: values.yrkesskade?.yrkesskade
-                ? {
-                      yrkesskade: true,
-                      skadedato: values.yrkesskade.skadedato ?? null,
-                  }
-                : null,
-            arbeidsgiver: values.arbeidsforhold
-                ? {
-                      harFlere: true,
-                      arbeidsgivernavn: values.arbeidsforhold.arbeidsgivernavn,
-                  }
-                : null,
-            tilbakedatering: values.tilbakedatering
-                ? {
-                      begrunnelse: values.tilbakedatering.begrunnelse,
-                      startdato: values.tilbakedatering.startdato,
-                  }
-                : null,
-            utdypendeSporsmal: mapUtdypendeSporsmalToSykInnApiMap(values.utdypendeSporsmal),
-            annenFravarsgrunn: values.annenFravarsgrunn ?? null,
+        pasientenSkalSkjermes: values.pasientenSkalSkjermes,
+        hoveddiagnose: values.hoveddiagnose,
+        bidiagnoser: values.bidiagnoser,
+        aktivitet: values.aktivitet.map(gqlInputAktivitetToSykInnAktivitet),
+        prognose: values.prognose
+            ? {
+                  friskmeldingTilArbeidsformidling: values.prognose.friskmeldingTilArbeidsformidling ?? null,
+              }
+            : null,
+        meldinger: {
+            tilNav: values.meldinger.tilNav ?? null,
+            tilArbeidsgiver: values.meldinger.tilArbeidsgiver ?? null,
         },
+        svangerskapsrelatert: values.svangerskapsrelatert,
+        yrkesskade: values.yrkesskade?.yrkesskade
+            ? {
+                  yrkesskade: true,
+                  skadedato: values.yrkesskade.skadedato ?? null,
+              }
+            : null,
+        arbeidsgiver: values.arbeidsforhold
+            ? {
+                  harFlere: true,
+                  arbeidsgivernavn: values.arbeidsforhold.arbeidsgivernavn,
+              }
+            : null,
+        tilbakedatering: values.tilbakedatering
+            ? {
+                  begrunnelse: values.tilbakedatering.begrunnelse,
+                  startdato: values.tilbakedatering.startdato,
+              }
+            : null,
+        utdypendeSporsmal: mapUtdypendeSporsmalToSykInnApiMap(values.utdypendeSporsmal),
+        annenFravarsgrunn: values.annenFravarsgrunn ?? null,
     }
 }
 

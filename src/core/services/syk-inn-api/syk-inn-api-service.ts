@@ -1,10 +1,15 @@
 import { getFlag, getUserToggles } from '#core/toggles/unleash'
-import { Sykmelding } from '#resolvers'
+import metrics from '#lib/prometheus/metrics'
+import { raise } from '#lib/ts'
+import { RuleOutcome, Sykmelding, SykmeldingFull } from '#resolvers'
 
+import { registerDiagnoseMetrics } from './metrics/diagnose-metrics'
+import { OpprettSykmeldingMeta, OpprettSykmeldingPayload, OpprettSykmeldingValues } from './schema/opprett'
 import { sykInnApiClient } from './syk-inn-api-client'
 import {
     sykInnApiSykmeldingRedactedToResolverSykmelding,
     sykInnApiSykmeldingToResolverSykmelding,
+    sykInnApiSykmeldingToResolverSykmeldingFull,
 } from './syk-inn-api-utils'
 
 export const sykInnApiService = {
@@ -67,5 +72,50 @@ export const sykInnApiService = {
         )
 
         return mappedSykmeldinger
+    },
+
+    async opprettSykmelding(
+        meta: OpprettSykmeldingMeta,
+        values: OpprettSykmeldingValues,
+        mode: { submitId: string; force: boolean },
+    ): Promise<SykmeldingFull | RuleOutcome | { error: 'API_ERROR'; cause: string } | { error: 'PATIENT_NOT_IN_PDL' }> {
+        const payload: OpprettSykmeldingPayload = {
+            submitId: mode.submitId,
+            meta,
+            values,
+        }
+
+        if (!mode.force) {
+            // When not forcing, we first verify the sykmelding
+            const verifyResult = await sykInnApiClient.verifySykmelding(payload)
+            if ('errorType' in verifyResult) {
+                return { error: 'API_ERROR', cause: verifyResult.errorType }
+            }
+
+            if ('status' in verifyResult && verifyResult.status !== 'OK') {
+                // There are rule outcomes, short circuit and return them
+                return {
+                    status: verifyResult.status,
+                    rule: verifyResult.rule ?? raise(`Rule outcome ${verifyResult.status} without rule`),
+                    message: verifyResult.message ?? raise(`Rule outcome ${verifyResult.status} without message`),
+                } satisfies RuleOutcome
+            }
+
+            if (typeof verifyResult === 'object' && verifyResult.message === 'Person does not exist') {
+                return { error: 'PATIENT_NOT_IN_PDL' }
+            }
+
+            // No rule hits, proceed to create the sykmelding
+        }
+
+        const result = await sykInnApiClient.opprettSykmelding(payload)
+        if ('errorType' in result) {
+            return { error: 'API_ERROR', cause: result.errorType }
+        }
+
+        metrics.createdSykmelding.inc({ hpr: meta.sykmelderHpr, outcome: result.utfall.result }, 1)
+        registerDiagnoseMetrics(values, meta.source.includes('FHIR') ? 'fhir' : 'helseid')
+
+        return sykInnApiSykmeldingToResolverSykmeldingFull(result)
     },
 }

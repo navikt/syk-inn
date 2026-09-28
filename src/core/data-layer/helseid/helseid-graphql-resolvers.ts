@@ -5,17 +5,11 @@ import * as R from 'remeda'
 import { pdlApiClient } from '#core/services/pdl/pdl-api-client'
 import { getFnrIdent, formatPdlName } from '#core/services/pdl/pdl-api-utils'
 import { OpprettSykmeldingMeta } from '#core/services/syk-inn-api/schema/opprett'
-import { sykInnApiClient } from '#core/services/syk-inn-api/syk-inn-api-client'
 import { sykInnApiService } from '#core/services/syk-inn-api/syk-inn-api-service'
-import {
-    resolverInputToSykInnApiPayload,
-    sykInnApiSykmeldingToResolverSykmeldingFull,
-} from '#core/services/syk-inn-api/syk-inn-api-utils'
-import metrics from '#lib/prometheus/metrics'
+import { resolverInputToSykInnApiPayloadValues } from '#core/services/syk-inn-api/syk-inn-api-utils'
 import { raise } from '#lib/ts'
-import { QueriedPerson, Resolvers, RuleOutcome } from '#resolvers'
+import { QueriedPerson, Resolvers } from '#resolvers'
 
-import { countDiagnoses } from '../common/diagnose-counting'
 import { getDraftClient } from '../draft/draft-client'
 import { DraftValuesSchema } from '../draft/draft-schema'
 import { commonObjectResolvers, commonQueryResolvers } from '../graphql/common-resolvers'
@@ -139,11 +133,9 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
         },
         opprettSykmelding: async (_, { draftId, meta, values, force }, { behandler, patientIdent }) => {
             if (patientIdent == null) throw NoHelseIdCurrentPatient()
+            if (meta.orgnummer == null || meta.legekontorTlf == null) return { cause: 'MISSING_PRACTITIONER_INFO' }
 
-            if (meta.orgnummer == null || meta.legekontorTlf == null) {
-                return { cause: 'MISSING_PRACTITIONER_INFO' }
-            }
-
+            const opprettValues = resolverInputToSykInnApiPayloadValues(values)
             const opprettMeta: OpprettSykmeldingMeta = {
                 source: `syk-inn (HelseID)`,
                 sykmelderHpr: behandler.hpr,
@@ -152,51 +144,26 @@ const helseidResolvers: Resolvers<HelseIdGraphqlContext> = {
                 legekontorTlf: meta.legekontorTlf,
             }
 
-            const payload = resolverInputToSykInnApiPayload(draftId, values, opprettMeta)
+            const result = await sykInnApiService.opprettSykmelding(opprettMeta, opprettValues, {
+                submitId: draftId,
+                force,
+            })
 
-            if (!force) {
-                // When not forcing, we first verify the sykmelding
-                const verifyResult = await sykInnApiClient.verifySykmelding(payload)
-                if ('errorType' in verifyResult) {
+            if ('error' in result) {
+                if (result.error === 'PATIENT_NOT_IN_PDL') {
+                    return { cause: 'PATIENT_NOT_FOUND_IN_PDL' }
+                } else {
                     throw new GraphQLError('API_ERROR')
                 }
-
-                if ('status' in verifyResult && verifyResult.status !== 'OK') {
-                    // There are rule outcomes, short circuit and return them
-                    return {
-                        status: verifyResult.status,
-                        rule: verifyResult.rule ?? raise(`Rule outcome ${verifyResult.status} without rule`),
-                        message: verifyResult.message ?? raise(`Rule outcome ${verifyResult.status} without message`),
-                    } satisfies RuleOutcome
-                }
-
-                if (verifyResult.message === 'Person does not exist') {
-                    return { cause: 'PATIENT_NOT_FOUND_IN_PDL' }
-                }
-
-                // No rule hits, proceed to create the sykmelding
             }
 
-            const result = await sykInnApiClient.opprettSykmelding(payload)
-            if ('errorType' in result) {
-                throw new GraphQLError('API_ERROR')
-            }
-
-            metrics.createdSykmelding.inc(
-                {
-                    hpr: behandler.hpr,
-                    outcome: result.utfall.result,
-                },
-                1,
-            )
-
-            countDiagnoses(values, 'helseid')
+            if (result.__typename === 'RuleOutcome') return result
 
             // Delete the draft after successful creation
             const draftClient = await getDraftClient()
             await draftClient.deleteDraft(draftId, { hpr: behandler.hpr, ident: patientIdent })
 
-            return sykInnApiSykmeldingToResolverSykmeldingFull(result)
+            return result
         },
         synchronizeSykmelding: () => raise('Not Implemented'),
     },
