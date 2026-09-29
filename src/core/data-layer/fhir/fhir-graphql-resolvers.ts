@@ -12,7 +12,6 @@ import { resolverInputToSykInnApiPayloadValues } from '#core/services/syk-inn-ap
 import { HAS_REQUESTED_ACCESS_COOKIE_NAME } from '#core/session/cookies'
 import { getHasRequestedAccessToSykmeldinger } from '#core/session/session'
 import { getUserToggles } from '#core/toggles/unleash'
-import metrics from '#lib/prometheus/metrics'
 import { raise } from '#lib/ts'
 import { Behandler, QueriedPerson, Resolvers } from '#resolvers'
 
@@ -24,23 +23,31 @@ import { commonTypeResolvers } from '../graphql/common-type-resolvers'
 import { createSchema } from '../graphql/create-schema'
 
 import { FhirGraphqlContext } from './fhir-graphql-context'
-import { assertValidIdent } from './fhir-graphql-utils'
-import { getExtendedBehandlerMeta, getPasient } from './resources/fhir-resources-service'
-import { fhirDiagnosisToRelevantDiagnosis } from './resources/mappers/diagnosis'
-import { getIdentFromFhir } from './resources/mappers/identifiers'
+import {
+    getDiagnosisInEncounter,
+    getExtendedBehandlerMeta,
+    getPasient,
+    isResourceError,
+} from './resources/fhir-resources-service'
 import { fhirWriteService, writeQuestionnaireResponseWithFallback } from './resources/write/fhir-write-service'
 
+/**
+ * The resolvers are for the most part a connection between FHIR resources and the GraphQL schema
+ * (used both for HelseID and FHIR modes). The resolvers are therefore supposed to be as thin as
+ * possible. Any involved "business logic" or mapping should be done in the service layer where
+ * possible.
+ */
 const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     Query: {
         behandler: async (_, _args, { client, behandler }) => {
             const meta = await getExtendedBehandlerMeta(client)
-            if (meta == null) throw new GraphQLError('API_ERROR')
+            if (isResourceError(meta)) throw new GraphQLError('API_ERROR')
 
             return { ...behandler, ...meta } satisfies Behandler
         },
         pasient: async (_, _args, { client }) => {
             const pasient = await getPasient(client)
-            if (pasient == null) throw new GraphQLError('API_ERROR')
+            if (isResourceError(pasient)) throw new GraphQLError('API_ERROR')
 
             return { navn: pasient.navn, ident: pasient.ident }
         },
@@ -57,7 +64,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
         },
         sykmeldinger: async (_, _args, { client, behandler }) => {
             const patient = await getPasient(client)
-            if (patient == null) throw new GraphQLError('API_ERROR')
+            if (isResourceError(patient)) throw new GraphQLError('API_ERROR')
 
             const sykmeldinger = await sykInnApiService.getSykmeldinger(patient.ident, behandler.hpr)
             if ('error' in sykmeldinger) throw new GraphQLError('API_ERROR')
@@ -87,14 +94,11 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             } satisfies QueriedPerson
         },
         draft: async (_, { draftId }, { client, behandler }) => {
-            const patient = await client.patient.request()
-            if ('error' in patient) throw new GraphQLError('API_ERROR')
-
-            const ident = getIdentFromFhir(patient.identifier)
-            assertValidIdent(ident)
+            const patient = await getPasient(client)
+            if (isResourceError(patient)) throw new GraphQLError('API_ERROR')
 
             const draftClient = await getDraftClient()
-            const draft = await draftClient.getDraft(draftId, { hpr: behandler.hpr, ident })
+            const draft = await draftClient.getDraft(draftId, { hpr: behandler.hpr, ident: patient.ident })
 
             if (draft == null) return null
 
@@ -106,7 +110,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
         },
         drafts: async (_, _args, { client, behandler }) => {
             const pasient = await getPasient(client)
-            if (pasient == null) throw new GraphQLError('API_ERROR')
+            if (isResourceError(pasient)) throw new GraphQLError('API_ERROR')
 
             const draftClient = await getDraftClient()
             const allDrafts = await draftClient.getDrafts({ hpr: behandler.hpr, ident: pasient.ident })
@@ -117,7 +121,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     Mutation: {
         saveDraft: async (_, { draftId, values }, { client, behandler }) => {
             const pasient = await getPasient(client)
-            if (pasient == null) throw new GraphQLError('API_ERROR')
+            if (isResourceError(pasient)) throw new GraphQLError('API_ERROR')
 
             const parsedValues = DraftValuesSchema.safeParse(values)
             if (!parsedValues.success) {
@@ -142,7 +146,7 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
         },
         deleteDraft: async (_, { draftId }, { client, behandler }) => {
             const pasient = await getPasient(client)
-            if (pasient == null) throw new GraphQLError('API_ERROR')
+            if (isResourceError(pasient)) throw new GraphQLError('API_ERROR')
 
             const draftClient = await getDraftClient()
             await draftClient.deleteDraft(draftId, { hpr: behandler.hpr, ident: pasient.ident })
@@ -157,10 +161,11 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
             { client, behandler, patientIdent: contextPatientIdent },
         ) => {
             const pasient = await getPasient(client)
+            if (isResourceError(pasient)) throw new GraphQLError('API_ERROR')
             if (contextPatientIdent !== pasient?.ident) throw new GraphQLError('PASIENT_IDENT_MISMATCH')
 
             const behandlerMeta = await getExtendedBehandlerMeta(client)
-            if (behandlerMeta == null) throw new GraphQLError('API_ERROR')
+            if (isResourceError(behandlerMeta)) throw new GraphQLError('API_ERROR')
 
             const opprettValues = resolverInputToSykInnApiPayloadValues(values)
             const opprettMeta: OpprettSykmeldingMeta = {
@@ -235,20 +240,10 @@ const fhirResolvers: Resolvers<FhirGraphqlContext> = {
     },
     Konsultasjon: {
         diagnoser: async (_, _args, { client }) => {
-            const conditionsByEncounter = await client.request(`Condition?encounter=${client.encounter.id}`)
-            if ('error' in conditionsByEncounter) {
-                throw new GraphQLError('PARSING_ERROR')
-            }
+            const diagnosis = await getDiagnosisInEncounter(client)
+            if (isResourceError(diagnosis)) throw new GraphQLError('API_ERROR')
 
-            if (conditionsByEncounter.entry == null) {
-                metrics.numberOfDiagnosesFetched.observe(0)
-                return []
-            }
-
-            const conditionList = conditionsByEncounter.entry.map((it) => it.resource)
-            metrics.numberOfDiagnosesFetched.observe(conditionList.length)
-
-            return fhirDiagnosisToRelevantDiagnosis(conditionList)
+            return diagnosis
         },
     },
     ...commonObjectResolvers,

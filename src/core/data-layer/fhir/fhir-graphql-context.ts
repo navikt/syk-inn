@@ -9,7 +9,7 @@ import { assertIsPilotUser } from '../common/pilot-user-utils'
 import { CommonGraphqlContext } from '../graphql/common-context'
 import { getCurrentPatientFromExtension } from '../graphql/yoga-utils'
 
-import { getBehandler } from './resources/fhir-resources-service'
+import { getBehandler, isResourceError } from './resources/fhir-resources-service'
 import { getReadyClient } from './smart/ready-client'
 
 const OtelNamespace = 'GraphQL(FHIR).context'
@@ -34,8 +34,8 @@ export const createFhirResolverContext = async (context: YogaInitialContext): Pr
         }
 
         const behandler = await getBehandler(client)
-        if (behandler == null) {
-            failSpan(span, 'No valid HPR or request failed')
+        if (isResourceError(behandler)) {
+            failSpan(span, `No valid HPR or request failed: ${behandler.error}`)
             throw NoSmartSession()
         }
 

@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 
 import { createTypstSykmelding } from '#core/pdf/pdf-service'
 import { sykInnApiClient } from '#core/services/syk-inn-api/syk-inn-api-client'
-import { getBehandler } from '#data-layer/fhir/resources/fhir-resources-service'
+import { getBehandler, isResourceError } from '#data-layer/fhir/resources/fhir-resources-service'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
@@ -19,8 +19,8 @@ export async function GET(
         }
 
         const behandler = await getBehandler(client)
-        if (behandler == null) {
-            failSpan(span, `Failed to get behandler from FHIR`)
+        if (isResourceError(behandler)) {
+            failSpan(span, `Failed to get behandler from FHIR: ${behandler.error}`)
             return new Response('Internal server error', { status: 500 })
         }
 

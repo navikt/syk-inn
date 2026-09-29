@@ -7,7 +7,7 @@ import { LegeOgBehandlerTelefonen } from '#components/help/LegeOgBehandlerTelefo
 import { PageLayout } from '#components/layout/Page'
 import { createFhirPaths } from '#core/providers/ModePaths'
 import { hasAcceptedBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
-import { getHprFromFhir, getNameFromFhir, isValidIdent } from '#data-layer/fhir/resources/mappers/identifiers'
+import { getBehandler, isResourceError } from '#data-layer/fhir/resources/fhir-resources-service'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { Bruksvilkar } from '#features/bruksvilkar/Bruksvilkar'
 
@@ -30,27 +30,20 @@ async function BruksvilkarWithData({ patientId }: { patientId: string }): Promis
         return <BruksvilkarError />
     }
 
-    const practitioner = await readyClient.user.request()
-    if ('error' in practitioner) {
-        logger.error(`Tried to load bruksvilkår, got ${practitioner.error}`)
+    const behandler = await getBehandler(readyClient)
+    if (isResourceError(behandler)) {
+        logger.error(`Tried to load bruksvilkår, behandler failed: ${behandler.error}`)
         return <BruksvilkarError />
     }
 
-    const hpr = getHprFromFhir(practitioner.identifier)
-    if (!isValidIdent(hpr)) {
-        logger.error(`Tried to load bruksvilkår, got practitioner without HPR: ${practitioner.id} (${hpr.details})`)
-        return <BruksvilkarError />
-    }
-
-    const acceptedBruksvilkar = await hasAcceptedBruksvilkar(hpr)
-    const practitionerName = getNameFromFhir(practitioner.name)
+    const acceptedBruksvilkar = await hasAcceptedBruksvilkar(behandler.hpr)
 
     return (
         <Bruksvilkar
             paths={R.pick(createFhirPaths(patientId), ['root', 'bruksvilkar'])}
             accepter={{
-                hpr: hpr,
-                name: typeof practitionerName === 'string' ? practitionerName : 'Ukjent behandlernavn',
+                hpr: behandler.hpr,
+                name: behandler.navn,
             }}
             accepted={
                 acceptedBruksvilkar?.acceptedAt != null

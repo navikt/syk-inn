@@ -1,18 +1,16 @@
 import { logger } from '@navikt/next-logger'
-import { GraphQLError } from 'graphql/error'
 import { NextRequest, NextResponse } from 'next/server'
 import * as z from 'zod'
 
 import { acceptBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
 import {
-    getHprFromFhir,
-    getNameFromFhir,
-    isValidIdent,
-    isValidName,
-} from '#data-layer/fhir/resources/mappers/identifiers'
-import { getOrganisasjonsnummerFromFhir } from '#data-layer/fhir/resources/mappers/organization'
+    getBehandler,
+    getExtendedBehandlerMeta,
+    isResourceError,
+} from '#data-layer/fhir/resources/fhir-resources-service'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { bundledEnv } from '#lib/env'
+import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 const PayloadSchema = z.object({
     version: z.templateLiteral([z.number(), '.', z.number()]),
@@ -24,61 +22,37 @@ type ResponsePayload = {
 }
 
 export async function PUT(request: NextRequest): Promise<Response> {
-    const body = PayloadSchema.parse(await request.json())
-    const patientIdQueryParam = request.nextUrl.searchParams.get('patientId')
+    return spanServerAsync('bruksvilkar.accept', async (span) => {
+        const body = PayloadSchema.parse(await request.json())
+        const patientIdQueryParam = request.nextUrl.searchParams.get('patientId')
 
-    if (!patientIdQueryParam) {
-        logger.error('Missing patientId query parameter')
-        return NextResponse.json({ error: 'MISSING_PATIENT_ID' }, { status: 400 })
-    }
+        if (!patientIdQueryParam) {
+            logger.error('Missing patientId query parameter')
+            return NextResponse.json({ error: 'MISSING_PATIENT_ID' }, { status: 400 })
+        }
 
-    const readyClient = await getReadyClient(patientIdQueryParam)
-    if ('error' in readyClient) {
-        logger.error(`Tried to accept bruksvilkår, got ${readyClient.error}`)
-        return NextResponse.json({ error: readyClient.error }, { status: 401 })
-    }
+        const readyClient = await getReadyClient(patientIdQueryParam)
+        if ('error' in readyClient) {
+            logger.error(`Tried to accept bruksvilkår, got ${readyClient.error}`)
+            return NextResponse.json({ error: readyClient.error }, { status: 401 })
+        }
 
-    const practitioner = await readyClient.user.request()
-    if ('error' in practitioner) {
-        logger.error(`Tried to accept bruksvilkår, got ${practitioner.error}`)
-        return NextResponse.json({ error: practitioner.error }, { status: 401 })
-    }
+        const [behandler, behandlerMeta] = await Promise.all([
+            getBehandler(readyClient),
+            getExtendedBehandlerMeta(readyClient),
+        ])
 
-    const hpr = getHprFromFhir(practitioner.identifier)
-    if (!isValidIdent(hpr)) {
-        logger.error(`Tried to accept bruksvilkår, got practitioner without HPR: ${practitioner.id}`)
-        return NextResponse.json({ error: 'NO_HPR' }, { status: 401 })
-    }
+        if (isResourceError(behandler) || isResourceError(behandlerMeta)) {
+            failSpan(span, 'Missing behandler or behandlerMeta')
+            return NextResponse.json({ error: 'MISSING_BEHANDLER_OR_META' }, { status: 500 })
+        }
 
-    const encounter = await readyClient.encounter.request()
-    if ('error' in encounter) {
-        logger.error(`Tried to accept bruksvilkår, got ${encounter.error}`)
-        throw new GraphQLError('API_ERROR')
-    }
+        const accept: ResponsePayload = await acceptBruksvilkar(
+            body.version,
+            { hpr: behandler.hpr, name: behandler.navn, orgnummer: behandlerMeta.orgnummer },
+            { system: readyClient.issuerName, commmitHash: bundledEnv.NEXT_PUBLIC_VERSION ?? 'missing' },
+        )
 
-    const organization = await readyClient.request(encounter.serviceProvider.reference as `Organization/${string}`)
-    if ('error' in organization) {
-        logger.error(`Tried to accept bruksvilkår, got ${organization.error}`)
-        throw new GraphQLError('API_ERROR')
-    }
-
-    const orgnummer = getOrganisasjonsnummerFromFhir(organization)
-    if (orgnummer == null) {
-        logger.error('Organization without valid orgnummer')
-        throw new GraphQLError('API_ERROR')
-    }
-
-    const practitionerName = getNameFromFhir(practitioner.name)
-    if (!isValidName(practitionerName)) {
-        logger.error(`Practitioner without valid name: ${practitionerName.error}`)
-        throw new GraphQLError('API_ERROR')
-    }
-
-    const accept: ResponsePayload = await acceptBruksvilkar(
-        body.version,
-        { hpr, orgnummer, name: practitionerName },
-        { system: readyClient.issuerName, commmitHash: bundledEnv.NEXT_PUBLIC_VERSION ?? 'missing' },
-    )
-
-    return Response.json(accept)
+        return Response.json(accept)
+    })
 }
