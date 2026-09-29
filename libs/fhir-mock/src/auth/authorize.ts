@@ -7,7 +7,6 @@ import * as R from 'remeda'
 import { getConfig, getMockSessionStore } from '../config'
 import { MockOrganizations } from '../data/organization'
 import { MockPatients } from '../data/patients'
-import { MockPractitioners } from '../data/practitioner'
 import { fhirLogger } from '../logger'
 import { MockLaunchType } from '../server-launch-types'
 
@@ -55,18 +54,16 @@ export function authorize(request: HonoRequest, context: Context): Response {
 
     const launchParts = launch.split(':')
     const launchPatient: MockPatients = launchParts[1] as MockPatients
-    const launchPractitioner: MockPractitioners = (launchParts[2] as MockPractitioners) || 'Magnar Koman'
-    const launchOrganization: MockOrganizations = (launchParts[3] as MockOrganizations) || 'Magnar Legekontor'
-    const withFrame: boolean = launchParts[4] === 'with-frame'
+    const launchOrganization: MockOrganizations = (launchParts[2] as MockOrganizations) || 'Magnar Legekontor'
+    const withFrame: boolean = launchParts[3] === 'with-frame'
 
-    if (!launchPatient || !launchOrganization || !launchPractitioner) {
+    if (!launchPatient || !launchOrganization) {
         throw Error(`Unknown local dev launch, launch string: ${launch}?`)
     }
 
     const notATokenCode = randomUUID()
     getMockSessionStore().initializeLaunch(notATokenCode, {
         patient: launchPatient,
-        practitioner: launchPractitioner,
         organization: launchOrganization,
     })
 

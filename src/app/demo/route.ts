@@ -6,5 +6,5 @@ import { isDemo } from '#lib/env'
 export function GET(): void {
     if (!isDemo) notFound()
 
-    redirect(createFhirScenarioUrl('demo', 'Espen Eksempel', 'Magnar Koman', 'Magnar Legekontor', false))
+    redirect(createFhirScenarioUrl('demo', 'Espen Eksempel', 'Magnar Legekontor', false))
 }

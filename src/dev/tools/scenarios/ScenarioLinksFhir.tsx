@@ -2,7 +2,7 @@
 
 import { FlowerPetalsIcon, PlayIcon } from '@navikt/aksel-icons'
 import { Heading, Link, LinkCard, Loader, Modal, Select, Switch } from '@navikt/ds-react'
-import { MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
+import { MockOrganizations, MockPatients } from '@navikt/fhir-mock-server/types'
 import Image from 'next/image'
 import { parseAsBoolean, parseAsString, useQueryState } from 'nuqs'
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
@@ -18,10 +18,6 @@ export function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: bo
     const [patient, setPatient] = useQueryState(
         'patient',
         parseAsString.withDefault('Espen Eksempel' satisfies MockPatients).withOptions({ clearOnDefault: true }),
-    )
-    const [practitioner, setPractitioner] = useQueryState(
-        'practitioner',
-        parseAsString.withDefault('').withOptions({ clearOnDefault: true }),
     )
     const [organization, setOrganization] = useQueryState(
         'organization',
@@ -72,7 +68,6 @@ export function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: bo
                         type="button"
                         onClick={() => {
                             void setPatient('Espen Eksempel' satisfies MockPatients)
-                            void setPractitioner('')
                             void setOrganization('')
                         }}
                     >
@@ -94,7 +89,7 @@ export function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: bo
                         <LinkCard.Anchor
                             ref={justLaunchRef}
                             href={pathWithBasePath(
-                                `${fhirLaunchUrl}&launch=${buildFhirLaunchParam(patient as MockPatients, (practitioner || 'Magnar Koman') as MockPractitioners, (organization || 'Magnar Legekontor') as MockOrganizations, frame)}`,
+                                `${fhirLaunchUrl}&launch=${buildFhirLaunchParam(patient as MockPatients, (organization || 'Magnar Legekontor') as MockOrganizations, frame)}`,
                             )}
                             onClick={() => setIsLaunching('keep previous')}
                         >
@@ -115,7 +110,6 @@ export function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: bo
                                 href={createFhirScenarioUrl(
                                     scenarioKey,
                                     patient as MockPatients,
-                                    (practitioner || 'Magnar Koman') as MockPractitioners,
                                     (organization || 'Magnar Legekontor') as MockOrganizations,
                                     frame,
                                 )}
@@ -147,7 +141,7 @@ export function ScenarioLinksFhir({ defaultFrameValue }: { defaultFrameValue: bo
                         <dt className="font-medium text-bold">Patient</dt>
                         <dd className="italic">{patient}</dd>
                         <dt className="font-medium text-bold">Practitioner</dt>
-                        <dd className="italic">{practitioner || 'Default (Magnar Koman)'}</dd>
+                        <dd className="italic">Magnar Koman</dd>
                         <dt className="font-medium text-bold">Organization</dt>
                         <dd className="italic">{organization || 'Default (Magnar Legekontor)'}</dd>
                     </dl>

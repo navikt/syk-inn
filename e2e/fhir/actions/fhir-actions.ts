@@ -1,4 +1,4 @@
-import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
+import { MockLaunchType, MockOrganizations, MockPatients } from '@navikt/fhir-mock-server/types'
 import { test, Page } from '@playwright/test'
 
 import { Scenarios } from '#dev/mock-engine/scenarios/scenarios'
@@ -12,17 +12,14 @@ const launchUrl = `${launchPath}?iss=http://localhost:3000/api/mocks/fhir`
 type AdditionalOptions =
     | {
           patient?: MockPatients
-          practitioner?: null
           organization?: null
       }
     | {
           patient: MockPatients
-          practitioner?: MockPractitioners
           organization?: null
       }
     | {
           patient: MockPatients
-          practitioner: MockPractitioners
           organization: MockOrganizations
       }
 

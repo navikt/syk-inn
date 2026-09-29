@@ -1,4 +1,4 @@
-import { MockLaunchType, MockOrganizations, MockPatients, MockPractitioners } from '@navikt/fhir-mock-server/types'
+import { MockLaunchType, MockOrganizations, MockPatients } from '@navikt/fhir-mock-server/types'
 
 import { getAbsoluteURL, pathWithBasePath } from '#lib/url'
 
@@ -7,24 +7,22 @@ export const fhirLaunchUrl = `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/
 export function createFhirScenarioUrl(
     scenario: string,
     patient: MockPatients,
-    practitioner: MockPractitioners,
     organization: MockOrganizations,
     frame: boolean,
 ): string {
     return pathWithBasePath(
         `/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(
-            `${fhirLaunchUrl}&launch=${buildFhirLaunchParam(patient as MockPatients, practitioner, organization, frame)}`,
+            `${fhirLaunchUrl}&launch=${buildFhirLaunchParam(patient as MockPatients, organization, frame)}`,
         )}`,
     )
 }
 
 export function buildFhirLaunchParam(
     patient: MockPatients,
-    practitioner: MockPractitioners,
     organization: MockOrganizations,
     frame: boolean,
 ): MockLaunchType {
-    return `local-dev-launch:${patient}:${practitioner}:${organization}:${frame ? 'with-frame' : 'no-frame'}`
+    return `local-dev-launch:${patient}:${organization}:${frame ? 'with-frame' : 'no-frame'}`
 }
 
 export function createHelseIDScenarioUrl(scenario: string): string {
