@@ -41,10 +41,6 @@ const devToggles: Record<ExpectedToggles, IToggle> = {
         name: 'SYK_INN_FEEDBACK_KVITTERING',
         ...off,
     },
-    SYK_INN_REQUIRE_BRUKSVILKAR: {
-        name: 'SYK_INN_REQUIRE_BRUKSVILKAR',
-        ...off,
-    },
     SYK_INN_STRUCTURED_FHIR: {
         name: 'SYK_INN_STRUCTURED_FHIR',
         ...on,

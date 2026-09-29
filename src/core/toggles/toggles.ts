@@ -15,5 +15,4 @@ export const EXPECTED_TOGGLES = [
 
     // Functional toggles
     'SYK_INN_FEEDBACK_KVITTERING',
-    'SYK_INN_REQUIRE_BRUKSVILKAR',
 ] as const
