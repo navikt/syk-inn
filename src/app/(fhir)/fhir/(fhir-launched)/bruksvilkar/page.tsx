@@ -7,7 +7,7 @@ import { LegeOgBehandlerTelefonen } from '#components/help/LegeOgBehandlerTelefo
 import { PageLayout } from '#components/layout/Page'
 import { createFhirPaths } from '#core/providers/ModePaths'
 import { hasAcceptedBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
-import { getBehandler, isResourceError } from '#data-layer/fhir/resources/fhir-resources-service'
+import { fhirResourcesService, isResourceError } from '#data-layer/fhir/resources/fhir-resources-service'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { Bruksvilkar } from '#features/bruksvilkar/Bruksvilkar'
 
@@ -30,7 +30,7 @@ async function BruksvilkarWithData({ patientId }: { patientId: string }): Promis
         return <BruksvilkarError />
     }
 
-    const behandler = await getBehandler(readyClient)
+    const behandler = await fhirResourcesService.getBehandler(readyClient)
     if (isResourceError(behandler)) {
         logger.error(`Tried to load bruksvilkår, behandler failed: ${behandler.error}`)
         return <BruksvilkarError />

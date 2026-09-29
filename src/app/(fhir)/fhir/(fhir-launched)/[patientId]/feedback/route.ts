@@ -2,7 +2,7 @@ import { logger } from '@navikt/next-logger'
 import { NextRequest } from 'next/server'
 
 import { handleFeedback } from '#core/services/feedback/feedback-service'
-import { getBehandler, isResourceError } from '#data-layer/fhir/resources/fhir-resources-service'
+import { fhirResourcesService, isResourceError } from '#data-layer/fhir/resources/fhir-resources-service'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
@@ -18,7 +18,7 @@ export async function POST(
             return Response.json({ message: client.error }, { status: 500 })
         }
 
-        const behandler = await getBehandler(client)
+        const behandler = await fhirResourcesService.getBehandler(client)
         if (isResourceError(behandler)) {
             failSpan(span, `Failed to fetch practitioner resource: ${behandler.error}`)
             return Response.json({ message: 'Failed to fetch practitioner resource' }, { status: 500 })

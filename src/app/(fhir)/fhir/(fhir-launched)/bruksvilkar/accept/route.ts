@@ -3,11 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import * as z from 'zod'
 
 import { acceptBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
-import {
-    getBehandler,
-    getExtendedBehandlerMeta,
-    isResourceError,
-} from '#data-layer/fhir/resources/fhir-resources-service'
+import { fhirResourcesService, isResourceError } from '#data-layer/fhir/resources/fhir-resources-service'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { bundledEnv } from '#lib/env'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
@@ -38,8 +34,8 @@ export async function PUT(request: NextRequest): Promise<Response> {
         }
 
         const [behandler, behandlerMeta] = await Promise.all([
-            getBehandler(readyClient),
-            getExtendedBehandlerMeta(readyClient),
+            fhirResourcesService.getBehandler(readyClient),
+            fhirResourcesService.getExtendedBehandlerMeta(readyClient),
         ])
 
         if (isResourceError(behandler) || isResourceError(behandlerMeta)) {
