@@ -28,12 +28,7 @@ type AdditionalOptions =
 
 export function launchWithMock(
     scenario: Scenarios = 'normal',
-    {
-        patient = 'Espen Eksempel',
-        practitioner = null,
-        organization = null,
-        ...toggleOverrides
-    }: ToggleOverrides & AdditionalOptions = {
+    { patient = 'Espen Eksempel', organization = null, ...toggleOverrides }: ToggleOverrides & AdditionalOptions = {
         patient: 'Espen Eksempel',
     },
 ) {
@@ -49,24 +44,19 @@ export function launchWithMock(
         if (scenario != 'normal') {
             await test.step(`Launch scenario ${scenario} (${patient})`, async () => {
                 await page.goto(
-                    `/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(`${launchUrl}&launch=${buildLaunchParam(patient, practitioner, organization)}`)}`,
+                    `/dev/set-scenario/${scenario}?returnTo=${encodeURIComponent(`${launchUrl}&launch=${buildLaunchParam(patient, organization)}`)}`,
                 )
             })
         } else {
             await test.step(`Launch FHIR mock with default scenario (normal, ${patient})`, async () => {
-                await page.goto(`${launchUrl}&launch=${buildLaunchParam(patient, practitioner, organization)}`)
+                await page.goto(`${launchUrl}&launch=${buildLaunchParam(patient, organization)}`)
             })
         }
     }
 }
 
-function buildLaunchParam(
-    patient: MockPatients,
-    practitioner: MockPractitioners | null,
-    organization: MockOrganizations | null,
-): MockLaunchType {
+function buildLaunchParam(patient: MockPatients, organization: MockOrganizations | null): MockLaunchType {
     let launch = `local-dev-launch:${patient}`
-    if (practitioner) launch += `:${practitioner}`
     if (organization) launch += `:${organization}`
     return launch as MockLaunchType
 }

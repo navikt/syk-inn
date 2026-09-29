@@ -3,12 +3,10 @@ import { expect, Page, test } from '@playwright/test'
 import { launchMode, modes, onMode } from './modes'
 
 modes.forEach(({ mode }) => {
-    test(`${mode}: when bruksvilkår toggle is on, user should be automatically redirected to bruksvilkår page`, async ({
+    test(`${mode}: when user has not signed bruksvilkår, they should be redirected to bruksvilkår page`, async ({
         page,
     }) => {
-        await launchMode(mode, 'noop', 'normal', {
-            SYK_INN_REQUIRE_BRUKSVILKAR: true,
-        })(page)
+        await launchMode(mode, 'noop', 'unsigned-bruksvilkar')(page)
 
         const bruksvilkår = page.getByRole('region', { name: /Bruksvilkår for applikasjonen/ })
         await expect(bruksvilkår.getByRole('heading', { name: 'Bruksvilkår', exact: true })).toBeVisible()
@@ -17,9 +15,7 @@ modes.forEach(({ mode }) => {
     })
 
     test(`${mode}: accepting the bruksvilkår should allow you to return to the patient`, async ({ page }) => {
-        await launchMode(mode, 'noop', 'normal', {
-            SYK_INN_REQUIRE_BRUKSVILKAR: true,
-        })(page)
+        await launchMode(mode, 'noop', 'unsigned-bruksvilkar')(page)
 
         const accept = await expectBehandler()(page)
 

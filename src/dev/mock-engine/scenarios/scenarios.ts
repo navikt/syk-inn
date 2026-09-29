@@ -11,6 +11,7 @@ export type Scenario = {
     sykmeldinger: (SykInnApiSykmelding | SykInnApiSykmeldingRedacted)[]
     arbeidsforhold: AaregArbeidsforhold[]
     drafts: ScenarioDraft[]
+    needsBruksvilkar?: boolean
 }
 
 type ScenarioCreator = () => Scenario
@@ -26,6 +27,15 @@ const simpleScenarios = {
                 new SykmeldingBuilder({ offset: -50 }).enkelAktivitet({ offset: 0, days: 7 }).build(),
                 new SykmeldingBuilder({ offset: -90 }).enkelAktivitet({ offset: 0, days: 7 }).build(),
             ],
+            arbeidsforhold: simpleAaregArbeidsforhold,
+            drafts: [],
+        }),
+    },
+    'unsigned-bruksvilkar': {
+        description: 'User with a current sykmelding, but has not signed bruksvilkår',
+        scenario: () => ({
+            needsBruksvilkar: true,
+            sykmeldinger: [],
             arbeidsforhold: simpleAaregArbeidsforhold,
             drafts: [],
         }),

@@ -94,10 +94,10 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [multi-mode/bruksvilkar.spec.ts](./multi-mode/bruksvilkar.spec.ts)
 
-- [FHIR: when bruksvilkår toggle is on, user should be automatically redirected to bruksvilkår page](./multi-mode/bruksvilkar.spec.ts#L6)
-- [FHIR: accepting the bruksvilkår should allow you to return to the patient](./multi-mode/bruksvilkar.spec.ts#L19)
-- [Standalone: when bruksvilkår toggle is on, user should be automatically redirected to bruksvilkår page](./multi-mode/bruksvilkar.spec.ts#L6)
-- [Standalone: accepting the bruksvilkår should allow you to return to the patient](./multi-mode/bruksvilkar.spec.ts#L19)
+- [FHIR: when user has not signed bruksvilkår, they should be redirected to bruksvilkår page](./multi-mode/bruksvilkar.spec.ts#L6)
+- [FHIR: accepting the bruksvilkår should allow you to return to the patient](./multi-mode/bruksvilkar.spec.ts#L17)
+- [Standalone: when user has not signed bruksvilkår, they should be redirected to bruksvilkår page](./multi-mode/bruksvilkar.spec.ts#L6)
+- [Standalone: accepting the bruksvilkår should allow you to return to the patient](./multi-mode/bruksvilkar.spec.ts#L17)
 
 ## [multi-mode/form-aareg.spec.ts](./multi-mode/form-aareg.spec.ts)
 

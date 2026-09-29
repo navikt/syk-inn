@@ -52,6 +52,15 @@ export class MockEngine {
                 draft.lastUpdated,
             )
         }
+
+        if (this.scenario.needsBruksvilkar !== true) {
+            await this.bruksvilkarClient.acceptBruksvilkar(
+                '1.0',
+                { hpr: '9144889', name: 'Magnar Koman', orgnummer: null },
+                { system: 'mock', commmitHash: 'mock' },
+            )
+        }
+
         this.initialized = true
     }
 }

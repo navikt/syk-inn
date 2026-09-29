@@ -132,13 +132,11 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
             redirect('/fhir/error/non-pilot-user')
         }
 
-        const requireBruksvilkarToggle = getFlag('SYK_INN_REQUIRE_BRUKSVILKAR', toggles)
         const acceptedBruksvilkar = await hasAcceptedBruksvilkar(behandler.hpr)
         span.setAttribute('PilotUser.bruskvilkar.acceptedAt', acceptedBruksvilkar?.acceptedAt ?? 'never')
         span.setAttribute('PilotUser.bruksvilkar.stale', acceptedBruksvilkar?.stale ? 'yes' : 'no')
-        span.setAttribute('PilotUser.bruksvilkar.toggledOn', requireBruksvilkarToggle ? 'yes' : 'no')
 
-        if (requireBruksvilkarToggle && (acceptedBruksvilkar?.acceptedAt == null || acceptedBruksvilkar.stale)) {
+        if (acceptedBruksvilkar?.acceptedAt == null || acceptedBruksvilkar.stale) {
             logger.info(
                 `User needs to sign (is stale: ${acceptedBruksvilkar?.stale ? 'yes' : 'no'}) the bruksvilkår, HPR: ${behandler.hpr})`,
             )
