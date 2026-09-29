@@ -19,7 +19,6 @@ import { fhirLogger } from './logger'
 
 type LaunchPayload = {
     patient: MockPatients
-    practitioner: MockPractitioners
     organization: MockOrganizations
 }
 
@@ -49,9 +48,7 @@ export class FhirMockSession {
     }
 
     initializeLaunch(code: string, payload: LaunchPayload): void {
-        fhirLogger.warn(
-            `Initializing launch ${code} for patient ${payload.patient} (${payload.practitioner}/${payload.organization})`,
-        )
+        fhirLogger.warn(`Initializing launch ${code} for patient ${payload.patient} (${payload.organization})`)
 
         this.launches[code] = payload
     }

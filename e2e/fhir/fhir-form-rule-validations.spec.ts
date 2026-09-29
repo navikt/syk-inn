@@ -8,7 +8,6 @@ import { startNewSykmelding } from './actions/fhir-user-actions'
 test('UGYLDIG_ORGNR_LENGDE', async ({ page }) => {
     await launchWithMock('normal', {
         patient: 'Espen Eksempel',
-        practitioner: 'Magnar Koman',
         organization: 'Karlsrud',
     })(page)
     await startNewSykmelding()(page)

@@ -59,7 +59,7 @@ export default async function Home(): Promise<ReactElement> {
                                     </LinkCardIcon>
                                     <LinkCardTitle>
                                         <LinkCardAnchor
-                                            href={`${fhirLaunchUrl}&launch=${buildFhirLaunchParam('Espen Eksempel', 'Magnar Koman', 'Magnar Legekontor', false)}`}
+                                            href={`${fhirLaunchUrl}&launch=${buildFhirLaunchParam('Espen Eksempel', 'Magnar Legekontor', false)}`}
                                         >
                                             FHIR with syk-inn-api!
                                         </LinkCardAnchor>
