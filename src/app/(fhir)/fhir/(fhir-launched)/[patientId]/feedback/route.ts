@@ -2,12 +2,7 @@ import { logger } from '@navikt/next-logger'
 import { NextRequest } from 'next/server'
 
 import { handleFeedback } from '#core/services/feedback/feedback-service'
-import {
-    getHprFromFhir,
-    getNameFromFhir,
-    isValidIdent,
-    isValidName,
-} from '#data-layer/fhir/resources/mappers/identifiers'
+import { getBehandler, isResourceError } from '#data-layer/fhir/resources/fhir-resources-service'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
@@ -22,28 +17,18 @@ export async function POST(
             failSpan(span, 'Failed to get FHIR client', new Error(client.error))
             return Response.json({ message: client.error }, { status: 500 })
         }
-        const practitioner = await client.user.request()
-        if ('error' in practitioner) {
-            failSpan(span, 'Failed to fetch practitioner resource', new Error(practitioner.error))
-            return Response.json({ message: practitioner.error }, { status: 500 })
-        }
 
-        const hpr = getHprFromFhir(practitioner.identifier)
-        if (!isValidIdent(hpr)) {
-            failSpan(span, `Missing HPR identifier in practitioner resource: ${hpr.details}`)
-            return Response.json({ message: 'Vi fant ikke et gyldig HPR nummer' }, { status: 500 })
-        }
-        const behandlerName = getNameFromFhir(practitioner.name)
-        if (!isValidName(behandlerName)) {
-            failSpan(span, `Missing name in practitioner resource: ${behandlerName.error}`)
-            return Response.json({ message: 'Vi fant ikke et gyldig navn' }, { status: 500 })
+        const behandler = await getBehandler(client)
+        if (isResourceError(behandler)) {
+            failSpan(span, `Failed to fetch practitioner resource: ${behandler.error}`)
+            return Response.json({ message: 'Failed to fetch practitioner resource' }, { status: 500 })
         }
 
         logger.info('Received feedback with HPR and name!')
         const json = await request.json()
         const feedback = await handleFeedback(json, {
-            hpr: hpr,
-            name: behandlerName,
+            hpr: behandler.hpr,
+            name: behandler.navn,
             system: client.issuerName,
         })
 

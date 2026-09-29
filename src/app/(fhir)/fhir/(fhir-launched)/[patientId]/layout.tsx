@@ -14,13 +14,7 @@ import { AutoPatient } from '#core/redux/reducers/ny-sykmelding/patient'
 import { hasAcceptedBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
 import { ToggleProvider } from '#core/toggles/context'
 import { getFlag, getUserToggles, toToggleMap } from '#core/toggles/unleash'
-import {
-    getNameFromFhir,
-    getIdentFromFhir,
-    getHprFromFhir,
-    isValidIdent,
-    isValidName,
-} from '#data-layer/fhir/resources/mappers/identifiers'
+import { getBehandler, getPasient, isResourceError } from '#data-layer/fhir/resources/fhir-resources-service'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { LazyDevTools } from '#dev/tools/LazyDevTools'
 import { isDemo, isDevGcp, isLocal } from '#lib/env'
@@ -100,71 +94,57 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
             return { error: 'NO_HELSEID' }
         }
 
-        const [practitioner, patient] = await Promise.all([readyClient.user.request(), readyClient.patient.request()])
+        const [behandler, pasient] = await Promise.all([getBehandler(readyClient), getPasient(readyClient)])
 
-        if ('error' in practitioner) {
-            failSpan.silently(span, practitioner.error)
+        if (isResourceError(behandler)) {
+            failSpan.silently(span, behandler.error)
+
+            if (behandler.error === 'NO_HPR') return { error: 'NO_HPR' }
             return { error: 'NO_SESSION' }
         }
 
-        if ('error' in patient) {
-            failSpan(span, patient.error)
+        if (isResourceError(pasient)) {
+            failSpan.silently(span, pasient.error)
             return { error: 'NO_PATIENT' }
         }
 
-        const hpr = getHprFromFhir(practitioner.identifier)
-        if (!isValidIdent(hpr)) {
-            logger.warn(
-                `Practitioner does not have HPR (${hpr.details}), practitioner: ${JSON.stringify(practitioner)}`,
-            )
-            return { error: 'NO_HPR' }
-        }
-
         const helseIdBehandler = await getHelseIdBehandler()
-        if (hpr === helseIdBehandler?.hpr) {
+        if (behandler.hpr === helseIdBehandler?.hpr) {
             logger.info(`HPR matches between FHIR practitioner and HelseID`)
         } else {
-            logger.error(`HPR mismatch between FHIR practitioner (${hpr}) and HelseID (${helseIdBehandler?.hpr})`)
+            logger.error(
+                `HPR mismatch between FHIR practitioner (${behandler.hpr}) and HelseID (${helseIdBehandler?.hpr})`,
+            )
         }
 
-        metrics.appLoadsTotal.inc({ hpr: hpr, mode: 'FHIR' })
+        metrics.appLoadsTotal.inc({ hpr: behandler.hpr, mode: 'FHIR' })
 
-        const toggles = await spanServerAsync('FHIR.getRootFhirData.toggles', async () => await getUserToggles(hpr))
+        const toggles = await spanServerAsync(
+            'FHIR.getRootFhirData.toggles',
+            async () => await getUserToggles(behandler.hpr),
+        )
         if (!getFlag('PILOT_USER', toggles)) {
-            logger.warn(`Non-pilot user has accessed the app, HPR: ${hpr}`)
+            logger.warn(`Non-pilot user has accessed the app, HPR: ${behandler.hpr}`)
 
             redirect('/fhir/error/non-pilot-user')
         }
 
         const requireBruksvilkarToggle = getFlag('SYK_INN_REQUIRE_BRUKSVILKAR', toggles)
-        const acceptedBruksvilkar = await hasAcceptedBruksvilkar(hpr)
+        const acceptedBruksvilkar = await hasAcceptedBruksvilkar(behandler.hpr)
         span.setAttribute('PilotUser.bruskvilkar.acceptedAt', acceptedBruksvilkar?.acceptedAt ?? 'never')
         span.setAttribute('PilotUser.bruksvilkar.stale', acceptedBruksvilkar?.stale ? 'yes' : 'no')
         span.setAttribute('PilotUser.bruksvilkar.toggledOn', requireBruksvilkarToggle ? 'yes' : 'no')
 
         if (requireBruksvilkarToggle && (acceptedBruksvilkar?.acceptedAt == null || acceptedBruksvilkar.stale)) {
             logger.info(
-                `User needs to sign (is stale: ${acceptedBruksvilkar?.stale ? 'yes' : 'no'}) the bruksvilkår, HPR: ${hpr})`,
+                `User needs to sign (is stale: ${acceptedBruksvilkar?.stale ? 'yes' : 'no'}) the bruksvilkår, HPR: ${behandler.hpr})`,
             )
 
             redirect(`/fhir/bruksvilkar?returnTo=${currentPatientId}`)
         }
 
-        const navn = getNameFromFhir(patient.name)
-        const ident = getIdentFromFhir(patient.identifier)
-
-        if (!isValidName(navn)) {
-            failSpan(span, `Patient without valid name: ${navn.error}`)
-            return { error: 'NO_PATIENT' }
-        }
-
-        if (!isValidIdent(ident)) {
-            failSpan(span, `Patient without valid FNR/DNR: ${ident.error}, ${ident.details}`)
-            return { error: 'NO_PATIENT' }
-        }
-
         return {
-            pasient: { type: 'auto', navn, ident },
+            pasient: { type: 'auto', navn: pasient.navn, ident: pasient.ident },
             acceptedBruksvilkarAt: acceptedBruksvilkar?.acceptedAt ?? null,
             toggles,
         } satisfies RootFhirData
