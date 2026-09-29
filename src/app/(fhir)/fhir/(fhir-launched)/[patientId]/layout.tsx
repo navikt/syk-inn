@@ -14,7 +14,7 @@ import { AutoPatient } from '#core/redux/reducers/ny-sykmelding/patient'
 import { hasAcceptedBruksvilkar } from '#core/services/bruksvilkar/bruksvilkar-service'
 import { ToggleProvider } from '#core/toggles/context'
 import { getFlag, getUserToggles, toToggleMap } from '#core/toggles/unleash'
-import { getBehandler, getPasient, isResourceError } from '#data-layer/fhir/resources/fhir-resources-service'
+import { fhirResourcesService, isResourceError } from '#data-layer/fhir/resources/fhir-resources-service'
 import { getReadyClient } from '#data-layer/fhir/smart/ready-client'
 import { LazyDevTools } from '#dev/tools/LazyDevTools'
 import { isDemo, isDevGcp, isLocal } from '#lib/env'
@@ -94,7 +94,10 @@ async function getRootFhirData(currentPatientId: string): Promise<RootFhirData> 
             return { error: 'NO_HELSEID' }
         }
 
-        const [behandler, pasient] = await Promise.all([getBehandler(readyClient), getPasient(readyClient)])
+        const [behandler, pasient] = await Promise.all([
+            fhirResourcesService.getBehandler(readyClient),
+            fhirResourcesService.getPasient(readyClient),
+        ])
 
         if (isResourceError(behandler)) {
             failSpan.silently(span, behandler.error)
