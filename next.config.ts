@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
     reactStrictMode: true,
     assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
+    /**
+     * When building multiple versions, one for each env, we want to provide a buildId based on the hash.
+     *
+     * See: https://nextjs.org/docs/app/guides/self-hosting#build-cache
+     */
+    generateBuildId: () => process.env.GITHUB_SHA ?? null,
     transpilePackages: ['@navikt/fhir-mock-server', '@navikt/helseid-mock-server'],
     serverExternalPackages: [
         '@navikt/next-logger',
