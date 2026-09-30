@@ -30,6 +30,8 @@ export default defineConfig({
         alias: {
             // Required to fix multi-realm issues in tests, see: https://github.com/vitest-dev/vitest/issues/4605
             'graphql/execution': 'graphql/execution/index.js',
+            'graphql/error': 'graphql/error/index.js',
+            'graphql/type': 'graphql/type/index.js',
             graphql: 'graphql/index.js',
         },
     },
