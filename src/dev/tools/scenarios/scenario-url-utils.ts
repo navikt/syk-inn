@@ -1,5 +1,4 @@
-import { MockLaunchType, MockOrganizations, MockPatients } from '@navikt/fhir-mock-server/types'
-
+import { MockLaunchType, MockOrganizations, MockPatients } from '#fhir-mock-server/types'
 import { getAbsoluteURL, pathWithBasePath } from '#lib/url'
 
 export const fhirLaunchUrl = `/fhir/launch?iss=${`${getAbsoluteURL()}/api/mocks/fhir`}` as const

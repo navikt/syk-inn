@@ -20,6 +20,7 @@ export default defineConfig({
                     { path: 'src/components', depth: 1 },
                     { path: 'src/lib', depth: 1 },
                     { path: 'src/dev', depth: 1 },
+                    { path: 'src/dev/mocks', depth: 2 },
                     { path: 'src/core', depth: 1 },
                     { path: 'src/features/ny-sykmelding-form', depth: 1 },
                     { path: 'src/features/ny-sykmelding-form/draft', depth: 2 },
@@ -43,7 +44,7 @@ export default defineConfig({
             },
         },
         {
-            files: ['libs/*-mock/**/*.{ts,tsx}'],
+            files: ['src/dev/mocks/**/*.{ts,tsx}'],
             rules: {
                 // TODO: Consider turning on
                 'typescript/no-base-to-string': 'off',

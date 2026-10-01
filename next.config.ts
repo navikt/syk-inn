@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
     reactStrictMode: true,
     assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-    transpilePackages: ['@navikt/fhir-mock-server', '@navikt/helseid-mock-server'],
     serverExternalPackages: [
         '@navikt/next-logger',
         '@valkey/valkey-glide',

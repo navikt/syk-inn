@@ -1,6 +1,6 @@
-import { createFhirHandler } from '@navikt/fhir-mock-server/next'
 import { notFound } from 'next/navigation'
 
+import { createFhirHandler } from '#fhir-mock-server/next'
 import { isCloud } from '#lib/env'
 import { getAbsoluteURL } from '#lib/url'
 

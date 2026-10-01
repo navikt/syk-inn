@@ -1,9 +1,9 @@
-import { MOCK_HELSEID_TOKEN_NAME, sessionToTokens } from '@navikt/helseid-mock-server'
 import { NextRequest, NextResponse, ProxyConfig } from 'next/server'
 
 import { SESSION_COOKIE_NAME } from '#core/session/cookies'
 import { UNLEASH_COOKIE_NAME } from '#core/toggles/const'
 import { shouldUseMockEngine } from '#dev/mock-engine'
+import { MOCK_HELSEID_TOKEN_NAME, sessionToTokens } from '#helseid-mock-server/next'
 import { getServerEnv } from '#lib/env'
 import { spanServerAsync } from '#lib/otel/server'
 import { pathWithBasePath } from '#lib/url'
