@@ -2,12 +2,12 @@
 
 import { FlowerPetalsIcon, PlayIcon } from '@navikt/aksel-icons'
 import { Heading, Link, LinkCard, Loader, Modal, Select, Switch } from '@navikt/ds-react'
-import { MockOrganizations, MockPatients } from '@navikt/fhir-mock-server/types'
 import Image from 'next/image'
 import { parseAsBoolean, parseAsString, useQueryState } from 'nuqs'
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 
 import { scenarios } from '#dev/mock-engine/scenarios/scenarios'
+import { MockOrganizations, MockPatients } from '#fhir-mock-server/types'
 import { pathWithBasePath } from '#lib/url'
 
 import { buildFhirLaunchParam, createFhirScenarioUrl, fhirLaunchUrl } from './scenario-url-utils'

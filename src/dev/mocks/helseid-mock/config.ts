@@ -38,7 +38,7 @@ export function getConfig(): HelseIdMockConfig {
 
     if (config == null) {
         throw new Error(
-            '@navikt/helseid-mock-server config not set. Please configure a route with createHelseIdHandler with proper options.',
+            '#helseid-mock-server config not set. Please configure a route with createHelseIdHandler with proper options.',
         )
     }
 

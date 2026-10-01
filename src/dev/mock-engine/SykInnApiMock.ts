@@ -1,4 +1,3 @@
-import { base64ExamplePdf } from '@navikt/fhir-mock-server/pdfs'
 import { logger } from '@navikt/next-logger'
 import { headers } from 'next/headers'
 
@@ -10,6 +9,8 @@ import {
     SykInnApiSykmelding,
     SykInnApiSykmeldingRedacted,
 } from '#core/services/syk-inn-api/schema/sykmelding'
+
+import { base64ExamplePdf } from '../mocks/fhir-mock/data/pdfs/base64pdf'
 
 import { MockRuleMarkers } from './SykInnApiMockRuleMarkers'
 import { sykInnApiPayloadToResponse } from './utils/syk-inn-api-mock-mappers'

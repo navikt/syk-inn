@@ -1,6 +1,6 @@
-import { createHelseIdHandler } from '@navikt/helseid-mock-server'
 import { notFound } from 'next/navigation'
 
+import { createHelseIdHandler } from '#helseid-mock-server/next'
 import { isCloud } from '#lib/env'
 import { getAbsoluteURL } from '#lib/url'
 

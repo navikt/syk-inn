@@ -1,7 +1,7 @@
-import { MockLaunchType, MockOrganizations, MockPatients } from '@navikt/fhir-mock-server/types'
 import { test, Page } from '@playwright/test'
 
 import { Scenarios } from '#dev/mock-engine/scenarios/scenarios'
+import { MockLaunchType, MockOrganizations, MockPatients } from '#fhir-mock-server/types'
 
 import { applyToggleOverrides, defaultE2EToggles, ToggleOverrides } from '../../actions/toggle-overrides'
 

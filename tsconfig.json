@@ -23,7 +23,9 @@
             "#resolvers": ["./src/core/data-layer/graphql/generated/resolvers.generated.ts"],
             "#features/*": ["./src/features/*"],
             "#components/*": ["./src/components/*"],
-            "#dev/*": ["./src/dev/*"]
+            "#dev/*": ["./src/dev/*"],
+            "#fhir-mock-server/*": ["./src/dev/mocks/fhir-mock/*"],
+            "#helseid-mock-server/*": ["./src/dev/mocks/helseid-mock/*"]
         },
         "target": "ES2017"
     },
