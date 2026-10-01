@@ -5,8 +5,8 @@ import React, { ReactElement, useState } from 'react'
 import useInterval from '#lib/hooks/useInterval'
 
 export function AutoUpdatingDistance({ time }: { time: string }): ReactElement {
-    const [rerernderino, triggerino] = useState(0)
-    const diffInSeconds = differenceInSeconds(new Date(), time)
+    const [now, setNow] = useState(() => new Date())
+    const diffInSeconds = differenceInSeconds(now, time)
 
     /**
      * More than 5 minutes: 1 minute rerender
@@ -16,11 +16,11 @@ export function AutoUpdatingDistance({ time }: { time: string }): ReactElement {
     const rerenderIntervalMs = diffInSeconds > 300 ? 1000 * 60 : diffInSeconds > 60 ? 1000 * 10 : 5000
 
     useInterval(() => {
-        triggerino((prev) => prev + 1)
+        setNow(new Date())
     }, rerenderIntervalMs)
 
     return (
-        <React.Fragment key={rerernderino}>
+        <React.Fragment key={now.toISOString()}>
             {formatDistanceToNowStrict(time, { locale: nb, addSuffix: true })}
         </React.Fragment>
     )
