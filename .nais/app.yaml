@@ -9,6 +9,13 @@ metadata:
     team: tsm
 spec:
   port: 3000
+  gcp:
+    buckets:
+      - name: tsm-syk-inn-pdf
+        publicAccessPrevention: true
+        lifecycleCondition:
+          daysSinceCustomTime: 1095
+          withState: ANY
   login:
     provider: openid
     enforce:
