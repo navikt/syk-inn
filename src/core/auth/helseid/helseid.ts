@@ -4,7 +4,7 @@ import { decodeJwt } from 'jose'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
 import { HelseIdIdToken, HelseIdIdTokenSchema, UserInfo, UserInfoSchema } from './schema'
-import { verifyHelseIdToken } from './token/validate'
+import { verifyHelseIdDPoPToken, verifyHelseIdToken } from './token/validate'
 import { getHelseIdWellKnown } from './token/well-known'
 import {
     getWonderwallHelseIdAccessToken,
@@ -53,8 +53,7 @@ export async function validateHelseIdAccessToken(): Promise<boolean> {
             }
             span.setAttribute('dpop.token.present', true)
 
-            // TODO: verifyHelseIDDPoPToken once its implementation is complete
-            return verifyHelseIdToken(dpop.token)
+            return verifyHelseIdDPoPToken(dpop.token, dpop.proof)
         } else {
             const token = await getWonderwallHelseIdAccessToken()
             if (!token) return false
