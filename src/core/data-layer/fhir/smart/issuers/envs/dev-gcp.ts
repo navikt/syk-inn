@@ -7,6 +7,7 @@ type FhirConfigurationDev = z.infer<typeof FhirConfigurationDevSchema>
 const FhirConfigurationDevSchema = z.object({
     webmedClientSecret: z.string(),
     joviaHelseSecret: z.string(),
+    engramClientSecret: z.string(),
     navEpjClientSecret: z.string(),
 })
 
@@ -14,6 +15,7 @@ export const getDevFhirConfiguration = (): FhirConfigurationDev =>
     FhirConfigurationDevSchema.parse({
         webmedClientSecret: process.env.WEBMED_CLIENT_SECRET,
         joviaHelseSecret: process.env.JOVIA_HELSE_CLIENT_SECRET,
+        engramClientSecret: process.env.ENGRAM_CLIENT_SECRET,
         navEpjClientSecret: process.env.NAV_EPJ_CLIENT_SECRET,
     } satisfies Record<keyof FhirConfigurationDev, unknown>)
 
@@ -42,6 +44,13 @@ export function getKnownDevFhirServers(): KnownFhirServer[] {
             type: 'confidential-asymmetric',
             method: 'private_key_jwt',
             privateKey: env.fhir.privateJwk,
+        },
+        {
+            name: 'Engram (test)',
+            issuer: 'https://api.demo.engram.no/fhir/r4',
+            type: 'confidential-symmetric',
+            method: 'client_secret_basic',
+            clientSecret: configuration.engramClientSecret,
         },
         {
             name: 'nav-epj',
