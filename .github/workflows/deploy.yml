@@ -176,7 +176,7 @@ jobs:
       - uses: nais/setup@v1
         with:
           team: tsm
-      - name: deploy to dev-gcp
+      - name: deploy demo to dev-gcp
         run: |
           nais apply .nais/app.demo.yaml \
             --environment dev-gcp \
@@ -196,7 +196,7 @@ jobs:
       - uses: nais/setup@v1
         with:
           team: tsm
-      - name: deploy to dev-gcp
+      - name: deploy to prod-gcp
         run: |
           nais apply .nais/app.yaml \
             --environment prod-gcp \
