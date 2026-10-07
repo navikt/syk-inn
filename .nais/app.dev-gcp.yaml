@@ -1,0 +1,23 @@
+spec:
+  ingresses:
+    - 'https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
+  replicas:
+    min: 1
+    max: 2
+  resources:
+    requests:
+      cpu: 50m
+      memory: 200Mi
+  accessPolicy:
+    outbound:
+      external:
+        - host: 'fhir-api-auth.public.webmedepj.no'
+        - host: 'joviahelse.no'
+        - host: 'dev.medro.no'
+        - host: 'api.demo.engram.no'
+        - host: 'auth.demo.engram.no'
+        - host: 'epj.ekstern.dev.nav.no'
+        - host: 'helseid-sts.test.nhn.no'
+  env:
+    - name: HELSEID_URL
+      value: https://helseid-sts.test.nhn.no

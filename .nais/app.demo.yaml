@@ -1,14 +1,15 @@
+# As opposed to app.yaml + app.<prod-gcp|dev-gcp>.yaml, this is a complete naiserator manifest, because the demo-environment is quite different, and would not work with mixins.
 apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
-  name: '{{appname}}-demo'
+  name: 'syk-inn-demo'
   namespace: tsm
   labels:
     team: tsm
 spec:
   port: 3000
   ingresses:
-    - '{{ingress}}'
+    - 'https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding'
   replicas:
     min: 1
     max: 1

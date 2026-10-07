@@ -1,3 +1,5 @@
+# See app.prod-gcp.yaml or app.dev-gcp.yaml for per env mixins values.
+# https://docs.nais.io/build/explanations/environment-mixins/
 apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
@@ -6,6 +8,7 @@ metadata:
   labels:
     team: tsm
 spec:
+  port: 3000
   login:
     provider: openid
     enforce:
@@ -16,22 +19,16 @@ spec:
         - /samarbeidspartner/sykmelding/fhir/error/**
         - /samarbeidspartner/sykmelding/api/**
         - /samarbeidspartner/sykmelding/jwk.json
-  ingresses:
-    - 'https://www.nav.no/samarbeidspartner/sykmelding'
+  azure:
+    application:
+      enabled: true
   valkey:
     - instance: syk-inn
       access: readwrite
-  port: 3000
-  replicas:
-    min: 2
-    max: 4
   observability:
     autoInstrumentation:
       enabled: true
       runtime: nodejs
-    logging:
-      destinations:
-        - id: loki
   prometheus:
     enabled: true
     path: /samarbeidspartner/sykmelding/api/internal/metrics
@@ -46,30 +43,18 @@ spec:
     - emptyDir:
         medium: Memory
       mountPath: /app/.next/cache
-  azure:
-    application:
-      enabled: true
   accessPolicy:
     outbound:
       external:
         - host: 'tsm-unleash-api.nav.cloud.nais.io'
-        - host: 'fhirapi.public.webmed.no'
-        - host: 'helseid-sts.nhn.no'
-        - host: 'slack.com'
       rules:
         - application: syk-inn-api
         - application: tsm-pdl-cache
+        # Team Logs: https://docs.nais.io/observability/logging/how-to/team-logs/
         - application: logging
           namespace: nais-system
-  resources:
-    requests:
-      cpu: 50m
-      memory: 360Mi
   envFrom:
     - secret: login-config-syk-inn
     - secret: tsm-syk-inn-epj-secrets
     - secret: tsm-syk-inn-slack-secrets
     - secret: tsm-unleash-api-token
-  env:
-    - name: HELSEID_URL
-      value: https://helseid-sts.nhn.no
