@@ -3,7 +3,7 @@ import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
 import { FhirDocumentReference, FhirQuestionnaireResponse } from '@navikt/smart-on-fhir/zod'
 import { Span } from '@opentelemetry/api'
 
-import { createTypstSykmelding } from '#core/pdf/pdf-service'
+import { getOrCreatePdf } from '#core/pdf/pdf-service'
 import { SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
 import { getFlag, UnleashClient } from '#core/toggles/unleash'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
@@ -46,9 +46,9 @@ export const fhirWriteService = (client: ReadyClient, unleash: UnleashClient) =>
                     return { error: 'UNABLE_TO_VERIFY_IF_EXISTS' }
                 }
 
-                const pdf = await createTypstSykmelding(sykmelding)
+                const pdf = await getOrCreatePdf(sykmelding)
                 if (!pdf.ok) {
-                    failSpan(span, `Failed to generate PDF for DocumentReference(${sykmeldingId}): ${pdf.error}`)
+                    failSpan(span, `Failed to get or create PDF, cause: ${pdf.error}`)
                     return { error: 'UNABLE_TO_CREATE' }
                 }
                 const payload: FhirDocumentReference = sykmeldingToDocumentReference(
