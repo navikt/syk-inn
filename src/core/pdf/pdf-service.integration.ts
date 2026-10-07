@@ -4,8 +4,8 @@ import { describe, test, expect } from 'vitest'
 
 import { SykmeldingBuilder } from '#dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 
-import { createTypstSykmelding } from './pdf-service'
-import { PdfOK, PdfResult } from './types'
+import { PdfOK, PdfResult } from './generation/types'
+import { createTypstSykmelding } from './generation/typst-service'
 
 describe('typst CLI integration', () => {
     test('should work', async () => {

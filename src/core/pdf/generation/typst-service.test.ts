@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest'
 
 import { SykmeldingBuilder } from '#dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 
-import { mapSykInnToPdfPayload } from './pdf-service'
+import { mapSykInnToPdfPayload } from './typst-service'
 
 describe('mapSykInnToPdfPayload - friskmelding til arbeidsformidling', () => {
     test('includes friskmelding line in andreSporsmal when true', () => {

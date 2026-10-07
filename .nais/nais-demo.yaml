@@ -44,3 +44,5 @@ spec:
   env:
     - name: HELSEID_URL
       value: https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding/api/mocks/helseid
+    - name: STORAGE_EMULATOR_HOST
+      value: https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding/api/mocks/gcp/storage

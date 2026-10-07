@@ -1,4 +1,4 @@
-import { handle } from 'hono/vercel'
+import { handle } from '@hono/vercel'
 
 import { HelseIdMockConfig, setConfig } from './config'
 import { createHelseIdMockApp } from './router'
