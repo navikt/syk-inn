@@ -7,8 +7,6 @@ on:
       - README.md
 
 env:
-  APP: syk-inn
-  BASE_PATH: /samarbeidspartner/sykmelding
   TYPST_VERSION: 0.15.1
 
 permissions:
@@ -67,7 +65,7 @@ jobs:
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
-          app: ${{ env.APP }}
+          app: syk-inn
           env: dev
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           salsa: false
@@ -87,7 +85,7 @@ jobs:
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
-          app: ${{ env.APP }}
+          app: syk-inn
           env: demo
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           salsa: false
@@ -107,7 +105,7 @@ jobs:
       - uses: navikt/tsm-workflows/actions/next/build@main
         id: next-build
         with:
-          app: ${{ env.APP }}
+          app: syk-inn
           env: prod
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           salsa: false
@@ -155,30 +153,35 @@ jobs:
     needs: [build-dev, test-lint-knip, integration-tests]
     steps:
       - uses: actions/checkout@v7
-      - uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/nais-dev.yaml
-          WORKLOAD_IMAGE: ${{ needs.build-dev.outputs.image }}
-          NAIS_DEPLOY_SUMMARY: false
+      - uses: nais/setup@v1
+        with:
+          team: tsm
+      - name: deploy to dev-gcp
+        run: |
+          nais apply .nais/app.yaml \
+            --environment dev-gcp \
+            --set spec.image="${{ needs.build-dev.outputs.image }}" \
+            --wait
 
   deploy-demo:
     if: github.ref_name == 'main' || startsWith(github.ref_name, 'demo')
     name: Deploy main to demo
     environment:
       name: demo-main
-      url: https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }}
+      url: https://syk-inn.ekstern.dev.nav.no/samarbeidspartner/sykmelding
     runs-on: ubuntu-26.04
     needs: [build-demo, test-lint-knip, integration-tests]
     steps:
       - uses: actions/checkout@v7
-      - uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/nais-demo.yaml
-          WORKLOAD_IMAGE: ${{ needs.build-demo.outputs.image }}
-          VAR: ingress=https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }},appname=${{ env.APP }}
-          NAIS_DEPLOY_SUMMARY: false
+      - uses: nais/setup@v1
+        with:
+          team: tsm
+      - name: deploy to dev-gcp
+        run: |
+          nais apply .nais/app.demo.yaml \
+            --environment dev-gcp \
+            --set spec.image="${{ needs.build-demo.outputs.image }}" \
+            --wait
 
   deploy-production:
     name: Deploy main to production
@@ -190,12 +193,15 @@ jobs:
     needs: [deploy-dev, run-playwright, build-prod]
     steps:
       - uses: actions/checkout@v7
-      - uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: prod-gcp
-          RESOURCE: .nais/nais-prod.yaml
-          WORKLOAD_IMAGE: ${{ needs.build-prod.outputs.image }}
-          NAIS_DEPLOY_SUMMARY: false
+      - uses: nais/setup@v1
+        with:
+          team: tsm
+      - name: deploy to dev-gcp
+        run: |
+          nais apply .nais/app.yaml \
+            --environment prod-gcp \
+            --set spec.image="${{ needs.build-prod.outputs.image }}" \
+            --wait
 
   build-for-playwright:
     name: Build for playwright

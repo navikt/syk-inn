@@ -1,0 +1,18 @@
+spec:
+  ingresses:
+    - 'https://www.nav.no/samarbeidspartner/sykmelding'
+  replicas:
+    min: 2
+    max: 4
+  resources:
+    requests:
+      cpu: 50m
+      memory: 360Mi
+  accessPolicy:
+    outbound:
+      external:
+        - host: 'fhirapi.public.webmed.no'
+        - host: 'helseid-sts.nhn.no'
+  env:
+    - name: HELSEID_URL
+      value: https://helseid-sts.nhn.no
