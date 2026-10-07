@@ -20,6 +20,7 @@ interface FailSpan {
     (span: Span, what: string): void
     (span: Span, what: string, error: Error): void
     (span: Span, what: string, error?: Error): void
+    (span: Span, what: string, error: unknown): void
     andThrow: (span: Span, what: string, error: Error) => never
     silently: (span: Span, reason: string, cause?: Error) => void
 }
@@ -28,32 +29,37 @@ interface FailSpan {
  * Marks the span as failed, as well as logs the exception (if defined).
  */
 export const failSpan: FailSpan = ((span, what, error): void => {
-    if (error) {
-        logger.error(error)
-    }
+    span.setStatus({ code: SpanStatusCode.ERROR, message: what })
 
-    if (error) {
+    // Log both errors and unknowns
+    if (error) logger.error(error)
+
+    // Only record exceptions for proper errors, with causes if applicable
+    if (error instanceof Error) {
         span.recordException(error)
         // OTEL does not support `cause`, but multiple recordException will create multiple events on the span
         if (error.cause != null) {
             span.recordException(error.cause instanceof Error ? error.cause : new Error(error.cause as string))
         }
+    } else if (error != null) {
+        // For unknown errors, we can wrap them in a cause so they propagate to the span
+        span.recordException(new Error('Unknown error', { cause: error }))
     }
-
-    span.setStatus({ code: SpanStatusCode.ERROR, message: what })
 }) as FailSpan
 
-failSpan.andThrow = (span: Span, what: string, error: Error): never => {
+failSpan.andThrow = (span: Span, what: string, error: unknown): never => {
     failSpan(span, what, error)
     throw error
 }
 
-failSpan.silently = (span: Span, reason: string, cause?: Error): void => {
-    if (cause) {
+failSpan.silently = (span: Span, reason: string, cause?: unknown): void => {
+    if (cause instanceof Error) {
         span.recordException(cause)
         if (cause.cause != null) {
             span.recordException(cause.cause instanceof Error ? cause.cause : new Error(cause.cause as string))
         }
+    } else if (cause != null) {
+        span.recordException(new Error('Unknown error', { cause }))
     }
 
     span.setStatus({ code: SpanStatusCode.ERROR, message: reason })

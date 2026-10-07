@@ -1,7 +1,8 @@
 import { NextRequest } from 'next/server'
+import { Readable } from 'node:stream'
 
 import { getHelseIdBehandler, validateHelseIdAccessToken } from '#core/auth/helseid/helseid'
-import { createTypstSykmelding } from '#core/pdf/pdf-service'
+import { gcpBucketClient } from '#core/pdf/bucket/bucket-client'
 import { sykInnApiClient } from '#core/services/syk-inn-api/syk-inn-api-client'
 import { failSpan, spanServerAsync } from '#lib/otel/server'
 
@@ -31,20 +32,31 @@ export async function GET(_: NextRequest, { params }: RouteContext<'/pdf/[sykmel
             return new Response('Internal server error', { status: 500 })
         }
 
-        const pdf = await createTypstSykmelding(sykmelding)
-        if (!pdf.ok) {
-            failSpan(span, `Failed to generate PDF: ${pdf.error}`)
+        try {
+            const metadata = await gcpBucketClient.pdfMetadata(sykmeldingId)
+            span.setAttributes({
+                'pdf.size': metadata.size,
+                'pdf.sykmeldingId': sykmeldingId,
+            })
+
+            const file = gcpBucketClient.streamPdfFromBucket(sykmeldingId)
+            const stream = Readable.toWeb(file)
+
+            return new Response(stream as ReadableStream<Uint8Array>, {
+                headers: {
+                    'Content-Type': 'application/pdf',
+                    'Content-Disposition': 'inline; filename="sykmelding.pdf"',
+                    'Cache-Control': 'private, no-store',
+                },
+                status: 200,
+            })
+        } catch (e) {
+            failSpan(
+                span,
+                `Failed to display PDF from bucket`,
+                e instanceof Error ? e : new Error('Unknown error', { cause: e }),
+            )
             return new Response('Internal server error', { status: 500 })
         }
-
-        span.setAttributes({
-            'pdf.size': pdf.pdf.byteLength,
-            'pdf.sykmeldingId': sykmeldingId,
-        })
-
-        return new Response(pdf.pdf, {
-            headers: { 'Content-Type': 'application/pdf' },
-            status: 200,
-        })
     })
 }
