@@ -9,10 +9,9 @@ import {
 } from '../actions/user-actions'
 import { expectBidagnoses, expectHoveddiagnose, expectPeriode } from '../actions/user-form-verification'
 import { verifySummaryPage } from '../actions/user-verifications'
-import { verifyIsOnKvitteringPage } from '../fhir/actions/fhir-user-verifications'
 
 import { launchAndStart } from './actions/mode-user-actions'
-import { verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
+import { verifyIsOnKvitteringPage, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
 import { modes } from './modes'
 
 modes.forEach(({ mode }) => {
@@ -37,7 +36,7 @@ modes.forEach(({ mode }) => {
         ])(page)
 
         await submitSykmelding()(page)
-        await verifyIsOnKvitteringPage()(page)
+        await verifyIsOnKvitteringPage(mode)(page)
 
         await page.getByRole('button', { name: 'Dupliser' }).click()
 

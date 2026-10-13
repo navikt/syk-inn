@@ -6,6 +6,7 @@ import { OpprettSykmeldingDocument } from '#queries'
 
 import { fillReisetilskuddPeriode, nextStep, selectReisetilskuddType, submitSykmelding } from '../actions/user-actions'
 import { verifySummaryPage } from '../actions/user-verifications'
+import { verifyIsOnKvitteringPage } from '../multi-mode/actions/mode-user-verifications'
 import { anything, expectGraphQLRequest } from '../utils/assertions'
 import {
     defaultAktivitetGradert,
@@ -16,7 +17,7 @@ import {
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewAlternateSykmelding } from './actions/fhir-user-actions'
-import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/fhir-user-verifications'
+import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 test('simple full reisetilskudd sykmelding ', async ({ page }) => {
     await launchWithMock('empty')(page)
@@ -49,7 +50,7 @@ test('simple full reisetilskudd sykmelding ', async ({ page }) => {
         },
     })
 
-    await verifyIsOnKvitteringPage()(page)
+    await verifyIsOnKvitteringPage('FHIR')(page)
 })
 
 test('simple gradert reisetilskudd sykmelding ', async ({ page }) => {
@@ -85,5 +86,5 @@ test('simple gradert reisetilskudd sykmelding ', async ({ page }) => {
         },
     })
 
-    await verifyIsOnKvitteringPage()(page)
+    await verifyIsOnKvitteringPage('FHIR')(page)
 })

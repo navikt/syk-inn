@@ -11,6 +11,7 @@ import {
     deleteBidiagnose,
 } from '../actions/user-actions'
 import { expectBidagnoses, expectPeriode } from '../actions/user-form-verification'
+import { verifyIsOnKvitteringPage } from '../multi-mode/actions/mode-user-verifications'
 import { wait } from '../utils/actions'
 import { anything, expectGraphQLRequest } from '../utils/assertions'
 import {
@@ -22,7 +23,7 @@ import {
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
-import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/fhir-user-verifications'
+import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 test('submit with only default values and prefilled FHIR values', async ({ page }) => {
     await launchWithMock('empty')(page)
@@ -57,7 +58,7 @@ test('submit with only default values and prefilled FHIR values', async ({ page 
         },
     })
 
-    await verifyIsOnKvitteringPage()(page)
+    await verifyIsOnKvitteringPage('FHIR')(page)
 })
 
 test('should be able to submit purely with shortcuts', async ({ page }) => {
@@ -92,7 +93,7 @@ test('should be able to submit purely with shortcuts', async ({ page }) => {
     // Submit sykmelding
     await page.keyboard.press('Alt+KeyN')
 
-    await verifyIsOnKvitteringPage()(page)
+    await verifyIsOnKvitteringPage('FHIR')(page)
 })
 
 test('should pre-fill bidiagnoser from FHIR', async ({ page }) => {
@@ -133,7 +134,7 @@ test('should pre-fill bidiagnoser from FHIR', async ({ page }) => {
         },
     })
 
-    await verifyIsOnKvitteringPage()(page)
+    await verifyIsOnKvitteringPage('FHIR')(page)
 })
 
 test.describe('Resetting diagnoser when prefilled from FHIR', () => {
@@ -166,7 +167,7 @@ test.describe('Resetting diagnoser when prefilled from FHIR', () => {
             },
         })
 
-        await verifyIsOnKvitteringPage()(page)
+        await verifyIsOnKvitteringPage('FHIR')(page)
     })
 
     test('removing diagonses from FHIR prefill and reseetting them should add them back', async ({ page }) => {
@@ -207,6 +208,6 @@ test.describe('Resetting diagnoser when prefilled from FHIR', () => {
             },
         })
 
-        await verifyIsOnKvitteringPage()(page)
+        await verifyIsOnKvitteringPage('FHIR')(page)
     })
 })

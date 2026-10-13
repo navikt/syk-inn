@@ -3,11 +3,11 @@ import { Page, test } from '@playwright/test'
 import { fillPeriodeRelative, nextStep, submitSykmelding } from '../actions/user-actions'
 import { expectPatient } from '../actions/user-form-verification'
 import { verifySummaryPage } from '../actions/user-verifications'
+import { verifyIsOnKvitteringPage } from '../multi-mode/actions/mode-user-verifications'
 import { userInteractionsGroup } from '../utils/actions'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
-import { verifyIsOnKvitteringPage } from './actions/fhir-user-verifications'
 
 const Kari = { name: 'Kari Normann', fnr: '45847100951' }
 const Espen = { name: 'Espen Eksempel', fnr: '21037712323' }
@@ -130,5 +130,5 @@ const fillAndSubmitMinimalSykmelding =
                 },
             ]),
             submitSykmelding(),
-            verifyIsOnKvitteringPage(),
+            verifyIsOnKvitteringPage('FHIR'),
         )(page)

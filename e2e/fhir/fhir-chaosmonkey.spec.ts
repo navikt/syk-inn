@@ -1,11 +1,12 @@
 import { expect, Locator, test } from '@playwright/test'
 
 import { fillPeriodeRelative, nextStep, pickHoveddiagnose } from '../actions/user-actions'
+import { verifyIsOnKvitteringPage } from '../multi-mode/actions/mode-user-verifications'
 import { wait } from '../utils/actions'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
-import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/fhir-user-verifications'
+import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 test(`spamming 'Send'-button repeatedly should only submit 1 sykmelding`, async ({ page }) => {
     await launchWithMock('empty')(page)
@@ -24,7 +25,7 @@ test(`spamming 'Send'-button repeatedly should only submit 1 sykmelding`, async 
     const sendButton = page.getByRole('button', { name: 'Send inn' })
     await attemptButtonSpam(sendButton)
 
-    await verifyIsOnKvitteringPage()(page)
+    await verifyIsOnKvitteringPage('FHIR')(page)
     await page.getByRole('button', { name: 'Tilbake til pasientoversikt' }).click()
 
     const currentRegion = page.getByRole('region', { name: 'Pågående sykmeldinger og utkast' })

@@ -3,11 +3,12 @@ import test, { expect, Locator, Page } from '@playwright/test'
 import { inDays, inputDate } from '#lib/test/date-utils'
 
 import { nextStep, submitSykmelding } from '../actions/user-actions'
+import { verifyIsOnKvitteringPage } from '../multi-mode/actions/mode-user-verifications'
 import { clickAndWait, waitForHttp } from '../utils/request-utils'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewSykmelding } from './actions/fhir-user-actions'
-import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/fhir-user-verifications'
+import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 test('submitting feedback should work', async ({ page }) => {
     const dialog = await openFeedbackDialog()(page)
@@ -50,7 +51,7 @@ test('submitting feedback on kvittering page should work', async ({ page }) => {
     await nextStep()(page)
     await verifySignerendeBehandler()(page)
     await submitSykmelding()(page)
-    await verifyIsOnKvitteringPage()(page)
+    await verifyIsOnKvitteringPage('FHIR')(page)
 
     const inSituRegion = page.getByRole('region', { name: 'Tilbakemelding' })
     await test.step('Fyll ut in-situ tilbakemelding', async () => {

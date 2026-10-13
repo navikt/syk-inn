@@ -14,7 +14,6 @@ import {
     pickHoveddiagnose,
     submitSykmelding,
 } from '../actions/user-actions'
-import { verifyIsOnKvitteringPage } from '../fhir/actions/fhir-user-verifications'
 import { userInteractionsGroup } from '../utils/actions'
 import { expectGraphQLRequest } from '../utils/assertions'
 import {
@@ -25,7 +24,11 @@ import {
 } from '../utils/submit-utils'
 
 import { launchAndStart } from './actions/mode-user-actions'
-import { expectedSykmeldingMeta, verifySignerendeBehandlerFillIfNeeded } from './actions/mode-user-verifications'
+import {
+    expectedSykmeldingMeta,
+    verifyIsOnKvitteringPage,
+    verifySignerendeBehandlerFillIfNeeded,
+} from './actions/mode-user-verifications'
 import { modes } from './modes'
 
 modes.forEach(({ mode }) => {
@@ -56,7 +59,7 @@ modes.forEach(({ mode }) => {
             },
         })
 
-        await verifyIsOnKvitteringPage()(page)
+        await verifyIsOnKvitteringPage(mode)(page)
     })
 
     test(`${mode}: simple - gradert sykmelding`, async ({ page }) => {
@@ -85,7 +88,7 @@ modes.forEach(({ mode }) => {
             },
         })
 
-        await verifyIsOnKvitteringPage()(page)
+        await verifyIsOnKvitteringPage(mode)(page)
     })
 
     test(`${mode}: optional - multiple bidiagnoser`, async ({ page }) => {
@@ -116,7 +119,7 @@ modes.forEach(({ mode }) => {
             },
         })
 
-        await verifyIsOnKvitteringPage()(page)
+        await verifyIsOnKvitteringPage(mode)(page)
     })
 
     test(`${mode}: optional - multiple perioder back to back`, async ({ page }) => {
@@ -163,7 +166,7 @@ modes.forEach(({ mode }) => {
             },
         })
 
-        await verifyIsOnKvitteringPage()(page)
+        await verifyIsOnKvitteringPage(mode)(page)
     })
 
     test(`${mode}: optional - "har flere arbeidsforhold" should be part of payload if checked`, async ({ page }) => {
@@ -332,7 +335,7 @@ modes.forEach(({ mode }) => {
                     ],
                 },
             })
-            await verifyIsOnKvitteringPage()(page)
+            await verifyIsOnKvitteringPage(mode)(page)
         })
 
         test(`${mode}: manuell behandling and expected: should be able to submit læll`, async ({ page }) => {
@@ -360,7 +363,7 @@ modes.forEach(({ mode }) => {
                     ],
                 },
             })
-            await verifyIsOnKvitteringPage()(page)
+            await verifyIsOnKvitteringPage(mode)(page)
         })
 
         test(`${mode}: invalid but unexpected: should NOT be able to submit`, async ({ page }) => {

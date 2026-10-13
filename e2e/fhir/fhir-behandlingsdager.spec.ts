@@ -11,12 +11,13 @@ import {
     submitSykmelding,
 } from '../actions/user-actions'
 import { verifySummaryPage } from '../actions/user-verifications'
+import { verifyIsOnKvitteringPage } from '../multi-mode/actions/mode-user-verifications'
 import { anything, expectGraphQLRequest } from '../utils/assertions'
 import { defaultBehandlingsdager, defaultOpprettSykmeldingValues, diagnoseSelection } from '../utils/submit-utils'
 
 import { launchWithMock } from './actions/fhir-actions'
 import { startNewAlternateSykmelding } from './actions/fhir-user-actions'
-import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from './actions/fhir-user-verifications'
+import { verifySignerendeBehandler } from './actions/fhir-user-verifications'
 
 test('simple full behandlingsdager sykmelding', async ({ page }) => {
     await launchWithMock('empty')(page)
@@ -57,5 +58,5 @@ test('simple full behandlingsdager sykmelding', async ({ page }) => {
         },
     })
 
-    await verifyIsOnKvitteringPage()(page)
+    await verifyIsOnKvitteringPage('FHIR')(page)
 })

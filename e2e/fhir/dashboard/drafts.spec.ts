@@ -11,11 +11,12 @@ import {
     submitSykmelding,
 } from '../../actions/user-actions'
 import { expectBehandlingsdagerForklaring, expectPeriode } from '../../actions/user-form-verification'
+import { verifyIsOnKvitteringPage } from '../../multi-mode/actions/mode-user-verifications'
 import { userInteractionsGroup } from '../../utils/actions'
 import { verifyNoHorizontalScroll } from '../../utils/assertions'
 import { launchWithMock } from '../actions/fhir-actions'
 import { startNewAlternateSykmelding, startNewSykmelding } from '../actions/fhir-user-actions'
-import { verifyIsOnKvitteringPage, verifySignerendeBehandler } from '../actions/fhir-user-verifications'
+import { verifySignerendeBehandler } from '../actions/fhir-user-verifications'
 
 test('quickly delete a lot of drafts', async ({ page }) => {
     await launchWithMock('plenty-of-drafts')(page)
@@ -59,7 +60,7 @@ test('open and edit a draft from the dashboard', async ({ page }) => {
         verifySignerendeBehandler(),
         verifyNoHorizontalScroll(),
         submitSykmelding(),
-        verifyIsOnKvitteringPage(),
+        verifyIsOnKvitteringPage('FHIR'),
     )(page)
 })
 
@@ -88,7 +89,7 @@ test('save and continue editing a behandlingsdager draft', async ({ page }) => {
         verifySignerendeBehandler(),
         verifyNoHorizontalScroll(),
         submitSykmelding(),
-        verifyIsOnKvitteringPage(),
+        verifyIsOnKvitteringPage('FHIR'),
     )(page)
 })
 
@@ -116,6 +117,6 @@ test('save and continue editing a reisetilskudd draft', async ({ page }) => {
         verifySignerendeBehandler(),
         verifyNoHorizontalScroll(),
         submitSykmelding(),
-        verifyIsOnKvitteringPage(),
+        verifyIsOnKvitteringPage('FHIR'),
     )(page)
 })

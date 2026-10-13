@@ -12,12 +12,15 @@ import {
     fillTilbakedatering,
 } from '../actions/user-actions'
 import { verifySummaryPage } from '../actions/user-verifications'
-import { verifyIsOnKvitteringPage } from '../fhir/actions/fhir-user-verifications'
 import { anything, expectGraphQLRequest } from '../utils/assertions'
 import { defaultAktivitetIkkeMulig, defaultOpprettSykmeldingValues, diagnoseSelection } from '../utils/submit-utils'
 
 import { launchAndStart } from './actions/mode-user-actions'
-import { verifySignerendeBehandlerFillIfNeeded, expectedSykmeldingMeta } from './actions/mode-user-verifications'
+import {
+    verifySignerendeBehandlerFillIfNeeded,
+    expectedSykmeldingMeta,
+    verifyIsOnKvitteringPage,
+} from './actions/mode-user-verifications'
 import { modes, onMode } from './modes'
 
 modes.forEach(({ mode }) => {
@@ -54,7 +57,7 @@ modes.forEach(({ mode }) => {
             },
         })
 
-        await verifyIsOnKvitteringPage()(page)
+        await verifyIsOnKvitteringPage(mode)(page)
     })
 
     test(`${mode}: 'tilbakedatering' is asked and required when fom is 5 days in the past`, async ({ page }) => {

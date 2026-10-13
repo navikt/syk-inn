@@ -10,10 +10,10 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [fhir/dashboard/drafts.spec.ts](./fhir/dashboard/drafts.spec.ts)
 
-- [quickly delete a lot of drafts](./fhir/dashboard/drafts.spec.ts#L20)
-- [open and edit a draft from the dashboard](./fhir/dashboard/drafts.spec.ts#L40)
-- [save and continue editing a behandlingsdager draft](./fhir/dashboard/drafts.spec.ts#L66)
-- [save and continue editing a reisetilskudd draft](./fhir/dashboard/drafts.spec.ts#L95)
+- [quickly delete a lot of drafts](./fhir/dashboard/drafts.spec.ts#L21)
+- [open and edit a draft from the dashboard](./fhir/dashboard/drafts.spec.ts#L41)
+- [save and continue editing a behandlingsdager draft](./fhir/dashboard/drafts.spec.ts#L67)
+- [save and continue editing a reisetilskudd draft](./fhir/dashboard/drafts.spec.ts#L96)
 
 ## [fhir/dashboard/dupliser.spec.ts](./fhir/dashboard/dupliser.spec.ts)
 
@@ -45,17 +45,17 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [fhir/fhir-behandlingsdager.spec.ts](./fhir/fhir-behandlingsdager.spec.ts)
 
-- [simple full behandlingsdager sykmelding](./fhir/fhir-behandlingsdager.spec.ts#L21)
+- [simple full behandlingsdager sykmelding](./fhir/fhir-behandlingsdager.spec.ts#L22)
 
 ## [fhir/fhir-chaosmonkey.spec.ts](./fhir/fhir-chaosmonkey.spec.ts)
 
-- [spamming 'Send'-button repeatedly should only submit 1 sykmelding](./fhir/fhir-chaosmonkey.spec.ts#L10)
+- [spamming 'Send'-button repeatedly should only submit 1 sykmelding](./fhir/fhir-chaosmonkey.spec.ts#L11)
 
 ## [fhir/fhir-feedback.spec.ts](./fhir/fhir-feedback.spec.ts)
 
-- [submitting feedback should work](./fhir/fhir-feedback.spec.ts#L12)
-- [submitting feedback without contact should work](./fhir/fhir-feedback.spec.ts#L25)
-- [submitting feedback on kvittering page should work](./fhir/fhir-feedback.spec.ts#L38)
+- [submitting feedback should work](./fhir/fhir-feedback.spec.ts#L13)
+- [submitting feedback without contact should work](./fhir/fhir-feedback.spec.ts#L26)
+- [submitting feedback on kvittering page should work](./fhir/fhir-feedback.spec.ts#L39)
 
 ## [fhir/fhir-form-interactions.spec.ts](./fhir/fhir-form-interactions.spec.ts)
 
@@ -70,12 +70,12 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [fhir/fhir-form-submit.spec.ts](./fhir/fhir-form-submit.spec.ts)
 
-- [submit with only default values and prefilled FHIR values](./fhir/fhir-form-submit.spec.ts#L27)
-- [should be able to submit purely with shortcuts](./fhir/fhir-form-submit.spec.ts#L63)
-- [should pre-fill bidiagnoser from FHIR](./fhir/fhir-form-submit.spec.ts#L98)
+- [submit with only default values and prefilled FHIR values](./fhir/fhir-form-submit.spec.ts#L28)
+- [should be able to submit purely with shortcuts](./fhir/fhir-form-submit.spec.ts#L64)
+- [should pre-fill bidiagnoser from FHIR](./fhir/fhir-form-submit.spec.ts#L99)
   ## [Resetting diagnoser when prefilled from FHIR](./fhir/fhir-form-submit.spec.ts)
-  - [adding extra diagnose and resetting them should remove them](./fhir/fhir-form-submit.spec.ts#L140)
-  - [removing diagonses from FHIR prefill and reseetting them should add them back](./fhir/fhir-form-submit.spec.ts#L172)
+  - [adding extra diagnose and resetting them should remove them](./fhir/fhir-form-submit.spec.ts#L141)
+  - [removing diagonses from FHIR prefill and reseetting them should add them back](./fhir/fhir-form-submit.spec.ts#L173)
 
 ## [fhir/fhir-launch.spec.ts](./fhir/fhir-launch.spec.ts)
 
@@ -89,8 +89,8 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [fhir/fhir-reisetilskudd.spec.ts](./fhir/fhir-reisetilskudd.spec.ts)
 
-- [simple full reisetilskudd sykmelding ](./fhir/fhir-reisetilskudd.spec.ts#L21)
-- [simple gradert reisetilskudd sykmelding ](./fhir/fhir-reisetilskudd.spec.ts#L55)
+- [simple full reisetilskudd sykmelding ](./fhir/fhir-reisetilskudd.spec.ts#L22)
+- [simple gradert reisetilskudd sykmelding ](./fhir/fhir-reisetilskudd.spec.ts#L56)
 
 ## [multi-mode/bruksvilkar.spec.ts](./multi-mode/bruksvilkar.spec.ts)
 
@@ -158,41 +158,41 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [multi-mode/form-submit.spec.ts](./multi-mode/form-submit.spec.ts)
 
-- [FHIR: simple - 100% sykmelding](./multi-mode/form-submit.spec.ts#L32)
-- [FHIR: simple - gradert sykmelding](./multi-mode/form-submit.spec.ts#L62)
-- [FHIR: optional - multiple bidiagnoser](./multi-mode/form-submit.spec.ts#L91)
-- [FHIR: optional - multiple perioder back to back](./multi-mode/form-submit.spec.ts#L122)
-- [FHIR: optional - "har flere arbeidsforhold" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L169)
-- [FHIR: optional - "friskmelding til arbeidsformidling" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L200)
-- [FHIR: optional - when 100%, "arbeidsrelaterte og medisinske årsaker" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L230)
-- [FHIR: summary - "skal skjermes" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L268)
-- [Standalone: simple - 100% sykmelding](./multi-mode/form-submit.spec.ts#L32)
-- [Standalone: simple - gradert sykmelding](./multi-mode/form-submit.spec.ts#L62)
-- [Standalone: optional - multiple bidiagnoser](./multi-mode/form-submit.spec.ts#L91)
-- [Standalone: optional - multiple perioder back to back](./multi-mode/form-submit.spec.ts#L122)
-- [Standalone: optional - "har flere arbeidsforhold" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L169)
-- [Standalone: optional - "friskmelding til arbeidsformidling" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L200)
-- [Standalone: optional - when 100%, "arbeidsrelaterte og medisinske årsaker" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L230)
-- [Standalone: summary - "skal skjermes" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L268)
+- [FHIR: simple - 100% sykmelding](./multi-mode/form-submit.spec.ts#L35)
+- [FHIR: simple - gradert sykmelding](./multi-mode/form-submit.spec.ts#L65)
+- [FHIR: optional - multiple bidiagnoser](./multi-mode/form-submit.spec.ts#L94)
+- [FHIR: optional - multiple perioder back to back](./multi-mode/form-submit.spec.ts#L125)
+- [FHIR: optional - "har flere arbeidsforhold" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L172)
+- [FHIR: optional - "friskmelding til arbeidsformidling" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L203)
+- [FHIR: optional - when 100%, "arbeidsrelaterte og medisinske årsaker" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L233)
+- [FHIR: summary - "skal skjermes" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L271)
+- [Standalone: simple - 100% sykmelding](./multi-mode/form-submit.spec.ts#L35)
+- [Standalone: simple - gradert sykmelding](./multi-mode/form-submit.spec.ts#L65)
+- [Standalone: optional - multiple bidiagnoser](./multi-mode/form-submit.spec.ts#L94)
+- [Standalone: optional - multiple perioder back to back](./multi-mode/form-submit.spec.ts#L125)
+- [Standalone: optional - "har flere arbeidsforhold" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L172)
+- [Standalone: optional - "friskmelding til arbeidsformidling" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L203)
+- [Standalone: optional - when 100%, "arbeidsrelaterte og medisinske årsaker" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L233)
+- [Standalone: summary - "skal skjermes" should be part of payload if checked](./multi-mode/form-submit.spec.ts#L271)
   ## [FHIR: rule outcomes](./multi-mode/form-submit.spec.ts)
-  - [FHIR: invalid but functionally expected: should be able to submit læll](./multi-mode/form-submit.spec.ts#L310)
-  - [FHIR: manuell behandling and expected: should be able to submit læll](./multi-mode/form-submit.spec.ts#L338)
-  - [FHIR: invalid but unexpected: should NOT be able to submit](./multi-mode/form-submit.spec.ts#L366)
-  - [FHIR: person does not exist in PDL: should NOT be able to submit](./multi-mode/form-submit.spec.ts#L373)
+  - [FHIR: invalid but functionally expected: should be able to submit læll](./multi-mode/form-submit.spec.ts#L313)
+  - [FHIR: manuell behandling and expected: should be able to submit læll](./multi-mode/form-submit.spec.ts#L341)
+  - [FHIR: invalid but unexpected: should NOT be able to submit](./multi-mode/form-submit.spec.ts#L369)
+  - [FHIR: person does not exist in PDL: should NOT be able to submit](./multi-mode/form-submit.spec.ts#L376)
   ## [Standalone: rule outcomes](./multi-mode/form-submit.spec.ts)
-  - [Standalone: invalid but functionally expected: should be able to submit læll](./multi-mode/form-submit.spec.ts#L310)
-  - [Standalone: manuell behandling and expected: should be able to submit læll](./multi-mode/form-submit.spec.ts#L338)
-  - [Standalone: invalid but unexpected: should NOT be able to submit](./multi-mode/form-submit.spec.ts#L366)
-  - [Standalone: person does not exist in PDL: should NOT be able to submit](./multi-mode/form-submit.spec.ts#L373)
+  - [Standalone: invalid but functionally expected: should be able to submit læll](./multi-mode/form-submit.spec.ts#L313)
+  - [Standalone: manuell behandling and expected: should be able to submit læll](./multi-mode/form-submit.spec.ts#L341)
+  - [Standalone: invalid but unexpected: should NOT be able to submit](./multi-mode/form-submit.spec.ts#L369)
+  - [Standalone: person does not exist in PDL: should NOT be able to submit](./multi-mode/form-submit.spec.ts#L376)
 
 ## [multi-mode/form-tilbakedatering.spec.ts](./multi-mode/form-tilbakedatering.spec.ts)
 
-- [FHIR: 'tilbakedatering' should be removed from state when period is updated to not be a 'tilbakedatering' period](./multi-mode/form-tilbakedatering.spec.ts#L24)
-- [FHIR: 'tilbakedatering' is asked and required when fom is 5 days in the past](./multi-mode/form-tilbakedatering.spec.ts#L60)
-- [FHIR: "tilbakedatering" and "Annen årsak" input field is required and part of payload when checked](./multi-mode/form-tilbakedatering.spec.ts#L132)
-- [Standalone: 'tilbakedatering' should be removed from state when period is updated to not be a 'tilbakedatering' period](./multi-mode/form-tilbakedatering.spec.ts#L24)
-- [Standalone: 'tilbakedatering' is asked and required when fom is 5 days in the past](./multi-mode/form-tilbakedatering.spec.ts#L60)
-- [Standalone: "tilbakedatering" and "Annen årsak" input field is required and part of payload when checked](./multi-mode/form-tilbakedatering.spec.ts#L132)
+- [FHIR: 'tilbakedatering' should be removed from state when period is updated to not be a 'tilbakedatering' period](./multi-mode/form-tilbakedatering.spec.ts#L27)
+- [FHIR: 'tilbakedatering' is asked and required when fom is 5 days in the past](./multi-mode/form-tilbakedatering.spec.ts#L63)
+- [FHIR: "tilbakedatering" and "Annen årsak" input field is required and part of payload when checked](./multi-mode/form-tilbakedatering.spec.ts#L135)
+- [Standalone: 'tilbakedatering' should be removed from state when period is updated to not be a 'tilbakedatering' period](./multi-mode/form-tilbakedatering.spec.ts#L27)
+- [Standalone: 'tilbakedatering' is asked and required when fom is 5 days in the past](./multi-mode/form-tilbakedatering.spec.ts#L63)
+- [Standalone: "tilbakedatering" and "Annen årsak" input field is required and part of payload when checked](./multi-mode/form-tilbakedatering.spec.ts#L135)
 
 ## [multi-mode/form-utdypende-sporsmal.spec.ts](./multi-mode/form-utdypende-sporsmal.spec.ts)
 
@@ -209,8 +209,8 @@ Run the tests from root using `yarn e2e:dev` or `yarn e2e`.
 
 ## [multi-mode/kvittering-dupliser.spec.ts](./multi-mode/kvittering-dupliser.spec.ts)
 
-- [FHIR: should be able to duplicate from kvittering](./multi-mode/kvittering-dupliser.spec.ts#L19)
-- [Standalone: should be able to duplicate from kvittering](./multi-mode/kvittering-dupliser.spec.ts#L19)
+- [FHIR: should be able to duplicate from kvittering](./multi-mode/kvittering-dupliser.spec.ts#L18)
+- [Standalone: should be able to duplicate from kvittering](./multi-mode/kvittering-dupliser.spec.ts#L18)
 
 ## [multi-mode/launch.spec.ts](./multi-mode/launch.spec.ts)
 
