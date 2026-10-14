@@ -19,6 +19,7 @@ spec:
         - /samarbeidspartner/sykmelding/fhir/error/**
         - /samarbeidspartner/sykmelding/api/**
         - /samarbeidspartner/sykmelding/jwk.json
+        - /samarbeidspartner/sykmelding/fhir/R4/Questionnaire/V1
   azure:
     application:
       enabled: true
