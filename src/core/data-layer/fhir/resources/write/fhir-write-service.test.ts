@@ -11,7 +11,7 @@ import { sykmeldingToDocumentReference } from './mappers/document-reference'
 import { sykmeldingToQuestionnaireResponse } from './mappers/questionnaire-response'
 
 vi.mock('#core/pdf/pdf-service', () => ({
-    createTypstSykmelding: vi.fn<() => Promise<{ ok: true; pdf: ArrayBuffer }>>().mockResolvedValue({
+    getOrCreatePdf: vi.fn<() => Promise<{ ok: true; pdf: ArrayBuffer }>>().mockResolvedValue({
         ok: true,
         pdf: new ArrayBuffer(0),
     }),

@@ -10,8 +10,6 @@ import {
     SykInnApiSykmeldingRedacted,
 } from '#core/services/syk-inn-api/schema/sykmelding'
 
-import { base64ExamplePdf } from '../mocks/fhir-mock/data/pdfs/base64pdf'
-
 import { MockRuleMarkers } from './SykInnApiMockRuleMarkers'
 import { sykInnApiPayloadToResponse } from './utils/syk-inn-api-mock-mappers'
 
@@ -61,12 +59,6 @@ export class SykInnApiMock {
         this._sykmeldinger.push(newSykmelding)
         this._alreadySubmittedSubmitIds[payload.submitId] = newSykmelding.sykmeldingId
         return newSykmelding
-    }
-
-    getPdf(): ArrayBuffer {
-        const pdfBuffer = Uint8Array.from(atob(base64ExamplePdf), (c) => c.charCodeAt(0))
-
-        return pdfBuffer.buffer
     }
 
     // oxlint-disable-next-line no-unused-vars

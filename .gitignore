@@ -49,6 +49,7 @@ next-env.d.ts
 /playwright/.cache/
 
 # local dev
+/fake-bucket-pdfs/
 .git-co-authors.yaml
 .husky/prepare-commit-msg
 
