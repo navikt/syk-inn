@@ -3,6 +3,8 @@ import { parseISO } from 'date-fns'
 import { nextleton } from 'nextleton'
 import { Readable } from 'node:stream'
 
+import { spanServerAsync } from '#lib/otel/server'
+
 const BUCKET_NAME = 'tsm-syk-inn-pdf'
 
 const bucket: Bucket = nextleton('google-storage', () => {
@@ -11,35 +13,43 @@ const bucket: Bucket = nextleton('google-storage', () => {
 
 export const gcpBucketClient = {
     async savePdfToBucket(sykmeldingId: string, pdf: ArrayBuffer, latestTom: string): Promise<void> {
-        const uint8ArrayPdf = new Uint8Array(pdf)
-        await bucket.file(sykmeldingId).save(uint8ArrayPdf, {
-            contentType: 'application/pdf',
-            resumable: false,
-            metadata: {
+        return spanServerAsync('gcpBucketClient.savePdfToBucket', async () => {
+            const uint8ArrayPdf = new Uint8Array(pdf)
+            await bucket.file(sykmeldingId).save(uint8ArrayPdf, {
                 contentType: 'application/pdf',
-                customTime: parseISO(latestTom).toISOString(),
-                cacheControl: 'private, no-store',
-            },
-            preconditionOpts: { ifGenerationMatch: 0 },
+                resumable: false,
+                metadata: {
+                    contentType: 'application/pdf',
+                    customTime: parseISO(latestTom).toISOString(),
+                    cacheControl: 'private, no-store',
+                },
+                preconditionOpts: { ifGenerationMatch: 0 },
+            })
         })
     },
     async pdfAlreadyExists(sykmeldingId: string): Promise<boolean> {
-        const [exists] = await bucket.file(sykmeldingId).exists()
+        return spanServerAsync('gcpBucketClient.pdfAlreadyExists', async () => {
+            const [exists] = await bucket.file(sykmeldingId).exists()
 
-        return exists
+            return exists
+        })
     },
     async pdfMetadata(sykmeldingId: string): Promise<FileMetadata> {
-        const [metadata] = await bucket.file(sykmeldingId).getMetadata()
+        return spanServerAsync('gcpBucketClient.pdfMetadata', async () => {
+            const [metadata] = await bucket.file(sykmeldingId).getMetadata()
 
-        return metadata
+            return metadata
+        })
     },
     /**
      * Assumes the file already exists, check with `pdfAlreadyExists` before calling this method to avoid errors.
      */
     async getPdfFromBucket(sykmeldingId: string): Promise<Uint8Array> {
-        const [file] = await bucket.file(sykmeldingId).download()
+        return spanServerAsync('gcpBucketClient.getPdfFromBucket', async () => {
+            const [file] = await bucket.file(sykmeldingId).download()
 
-        return new Uint8Array(file)
+            return new Uint8Array(file)
+        })
     },
     /**
      * Assumes the file already exists, check with `pdfAlreadyExists` before calling this method to avoid errors.
