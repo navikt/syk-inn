@@ -1,7 +1,6 @@
 import { Bucket, Storage, FileMetadata } from '@google-cloud/storage'
 import { parseISO } from 'date-fns'
 import { nextleton } from 'nextleton'
-import { Readable } from 'node:stream'
 
 import { spanServerAsync, squelchTracing } from '#lib/otel/server'
 
@@ -57,8 +56,4 @@ export const gcpBucketClient = {
             return new Uint8Array(file)
         })
     },
-    /**
-     * Assumes the file already exists, check with `pdfAlreadyExists` before calling this method to avoid errors.
-     */
-    streamPdfFromBucket: (sykmeldingId: string): Readable => bucket.file(sykmeldingId).createReadStream(),
 }

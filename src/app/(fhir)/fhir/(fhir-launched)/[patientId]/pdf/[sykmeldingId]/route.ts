@@ -1,5 +1,4 @@
 import { NextRequest } from 'next/server'
-import { Readable } from 'node:stream'
 
 import { gcpBucketClient } from '#core/pdf/bucket/bucket-client'
 import { sykInnApiClient } from '#core/services/syk-inn-api/syk-inn-api-client'
@@ -47,10 +46,9 @@ export async function GET(
                 'pdf.sykmeldingId': sykmeldingId,
             })
 
-            const file = gcpBucketClient.streamPdfFromBucket(sykmeldingId)
-            const stream = Readable.toWeb(file)
+            const pdf = await gcpBucketClient.getPdfFromBucket(sykmeldingId)
 
-            return new Response(stream as ReadableStream<Uint8Array>, {
+            return new Response(pdf as Uint8Array<ArrayBuffer>, {
                 headers: {
                     'Content-Type': 'application/pdf',
                     'Content-Disposition': 'inline; filename="sykmelding.pdf"',

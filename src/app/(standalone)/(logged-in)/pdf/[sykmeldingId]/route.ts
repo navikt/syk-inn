@@ -1,5 +1,4 @@
 import { NextRequest } from 'next/server'
-import { Readable } from 'node:stream'
 
 import { getHelseIdBehandler, validateHelseIdAccessToken } from '#core/auth/helseid/helseid'
 import { gcpBucketClient } from '#core/pdf/bucket/bucket-client'
@@ -39,10 +38,9 @@ export async function GET(_: NextRequest, { params }: RouteContext<'/pdf/[sykmel
                 'pdf.sykmeldingId': sykmeldingId,
             })
 
-            const file = gcpBucketClient.streamPdfFromBucket(sykmeldingId)
-            const stream = Readable.toWeb(file)
+            const pdf = await gcpBucketClient.getPdfFromBucket(sykmeldingId)
 
-            return new Response(stream as ReadableStream<Uint8Array>, {
+            return new Response(pdf as Uint8Array<ArrayBuffer>, {
                 headers: {
                     'Content-Type': 'application/pdf',
                     'Content-Disposition': 'inline; filename="sykmelding.pdf"',
