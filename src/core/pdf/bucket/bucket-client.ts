@@ -3,7 +3,7 @@ import { parseISO } from 'date-fns'
 import { nextleton } from 'nextleton'
 import { Readable } from 'node:stream'
 
-import { spanServerAsync } from '#lib/otel/server'
+import { spanServerAsync, squelchTracing } from '#lib/otel/server'
 
 const BUCKET_NAME = 'tsm-syk-inn-pdf'
 
@@ -28,8 +28,14 @@ export const gcpBucketClient = {
         })
     },
     async pdfAlreadyExists(sykmeldingId: string): Promise<boolean> {
-        return spanServerAsync('gcpBucketClient.pdfAlreadyExists', async () => {
-            const [exists] = await bucket.file(sykmeldingId).exists()
+        return spanServerAsync('gcpBucketClient.pdfAlreadyExists', async (span) => {
+            /**
+             *  Why squelch: When the file does not exist, the underlying 404 request is automatically marked as
+             * 'error' in OTEL. This causes the overall trace to be an error-trace, which we do not want.
+             */
+            const [exists] = await squelchTracing(() => bucket.file(sykmeldingId).exists())
+
+            span.setAttribute('gcpBucketClient.pdfAlreadyExists.exists', exists)
 
             return exists
         })
