@@ -1,9 +1,9 @@
-import { Bucket, Storage, FileMetadata } from '@google-cloud/storage'
+import { ApiError, Bucket, Storage, FileMetadata } from '@google-cloud/storage'
 import { parseISO } from 'date-fns'
 import { nextleton } from 'nextleton'
 
 import { bundledEnv } from '#lib/env'
-import { spanServerAsync, squelchTracing } from '#lib/otel/server'
+import { failSpan, spanServerAsync, squelchTracing } from '#lib/otel/server'
 
 const BUCKET_NAME = `tsm-syk-inn-pdf-${bundledEnv.runtimeEnv === 'prod-gcp' ? 'prod' : 'dev'}`
 
@@ -40,11 +40,23 @@ export const gcpBucketClient = {
             return exists
         })
     },
-    async pdfMetadata(sykmeldingId: string): Promise<FileMetadata> {
-        return spanServerAsync('gcpBucketClient.pdfMetadata', async () => {
-            const [metadata] = await bucket.file(sykmeldingId).getMetadata()
+    /**
+     * Returns null if the file does not exist, throws on any other error.
+     */
+    async pdfMetadata(sykmeldingId: string): Promise<FileMetadata | null> {
+        return spanServerAsync('gcpBucketClient.pdfMetadata', async (span) => {
+            try {
+                // Squelched for the same reason as in pdfAlreadyExists: 404s would mark the trace as error
+                const [metadata] = await squelchTracing(() => bucket.file(sykmeldingId).getMetadata())
+                return metadata
+            } catch (e) {
+                if (e instanceof ApiError && e.code === 404) {
+                    span.setAttribute('gcpBucketClient.pdfMetadata.exists', false)
+                    return null
+                }
 
-            return metadata
+                failSpan.andThrow(span, 'Failed to get PDF metadata from bucket', e)
+            }
         })
     },
     /**

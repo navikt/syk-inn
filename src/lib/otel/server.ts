@@ -22,8 +22,8 @@ interface FailSpan {
     (span: Span, what: string, error: Error): void
     (span: Span, what: string, error?: Error): void
     (span: Span, what: string, error: unknown): void
-    andThrow: (span: Span, what: string, error: Error) => never
-    silently: (span: Span, reason: string, cause?: Error) => void
+    andThrow: (span: Span, what: string, error: unknown) => never
+    silently: (span: Span, reason: string, error?: unknown) => void
 }
 
 /**

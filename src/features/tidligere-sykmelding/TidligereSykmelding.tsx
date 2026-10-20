@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client/react'
 import { Skeleton } from '@navikt/ds-react'
+import { Link as AkselLink } from '@navikt/ds-react/Link'
 import { useParams } from 'next/navigation'
 import React, { PropsWithChildren, ReactElement } from 'react'
 
@@ -13,6 +14,7 @@ import { ValuesSection } from '#components/sykmelding/ValuesSection'
 import { useMode } from '#core/providers/Modes'
 import { toReadableDate } from '#lib/date'
 import { cn } from '#lib/tw'
+import { pathWithBasePath } from '#lib/url'
 import { SykmeldingByIdDocument, SykmeldingFragment } from '#queries'
 
 import { TidligereSykmeldingActions } from './TidligereSykmeldingActions'
@@ -69,12 +71,16 @@ export function TidligereSykmelding(): ReactElement {
 }
 
 function TidligereSykmeldingShell({ children, className }: PropsWithChildren<{ className?: string }>): ReactElement {
+    const params = useParams<{ sykmeldingId: string }>()
     const mode = useMode()
 
     return (
         <div className={cn('p-4 bg-ax-bg-default', className)}>
             <TwoPaneGrid tag="div">{children}</TwoPaneGrid>
-            <div className="mx-4 flex justify-end p-4 pb-0">
+            <div className="mx-4 flex justify-between p-4 pb-0 gap-3">
+                <AkselLink href={pathWithBasePath(mode.paths.pdf(params.sykmeldingId))} target="_blank">
+                    Se PDF
+                </AkselLink>
                 <AkselNextLink href={mode.paths.root}>Lukk</AkselNextLink>
             </div>
         </div>

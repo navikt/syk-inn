@@ -41,6 +41,11 @@ export async function GET(
         }
         try {
             const metadata = await gcpBucketClient.pdfMetadata(sykmeldingId)
+            if (metadata == null) {
+                failSpan(span, 'PDF does not exist in bucket')
+                return new Response('Not found', { status: 404 })
+            }
+
             span.setAttributes({
                 'pdf.size': metadata.size,
                 'pdf.sykmeldingId': sykmeldingId,
