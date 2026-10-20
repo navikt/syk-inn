@@ -2,9 +2,10 @@ import { Bucket, Storage, FileMetadata } from '@google-cloud/storage'
 import { parseISO } from 'date-fns'
 import { nextleton } from 'nextleton'
 
+import { bundledEnv } from '#lib/env'
 import { spanServerAsync, squelchTracing } from '#lib/otel/server'
 
-const BUCKET_NAME = 'tsm-syk-inn-pdf'
+const BUCKET_NAME = `tsm-syk-inn-pdf-${bundledEnv.runtimeEnv === 'prod-gcp' ? 'prod' : 'dev'}`
 
 const bucket: Bucket = nextleton('google-storage', () => {
     return new Storage().bucket(BUCKET_NAME)

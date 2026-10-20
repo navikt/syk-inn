@@ -1,4 +1,4 @@
-const EXPECTED_BUCKET_NAME = 'tsm-syk-inn-pdf'
+const EXPECTED_BUCKET_NAME = 'tsm-syk-inn-pdf-dev'
 
 export function assertCorrectBucket(name: string): asserts name is typeof EXPECTED_BUCKET_NAME {
     if (name !== EXPECTED_BUCKET_NAME) {

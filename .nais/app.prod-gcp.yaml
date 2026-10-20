@@ -1,4 +1,11 @@
 spec:
+  gcp:
+    buckets:
+      - name: tsm-syk-inn-pdf-prod
+        publicAccessPrevention: true
+        lifecycleCondition:
+          daysSinceCustomTime: 1095
+          withState: ANY
   ingresses:
     - 'https://www.nav.no/samarbeidspartner/sykmelding'
   replicas:
