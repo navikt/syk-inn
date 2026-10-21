@@ -33,11 +33,17 @@ export function execTypst(module: Modules): Promise<PdfResult> {
                 { encoding: 'buffer' },
             )
 
+            /**
+             * stdout.buffer is the underlying (possibly shared/pooled) ArrayBuffer, which can be larger than the
+             * actual output and contain stale bytes. Copy out exactly the bytes belonging to this Buffer.
+             */
+            const pdf = stdout.buffer.slice(stdout.byteOffset, stdout.byteOffset + stdout.byteLength) as ArrayBuffer
+
             logger.info(
-                `PDF created - typst module ${module.module} (${stdout.buffer.byteLength} bytes), it took ${(performance.now() - start).toFixed(2)}ms`,
+                `PDF created - typst module ${module.module} (${pdf.byteLength} bytes), it took ${(performance.now() - start).toFixed(2)}ms`,
             )
 
-            return { ok: true, pdf: stdout.buffer }
+            return { ok: true, pdf }
         } catch (error: unknown) {
             // Is it ENOENT? In which case, the binary is missing
             if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
