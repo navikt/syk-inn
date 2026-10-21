@@ -7,7 +7,7 @@ import { gcpBucketClient } from './bucket/bucket-client'
 import { createTypstSykmelding } from './generation/typst-service'
 
 export async function getOrCreatePdf(sykmelding: SykInnApiSykmelding): Promise<
-    | { ok: true; pdf: ArrayBuffer }
+    | { ok: true; pdf: ArrayBuffer; source: 'BUCKET' | 'CREATED' }
     | {
           ok: false
           error: 'UNABLE_TO_CREATE' | 'UNABLE_TO_VERIFY_IF_EXISTS' | 'GCP_ERROR'
@@ -23,7 +23,7 @@ export async function getOrCreatePdf(sykmelding: SykInnApiSykmelding): Promise<
                 const pdf = new ArrayBuffer(bucketPdf.byteLength)
                 new Uint8Array(pdf).set(bucketPdf)
 
-                return { ok: true, pdf }
+                return { ok: true, pdf, source: 'BUCKET' }
             }
         } catch (e) {
             failSpan(
@@ -48,6 +48,6 @@ export async function getOrCreatePdf(sykmelding: SykInnApiSykmelding): Promise<
             return { ok: false, error: 'GCP_ERROR' }
         }
 
-        return { ok: true, pdf: createdPdf.pdf }
+        return { ok: true, pdf: createdPdf.pdf, source: 'CREATED' }
     })
 }

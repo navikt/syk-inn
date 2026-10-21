@@ -116,4 +116,20 @@ export const sykInnApiClient = {
             ),
         })
     },
+    getAllPdfableSykmeldinger: async (): Promise<SykInnApiSykmelding[] | ApiFetchErrors> => {
+        if (shouldUseMockEngine()) {
+            logger.info(`Running in ${bundledEnv.runtimeEnv} environment, returning mocked sykmelding data`)
+
+            const mockEngine = await mockEngineForSession()
+            return mockEngine.sykInnApi.allSykmeldinger().filter((it): it is SykInnApiSykmelding => it.kind === 'full')
+        }
+
+        return fetchInternalAPI({
+            api: 'syk-inn-api',
+            path: `/api/sykmelding/internal/should-pdf`,
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            responseSchema: z.array(SykInnApiSykmeldingSchema),
+        })
+    },
 }
