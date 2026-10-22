@@ -23,6 +23,8 @@ export async function getOrCreatePdf(sykmelding: SykInnApiSykmelding): Promise<
                 const pdf = new ArrayBuffer(bucketPdf.byteLength)
                 new Uint8Array(pdf).set(bucketPdf)
 
+                span.setAttribute('pdf.source', 'BUCKET')
+
                 return { ok: true, pdf, source: 'BUCKET' }
             }
         } catch (e) {
@@ -47,6 +49,8 @@ export async function getOrCreatePdf(sykmelding: SykInnApiSykmelding): Promise<
             failSpan(span, 'GCP save failed', e)
             return { ok: false, error: 'GCP_ERROR' }
         }
+
+        span.setAttribute('pdf.source', 'CREATED')
 
         return { ok: true, pdf: createdPdf.pdf, source: 'CREATED' }
     })
