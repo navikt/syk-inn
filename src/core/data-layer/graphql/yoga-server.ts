@@ -1,9 +1,10 @@
 // oxlint-disable react-hooks/rules-of-hooks
 
 import { useOpenTelemetry } from '@envelop/opentelemetry'
+import { PinoLogWriter } from '@graphql-hive/logger/writers/pino'
 import { logger as pinoLogger } from '@navikt/next-logger'
 import { trace } from '@opentelemetry/api'
-import { createYoga, Plugin } from 'graphql-yoga'
+import { createYoga, Logger, Plugin } from 'graphql-yoga'
 import { GraphQLSchema } from 'graphql/type'
 
 import { ModeType } from '#core/providers/ModePaths'
@@ -44,7 +45,7 @@ export function createGraphQLHandler<UserContext extends Record<string, unknown>
 
     const { handleRequest } = createYoga<NextContext, UserContext>({
         schema,
-        logging: logger,
+        logging: new Logger({ writers: [new PinoLogWriter(logger)], level: 'warn' }),
         plugins: [...defaultPlugins, ...runtimeSpecificPlugins],
         fetchAPI: { Response },
         context: options?.context,
