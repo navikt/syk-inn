@@ -52,15 +52,15 @@
         "@navikt/ds-tailwind": "^8.20.1",
         "@navikt/next-logger": "^5.0.1",
         "@navikt/pino-logger": "^5.0.1",
-        "@navikt/smart-on-fhir": "1.6.33",
+        "@navikt/smart-on-fhir": "1.6.34",
         "@navikt/syk-zara": "workspace:*",
         "@navikt/texas": "^4.2.2",
         "@navikt/tsm-diagnoser": "^2026.8.25",
         "@navikt/tsm-oxfmt": "^0.0.11",
         "@navikt/tsm-oxlint": "^0.0.7",
         "@next/mdx": "^16.4.3",
-        "@opentelemetry/api": "^1.10.0",
-        "@opentelemetry/core": "^3.0.0",
+        "@opentelemetry/api": "1.9.1",
+        "@opentelemetry/core": "2.12.0",
         "@reduxjs/toolkit": "^2.13.0",
         "@types/mdx": "^2.0.14",
         "@unleash/nextjs": "^1.6.7",
@@ -126,5 +126,8 @@
         "typescript": "^7.0.2",
         "vite": "^8.3.5",
         "vitest": "^5.0.5"
+    },
+    "resolutions": {
+        "@opentelemetry/api": "1.9.1"
     }
 }
