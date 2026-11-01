@@ -71,7 +71,7 @@
         "graphql": "^16.14.2",
         "graphql-yoga": "^6.0.1",
         "jose": "^6.2.13",
-        "motion": "^14.6.0",
+        "motion": "^14.7.1",
         "next": "^16.4.3",
         "next-logger": "^5.0.2",
         "nextleton": "^0.6.1",
