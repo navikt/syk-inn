@@ -25,7 +25,6 @@ export async function verifyHelseIdDPoPToken(token: string, proof: string): Prom
 
             await jwtVerify(token, jwks, {
                 issuer: wellKnown.issuer,
-                algorithms: ['RS256'],
                 requiredClaims: ['cnf'],
             })
 
