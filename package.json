@@ -59,7 +59,7 @@
         "@navikt/tsm-oxfmt": "^0.0.11",
         "@navikt/tsm-oxlint": "^0.0.7",
         "@next/mdx": "^16.4.3",
-        "@opentelemetry/api": "1.9.1",
+        "@opentelemetry/api": "1.10.0",
         "@opentelemetry/core": "2.12.0",
         "@reduxjs/toolkit": "^2.13.0",
         "@types/mdx": "^2.0.14",
@@ -128,6 +128,6 @@
         "vitest": "^5.0.5"
     },
     "resolutions": {
-        "@opentelemetry/api": "1.9.1"
+        "@opentelemetry/api": "1.10.0"
     }
 }
