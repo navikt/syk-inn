@@ -12,9 +12,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^4.3.5":
-  version: 4.3.5
-  resolution: "@apollo/client@npm:4.3.5"
+"@apollo/client@npm:^4.3.8":
+  version: 4.3.8
+  resolution: "@apollo/client@npm:4.3.8"
   dependencies:
     "@graphql-typed-document-node/core": "npm:^3.1.1"
     "@wry/caches": "npm:^1.0.0"
@@ -39,7 +39,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 10c0/b3b5f9e615a1f08643e215635b7158d9502f74e2c0e9c7a87b7e0857cbe477b5bc9d8282931dec081bd7b9cbaa1db92d056b1c3274882aca21687d305ecf6331
+  checksum: 10c0/81d159e92a80939493a4ff9fe28b3284908fd2d91de31aa07804e8dbf788e04d4bb929df5d8a18e4a4c673f2049c6f113c2018345aa06d8141b77b1c75c5e41e
   languageName: node
   linkType: hard
 
@@ -604,7 +604,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@envelop/core@npm:^6.0.0, @envelop/core@npm:^6.0.1":
+"@envelop/core@npm:^6.0.1":
   version: 6.0.1
   resolution: "@envelop/core@npm:6.0.1"
   dependencies:
@@ -636,30 +636,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@envelop/on-resolve@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "@envelop/on-resolve@npm:8.0.0"
+"@envelop/on-resolve@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "@envelop/on-resolve@npm:8.0.1"
   dependencies:
-    "@whatwg-node/promise-helpers": "npm:^2.0.0"
+    "@whatwg-node/promise-helpers": "npm:^2.0.2"
   peerDependencies:
-    "@envelop/core": ^6.0.0
+    "@envelop/core": ^6.0.1
     graphql: ^16.0.0 || ^17.0.0
-  checksum: 10c0/8cd72fef22ee6b6b5ffe9ef418903ab2112402f1af60803e15f251f2637173402dbc4aa378128a25ba1a3a7925e95c63a6aa78bc7f201973efdfa3ad428c88df
+  checksum: 10c0/395c1c6718714ec28018387c3a0f6f2df011c080fd74a6ce27c8ecf7a509c8feaa9084c1ec56b5f8fe81aaf85e2de90402ae13ea89ae767adb62cffc41c40764
   languageName: node
   linkType: hard
 
-"@envelop/opentelemetry@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "@envelop/opentelemetry@npm:10.0.0"
+"@envelop/opentelemetry@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "@envelop/opentelemetry@npm:10.0.1"
   dependencies:
-    "@envelop/on-resolve": "npm:^8.0.0"
+    "@envelop/on-resolve": "npm:^8.0.1"
     "@opentelemetry/api": "npm:^1.8.0"
     "@opentelemetry/sdk-trace-base": "npm:^1.11.0"
     tslib: "npm:^2.5.0"
   peerDependencies:
-    "@envelop/core": ^6.0.0
+    "@envelop/core": ^6.0.1
     graphql: ^16.0.0 || ^17.0.0
-  checksum: 10c0/34384246eaa9b134c1fd7e059bcfd1764489d44cc4d297870fd097aa5797859fc034d97031289f156436b990bc8d585167d7295ed8668f30cc570fd1e84a7d49
+  checksum: 10c0/5dc1d968d5f10bd80ba15bb6f967f979b4614424ad668c96f6d656dcf91b9ecaed7e95176302bcc9b551f787e155c2632c05b8a1ef521b825f18e976be57e4ec
   languageName: node
   linkType: hard
 
@@ -796,32 +796,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grafana/faro-core@npm:^2.13.0":
-  version: 2.13.0
-  resolution: "@grafana/faro-core@npm:2.13.0"
+"@grafana/faro-core@npm:^2.14.0":
+  version: 2.14.0
+  resolution: "@grafana/faro-core@npm:2.14.0"
   dependencies:
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/otlp-transformer": "npm:^0.223.0"
-  checksum: 10c0/b9a69e3f89f708a6133d4a6bb4f38a96f9a63a0e59a2cf913d3a8a3c60592f9332955da138b12e983cd67cf4224f3e8966032748bfe92c36d79a83dda160083f
+  checksum: 10c0/34fd3d209ae88f5601bc39fffa0ef3e41ee795ccaff05de420985ce08b3a72361b176065c8477f41b2bead0fb7991725683121ac8d335d221f60a2591c10ef02
   languageName: node
   linkType: hard
 
-"@grafana/faro-web-sdk@npm:2.13.0, @grafana/faro-web-sdk@npm:^2.13.0":
-  version: 2.13.0
-  resolution: "@grafana/faro-web-sdk@npm:2.13.0"
+"@grafana/faro-web-sdk@npm:2.14.0, @grafana/faro-web-sdk@npm:^2.14.0":
+  version: 2.14.0
+  resolution: "@grafana/faro-web-sdk@npm:2.14.0"
   dependencies:
-    "@grafana/faro-core": "npm:^2.13.0"
+    "@grafana/faro-core": "npm:^2.14.0"
     ua-parser-js: "npm:1.0.41"
     web-vitals: "npm:^6.0.0"
-  checksum: 10c0/60419e9bfcb52ed1c493575ec9bfb12d49ee96287d34a1e3058fb1663fb333efea74cc1aded6fc204098756c802258a2f1d5848c3ed1d5891f68eaf4f1097313
+  checksum: 10c0/84f52f0124b90addf7959a9e8fdb3232005c1aea154adae97afbce3427676e57d37bff4818aded4c9d3637a480943863b0c10b778943121484a1665ba45eb3a9
   languageName: node
   linkType: hard
 
-"@grafana/faro-web-tracing@npm:2.13.0":
-  version: 2.13.0
-  resolution: "@grafana/faro-web-tracing@npm:2.13.0"
+"@grafana/faro-web-tracing@npm:2.14.0":
+  version: 2.14.0
+  resolution: "@grafana/faro-web-tracing@npm:2.14.0"
   dependencies:
-    "@grafana/faro-web-sdk": "npm:^2.13.0"
+    "@grafana/faro-web-sdk": "npm:^2.14.0"
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/core": "npm:^2.0.0"
     "@opentelemetry/exporter-trace-otlp-http": "npm:^0.223.0"
@@ -832,7 +832,7 @@ __metadata:
     "@opentelemetry/resources": "npm:^2.0.0"
     "@opentelemetry/sdk-trace-web": "npm:^2.0.0"
     "@opentelemetry/semantic-conventions": "npm:^1.32.0"
-  checksum: 10c0/9c4d97c9b2d7df9ba0307b3a638b7f6acc2063be19cbace885d6e421222fad37a02b7563a23707e668996552849d1b4fdb6472e0da4e0f377dc38b35eed60b6a
+  checksum: 10c0/4683820af3426c41612ddbe3d511d8471d95e40e327507bbffe1dea0d87fab684a85fc771581db32764002b2e13820ac8f4ebf21b393cffe4a5c0a443550bed7
   languageName: node
   linkType: hard
 
@@ -2575,49 +2575,49 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/aksel-icons@npm:^8.21.0":
-  version: 8.21.0
-  resolution: "@navikt/aksel-icons@npm:8.21.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F8.21.0%2F3732daf4de6b0b26ae40aa42c2ad832b6acccc62"
-  checksum: 10c0/e49e2f08aed8dae92b80e7c277687d62e4fbd3c5c7a39c9090e51b40ab11c2e176a1be87f22fb8b00fb17213ebe8c297b25bc1aa1ecc166d522f734838f7eb76
+"@navikt/aksel-icons@npm:^8.23.0":
+  version: 8.23.0
+  resolution: "@navikt/aksel-icons@npm:8.23.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F8.23.0%2F311555ce46b07fdc883d5398adbb0c7a47be45cd"
+  checksum: 10c0/560c4596df335e72ffa87b2dfac837b785b78090e29a3ccfcaadd4f4222971b2884ce0b26313d89ea4d1527c8dc137c0df52bf864c4d807a08145bc563b1a779
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^8.21.0":
-  version: 8.21.0
-  resolution: "@navikt/ds-css@npm:8.21.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F8.21.0%2F6eb5e54586619b14d42a8dd9df8f95268d688adc"
-  checksum: 10c0/98552774210fc1f308bfcab36e7c1110f798cd92a58d1582b226a0ce74f9aae4cd6531cf4896ced90e5fa1d7a5e515e3dda1b07b9391563fc33d14df8853ef1a
+"@navikt/ds-css@npm:^8.23.0":
+  version: 8.23.0
+  resolution: "@navikt/ds-css@npm:8.23.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F8.23.0%2F25c581536d7651058a0d1652a6814b4657761dc0"
+  checksum: 10c0/3311842425c00257e43b7d0b4c0185e15bb7c58cdc4d2b5f01ef8f94c635691ea41ca89eee8e2ef338ecf4c7de3416b1d850cd3580ca14d3e0434da34725192a
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^8.21.0":
-  version: 8.21.0
-  resolution: "@navikt/ds-react@npm:8.21.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F8.21.0%2F4584f43909971b8c8957c655068ffa954e4dcfdd"
+"@navikt/ds-react@npm:^8.23.0":
+  version: 8.23.0
+  resolution: "@navikt/ds-react@npm:8.23.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F8.23.0%2F2719a502c207c16a55528c580b2d5fc88697d0b1"
   dependencies:
     "@floating-ui/react": "npm:0.27.20"
     "@floating-ui/react-dom": "npm:^2.1.9"
-    "@navikt/aksel-icons": "npm:^8.21.0"
-    "@navikt/ds-tokens": "npm:^8.21.0"
+    "@navikt/aksel-icons": "npm:^8.23.0"
+    "@navikt/ds-tokens": "npm:^8.23.0"
     date-fns: "npm:^4.0.0"
     react-day-picker: "npm:10.0.2"
   peerDependencies:
     "@types/react": ^17.0.30 || ^18 || ^19
     react: ^17 || ^18 || ^19
     react-dom: ^17 || ^18 || ^19
-  checksum: 10c0/62dc4e4aac78b8be15c09381c2c0bba3439144b19cf9e1c684c3bbd5f7209a843943ad6a7708df5ddb74884eb07500cd68c6843b7b310caf8d79369488820bf1
+  checksum: 10c0/de9e683d4f95a3b7df1d8a948c81e9cd7b34bc1c3594a7f1bf77cfc4ef37d55df4cd8912134d063e2c6a701da50b71a7181011e1737a9ff759166776246fe7b5
   languageName: node
   linkType: hard
 
-"@navikt/ds-tailwind@npm:^8.21.0":
-  version: 8.21.0
-  resolution: "@navikt/ds-tailwind@npm:8.21.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F8.21.0%2F8db66bff3286b1a28af6a8ecccdd590ffb7e6cda"
-  checksum: 10c0/f59edd79d1f87f421d2b5b64d1bfc2327bc5dea132b0ffc777b3172014772132267757dfb6993777e774613fd9f60f6463eed3a0f1e928e89f677696bb04b38d
+"@navikt/ds-tailwind@npm:^8.23.0":
+  version: 8.23.0
+  resolution: "@navikt/ds-tailwind@npm:8.23.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F8.23.0%2Ff55efc25956862cf2dbf6569c2770a96b54f70b8"
+  checksum: 10c0/d435320d8d2f45a804be8da41c43a0e4aaf9a8361f465f0e7da1b281e631e399da7b33c845e70629a23d36c86bf8fce573726d84b3bdf6d5bc6d490e80c2c565
   languageName: node
   linkType: hard
 
-"@navikt/ds-tokens@npm:^8.21.0":
-  version: 8.21.0
-  resolution: "@navikt/ds-tokens@npm:8.21.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F8.21.0%2F949e31cda0c51fa5022c09de3ed9f9a279c8da1f"
-  checksum: 10c0/d32005040ceb0f4a1317a2279280c839381e4e17d9e0a0933c0ecd5bc5f9d8b7f4515cee5fa048508a370d69d0d09dbb3d2716dddfd3d59b6bc0e5b93f19f1d5
+"@navikt/ds-tokens@npm:^8.23.0":
+  version: 8.23.0
+  resolution: "@navikt/ds-tokens@npm:8.23.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F8.23.0%2F569a10706977258093e2ecf396f29884b03562f9"
+  checksum: 10c0/d77ee1ef204527868b7f25ef20255474c03fd70b36dad25df3c9e45f41520da01a93e12ddc696caac9309c6cea4bd46bf5168fe967af19e0093d2f06ffbbb639
   languageName: node
   linkType: hard
 
@@ -3933,25 +3933,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@reduxjs/toolkit@npm:^2.13.0":
-  version: 2.13.0
-  resolution: "@reduxjs/toolkit@npm:2.13.0"
+"@reduxjs/toolkit@npm:^2.14.0":
+  version: 2.14.0
+  resolution: "@reduxjs/toolkit@npm:2.14.0"
   dependencies:
     "@standard-schema/spec": "npm:^1.0.0"
     "@standard-schema/utils": "npm:^0.3.0"
-    immer: "npm:^11.0.0"
+    immer: "npm:^11.2.9"
     redux: "npm:^5.0.1"
     redux-thunk: "npm:^3.1.0"
     reselect: "npm:^5.1.0"
   peerDependencies:
+    "@types/react": "*"
     react: ^16.9.0 || ^17.0.0 || ^18 || ^19
     react-redux: ^7.2.1 || ^8.1.3 || ^9.0.0
   peerDependenciesMeta:
+    "@types/react":
+      optional: true
     react:
       optional: true
     react-redux:
       optional: true
-  checksum: 10c0/9c8a75adab87a6c172754ff0308ddd17cf1c202e2e8144e56fb124b126b3959f088b533bb66ebc41a7a7143658c6b5c2e588efa2392f62090e374ae0dc249159
+  checksum: 10c0/7316d62f9773a2e5d44fdfbf29d54d9b3d133633cdd0d27d43bff1e0b02cde8f600200b6bed7610d3a676f5f68475c05e6960492f1e203873f493f00f6604b9c
   languageName: node
   linkType: hard
 
@@ -4701,58 +4704,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@valkey/valkey-glide-darwin-arm64@npm:2.5.3":
-  version: 2.5.3
-  resolution: "@valkey/valkey-glide-darwin-arm64@npm:2.5.3"
+"@valkey/valkey-glide-darwin-arm64@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@valkey/valkey-glide-darwin-arm64@npm:2.6.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@valkey/valkey-glide-darwin-x64@npm:2.5.3":
-  version: 2.5.3
-  resolution: "@valkey/valkey-glide-darwin-x64@npm:2.5.3"
+"@valkey/valkey-glide-darwin-x64@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@valkey/valkey-glide-darwin-x64@npm:2.6.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@valkey/valkey-glide-linux-arm64-gnu@npm:2.5.3":
-  version: 2.5.3
-  resolution: "@valkey/valkey-glide-linux-arm64-gnu@npm:2.5.3"
+"@valkey/valkey-glide-linux-arm64-gnu@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@valkey/valkey-glide-linux-arm64-gnu@npm:2.6.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@valkey/valkey-glide-linux-arm64-musl@npm:2.5.3":
-  version: 2.5.3
-  resolution: "@valkey/valkey-glide-linux-arm64-musl@npm:2.5.3"
+"@valkey/valkey-glide-linux-arm64-musl@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@valkey/valkey-glide-linux-arm64-musl@npm:2.6.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@valkey/valkey-glide-linux-x64-gnu@npm:2.5.3":
-  version: 2.5.3
-  resolution: "@valkey/valkey-glide-linux-x64-gnu@npm:2.5.3"
+"@valkey/valkey-glide-linux-x64-gnu@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@valkey/valkey-glide-linux-x64-gnu@npm:2.6.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@valkey/valkey-glide-linux-x64-musl@npm:2.5.3":
-  version: 2.5.3
-  resolution: "@valkey/valkey-glide-linux-x64-musl@npm:2.5.3"
+"@valkey/valkey-glide-linux-x64-musl@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@valkey/valkey-glide-linux-x64-musl@npm:2.6.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@valkey/valkey-glide@npm:^2.5.3":
-  version: 2.5.3
-  resolution: "@valkey/valkey-glide@npm:2.5.3"
+"@valkey/valkey-glide@npm:^2.6.0":
+  version: 2.6.0
+  resolution: "@valkey/valkey-glide@npm:2.6.0"
   dependencies:
-    "@valkey/valkey-glide-darwin-arm64": "npm:2.5.3"
-    "@valkey/valkey-glide-darwin-x64": "npm:2.5.3"
-    "@valkey/valkey-glide-linux-arm64-gnu": "npm:2.5.3"
-    "@valkey/valkey-glide-linux-arm64-musl": "npm:2.5.3"
-    "@valkey/valkey-glide-linux-x64-gnu": "npm:2.5.3"
-    "@valkey/valkey-glide-linux-x64-musl": "npm:2.5.3"
+    "@valkey/valkey-glide-darwin-arm64": "npm:2.6.0"
+    "@valkey/valkey-glide-darwin-x64": "npm:2.6.0"
+    "@valkey/valkey-glide-linux-arm64-gnu": "npm:2.6.0"
+    "@valkey/valkey-glide-linux-arm64-musl": "npm:2.6.0"
+    "@valkey/valkey-glide-linux-x64-gnu": "npm:2.6.0"
+    "@valkey/valkey-glide-linux-x64-musl": "npm:2.6.0"
     long: "npm:5"
     protobufjs: "npm:^7.6.3"
   dependenciesMeta:
@@ -4768,7 +4771,7 @@ __metadata:
       optional: true
     "@valkey/valkey-glide-linux-x64-musl":
       optional: true
-  checksum: 10c0/e2d0e165f7c0d7b6d1f362c7b41fb20afb85b53fe92f43e853bb241e5c585c40105d7776932cd803849a264ef55c8ddcd66d3711dc5998591339cecdcc488e6b
+  checksum: 10c0/7113c532b436683e7038669cf7047a7e5c0ffbb72a45af90a444d2ccec659fcc4b2a011fc6defa5ea4859cc85d1e081984b345a09bff63197ec34f96a606c211
   languageName: node
   linkType: hard
 
@@ -5998,7 +6001,7 @@ __metadata:
   dependencies:
     "@playwright/test": "npm:^1.65.1"
     date-fns: "npm:^4.4.0"
-    remeda: "npm:^2.57.0"
+    remeda: "npm:^2.61.0"
   languageName: unknown
   linkType: soft
 
@@ -6437,11 +6440,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:14.9.0":
-  version: 14.9.0
-  resolution: "framer-motion@npm:14.9.0"
+"framer-motion@npm:14.14.0":
+  version: 14.14.0
+  resolution: "framer-motion@npm:14.14.0"
   dependencies:
-    motion-dom: "npm:14.9.0"
+    motion-dom: "npm:14.14.0"
     motion-utils: "npm:14.7.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -6455,7 +6458,7 @@ __metadata:
       optional: true
     remix:
       optional: true
-  checksum: 10c0/5de4cef81e79a1f0eaf63718ddc1a6ba54593d6c1f274483abf2b250dca7ea20f7c0ecd33f4f26de16213f1cec927500185b2361fdfdcc6e9059f15bea54bef3
+  checksum: 10c0/405c7ac033bcc308a2444f54526cfc100b2a4373db66ec6d0da5b97c799802490c72a4623d1929a52642470ce6b5c451a1f15806d8bb8c9498a2e5b3d88825e3
   languageName: node
   linkType: hard
 
@@ -6875,10 +6878,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"immer@npm:^11.0.0":
-  version: 11.2.9
-  resolution: "immer@npm:11.2.9"
-  checksum: 10c0/fe64b10033aba3f89f778f0a28835c31f9ce28283f0b9a85245de3885442aea20ea8cf6bda7bca57f8159ff2c566ada6d9da9285461e120fe1587d335d648551
+"immer@npm:^11.2.9":
+  version: 11.2.10
+  resolution: "immer@npm:11.2.10"
+  checksum: 10c0/6f06679642fba3a4d71a0ead000e0583fd423a8e6256616f67fd5e7f82f448f704135b9cfb84cb75787a48b362643089909d99ec08b19b6c79fecbc5bc1294c2
   languageName: node
   linkType: hard
 
@@ -7171,10 +7174,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^6.2.12, jose@npm:^6.2.13, jose@npm:^6.2.14":
-  version: 6.2.14
-  resolution: "jose@npm:6.2.14"
-  checksum: 10c0/3db121220793e391c24803edae1ede848e7a67e2c3d37f9864f3e3e245c4b2d318f176d17f0f8ab02be07e210a3db5453612c8d5716af2deeaaa4e5d50e70641
+"jose@npm:^6.2.12, jose@npm:^6.2.13, jose@npm:^6.2.17":
+  version: 6.2.17
+  resolution: "jose@npm:6.2.17"
+  checksum: 10c0/1a00d44656e38664c54a8b2d903b6c947b3fc4275f7ede2462f74e50ce320359ea324deba15652dcc158c14ed99135a2382a4c5718be350923a9e583bea727db
   languageName: node
   linkType: hard
 
@@ -8487,12 +8490,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion-dom@npm:14.9.0":
-  version: 14.9.0
-  resolution: "motion-dom@npm:14.9.0"
+"motion-dom@npm:14.14.0":
+  version: 14.14.0
+  resolution: "motion-dom@npm:14.14.0"
   dependencies:
     motion-utils: "npm:14.7.0"
-  checksum: 10c0/457195a40365be1311ecad6dd07b88e6da6b3c1f332747932a9ec7dda1b3828a5a20754349e2ce477083d60bef6138d60fab8f7c8ee6a590f2794cc8946b6f85
+  checksum: 10c0/8a320425f280d2b413bc4da3b161da30d192180e5b367c4379e17eccdb6070089c71ab794267f073ff4dbeea31b75dfdbfd45d44d9888865fc0b0d22d3ec13c5
   languageName: node
   linkType: hard
 
@@ -8503,11 +8506,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion@npm:^14.9.0":
-  version: 14.9.0
-  resolution: "motion@npm:14.9.0"
+"motion@npm:^14.14.0":
+  version: 14.14.0
+  resolution: "motion@npm:14.14.0"
   dependencies:
-    framer-motion: "npm:14.9.0"
+    framer-motion: "npm:14.14.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
@@ -8520,7 +8523,7 @@ __metadata:
       optional: true
     remix:
       optional: true
-  checksum: 10c0/46b45d7da78376c5298e88ee3ff7efc7d7fd3bda7ddf5b19e7f18085b22ff6dc0571e566aed1542b0bd54a82f3c55ba5c8f095b2045000bfe276443df8019ada
+  checksum: 10c0/1edade40f79b69a1ad187e2023b869a49575c92f25a30cd3781d574e484aea077e0d239cb2243b4b2b72421b13f430f7491ce8d2782a30158b8378308d090322
   languageName: node
   linkType: hard
 
@@ -8758,9 +8761,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuqs@npm:^2.10.2":
-  version: 2.10.2
-  resolution: "nuqs@npm:2.10.2"
+"nuqs@npm:^2.10.3":
+  version: 2.10.3
+  resolution: "nuqs@npm:2.10.3"
   dependencies:
     "@standard-schema/spec": "npm:1.1.0"
   peerDependencies:
@@ -8781,7 +8784,7 @@ __metadata:
       optional: true
     react-router-dom:
       optional: true
-  checksum: 10c0/75974d7b332a7eefe45353c80de4360e608779f951fa7a71e312f32975753a6fc17524499f1e6f318f67c7232189bacf4e4075f6739f16bbfa8408b22e11dea3
+  checksum: 10c0/0ddaa127917fe2ef1f22cfbb96d057b4b0a9db882f167747f74f17d1b28676c4c250a1f0ce134c2fcb8de39944ac5139158bcc8a51575fb40fcb4fda4b7a20c5
   languageName: node
   linkType: hard
 
@@ -9638,16 +9641,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.91.0":
-  version: 7.91.0
-  resolution: "react-hook-form@npm:7.91.0"
+"react-hook-form@npm:7.92.0":
+  version: 7.92.0
+  resolution: "react-hook-form@npm:7.92.0"
   peerDependencies:
     "@types/react": "*"
     react: ^16.8.0 || ^17 || ^18 || ^19
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10c0/21c6164024082331242eaf7dd865ca6ac905af5a4941da60dc302337f0190635be7e73af30954cb7a310f5d94883e851b1d79322415aca796b81877085ef1c7c
+  checksum: 10c0/afed3d373c8f61bf019d82e92ff13dd41d39027b5c70332268f79a8bdcbea476798ffa9b4081df832dd6993e995092b2bc0788d24e51df173720ec57478a1631
   languageName: node
   linkType: hard
 
@@ -9885,10 +9888,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^2.57.0":
-  version: 2.57.0
-  resolution: "remeda@npm:2.57.0"
-  checksum: 10c0/4ef6b5779ff929c7c31dd88440206c4e27993a61a08f975a0126e4260483b34786f0cf720cba324e3d2543cd96a708f87b94855027e0f8aacd1914f0e0449de7
+"remeda@npm:^2.61.0":
+  version: 2.61.0
+  resolution: "remeda@npm:2.61.0"
+  checksum: 10c0/a252b0ad1891334a422956ed5303d88134c2bcd177cdb767cddb06d1ab11227544e86d7943049763c3043c29d5eb3609a13b4f81c8694ea1a43783221a4eb067
   languageName: node
   linkType: hard
 
@@ -10702,12 +10705,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "syk-inn@workspace:."
   dependencies:
-    "@apollo/client": "npm:^4.3.5"
-    "@envelop/core": "npm:^6.0.0"
-    "@envelop/opentelemetry": "npm:^10.0.0"
+    "@apollo/client": "npm:^4.3.8"
+    "@envelop/core": "npm:^6.0.1"
+    "@envelop/opentelemetry": "npm:^10.0.1"
     "@google-cloud/storage": "npm:^8.4.0"
-    "@grafana/faro-web-sdk": "npm:2.13.0"
-    "@grafana/faro-web-tracing": "npm:2.13.0"
+    "@grafana/faro-web-sdk": "npm:2.14.0"
+    "@grafana/faro-web-tracing": "npm:2.14.0"
     "@graphql-codegen/cli": "npm:^8.0.0"
     "@graphql-codegen/fragment-matcher": "npm:^8.0.0"
     "@graphql-codegen/introspection": "npm:^7.0.0"
@@ -10718,10 +10721,10 @@ __metadata:
     "@limegrass/eslint-plugin-import-alias": "npm:^1.6.1"
     "@mdx-js/loader": "npm:^3.1.1"
     "@mdx-js/react": "npm:^3.1.1"
-    "@navikt/aksel-icons": "npm:^8.21.0"
-    "@navikt/ds-css": "npm:^8.21.0"
-    "@navikt/ds-react": "npm:^8.21.0"
-    "@navikt/ds-tailwind": "npm:^8.21.0"
+    "@navikt/aksel-icons": "npm:^8.23.0"
+    "@navikt/ds-css": "npm:^8.23.0"
+    "@navikt/ds-react": "npm:^8.23.0"
+    "@navikt/ds-tailwind": "npm:^8.23.0"
     "@navikt/next-logger": "npm:^5.0.2"
     "@navikt/pino-logger": "npm:^5.0.2"
     "@navikt/smart-on-fhir": "npm:1.6.34"
@@ -10734,7 +10737,7 @@ __metadata:
     "@opentelemetry/api": "npm:1.9.1"
     "@opentelemetry/core": "npm:2.12.0"
     "@parcel/watcher": "npm:^2.6.0"
-    "@reduxjs/toolkit": "npm:^2.13.0"
+    "@reduxjs/toolkit": "npm:^2.14.0"
     "@tailwindcss/postcss": "npm:^4.3.5"
     "@testcontainers/kafka": "npm:^12.2.1"
     "@testcontainers/postgresql": "npm:^12.2.1"
@@ -10744,7 +10747,7 @@ __metadata:
     "@types/react": "npm:19.3.0"
     "@types/react-dom": "npm:19.3.0"
     "@unleash/nextjs": "npm:^1.6.7"
-    "@valkey/valkey-glide": "npm:^2.5.3"
+    "@valkey/valkey-glide": "npm:^2.6.0"
     "@vitest/coverage-v8": "npm:5.1.0"
     asciichart: "npm:^1.5.25"
     clsx: "npm:^2.1.1"
@@ -10755,16 +10758,16 @@ __metadata:
     graphql-yoga: "npm:^6.1.0"
     hono: "npm:^4.13.18"
     husky: "npm:^9.1.7"
-    jose: "npm:^6.2.14"
+    jose: "npm:^6.2.17"
     kafkajs: "npm:^2.2.4"
     knip: "npm:^6.45.1"
     lint-staged: "npm:^17.6.0"
-    motion: "npm:^14.9.0"
+    motion: "npm:^14.14.0"
     next: "npm:^16.4.6"
     next-logger: "npm:^5.0.2"
     nextleton: "npm:^0.6.1"
     nock: "npm:^15.0.6"
-    nuqs: "npm:^2.10.2"
+    nuqs: "npm:^2.10.3"
     oxfmt: "npm:^0.78.0"
     oxlint: "npm:1.93.0"
     oxlint-tsgolint: "npm:^7.0.2007"
@@ -10777,10 +10780,10 @@ __metadata:
     quick-lru: "npm:^7.3.0"
     react: "npm:^19.3.1"
     react-dom: "npm:^19.3.1"
-    react-hook-form: "npm:7.91.0"
+    react-hook-form: "npm:7.92.0"
     react-redux: "npm:^9.3.1"
     remark-gfm: "npm:^4.0.1"
-    remeda: "npm:^2.57.0"
+    remeda: "npm:^2.61.0"
     rxjs: "npm:^7.8.2"
     sonner: "npm:^2.0.8"
     tailwind-merge: "npm:^3.7.0"
