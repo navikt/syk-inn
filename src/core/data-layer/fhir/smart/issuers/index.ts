@@ -1,4 +1,4 @@
-import { KnownFhirServer } from '@navikt/smart-on-fhir/client'
+import { KnownFhirServer } from '@navikt/smart-on-fhir/smart'
 
 import { bundledEnv } from '#lib/env'
 

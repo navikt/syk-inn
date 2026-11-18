@@ -1,4 +1,4 @@
-import { ReadyClient } from '@navikt/smart-on-fhir/client'
+import { ReadyClient } from '@navikt/smart-on-fhir/smart'
 import { YogaInitialContext } from 'graphql-yoga'
 import { GraphQLError } from 'graphql/error'
 
