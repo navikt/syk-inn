@@ -1,4 +1,4 @@
-import { ReadyClient, SmartClientReadyErrors } from '@navikt/smart-on-fhir/client'
+import { ReadyClient, SmartClientReadyErrors } from '@navikt/smart-on-fhir/smart'
 
 import { getSessionId } from '#core/session/session'
 import { getUserlessToggles } from '#core/toggles/unleash'

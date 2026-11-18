@@ -1,5 +1,5 @@
 import { logger } from '@navikt/next-logger'
-import { SmartClient, SmartClientConfiguration, SmartStorage } from '@navikt/smart-on-fhir/client'
+import { SmartClient, SmartClientConfiguration, SmartStorage } from '@navikt/smart-on-fhir/smart'
 import { GlideClient } from '@valkey/valkey-glide'
 
 import { realValkey } from '#core/services/valkey/client'

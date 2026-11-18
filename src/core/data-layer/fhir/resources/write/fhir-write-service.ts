@@ -1,5 +1,5 @@
 import { logger } from '@navikt/next-logger'
-import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/client'
+import { ReadyClient, ResourceCreateErrors } from '@navikt/smart-on-fhir/smart'
 import { FhirDocumentReference, FhirQuestionnaireResponse } from '@navikt/smart-on-fhir/zod'
 import { Span } from '@opentelemetry/api'
 

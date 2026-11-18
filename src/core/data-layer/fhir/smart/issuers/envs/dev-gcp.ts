@@ -1,4 +1,4 @@
-import { KnownFhirServer } from '@navikt/smart-on-fhir/client'
+import { KnownFhirServer } from '@navikt/smart-on-fhir/smart'
 import * as z from 'zod'
 
 import { getServerEnv } from '#lib/env'

@@ -1,4 +1,4 @@
-import { ReadyClient, ResourceRequestErrors } from '@navikt/smart-on-fhir/client'
+import { ReadyClient, ResourceRequestErrors } from '@navikt/smart-on-fhir/smart'
 
 import { Diagnose } from '#data-layer/common/diagnose'
 import { failSpan, spanServerAsync } from '#lib/otel/server'

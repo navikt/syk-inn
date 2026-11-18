@@ -1,5 +1,5 @@
 import { Alert, Heading, Loader, Skeleton, Tag } from '@navikt/ds-react'
-import { Validation, ValidationOutcome } from '@navikt/smart-on-fhir/client'
+import { ValidationOutcome, SmartValidation } from '@navikt/smart-on-fhir/smart'
 import React, { PropsWithChildren, ReactElement, Suspense } from 'react'
 
 import { PageLayout } from '#components/layout/Page'
@@ -93,7 +93,7 @@ function ValidationSection({
     validation,
     onlyWarnAndUp,
 }: {
-    validation: Validation
+    validation: SmartValidation
     onlyWarnAndUp: boolean
 }): ReactElement {
     const headingId = `validator-report-${validation.type}`
@@ -150,7 +150,7 @@ const TEST_VARIANT = {
     ERROR: 'error',
 } as const
 
-function OverallStatus({ status }: { status: Validation['status'] }): ReactElement {
+function OverallStatus({ status }: { status: SmartValidation['status'] }): ReactElement {
     switch (status) {
         case 'OK':
             return (
