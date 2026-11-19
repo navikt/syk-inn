@@ -29,7 +29,13 @@ Pasient og konsultasjon identifiseres fra SMART launch-konteksten, ikke fra felt
 
 - Token-responsen må inneholde `patient` og `encounter`. Begge må være gyldige FHIR-id-er (1-64 tegn
   av `A-Za-z0-9-.`).
-- `fhirUser`-claimet i id_token må være en relativ referanse på formen `Practitioner/<id>`.
+- `fhirUser`-claimet i id_token må peke på en Practitioner. Dette er et Nav-krav.
+
+### Dagens begrensninger
+
+- `fhirUser` må være en relativ referanse på formen `Practitioner/<id>`. SMART App Launch STU 2.2
+  tillater også absolutte URL-er, men biblioteket henter id-en med `split('/')[1]` og forventer
+  prefikset `Practitioner/`.
 
 ## Kontekst
 
