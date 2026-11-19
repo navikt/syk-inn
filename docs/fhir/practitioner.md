@@ -21,44 +21,6 @@ _Relevante referanser:_
       "system": "urn:oid:2.16.578.1.12.4.1.4.4",
       "value": "hpr-nummer"
     }
-  ],
-  "qualifications": [
-    {
-      "code": {
-        "coding": [
-          {
-            "system": "urn:oid:2.16.578.1.12.4.1.1.9060",
-            "code": "LE",
-            "display": "Lege"
-          }
-        ]
-      }
-    },
-    {
-      "code": {
-        "coding": [
-          {
-            "system": "urn:oid:2.16.578.1.12.4.1.1.7426",
-            "code": "1",
-            "display": "Allmennmedisin"
-          }
-        ]
-      }
-    },
-    {
-      "code": {
-        "coding": [
-          {
-            "system": "urn:oid:2.16.578.1.12.4.1.1.7704",
-            "code": "1",
-            "display": "Autorisasjon"
-          }
-        ]
-      },
-      "period": {
-        "start": "dateTime kvalifikasjonen gjelder fra"
-      }
-    }
   ]
 }
 ```
@@ -66,3 +28,4 @@ _Relevante referanser:_
 ## Begrunnelse
 
 - Identifier/hpr-nummer benyttes som identifikator for sykmelder/helsepersonell.
+- Qualifications feltet er fjernet da dette hentes fra HelseID
