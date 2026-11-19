@@ -7,7 +7,7 @@ export const sykmeldingQuestionnaireV1 = {
             linkId: 'hoveddiagnose',
             text: 'Hoveddiagnose',
             type: 'open-choice',
-            required: true,
+            required: false,
         },
         {
             linkId: 'bidiagnose',

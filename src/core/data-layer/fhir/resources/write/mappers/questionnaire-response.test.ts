@@ -3,6 +3,8 @@ import { assert, describe, expect, it } from 'vitest'
 
 import { SykmeldingBuilder } from '#dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 
+import { sykmeldingQuestionnaireV1 } from '../resources/questionnaire/sykmelding-questionnaire'
+
 import { sykmeldingToQuestionnaireResponse } from './questionnaire-response'
 
 const REFS = {
@@ -43,6 +45,23 @@ describe('QuestionnaireResponseMapper', () => {
                 },
             },
         ])
+    })
+})
+
+describe('Questionnaire conformance', () => {
+    it('answers every required root item when hoveddiagnose is null and annenFravarsgrunn is given', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.hoveddiagnose = null
+        sykmelding.values.annenFravarsgrunn = 'DONOR'
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        const requiredLinkIds = sykmeldingQuestionnaireV1.item
+            .filter((item) => 'required' in item && item.required)
+            .map((item) => item.linkId)
+        const answeredLinkIds = result.item.map((item) => item.linkId)
+
+        expect(answeredLinkIds).toEqual(expect.arrayContaining(requiredLinkIds))
     })
 })
 

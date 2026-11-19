@@ -7,6 +7,7 @@ import {
 import { SykInnApiAktivitet, SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
 import { Diagnose } from '#data-layer/common/diagnose'
 import { diagnosisSystemToUrn } from '#data-layer/fhir/resources/mappers/diagnosis'
+
 import { sykmeldingQuestionnaireV1 } from '../resources/questionnaire/sykmelding-questionnaire'
 
 export function sykmeldingToQuestionnaireResponse(
