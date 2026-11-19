@@ -58,6 +58,13 @@ EPJ kan slå opp definisjonen for å forstå strukturen til de ulike `item`-felt
             "code": "F32.0",
             "display": "Mild depressiv episode"
           }
+        },
+        {
+          "valueCoding": {
+            "system": "urn:oid:2.16.578.1.12.4.1.1.7110",
+            "code": "G47.0",
+            "display": "Søvnløshet"
+          }
         }
       ]
     },
@@ -195,12 +202,12 @@ EPJ kan slå opp definisjonen for å forstå strukturen til de ulike `item`-felt
   `valueDate`, `valueInteger`, `valueBoolean` eller `valueString` avhengig av felt.
   - `hoveddiagnose` og `bidiagnose` er `valueCoding` med kodesystem (ICD-10
     `urn:oid:2.16.578.1.12.4.1.1.7110` eller ICPC-2 `urn:oid:2.16.578.1.12.4.1.1.7170`), kode og
-    visningstekst. Ingen egen Condition-ressurs benyttes. `bidiagnose` kan gjentas for flere
-    bidiagnoser.
+    visningstekst. Ingen egen Condition-ressurs benyttes. `bidiagnose` er ett `item` med ett
+    `answer` per bidiagnose, og utelates når det ikke finnes noen bidiagnoser.
   - `aktivitet` er en gruppe med periode (`aktivitet-fom`/`aktivitet-tom`) og type. Flere perioder
     representeres ved å gjenta `aktivitet`-gruppen. `aktivitet-grad` inkluderes kun for type
     `GRADERT`.
-  - `svangerskapsrelatert` er `valueBoolean`.
+  - `svangerskapsrelatert` er `valueBoolean` og sendes alltid, med `true` eller `false`.
   - `yrkesskade` er en gruppe med boolean og valgfri skadedato (`yrkesskade-skadedato` utelates hvis
     ikke relevant).
   - `arbeidsforhold` er en gruppe med arbeidsgivernavn.

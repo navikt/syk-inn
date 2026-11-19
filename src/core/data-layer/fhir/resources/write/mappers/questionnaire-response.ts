@@ -38,7 +38,7 @@ function sykmeldingValuesToItems(values: SykInnApiSykmelding['values']): FhirQue
 
     if (values.bidiagnoser && values.bidiagnoser.length > 0) {
         items.push({
-            linkId: 'bidiagnoser',
+            linkId: 'bidiagnose',
             text: 'Bidiagnose',
             answer: values.bidiagnoser.map(toDiagnoseValueAnswer),
         })
@@ -48,9 +48,11 @@ function sykmeldingValuesToItems(values: SykInnApiSykmelding['values']): FhirQue
         items.push({
             linkId: 'arbeidsforhold',
             text: 'Arbeidsforhold sykmeldingen gjelder for',
-            answer: [
+            item: [
                 {
-                    valueString: values.arbeidsgiver.arbeidsgivernavn,
+                    linkId: 'arbeidsforhold-arbeidsgivernavn',
+                    text: 'Navn på arbeidsgiver',
+                    answer: [{ valueString: values.arbeidsgiver.arbeidsgivernavn }],
                 },
             ],
         })
@@ -60,17 +62,11 @@ function sykmeldingValuesToItems(values: SykInnApiSykmelding['values']): FhirQue
         items.push(...values.aktivitet.map(toAktivitetItem))
     }
 
-    if (values.svangerskapsrelatert) {
-        items.push({
-            linkId: 'svangerskapsrelatert',
-            text: 'Svangerskapsrelatert',
-            answer: [
-                {
-                    valueBoolean: values.svangerskapsrelatert,
-                },
-            ],
-        })
-    }
+    items.push({
+        linkId: 'svangerskapsrelatert',
+        text: 'Svangerskapsrelatert',
+        answer: [{ valueBoolean: values.svangerskapsrelatert }],
+    })
 
     if (values.yrkesskade) {
         items.push(toYrkesskadeItem(values.yrkesskade))

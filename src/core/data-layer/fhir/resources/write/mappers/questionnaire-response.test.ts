@@ -114,15 +114,29 @@ describe('aktivitet mapping', () => {
 })
 
 describe('arbeidsforhold mapping', () => {
-    it('maps arbeidsgivernavn as valueString', () => {
+    it('maps arbeidsgivernavn as valueString on the arbeidsforhold-arbeidsgivernavn child item', () => {
         const result = sykmeldingToQuestionnaireResponse(new SykmeldingBuilder().enkelAktivitet().build(), REFS)
 
-        expect(getRootItem('arbeidsforhold', result.item).answer).toEqual([{ valueString: 'Default AS' }])
+        const arbeidsforhold = getRootItem('arbeidsforhold', result.item)
+
+        expect(arbeidsforhold.answer).toBeUndefined()
+        expect(getChildItem('arbeidsforhold-arbeidsgivernavn', arbeidsforhold).answer).toEqual([
+            { valueString: 'Default AS' },
+        ])
+    })
+
+    it('omits arbeidsforhold when there is no arbeidsgiver', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.arbeidsgiver = null
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        expect(result.item.find((item) => item.linkId === 'arbeidsforhold')).toBeUndefined()
     })
 })
 
-describe('bidiagnoser mapping', () => {
-    it('maps multiple bidiagnoser as multiple answers on one line', () => {
+describe('bidiagnose mapping', () => {
+    it('maps multiple bidiagnoser as multiple answers on one bidiagnose item', () => {
         const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
         sykmelding.values.bidiagnoser = [
             { system: 'ICPC2', code: 'L99', text: 'Diagnose 1' },
@@ -131,12 +145,24 @@ describe('bidiagnoser mapping', () => {
         ]
 
         const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
-        const bidiagnoser = getRootItem('bidiagnoser', result.item)
+        const bidiagnoser = getRootItem('bidiagnose', result.item)
 
+        expect(result.item.filter((item) => item.linkId === 'bidiagnose')).toHaveLength(1)
         expect(bidiagnoser.answer).toHaveLength(3)
         expect(bidiagnoser.answer?.[0].valueCoding?.code).toBe('L99')
         expect(bidiagnoser.answer?.[1].valueCoding?.code).toBe('M54')
         expect(bidiagnoser.answer?.[2].valueCoding?.code).toBe('S44')
+    })
+})
+
+describe('svangerskapsrelatert mapping', () => {
+    it.each([true, false])('always maps svangerskapsrelatert as valueBoolean (%s)', (value) => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.svangerskapsrelatert = value
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        expect(getRootItem('svangerskapsrelatert', result.item).answer).toEqual([{ valueBoolean: value }])
     })
 })
 
