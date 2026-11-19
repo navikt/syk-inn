@@ -33,21 +33,14 @@ _Relevante referanser:_
 
 ## Krav
 
-Se [oversikten](_oversikt.md#hvordan-kravene-leses) for forklaring av kildene.
+Organization leses fra `Encounter.serviceProvider`.
 
-- **R4:** `identifier` eller `name` må være med (org-1). Nav-kravet under oppfyller dette.
-- **Nav:** `identifier` med organisasjonsnummer (`urn:oid:2.16.578.1.12.4.1.4.101`). no-basis har en
-  `ENH`-slice for dette, men krever ikke at den finnes.
-- **Nav:** `telecom` med `system` satt til `phone`. R4 og no-basis krever ikke `telecom`.
-- Organization leses med `Encounter.serviceProvider.reference`, se [Encounter](encounter.md).
-
-### Dagens begrensninger
-
-- `identifier` og `telecom` må finnes som lister i svaret (eventuelt tomme), og hvert element må ha
-  `system` og `value`. R4 har `identifier` og `telecom` som 0..\*, og `system` og `value` som 0..1.
-  Mangler listene, avvises hele Organization i stedet for at appen melder manglende orgnummer eller
-  telefonnummer.
-- Det første `telecom`-elementet med `system` `phone` brukes.
+| Felt                               | R4    | Nav     | Merknad                      |
+| ---------------------------------- | ----- | ------- | ---------------------------- |
+| `identifier` (organisasjonsnummer) | 0..\* | Påkrevd |                              |
+| `telecom` (`system` `phone`)       | 0..\* | Påkrevd | Første telefonnummer brukes. |
+| `identifier.system`, `.value`      | 0..1  | Påkrevd | Gjelder alle elementer.      |
+| `telecom.system`, `.value`         | 0..1  | Påkrevd | Gjelder alle elementer.      |
 
 ## Begrunnelse
 
@@ -59,4 +52,4 @@ Se [oversikten](_oversikt.md#hvordan-kravene-leses) for forklaring av kildene.
 ## Planlagt
 
 - Identifier/her-id skal brukes til å sende dokumenter asynkront (som Dialogmelding) til EPJ hvis
-  synkron tilbakeskriving feiler. Brukes ikke i dag, og er ikke påkrevd.
+  synkron tilbakeskriving feiler.

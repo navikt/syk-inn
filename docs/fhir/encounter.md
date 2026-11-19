@@ -6,13 +6,12 @@ _Relevante referanser:_
 
 - [Encounter](https://www.hl7.org/fhir/R4/encounter.html) (HL7)
 
-HL7 Norge har ingen no-basis-profil for Encounter, så kravene kommer fra R4 og Nav.
+Det finnes ingen no-basis-profil for Encounter.
 
 ## Eksempel JSON-struktur for Encounter
 
-Feltene `status` og `class` er med fordi de er påkrevd i R4 (1..1). `class` leses ikke av syk-inn i
-dag. `subject`, `participant` og `diagnosis` er valgfrie i R4, men er med som kontekst som kan
-brukes til å validere launch-konteksten, nå og senere.
+`status` og `class` er påkrevd i R4. `subject`, `participant` og `diagnosis` er valgfrie, men tas
+med som kontekst for konsultasjonen.
 
 ```json
 {
@@ -48,36 +47,14 @@ brukes til å validere launch-konteksten, nå og senere.
 
 ## Krav
 
-Se [oversikten](_oversikt.md#hvordan-kravene-leses) for forklaring av kildene.
-
-- **R4:** `status` (1..1) og `class` (1..1). syk-inn leser `status`, men sjekker ikke verdien.
-  `class` kontrolleres ikke i dag.
-- **Nav:** `serviceProvider.reference` til `Organization/<id>`. R4 har `serviceProvider` som 0..1.
-- Konsultasjonens id kommer fra SMART launch-konteksten (`encounter`), og Encounter leses med
-  `Encounter/<id>`.
-
-### Kontekstfelter
-
-Disse feltene er ikke harde krav fra R4 eller Nav, og syk-inn bruker dem ikke i dag:
-
-| Felt                     | R4 kardinalitet             |
-| ------------------------ | --------------------------- |
-| `subject`                | 0..1                        |
-| `participant`            | 0..\*                       |
-| `participant.individual` | 0..1                        |
-| `diagnosis`              | 0..\*                       |
-| `diagnosis.condition`    | 1..1 når `diagnosis` finnes |
-
-### Dagens begrensninger
-
-- Er `subject`, `participant` eller `diagnosis` med, må `subject.reference`,
-  `participant[].individual.reference` og `diagnosis[].condition.reference` finnes, ellers avvises
-  hele Encounter. I R4 er `participant.individual` og `Reference.reference` 0..1.
-- `serviceProvider.reference` må være en relativ referanse på formen `Organization/<id>`.
-- Diagnoser hentes ikke fra `Encounter.diagnosis`, men med søket `Condition?encounter=<id>`, se
-  [Condition](condition.md).
-- Pasient og sykmelder identifiseres fra launch-konteksten, ikke fra `subject` og
-  `participant.individual`.
+| Felt                     | R4   | Nav     | Merknad                                                                              |
+| ------------------------ | ---- | ------- | ------------------------------------------------------------------------------------ |
+| `status`                 | 1..1 | Påkrevd | Verdien kontrolleres ikke.                                                           |
+| `class`                  | 1..1 | Påkrevd | Verdien kontrolleres ikke.                                                           |
+| `serviceProvider`        | 0..1 | Påkrevd | Relativ referanse på formen `Organization/<id>`.                                     |
+| `subject`                | 0..1 | Valgfri | Må ha `reference` hvis feltet er med.                                                |
+| `participant.individual` | 0..1 | Valgfri | Må ha `reference` hvis `participant` er med.                                         |
+| `diagnosis.condition`    | 1..1 | Valgfri | Må ha `reference` hvis `diagnosis` er med. Leses ikke, se [Condition](condition.md). |
 
 ## Begrunnelse
 
@@ -94,16 +71,11 @@ Disse feltene er ikke harde krav fra R4 eller Nav, og syk-inn bruker dem ikke i 
   referanse (literal reference) eller selve objektet (logical reference). Literal reference er da
   FHIR referansen til Condition, f.eks. Condition/unik-uuid-1234.
   [Dersom begge er til stede foretrekkes literal reference](https://www.hl7.org/fhir/R4/references.html#logical).
-- Class - kan brukes til å skille fysisk og virtuell konsultasjon etter norsk kodeverk. For
-  v3-ActCode er AMB (pasienten er fysisk til stede) og VR (virtuelt) aktuelle verdier. Ikke et krav
-  i dag.
+- Class kan brukes til å skille fysisk og virtuell konsultasjon etter norsk kodeverk. For v3-ActCode
+  er AMB (pasienten er fysisk til stede) og VR (virtuelt) aktuelle verdier.
 
 ## Planlagt
 
-Ikke i bruk i dag og ikke påkrevd:
-
 - `type` med Kontakttype (`urn:oid:2.16.578.1.12.4.1.1.8432`) for å avgjøre konsultasjonstype.
-  Valideringsrapporten i `@navikt/smart-on-fhir` gir en advarsel når den mangler.
-- Kontroll av at sykmeldingen kun sendes i rett type konsultasjon, basert på `class`, `type` og
-  `status`.
+- Kontroll av konsultasjonstype basert på `class`, `type` og `status`.
 - Kryssjekk av `subject` og `participant.individual` mot launch-konteksten.

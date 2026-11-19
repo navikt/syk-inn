@@ -132,10 +132,9 @@ Begrunnelse under). Selve bundlen sendes med `POST` til FHIR-serverens base-URL 
   - `PUT /<ressurstype>/<sykmelding-id>` er en «update as create» (upsert) der klienten bestemmer
     id-en. `POST /<ressurstype>` ville latt FHIR-serveren generere en tilfeldig id og opprette en ny
     ressurs ved hvert kall.
-  - Det gjør operasjonen trygg å gjenta: et nytt forsøk med samme sykmelding treffer samme id og
-    lager ikke duplikater, selv om to forsøk skulle kjøre samtidig. syk-inn sjekker først med
-    `GET /<ressurstype>/<sykmelding-id>` og hopper over skrivingen hvis ressursen finnes, så en
-    eksisterende ressurs overskrives ikke. Sjekken er kun mulig fordi id-en er forutsigbar.
+  - Operasjonen blir dermed idempotent. Et nytt forsøk med samme sykmelding treffer samme id og
+    lager ikke duplikater. syk-inn sjekker først med `GET /<ressurstype>/<sykmelding-id>` og hopper
+    over skrivingen hvis ressursen finnes. Sjekken er kun mulig fordi id-en er forutsigbar.
   - Fordi id-en er kjent på forhånd, kan `DocumentReference.context.related` peke til
     `QuestionnaireResponse/<sykmelding-id>` allerede før ressursen er lagret.
 - Både `QuestionnaireResponse.id` og `DocumentReference.id` settes til sykmeldings-id-en. Siden

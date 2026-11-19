@@ -60,22 +60,17 @@ _Relevante referanser:_
 
 ## Krav
 
-Se [oversikten](_oversikt.md#hvordan-kravene-leses) for forklaring av kildene. HL7 Norge har ingen
-no-basis-profil for Condition. Condition er ikke påkrevd: uten den preutfylles ingen diagnoser.
+Condition er valgfri. Diagnoser hentes med `Condition?encounter=<encounter-id>`, og EPJ må svare med
+en Bundle av typen `searchset`.
 
-- **Nav:** EPJ støtter søket `Condition?encounter=<encounter-id>` (søkeparameteren `encounter` i R4)
-  og svarer med en Bundle av typen `searchset`. Diagnosene hentes ikke fra `Encounter.diagnosis`.
-- **R4:** `subject` (1..1).
-- **Nav:** `code.coding` med kodesystem ICD-10, ICPC-2 eller ICPC-2B, og med `code` og `display`.
-  Conditions uten et av disse kodesystemene ignoreres.
+| Felt                                      | R4    | Nav     | Merknad                                                                                                          |
+| ----------------------------------------- | ----- | ------- | ---------------------------------------------------------------------------------------------------------------- |
+| `subject`                                 | 1..1  | Påkrevd |                                                                                                                  |
+| `encounter`                               | 0..1  | Påkrevd |                                                                                                                  |
+| `code.coding`                             | 0..\* | Påkrevd | ICD-10, ICPC-2 eller ICPC-2B. Andre kodesystemer ignoreres.                                                      |
+| `code.coding.system`, `.code`, `.display` | 0..1  | Påkrevd | Gjelder alle `coding`-elementer i søkeresultatet. Ett element uten `display` stopper preutfylling ([#104][lib]). |
 
-### Dagens begrensninger
-
-- Alle `coding`-elementer i alle Conditions i søkeresultatet må ha `system`, `code` og `display`. I
-  R4 er alle tre 0..1. Ett element uten `display`, for eksempel en ekstra SNOMED-kode, avviser hele
-  søkeresultatet slik at ingen diagnoser preutfylles. Se
-  [navikt/smart-on-fhir#104](https://github.com/navikt/smart-on-fhir/issues/104).
-- Hver Condition må ha `encounter.reference` og `code.coding`. I R4 er `encounter` og `code` 0..1.
+[lib]: https://github.com/navikt/smart-on-fhir/issues/104
 
 ## Begrunnelse
 
