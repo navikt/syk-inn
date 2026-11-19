@@ -14,8 +14,8 @@ _Relevante referanser:_
 
 ## Eksempel JSON-struktur for _no-basis-DocumentReference_
 
-Her er feltet `status` i eksempelet fordi den er påkrevd i R4 FHIR spesifikasjonen, men det er ikke
-et felt som Nav bruker i dag.
+Feltet `status` er med fordi det er påkrevd i R4 (1..1). `context.period` er valgfritt i R4, men
+settes av syk-inn.
 
 ```json
 {
@@ -39,8 +39,8 @@ et felt som Nav bruker i dag.
       "attachment": {
         "title": "Tittel generert av Nav",
         "language": "NO-nb",
-        "contentType": "application/pdf | application/fhir+json",
-        "data": "base64 PDF | base64 FHIR JSON"
+        "contentType": "application/pdf",
+        "data": "base64 PDF"
       }
     }
   ],
@@ -67,6 +67,39 @@ et felt som Nav bruker i dag.
 }
 ```
 
+## Krav
+
+Se [oversikten](_oversikt.md#hvordan-kravene-leses) for forklaring av kildene.
+
+- **R4:** `status` (1..1) og `content.attachment` (1..1). syk-inn sender `status` `current`.
+- **no-basis:** `type` er bundet til ValueSet `no-basis-documentreference-type`. syk-inn sender
+  J01-2 (Sykmeldinger og trygdesaker) fra kodeverk 9602.
+- **Nav:** `subject`, `author` og `context.encounter` med referanser til Patient, Practitioner og
+  Encounter fra launch-konteksten. R4 har `subject` 0..1, `author` 0..\* og `context` 0..1.
+- **Nav:** `context.period` og `description`. Begge er 0..1 i R4.
+- **Nav:** `content.attachment` med `contentType` `application/pdf`, `language` `NO-nb`, `title` og
+  base64-kodet `data`.
+- **Nav:** Skriving med `PUT DocumentReference/<id>`, der id er satt av syk-inn. Før skriving gjør
+  syk-inn `GET DocumentReference/<id>` og forventer `404` hvis dokumentet ikke finnes. Finnes det
+  allerede, skrives ikke noe på nytt.
+- Utover `GET` på id-en før skriving leser syk-inn ikke DocumentReference.
+
+### Dagens begrensninger
+
+- Svaret på `GET` og `PUT` må være en vellykket respons med hele ressursen i body. R4 tillater at en
+  server svarer uten body når `Prefer` ikke er satt, og syk-inn sender ikke `Prefer`. En tom body
+  gir en `SyntaxError` fra `response.json()`. En body som ikke samsvarer med skjemaet gir
+  `CREATE_FAILED_INVALID_RESPONSE` og syk-inn melder at dokumentet ikke ble opprettet.
+- Svaret må ha `status`, `type.coding` (med `system`, `code` og `display`), `meta.lastUpdated`,
+  `subject.reference`, `author[].reference`, `content[].attachment` og
+  `context.encounter[].reference`. Av disse er bare `status` og `content.attachment` påkrevd i R4,
+  og `meta.lastUpdated` er 0..1. `OperationOutcome` som svar avvises også, siden det ikke er en
+  DocumentReference. Se
+  [navikt/smart-on-fhir#104](https://github.com/navikt/smart-on-fhir/issues/104).
+- Svar med `404`, `405` eller `501` på `PUT` tolkes som at EPJ ikke støtter skriving, og dokumentet
+  regnes som ikke opprettet.
+- Bare PDF sendes i dag.
+
 ## Begrunnelse
 
 - `Type` benyttes til å spesifisere dokumenttype. Dette bruker kodeverket
@@ -75,12 +108,18 @@ et felt som Nav bruker i dag.
 - `Description` er en overordnet beskrivelse av dokumentet, for sykmeldingen vil vi generere opp en
   informativ beskrivelse som _"100% Sykmelding fra 01.06.2024 til 07.06.2024"_.
 - `Content` er selve dokumentet, for sykmeldinger så vil vi opprette PDF-er med base64-koding som
-  vist i eksempelet over. Det er også mulig å sende base64-kodet FHIR JSON fremfor PDF.
+  vist i eksempelet over.
 - `Subject` er en refereanse til pasienten som gjelder for den aktuelle sykmeldingen.
 - `Author` er en referanse til Practitioner som sendte inn sykmeldingen.
 - `Context` → `Encounter` er brukt til å ivareta kravet om at en sykmelding krever en konsultasjon.
-  Sykmeldingsapplikasjonen vil ivare ta at sykmeldinger kun sendes i rett type konsultasjon. Se
-  [Encounter](encounter.md) for flere detaljer.
+  Intensjonen er at sykmeldinger kun sendes i rett type konsultasjon, men syk-inn kontrollerer ikke
+  dette i dag. Se [Encounter](encounter.md) for flere detaljer.
 
 `Context.Encounter` **MÅ** inneholde referanse til konsultasjon da Folketrygdloven §8-7 krever
 konsultasjon for sykmelding.
+
+## Planlagt
+
+- Base64-kodet FHIR JSON (`application/fhir+json`) som alternativ til PDF. Bibliotekets skjema
+  støtter det, men syk-inn sender det ikke i dag.
+- Å sende dokumentet som en del av en Bundle, se [Bundle](bundle.md).

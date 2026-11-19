@@ -197,6 +197,29 @@ EPJ kan slå opp definisjonen for å forstå strukturen til de ulike `item`-felt
 }
 ```
 
+## Krav
+
+QuestionnaireResponse er ikke påkrevd. Se [oversikten](_oversikt.md#hvordan-kravene-leses) for
+forklaring av kildene. HL7 Norge har ingen no-basis-profil for QuestionnaireResponse.
+
+- **R4:** `status` (1..1). syk-inn sender alltid `completed`.
+- **Nav:** `questionnaire`, `subject`, `encounter`, `author`, `authored` og `item` er med i det
+  syk-inn sender. R4 har alle disse som 0..1, bortsett fra `item` som er 0..\*.
+- **Nav:** Skriving med `PUT QuestionnaireResponse/<id>`, der id er satt av syk-inn. Før skriving
+  gjør syk-inn `GET QuestionnaireResponse/<id>` og forventer `404` hvis ressursen ikke finnes.
+  Finnes den allerede, skrives ikke noe på nytt.
+- Skriving er best-effort og feil stopper ikke DocumentReference. Svarer EPJ med `404`, `405` eller
+  `501` på `PUT`, regnes QuestionnaireResponse som ikke støttet og hoppes over. Skriving er slått av
+  når funksjonsbryteren `SYK_INN_STRUCTURED_FHIR` er av, og da kreves heller ikke scopene for
+  QuestionnaireResponse.
+
+### Dagens begrensninger
+
+- Svaret på `GET` og `PUT` må være en vellykket respons med hele QuestionnaireResponse i body, med
+  `status` `completed` og `item`. R4 tillater at en server svarer uten body når `Prefer` ikke er
+  satt, og syk-inn sender ikke `Prefer`. En tom body gir en `SyntaxError` fra `response.json()`. Se
+  [navikt/smart-on-fhir#104](https://github.com/navikt/smart-on-fhir/issues/104).
+
 ## Begrunnelse
 
 - `id` settes til sykmeldings-id-en, den samme id-en som benyttes for
