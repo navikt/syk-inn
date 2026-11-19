@@ -46,20 +46,6 @@ function sykmeldingValuesToItems(values: SykInnApiSykmelding['values']): FhirQue
         })
     }
 
-    if (values.arbeidsgiver?.arbeidsgivernavn) {
-        items.push({
-            linkId: 'arbeidsforhold',
-            text: 'Arbeidsforhold sykmeldingen gjelder for',
-            item: [
-                {
-                    linkId: 'arbeidsforhold-arbeidsgivernavn',
-                    text: 'Navn på arbeidsgiver',
-                    answer: [{ valueString: values.arbeidsgiver.arbeidsgivernavn }],
-                },
-            ],
-        })
-    }
-
     if (values.aktivitet && values.aktivitet.length > 0) {
         items.push(...values.aktivitet.map(toAktivitetItem))
     }
@@ -80,6 +66,20 @@ function sykmeldingValuesToItems(values: SykInnApiSykmelding['values']): FhirQue
 
     if (values.yrkesskade) {
         items.push(toYrkesskadeItem(values.yrkesskade))
+    }
+
+    if (values.arbeidsgiver?.arbeidsgivernavn) {
+        items.push({
+            linkId: 'arbeidsforhold',
+            text: 'Arbeidsforhold sykmeldingen gjelder for',
+            item: [
+                {
+                    linkId: 'arbeidsforhold-arbeidsgivernavn',
+                    text: 'Navn på arbeidsgiver',
+                    answer: [{ valueString: values.arbeidsgiver.arbeidsgivernavn }],
+                },
+            ],
+        })
     }
 
     return items

@@ -63,6 +63,22 @@ describe('Questionnaire conformance', () => {
 
         expect(answeredLinkIds).toEqual(expect.arrayContaining(requiredLinkIds))
     })
+
+    it('orders root items like the Questionnaire when every item is answered', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.hoveddiagnose = { system: 'ICPC2', code: 'L99', text: 'Hoveddiagnose' }
+        sykmelding.values.bidiagnoser = [{ system: 'ICPC2', code: 'M54', text: 'Bidiagnose' }]
+        sykmelding.values.annenFravarsgrunn = 'DONOR'
+        sykmelding.values.yrkesskade = { yrkesskade: true, skadedato: '2026-01-01' }
+        sykmelding.values.arbeidsgiver = { harFlere: false, arbeidsgivernavn: 'Arbeidsgiver AS' }
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        const answeredLinkIds = [...new Set(result.item.map((item) => item.linkId))]
+        const questionnaireLinkIds = sykmeldingQuestionnaireV1.item.map((item) => item.linkId)
+
+        expect(answeredLinkIds).toEqual(questionnaireLinkIds)
+    })
 })
 
 describe('aktivitet mapping', () => {
