@@ -149,6 +149,17 @@ EPJ kan slå opp definisjonen for å forstå strukturen til de ulike `item`-felt
       ]
     },
     {
+      "linkId": "annen-fravarsgrunn",
+      "answer": [
+        {
+          "valueCoding": {
+            "code": "NODVENDIG_KONTROLLUNDENRSOKELSE",
+            "display": "Nødvendig kontrollundersøkelse"
+          }
+        }
+      ]
+    },
+    {
       "linkId": "yrkesskade",
       "item": [
         {
@@ -208,6 +219,9 @@ EPJ kan slå opp definisjonen for å forstå strukturen til de ulike `item`-felt
     representeres ved å gjenta `aktivitet`-gruppen. `aktivitet-grad` inkluderes kun for type
     `GRADERT`.
   - `svangerskapsrelatert` er `valueBoolean` og sendes alltid, med `true` eller `false`.
+  - `annen-fravarsgrunn` er `valueCoding` med kode og visningstekst fra svaralternativene i
+    Questionnaire-definisjonen, og utelates når sykmeldingen ikke har en annen lovfestet
+    fraværsgrunn.
   - `yrkesskade` er en gruppe med boolean og valgfri skadedato (`yrkesskade-skadedato` utelates hvis
     ikke relevant).
   - `arbeidsforhold` er en gruppe med arbeidsgivernavn.

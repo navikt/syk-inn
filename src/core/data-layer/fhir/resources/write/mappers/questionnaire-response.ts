@@ -7,6 +7,7 @@ import {
 import { SykInnApiAktivitet, SykInnApiSykmelding } from '#core/services/syk-inn-api/schema/sykmelding'
 import { Diagnose } from '#data-layer/common/diagnose'
 import { diagnosisSystemToUrn } from '#data-layer/fhir/resources/mappers/diagnosis'
+import { sykmeldingQuestionnaireV1 } from '../resources/questionnaire/sykmelding-questionnaire'
 
 export function sykmeldingToQuestionnaireResponse(
     sykmelding: SykInnApiSykmelding,
@@ -68,6 +69,14 @@ function sykmeldingValuesToItems(values: SykInnApiSykmelding['values']): FhirQue
         answer: [{ valueBoolean: values.svangerskapsrelatert }],
     })
 
+    if (values.annenFravarsgrunn != null) {
+        items.push({
+            linkId: 'annen-fravarsgrunn',
+            text: 'Annen lovfestet fraværsgrunn',
+            answer: [toAnnenFravarsgrunnValueAnswer(values.annenFravarsgrunn)],
+        })
+    }
+
     if (values.yrkesskade) {
         items.push(toYrkesskadeItem(values.yrkesskade))
     }
@@ -82,6 +91,20 @@ function toDiagnoseValueAnswer(diagnose: Diagnose): FhirQuestionnaireResponseAns
             code: diagnose.code,
             display: diagnose.text,
         },
+    }
+}
+
+const annenFravarsgrunnDisplay: ReadonlyMap<string, string> = new Map(
+    sykmeldingQuestionnaireV1.item
+        .flatMap((item) => (item.linkId === 'annen-fravarsgrunn' ? item.answerOption : []))
+        .map(({ valueCoding }) => [valueCoding.code, valueCoding.display]),
+)
+
+function toAnnenFravarsgrunnValueAnswer(annenFravarsgrunn: string): FhirQuestionnaireResponseAnswer {
+    const display = annenFravarsgrunnDisplay.get(annenFravarsgrunn)
+
+    return {
+        valueCoding: display != null ? { code: annenFravarsgrunn, display } : { code: annenFravarsgrunn },
     }
 }
 

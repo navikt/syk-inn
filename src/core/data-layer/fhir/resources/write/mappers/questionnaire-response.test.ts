@@ -166,6 +166,36 @@ describe('svangerskapsrelatert mapping', () => {
     })
 })
 
+describe('annen-fravarsgrunn mapping', () => {
+    it('maps a known annenFravarsgrunn as valueCoding with display from the Questionnaire', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.annenFravarsgrunn = 'NODVENDIG_KONTROLLUNDENRSOKELSE'
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        expect(getRootItem('annen-fravarsgrunn', result.item).answer).toEqual([
+            { valueCoding: { code: 'NODVENDIG_KONTROLLUNDENRSOKELSE', display: 'Nødvendig kontrollundersøkelse' } },
+        ])
+    })
+
+    it('keeps the code without a display when annenFravarsgrunn is not in the Questionnaire', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.annenFravarsgrunn = 'UKJENT_GRUNN'
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        expect(getRootItem('annen-fravarsgrunn', result.item).answer).toEqual([
+            { valueCoding: { code: 'UKJENT_GRUNN' } },
+        ])
+    })
+
+    it('omits annen-fravarsgrunn when annenFravarsgrunn is null', () => {
+        const result = sykmeldingToQuestionnaireResponse(new SykmeldingBuilder().enkelAktivitet().build(), REFS)
+
+        expect(result.item.find((item) => item.linkId === 'annen-fravarsgrunn')).toBeUndefined()
+    })
+})
+
 describe('yrkesskade mapping', () => {
     it('maps yrkesskade with skadedato', () => {
         const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
