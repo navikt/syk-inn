@@ -2889,6 +2889,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@opentelemetry/core@npm:3.1.1":
+  version: 3.1.1
+  resolution: "@opentelemetry/core@npm:3.1.1"
+  dependencies:
+    "@opentelemetry/semantic-conventions": "npm:^1.29.0"
+  peerDependencies:
+    "@opentelemetry/api": ">=1.10.0 <1.11.0"
+  checksum: 10c0/4776fb7f6dd08e96c1069f8b08e329ae854353ab617759539ca4b5bf925a1cce77b7c6f744f14565e75297cb73117a111c5d96b6489e64e789502032f041fceb
+  languageName: node
+  linkType: hard
+
 "@opentelemetry/exporter-trace-otlp-http@npm:^0.223.0":
   version: 0.223.0
   resolution: "@opentelemetry/exporter-trace-otlp-http@npm:0.223.0"
@@ -10735,7 +10746,7 @@ __metadata:
     "@navikt/tsm-oxlint": "npm:^0.0.7"
     "@next/mdx": "npm:^16.4.6"
     "@opentelemetry/api": "npm:1.9.1"
-    "@opentelemetry/core": "npm:2.12.0"
+    "@opentelemetry/core": "npm:3.1.1"
     "@parcel/watcher": "npm:^2.6.0"
     "@reduxjs/toolkit": "npm:^2.14.0"
     "@tailwindcss/postcss": "npm:^4.3.5"
