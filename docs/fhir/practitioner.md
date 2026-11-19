@@ -22,13 +22,6 @@ _Relevante referanser:_
       "value": "hpr-nummer"
     }
   ],
-  "telecom": [
-    {
-      "system": "phone | fax | email | pager | url | sms | other",
-      "value": "+47 987 65 432",
-      "use": "home | work | temp | old | mobile"
-    }
-  ],
   "qualifications": [
     {
       "code": {
