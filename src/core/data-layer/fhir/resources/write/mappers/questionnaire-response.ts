@@ -8,6 +8,8 @@ import { SykInnApiAktivitet, SykInnApiSykmelding } from '#core/services/syk-inn-
 import { Diagnose } from '#data-layer/common/diagnose'
 import { diagnosisSystemToUrn } from '#data-layer/fhir/resources/mappers/diagnosis'
 
+import { sykmeldingQuestionnaireV1 } from '../resources/questionnaire/sykmelding-questionnaire'
+
 export function sykmeldingToQuestionnaireResponse(
     sykmelding: SykInnApiSykmelding,
     references: { patientId: string; encounterId: string; practitionerId: string },
@@ -38,21 +40,9 @@ function sykmeldingValuesToItems(values: SykInnApiSykmelding['values']): FhirQue
 
     if (values.bidiagnoser && values.bidiagnoser.length > 0) {
         items.push({
-            linkId: 'bidiagnoser',
+            linkId: 'bidiagnose',
             text: 'Bidiagnose',
             answer: values.bidiagnoser.map(toDiagnoseValueAnswer),
-        })
-    }
-
-    if (values.arbeidsgiver?.arbeidsgivernavn) {
-        items.push({
-            linkId: 'arbeidsforhold',
-            text: 'Arbeidsforhold sykmeldingen gjelder for',
-            answer: [
-                {
-                    valueString: values.arbeidsgiver.arbeidsgivernavn,
-                },
-            ],
         })
     }
 
@@ -60,20 +50,36 @@ function sykmeldingValuesToItems(values: SykInnApiSykmelding['values']): FhirQue
         items.push(...values.aktivitet.map(toAktivitetItem))
     }
 
-    if (values.svangerskapsrelatert) {
+    items.push({
+        linkId: 'svangerskapsrelatert',
+        text: 'Svangerskapsrelatert',
+        answer: [{ valueBoolean: values.svangerskapsrelatert }],
+    })
+
+    if (values.annenFravarsgrunn != null) {
         items.push({
-            linkId: 'svangerskapsrelatert',
-            text: 'Svangerskapsrelatert',
-            answer: [
-                {
-                    valueBoolean: values.svangerskapsrelatert,
-                },
-            ],
+            linkId: 'annen-fravarsgrunn',
+            text: 'Annen lovfestet fraværsgrunn',
+            answer: [toAnnenFravarsgrunnValueAnswer(values.annenFravarsgrunn)],
         })
     }
 
     if (values.yrkesskade) {
         items.push(toYrkesskadeItem(values.yrkesskade))
+    }
+
+    if (values.arbeidsgiver?.arbeidsgivernavn) {
+        items.push({
+            linkId: 'arbeidsforhold',
+            text: 'Arbeidsforhold sykmeldingen gjelder for',
+            item: [
+                {
+                    linkId: 'arbeidsforhold-arbeidsgivernavn',
+                    text: 'Navn på arbeidsgiver',
+                    answer: [{ valueString: values.arbeidsgiver.arbeidsgivernavn }],
+                },
+            ],
+        })
     }
 
     return items
@@ -86,6 +92,20 @@ function toDiagnoseValueAnswer(diagnose: Diagnose): FhirQuestionnaireResponseAns
             code: diagnose.code,
             display: diagnose.text,
         },
+    }
+}
+
+const annenFravarsgrunnDisplay: ReadonlyMap<string, string> = new Map(
+    sykmeldingQuestionnaireV1.item
+        .flatMap((item) => (item.linkId === 'annen-fravarsgrunn' ? item.answerOption : []))
+        .map(({ valueCoding }) => [valueCoding.code, valueCoding.display]),
+)
+
+function toAnnenFravarsgrunnValueAnswer(annenFravarsgrunn: string): FhirQuestionnaireResponseAnswer {
+    const display = annenFravarsgrunnDisplay.get(annenFravarsgrunn)
+
+    return {
+        valueCoding: display != null ? { code: annenFravarsgrunn, display } : { code: annenFravarsgrunn },
     }
 }
 

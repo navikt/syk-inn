@@ -3,6 +3,8 @@ import { assert, describe, expect, it } from 'vitest'
 
 import { SykmeldingBuilder } from '#dev/mock-engine/scenarios/SykInnApiSykmeldingBuilder'
 
+import { sykmeldingQuestionnaireV1 } from '../resources/questionnaire/sykmelding-questionnaire'
+
 import { sykmeldingToQuestionnaireResponse } from './questionnaire-response'
 
 const REFS = {
@@ -43,6 +45,39 @@ describe('QuestionnaireResponseMapper', () => {
                 },
             },
         ])
+    })
+})
+
+describe('Questionnaire conformance', () => {
+    it('answers every required root item when hoveddiagnose is null and annenFravarsgrunn is given', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.hoveddiagnose = null
+        sykmelding.values.annenFravarsgrunn = 'DONOR'
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        const requiredLinkIds = sykmeldingQuestionnaireV1.item
+            .filter((item) => 'required' in item && item.required)
+            .map((item) => item.linkId)
+        const answeredLinkIds = result.item.map((item) => item.linkId)
+
+        expect(answeredLinkIds).toEqual(expect.arrayContaining(requiredLinkIds))
+    })
+
+    it('orders root items like the Questionnaire when every item is answered', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.hoveddiagnose = { system: 'ICPC2', code: 'L99', text: 'Hoveddiagnose' }
+        sykmelding.values.bidiagnoser = [{ system: 'ICPC2', code: 'M54', text: 'Bidiagnose' }]
+        sykmelding.values.annenFravarsgrunn = 'DONOR'
+        sykmelding.values.yrkesskade = { yrkesskade: true, skadedato: '2026-01-01' }
+        sykmelding.values.arbeidsgiver = { harFlere: false, arbeidsgivernavn: 'Arbeidsgiver AS' }
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        const answeredLinkIds = [...new Set(result.item.map((item) => item.linkId))]
+        const questionnaireLinkIds = sykmeldingQuestionnaireV1.item.map((item) => item.linkId)
+
+        expect(answeredLinkIds).toEqual(questionnaireLinkIds)
     })
 })
 
@@ -114,15 +149,29 @@ describe('aktivitet mapping', () => {
 })
 
 describe('arbeidsforhold mapping', () => {
-    it('maps arbeidsgivernavn as valueString', () => {
+    it('maps arbeidsgivernavn as valueString on the arbeidsforhold-arbeidsgivernavn child item', () => {
         const result = sykmeldingToQuestionnaireResponse(new SykmeldingBuilder().enkelAktivitet().build(), REFS)
 
-        expect(getRootItem('arbeidsforhold', result.item).answer).toEqual([{ valueString: 'Default AS' }])
+        const arbeidsforhold = getRootItem('arbeidsforhold', result.item)
+
+        expect(arbeidsforhold.answer).toBeUndefined()
+        expect(getChildItem('arbeidsforhold-arbeidsgivernavn', arbeidsforhold).answer).toEqual([
+            { valueString: 'Default AS' },
+        ])
+    })
+
+    it('omits arbeidsforhold when there is no arbeidsgiver', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.arbeidsgiver = null
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        expect(result.item.find((item) => item.linkId === 'arbeidsforhold')).toBeUndefined()
     })
 })
 
-describe('bidiagnoser mapping', () => {
-    it('maps multiple bidiagnoser as multiple answers on one line', () => {
+describe('bidiagnose mapping', () => {
+    it('maps multiple bidiagnoser as multiple answers on one bidiagnose item', () => {
         const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
         sykmelding.values.bidiagnoser = [
             { system: 'ICPC2', code: 'L99', text: 'Diagnose 1' },
@@ -131,12 +180,54 @@ describe('bidiagnoser mapping', () => {
         ]
 
         const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
-        const bidiagnoser = getRootItem('bidiagnoser', result.item)
+        const bidiagnoser = getRootItem('bidiagnose', result.item)
 
+        expect(result.item.filter((item) => item.linkId === 'bidiagnose')).toHaveLength(1)
         expect(bidiagnoser.answer).toHaveLength(3)
         expect(bidiagnoser.answer?.[0].valueCoding?.code).toBe('L99')
         expect(bidiagnoser.answer?.[1].valueCoding?.code).toBe('M54')
         expect(bidiagnoser.answer?.[2].valueCoding?.code).toBe('S44')
+    })
+})
+
+describe('svangerskapsrelatert mapping', () => {
+    it.each([true, false])('always maps svangerskapsrelatert as valueBoolean (%s)', (value) => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.svangerskapsrelatert = value
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        expect(getRootItem('svangerskapsrelatert', result.item).answer).toEqual([{ valueBoolean: value }])
+    })
+})
+
+describe('annen-fravarsgrunn mapping', () => {
+    it('maps a known annenFravarsgrunn as valueCoding with display from the Questionnaire', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.annenFravarsgrunn = 'NODVENDIG_KONTROLLUNDENRSOKELSE'
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        expect(getRootItem('annen-fravarsgrunn', result.item).answer).toEqual([
+            { valueCoding: { code: 'NODVENDIG_KONTROLLUNDENRSOKELSE', display: 'Nødvendig kontrollundersøkelse' } },
+        ])
+    })
+
+    it('keeps the code without a display when annenFravarsgrunn is not in the Questionnaire', () => {
+        const sykmelding = new SykmeldingBuilder().enkelAktivitet().build()
+        sykmelding.values.annenFravarsgrunn = 'UKJENT_GRUNN'
+
+        const result = sykmeldingToQuestionnaireResponse(sykmelding, REFS)
+
+        expect(getRootItem('annen-fravarsgrunn', result.item).answer).toEqual([
+            { valueCoding: { code: 'UKJENT_GRUNN' } },
+        ])
+    })
+
+    it('omits annen-fravarsgrunn when annenFravarsgrunn is null', () => {
+        const result = sykmeldingToQuestionnaireResponse(new SykmeldingBuilder().enkelAktivitet().build(), REFS)
+
+        expect(result.item.find((item) => item.linkId === 'annen-fravarsgrunn')).toBeUndefined()
     })
 })
 

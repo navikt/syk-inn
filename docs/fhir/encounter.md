@@ -6,10 +6,12 @@ _Relevante referanser:_
 
 - [Encounter](https://www.hl7.org/fhir/R4/encounter.html) (HL7)
 
+Det finnes ingen no-basis-profil for Encounter.
+
 ## Eksempel JSON-struktur for Encounter
 
-Her er feltet `class` I eksemplet fordi den er påkrevd i R4 FHIR spesifikasjonen, men det er ikke et
-felt som Nav bruker i dag.
+`status` og `class` er påkrevd i R4. `subject`, `participant` og `diagnosis` er valgfrie, men tas
+med som kontekst for konsultasjonen.
 
 ```json
 {
@@ -43,14 +45,25 @@ felt som Nav bruker i dag.
 }
 ```
 
+## Krav
+
+| Felt                     | R4   | Nav     | Merknad                                                                              |
+| ------------------------ | ---- | ------- | ------------------------------------------------------------------------------------ |
+| `status`                 | 1..1 | Påkrevd | Verdien kontrolleres ikke.                                                           |
+| `class`                  | 1..1 | Påkrevd | Verdien kontrolleres ikke.                                                           |
+| `serviceProvider`        | 0..1 | Påkrevd | Relativ referanse på formen `Organization/<id>`.                                     |
+| `subject`                | 0..1 | Valgfri | Må ha `reference` hvis feltet er med.                                                |
+| `participant.individual` | 0..1 | Valgfri | Må ha `reference` hvis `participant` er med.                                         |
+| `diagnosis.condition`    | 1..1 | Valgfri | Må ha `reference` hvis `diagnosis` er med. Leses ikke, se [Condition](condition.md). |
+
 ## Begrunnelse
 
-- Subject benyttes for å identifisere pasient for den aktuelle konsultasjonen
-- Participant/individual benyttes for å identifisere sykmelder/helsepersonell for den aktuelle
+- Subject kan brukes til å validere at konsultasjonen gjelder pasienten fra launch-konteksten
+- Participant/individual kan brukes til å validere at sykmelder fra launch-konteksten deltar i
   konsultasjonen
 - ServiceProvider/reference benyttes for å identifisere sykmelders organisasjon for den aktuelle
   konsultasjonen
-- Diagnosis benyttes for å preutfylle diagnose i appen, er ikke påkrevd
+- Diagnosis gir diagnosene som er knyttet til konsultasjonen, men er ikke påkrevd
 
 ### Notater
 
@@ -58,5 +71,11 @@ felt som Nav bruker i dag.
   referanse (literal reference) eller selve objektet (logical reference). Literal reference er da
   FHIR referansen til Condition, f.eks. Condition/unik-uuid-1234.
   [Dersom begge er til stede foretrekkes literal reference](https://www.hl7.org/fhir/R4/references.html#logical).
-- Class - denne bør være type behandling (fysisk eller virtuelt) etter norsk kodeverk. For
-  v3-ActCode kan vi ta i bruk AMB (pasienten er fysisk til stede) og VR (virtuelt)
+- Class kan brukes til å skille fysisk og virtuell konsultasjon etter norsk kodeverk. For v3-ActCode
+  er AMB (pasienten er fysisk til stede) og VR (virtuelt) aktuelle verdier.
+
+## Planlagt
+
+- `type` med Kontakttype (`urn:oid:2.16.578.1.12.4.1.1.8432`) for å avgjøre konsultasjonstype.
+- Kontroll av konsultasjonstype basert på `class`, `type` og `status`.
+- Kryssjekk av `subject` og `participant.individual` mot launch-konteksten.

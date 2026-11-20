@@ -16,10 +16,10 @@ slik at DocumentReference alltid kan lagres selv om QuestionnaireResponse skulle
 Begrunnelse under). Selve bundlen sendes med `POST` til FHIR-serverens base-URL (`/`), mens hver
 `entry` i bundlen bruker `PUT` for å lagre den enkelte ressursen.
 
-> **Merk:** Bundle er foreløpig ikke implementert. I dagens løsning skrives DocumentReference og
-> QuestionnaireResponse som to separate `PUT`-kall, ett per ressurs. DocumentReference skrives
-> alltid (journalføringsplikten), mens QuestionnaireResponse er en nice-to-have som skrives
-> best-effort.
+> **Merk:** Bundle er foreløpig ikke implementert og er ikke et krav til EPJ i dag. I dagens løsning
+> skrives DocumentReference og QuestionnaireResponse som to separate `PUT`-kall, ett per ressurs.
+> DocumentReference skrives alltid (journalføringsplikten), mens QuestionnaireResponse er en
+> nice-to-have som skrives best-effort.
 
 ## Eksempel JSON-struktur for _batch Bundle_
 
@@ -61,6 +61,10 @@ Begrunnelse under). Selve bundlen sendes med `POST` til FHIR-serverens base-URL 
         "resourceType": "DocumentReference",
         "id": "<sykmelding-id>",
         "status": "current",
+        "meta": {
+          "lastUpdated": "2026-02-10T09:30:00+01:00"
+        },
+        "description": "Menneskelig lesbar forklaring av dokumentet",
         "type": {
           "coding": [
             {
@@ -68,8 +72,7 @@ Begrunnelse under). Selve bundlen sendes med `POST` til FHIR-serverens base-URL 
               "code": "J01-2",
               "display": "Sykmeldinger og trygdesaker"
             }
-          ],
-          "text": "Sykmelding"
+          ]
         },
         "subject": {
           "reference": "Patient/<Pasienten sykmeldingen gjelder for>"
@@ -84,7 +87,7 @@ Begrunnelse under). Selve bundlen sendes med `POST` til FHIR-serverens base-URL 
             "attachment": {
               "contentType": "application/pdf",
               "language": "NO-nb",
-              "title": "Sykmelding",
+              "title": "Menneskelig lesbar forklaring av dokumentet",
               "data": "base64 PDF"
             }
           }
@@ -129,9 +132,9 @@ Begrunnelse under). Selve bundlen sendes med `POST` til FHIR-serverens base-URL 
   - `PUT /<ressurstype>/<sykmelding-id>` er en «update as create» (upsert) der klienten bestemmer
     id-en. `POST /<ressurstype>` ville latt FHIR-serveren generere en tilfeldig id og opprette en ny
     ressurs ved hvert kall.
-  - Det gjør operasjonen idempotent: å sende samme sykmelding på nytt treffer samme id og
-    overskriver i stedet for å lage duplikater. Idempotenssjekken
-    (`GET /<ressurstype>/<sykmelding-id>`) er kun mulig fordi id-en er forutsigbar.
+  - Operasjonen blir dermed idempotent. Et nytt forsøk med samme sykmelding treffer samme id og
+    lager ikke duplikater. syk-inn sjekker først med `GET /<ressurstype>/<sykmelding-id>` og hopper
+    over skrivingen hvis ressursen finnes. Sjekken er kun mulig fordi id-en er forutsigbar.
   - Fordi id-en er kjent på forhånd, kan `DocumentReference.context.related` peke til
     `QuestionnaireResponse/<sykmelding-id>` allerede før ressursen er lagret.
 - Både `QuestionnaireResponse.id` og `DocumentReference.id` settes til sykmeldings-id-en. Siden

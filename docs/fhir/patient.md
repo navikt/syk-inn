@@ -36,6 +36,14 @@ _Relevante referanser:_
 }
 ```
 
+## Krav
+
+| Felt                          | R4          | Nav     | Merknad                                                     |
+| ----------------------------- | ----------- | ------- | ----------------------------------------------------------- |
+| `identifier` (fnr eller d-nr) | 0..\*       | Påkrevd | Fødselsnummer brukes hvis begge finnes.                     |
+| `name`                        | 0..\*       | Påkrevd | Første element brukes.                                      |
+| `name.family`, `name.given`   | 0..1, 0..\* | Påkrevd | Gjelder alle `name`-elementer. Navn med kun `text` avvises. |
+
 ## Begrunnelse
 
 - Identifier/fødslesnummer eller d-nummer er nødvendig for å identifisere pasienten

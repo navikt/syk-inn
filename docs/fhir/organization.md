@@ -31,11 +31,25 @@ _Relevante referanser:_
 }
 ```
 
+## Krav
+
+Organization leses fra `Encounter.serviceProvider`.
+
+| Felt                               | R4    | Nav     | Merknad                      |
+| ---------------------------------- | ----- | ------- | ---------------------------- |
+| `identifier` (organisasjonsnummer) | 0..\* | Påkrevd |                              |
+| `telecom` (`system` `phone`)       | 0..\* | Påkrevd | Første telefonnummer brukes. |
+| `identifier.system`, `.value`      | 0..1  | Påkrevd | Gjelder alle elementer.      |
+| `telecom.system`, `.value`         | 0..1  | Påkrevd | Gjelder alle elementer.      |
+
 ## Begrunnelse
 
 - Identifier/organisasjonsnummer - Nav benytter organisasjonsnummer som identifikator for
   organisasjonen sykmelder er tilknyttet (f.eks. fastlegekontor).
-- Identifier/her-id brukes til å sende dokumenter asynkront (som Dialogmelding) til EPJ hvis synkron
-  tilbakeskriving feiler.
 - Telecom/phone - Saksbehandlere og veiledere i Nav trenger telefonnummer for å kontakte sykmelder
   ved oppfølging av sykmelding.
+
+## Planlagt
+
+- Identifier/her-id skal brukes til å sende dokumenter asynkront (som Dialogmelding) til EPJ hvis
+  synkron tilbakeskriving feiler.
