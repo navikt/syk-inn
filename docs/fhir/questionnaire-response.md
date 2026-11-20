@@ -218,8 +218,7 @@ QuestionnaireResponse er valgfri. Skriving er best-effort, og feil stopper ikke 
 | `GET QuestionnaireResponse/<id>` | `404` hvis ressursen ikke finnes. Finnes den, skrives den ikke på nytt.                             |
 | `PUT QuestionnaireResponse/<id>` | Hele ressursen i body. `404`, `405` og `501` betyr at skriving ikke støttes, og steget hoppes over. |
 
-Id-en settes av syk-inn. Svar uten body regnes som feil, selv om R4 tillater det
-([navikt/smart-on-fhir#104](https://github.com/navikt/smart-on-fhir/issues/104)).
+Id-en settes av syk-inn. Svar uten body regnes som feil, selv om R4 tillater det.
 
 ## Begrunnelse
 

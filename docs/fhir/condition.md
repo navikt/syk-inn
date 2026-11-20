@@ -63,14 +63,12 @@ _Relevante referanser:_
 Condition er valgfri. Diagnoser hentes med `Condition?encounter=<encounter-id>`, og EPJ må svare med
 en Bundle av typen `searchset`.
 
-| Felt                                      | R4    | Nav     | Merknad                                                                                                          |
-| ----------------------------------------- | ----- | ------- | ---------------------------------------------------------------------------------------------------------------- |
-| `subject`                                 | 1..1  | Påkrevd |                                                                                                                  |
-| `encounter`                               | 0..1  | Påkrevd |                                                                                                                  |
-| `code.coding`                             | 0..\* | Påkrevd | ICD-10, ICPC-2 eller ICPC-2B. Andre kodesystemer ignoreres.                                                      |
-| `code.coding.system`, `.code`, `.display` | 0..1  | Påkrevd | Gjelder alle `coding`-elementer i søkeresultatet. Ett element uten `display` stopper preutfylling ([#104][lib]). |
-
-[lib]: https://github.com/navikt/smart-on-fhir/issues/104
+| Felt                                      | R4    | Nav     | Merknad                                                                                            |
+| ----------------------------------------- | ----- | ------- | -------------------------------------------------------------------------------------------------- |
+| `subject`                                 | 1..1  | Påkrevd |                                                                                                    |
+| `encounter`                               | 0..1  | Påkrevd |                                                                                                    |
+| `code.coding`                             | 0..\* | Påkrevd | ICD-10, ICPC-2 eller ICPC-2B. Andre kodesystemer ignoreres.                                        |
+| `code.coding.system`, `.code`, `.display` | 0..1  | Påkrevd | Gjelder alle `coding`-elementer i søkeresultatet. Ett element uten `display` stopper preutfylling. |
 
 ## Begrunnelse
 

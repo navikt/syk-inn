@@ -90,7 +90,7 @@ EPJ må kunne lagre følgende felter.
 | `PUT DocumentReference/<id>` | Hele ressursen i body, inkludert `meta.lastUpdated`. `404`, `405` og `501` betyr at skriving ikke støttes. |
 
 Id-en settes av syk-inn. Svar uten body eller med `OperationOutcome` regnes som feil, selv om R4
-tillater dem ([navikt/smart-on-fhir#104](https://github.com/navikt/smart-on-fhir/issues/104)).
+tillater dem.
 
 ## Begrunnelse
 

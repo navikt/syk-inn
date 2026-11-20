@@ -36,13 +36,11 @@ _Relevante referanser:_
 
 Practitioner leses fra `fhirUser`, se [Launch-kontekst](_oversikt.md#launch-kontekst).
 
-| Felt                        | R4          | Nav     | Merknad                                                                   |
-| --------------------------- | ----------- | ------- | ------------------------------------------------------------------------- |
-| `identifier` (HPR-nummer)   | 0..\*       | Påkrevd |                                                                           |
-| `name`                      | 0..\*       | Påkrevd | Første element brukes.                                                    |
-| `name.family`, `name.given` | 0..1, 0..\* | Påkrevd | Gjelder alle `name`-elementer. Navn med kun `text` avvises ([#104][lib]). |
-
-[lib]: https://github.com/navikt/smart-on-fhir/issues/104
+| Felt                        | R4          | Nav     | Merknad                                                     |
+| --------------------------- | ----------- | ------- | ----------------------------------------------------------- |
+| `identifier` (HPR-nummer)   | 0..\*       | Påkrevd |                                                             |
+| `name`                      | 0..\*       | Påkrevd | Første element brukes.                                      |
+| `name.family`, `name.given` | 0..1, 0..\* | Påkrevd | Gjelder alle `name`-elementer. Navn med kun `text` avvises. |
 
 ## Begrunnelse
 
